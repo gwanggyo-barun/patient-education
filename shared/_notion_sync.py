@@ -56,7 +56,13 @@ def upsert(
     status: str = "✅ 사용중",
 ) -> tuple[str, str]:
     """Create or update a row in the DB. Returns (action, page_id)."""
-    notes = f"🌐 HTML: {html_url}\n📄 PDF: {pdf_url}"
+    # 비고: clickable links — each URL text is annotated with link.url so a
+    # single click in Notion opens the page (no copy-paste).
+    notes_rich = [
+        {"type": "text", "text": {"content": "🌐 HTML 보기", "link": {"url": html_url}}},
+        {"type": "text", "text": {"content": "\n"}},
+        {"type": "text", "text": {"content": "📄 PDF 다운로드", "link": {"url": pdf_url}}},
+    ]
     properties = {
         "자료명": {"title": [{"text": {"content": title}}]},
         "카테고리": {"select": {"name": category}},
@@ -65,7 +71,7 @@ def upsert(
         "파일형식": {"multi_select": [{"name": "PDF"}]},
         "세부 질환": {"rich_text": [{"text": {"content": disease}}]},
         "버전": {"rich_text": [{"text": {"content": version}}]},
-        "비고": {"rich_text": [{"text": {"content": notes}}]},
+        "비고": {"rich_text": notes_rich},
         "최종수정일": {"date": {"start": today_iso}},
     }
 
