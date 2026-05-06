@@ -32,8 +32,10 @@ jobs:
       - name: Install Playwright Chromium
         run: python -m playwright install --with-deps chromium
 
-      - name: Build all PDFs (HTML + QR + OG meta)
+      - name: Build all PDFs (HTML + QR + OG meta) and sync to Notion
         run: python build.py
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
