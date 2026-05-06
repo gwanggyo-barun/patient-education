@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Morning Hypertension — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/htn/morning/">
+  <meta property="og:title" content="아침 고혈압 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="기상 직후 혈압이 심장과 뇌를 지키는 열쇠 — 진단부터 치료, 생활관리까지">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/htn/morning/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (TOC + 3-stat row + risk-row + vertical alert stack) -->
+  <style>
+    /* TOC: 4 columns × 2 rows (8 items) */
+    .pattern-toc {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: var(--space-4);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+      align-content: stretch;
+    }
+    .toc-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+    .toc-item__num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      font-variant-numeric: tabular-nums;
+    }
+    .toc-item__text {
+      font-size: var(--text-h3);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+    }
+
+    /* Three-stat row (slides 3 and 12) — single row of 3 large circular stats + supporting card */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 3rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Risk-row table (slide 6) — 3 columns: condition / multiplier / outcome */
+    .pattern-risk {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .risk-table {
+      display: grid;
+      grid-template-columns: 1.4fr 0.7fr 1fr;
+      gap: 1px;
+      background: var(--color-border);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .risk-table__head {
+      background: var(--color-navy);
+      padding: var(--space-2) var(--space-5);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      color: var(--color-canvas);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .risk-table__cell {
+      background: var(--color-canvas);
+      padding: var(--space-2) var(--space-5);
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: var(--lh-snug);
+    }
+    .risk-table__cell--alt { background: var(--color-canvas-warm); }
+    .risk-table__cell--label { justify-content: flex-start; font-weight: var(--weight-540); color: var(--color-navy); }
+    .risk-table__cell--alert { color: var(--color-danger); font-weight: var(--weight-bold); }
+    .risk-table__cell--mul { font-weight: var(--weight-bold); color: var(--color-danger); font-variant-numeric: tabular-nums; }
+
+    /* Vertical alert stack (slides 11 and 14) — single column, 3 alert rows */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+
+    /* 8-item checklist tightened spacing so they all fit comfortably */
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · CARDIOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">아침 고혈압,<br><em>왜 중요할까요?</em></h1>
+      <p class="slide__subtitle">기상 직후의 혈압이 심장과 뇌를 지키는 열쇠입니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Morning Hypertension · Home Blood Pressure Monitoring</span>
+      <span class="slide__page">광교바른내과 순환기내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · TABLE OF CONTENTS — 4×2 numbered tiles
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CONTENTS · <strong>TODAY'S OUTLINE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 함께 알아볼 내용</h2>
+      <p class="slide__subtitle">진단부터 치료, 생활관리까지 — 8가지 핵심 주제</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-toc">
+        <div class="toc-item"><span class="toc-item__num">1</span><span class="toc-item__text">아침 고혈압이란 무엇인가요?</span></div>
+        <div class="toc-item"><span class="toc-item__num">2</span><span class="toc-item__text">왜 아침 혈압이 위험한가요?</span></div>
+        <div class="toc-item"><span class="toc-item__num">3</span><span class="toc-item__text">가정에서 혈압 재는 법 (722 규칙)</span></div>
+        <div class="toc-item"><span class="toc-item__num">4</span><span class="toc-item__text">병원에서의 정밀 검사 (ABPM)</span></div>
+        <div class="toc-item"><span class="toc-item__num">5</span><span class="toc-item__text">목표로 해야 할 혈압 수치</span></div>
+        <div class="toc-item"><span class="toc-item__num">6</span><span class="toc-item__text">아침 고혈압 약물 치료</span></div>
+        <div class="toc-item"><span class="toc-item__num">7</span><span class="toc-item__text">식사 · 운동 · 생활습관 관리</span></div>
+        <div class="toc-item"><span class="toc-item__num">8</span><span class="toc-item__text">꼭 기억해야 할 8가지</span></div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 환자 교육 자료 · Ver 1.0</span>
+      <span class="slide__page">02 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · DEFINITION + 3 STATS (custom stats3 pattern)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">아침 고혈압이란 무엇인가요</h2>
+      <p class="slide__subtitle">기상 후 1~2시간 사이 혈압이 비정상적으로 높은 상태</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">135/85</div>
+              <div class="stats3-cell__unit">mmHg 이상</div>
+            </div>
+            <div class="stats3-cell__label">아침 가정 혈압 기준</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">21<span style="font-size:1.5rem">%</span></div>
+              <div class="stats3-cell__unit">한국 일차진료</div>
+            </div>
+            <div class="stats3-cell__label">가면고혈압 유병률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">30<span style="font-size:1.5rem">%</span></div>
+              <div class="stats3-cell__unit">약 1,300만 명</div>
+            </div>
+            <div class="stats3-cell__label">한국 성인 고혈압 유병률</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          아침 고혈압은 병원에서는 정상이지만 집에서 아침에 재면 높게 나오는 <em>'가면 고혈압'</em> 형태로 자주 숨어 있습니다. 한국인은 서양인에 비해 아침 혈압이 더 많이, 더 심하게 오르는 경향이 있어 반드시 가정에서 측정해 확인해야 합니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH 2022 / HOPE Asia Network 2022 / 대한고혈압학회 가이드라인</span>
+      <span class="slide__page">03 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 2×2 — three patterns + diagnosis key
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>SUBTYPES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">아침 고혈압의 세 가지 모습</h2>
+      <p class="slide__subtitle">한 가지 병이 아니라 서로 겹치는 세 가지 양상입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">SUBTYPE · 01</div>
+          <div class="tile__title">아침 혈압 급등형</div>
+          <div class="tile__body">자고 일어난 뒤 2시간 이내에 수축기 혈압이 35~55 mmHg 이상 급격히 오르는 경우. 교감신경이 갑자기 활성화되면서 심장과 혈관에 큰 부담을 줍니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SUBTYPE · 02</div>
+          <div class="tile__title">가면(숨은) 아침 고혈압</div>
+          <div class="tile__body">진료실에서는 140/90 미만으로 정상이지만, 집에서 아침에 재면 135/85 이상이 나오는 유형. 병원 측정만 믿으면 놓칠 수 있어 가장 위험합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SUBTYPE · 03</div>
+          <div class="tile__title">야간 · 아침 지속형</div>
+          <div class="tile__body">밤에도 혈압이 낮아지지 않고(non-dipper), 오히려 밤이 낮보다 높은(riser) 유형. 총 사망 위험이 1.4배, 심부전 위험이 2.5배까지 증가합니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">DIAGNOSIS · KEY</div>
+          <div class="tile__title">진단의 열쇠 — 가정 혈압 측정</div>
+          <div class="tile__body">세 가지 유형 모두 진료실 혈압만으로는 판별이 어렵습니다. 집에서 아침에 1주일 꾸준히 혈압을 재야 정확한 진단이 가능합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Morning surge / Masked / Non-dipper · Riser — HOPE Asia 2022</span>
+      <span class="slide__page">04 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DENSITY GRID 2×2 — why morning BP is dangerous
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>WHY DANGEROUS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">왜 아침 혈압이 가장 위험할까요</h2>
+      <p class="slide__subtitle">뇌졸중과 심근경색이 아침 6~12시에 가장 많이 발생합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">RISK · 01</div>
+          <div class="tile__title">뇌졸중 49% 증가</div>
+          <div class="tile__body">아침 6시부터 12시 사이에 뇌졸중 발생률이 다른 시간대보다 49% 더 높습니다. 수축기 혈압이 10 mmHg 오를 때마다 뇌졸중 위험도 11% 증가합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 02</div>
+          <div class="tile__title">심근경색 위험 6배</div>
+          <div class="tile__body">아침 가정 혈압이 155 mmHg 이상이면, 정상인 분에 비해 뇌졸중 위험은 6.0배, 심근경색 위험은 6.2배까지 올라갑니다 (HONEST 연구).</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 03</div>
+          <div class="tile__title">혈관 내피 손상</div>
+          <div class="tile__body">아침에는 교감신경이 급격히 활성화되어 심박수가 빨라지고 혈관이 수축합니다. 혈관 내벽에 강한 충격이 가해져 동맥경화반이 터질 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 04</div>
+          <div class="tile__title">혈전 형성 증가</div>
+          <div class="tile__body">아침에는 혈소판 응집력이 높아지고 혈액이 끈적해지는 '고응고 상태'가 됩니다. 좁아진 혈관에서 혈전(핏덩이)이 더 쉽게 만들어집니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — HONEST Study (Japan, 21,591 patients) · ESC 2024</span>
+      <span class="slide__page">05 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · RISK TABLE — quantified risk multipliers
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>RISK QUANTIFIED</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">아침 고혈압, 얼마나 위험한가요</h2>
+      <p class="slide__subtitle">대규모 연구로 확인된 위험도 — 숫자가 클수록 위험이 큽니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-risk">
+        <div class="risk-table">
+          <div class="risk-table__head">어떤 상태인가요</div>
+          <div class="risk-table__head">위험 증가 배수</div>
+          <div class="risk-table__head">무엇에 대한 위험</div>
+
+          <div class="risk-table__cell risk-table__cell--label risk-table__cell--alert">아침 가정 혈압 ≥ 155 mmHg</div>
+          <div class="risk-table__cell risk-table__cell--mul">6.0배 ↑</div>
+          <div class="risk-table__cell">뇌졸중 발생</div>
+
+          <div class="risk-table__cell risk-table__cell--alt risk-table__cell--label risk-table__cell--alert">아침 가정 혈압 ≥ 155 mmHg</div>
+          <div class="risk-table__cell risk-table__cell--alt risk-table__cell--mul">6.2배 ↑</div>
+          <div class="risk-table__cell risk-table__cell--alt">심근경색 등 관상동맥질환</div>
+
+          <div class="risk-table__cell risk-table__cell--label">가면(숨은) 아침 고혈압</div>
+          <div class="risk-table__cell risk-table__cell--mul">2.7배 ↑</div>
+          <div class="risk-table__cell">뇌졸중 발생</div>
+
+          <div class="risk-table__cell risk-table__cell--alt risk-table__cell--label">밤에 오히려 혈압이 올라감 (riser)</div>
+          <div class="risk-table__cell risk-table__cell--alt risk-table__cell--mul">2.5배 ↑</div>
+          <div class="risk-table__cell risk-table__cell--alt">심부전 발생</div>
+
+          <div class="risk-table__cell risk-table__cell--label">밤에 혈압 강하 부족 (non-dipper)</div>
+          <div class="risk-table__cell risk-table__cell--mul">1.4배 ↑</div>
+          <div class="risk-table__cell">전체 사망 위험</div>
+
+          <div class="risk-table__cell risk-table__cell--alt risk-table__cell--label risk-table__cell--alert">아침 혈압 10 mmHg ↑ 당</div>
+          <div class="risk-table__cell risk-table__cell--alt risk-table__cell--mul">1.1배 ↑</div>
+          <div class="risk-table__cell risk-table__cell--alt">뇌졸중 발생</div>
+        </div>
+        <div class="alert-strip">
+          <span class="alert-strip__label">핵심</span>
+          <span class="alert-strip__text">아침 혈압이 10 mmHg만 높아도 뇌졸중 위험이 올라갑니다. 아침 혈압 155 mmHg 이상은 반드시 치료가 필요합니다.</span>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">HONEST · J-HOP · Ohasama · IDACO Studies — pooled HR estimates</span>
+      <span class="slide__page">06 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · TIMELINE — 722 home BP measurement rule
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>HOW TO MEASURE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">집에서 혈압 재는 법 — 722 규칙</h2>
+      <p class="slide__subtitle">7일 동안 아침·저녁 각 2회씩. 이것이 진단의 첫걸음입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">7일 연속 측정</div>
+          <div class="timeline-step__body">최소 7일간 매일 측정합니다. 첫날은 제외하고 평균을 내는 것이 표준입니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">아침 측정</div>
+          <div class="timeline-step__body">기상 후 1시간 이내, 소변 후, 약 복용 · 식사 전에 측정합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">저녁 측정</div>
+          <div class="timeline-step__body">취침 직전 측정. 식사 · 목욕 · 운동 후 1시간은 피합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">2회씩 평균 기록</div>
+          <div class="timeline-step__body">매회 2번 측정, 1~2분 간격으로. 두 값의 평균을 기록지에 남깁니다.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">측정 원칙</span>
+        <span class="alert-strip__text">평균 ≥ 135/85 mmHg면 아침 고혈압 — 의사에게 기록을 꼭 보여주세요. 반드시 팔뚝형(상완형) 자동 혈압계 사용 — 손목형 · 반지형 · 스마트워치는 부정확합니다. 측정 전 5분간 안정, 대화 · 흡연 · 커피는 피합니다.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH Home BP Monitoring Guideline 2022 · ESH 2023</span>
+      <span class="slide__page">07 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DENSITY GRID 2×2 — ABPM (24-hour ambulatory BP)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>ABPM</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">병원 정밀 검사 — 24시간 활동혈압 (ABPM)</h2>
+      <p class="slide__subtitle">팔에 작은 혈압계를 달고 하루를 생활하며 낮 · 밤 혈압을 모두 측정합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">METHOD · 01</div>
+          <div class="tile__title">검사 방법</div>
+          <div class="tile__body">팔에 자동 혈압계를 부착하고 30분마다 낮 · 밤 24시간 자동 측정합니다. 평소처럼 생활 · 수면하시면 됩니다. 건강보험 급여 대상 (E6547)입니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">INDICATION · 02</div>
+          <div class="tile__title">이런 분께 필요합니다</div>
+          <div class="tile__body">병원 · 가정 혈압 수치가 서로 다른 경우, 약을 먹어도 조절되지 않는 경우, 당뇨 · 신장병 · 수면무호흡이 있는 경우, 밤 혈압 평가가 필요한 경우.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">REFERENCE · 03</div>
+          <div class="tile__title">기준 수치 (ABPM)</div>
+          <div class="tile__body">24시간 평균 130/80 미만, 낮 평균 135/85 미만, 밤 평균 120/70 미만이 정상입니다. 이 수치를 넘으면 치료 강화가 필요합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">UNIQUE VALUE · 04</div>
+          <div class="tile__title">야간 혈압 패턴 확인</div>
+          <div class="tile__body">정상이라면 밤에 혈압이 10~20% 떨어져야 합니다. 떨어지지 않거나 (non-dipper) 오히려 오르는 (riser) 경우를 확인할 수 있는 유일한 방법입니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">건강보험 급여 — E6547 · ESC 2024 ABPM Guidelines</span>
+      <span class="slide__page">08 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · DENSITY GRID 2×2 — target BP
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>TARGET BP</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">우리의 목표 혈압은</h2>
+      <p class="slide__subtitle">아침에 집에서 잰 혈압을 기준으로 합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">GENERAL · 01</div>
+          <div class="tile__title">일반 목표 — 135 / 85 mmHg 미만</div>
+          <div class="tile__body">대부분의 고혈압 환자는 아침 가정 혈압이 135/85 mmHg 미만이면 잘 조절되고 있는 것입니다. 가정에서 일주일간 측정한 평균 혈압으로 판정합니다.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">HIGH RISK · 02</div>
+          <div class="tile__title">고위험군 목표 — 125 / 75 mmHg 미만</div>
+          <div class="tile__body">당뇨병, 만성신장병, 단백뇨, 관상동맥질환, 심부전, 뇌졸중 · 심근경색 과거력이 있거나 아스피린 · 항응고제 복용 중이신 분은 더 낮은 목표가 권고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RATIONALE · 03</div>
+          <div class="tile__title">왜 더 엄격한 목표가 필요할까요</div>
+          <div class="tile__body">고위험군에서는 아침 혈압을 125/75 mmHg 미만으로 낮추는 것이 뇌졸중 · 심근경색을 줄이는 데 훨씬 효과적이라는 연구 결과가 꾸준히 나오고 있습니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">PERSONALIZE · 04</div>
+          <div class="tile__title">본인의 목표는 주치의와 상의</div>
+          <div class="tile__body">나이, 기저 질환, 복용 약물, 혈압 변동성에 따라 목표가 달라질 수 있습니다. 진료 시 가정혈압 기록을 함께 보며 본인에게 맞는 목표를 정합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH 2022 / SPRINT · STEP Trial / ESC 2024</span>
+      <span class="slide__page">09 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · DENSITY GRID 2×2 — medication principles
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>MEDICATION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">아침 고혈압 약물 치료 원칙</h2>
+      <p class="slide__subtitle">'24시간 지속되는 약'을 '아침'에 한 번 복용하는 것이 기본입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">PRINCIPLE · 01</div>
+          <div class="tile__title">24시간 지속형 1일 1회 약제</div>
+          <div class="tile__body">약효가 24시간 일정하게 유지되어 다음 날 아침까지 혈압을 지켜주는 Long-acting 제제 — 텔미사르탄(트윈스타), 올메사르탄(세비카), 피마사르탄(듀카브, 카나브), 암로디핀, S-암로디핀 등이 대표적입니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">PRINCIPLE · 02</div>
+          <div class="tile__title">아침 복용이 원칙 — 매일 같은 시각에</div>
+          <div class="tile__body">특별한 이유가 없는 한 약은 아침에 복용합니다. 기상 직후 양치 · 세수와 함께 드시면 빠뜨리지 않습니다. 대규모 연구(TIME, BedMed 2025)에서 저녁 복용이 더 좋다는 증거는 없었습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PRINCIPLE · 03</div>
+          <div class="tile__title">복합제(SPC) 적극 활용</div>
+          <div class="tile__body">ARB + 칼슘길항제(CCB)를 한 알에 합친 복합제(트윈스타, 세비카, 듀카브, 아모잘탄 등)가 한국에서 가장 많이 처방됩니다. 복약이 편해져 혈압 조절률이 훨씬 좋아집니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PRINCIPLE · 04</div>
+          <div class="tile__title">저녁 복용은 ABPM 확인 후에만</div>
+          <div class="tile__body">ABPM으로 밤 혈압이 높거나 non-dipper · riser 패턴이 확인된 경우에 한해, 일부 약제를 저녁으로 옮기는 것을 주치의와 상의할 수 있습니다. 스스로 임의로 바꾸지 않습니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH 2022 focused update · HOPE Asia 2022 · TIME Trial · BedMed 2025</span>
+      <span class="slide__page">10 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · ALERT STACK — medication taking precautions (3 alerts)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>MEDICATION CAUTIONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">약 복용 시 반드시 지켜야 할 것</h2>
+      <p class="slide__subtitle">한 번의 실수가 하루 종일의 혈압 조절을 망칠 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-alert-stack">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">절대 임의로 약을 중단하지 마세요</div>
+            <div class="alert-row__text">혈압이 정상이 되었다고 약을 끊으면 수일 내 다시 오르며, 특히 아침 급등으로 뇌졸중 위험이 크게 증가합니다. 반드시 주치의와 상의 후 조정합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">매일 같은 시각에 복용하세요</div>
+            <div class="alert-row__text">복용 시각이 들쭉날쭉하면 약효가 끊기는 구간이 생겨 아침 혈압이 급등합니다. 아침 기상 직후로 시간을 고정하고, 알람 · 약통을 활용합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">혈압이 잘 조절된다고 가정 혈압 측정을 중단하지 마세요</div>
+            <div class="alert-row__text">약이 효과를 내고 있는지, 계절 변화로 혈압이 바뀌지 않았는지 확인하려면 주 1~2회라도 아침 혈압 측정을 꾸준히 이어가야 합니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Adherence — strongest predictor of long-term BP control</span>
+      <span class="slide__page">11 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · STATS3 — low-sodium diet
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">12</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>LIFESTYLE · DIET</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">생활습관 ① 저염식이 가장 중요합니다</h2>
+      <p class="slide__subtitle">한국인은 세계보건기구(WHO) 권고량의 1.6배 나트륨을 먹고 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">3,136</div>
+              <div class="stats3-cell__unit">mg</div>
+            </div>
+            <div class="stats3-cell__label">한국인 하루 평균 나트륨</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">2,000</div>
+              <div class="stats3-cell__unit">mg 이하</div>
+            </div>
+            <div class="stats3-cell__label">목표 섭취량 (소금 5g)</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">50<span style="font-size:1.5rem">%</span></div>
+              <div class="stats3-cell__unit">절반 이상</div>
+            </div>
+            <div class="stats3-cell__label">나트륨의 절반은 장 · 찌개 · 김치</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          국물은 반만 드시고, 김치는 한 끼에 1~2 조각으로 줄이며, 찌개에 밥을 말아 먹는 습관은 피합니다. 라면 · 국수 · 인스턴트 식품은 나트륨이 한 끼 목표량을 넘어가므로 가급적 피합니다. 대신 생채소 · 과일 · 무염 견과류를 간식으로 활용하면 자연스럽게 칼륨이 나트륨을 배출해 혈압을 낮추는 데 도움이 됩니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">출처 — WHO Sodium Reduction Guideline · 국민건강영양조사 2023</span>
+      <span class="slide__page">12 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 13 · COMPARISON — DO vs DON'T lifestyle
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">13</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>DAILY HABITS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">생활습관 ② 이렇게 실천하세요</h2>
+      <p class="slide__subtitle">아침 고혈압을 이기는 일상의 작은 습관들</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            이렇게 하세요
+          </div>
+          <ul class="compare-col__list">
+            <li>아침에 일어나 바로 일어서지 말고 1~2분 앉아 안정 후 기상</li>
+            <li>찬물 세수보다는 미지근한 물로 서서히 얼굴에 적응</li>
+            <li>겨울철 외출은 약 복용 30분 후, 해 뜬 뒤에 시작</li>
+            <li>주 3~5회 중강도 유산소 운동 (빠르게 걷기 30분)</li>
+            <li>하루 7시간 이상 수면, 코골이가 심하면 수면검사 의뢰</li>
+            <li>싱겁게 먹기, 채소 · 과일 하루 5접시 이상</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            이것은 피하세요
+          </div>
+          <ul class="compare-col__list">
+            <li>새벽 5~6시 야외 운동 (혈압 급등 시간대와 겹침)</li>
+            <li>일어나자마자 찬물 마시기 · 차가운 실외로 나가기</li>
+            <li>과음 — 남성 소주 2잔, 여성 1잔 이하</li>
+            <li>흡연 — 한 대만 피워도 아침 혈압 10~15 mmHg 급등</li>
+            <li>뜨거운 사우나 · 반신욕 직후 찬물 샤워 반복</li>
+            <li>혈압약 빠뜨리고 다음날 두 배 먹기 (위험합니다)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH Lifestyle Recommendations 2022 · ESC 2024</span>
+      <span class="slide__page">13 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 14 · ALERT STACK — winter / dawn risks (3 alerts)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">14</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>SEASONAL CAUTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">겨울철 · 새벽이 가장 위험합니다</h2>
+      <p class="slide__subtitle">기온이 1°C 떨어질 때마다 수축기 혈압은 0.26 mmHg 오릅니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-alert-stack">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">새벽 야외 운동은 피하세요</div>
+            <div class="alert-row__text">새벽 5~6시는 교감신경이 가장 활발해 혈압이 급등하는 시간이면서 바깥 기온도 가장 낮습니다. 두 위험이 겹쳐 고령 고혈압 환자에게 심근경색 · 뇌졸중 위험이 가장 높은 시간대입니다. 운동은 해가 뜬 뒤로 미룹니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">외출 전 실내에서 먼저 몸을 데우세요</div>
+            <div class="alert-row__text">갑자기 찬 공기에 노출되면 혈관이 수축해 혈압이 10~20 mmHg 오를 수 있습니다. 외출 10분 전 실내에서 가벼운 스트레칭, 따뜻한 물 한 잔, 약 복용 후 30분 뒤 나서는 것이 안전합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">이런 증상은 즉시 119 · 응급실로</div>
+            <div class="alert-row__text">갑작스러운 두통 · 어지럼증, 한쪽 팔다리 힘빠짐, 말이 어눌해짐, 가슴 통증, 호흡곤란이 있으면 즉시 119에 연락하거나 응급실로 가세요. 혈압 측정보다 증상이 먼저입니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">FAST stroke screening — Face · Arm · Speech · Time</span>
+      <span class="slide__page">14 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 15 · CHECKLIST — 8 essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">15</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">꼭 기억해야 할 핵심 8가지</h2>
+      <p class="slide__subtitle">오늘부터 실천할 수 있는 아침 고혈압 관리 수칙</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">아침 기상 후 1시간 이내, 식사 · 약 복용 전에 <strong>혈압 측정</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">7일 연속, 아침 · 저녁 각 2회씩 재서 평균 기록 <strong>(722 규칙)</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">평균 아침 혈압 <strong>135/85 mmHg 미만</strong>이 목표 (고위험군 125/75)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">약은 매일 같은 아침 시각에, <strong>절대 임의 중단 금지</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">병원 혈압이 정상이어도 아침 혈압 높으면 <strong>반드시 치료</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">싱겁게 먹기 — 국물 · 김치 · 장류 줄이고 <strong>채소 · 과일 늘리기</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">새벽 야외 운동 금지, 해 뜬 뒤 약 복용 <strong>30분 후 외출</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">코골이 · 주간 졸림 · 비만 동반되면 <strong>수면무호흡 검사</strong></div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — sustained adherence predicts long-term outcomes</span>
+      <span class="slide__page">15 / 16</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 16 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">매일 아침의 작은 기록이<br><em>평생의 건강을 지킵니다</em></h2>
+      <p class="slide__subtitle">꾸준한 측정과 규칙적인 복약으로 아침 고혈압, 충분히 관리할 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">16 / 16</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,384 @@
+/* ==========================================================================
+   GWANGGYO BARUN — A4 PORTRAIT SINGLE-PAGE STYLESHEET
+   For: patient-handout-pdf, lab-report-infographic
+   Page: A4 portrait (210mm × 297mm), single page, footer mini-QR + OG meta
+   ========================================================================== */
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-family);
+  font-size: 10pt;
+  line-height: var(--lh-snug);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  font-feature-settings: "ss01", "tnum";
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* --------------------------------------------------------------------------
+   PAGE — single A4 portrait container
+   210mm × 297mm = 794px × 1123px (at 96dpi)
+   -------------------------------------------------------------------------- */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  max-height: 297mm;
+  padding: 14mm 14mm 11mm;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;   /* header / title-block / body / footer */
+  gap: 8mm;
+  overflow: hidden;
+  page-break-after: always;
+}
+
+/* --------------------------------------------------------------------------
+   HEADER — logo left, eyebrow right (matches deck structure)
+   -------------------------------------------------------------------------- */
+.page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 4mm;
+}
+
+.page__logo {
+  height: 8.5mm;     /* Matches deck slide__logo (~32px @ 96dpi) for cross-medium consistency */
+  width: auto;
+}
+
+.page__eyebrow {
+  font-size: 8pt;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-slate);
+}
+
+.page__eyebrow strong {
+  color: var(--color-navy);
+  font-weight: var(--weight-bold);
+}
+
+/* --------------------------------------------------------------------------
+   TITLE BLOCK
+   -------------------------------------------------------------------------- */
+.page__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+
+.page__title {
+  font-size: 24pt;
+  font-weight: var(--weight-540);    /* Match deck signature weight (Superhuman-style) */
+  color: var(--color-navy);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-display);
+}
+
+.page__subtitle {
+  font-size: 11pt;
+  font-weight: var(--weight-regular);
+  color: var(--color-ink-soft);
+  line-height: var(--lh-snug);
+}
+
+/* --------------------------------------------------------------------------
+   BODY — flexible container for handout/lab-report content
+   -------------------------------------------------------------------------- */
+.page__body {
+  display: flex;
+  flex-direction: column;
+  gap: 5mm;
+  min-height: 0;
+}
+
+/* --------------------------------------------------------------------------
+   FOOTER — mini QR + clinic info (replaces deck closing slide)
+   -------------------------------------------------------------------------- */
+.page__footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 8mm;
+  padding-top: 4mm;
+  border-top: 1px solid var(--color-border);
+}
+
+.page__footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  font-size: 8pt;
+  line-height: var(--lh-snug);
+}
+
+.page__footer-info .clinic-name {
+  font-size: 9pt;
+  font-weight: var(--weight-semibold);
+  color: var(--color-navy);
+}
+
+.page__footer-info .clinic-meta {
+  color: var(--color-slate);
+}
+
+.qr-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5mm;
+}
+
+.qr-mini__code {
+  width: 18mm;
+  height: 18mm;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  border-radius: 2mm;
+  padding: 1mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-mini__code svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.qr-mini__label {
+  font-size: 7pt;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-slate);
+}
+
+/* --------------------------------------------------------------------------
+   CONTENT COMPONENTS — building blocks for body sections
+   -------------------------------------------------------------------------- */
+
+/* Section heading */
+.section-heading {
+  font-size: 12pt;
+  font-weight: var(--weight-semibold);
+  color: var(--color-navy);
+  letter-spacing: var(--tracking-snug);
+  margin-bottom: 2mm;
+  padding-left: 3mm;
+  border-left: 3px solid var(--color-steel);
+}
+
+/* Card (used for grouped info — instructions, warnings, summaries) */
+.card {
+  background: var(--color-canvas-warm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 4mm 5mm;
+}
+
+.card--accent {
+  background: var(--color-cream);
+  border-color: var(--color-cream-deep);
+}
+
+.card--warning {
+  background: var(--color-warning-bg);
+  border-color: var(--color-warning);
+  border-left-width: 3px;
+}
+
+.card--navy {
+  background: var(--color-navy);
+  color: var(--color-white-95);
+  border: none;
+}
+
+.card--navy .card-label,
+.card--navy .card-title {
+  color: var(--color-white-95);
+}
+
+/* Card label — matches deck signature label pattern
+   (.contact-card__label, .qr-block__label, .pattern-split__metric-label) */
+.card-label {
+  font-size: 8pt;                            /* ≈ --text-micro 11px @ A4 scale */
+  font-weight: var(--weight-semibold);
+  color: var(--color-slate);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin-bottom: 2mm;
+}
+
+.card-label--warning { color: var(--color-warning); }
+.card-label--navy    { color: var(--color-navy); }
+.card-label--steel   { color: var(--color-steel); }
+
+/* Card body list — used for bullet lists inside cards */
+.card-list {
+  list-style: none;
+  font-size: 9pt;
+  line-height: 1.6;
+}
+
+/* Numbered checklist (for handouts) */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5mm;
+}
+
+.checklist__item {
+  display: grid;
+  grid-template-columns: 6mm 1fr;
+  gap: 3mm;
+  align-items: start;
+}
+
+.checklist__num {
+  width: 6mm;
+  height: 6mm;
+  background: var(--color-navy);
+  color: var(--color-canvas);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9pt;
+  font-weight: var(--weight-bold);
+}
+
+.checklist__text {
+  font-size: 10pt;
+  line-height: var(--lh-snug);
+}
+
+.checklist__text strong {
+  color: var(--color-navy);
+  font-weight: var(--weight-semibold);
+}
+
+/* 2-column body grid (for lab reports — items left, summary right) */
+.body-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6mm;
+}
+
+/* Stats row (lab values strip) */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 3mm;
+}
+
+.stat-cell {
+  background: var(--color-canvas-warm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3mm;
+  text-align: center;
+}
+
+.stat-cell__label {
+  font-size: 7pt;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-slate);
+  margin-bottom: 1.5mm;
+}
+
+.stat-cell__value {
+  font-size: 16pt;
+  font-weight: var(--weight-bold);
+  color: var(--color-navy);
+  line-height: 1;
+  letter-spacing: var(--tracking-snug);
+}
+
+.stat-cell__unit {
+  font-size: 8pt;
+  color: var(--color-slate);
+  margin-top: 1mm;
+}
+
+.stat-cell--high { background: var(--color-danger-bg); border-color: #FECACA; }
+.stat-cell--high .stat-cell__value { color: var(--color-danger); }
+.stat-cell--low  { background: var(--color-warning-bg); border-color: #FED7AA; }
+.stat-cell--low  .stat-cell__value { color: var(--color-warning); }
+.stat-cell--ok   { background: #ECFDF5; border-color: #A7F3D0; }
+.stat-cell--ok   .stat-cell__value { color: #047857; }
+
+/* Lab item row (label / value / range / status) */
+.lab-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.7fr 1fr auto;
+  gap: 3mm;
+  align-items: center;
+  padding: 2mm 3mm;
+  border-bottom: 1px dashed var(--color-border);
+  font-size: 9pt;
+}
+
+.lab-row:last-child { border-bottom: none; }
+
+.lab-row--header {
+  border-bottom: 1px solid var(--color-border-strong);
+  padding-bottom: 2mm;
+  font-weight: var(--weight-semibold);
+  color: var(--color-slate);
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.lab-row__label {
+  color: var(--color-ink);
+  font-weight: var(--weight-medium);
+}
+
+.lab-row__value {
+  font-weight: var(--weight-semibold);
+  color: var(--color-navy);
+  text-align: right;
+  font-feature-settings: "tnum";
+}
+
+.lab-row__range {
+  color: var(--color-slate);
+  font-size: 8pt;
+  font-feature-settings: "tnum";
+}
+
+.lab-row__badge {
+  font-size: 7pt;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  padding: 1mm 2mm;
+  border-radius: 2mm;
+  background: #ECFDF5;
+  color: #047857;
+}
+
+.lab-row__badge--high { background: var(--color-danger-bg); color: var(--color-danger); }
+.lab-row__badge--low  { background: var(--color-warning-bg); color: var(--color-warning); }
+
+/* Disclaimer line (small print at very bottom of footer) */
+.disclaimer {
+  font-size: 7pt;
+  color: var(--color-slate);
+  font-style: italic;
+  margin-top: 1mm;
+}

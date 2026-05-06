@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>응급카트 약품·장비 위치 맵 — Gwanggyo Barun Internal Medicine</title>
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/handouts/emergency/crash-cart-map/">
+  <meta property="og:title" content="응급카트 약품·장비 위치 맵 — 광교바른내과">
+  <meta property="og:description" content="4단 서랍별 약품·장비 배치도 — 어느 직원이든 동일 동선으로 즉시 접근">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/handouts/emergency/crash-cart-map/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+
+  <style>
+    /* Cart drawer visual map — 4 horizontal "drawers" stacked */
+    .cart-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5mm;
+    }
+    .drawer {
+      display: grid;
+      grid-template-columns: 22mm 1fr;
+      border: 1.2px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas);
+    }
+    .drawer__tab {
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      padding: 3mm 2.5mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1mm;
+    }
+    .drawer__tab--steel { background: var(--color-steel-deep); }
+    .drawer__num {
+      font-size: 18pt;
+      font-weight: var(--weight-black);
+      letter-spacing: var(--tracking-mega);
+      line-height: 1;
+    }
+    .drawer__cat {
+      font-size: 7.5pt;
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      opacity: 0.85;
+      line-height: 1.15;
+    }
+    .drawer__body {
+      padding: 3mm 4mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1mm 5mm;
+      align-content: center;
+    }
+    .drawer__title {
+      grid-column: 1 / -1;
+      font-size: 9.5pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      margin-bottom: 1mm;
+      letter-spacing: var(--tracking-snug);
+    }
+    .drawer__item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2mm;
+      font-size: 8.5pt;
+      line-height: 1.45;
+      padding: 0.5mm 0;
+      align-items: baseline;
+    }
+    .drawer__item-marker {
+      width: 1.8mm;
+      height: 1.8mm;
+      background: var(--color-steel);
+      border-radius: 50%;
+      display: inline-block;
+      transform: translateY(-0.3mm);
+    }
+    .drawer__item-marker--alert {
+      background: var(--color-warning);
+    }
+    .drawer__item strong {
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+    }
+    .drawer__item em {
+      color: var(--color-steel-deep);
+      font-style: normal;
+      font-weight: var(--weight-semibold);
+      font-size: 8pt;
+    }
+
+    /* Top legend strip */
+    .legend-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3mm;
+    }
+    .legend-card {
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-steel);
+      border-radius: var(--radius-sm);
+      padding: 2.5mm 3.5mm;
+    }
+    .legend-card--navy { border-left-color: var(--color-navy); }
+    .legend-card--warning { border-left-color: var(--color-warning); background: var(--color-warning-bg); }
+    .legend-card__label {
+      font-size: 7pt;
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--color-slate);
+      margin-bottom: 0.8mm;
+    }
+    .legend-card__value {
+      font-size: 9pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      line-height: 1.3;
+    }
+    .legend-card--warning .legend-card__value { color: var(--color-warning); }
+
+    /* External (top-of-cart) items */
+    .external {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 2.5mm;
+      padding: 3mm 4mm;
+      background: var(--color-cream);
+      border: 1px solid var(--color-cream-deep);
+      border-radius: var(--radius-sm);
+    }
+    .external__item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5mm;
+    }
+    .external__label {
+      font-size: 7pt;
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--color-navy);
+      opacity: 0.7;
+    }
+    .external__value {
+      font-size: 9pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      line-height: 1.25;
+    }
+
+    /* Tighten for one-page fit */
+    .page__body { gap: 3.5mm; }
+    .page { padding: 11mm 12mm 9mm; gap: 4mm; }
+    .page__header { padding-bottom: 3mm; }
+    .page__footer { padding-top: 3mm; }
+    .section-heading { margin-bottom: 1.5mm; font-size: 11pt; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="page__header">
+    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
+    <div class="page__eyebrow">EMERGENCY · <strong>CRASH CART LAYOUT MAP</strong></div>
+  </header>
+
+  <section class="page__title-block">
+    <h1 class="page__title">응급카트 약품·장비 위치 맵</h1>
+    <p class="page__subtitle">4단 서랍 표준 배치 — 어느 직원이든 동일 동선으로 즉시 접근 (카트 측면 부착용)</p>
+  </section>
+
+  <main class="page__body">
+
+    <!-- TOP: External / always-visible items -->
+    <section>
+      <h2 class="section-heading">카트 상단 · 외부 (항상 시인)</h2>
+      <div class="external">
+        <div class="external__item">
+          <div class="external__label">제세동기</div>
+          <div class="external__value">AED · biphasic<br>패드 성인·소아 + 여분</div>
+        </div>
+        <div class="external__item">
+          <div class="external__label">모니터</div>
+          <div class="external__value">5-parameter<br>ECG·NIBP·SpO₂·ETCO₂·Temp</div>
+        </div>
+        <div class="external__item">
+          <div class="external__label">산소</div>
+          <div class="external__value">휴대용 산소통 (E)<br>regulator 부착</div>
+        </div>
+        <div class="external__item">
+          <div class="external__label">CPR 보조</div>
+          <div class="external__value">CPR board · stepstool<br>벽시계 (압박 cycle)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DRAWER STACK -->
+    <section>
+      <h2 class="section-heading">서랍 1–4단 · 표준 inventory</h2>
+      <div class="cart-stack">
+
+        <!-- Drawer 1 -->
+        <div class="drawer">
+          <div class="drawer__tab">
+            <div class="drawer__num">1</div>
+            <div class="drawer__cat">Airway · Breathing</div>
+          </div>
+          <div class="drawer__body">
+            <div class="drawer__title">기도 · 환기 — 즉시 접근 1순위</div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span><strong>i-gel</strong> Size 3·4·5 각 2개 <em>1차 advanced airway</em></span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span><strong>BVM</strong> 성인·소아 + reservoir bag</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>OPA Size 2·3·4·5 / NPA 6.0·7.0·7.5 mm</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>ETT 6.5–8.0 mm · Mac 3·4 + bougie 15 Fr</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>Yankauer · suction catheter 12·14 Fr</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>O₂ mask · NRM · nasal cannula · 윤활제</span></div>
+          </div>
+        </div>
+
+        <!-- Drawer 2 -->
+        <div class="drawer">
+          <div class="drawer__tab drawer__tab--steel">
+            <div class="drawer__num">2</div>
+            <div class="drawer__cat">IV · Drugs</div>
+          </div>
+          <div class="drawer__body">
+            <div class="drawer__title">IV 라인 · 약물 — Code 시 동시 접근</div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span><strong>Epinephrine 1 mg</strong> prefilled × 10A <em>모든 arrest 1차</em></span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span><strong>Amiodarone 150 mg/3 mL</strong> × 4A <em>VF/pVT</em></span></div>
+            <div class="drawer__item"><span class="drawer__item-marker--alert"></span><span><strong>Naloxone 0.4 mg</strong> × 5A <em>opioid 역전</em></span></div>
+            <div class="drawer__item"><span class="drawer__item-marker--alert"></span><span><strong>Flumazenil 0.5 mg</strong> × 4A <em>BZD 역전</em></span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>Atropine · Adenosine · MgSO₄ · Lidocaine</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>NaHCO₃ · Ca gluconate · 50% dextrose</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>IV 18·20·22G × 10 + 3-way · extension</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>NS 1L × 4 · Hartmann × 2 · pressure bag</span></div>
+          </div>
+        </div>
+
+        <!-- Drawer 3 -->
+        <div class="drawer">
+          <div class="drawer__tab">
+            <div class="drawer__num">3</div>
+            <div class="drawer__cat">Circulation</div>
+          </div>
+          <div class="drawer__body">
+            <div class="drawer__title">순환 · 모니터링 보조</div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>AED 패드 여분 (성인·소아 각 1조)</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>ECG electrode 여분 + 12-lead 케이블</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>Norepinephrine · Dopamine (post-ROSC)</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>Nitroglycerin SL/IV · Aspirin chewable</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>Hydrocortisone · Methylprednisolone</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>Furosemide · Diphenhydramine</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>Glucometer + strip · thiamine</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>(선택) IO device — EZ-IO</span></div>
+          </div>
+        </div>
+
+        <!-- Drawer 4 -->
+        <div class="drawer">
+          <div class="drawer__tab drawer__tab--steel">
+            <div class="drawer__num">4</div>
+            <div class="drawer__cat">Supplies · Records</div>
+          </div>
+          <div class="drawer__body">
+            <div class="drawer__title">소모품 · 기록 — 사용 후 재정비 항목</div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>거즈 · 반창고 · 압박붕대 · 토니켓</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>장갑 (멸균·일반) · 마스크 · 고글</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>NG/OG tube 12·14·16 Fr <em>i-gel용 12 Fr 필수</em></span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>Sharps · 의료폐기물 박스 · 비닐백</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker--alert"></span><span><strong>Code Blue 기록지</strong> · 응급 플로우차트</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker--alert"></span><span><strong>119 · 한림대동탄성심병원</strong> 직통번호</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>이송 동의서 · Code Blue 사후 분석지</span></div>
+            <div class="drawer__item"><span class="drawer__item-marker"></span><span>여분 봉인 (tamper-evident seal)</span></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LEGEND -->
+    <section>
+      <div class="legend-row">
+        <div class="legend-card legend-card--navy">
+          <div class="legend-card__label">파란 점</div>
+          <div class="legend-card__value">표준 비치 항목</div>
+        </div>
+        <div class="legend-card legend-card--warning">
+          <div class="legend-card__label">주황 점</div>
+          <div class="legend-card__value">진정제 길항제 · 핵심 기록 (즉시 인지)</div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-card__label">잠금 별도 보관</div>
+          <div class="legend-card__value">midazolam · fentanyl (마약·향정)</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="page__footer">
+    <div class="page__footer-info">
+      <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560 · 카트 측면 부착용</div>
+      <div class="clinic-meta">근거 — ASGE 2018 Sedation Guideline · 대한소화기내시경학회 진정 가이드라인</div>
+      <div class="disclaimer">서랍 라벨과 본 맵을 일치시켜 운영. 변경 시 매월 점검에서 최신화 확인.</div>
+    </div>
+    <div class="qr-mini">
+      <div class="qr-mini__code"></div>
+      <div class="qr-mini__label">상세 프로토콜</div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Management of Orthostatic Hypotension — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/orthostatic-hypotension/management-2026/">
+  <meta property="og:title" content="Management of Orthostatic Hypotension — JAMA Intern Med 2026 Review">
+  <meta property="og:description" content="Moloney 2026 review 기반 임상 요약 — 진단·약물 검토·비약물·약물 치료·Supine HTN까지 12장 정리">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/orthostatic-hypotension/management-2026/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
+
+  <!-- Local extensions: stats3 (slide 2) + take-home closing variant (slide 12) -->
+  <style>
+    /* stats3: 3 large circular stats + supporting card */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 2.6rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Take-home + closing variant: 6 numbered items left, qr+reference right */
+    .takehome-grid {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: var(--space-8);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+      align-items: stretch;
+    }
+    .takehome-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(3, 1fr);
+      gap: var(--space-3) var(--space-5);
+      align-content: stretch;
+    }
+    .takehome-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--color-border-soft);
+    }
+    .takehome-item__num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-body);
+      font-weight: var(--weight-bold);
+      font-variant-numeric: tabular-nums;
+    }
+    .takehome-item__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+    .takehome-item__text strong {
+      color: var(--color-navy);
+      font-weight: var(--weight-bold);
+    }
+    .takehome-side {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      padding: var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .takehome-side__qr {
+      width: 120px;
+      height: 120px;
+      background: var(--color-canvas);
+      border-radius: var(--radius-md);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .takehome-side__qr svg,
+    .takehome-side__qr img,
+    .takehome-side__qr canvas {
+      width: 100%;
+      height: 100%;
+    }
+    .takehome-side__label {
+      font-size: var(--text-micro);
+      font-weight: var(--weight-bold);
+      color: var(--color-steel-deep);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .takehome-side__heading {
+      font-size: var(--text-h3);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-snug);
+    }
+    .takehome-side__cite {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-450);
+      color: var(--color-ink-soft);
+      line-height: var(--lh-normal);
+    }
+    .takehome-side__cite strong {
+      color: var(--color-navy);
+      font-weight: var(--weight-bold);
+    }
+    .takehome-side__doi {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      color: var(--color-steel-deep);
+      font-variant-numeric: tabular-nums;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>CLINICAL REVIEW</strong> · GENERAL INTERNAL MEDICINE</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">Management of<br><em>Orthostatic Hypotension</em></h1>
+      <p class="slide__subtitle">A Review — Moloney et al., JAMA Internal Medicine 2026</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">발표자 정지환 · 광교바른내과</span>
+      <span class="slide__page">DATE · ____</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · BACKGROUND — why it matters (stats3)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>BACKGROUND</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">왜 중요한가</h2>
+      <p class="slide__subtitle">고령화 외래에서 어지럼·낙상 호소가 늘고, OH는 그 흔한 원인 중 하나</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">5–30<span style="font-size:1.4rem">%</span></div>
+              <div class="stats3-cell__unit">community-dwelling</div>
+            </div>
+            <div class="stats3-cell__label">일반 노인 OH 유병률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">50<span style="font-size:1.5rem">%</span></div>
+              <div class="stats3-cell__unit">nursing home</div>
+            </div>
+            <div class="stats3-cell__label">양로원 거주자 유병률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">2×</div>
+              <div class="stats3-cell__unit">5-yr mortality</div>
+            </div>
+            <div class="stats3-cell__label">정상 대비 사망률 2배</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          OH는 <em>낙상 · 골절 · 실신 · 심혈관 사건</em>을 늘리고 5년 사망률을 약 2배로 올린다. 65세 이상, 다약제 복용 중인 환자는 모두 OH 고위험군으로 보고 외래에서 적극적으로 선별해야 한다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Moloney D, et al. JAMA Intern Med 2026 · pooled prevalence estimates</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · DIAGNOSTIC CRITERIA — Classical + 3 variants (Density Grid 2x2)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>DIAGNOSTIC CRITERIA</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">정의와 진단 기준</h2>
+      <p class="slide__subtitle">Classical OH + 3가지 변이형 — 시간축과 HR 반응으로 구분</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile tile--accent">
+          <div class="tile__index">CLASSICAL · 01</div>
+          <div class="tile__title">Classical OH (3분 이내)</div>
+          <div class="tile__body">기립 3분 이내 SBP <strong>≥ 20 mmHg</strong> 또는 DBP <strong>≥ 10 mmHg</strong> 하강. Supine HTN 동반 시 SBP <strong>≥ 30 mmHg</strong> 하강을 진단 기준으로 적용.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">VARIANT · 02</div>
+          <div class="tile__title">Initial OH (15초 이내)</div>
+          <div class="tile__body">기립 15초 이내 SBP ≥ 40 mmHg 또는 DBP ≥ 20 mmHg 하강 후 빠르게 회복. 젊은 성인에 흔하며 active standing test로만 검출 가능.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">VARIANT · 03</div>
+          <div class="tile__title">Delayed OH (3분 이후)</div>
+          <div class="tile__body">3분 이후에 BP가 떨어지는 형태. 자율신경부전 초기 단계로 알려져 있고 향후 neurogenic OH·시눅레인병으로 진행할 수 있다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">VARIANT · 04</div>
+          <div class="tile__title">POTS · Supine HTN with OH</div>
+          <div class="tile__body">POTS는 기립 시 HR ≥ 30 bpm 증가 (BP 하강 없이도). Supine HTN with OH는 누우면 SBP ≥ 140이면서 기립 시 OH 진단 기준 충족.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">AAS / EFAS 2011 Consensus · Moloney 2026 Table 1</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · PATHOPHYSIOLOGY — Asymmetric Split
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>PATHOPHYSIOLOGY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">정상 baroreflex와 OH의 분기점</h2>
+      <p class="slide__subtitle">기립 시 정상적으로 작동해야 할 보상 반사가 무너지는 곳에서 OH가 시작된다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">기립 시 <em>600–800 ml</em>의 혈액이 하지로 이동하면, 압수용체(baroreceptor) 반사가 즉시 작동해 교감신경을 활성화하고 HR을 올리며 혈관을 수축시켜 BP를 유지한다.</p>
+          <p class="pattern-split__supporting">
+            이 정상 보상 반사가 다음 두 갈래에서 무너질 때 OH가 발생한다 —
+            (1) <em>neurogenic</em>: 압수용체 둔화 또는 교감신경 활성 부전 자체 (자율신경부전),
+            (2) <em>non-neurogenic</em>: 보상 반사는 살아 있지만 용적이 비어 있거나 약물이 혈관수축·심박출 반응을 차단하는 경우.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Compensatory HR</div>
+            <div class="pattern-split__metric-value">+10–20 bpm</div>
+            <div class="pattern-split__metric-detail">정상에서는 기립 시 HR이 이 수준으로 즉각 상승해 BP를 보강한다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Neurogenic clue</div>
+            <div class="pattern-split__metric-value">ΔHR &lt; 15 bpm</div>
+            <div class="pattern-split__metric-detail">BP가 떨어지는데 HR이 거의 안 오르면 neurogenic OH를 강하게 시사.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Baroreflex physiology · Moloney 2026 Figure 1</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · CLASSIFICATION — Comparison
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>CLASSIFICATION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">Neurogenic vs Non-neurogenic</h2>
+      <p class="slide__subtitle">치료 방향이 달라진다 — 원인 갈래를 먼저 정한다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">N</span>
+            Neurogenic OH (자율신경부전)
+          </div>
+          <ul class="compare-col__list">
+            <li>Parkinson's disease (PD)</li>
+            <li>Multiple system atrophy (MSA)</li>
+            <li>Pure autonomic failure (PAF)</li>
+            <li>Diabetic autonomic neuropathy</li>
+            <li>Amyloidosis (transthyretin / AL)</li>
+            <li>Lewy body dementia</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">non-N</span>
+            Non-neurogenic OH
+          </div>
+          <ul class="compare-col__list">
+            <li>약물 유발 (가장 흔함)</li>
+            <li>용적 부족 — 탈수 · 출혈 · 빈혈</li>
+            <li>심박출량 저하 — HF · AS · MI 후</li>
+            <li>장기 와상 · deconditioning</li>
+            <li>부신부전 · 갑상선 이상</li>
+            <li>패혈증 · 알코올 · adrenal 결핍</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Etiologic classification — Moloney 2026 Table 2</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · ACTIVE STANDING TEST — Timeline + HR alert
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>OFFICE DIAGNOSIS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">외래 5분 진단 — Active Standing Test</h2>
+      <p class="slide__subtitle">5분 휴식 → 기립 직후 → 1분 → 3분, 네 시점의 BP/HR을 기록한다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">Supine 5분 휴식</div>
+          <div class="timeline-step__body">조용한 공간에서 5분간 누워 안정. Baseline BP/HR 기록 (대화 · 통화 · 식후 1시간 내 측정 회피).</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">기립 직후 측정</div>
+          <div class="timeline-step__body">스스로 일어선 직후 (15–30초 내) BP/HR. Initial OH 검출용 — 빠르게 회복되므로 놓치기 쉽다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">1분 후 재측정</div>
+          <div class="timeline-step__body">기립 1분 시점 BP/HR. Classical OH가 가장 빈번하게 잡히는 구간이다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">3분 후 재측정 · 진단</div>
+          <div class="timeline-step__body">3분 시점 BP/HR. SBP ≥ 20 또는 DBP ≥ 10 mmHg 하강이면 Classical OH로 판정.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">HR 해석</span>
+        <span class="alert-strip__text">ΔHR &lt; 15 bpm + BP↓ → <strong>Neurogenic OH</strong> 의심 / ΔHR ≥ 30 bpm (BP↓ 없이) → <strong>POTS</strong> / ΔHR 적절 + BP↓ → <strong>Non-neurogenic OH</strong> (용적 부족·약물·심박출 저하 평가).</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Active standing test protocol — Moloney 2026 Box 2</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · DRUG REVIEW — Density Grid 3x2 + alert
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>DRUG REVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">즉시 점검할 OH 유발 약물</h2>
+      <p class="slide__subtitle">약물 검토는 비용 0의 가장 효율 높은 OH 중재 — 6개 카테고리를 빠르게 훑는다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">DRUG · 01</div>
+          <div class="tile__title">항고혈압제</div>
+          <div class="tile__body">α-blocker (doxazosin, terazosin), diuretic (HCTZ, furosemide), ACEI/ARB. 특히 다제 병용 노인에서 OH 유발 1위.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 02</div>
+          <div class="tile__title">항우울제</div>
+          <div class="tile__body">TCA (amitriptyline, nortriptyline), SSRI · SNRI (venlafaxine), trazodone. α-차단·콜린성 차단 작용으로 OH 유발.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 03</div>
+          <div class="tile__title">항정신병제</div>
+          <div class="tile__body">Chlorpromazine, risperidone, olanzapine, quetiapine. 1세대뿐 아니라 2세대도 α1-차단으로 OH 유발 가능.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 04</div>
+          <div class="tile__title">도파민 작용제</div>
+          <div class="tile__body">Levodopa, pramipexole, ropinirole. 파킨슨병 자체 + 약물 모두 OH에 기여 — 자율신경부전과 중첩.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 05</div>
+          <div class="tile__title">PDE-5 inhibitor · Nitrate</div>
+          <div class="tile__body">Sildenafil, tadalafil + nitrate 병용은 강력 혈관확장으로 절대 금기. 단독 사용도 OH 위험 높임.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 06</div>
+          <div class="tile__title">Opioid · 기타</div>
+          <div class="tile__body">Tramadol, morphine 등 마약성 진통제 + 항히스타민 (1세대), 근이완제, 알코올. 노인 다약제에서 누적 효과.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">실행</span>
+        <span class="alert-strip__text">우선 <strong>저녁 복용 시간 조정</strong>(기립 위험 시간대 회피), 다음 <strong>감량</strong> 또는 <strong>OH 안전 약물로 교체</strong>를 검토. 임의 중단 금지 — 원질환 악화 위험.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Beers Criteria 2023 · Moloney 2026 Table 3</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · NON-PHARMACOLOGIC — Density Grid 3x2 (5 + 1 alert)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>NON-PHARMACOLOGIC</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">비약물 치료 — 1차, 모든 환자에 적용</h2>
+      <p class="slide__subtitle">약물보다 먼저, 약물과 함께 — 6가지 핵심</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">MEASURE · 01</div>
+          <div class="tile__title">수분 + 염분 부하</div>
+          <div class="tile__body">수분 ≥ 2 L/일 + 염분 6–10 g/일. 혈장 용적 증가가 OH 완화의 기본 — HF · CKD 동반 시 의사 평가 후 조정.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MEASURE · 02</div>
+          <div class="tile__title">식사 직전 냉수 부스터</div>
+          <div class="tile__body">식사 직전 240–480 ml 찬물 음용. 식후 OH (postprandial hypotension)를 줄이는 즉각 효과 — 약물 전에 시도.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MEASURE · 03</div>
+          <div class="tile__title">압박 스타킹</div>
+          <div class="tile__body">Waist-high 30–40 mmHg 권장. 무릎까지 오는 짧은 스타킹은 효과 제한적. 아침 기상 전 누운 자세에서 착용.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MEASURE · 04</div>
+          <div class="tile__title">침대 머리 거상</div>
+          <div class="tile__body">10–20° 거상 (블록 또는 조절식 침대). 야뇨 감소 + 야간 supine HTN 완화 + 아침 OH 완화에 동시 기여.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MEASURE · 05</div>
+          <div class="tile__title">Physical counter-maneuvers</div>
+          <div class="tile__body">다리 꼬기 · 발끝 들기 · 발 펌프하기 · 쪼그려 앉기. 기립 직전·도중 시행 시 BP를 즉시 5–15 mmHg 끌어올린다.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">AVOID · 06</div>
+          <div class="tile__title">회피 항목</div>
+          <div class="tile__body">갑작스런 기립 · 뜨거운 샤워 · 사우나 · 과식 · 알코올 · 더운 환경 노출 · 장시간 부동 · Valsalva (배변 시 강한 힘주기).</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Lifestyle interventions — Moloney 2026 Box 3</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · PHARMACOLOGIC — Regimen Tile 3 + combo alert
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>PHARMACOLOGIC</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">약물 치료 알고리즘</h2>
+      <p class="slide__subtitle">비약물 + 약물 검토에도 증상 지속 시 — Step 1 → 2 → 3, 또는 병용</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr;">
+        <div class="tile tile--accent">
+          <div class="tile__index">STEP · 01 · FIRST-LINE</div>
+          <div class="tile__title">Fludrocortisone</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">Dose</span><span class="tile__regimen-dose">0.1–0.2 mg · qd</span></li>
+            <li><span class="tile__regimen-name">Action</span><span class="tile__regimen-dose">혈장 용적 ↑</span></li>
+            <li><span class="tile__regimen-name">Monitor</span><span class="tile__regimen-dose">K⁺ · BP · 부종 · BNP</span></li>
+            <li><span class="tile__regimen-name">Caution</span><span class="tile__regimen-dose">HF · severe CKD 금기</span></li>
+          </ul>
+          <div class="tile__duration">식사와 함께 아침 1회</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 02</div>
+          <div class="tile__title">Midodrine</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">Dose</span><span class="tile__regimen-dose">2.5–10 mg · tid</span></li>
+            <li><span class="tile__regimen-name">Action</span><span class="tile__regimen-dose">α₁-agonist · 혈관수축</span></li>
+            <li><span class="tile__regimen-name">Timing</span><span class="tile__regimen-dose">식전 30분 · 활동 전</span></li>
+            <li><span class="tile__regimen-name">Caution</span><span class="tile__regimen-dose">취침 4시간 전 마지막</span></li>
+          </ul>
+          <div class="tile__duration">Supine HTN 회피 — 시간 엄수</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 03</div>
+          <div class="tile__title">Droxidopa</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">Dose</span><span class="tile__regimen-dose">100–600 mg · tid</span></li>
+            <li><span class="tile__regimen-name">Action</span><span class="tile__regimen-dose">NE precursor</span></li>
+            <li><span class="tile__regimen-name">Indication</span><span class="tile__regimen-dose">neurogenic OH (PD/MSA)</span></li>
+            <li><span class="tile__regimen-name">Note</span><span class="tile__regimen-dose">한국 가용성 제한</span></li>
+          </ul>
+          <div class="tile__duration">미국 FDA 승인 (2014)</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">병용</span>
+        <span class="alert-strip__text"><strong>Fludrocortisone + Midodrine</strong> 조합은 단독 대비 시너지를 보인다 — 하나로 부족한 환자에서 우선 고려. Pyridostigmine은 supine HTN 동반 시 대안 (효과는 mild).</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Pharmacotherapy stepwise — Moloney 2026 Figure 2</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · SUPINE HYPERTENSION — Density Grid 2x2
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>SUPINE HYPERTENSION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">OH + Supine HTN 동반 — 균형 치료</h2>
+      <p class="slide__subtitle">치료의 가장 까다로운 시나리오 — 낮 BP를 올리려다 밤 BP를 더 올린다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">PRINCIPLE · 01</div>
+          <div class="tile__title">취침 전 BP 측정 필수</div>
+          <div class="tile__body">자기 직전 SBP/DBP 기록. <strong>&gt; 180/110 mmHg</strong>면 야간 표적장기 손상 위험 → 단기 대응 필요. 환자에게 가정 BP 기록을 처방한다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PRINCIPLE · 02</div>
+          <div class="tile__title">침대 머리 10–20° 거상</div>
+          <div class="tile__body">비약물 첫 단계. 야간 SBP를 약 10–15 mmHg 낮추면서 기립 직후 OH도 완화 — 단일 중재로 양쪽에 동시 작용.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">PRINCIPLE · 03</div>
+          <div class="tile__title">야간 SBP 200+ → 단기 단작용 항고혈압제</div>
+          <div class="tile__body">Hydralazine 25 mg 또는 captopril 25 mg 단회 취침 시 — 짧게 작용해 새벽 OH 악화 위험을 최소화. 장기 작용제는 OH 악화로 회피.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PRINCIPLE · 04</div>
+          <div class="tile__title">Midodrine 마지막 용량 시간 단축</div>
+          <div class="tile__body">취침 4시간 전 마지막 복용 원칙. Supine HTN이 심하면 3–4시간 전 → 6시간 전으로 더 앞당기고 마지막 용량 감량 검토.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Supine HTN management — Moloney 2026 Box 4</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CASE — 78F dizziness (Density Grid 2x2)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>CLINICAL CASE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">사례 — 78세 여, 외래 어지럼 호소</h2>
+      <p class="slide__subtitle">교과서적 진단 흐름 + 약물 검토 우선의 실무 적용 예</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">PROFILE · 01</div>
+          <div class="tile__title">Patient · 약물</div>
+          <div class="tile__body">78F, 6개월 전부터 기립 시 어지럼. 낙상 1회 (경상). 약물: <strong>HCTZ 25 mg</strong>, <strong>amlodipine 5 mg</strong>, <strong>sertraline 50 mg</strong>. 당뇨 · 신질환 없음.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">EXAM · 02</div>
+          <div class="tile__title">Active Standing Test</div>
+          <div class="tile__body">Baseline 145/85, HR 72 → 즉시 측정 130/75, HR 76 → 1분 110/70, HR 78 → <strong>3분 100/65, HR 80</strong>. ΔSBP −45 mmHg, <strong>ΔHR +8 bpm</strong> (반응 부족).</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">DIAGNOSIS · 03</div>
+          <div class="tile__title">Neurogenic OH + 약물 기여</div>
+          <div class="tile__body">Classical OH 기준 충족 (SBP ↓ 45 mmHg) + HR 반응 부족 (ΔHR &lt; 15) → <strong>Neurogenic OH</strong> 시사. HCTZ · sertraline 모두 OH 유발 약물 — 약물 기여 가능성 ↑.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PLAN · 04</div>
+          <div class="tile__title">단계적 처방</div>
+          <div class="tile__body">① <strong>HCTZ 중단</strong> · amlodipine 야간으로 이동 ② 비약물 6항목 + 압박 스타킹 ③ <strong>2주 후 follow-up</strong> 가정 BP 일지 ④ 호전 없으면 <strong>fludrocortisone 0.1 mg qd</strong> 추가.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Illustrative case — adapted from Moloney 2026 case vignette</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · TAKE-HOME + CLOSING — 6 items + QR/Reference
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>TAKE-HOME POINTS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">임상 실무 6가지 <em>핵심</em></h2>
+      <p class="slide__subtitle">노인 외래에서 OH는 흔하고, 진단·치료의 ROI는 약물 검토에 가장 크다</p>
+    </div>
+    <div class="slide__body">
+      <div class="takehome-grid">
+        <div class="takehome-list">
+          <div class="takehome-item">
+            <div class="takehome-item__num">1</div>
+            <div class="takehome-item__text">노인 어지럼 · 낙상 → <strong>즉시 active standing test</strong> (5분이면 진단 가능)</div>
+          </div>
+          <div class="takehome-item">
+            <div class="takehome-item__num">2</div>
+            <div class="takehome-item__text"><strong>약물 검토가 가장 높은 ROI</strong> — 비용 0, 효과 큼. 6개 카테고리 빠르게 훑기</div>
+          </div>
+          <div class="takehome-item">
+            <div class="takehome-item__num">3</div>
+            <div class="takehome-item__text">비약물 <strong>6항목 = 모든 환자 1차</strong> — 수분·염분·압박·머리 거상·counter-maneuver·회피</div>
+          </div>
+          <div class="takehome-item">
+            <div class="takehome-item__num">4</div>
+            <div class="takehome-item__text">약물은 <strong>fludrocortisone → midodrine</strong> 순, 부족 시 <strong>병용 시너지</strong> 검토</div>
+          </div>
+          <div class="takehome-item">
+            <div class="takehome-item__num">5</div>
+            <div class="takehome-item__text"><strong>Supine HTN 동반 시 균형 치료</strong> — 머리 거상 + midodrine 시간 단축 + 단작용 야간 단회</div>
+          </div>
+          <div class="takehome-item">
+            <div class="takehome-item__num">6</div>
+            <div class="takehome-item__text">호전 없으면 <strong>다학제 협진</strong> — 가정의 · 신경과 · 노인의학</div>
+          </div>
+        </div>
+        <div class="takehome-side">
+          <div class="qr-block__code takehome-side__qr"></div>
+          <div class="takehome-side__label">SCAN TO REVISIT</div>
+          <div class="takehome-side__heading">슬라이드 다시 보기</div>
+          <div class="takehome-side__cite">
+            <strong>Moloney D, et al.</strong><br>
+            Management of Orthostatic Hypotension: A Review.<br>
+            <em>JAMA Intern Med</em>. 2026.
+          </div>
+          <div class="takehome-side__doi">doi:10.1001/<br>jamainternmed.2026.0284</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · 발표자 정지환 · Clinical Review for Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth (fallback if build skipped)
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

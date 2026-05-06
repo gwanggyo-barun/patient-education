@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>내시경실 Code Blue 응급 플로우차트 — Gwanggyo Barun Internal Medicine</title>
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/handouts/emergency/cpr-flowchart/">
+  <meta property="og:title" content="내시경실 Code Blue 플로우차트 — 광교바른내과">
+  <meta property="og:description" content="진정 내시경 중 심정지 시 즉시 시행하는 CPR 알고리즘 — i-gel 기준 한 장 요약">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/handouts/emergency/cpr-flowchart/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+
+  <style>
+    /* Local extensions for flowchart layout — uses only design tokens */
+    .flow-step {
+      display: grid;
+      grid-template-columns: 9mm 1fr;
+      gap: 3mm;
+      align-items: start;
+    }
+    .flow-step__num {
+      width: 9mm;
+      height: 9mm;
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11pt;
+      font-weight: var(--weight-bold);
+      flex-shrink: 0;
+    }
+    .flow-step__title {
+      font-size: 10.5pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      line-height: 1.3;
+      letter-spacing: var(--tracking-snug);
+    }
+    .flow-step__detail {
+      font-size: 9pt;
+      line-height: 1.5;
+      color: var(--color-ink-soft);
+      margin-top: 1mm;
+    }
+    .flow-step__detail strong {
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+    }
+    .flow-step__detail em {
+      color: var(--color-steel-deep);
+      font-style: normal;
+      font-weight: var(--weight-semibold);
+    }
+    .flow-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+    }
+
+    .rhythm-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+    .rhythm-card {
+      border-radius: var(--radius-sm);
+      padding: 4mm 5mm;
+      color: var(--color-canvas);
+    }
+    .rhythm-card--shock { background: var(--color-navy); }
+    .rhythm-card--noshock { background: var(--color-steel-deep); }
+    .rhythm-card__label {
+      font-size: 8pt;
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-bottom: 1.5mm;
+    }
+    .rhythm-card__title {
+      font-size: 12pt;
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-snug);
+      margin-bottom: 2mm;
+      line-height: 1.2;
+    }
+    .rhythm-card__body {
+      font-size: 9pt;
+      line-height: 1.55;
+      opacity: 0.95;
+    }
+
+    .antidote-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3mm;
+    }
+    .antidote-card {
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-steel);
+      border-radius: var(--radius-sm);
+      padding: 3.5mm 4mm;
+    }
+    .antidote-card--none {
+      border-left-color: var(--color-warning);
+      background: var(--color-warning-bg);
+    }
+    .antidote-card__drug {
+      font-size: 11pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      line-height: 1.2;
+    }
+    .antidote-card__dose {
+      font-size: 9pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-steel-deep);
+      margin-top: 1mm;
+      letter-spacing: var(--tracking-snug);
+    }
+    .antidote-card__target {
+      font-size: 8.5pt;
+      color: var(--color-ink-soft);
+      margin-top: 1.5mm;
+      line-height: 1.4;
+    }
+    .antidote-card--none .antidote-card__drug { color: var(--color-warning); }
+    .antidote-card--none .antidote-card__dose { color: var(--color-warning); }
+
+    .contact-banner {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      gap: 6mm;
+      align-items: center;
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      padding: 4mm 6mm;
+      border-radius: var(--radius-sm);
+    }
+    .contact-banner__title {
+      font-size: 10pt;
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      writing-mode: horizontal-tb;
+    }
+    .contact-banner__cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5mm;
+    }
+    .contact-banner__label {
+      font-size: 7.5pt;
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .contact-banner__value {
+      font-size: 12pt;
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-snug);
+      line-height: 1.2;
+    }
+    .contact-banner__sub {
+      font-size: 8pt;
+      opacity: 0.8;
+      margin-top: 0.5mm;
+    }
+
+    /* Tighten spacing for single-page fit */
+    .page__body { gap: 4mm; }
+    .section-heading { margin-bottom: 1.5mm; font-size: 11pt; }
+    .page { padding: 11mm 12mm 9mm; gap: 5mm; }
+    .page__header { padding-bottom: 3mm; }
+    .page__footer { padding-top: 3mm; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="page__header">
+    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
+    <div class="page__eyebrow">EMERGENCY · <strong>CODE BLUE FLOWCHART</strong></div>
+  </header>
+
+  <section class="page__title-block">
+    <h1 class="page__title">내시경실 심정지 응급 플로우차트</h1>
+    <p class="page__subtitle">진정 내시경 중 의식·호흡·맥박 소실 시 즉시 시행 · i-gel supraglottic airway 기준</p>
+  </section>
+
+  <main class="page__body">
+
+    <!-- STEP 1~6: 핵심 알고리즘 -->
+    <section>
+      <h2 class="section-heading">즉시 시행 6단계</h2>
+      <div class="flow-list">
+
+        <div class="flow-step">
+          <div class="flow-step__num">1</div>
+          <div>
+            <div class="flow-step__title">인지 · 호출 (≤10초) — "코드 블루"</div>
+            <div class="flow-step__detail">
+              <strong>내시경·mouthguard 즉시 제거</strong> · 좌측위→supine 전환 · CPR board 확보 · suction 준비 ·
+              직원 분담: <em>압박자 / 환기자 / 약물 / 기록 / 119 호출</em>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step__num">2</div>
+          <div>
+            <div class="flow-step__title">흉부압박 즉시 시작 — 100–120/min · 깊이 5–6 cm</div>
+            <div class="flow-step__detail">
+              Full chest recoil 보장 · <strong>2분마다 교대</strong> · hands-off time &lt;10초 · ETCO₂ &lt;10 mmHg면 압박 질 점검
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step__num">3</div>
+          <div>
+            <div class="flow-step__title">리듬 확인 → 제세동 (필요 시)</div>
+            <div class="flow-step__detail">
+              AED 패드 부착 · 즉시 분석 · <strong>shock 후 리듬 재확인 없이 압박 즉시 재개</strong>
+            </div>
+            <div class="rhythm-grid" style="margin-top: 2mm;">
+              <div class="rhythm-card rhythm-card--shock">
+                <div class="rhythm-card__label">Shockable</div>
+                <div class="rhythm-card__title">VF / pVT</div>
+                <div class="rhythm-card__body">Biphasic <strong>200 J</strong> 단일 충격 → 즉시 압박 재개 → 2분 후 리듬 재평가</div>
+              </div>
+              <div class="rhythm-card rhythm-card--noshock">
+                <div class="rhythm-card__label">Non-shockable</div>
+                <div class="rhythm-card__title">PEA / Asystole</div>
+                <div class="rhythm-card__body">제세동 금지 · 압박 + Epi 1mg q3–5min 지속 · 5H 5T 가역 원인 동시 점검</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step__num">4</div>
+          <div>
+            <div class="flow-step__title">i-gel 삽입 (Advanced airway) · Size 4 표준 (50–90 kg)</div>
+            <div class="flow-step__detail">
+              Cuff에 수용성 윤활제 · sniffing position · hard palate 따라 단번에 삽입 ·
+              검은 표시선이 치열에 위치할 때 정지 · <strong>압박 중단 없이 ≤10초</strong> · 삽입 후 BVM·FiO₂ 100% ·
+              <em>압박과 비동기 환기 10회/min</em> · ETCO₂ 모니터 · gastric channel로 OG tube 12 Fr 위 감압
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step__num">5</div>
+          <div>
+            <div class="flow-step__title">IV/IO 확보 → Epinephrine 1 mg IV q3–5분</div>
+            <div class="flow-step__detail">
+              <strong>모든 리듬 공통</strong> · VF/pVT 지속 시 Amiodarone <em>300 mg → 150 mg</em> (또는 Lidocaine 1–1.5 mg/kg) ·
+              NaHCO₃·Ca·Mg는 routine 비권장 (특이 적응증만)
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step__num">6</div>
+          <div>
+            <div class="flow-step__title">5H 5T 가역 원인 동시 점검 — 내시경실 특이</div>
+            <div class="flow-step__detail">
+              <strong>Hypoxia</strong> 환기 강화 · <strong>Toxin</strong> 진정제 길항제 (아래 참조) ·
+              Hypovolemia(출혈) 수액·수혈 · Tension PTX(EUS·ERCP 후 드물게)
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 진정제 길항제 -->
+    <section>
+      <h2 class="section-heading">진정제 길항제 (Antidote) — 내시경실 특화</h2>
+      <div class="antidote-grid">
+        <div class="antidote-card">
+          <div class="antidote-card__drug">Naloxone</div>
+          <div class="antidote-card__dose">0.4–2 mg IV</div>
+          <div class="antidote-card__target">Opioid 역전 — fentanyl · pethidine 호흡억제</div>
+        </div>
+        <div class="antidote-card">
+          <div class="antidote-card__drug">Flumazenil</div>
+          <div class="antidote-card__dose">0.2 mg IV</div>
+          <div class="antidote-card__target">Benzodiazepine 역전 — midazolam · CPR 중 우선순위 낮음, ROSC 후 고려</div>
+        </div>
+        <div class="antidote-card antidote-card--none">
+          <div class="antidote-card__drug">Propofol</div>
+          <div class="antidote-card__dose">길항제 없음</div>
+          <div class="antidote-card__target">지지요법만 — 환기·승압·수액으로 시간 벌기</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 119 + 상급병원 -->
+    <section>
+      <div class="contact-banner">
+        <div class="contact-banner__title">즉시<br>이송<br>연락</div>
+        <div class="contact-banner__cell">
+          <div class="contact-banner__label">119 응급의료</div>
+          <div class="contact-banner__value">119</div>
+          <div class="contact-banner__sub">위치·증상·CPR 진행 중 명시</div>
+        </div>
+        <div class="contact-banner__cell">
+          <div class="contact-banner__label">상급병원 (인근 종합)</div>
+          <div class="contact-banner__value">한림대동탄성심병원</div>
+          <div class="contact-banner__sub">응급실 직통 ☏ ____-____ (사전 확보)</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="page__footer">
+    <div class="page__footer-info">
+      <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">근거 — AHA 2020 ACLS + 2024 Focused Update · KACPR 2020 · ASGE 2018 Sedation Guideline</div>
+      <div class="disclaimer">본 알고리즘은 표준 성인 기준이며 환자별 상황에 따라 수정될 수 있습니다. 분기별 시뮬레이션 훈련 권장.</div>
+    </div>
+    <div class="qr-mini">
+      <div class="qr-mini__code"></div>
+      <div class="qr-mini__label">상세 프로토콜</div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

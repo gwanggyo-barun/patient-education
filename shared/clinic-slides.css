@@ -1,0 +1,1042 @@
+/* ==========================================================================
+   GWANGGYO BARUN — SLIDE MASTER & COMPONENT LIBRARY v2
+   Superhuman-inspired patterns for clinical patient education.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------------
+   RESET
+   ------------------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--text-body);
+  line-height: var(--lh-normal);
+  color: var(--color-ink);
+  background: var(--color-canvas-warm);
+  font-feature-settings: "ss01", "tnum"; /* Stylistic set + tabular numerals */
+}
+
+
+/* ------------------------------------------------------------------------
+   DECK CONTAINER
+   ------------------------------------------------------------------------ */
+.deck {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-10) var(--space-8);
+}
+
+
+/* ==========================================================================
+   SLIDE MASTER
+   Every slide is exactly 1280x720, with a fixed 4-region grid:
+   - HEADER (logo + chapter eyebrow)  — same position on every slide
+   - TITLE BLOCK (title + subtitle)   — same position on every slide
+   - BODY (pattern-specific content)  — fills remaining space
+   - FOOTER (source + page number)    — same position on every slide
+   ========================================================================== */
+
+.slide {
+  width: var(--slide-width);
+  height: var(--slide-height);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "title"
+    "body"
+    "footer";
+  padding: var(--slide-pad-y) var(--slide-pad-x);
+  gap: 0;
+}
+
+
+/* ----- HEADER -------------------------------------------------------- */
+
+.slide__header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-10);
+}
+
+.slide__logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.slide__chapter {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-semibold);
+  color: var(--color-slate);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.slide__chapter strong {
+  color: var(--color-navy);
+  font-weight: var(--weight-bold);
+}
+
+
+/* ----- TITLE BLOCK --------------------------------------------------- */
+
+.slide__title-block {
+  grid-area: title;
+  margin-bottom: var(--space-8);
+  max-width: 920px;
+}
+
+.slide__title {
+  font-size: var(--text-display);
+  font-weight: var(--weight-540);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-navy);
+  margin-bottom: var(--space-3);
+}
+
+.slide__title em {
+  font-style: normal;
+  color: var(--color-steel);
+}
+
+.slide__subtitle {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-450);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-snug);
+  color: var(--color-slate);
+}
+
+
+/* ----- BODY ---------------------------------------------------------- */
+
+.slide__body {
+  grid-area: body;
+  position: relative;
+  min-height: 0;          /* allow grid 1fr to shrink */
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ----- FOOTER -------------------------------------------------------- */
+
+.slide__footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-soft);
+  font-size: var(--text-xs);
+  color: var(--color-slate);
+}
+
+.slide__source {
+  font-style: normal;
+  letter-spacing: 0;
+  max-width: 80%;
+}
+
+.slide__page {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-wide);
+  font-weight: var(--weight-semibold);
+  color: var(--color-slate);
+  text-transform: uppercase;
+  font-size: var(--text-micro);
+}
+
+
+/* ----- DECORATIVE BACKGROUND CHAPTER NUMBER --------------------------
+   A massive, low-opacity chapter number sits behind the body content.
+   Fills "empty" space and creates editorial rhythm without noise.
+   ----------------------------------------------------------------------*/
+
+.slide__bg-num {
+  position: absolute;
+  right: -32px;
+  bottom: -80px;
+  font-size: 26rem;
+  font-weight: var(--weight-black);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--color-navy);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  font-feature-settings: "tnum";
+  user-select: none;
+}
+
+
+/* ==========================================================================
+   COVER SLIDE — the only "dramatic" gesture in the deck
+   Deep navy gradient, white type. Inspired by Superhuman's hero curtain.
+   ========================================================================== */
+
+.slide--cover {
+  background:
+    radial-gradient(ellipse at top right, rgba(91, 155, 213, 0.25) 0%, transparent 50%),
+    linear-gradient(135deg, var(--color-navy-deep) 0%, var(--color-navy) 55%, var(--color-navy-mid) 100%);
+  color: var(--color-white-95);
+}
+
+.slide--cover .slide__logo {
+  filter: brightness(0) invert(1);
+  height: 36px;
+}
+
+.slide--cover .slide__chapter {
+  color: var(--color-white-60);
+}
+
+.slide--cover .slide__chapter strong {
+  color: var(--color-sky);
+}
+
+.slide--cover .slide__title {
+  font-size: var(--text-display-lg);
+  color: var(--color-white-95);
+  font-weight: var(--weight-540);
+  margin-top: auto;
+  margin-bottom: var(--space-4);
+}
+
+.slide--cover .slide__title em {
+  color: var(--color-sky);
+}
+
+.slide--cover .slide__subtitle {
+  color: var(--color-white-80);
+  font-size: var(--text-h2);
+  margin-bottom: var(--space-10);
+}
+
+.slide--cover .slide__title-block {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.slide--cover {
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "title"
+    "footer";
+}
+
+.slide--cover .slide__body { display: none; }
+
+.slide--cover .slide__footer {
+  border-top: 1px solid var(--color-white-15);
+  color: var(--color-white-60);
+}
+
+.slide--cover .slide__page {
+  color: var(--color-white-60);
+}
+
+
+/* ==========================================================================
+   CLOSING SLIDE
+   Mirrors the cover's gravitas with a soft cream backdrop and contact card.
+   ========================================================================== */
+
+.slide--closing {
+  background:
+    radial-gradient(ellipse at bottom left, rgba(91, 155, 213, 0.10) 0%, transparent 50%),
+    var(--color-canvas);
+}
+
+.slide--closing .slide__title {
+  font-size: var(--text-display-lg);
+  margin-top: auto;
+}
+
+.slide--closing .slide__title-block {
+  margin-bottom: 0;
+}
+
+.slide--closing {
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-areas:
+    "header"
+    "title"
+    "body"
+    "footer";
+}
+
+.contact-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8);
+  padding: var(--space-8);
+  background: var(--color-canvas-warm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+}
+
+.closing-grid {
+  display: grid;
+  grid-template-columns: 2.4fr 1fr;
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+.closing-grid > .contact-card {
+  margin-bottom: 0;
+}
+
+/* Inside closing-grid, contact-card stacks vertically (3 rows × 1 col) */
+.closing-grid > .contact-card {
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-8);
+}
+
+.contact-card__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.contact-card__label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-semibold);
+  color: var(--color-slate);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.contact-card__value {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-540);
+  color: var(--color-navy);
+  line-height: var(--lh-snug);
+}
+
+
+/* ----- QR BLOCK -----------------------------------------------------------
+   Marketing-grade QR code on closing slide for in-clinic patient handoff.
+   Renders client-side via qrcode.js using og:url meta as source of truth.
+   ----------------------------------------------------------------------- */
+
+.qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--color-canvas-warm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.qr-block__code {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  background: var(--color-canvas);
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-block__code svg,
+.qr-block__code canvas,
+.qr-block__code img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.qr-block__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.qr-block__label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-semibold);
+  color: var(--color-slate);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.qr-block__heading {
+  font-size: var(--text-body);
+  font-weight: var(--weight-540);
+  color: var(--color-navy);
+  letter-spacing: var(--tracking-snug);
+  line-height: var(--lh-tight);
+}
+
+.qr-block__hint {
+  font-size: var(--text-xs);
+  color: var(--color-slate);
+  font-weight: var(--weight-450);
+  line-height: var(--lh-snug);
+}
+
+
+/* ==========================================================================
+   BODY PATTERNS
+   The body region uses one of these patterns per slide.
+   Patterns are mutually exclusive — pick one per slide.
+   ========================================================================== */
+
+
+/* ------------------------------------------------------------------------
+   PATTERN A — HERO NUMBER
+   Asymmetric: Mega digit on left (60%), supporting copy on right (40%).
+   Best for: prevalence stats, key metrics, single dominant fact.
+   ------------------------------------------------------------------------ */
+
+.pattern-hero-number {
+  display: grid;
+  grid-template-columns: 5fr 4fr;
+  gap: var(--space-12);
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.pattern-hero-number__numeric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.pattern-hero-number__value {
+  font-size: var(--text-display-xl);
+  font-weight: var(--weight-black);
+  line-height: 0.92;
+  letter-spacing: var(--tracking-mega);
+  color: var(--color-navy);
+  font-feature-settings: "tnum";
+}
+
+.pattern-hero-number__value em {
+  color: var(--color-steel);
+  font-style: normal;
+}
+
+.pattern-hero-number__caption {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-450);
+  color: var(--color-ink-soft);
+  line-height: var(--lh-snug);
+  max-width: 90%;
+}
+
+.pattern-hero-number__detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  border-left: 2px solid var(--color-steel);
+  padding-left: var(--space-6);
+}
+
+.pattern-hero-number__detail-label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-steel);
+}
+
+.pattern-hero-number__detail-text {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-450);
+  color: var(--color-ink);
+  line-height: var(--lh-normal);
+}
+
+
+/* ------------------------------------------------------------------------
+   PATTERN B — ASYMMETRIC SPLIT
+   Left column: dominant statement / quote (55%)
+   Right column: supporting detail list (45%)
+   Best for: definitions, key concepts with supporting evidence.
+   ------------------------------------------------------------------------ */
+
+.pattern-split {
+  display: grid;
+  grid-template-columns: 11fr 9fr;
+  gap: var(--space-12);
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.pattern-split__primary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.pattern-split__statement {
+  font-size: var(--text-h1);
+  font-weight: var(--weight-540);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-snug);
+  color: var(--color-navy);
+}
+
+.pattern-split__statement em {
+  color: var(--color-steel);
+  font-style: normal;
+}
+
+.pattern-split__supporting {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-450);
+  color: var(--color-ink-soft);
+  line-height: var(--lh-relaxed);
+  max-width: 95%;
+}
+
+.pattern-split__detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.pattern-split__metric {
+  padding: var(--space-5);
+  background: var(--color-canvas-warm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.pattern-split__metric-label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-semibold);
+  color: var(--color-slate);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.pattern-split__metric-value {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-540);
+  color: var(--color-navy);
+  letter-spacing: var(--tracking-snug);
+  line-height: var(--lh-tight);
+}
+
+.pattern-split__metric-detail {
+  font-size: var(--text-sm);
+  color: var(--color-slate);
+  margin-top: var(--space-1);
+}
+
+
+/* ------------------------------------------------------------------------
+   PATTERN C — DENSITY GRID
+   3-column or 2x3 card grid. Each card is minimal: icon + title + body.
+   Cards use 1px border and the 16px radius — no inner shadows.
+   Best for: enumerations of equal-weight items (causes, lifestyle tips).
+   ------------------------------------------------------------------------ */
+
+.pattern-grid {
+  display: grid;
+  gap: var(--space-4);
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  align-content: stretch;
+}
+
+.pattern-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+}
+
+.pattern-grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr 1fr;
+}
+
+.pattern-grid--2x4 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr 1fr;
+}
+
+.tile {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+@media (hover: hover) {
+  .tile:hover {
+    border-color: var(--color-steel);
+    transform: translateY(-1px);
+  }
+}
+
+.tile__index {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-semibold);
+  color: var(--color-steel);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.tile__title {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-540);
+  color: var(--color-navy);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-snug);
+}
+
+.tile__body {
+  font-size: var(--text-body);
+  font-weight: var(--weight-450);
+  color: var(--color-ink-soft);
+  line-height: var(--lh-normal);
+  margin-top: auto;
+}
+
+.tile--alert {
+  border-color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.tile--alert .tile__title { color: var(--color-danger); }
+.tile--alert .tile__index { color: var(--color-danger); }
+
+.tile--accent {
+  background: var(--color-canvas-warm);
+  border-color: var(--color-steel);
+  border-width: 1px;
+}
+
+
+/* ----- TILE EXTENSION: drug regimen list ---------------------------------
+   For tiles that show a medication regimen (drug name + dose + frequency).
+   Used in H. pylori eradication, antibiotic protocols, etc.
+   ------------------------------------------------------------------------ */
+
+.tile__regimen {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  margin-top: var(--space-2);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.tile__regimen li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  align-items: baseline;
+}
+
+.tile__regimen-name {
+  font-weight: var(--weight-540);
+  color: var(--color-navy);
+  letter-spacing: var(--tracking-snug);
+}
+
+.tile__regimen-dose {
+  color: var(--color-slate);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-450);
+  white-space: nowrap;
+}
+
+.tile__duration {
+  margin-top: auto;
+  padding-top: var(--space-3);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-semibold);
+  color: var(--color-steel);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tile__duration::before {
+  content: "";
+  width: 16px;
+  height: 1px;
+  background: var(--color-steel);
+}
+
+
+/* ------------------------------------------------------------------------
+   PATTERN D — COMPARISON
+   Two columns with navy/steel header bars (per design system §4.9).
+   Best for: DO/DON'T, recommended vs avoid, before/after.
+   ------------------------------------------------------------------------ */
+
+.pattern-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.compare-col {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.compare-col__header {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-h3);
+  font-weight: var(--weight-540);
+  color: var(--color-canvas);
+  letter-spacing: var(--tracking-snug);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.compare-col--avoid .compare-col__header { background: var(--color-navy); }
+.compare-col--prefer .compare-col__header { background: var(--color-steel); }
+
+.compare-col__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-white-15);
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+}
+
+.compare-col__list {
+  list-style: none;
+  padding: var(--space-5) var(--space-6) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1;
+}
+
+.compare-col__list li {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-450);
+  color: var(--color-ink);
+  line-height: var(--lh-snug);
+  padding-left: var(--space-6);
+  position: relative;
+}
+
+.compare-col--avoid .compare-col__list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-navy);
+  font-weight: var(--weight-bold);
+}
+
+.compare-col--prefer .compare-col__list li::before {
+  content: "+";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-steel);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-h3);
+  line-height: 0.9;
+}
+
+
+/* ------------------------------------------------------------------------
+   PATTERN E — TIMELINE / PROCESS
+   Horizontal stepped flow with numbered nodes.
+   Best for: diagnostic pathways, treatment escalation, decision trees.
+   ------------------------------------------------------------------------ */
+
+.pattern-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  align-items: stretch;
+}
+
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  position: relative;
+}
+
+.timeline-step__node {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-canvas);
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-step__title {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-540);
+  color: var(--color-navy);
+  letter-spacing: var(--tracking-snug);
+}
+
+.timeline-step__body {
+  font-size: var(--text-body);
+  font-weight: var(--weight-450);
+  color: var(--color-ink-soft);
+  line-height: var(--lh-normal);
+}
+
+.timeline-step:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: var(--color-border-strong);
+  z-index: 2;
+  font-weight: var(--weight-light);
+}
+
+
+/* ------------------------------------------------------------------------
+   PATTERN F — CHECKLIST
+   Bold typography list. Each item is a clear, actionable statement.
+   Best for: action items, key takeaways, instructions.
+   ------------------------------------------------------------------------ */
+
+.pattern-checklist {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3) var(--space-8);
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  align-content: center;
+}
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.check-item__num {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-540);
+  color: var(--color-steel);
+  letter-spacing: var(--tracking-snug);
+  font-variant-numeric: tabular-nums;
+  min-width: 36px;
+}
+
+.check-item__text {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-450);
+  color: var(--color-ink);
+  line-height: var(--lh-snug);
+  padding-top: 4px;
+}
+
+.check-item__text strong {
+  color: var(--color-navy);
+  font-weight: var(--weight-bold);
+}
+
+
+/* ==========================================================================
+   ALERT — used as an inline strip, not a pattern
+   Sits at the bottom of any pattern when needed.
+   ========================================================================== */
+
+.alert-strip {
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-danger-bg);
+  border-left: 3px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  font-size: var(--text-body);
+  line-height: var(--lh-normal);
+}
+
+.alert-strip__label {
+  font-weight: var(--weight-bold);
+  color: var(--color-danger);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.alert-strip__text {
+  color: var(--color-ink);
+  font-weight: var(--weight-450);
+}
+
+
+/* ==========================================================================
+   PRESENTING MODE — fullscreen one-slide-at-a-time
+   ========================================================================== */
+
+body.presenting {
+  background: #000;
+  overflow: hidden;
+}
+
+body.presenting .deck {
+  padding: 0;
+  gap: 0;
+}
+
+body.presenting .slide {
+  display: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  /* Slide stays at native 1280x720; CSS transform scales to viewport */
+  transform: scale(var(--present-scale, 1));
+  transform-origin: center center;
+}
+
+body.presenting .slide.is-active {
+  display: grid;
+}
+
+
+/* ==========================================================================
+   PRINT (PDF) — patient-share format
+   Each slide renders as one A4-landscape page at native 16:9.
+   ========================================================================== */
+
+@media print {
+  @page {
+    size: 1280px 720px;
+    margin: 0;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .deck {
+    padding: 0;
+    gap: 0;
+  }
+
+  .slide {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    page-break-after: always;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .slide:last-child { page-break-after: auto; }
+
+  .deck-nav { display: none !important; }
+}
+
+
+/* ==========================================================================
+   NAVIGATION (screen mode only — hidden in print)
+   ========================================================================== */
+
+.deck-nav {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  display: flex;
+  gap: var(--space-2);
+  z-index: 100;
+}
+
+.deck-nav button {
+  background: var(--color-navy);
+  color: var(--color-canvas);
+  border: none;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  box-shadow: var(--shadow-elevated);
+  transition: transform 0.15s ease;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.deck-nav button:hover { transform: translateY(-2px); }
