@@ -15,6 +15,61 @@ description: >
 
 # Clinic Content System — Unified Patient Content (HTML + PDF)
 
+## 🚀 배포 워크플로우 — 모든 머신 공통 (반드시 먼저 읽기)
+
+**Source of Truth**: https://github.com/gwanggyo-barun/patient-education (public)
+
+이 스킬의 **실제 콘텐츠와 빌드 파이프라인**은 위 GitHub 레포에 있다. 스킬 플러그인 폴더(`~/Library/Application Support/Claude/.../skills/clinic-content-system/`)는 머신마다 버전이 다르고 플러그인 업데이트 시 갈아엎힐 수 있으므로, **콘텐츠 작성·수정·빌드는 절대 플러그인 폴더에서 하지 말 것**.
+
+### 표준 워킹 디렉토리 (모든 머신)
+
+```
+~/clinic-content-system/
+```
+
+이 경로에 GitHub 레포를 clone한 사본이 있어야 한다. 모든 작업(HTML 작성, build.py 수정, 커밋, 푸시)은 여기서 수행.
+
+### 새 머신 1회 세팅 (3개 명령)
+
+```bash
+gh auth status || gh auth login                                    # GitHub 인증 (gh CLI 필요)
+git clone https://github.com/gwanggyo-barun/patient-education ~/clinic-content-system
+cd ~/clinic-content-system && pip install -r requirements.txt      # 로컬 빌드용 (CI만 쓸거면 생략 가능)
+```
+
+이게 끝. 별도 환경변수·시크릿 설정 불필요 (`NOTION_TOKEN`은 레포 GitHub Secret으로 등록되어 있어 CI가 알아서 사용).
+
+### 일상 콘텐츠 작성 워크플로우
+
+1. `cd ~/clinic-content-system` (스킬 트리거되면 Claude가 여기로 이동)
+2. `git pull` (다른 머신에서 푸시한 것 받기)
+3. 새 HTML 작성 — `decks/{specialty}/{topic}/{slug}/index.html` 또는 `handouts/...` 또는 `lab-reports/...`
+4. `build.py`의 `TARGETS` 리스트에 새 항목 추가 (kind, slug, slug_path, html_path, qr_class, fmt, **+ Notion 메타: title, category, audience, disease**)
+5. (선택) 로컬 검증: `python build.py` — Playwright 설치되어 있다면
+6. **`git add . && git commit -m "Add {topic}" && git push`**
+7. CI(GitHub Actions)가 ~1분 20초에 자동 처리:
+   - PDF 빌드 (Playwright Chromium)
+   - GitHub Pages 배포 (HTML + PDF 라이브)
+   - Notion DB 자동 행 upsert (📋 진료 설명용 자료 DB)
+
+### 라이브 URL
+
+| 자원 | URL |
+|---|---|
+| Pages 호스팅 | https://gwanggyo-barun.github.io/patient-education/ |
+| Notion DB (📋 진료 설명용 자료) | https://www.notion.so/a84f23489df54e8fbe34b9818d6109e5 |
+| GitHub Actions | https://github.com/gwanggyo-barun/patient-education/actions |
+
+### 절대 규칙
+
+- ❌ **스킬 플러그인 폴더에서 작업 금지** — 거기서의 변경은 다른 머신에 전파 안 됨
+- ❌ **`output/` 디렉토리 수동 편집 금지** — CI가 매번 새로 빌드함 (.gitignore에 등록됨)
+- ✅ **항상 `~/clinic-content-system/`에서 작업**
+- ✅ **푸시 후 1-2분 안에 라이브 반영** (Pages CDN + Notion API)
+- ✅ **Notion 비고 컬럼의 "🌐 HTML 보기" / "📄 PDF 다운로드" 클릭 → 즉시 열림**
+
+---
+
 ## 콘텐츠 타입 3종
 
 이 스킬은 광교바른내과 모든 환자 콘텐츠를 단일 디자인 시스템과 단일 빌드 파이프라인으로 생산한다:
