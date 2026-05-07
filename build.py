@@ -131,6 +131,14 @@ TARGETS = [
         "title": "지질 패널 결과 안내",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "지질패널",
     },
+    {
+        "kind": "lab-reports", "slug": "박형주",
+        "slug_path": "lab-reports/diabetes-screening/박형주/",
+        "html_path": ROOT / "lab-reports/diabetes-screening/박형주/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "박형주 공단검진 결과 (2026-05-06)",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "당뇨 신규진단",
+    },
 ]
 
 
