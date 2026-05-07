@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Latent Tuberculosis Infection — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/infectious/ltbi-overview/">
+  <meta property="og:title" content="잠복결핵감염 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="잠복결핵감염(LTBI)이란 무엇이고, 활성 결핵과 어떻게 다른지 — IGRA 검사·고위험군·재활성화 위험까지 한눈에">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/infectious/ltbi-overview/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck -->
+  <style>
+    /* Three-stat row — single row of large circular stats */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 3rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Vertical alert stack — single column, alert rows */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · INFECTIOUS DISEASE</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">잠복결핵감염,<br><em>병이 아닌 '감염 상태'를 이해하기</em></h1>
+      <p class="slide__subtitle">잠복결핵감염 (Latent Tuberculosis Infection, LTBI) — 결핵균이 몸 안에 있지만 활동하지 않는 상태와 IGRA 검사의 의미</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">LTBI · IGRA · Risk Groups · Reactivation Risk</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO STATS — Korean prevalence, lifetime reactivation
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">한국 성인 약 30%가 잠복결핵 상태입니다</h2>
+      <p class="slide__subtitle">잠복결핵감염 (LTBI) 은 흔하지만 대부분은 평생 결핵으로 발병하지 않습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">~30</div>
+              <div class="stats3-cell__unit">%</div>
+            </div>
+            <div class="stats3-cell__label">한국 성인 LTBI 추정 유병률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">5–10</div>
+              <div class="stats3-cell__unit">%</div>
+            </div>
+            <div class="stats3-cell__label">평생 활성 결핵으로 발병할 위험 (대부분 감염 후 첫 2년)</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">90+</div>
+              <div class="stats3-cell__unit">%</div>
+            </div>
+            <div class="stats3-cell__label">평생 발병하지 않고 잠복 상태로 지나가는 비율</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          한국은 OECD 국가 중 결핵 발생률이 높은 편이라 성인 상당수가 과거에 결핵균에 노출된 적이 있습니다. 감염되었다고 해서 모두 환자가 되는 것은 아니며, 면역이 정상이면 대부분 잠복 상태로 머물러 다른 사람에게 전염되지도 않습니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 대한결핵 및 호흡기학회 결핵 진료지침 2024 · KDCA</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — Definition of LTBI
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">잠복결핵감염 (LTBI) 이란</h2>
+      <p class="slide__subtitle">결핵균은 몸 안에 있지만 활동하지 않고 잠들어 있는 상태</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">결핵균에 <em>감염은 되었지만 균이 활동하지 않아 증상도 없고 전염력도 없는 상태</em>입니다 — 병이 아닌 '감염 상태'입니다.</p>
+          <p class="pattern-split__supporting">
+            우리 몸의 면역세포가 결핵균을 가둬 둔 상태라고 보면 됩니다. 균은 살아 있지만 깨어나지 못해 증상을 일으키지 않고, 기침이나 가래를 통해 다른 사람에게 옮기지도 않습니다. 흉부 X-ray와 객담 검사도 정상으로 나옵니다. 다만 면역이 약해지면 균이 다시 깨어나 활성 결핵이 될 수 있어, 위험군은 사전에 평가하고 관리합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">증상</div>
+            <div class="pattern-split__metric-value">없음</div>
+            <div class="pattern-split__metric-detail">기침·가래·발열·체중 감소 모두 없음 — 본인은 전혀 인지 못함.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">전염력</div>
+            <div class="pattern-split__metric-value">없음</div>
+            <div class="pattern-split__metric-detail">가족·동료·지하철 모두 안전 — 격리·마스크 불필요.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — WHO LTBI Guideline · 결핵 진료지침 2024</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 2×2 — LTBI vs Active TB comparison (paired)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>LTBI vs ACTIVE TB</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">잠복결핵 vs 활성 결핵 — 같은 균, 전혀 다른 상태</h2>
+      <p class="slide__subtitle">증상·전염력·검사·치료 면에서 완전히 다른 두 상태입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">LTBI · 증상과 전염력</div>
+          <div class="tile__title">잠복결핵감염 (Latent TB)</div>
+          <div class="tile__body">증상 없음 · 다른 사람에게 전염되지 않음 · 본인은 건강하다고 느낌. 결핵균은 몸 안에 있지만 면역세포가 가둬 둔 상태로, 일상 생활·직장·학교 모두 정상 가능합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">ACTIVE TB · 증상과 전염력</div>
+          <div class="tile__title">활성 결핵 (Active TB)</div>
+          <div class="tile__body">2주 이상 기침·가래·혈담, 발열·야간 발한, 체중 감소·식욕 부진. 호흡기 분비물로 다른 사람에게 전염될 수 있어 일정 기간 격리·치료가 필요합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">LTBI · 검사 소견</div>
+          <div class="tile__title">잠복결핵 — 검사 결과</div>
+          <div class="tile__body">흉부 X-ray 정상 · 객담 검사 음성 · IGRA 또는 TST 만 양성. 영상이나 균 검사로는 잡히지 않고, 면역 반응을 측정하는 IGRA로만 확인됩니다.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">ACTIVE TB · 검사 소견</div>
+          <div class="tile__title">활성 결핵 — 검사 결과</div>
+          <div class="tile__body">흉부 X-ray 이상 소견 · 객담 결핵균 검출 (도말·배양·PCR). 즉시 격리, 다약제 표준 치료 6개월 이상 (HRZE) — 이 슬라이드의 주제 밖이지만 의심되면 즉시 검사가 필요합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 대한결핵 및 호흡기학회 결핵 진료지침 2024</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · ASYMMETRIC SPLIT — Transmission and how LTBI develops
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>TRANSMISSION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">결핵균은 어떻게 전파되고 잠복상태가 되나</h2>
+      <p class="slide__subtitle">활성 결핵 환자의 호흡기 분비물 — 흡입 후 면역 반응에 따라 갈래가 갈립니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">활성 결핵 환자의 <em>기침·재채기·대화로 공기 중에 퍼진 결핵균</em>을 들이마시면 폐포에 도달하여 면역세포와 만납니다.</p>
+          <p class="pattern-split__supporting">
+            결핵균은 음식·악수·식기·수건으로는 전염되지 않습니다. 오직 활성 결핵 환자가 배출한 공기 중 비말핵을 흡입할 때만 가능합니다. 결핵균이 폐로 들어와도 면역이 정상이면 약 90% 이상이 잠복상태로 진행하여 평생 증상 없이 지나가고, 약 5–10% 정도만 평생에 걸쳐 활성 결핵으로 발병합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">감염 후 결과</div>
+            <div class="pattern-split__metric-value">90%+</div>
+            <div class="pattern-split__metric-detail">잠복결핵감염 (LTBI) — 증상 없이 지나감.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">평생 발병 위험</div>
+            <div class="pattern-split__metric-value">5 – 10%</div>
+            <div class="pattern-split__metric-detail">활성 결핵으로 진행 — 절반은 감염 후 첫 2년 내 발생.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — WHO TB Transmission · 결핵 진료지침 2024</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — High-risk groups for screening
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>WHO SHOULD BE SCREENED</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">잠복결핵 검사 대상이 되는 6대 고위험군</h2>
+      <p class="slide__subtitle">감염 후 활성 결핵으로 진행할 위험이 높은 분들 — 미리 발견하면 예방이 가능합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile tile--alert">
+          <div class="tile__index">RISK · 01</div>
+          <div class="tile__title">HIV 감염자</div>
+          <div class="tile__body">면역력 저하로 평생 활성 결핵 발병 위험이 일반인의 20–30배까지 증가합니다. HIV 진단 시 IGRA 검사가 표준이며, 결과가 양성이면 적극적인 LTBI 치료가 권고됩니다.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">RISK · 02</div>
+          <div class="tile__title">TNF-α 억제제 사용 예정자</div>
+          <div class="tile__body">류마티스관절염·강직성척추염·크론병·건선 등에 쓰이는 인플릭시맙·아달리무맙 등 생물학적 제제. 면역 억제로 잠복 결핵이 활성화될 수 있어 투약 전 필수 선별검사입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 03</div>
+          <div class="tile__title">장기이식 전 면역억제 예정자</div>
+          <div class="tile__body">신장·간·심장·골수 이식 후 면역억제제 장기 사용 예정인 분들. 강력한 면역 억제로 결핵 재활성화 위험이 크므로 이식 전 IGRA 검사로 LTBI 여부를 평가합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 04</div>
+          <div class="tile__title">활성 결핵 환자 가족·밀접 접촉자</div>
+          <div class="tile__body">결핵 환자와 같은 집에서 생활하거나 직장·학교에서 가까이 지낸 분. 최근 노출되었을 가능성이 높아 새로운 감염을 잡기 위해 보건소가 접촉자 조사로 IGRA 검사를 시행합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 05</div>
+          <div class="tile__title">의료기관 종사자 (Healthcare Workers)</div>
+          <div class="tile__body">결핵 환자와의 직업적 노출 가능성이 큰 의사·간호사·방사선사·임상병리사·요양보호사. 정기 검진과 입사 전 기저 검사로 IGRA 검사가 권고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 06</div>
+          <div class="tile__title">기타 면역 저하 상태</div>
+          <div class="tile__body">투석 중인 만성 신부전, 조절되지 않은 당뇨, 장기 스테로이드(프레드니솔론 ≥15mg/일 1개월 이상), 진폐증, 위절제술 후, 영양 결핍 등 — 의사와 상담하여 검사 여부를 결정합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDCA LTBI 검진 대상 · 결핵 진료지침 2024</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · COMPARISON — IGRA vs TST
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>IGRA vs TST</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">잠복결핵 검사 두 가지 방법 — IGRA vs TST</h2>
+      <p class="slide__subtitle">한국에서는 BCG 접종률이 높아 IGRA 검사가 표준으로 자리잡았습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            IGRA (혈액 검사 · 선호)
+          </div>
+          <ul class="compare-col__list">
+            <li>채혈 1회 — 한 번 방문으로 끝</li>
+            <li>BCG 접종 영향을 받지 않아 정확</li>
+            <li>QuantiFERON-TB Gold Plus, T-SPOT.TB</li>
+            <li>결핵균 항원에 T세포 반응을 측정</li>
+            <li>결과 객관적 (수치/양성/음성/판정 불가)</li>
+            <li>한국 진료지침 1차 권고 (특히 BCG 접종자)</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">!</span>
+            TST (피부 반응 검사)
+          </div>
+          <ul class="compare-col__list">
+            <li>전완에 결핵균 항원을 피내 주사</li>
+            <li>48–72시간 후 재방문하여 판독 (2회 방문)</li>
+            <li>BCG 접종력에 영향 받아 위양성 가능</li>
+            <li>판독자 간 차이가 있을 수 있음</li>
+            <li>한국에서는 IGRA를 우선 권고</li>
+            <li>특정 상황 (5세 미만 등) 보조적 사용</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDCA IGRA 권고 · 결핵 진료지침 2024</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DENSITY GRID 2×2 — IGRA result interpretation
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>READING THE RESULT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">IGRA 결과를 어떻게 해석하나</h2>
+      <p class="slide__subtitle">양성·음성·판정 불가 — 결과는 다음 단계 의사 결정의 시작점입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">RESULT · 음성 (Negative)</div>
+          <div class="tile__title">결핵균 감염 가능성 낮음</div>
+          <div class="tile__body">대부분의 일반인은 음성입니다. 단, 최근 노출(8주 이내)이 의심되면 일정 기간 후 재검사가 필요할 수 있습니다. 또한 면역이 매우 저하되면 위음성 가능성도 있어 임상 정황과 함께 해석합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RESULT · 양성 (Positive)</div>
+          <div class="tile__title">결핵균에 감염된 적이 있음</div>
+          <div class="tile__body">활성 결핵인지 잠복결핵인지를 구분하지 못합니다. 따라서 양성이 나오면 흉부 X-ray·증상 평가·필요시 객담 검사로 활성 결핵 여부를 먼저 확인합니다. 활성 결핵이 아니면 LTBI로 진단합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RESULT · 판정 불가 (Indeterminate)</div>
+          <div class="tile__title">검사 결과를 신뢰할 수 없음</div>
+          <div class="tile__body">면역 저하·검사 오류 등으로 결과가 명확하지 않을 때 나옵니다. 일정 기간 후 재검사 또는 임상 판단으로 보완합니다. 결과지에 'Indeterminate' 또는 '판정 불가'로 표시됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CONVERSION · 전환</div>
+          <div class="tile__title">음성 → 양성으로 바뀜</div>
+          <div class="tile__body">이전에 음성이었던 IGRA가 양성으로 바뀌면 '전환(Conversion)'이라 하며, 새로운 결핵 감염의 강한 근거가 됩니다. 단순 양성보다 활성 결핵 진행 위험이 더 높아 적극적 평가가 필요합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — IGRA 결과 해석 · 결핵 진료지침 2024</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · DENSITY GRID 2×2 — Common myths and clarifications
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>COMMON MYTHS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">잠복결핵에 대한 흔한 오해 4가지</h2>
+      <p class="slide__subtitle">검사 결과지를 받으셨다면 한 번씩 떠올리시는 궁금증을 정리했습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">MYTH · 01</div>
+          <div class="tile__title">"양성 = 지금 결핵에 걸린 것 아닌가요?"</div>
+          <div class="tile__body">아닙니다. IGRA 양성은 결핵균에 감염된 적이 있다는 뜻이지 지금 환자라는 뜻이 아닙니다. 활성 결핵 여부는 흉부 X-ray와 증상 평가로 추가 확인합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MYTH · 02</div>
+          <div class="tile__title">"가족·동료에게 옮길까요?"</div>
+          <div class="tile__body">옮기지 않습니다. 잠복 상태에서는 균이 활동하지 않아 호흡기로 배출되지 않습니다. 격리·마스크가 필요하지 않고 정상적인 사회생활이 가능합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MYTH · 03</div>
+          <div class="tile__title">"BCG 맞아서 양성 나온 거 아닌가요?"</div>
+          <div class="tile__body">IGRA는 BCG의 영향을 받지 않습니다. BCG 접종으로 위양성이 생길 수 있는 검사는 TST이며, 한국이 IGRA를 표준으로 쓰는 이유 중 하나입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MYTH · 04</div>
+          <div class="tile__title">"양성이면 무조건 약을 먹어야 하나요?"</div>
+          <div class="tile__body">반드시는 아닙니다. 위험군·연령·간 기능·임신 등을 종합 판단하여 결정합니다. 치료 자체에 대한 자세한 내용은 별도의 LTBI 치료 자료를 참고해 주세요.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Patient FAQ · 결핵 진료지침 2024</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · TIMELINE — Pathway from screening to next step
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>YOUR PATHWAY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">검사부터 다음 단계까지 — 4단계 흐름</h2>
+      <p class="slide__subtitle">IGRA 검사 결과에 따라 어떤 절차를 거치게 되는지 미리 알아둡니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">검사 권고 평가</div>
+          <div class="timeline-step__body">고위험군에 해당하는지 의사와 함께 확인합니다. 해당하지 않으면 IGRA 검사를 일률적으로 시행하지는 않습니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">IGRA 채혈 검사</div>
+          <div class="timeline-step__body">한 번의 채혈로 검사 가능. 약 3–5일 후 결과 확인 — 양성·음성·판정 불가 중 하나로 보고됩니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">활성 결핵 배제</div>
+          <div class="timeline-step__body">양성이라면 흉부 X-ray와 증상 평가로 활성 결핵을 먼저 배제합니다. 의심 소견이 있으면 객담 검사를 추가합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">치료 여부 결정</div>
+          <div class="timeline-step__body">LTBI로 진단되면 위험·이익을 종합해 치료 여부를 결정합니다. 치료의 구체적 약물·기간은 별도 자료를 참고합니다.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">참고</span>
+        <span class="alert-strip__text">활성 결핵이 의심되는 증상(2주 이상 기침·혈담·발열·체중 감소)이 있다면 IGRA 결과를 기다리지 말고 즉시 흉부 X-ray와 객담 검사를 받으세요.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDCA Screening Pathway · 결핵 진료지침 2024</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — Today's 8 essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>TAKE HOME</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">잠복결핵 (LTBI) 의 의미와 IGRA 검사의 핵심을 한 번 더 정리합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">잠복결핵은 <strong>병이 아닌 '감염 상태'</strong> — 증상도 전염력도 없습니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">한국 성인 약 <strong>30%</strong>가 LTBI 상태이지만 평생 발병은 5–10%</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">IGRA는 <strong>채혈 한 번</strong>으로 결핵균 감염 여부를 확인하는 검사</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">한국에서는 <strong>BCG 영향이 없는 IGRA</strong>를 표준으로 사용합니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">고위험군 — HIV · TNF-α 억제제 · 이식 전 · 접촉자 · 의료종사자</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">IGRA 양성 = 감염 이력이며 <strong>활성 결핵 여부는 X-ray·증상</strong>으로 확인</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">'전환(Conversion)' — 음성→양성은 <strong>새 감염</strong>의 강한 근거</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">치료 여부는 <strong>위험·이익 종합 판단</strong> — 별도 자료 참고</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Take-home summary — what LTBI means, why IGRA, who needs it</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">정확히 이해하면<br><em>불필요한 걱정과 놓치는 위험 모두 피할 수 있습니다</em></h2>
+      <p class="slide__subtitle">잠복결핵에 대해 궁금한 점은 언제든 문의해 주세요 — 함께 결정하겠습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>LTBI Treatment — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/infectious/ltbi-treatment/">
+  <meta property="og:title" content="잠복결핵감염(LTBI) 치료 — 광교바른내과">
+  <meta property="og:description" content="3HP·4R·9H 치료 요법 비교, 간독성 모니터링, 리팜핀 약물상호작용, 임신 시 고려사항까지 — 잠복결핵감염 치료 환자 가이드">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/infectious/ltbi-treatment/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (regimen comparison table + alert stack + monitoring schedule) -->
+  <style>
+    /* Three-stat row — used on slide 2 (hero stats) */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 3rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Regimen comparison table — 4 cols × N rows for 3HP/4R/9H */
+    .regimen-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: var(--text-body);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+    .regimen-table thead th {
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      font-weight: var(--weight-bold);
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      letter-spacing: var(--tracking-snug);
+      font-size: var(--text-body);
+      line-height: var(--lh-snug);
+    }
+    .regimen-table thead th .regimen-table__sub {
+      display: block;
+      font-size: var(--text-sm);
+      font-weight: var(--weight-450);
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+    .regimen-table thead th:first-child { background: var(--color-steel); }
+    .regimen-table tbody td {
+      padding: var(--space-3) var(--space-4);
+      border-top: 1px solid var(--color-border-soft);
+      vertical-align: top;
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+    .regimen-table tbody tr td:first-child {
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      width: 22%;
+      letter-spacing: var(--tracking-snug);
+    }
+    .regimen-table__primary {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--color-steel);
+      color: var(--color-canvas);
+      font-size: var(--text-micro);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .regimen-table__alt {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      color: var(--color-slate);
+      font-size: var(--text-micro);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      border: 1px solid var(--color-border);
+    }
+
+    /* Vertical alert stack — single column emergency rows (slide 7 hepatotoxicity) */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Monitoring schedule — horizontal timeline of LFT checks */
+    .monitor-schedule {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-3);
+      align-items: stretch;
+    }
+    .monitor-step {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      position: relative;
+    }
+    .monitor-step__week {
+      font-size: var(--text-micro);
+      font-weight: var(--weight-bold);
+      color: var(--color-steel);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .monitor-step__label {
+      font-size: var(--text-body);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-snug);
+    }
+    .monitor-step__body {
+      font-size: var(--text-sm);
+      color: var(--color-ink-soft);
+      line-height: var(--lh-snug);
+    }
+    .monitor-step--baseline { background: var(--color-canvas-warm); border-color: var(--color-steel); }
+
+    /* Checklist with 8 items */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · INFECTIOUS DISEASE</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">잠복결핵감염 치료,<br><em>3~9개월의 정확한 복용</em></h1>
+      <p class="slide__subtitle">잠복결핵감염 (Latent Tuberculosis Infection, LTBI) 치료 요법·간독성·약물상호작용 가이드</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">3HP · 4R · 9H Regimens · Hepatotoxicity · Drug Interactions</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO STATS — 3 key numbers (efficacy / cost / regimens)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">짧은 치료로 평생 결핵을 예방합니다</h2>
+      <p class="slide__subtitle">잠복결핵감염 치료의 핵심 — 단기 복용으로 활동성 결핵 발병 위험을 크게 낮춥니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">60–90<span style="font-size:1.5rem">%</span></div>
+              <div class="stats3-cell__unit">예방 효과</div>
+            </div>
+            <div class="stats3-cell__label">치료 완주 시 결핵 발병 위험 감소</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">3</div>
+              <div class="stats3-cell__unit">권고 요법</div>
+            </div>
+            <div class="stats3-cell__label">3HP · 4R · 9H — 환자 상태에 맞춰 선택</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">0<span style="font-size:1.5rem">%</span></div>
+              <div class="stats3-cell__unit">본인부담</div>
+            </div>
+            <div class="stats3-cell__label">건강보험 산정특례 (V010) 적용</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          잠복결핵감염은 결핵균이 몸에 존재하지만 잠자는 상태로 — 증상도 전염력도 없습니다. 그러나 평생 5~10% 확률로 활동성 결핵 (Active TB) 으로 진행할 수 있어, 단기 약물 치료로 미리 균을 제거하는 것이 표준 진료입니다. 잠복결핵 자체에 대한 자세한 내용은 <em>LTBI 개요</em> 자료를 참고해 주세요.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 결핵 진료지침 5판 (2024) · WHO LTBI Guidelines 2020</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · COMPARISON TABLE — 3HP vs 4R vs 9H regimens
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>REGIMENS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">3가지 표준 치료 요법 한눈에 비교</h2>
+      <p class="slide__subtitle">3HP · 4R 은 1차 권고 / 9H 는 대안 — 간 기능, 동반 약물, 임신 여부에 따라 의료진이 결정</p>
+    </div>
+    <div class="slide__body">
+      <table class="regimen-table">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>3HP<span class="regimen-table__sub">이소니아지드 (Isoniazid, INH) + 리파펜틴 (Rifapentine), 주 1회</span></th>
+            <th>4R<span class="regimen-table__sub">리팜핀 (Rifampin), 1일 1회</span></th>
+            <th>9H<span class="regimen-table__sub">이소니아지드 (Isoniazid) 단독, 1일 1회</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>복용 기간</td>
+            <td>3개월 (12회 / 주 1회)</td>
+            <td>4개월 (120일 / 매일)</td>
+            <td>9개월 (270일 / 매일)</td>
+          </tr>
+          <tr>
+            <td>한국 권고</td>
+            <td><span class="regimen-table__primary">1차 권고</span></td>
+            <td><span class="regimen-table__primary">1차 권고</span></td>
+            <td><span class="regimen-table__alt">대안</span></td>
+          </tr>
+          <tr>
+            <td>치료 완료율</td>
+            <td>약 87% (가장 높음)</td>
+            <td>78.8%</td>
+            <td>63.2% (가장 낮음)</td>
+          </tr>
+          <tr>
+            <td>심한 간독성</td>
+            <td>약 0.4% (낮음)</td>
+            <td>0.3% (가장 낮음)</td>
+            <td>약 2.0% (가장 높음)</td>
+          </tr>
+          <tr>
+            <td>약물상호작용</td>
+            <td>리파펜틴 — CYP3A4 강력 유도</td>
+            <td>리팜핀 — CYP3A4 강력 유도</td>
+            <td>적은 편 (CYP 영향 적음)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Menzies D, NEJM 2018;379:440-453 · CDC LTBI Treatment 2020</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 3-up — Drug detail tiles (regimen tile pattern)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>DRUG PROFILE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">사용되는 핵심 약물 3가지</h2>
+      <p class="slide__subtitle">각 약물의 작용·복용법·대표 부작용을 미리 알아두면 안전한 치료에 큰 도움이 됩니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3" style="grid-template-rows: 1fr;">
+        <div class="tile">
+          <div class="tile__index">DRUG · 01</div>
+          <div class="tile__title">이소니아지드 (Isoniazid, INH)</div>
+          <div class="tile__body">결핵균 세포벽 합성 차단. 1일 1회 공복 복용 (식전 1시간 또는 식후 2시간). 대표 부작용 — 간독성, 말초신경병증 (피리독신/B6 동시 복용으로 예방). 등푸른 생선·발효식품 섭취 후 홍조·두통이 생길 수 있습니다.</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">300 mg / 1일 1회</span></li>
+            <li><span class="tile__regimen-name">B6 (피리독신)</span><span class="tile__regimen-dose">25–50 mg 동시</span></li>
+          </ul>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 02</div>
+          <div class="tile__title">리팜핀 (Rifampin, RIF)</div>
+          <div class="tile__body">결핵균 RNA 중합효소 억제. 1일 1회 공복 복용. 체액(소변·눈물·땀·침)이 주황~붉은색으로 변하는 것은 정상 — 약을 끊으면 사라집니다. 콘택트렌즈는 영구 착색될 수 있으니 안경 또는 일회용 렌즈 권장.</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">600 mg / 1일 1회</span></li>
+            <li><span class="tile__regimen-name">제산제와 간격</span><span class="tile__regimen-dose">1시간 이상</span></li>
+          </ul>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 03</div>
+          <div class="tile__title">리파펜틴 (Rifapentine, RPT)</div>
+          <div class="tile__body">리팜핀 계열의 장시간 작용 약물 — 주 1회 복용이 가능한 이유입니다. 3HP 요법에서 이소니아지드와 함께 사용. 음식과 함께 복용 시 흡수 향상. 리팜핀과 동일하게 CYP3A4 강력 유도제로 약물상호작용 주의가 필요합니다.</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">900 mg / 주 1회</span></li>
+            <li><span class="tile__regimen-name">복용 시기</span><span class="tile__regimen-dose">식사와 함께</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 결핵 진료지침 5판 (2024) · ATS/CDC/IDSA Drug Reference</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · TIMELINE — LFT monitoring schedule
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>LFT MONITORING</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">간 기능 검사 (LFT) 모니터링 일정</h2>
+      <p class="slide__subtitle">약 시작 전 기저 검사 후 정기 추적 — 무증상 간독성을 조기에 발견하기 위한 표준 일정</p>
+    </div>
+    <div class="slide__body">
+      <div class="monitor-schedule">
+        <div class="monitor-step monitor-step--baseline">
+          <div class="monitor-step__week">BASELINE</div>
+          <div class="monitor-step__label">치료 시작 전</div>
+          <div class="monitor-step__body">AST · ALT · 총빌리루빈 · CBC · 크레아티닌 · HBV/HCV 선별. 흉부 X선으로 활동성 결핵 배제.</div>
+        </div>
+        <div class="monitor-step">
+          <div class="monitor-step__week">WEEK 2–4</div>
+          <div class="monitor-step__label">초기 추적</div>
+          <div class="monitor-step__body">고위험군 (음주·간질환·고령·임신·HIV) 우선 재검. 증상 문진 + 부작용 점검.</div>
+        </div>
+        <div class="monitor-step">
+          <div class="monitor-step__week">MONTH 1–2</div>
+          <div class="monitor-step__label">월 1회 추적</div>
+          <div class="monitor-step__body">LFT 정상 + 무증상이면 일반 환자도 매월 1회 외래 진료로 부작용 점검.</div>
+        </div>
+        <div class="monitor-step">
+          <div class="monitor-step__week">MONTH 3+</div>
+          <div class="monitor-step__label">정기 추적</div>
+          <div class="monitor-step__body">간기능 안정 시 1~2개월 간격으로 LFT 재검. 증상 발생 시는 수시 검사.</div>
+        </div>
+        <div class="monitor-step">
+          <div class="monitor-step__week">END</div>
+          <div class="monitor-step__label">치료 종료 시</div>
+          <div class="monitor-step__body">최종 LFT 확인 후 산정특례 종료 처리. 완료 기록 발급 (사업장·학교 제출용).</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">중단 기준</span>
+        <span class="alert-strip__text">AST/ALT 가 정상 상한의 <strong>5배 이상 (무증상)</strong> 또는 <strong>3배 이상 (증상 동반)</strong>이면 약물 즉시 중단 — ATS 2006 기준.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · 결핵 진료지침 5판</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — High-risk groups for hepatotoxicity
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>HEPATOTOXICITY RISK</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">간독성 (Hepatotoxicity) 위험이 높은 분들</h2>
+      <p class="slide__subtitle">아래 항목 중 하나 이상 해당되면 더 자주 검사·더 면밀한 관찰이 필요합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">RISK · 01</div>
+          <div class="tile__title">고령 (65세 이상)</div>
+          <div class="tile__body">나이가 많아질수록 약물 대사·해독 능력이 감소합니다. 특히 9H (이소니아지드 9개월) 요법에서 간독성 발생률이 증가하므로, 가능하면 짧은 3HP 또는 4R 요법이 권고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 02</div>
+          <div class="tile__title">만성 간질환 · B/C형 간염</div>
+          <div class="tile__body">기저 간질환이 있으면 간독성 위험이 2~3배까지 증가. 치료 전 HBsAg / anti-HCV 선별 검사 시행. 간경변·활동성 간염이 있는 경우 전문의 상의 후 결정합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 03</div>
+          <div class="tile__title">매일 음주 · 알코올 사용</div>
+          <div class="tile__body">매일 음주는 간독성 위험을 약 4배까지 높입니다 (USPHS surveillance). 가끔 음주도 약 2배. 치료 기간 동안 금주가 원칙이며, 어려우면 솔직히 말씀해 주세요 — 더 자주 LFT 검사로 안전 관리 가능합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 04</div>
+          <div class="tile__title">간독성 약물 병용</div>
+          <div class="tile__body">아세트아미노펜 고용량, 메토트렉세이트, 일부 항생제·항진균제 등 간 부담이 큰 약물을 동시에 복용 중이면 간독성 위험이 가중됩니다. 모든 복용 약·건강기능식품·한약을 진료 시 알려주세요.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 05</div>
+          <div class="tile__title">임신 · 산후 3개월 이내</div>
+          <div class="tile__body">임신·출산 직후 (특히 산후 3개월 이내) 이소니아지드 관련 간독성 위험이 높다는 보고가 있습니다. 가능하면 출산 후 일정 시점까지 치료 시기를 조정 — 단, 고위험군은 임신 중에도 치료가 권고될 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 06</div>
+          <div class="tile__title">영양 불량 · 저체중</div>
+          <div class="tile__body">단백·비타민 결핍 상태에서는 약물 대사가 저하되고 간독성 발현이 빨라질 수 있습니다. 영양 상태 평가 후 필요 시 영양 상담 병행. 이소니아지드 복용 시 비타민 B6 보충은 표준 권고사항입니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · USPHS Surveillance Study</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · ALERT STACK — STOP-AND-CALL hepatotoxicity warning signs
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>STOP &amp; CALL</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이런 증상이 나타나면 약을 즉시 멈추세요</h2>
+      <p class="slide__subtitle">간독성 (Drug-Induced Liver Injury) 의 경고 신호 — 한 가지라도 해당되면 약 중단 후 같은 날 진료</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-alert-stack">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">황달 (Jaundice) · 진한 갈색 소변</div>
+            <div class="alert-row__text">피부·눈 흰자가 노랗게 변하거나 콜라색 소변이 나오면 즉시 약 중단. 리팜핀에 의한 정상적인 주황색 소변과 구별 — 갈색·콜라색은 간 손상 신호입니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">지속적 구역·구토 · 식욕 부진</div>
+            <div class="alert-row__text">하루 이상 음식이 안 받거나 구토가 반복되면 단순 위장 부작용이 아닌 간독성 가능성. 혈액검사로 간 효소 (AST/ALT) 확인이 필요합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">우상복부 통증 · 극심한 피로감</div>
+            <div class="alert-row__text">오른쪽 윗배 불편감이나 평소와 다른 무력감·쇠약. 회백색 대변이 동반되면 담즙 정체 (Cholestasis) 도 의심 — 즉시 진료가 필요합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">발진 · 발열 · 고열 동반 증상</div>
+            <div class="alert-row__text">전신 발진·고열·림프절 종대 등이 동반되면 약물 과민반응 (DRESS 등) 가능성. 즉시 약 중단하고 응급 진료 — 자가 복용 재개 절대 금지.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · CDC LTBI Adverse Events</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DENSITY GRID 3×2 — Rifampin/Rifapentine drug interactions (CYP3A4)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>DRUG INTERACTIONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">리팜핀·리파펜틴의 약물상호작용 6가지</h2>
+      <p class="slide__subtitle">두 약은 간 효소 (CYP3A4) 를 강력하게 유도해 다른 약의 효과를 떨어뜨립니다 — 모든 복용 약을 알려주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 01</div>
+          <div class="tile__title">경구 피임약 (Oral Contraceptives)</div>
+          <div class="tile__body">에스트로겐·프로게스틴 효과 64~66% 감소 → 단독 사용 금지. 콘돔 (남성·여성), 구리 IUD (자궁내장치), 데포프로베라 주사가 권장 대안. 치료 종료 후 4주간도 동일하게 적용합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 02</div>
+          <div class="tile__title">와파린 (Warfarin) · 항응고제</div>
+          <div class="tile__body">와파린 대사 가속화 → INR 감소, 출혈 위험 변동. 치료 시작 후 INR 자주 측정 (1~2주 간격) 후 용량 조정. DOAC (리바록사반·아픽사반 등) 도 농도 저하 보고가 있으니 주의.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 03</div>
+          <div class="tile__title">고혈압약 · 칼슘차단제</div>
+          <div class="tile__body">암로디핀 (Amlodipine), 딜티아젬 (Diltiazem), 베라파밀 (Verapamil) 등 효과 감소 → 혈압 조절 약화 가능. 필요 시 다른 계열 (ACE-I, ARB, 이뇨제) 로 변경하거나 용량 조정.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 04</div>
+          <div class="tile__title">고지혈증약 (Statin)</div>
+          <div class="tile__body">심바스타틴 (Simvastatin), 아토르바스타틴 (Atorvastatin) 효과 80~87% 감소. 대부분 LTBI 치료 기간 (3~4개월) 동안 statin 일시 중단 또는 감소 영향이 적은 약 (rosuvastatin 등) 으로 변경 검토.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 05</div>
+          <div class="tile__title">당뇨약 · 설포닐유레아</div>
+          <div class="tile__body">글리메피리드 (Glimepiride), 글리피지드 (Glipizide) 등 효과 감소 → 혈당 상승 가능. 자가 혈당 측정 강화, 필요 시 메트포르민·DPP-4 억제제 등 다른 계열 보완.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">INTERACTION · 06</div>
+          <div class="tile__title">면역억제제 · 항진균제 — 병용 금기 영역</div>
+          <div class="tile__body">타크로리무스 (Tacrolimus), 사이클로스포린, 보리코나졸 (Voriconazole), 일부 항HIV제 (PI 계열) 는 농도가 급격히 떨어져 병용 금기 또는 상급병원 의뢰 필요. 이식 환자·면역억제 중인 분은 반드시 사전 협진.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Rifampin Drug-Drug Interaction Database (Lexicomp 2024)</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · COMPARISON — Pregnancy & special populations
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>PREGNANCY &amp; SPECIAL CASES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">임신 · 모유 수유 · 특수 상황</h2>
+      <p class="slide__subtitle">치료 시기 조정과 약물 선택 — 위험과 이익을 종합해 의료진과 함께 결정합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            출산 후로 연기 가능 (Defer)
+          </div>
+          <ul class="compare-col__list">
+            <li>임신 중 새로 진단된 LTBI · <strong>저위험군</strong></li>
+            <li>최근 활동성 결핵 환자 접촉 없음</li>
+            <li>면역 저하 (HIV·면역억제제 등) 없음</li>
+            <li>대부분 출산 후 2~3개월까지 연기 가능</li>
+            <li>임신 중에는 LFT만 추적 관찰</li>
+            <li>모유 수유 중 INH/RIF 사용 가능 (B6 보충 필수)</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">!</span>
+            임신 중 치료 권고 (Treat Now)
+          </div>
+          <ul class="compare-col__list">
+            <li>최근 결핵 환자와 <strong>밀접 접촉</strong>한 경우</li>
+            <li>HIV 감염 · 면역억제제 복용 중</li>
+            <li>2년 이내 IGRA 양전 (Recent Conversion)</li>
+            <li>9H 또는 4R 요법이 우선 — 3HP 는 임신 중 자료 제한</li>
+            <li>이소니아지드 사용 시 <strong>비타민 B6 보충 필수</strong></li>
+            <li>산후 3개월 이내 간독성 위험 ↑ — 더 자주 LFT</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — CDC TB Pregnancy Recommendations · WHO LTBI 2020</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · DENSITY GRID 2×2 — When to refer (specialist / hospital)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>WHEN TO REFER</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">상급병원·전문의 의뢰가 필요한 경우</h2>
+      <p class="slide__subtitle">아래 4가지 상황은 일차의료기관 단독 치료가 어려워 전문의 협진이 권고됩니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">REFER · 01</div>
+          <div class="tile__title">간경변 · 활동성 간염 (HBV/HCV)</div>
+          <div class="tile__body">기저 간질환이 있는 경우 약물 선택과 모니터링 강화가 필요합니다. 간기능 검사 결과를 들고 소화기내과 또는 감염내과에 의뢰 — 4R (리팜핀 단독) 이 상대적으로 안전한 선택지일 수 있으나 개별 평가 필수.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">REFER · 02</div>
+          <div class="tile__title">HIV 감염 · 장기이식 후</div>
+          <div class="tile__body">항HIV제 (특히 PI·INSTI) 와 리팜핀의 상호작용이 복잡합니다. 장기이식 환자는 면역억제제 (타크로리무스 등) 와 병용 금기 영역. 모두 감염내과 협진 후 약물·일정 결정이 안전합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">REFER · 03</div>
+          <div class="tile__title">활동성 결핵 의심 소견</div>
+          <div class="tile__body">치료 중 새로운 기침·발열·체중감소·야간 발한이 발생하면 활동성 결핵 (Active TB) 재평가가 필요합니다. 흉부 X선 + 객담 검사. LTBI 약물만으로 활동성 결핵을 치료하면 다제내성 결핵 위험이 있어 즉시 의뢰.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">REFER · 04</div>
+          <div class="tile__title">치료 중단 · 약물 부작용 반복</div>
+          <div class="tile__body">간독성·발진 등으로 치료 중단했던 분, 2개월 이상 복용을 놓친 분, 다제내성 결핵 환자와의 접촉이 의심되는 경우는 결핵·감염내과 의뢰. 대안 요법 또는 추가 검사가 필요할 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 결핵 진료지침 5판 · WHO LTBI Programmatic Management 2020</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST 8 — Today's essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">치료 성공의 핵심 — 끝까지 정확히 복용하면 평생의 건강을 지킬 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">치료는 <strong>3HP · 4R · 9H</strong> 중 의료진이 결정 — 끝까지 완주가 핵심</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">약은 <strong>1일 1회 공복</strong> 복용 (3HP는 주 1회, 식사와 함께)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text"><strong>황달·갈색 소변·극심한 피로</strong> 시 약 중단 후 같은 날 진료</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">치료 기간 동안 <strong>금주가 원칙</strong> — 매일 음주 시 간독성 4배</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">리팜핀은 <strong>피임약·혈압약·당뇨약·와파린</strong> 효과를 떨어뜨림</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">소변·눈물·땀이 <strong>주황색</strong>은 정상 (콘택트렌즈는 안경으로)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text"><strong>모든 복용 약·건강기능식품·한약</strong>은 진료 시 알려주세요</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">임신·간질환·HIV 등은 <strong>치료 전 반드시 상담</strong></div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — adherence · monitoring · interaction awareness</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">3~9개월의 정확한 복용이<br><em>평생의 건강을 지킵니다</em></h2>
+      <p class="slide__subtitle">잠복결핵감염 치료, 함께 끝까지 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

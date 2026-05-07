@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Atrophic Gastritis &amp; Intestinal Metaplasia — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/atrophic-gastritis/">
+  <meta property="og:title" content="위축성위염 / 장상피화생 — 광교바른내과">
+  <meta property="og:description" content="위축성위염과 장상피화생의 의미, 위암 위험과 추적 관찰, H. pylori 제균 치료까지 한눈에">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/atrophic-gastritis/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (Kimura class strip + Correa horizontal flow + age-prevalence row) -->
+  <style>
+    /* Three-stat row (slide 2) — single row of 3 large circular stats + supporting card */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 3rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Correa cascade — 5 horizontal nodes for cancer progression sequence */
+    .pattern-correa {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .correa-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-3);
+      align-items: stretch;
+    }
+    .correa-step {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-steel);
+      border-radius: var(--radius-md);
+      position: relative;
+    }
+    .correa-step--cancer {
+      background: var(--color-navy);
+      border-left-color: var(--color-canvas);
+    }
+    .correa-step--cancer .correa-step__index,
+    .correa-step--cancer .correa-step__title,
+    .correa-step--cancer .correa-step__body { color: var(--color-canvas); }
+    .correa-step__index {
+      font-size: var(--text-eyebrow);
+      font-weight: var(--weight-bold);
+      color: var(--color-steel);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .correa-step__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      line-height: var(--lh-tight);
+    }
+    .correa-step__body {
+      font-size: var(--text-body-sm);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+    .correa-note {
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+    .correa-note strong { color: var(--color-navy); font-weight: var(--weight-bold); }
+
+    /* Kimura classification strip — 6-cell band (C-1, C-2, C-3, O-1, O-2, O-3) */
+    .pattern-kimura {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .kimura-strip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--space-2);
+    }
+    .kimura-cell {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-top: 3px solid var(--color-steel);
+      border-radius: var(--radius-md);
+    }
+    .kimura-cell--open {
+      border-top-color: var(--color-navy);
+      background: var(--color-canvas-warm);
+    }
+    .kimura-cell__code {
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-mega);
+    }
+    .kimura-cell__label {
+      font-size: var(--text-body-sm);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      line-height: var(--lh-tight);
+    }
+    .kimura-cell__detail {
+      font-size: var(--text-body-sm);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+    .kimura-legend {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+    .kimura-legend__item {
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body);
+      line-height: var(--lh-relaxed);
+    }
+    .kimura-legend__item strong { color: var(--color-navy); font-weight: var(--weight-bold); }
+
+    /* Age-prevalence rows — 6 horizontal bars showing prevalence by decade */
+    .pattern-prevalence {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .prev-row {
+      display: grid;
+      grid-template-columns: 72px 1fr 1fr;
+      gap: var(--space-4);
+      align-items: center;
+      padding: 6px var(--space-4);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+    .prev-row__age {
+      font-size: var(--text-body);
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+    }
+    .prev-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .prev-bar__track {
+      flex: 1;
+      height: 12px;
+      background: var(--color-border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .prev-bar__fill {
+      height: 100%;
+      border-radius: 6px;
+    }
+    .prev-bar__fill--ag { background: var(--color-navy); }
+    .prev-bar__fill--im { background: var(--color-steel); }
+    .prev-bar__value {
+      font-size: var(--text-body-sm);
+      font-weight: var(--weight-540);
+      color: var(--color-ink);
+      width: 56px;
+      text-align: right;
+    }
+    .prev-legend {
+      display: flex;
+      gap: var(--space-6);
+      justify-content: center;
+      padding: var(--space-2);
+      font-size: var(--text-body-sm);
+      color: var(--color-slate);
+    }
+    .prev-legend__swatch {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: var(--space-2);
+      vertical-align: middle;
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">위축성위염 · 장상피화생,<br><em>의미와 관리 한눈에</em></h1>
+      <p class="slide__subtitle">위 점막의 변화가 무엇이고, 위암 위험과 추적 관찰을 어떻게 설계해야 하는지 알아봅니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Atrophic Gastritis · Intestinal Metaplasia · H. pylori · Correa Sequence</span>
+      <span class="slide__page">광교바른내과 소화기내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO NUMBER — Korean prevalence in 50+
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">한국인 50대 절반 이상이 위축성위염을 가지고 있습니다</h2>
+      <p class="slide__subtitle">나이가 들수록 유병률이 가파르게 올라가는 흔한 위 점막 변화입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="pattern-hero-number__value"><em>57</em>%</div>
+          <div class="pattern-hero-number__caption">한국 50대 위축성위염 유병률 — 70대 이상에서는 약 76%까지 올라가며 장상피화생도 35%에 이릅니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">Why this matters</div>
+          <div class="pattern-hero-number__detail-text">
+            위축성위염과 장상피화생은 위암으로 진행하는 전암성 단계로 분류됩니다. 그러나 모든 환자가 위암이 되는 것은 아니며, 정기 내시경 추적과 H. pylori 제균을 통해 진행을 늦추거나 조기에 발견할 수 있습니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Lim JH et al. Gut Liver 2013;7:41-50 · Korean nationwide endoscopy data</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — Definitions
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>DEFINITION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">위축성위염과 장상피화생은 어떤 변화인가</h2>
+      <p class="slide__subtitle">위 점막이 얇아지고(위축) 다른 조직으로 바뀌는(화생) 만성 변화</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">위축성위염 (Atrophic Gastritis)은 위 점막의 분비샘이 <em>얇아지고 줄어드는</em> 만성 염증성 변화입니다.</p>
+          <p class="pattern-split__supporting">
+            장상피화생 (Intestinal Metaplasia)은 위 점막 세포가 위가 아닌 장 (소장·대장형) 점막 세포로 바뀌는 현상으로, 위축성위염이 더 진행된 단계로 봅니다. 두 변화 모두 위암으로 가는 단계적 진행 (Correa sequence)에 포함되지만, 모든 환자가 위암이 되지는 않습니다. 핵심은 정기 내시경 추적과 위험 인자 (H. pylori, 흡연, 짠 음식)의 적극적 관리입니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Cancer risk vs normal</div>
+            <div class="pattern-split__metric-value">3 – 5배</div>
+            <div class="pattern-split__metric-detail">정상 위 점막에 비해 위암 발생 위험이 수배 높아집니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Reversibility</div>
+            <div class="pattern-split__metric-value">제한적</div>
+            <div class="pattern-split__metric-detail">한 번 발생한 변화를 약으로 되돌리기는 어렵고, 진행을 늦추는 것이 목표입니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSGE 2020 위암 검진 가이드라인 · Correa Cascade</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · CORREA SEQUENCE — 5-step cancer progression
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>CORREA SEQUENCE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">정상 위에서 위암까지 — 단계적 진행</h2>
+      <p class="slide__subtitle">Correa Cascade — 위 점막이 위암에 이르는 단계적 변화 모델</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-correa">
+        <div class="correa-row">
+          <div class="correa-step">
+            <div class="correa-step__index">STEP · 01</div>
+            <div class="correa-step__title">정상 위 점막</div>
+            <div class="correa-step__body">손상 없는 위 분비샘 — 산·점액·소화 효소가 정상 분비됩니다.</div>
+          </div>
+          <div class="correa-step">
+            <div class="correa-step__index">STEP · 02</div>
+            <div class="correa-step__title">만성 위염</div>
+            <div class="correa-step__body">H. pylori 감염 등으로 점막에 만성 염증이 생기고 면역 세포가 침윤합니다.</div>
+          </div>
+          <div class="correa-step">
+            <div class="correa-step__index">STEP · 03</div>
+            <div class="correa-step__title">위축성위염</div>
+            <div class="correa-step__body">분비샘이 얇아지고 줄어들면서 위 점막이 옅어 보이고 혈관이 비쳐 보입니다.</div>
+          </div>
+          <div class="correa-step">
+            <div class="correa-step__index">STEP · 04</div>
+            <div class="correa-step__title">장상피화생</div>
+            <div class="correa-step__body">위 점막이 장 세포 (소장·대장형)로 바뀌면서 점막 표면이 거칠고 둔덕 모양이 됩니다.</div>
+          </div>
+          <div class="correa-step correa-step--cancer">
+            <div class="correa-step__index">STEP · 05</div>
+            <div class="correa-step__title">위암</div>
+            <div class="correa-step__body">이형성 (dysplasia)을 거쳐 위 선암이 발생합니다 — 일부 환자에서만.</div>
+          </div>
+        </div>
+        <div class="correa-note">
+          <strong>핵심:</strong> 위축성위염과 장상피화생은 위암으로 가는 <strong>전 단계 변화</strong>이지만, 모든 환자가 위암이 되는 것은 아닙니다. <strong>H. pylori 감염, 50대 이상, 흡연, 짠 음식, 가족력</strong>이 동반될 때 진행 위험이 누적됩니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Correa P. Cancer Res 1992 · KSGE 2020 위암 검진 가이드라인</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · KIMURA-TAKEMOTO 6-CELL STRIP
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>ENDOSCOPIC CLASSIFICATION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">Kimura-Takemoto 분류 — 위축의 범위에 따라 6등급</h2>
+      <p class="slide__subtitle">내시경에서 위축 경계가 어디까지 올라왔는지에 따라 C-1부터 O-3까지 단계별로 표시합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-kimura">
+        <div class="kimura-strip">
+          <div class="kimura-cell">
+            <div class="kimura-cell__code">C-1</div>
+            <div class="kimura-cell__label">전정부 소만에 국한</div>
+            <div class="kimura-cell__detail">가장 경미한 단계 — 위축이 전정부 입구 부근에만 보입니다.</div>
+          </div>
+          <div class="kimura-cell">
+            <div class="kimura-cell__code">C-2</div>
+            <div class="kimura-cell__label">전정부 전체</div>
+            <div class="kimura-cell__detail">위축이 전정부 전체로 퍼지지만 위각 (incisura)은 넘지 않습니다.</div>
+          </div>
+          <div class="kimura-cell">
+            <div class="kimura-cell__code">C-3</div>
+            <div class="kimura-cell__label">위각 직하부까지</div>
+            <div class="kimura-cell__detail">위축이 위각 바로 아래까지 진행 — Closed type 의 마지막 단계.</div>
+          </div>
+          <div class="kimura-cell kimura-cell--open">
+            <div class="kimura-cell__code">O-1</div>
+            <div class="kimura-cell__label">위각을 넘어 체부 하부</div>
+            <div class="kimura-cell__detail">Open type 시작 — 위 체부 (corpus)로 위축이 진입합니다.</div>
+          </div>
+          <div class="kimura-cell kimura-cell--open">
+            <div class="kimura-cell__code">O-2</div>
+            <div class="kimura-cell__label">체부 중간부</div>
+            <div class="kimura-cell__detail">위축이 위 체부 중간까지 광범위하게 확장됩니다.</div>
+          </div>
+          <div class="kimura-cell kimura-cell--open">
+            <div class="kimura-cell__code">O-3</div>
+            <div class="kimura-cell__label">체부 상부 · 위저부까지</div>
+            <div class="kimura-cell__detail">가장 진행된 단계 — 위 전반에 광범위 위축. 위암 발생 위험이 가장 높습니다.</div>
+          </div>
+        </div>
+        <div class="kimura-legend">
+          <div class="kimura-legend__item">
+            <strong>Closed type (C-1 ~ C-3)</strong> — 위축 경계가 전정부에 국한된 비교적 경미한 단계입니다. 정기 추적 위주로 관리합니다.
+          </div>
+          <div class="kimura-legend__item">
+            <strong>Open type (O-1 ~ O-3)</strong> — 위 체부까지 위축이 확장된 진행성 단계로, 위암 발생 위험이 더 높아 짧은 추적 간격이 권고됩니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Kimura K, Takemoto T. Endoscopy 1969 · Japanese Endoscopic Atrophy Classification</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — Risk factors
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>RISK FACTORS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">진행을 가속하는 6가지 위험 인자</h2>
+      <p class="slide__subtitle">조절 가능한 인자를 찾아 적극적으로 줄이는 것이 추적 관찰의 핵심입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">FACTOR · 01</div>
+          <div class="tile__title">H. pylori 감염</div>
+          <div class="tile__body">위축성위염·장상피화생의 가장 강력한 원인. 장기 감염은 위암 위험을 약 6배 높이며, WHO Group 1 발암물질로 분류됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 02</div>
+          <div class="tile__title">나이 · 50세 이상</div>
+          <div class="tile__body">유병률은 50대 약 57%, 70대 이상 약 76%로 급격히 상승. 진단 후에도 나이가 많을수록 진행 속도가 빠릅니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 03</div>
+          <div class="tile__title">흡연</div>
+          <div class="tile__body">담배 연기 속 발암물질이 위 점막을 직접 자극. 위축성위염·장상피화생 진행과 위암 발생을 동시에 가속합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 04</div>
+          <div class="tile__title">짠 음식 · 짠 발효식품</div>
+          <div class="tile__body">젓갈·장아찌·소금 절임 식품의 잦은 섭취. 한국인의 짠 식습관이 위축·화생 진행과 위암 위험에 직결됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 05</div>
+          <div class="tile__title">가족력</div>
+          <div class="tile__body">직계 가족 중 위암 환자가 있는 경우 위험이 2~3배 높아집니다. 한국은 위암 가족력 빈도가 높은 편입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 06</div>
+          <div class="tile__title">자가면역 · 악성빈혈</div>
+          <div class="tile__body">자가면역성 위염은 체부 위주 위축을 일으키고 비타민 B12 결핍·악성빈혈을 동반할 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSGE 2020 가이드라인 · IARC H. pylori 발암 평가 (Group 1)</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · PREVALENCE BY AGE — 6 horizontal rows (AG vs IM)
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>PREVALENCE BY AGE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">나이가 들수록 유병률이 가파르게 올라갑니다</h2>
+      <p class="slide__subtitle">한국인 위축성위염 (AG) · 장상피화생 (IM) 연령별 유병률</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-prevalence">
+        <div class="prev-row">
+          <div class="prev-row__age">20대</div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 13%;"></div></div>
+            <div class="prev-bar__value">AG 10%</div>
+          </div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 3%;"></div></div>
+            <div class="prev-bar__value">IM 2%</div>
+          </div>
+        </div>
+        <div class="prev-row">
+          <div class="prev-row__age">30대</div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 29%;"></div></div>
+            <div class="prev-bar__value">AG 22%</div>
+          </div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 7%;"></div></div>
+            <div class="prev-bar__value">IM 5%</div>
+          </div>
+        </div>
+        <div class="prev-row">
+          <div class="prev-row__age">40대</div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 50%;"></div></div>
+            <div class="prev-bar__value">AG 38%</div>
+          </div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 13%;"></div></div>
+            <div class="prev-bar__value">IM 10%</div>
+          </div>
+        </div>
+        <div class="prev-row">
+          <div class="prev-row__age">50대</div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 75%;"></div></div>
+            <div class="prev-bar__value">AG 57%</div>
+          </div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 29%;"></div></div>
+            <div class="prev-bar__value">IM 22%</div>
+          </div>
+        </div>
+        <div class="prev-row">
+          <div class="prev-row__age">60대</div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 89%;"></div></div>
+            <div class="prev-bar__value">AG 68%</div>
+          </div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 41%;"></div></div>
+            <div class="prev-bar__value">IM 31%</div>
+          </div>
+        </div>
+        <div class="prev-row">
+          <div class="prev-row__age">70대+</div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 100%;"></div></div>
+            <div class="prev-bar__value">AG 76%</div>
+          </div>
+          <div class="prev-bar">
+            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 46%;"></div></div>
+            <div class="prev-bar__value">IM 35%</div>
+          </div>
+        </div>
+        <div class="prev-legend">
+          <span><span class="prev-legend__swatch" style="background: var(--color-navy);"></span>AG · 위축성위염</span>
+          <span><span class="prev-legend__swatch" style="background: var(--color-steel);"></span>IM · 장상피화생</span>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Lim JH et al. Gut Liver 2013;7:41-50</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DENSITY GRID 3×2 — H. pylori eradication indication strength
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>H. PYLORI ERADICATION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">H. pylori 제균 — 적응증의 강도별 정리</h2>
+      <p class="slide__subtitle">대한상부위장관·헬리코박터학회 가이드라인 기준 · 위축성위염/장상피화생은 권고적 적응증</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">STRONG · 01</div>
+          <div class="tile__title">소화성 궤양</div>
+          <div class="tile__body">위·십이지장 궤양 (활동성·반흔 모두). 제균 시 재발률이 약 80%에서 5% 미만으로 극적으로 떨어집니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STRONG · 02</div>
+          <div class="tile__title">저등급 위 MALT 림프종</div>
+          <div class="tile__body">위 MALT 림프종은 H. pylori 제균만으로 약 70~80%가 관해됩니다. 일차 치료로 제균이 권고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STRONG · 03</div>
+          <div class="tile__title">조기 위암 내시경 절제 후</div>
+          <div class="tile__body">조기 위암 ESD/EMR 후 잔존 위 점막에 대한 제균은 이시성 위암 발생을 약 50% 감소시킵니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">RECOMMENDED · 04</div>
+          <div class="tile__title">위축성위염 / 장상피화생</div>
+          <div class="tile__body">제균이 점막 변화의 진행을 늦추고 위암 발생 위험을 줄입니다. 본 자료의 대상 환자가 해당하는 적응증입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RECOMMENDED · 05</div>
+          <div class="tile__title">위암 가족력 (1촌)</div>
+          <div class="tile__body">직계 가족 위암 병력이 있는 H. pylori 양성 환자에서 제균은 위암 위험을 의미 있게 낮춥니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CONSIDER · 06</div>
+          <div class="tile__title">기능성 소화불량 · 장기 NSAID</div>
+          <div class="tile__body">기능성 소화불량, 장기 아스피린/NSAID 복용 예정자, 특발성 혈소판감소증 등도 개별적 고려 대상입니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 대한상부위장관·헬리코박터학회 H. pylori 진료 가이드라인</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · TIMELINE — 4-step follow-up schedule
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>FOLLOW-UP SCHEDULE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">위축성위염 · 장상피화생, 추적 관찰 일정</h2>
+      <p class="slide__subtitle">진단 후 정기 내시경으로 변화의 진행 여부와 조기 위암을 함께 확인합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">진단 시점 · Baseline</div>
+          <div class="timeline-step__body">위축 범위 (Kimura 등급) 확인 + H. pylori 검사 + 조직검사로 화생·이형성 여부 평가.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">위축성위염 · 2~3년</div>
+          <div class="timeline-step__body">Closed type (C-1~C-3)는 2~3년 간격 추적. Open type은 더 짧게 권고됩니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">장상피화생 · 1~2년</div>
+          <div class="timeline-step__body">화생이 광범위하거나 위암 가족력이 동반된 고위험군은 1~2년 간격으로 단축.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">이형성 발견 시 · 즉시</div>
+          <div class="timeline-step__body">고도 이형성·조기 위암 의심 소견은 ESD/EMR 등 추가 처치를 고려합니다.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">중요</span>
+        <span class="alert-strip__text">권장 간격은 환자별 위험 인자 (Kimura 등급, 가족력, 흡연, H. pylori 상태)에 따라 달라집니다. 담당 의사와 개별 일정을 정하세요.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSGE 위암 검진 가이드라인 · MAPS II 2019 (Europe)</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · COMPARISON — DO vs DON'T (lifestyle)
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>LIFESTYLE — DO &amp; DON'T</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">진행을 늦추는 생활 관리</h2>
+      <p class="slide__subtitle">위축성위염·장상피화생 자체를 되돌리는 음식은 없지만, 진행 속도와 위암 위험을 줄일 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            이렇게 하세요 (DO)
+          </div>
+          <ul class="compare-col__list">
+            <li>신선한 채소·과일을 매끼 충분히</li>
+            <li>싱겁게 — 국물·찌개 절반만 섭취</li>
+            <li>H. pylori 양성이면 적극 제균 치료</li>
+            <li>금연 — 위 점막 자극 가장 강력한 인자</li>
+            <li>규칙적 운동과 적정 체중 유지</li>
+            <li>2~3년 간격 정기 위내시경 추적</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            이것은 피하세요 (DON'T)
+          </div>
+          <ul class="compare-col__list">
+            <li>젓갈·장아찌·짠 발효식품 자주 섭취</li>
+            <li>훈제·태운 음식·가공육 (햄·소시지) 자주</li>
+            <li>과도한 음주 (주 2회 이상 폭음)</li>
+            <li>스트레스 누적·수면 부족 방치</li>
+            <li>증상 없다고 추적 내시경 미루기</li>
+            <li>처방 없이 위염 약 임의 장기 복용</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSGE 생활관리 권고 · WCRF 위암 예방 식이</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — 8 essentials
+       ======================================================================== -->
+  <section class="slide">    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">위축성위염·장상피화생을 진단받은 분들이 일상에서 실천할 행동 체크리스트</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">위축성위염·장상피화생은 <strong>위암 전 단계</strong>이지만 모두 위암이 되지는 않음</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">한국 50대 약 57% · 70대+ 약 76% — <strong>나이 들수록 흔함</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">H. pylori 검사를 받고 양성이면 <strong>적극 제균 치료</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">금연 · 짠 음식 줄이기 · 신선 채소·과일 <strong>매끼 충분히</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">위축성위염은 <strong>2~3년</strong>, 장상피화생은 <strong>1~2년</strong> 간격 내시경 추적</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">Kimura <strong>Open type · 가족력</strong>은 추적 간격이 짧아짐</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">증상 없어도 <strong>추적 내시경 미루지 않기</strong> — 조기 발견이 핵심</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">체중 감소·흑색변·삼킴 곤란이 새로 생기면 <strong>즉시 내원</strong></div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — eradicate H. pylori, modify diet, follow up on schedule</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">정기적인 검진으로<br><em>건강한 위를 지켜가세요</em></h2>
+      <p class="slide__subtitle">궁금한 점은 언제든 주치의에게 문의해 주세요 — 함께 추적·관리하겠습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

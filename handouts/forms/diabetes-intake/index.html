@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>당뇨병 초진 설문지 — Gwanggyo Barun Internal Medicine</title>
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/handouts/forms/diabetes-intake/">
+  <meta property="og:title" content="당뇨병 초진 설문지 — 광교바른내과">
+  <meta property="og:description" content="당뇨병으로 처음 내원하시는 환자분께 정확한 진료를 제공하기 위한 1장짜리 초진 설문지. 진단·치료·HbA1c·합병증·가족력·생활습관·복약을 기록합니다.">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/handouts/forms/diabetes-intake/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+
+  <!-- Form-specific overrides — keep checkboxes/inputs printable -->
+  <style>
+    /* Demographics row */
+    .demographics {
+      display: grid;
+      grid-template-columns: 1.4fr 1.4fr 1fr;
+      gap: 4mm;
+      padding: 3mm 4mm;
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+    .demographics__field { display: flex; align-items: baseline; gap: 2mm; }
+    .demographics__label {
+      font-size: 9pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      white-space: nowrap;
+    }
+    .demographics__line {
+      flex: 1;
+      border-bottom: 1px solid var(--color-slate);
+      height: 5mm;
+    }
+
+    /* Form section card — tighter padding to fit form rows */
+    .form-card { padding: 2.2mm 3.5mm; }
+    .form-card .card-label { margin-bottom: 1mm; }
+
+    /* Question row inside cards */
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.2mm 3.5mm;
+      font-size: 9pt;
+      line-height: 1.45;
+      padding: 0.6mm 0;
+    }
+    .form-row + .form-row {
+      border-top: 1px dashed var(--color-border);
+      padding-top: 1.2mm;
+      margin-top: 0.6mm;
+    }
+
+    .form-row__q {
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      min-width: 26mm;
+    }
+
+    /* Checkbox option */
+    .opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.3mm;
+      white-space: nowrap;
+    }
+    .opt::before {
+      content: "";
+      display: inline-block;
+      width: 3mm;
+      height: 3mm;
+      border: 1px solid var(--color-slate);
+      border-radius: 0.6mm;
+      background: var(--color-canvas);
+      flex-shrink: 0;
+    }
+
+    /* Inline fillable input line */
+    .inp {
+      display: inline-block;
+      border-bottom: 1px solid var(--color-slate);
+      min-width: 16mm;
+      height: 3.6mm;
+      vertical-align: bottom;
+    }
+    .inp--sm { min-width: 9mm; }
+    .inp--md { min-width: 22mm; }
+    .inp--lg { min-width: 32mm; }
+    .inp--xl { min-width: 50mm; }
+
+    /* Multi-line writing area for free-text questions */
+    .write-area {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas);
+      height: 11mm;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 5.5mm,
+        var(--color-border) 5.5mm,
+        var(--color-border) calc(5.5mm + 1px)
+      );
+      margin-top: 1mm;
+    }
+
+    /* Compact body gap for forms */
+    .page__body { gap: 1.8mm; }
+    .page__body > section { gap: 0.6mm; }
+    .section-heading { font-size: 10.5pt; margin-bottom: 0.6mm; padding-left: 2.5mm; }
+    .demographics { padding: 2mm 3.5mm; }
+    .form-card { padding: 1.6mm 3.2mm; }
+    .form-row { font-size: 8.6pt; line-height: 1.35; padding: 0.4mm 0; gap: 1mm 3mm; }
+    .form-row + .form-row { padding-top: 0.8mm; margin-top: 0.4mm; }
+    .opt::before { width: 2.7mm; height: 2.7mm; }
+    .inp { height: 3.2mm; }
+    .write-area { height: 8mm; background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 4mm, var(--color-border) 4mm, var(--color-border) calc(4mm + 1px)); }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- PAGE 1 — 당뇨병 초진 설문지 (단일 페이지)                       -->
+<!-- ============================================================ -->
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="page__header">
+    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
+    <div class="page__eyebrow">PATIENT INTAKE FORM · <strong>DIABETES</strong></div>
+  </header>
+
+  <!-- TITLE BLOCK -->
+  <section class="page__title-block" style="gap:1mm;">
+    <h1 class="page__title" style="font-size:19pt;">당뇨병 초진 설문지</h1>
+    <p class="page__subtitle" style="font-size:9.5pt;">Diabetes Initial Assessment — 정확한 진료를 위해 아래 항목을 성실히 작성해 주시면 감사하겠습니다.</p>
+  </section>
+
+  <!-- BODY -->
+  <main class="page__body">
+
+    <!-- 인적사항 -->
+    <section>
+      <div class="demographics">
+        <div class="demographics__field">
+          <div class="demographics__label">성명 (Name)</div>
+          <div class="demographics__line"></div>
+        </div>
+        <div class="demographics__field">
+          <div class="demographics__label">생년월일 (DOB)</div>
+          <div class="demographics__line"></div>
+        </div>
+        <div class="demographics__field">
+          <div class="demographics__label">작성일 (Date)</div>
+          <div class="demographics__line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. 당뇨 진단·치료 -->
+    <section>
+      <h2 class="section-heading">1. 당뇨 진단·치료 (Diagnosis &amp; Treatment)</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="form-row__q">당뇨 진단 시기</span>
+          <span class="opt">처음 진단</span>
+          <span class="opt"><span class="inp inp--sm"></span>년 전 진단</span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">당뇨 유형 (Type)</span>
+          <span class="opt">모름</span>
+          <span class="opt">제2형 (T2DM)</span>
+          <span class="opt">제1형 (T1DM)</span>
+          <span class="opt">임신성 당뇨 이력 (GDM)</span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">현재 당뇨약 복용</span>
+          <span class="opt">없음</span>
+          <span class="opt">경구약</span>
+          <span class="opt">인슐린 주사 (Insulin)</span>
+          <span class="opt">GLP-1 주사</span>
+          <span>약 이름: <span class="inp inp--xl"></span></span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">자가 혈당 측정</span>
+          <span class="opt">예</span>
+          <span class="opt">아니오</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 혈당·HbA1c -->
+    <section>
+      <h2 class="section-heading">2. 혈당 · 당화혈색소 (Glucose &amp; HbA1c) · 아시는 경우</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="form-row__q">최근 공복 혈당 (FBS)</span>
+          <span><span class="inp inp--md"></span> mg/dL</span>
+          <span class="form-row__q" style="margin-left:6mm;">최근 당화혈색소 (HbA1c)</span>
+          <span><span class="inp inp--sm"></span> %</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 합병증 관련 증상 -->
+    <section>
+      <h2 class="section-heading">3. 합병증 관련 증상 (Complications &amp; Symptoms) · 해당 항목 모두 체크</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="opt">시력 변화·흐림 (Retinopathy)</span>
+          <span class="opt">손발 저림·통증 (Neuropathy)</span>
+          <span class="opt">발 상처 안 나음 (Foot ulcer)</span>
+          <span class="opt">소변량 증가 (Polyuria)</span>
+          <span class="opt">갈증 심함 (Polydipsia)</span>
+          <span class="opt">체중 감소</span>
+          <span class="opt">반복 감염</span>
+          <span class="opt">어지러움</span>
+          <span class="opt">특별한 증상 없음</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 동반 질환 -->
+    <section>
+      <h2 class="section-heading">4. 동반 질환 (Comorbidities) · 해당 항목 모두 체크</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="opt">고혈압 (HTN)</span>
+          <span class="opt">고지혈증 (Dyslipidemia)</span>
+          <span class="opt">심장질환 (CVD)</span>
+          <span class="opt">뇌졸중 (Stroke)</span>
+          <span class="opt">신장질환 (CKD)</span>
+          <span class="opt">지방간 (Fatty liver)</span>
+          <span class="opt">갑상선질환 (Thyroid)</span>
+          <span class="opt">기타: <span class="inp inp--lg"></span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 가족력 -->
+    <section>
+      <h2 class="section-heading">5. 가족력 (Family History) · 부모·형제 중 해당 질환</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="opt">당뇨병 (DM)</span>
+          <span class="opt">고혈압 (HTN)</span>
+          <span class="opt">심장질환 (CVD)</span>
+          <span class="opt">뇌졸중 (Stroke)</span>
+          <span class="opt">없음</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. 생활습관 -->
+    <section>
+      <h2 class="section-heading">6. 생활습관 (Lifestyle)</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="form-row__q">흡연 (Smoking)</span>
+          <span class="opt">비흡연</span>
+          <span class="opt">현재 흡연 (<span class="inp inp--sm"></span>개비/일)</span>
+          <span class="opt">과거 흡연</span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">음주 (Alcohol)</span>
+          <span class="opt">안 함</span>
+          <span class="opt">주 <span class="inp inp--sm"></span>회 · 1회 <span class="inp inp--sm"></span>잔</span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">운동 (Exercise)</span>
+          <span class="opt">안 함</span>
+          <span class="opt">주 <span class="inp inp--sm"></span>회 · 1회 <span class="inp inp--sm"></span>분</span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">식사 (Diet)</span>
+          <span class="opt">규칙적</span>
+          <span class="opt">불규칙</span>
+          <span>하루 <span class="inp inp--sm"></span>끼</span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">단 음식·음료</span>
+          <span class="opt">자주</span>
+          <span class="opt">가끔</span>
+          <span class="opt">거의 안 함</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. 당뇨 교육 이력 -->
+    <section>
+      <h2 class="section-heading">7. 당뇨 교육 이력 (Diabetes Education)</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="form-row__q">교육 이력</span>
+          <span class="opt">받은 적 없음</span>
+          <span class="opt">받은 적 있음 (시기: <span class="inp inp--md"></span>)</span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">관심 교육 주제</span>
+          <span class="opt">식이요법</span>
+          <span class="opt">운동요법</span>
+          <span class="opt">약물관리</span>
+          <span class="opt">합병증 예방</span>
+          <span class="opt">혈당측정법</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 현재 복용 약물 -->
+    <section>
+      <h2 class="section-heading">8. 현재 복용 중인 약물 / 건강기능식품 (Medications &amp; Supplements)</h2>
+      <div class="card form-card" style="padding-top:2.5mm; padding-bottom:2.5mm;">
+        <div class="write-area"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER (mini QR + clinic info) -->
+  <footer class="page__footer">
+    <div class="page__footer-info">
+      <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">평일 08:30–18:30 · 토요일 08:30–13:30</div>
+      <div class="disclaimer">위 내용은 정확한 진료를 위해 사용됩니다. 본 자료는 참고용이며, 정확한 의료 상담은 담당 의사와 진행하시기 바랍니다.</div>
+    </div>
+    <div class="qr-mini">
+      <div class="qr-mini__code"></div>
+      <div class="qr-mini__label">집에서 다시 작성</div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

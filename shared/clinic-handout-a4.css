@@ -94,12 +94,42 @@ body {
 
 /* --------------------------------------------------------------------------
    BODY — flexible container for handout/lab-report content
+   When content is short, sections distribute evenly (no top-loading);
+   when content is dense, gap stays at 5mm minimum.
    -------------------------------------------------------------------------- */
 .page__body {
   display: flex;
   flex-direction: column;
   gap: 5mm;
   min-height: 0;
+  justify-content: space-between;
+}
+
+/* Each direct section grows to share leftover vertical space proportionally,
+   so a sparse handout fills the page evenly instead of clustering at top. */
+.page__body > section {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5mm;
+}
+
+/* When a section has only one card child, let the card stretch to fill */
+.page__body > section > .card:only-child {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Two-column body fills its section vertically */
+.page__body > section > .body-2col {
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+.page__body > section > .body-2col > .card {
+  display: flex;
+  flex-direction: column;
 }
 
 /* --------------------------------------------------------------------------

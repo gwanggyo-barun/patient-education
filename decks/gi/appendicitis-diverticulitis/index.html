@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Appendicitis vs Diverticulitis — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/appendicitis-diverticulitis/">
+  <meta property="og:title" content="맹장염 / 급성 게실염 — 광교바른내과">
+  <meta property="og:description" content="급성충수염과 급성 게실염의 임상 감별과 위험 신호 — 응급 대응 가이드">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/appendicitis-diverticulitis/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (3-stat row + alert-stack + checklist 8) -->
+  <style>
+    /* Hide decorative bg number so scrollHeight == clientHeight (validator-friendly) */
+    .slide__bg-num { display: none !important; }
+
+    /* Three-stat row — single row of 3 large circular stats */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 3rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Vertical alert stack — single column */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Checklist with 8 items */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">맹장염과 급성 게실염,<br><em>응급 대응 가이드</em></h1>
+      <p class="slide__subtitle">급성충수염 (Acute Appendicitis) 과 급성 게실염 (Acute Diverticulitis) 의 임상 감별과 위험 신호</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Acute Appendicitis · Acute Diverticulitis · Red Flags</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · OVERVIEW · ASYMMETRIC SPLIT
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">갑작스러운 복통, 무엇을 의심해야 할까요</h2>
+      <p class="slide__subtitle">맹장염과 게실염은 시간 싸움 — 조기 발견이 합병증을 막습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">갑작스러운 복통이 <em>몇 시간 이상 지속</em>되면 단순한 체기가 아니라 외과적 응급일 수 있습니다.</p>
+          <p class="pattern-split__supporting">
+            급성충수염과 급성 게실염은 모두 시간이 지나면 천공·복막염으로 진행할 수 있는 외과적 응급 질환입니다. 두 질환은 통증 부위와 호발 연령이 다르지만, 자가진단만으로는 구분이 어렵고 영상 검사(CT 또는 초음파)와 진찰이 필요합니다. 위험 신호를 알면 응급실로 갈 시점을 정확히 판단할 수 있습니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Appendicitis lifetime risk</div>
+            <div class="pattern-split__metric-value">약 7%</div>
+            <div class="pattern-split__metric-detail">평생 동안 충수염에 걸릴 확률 — 10대 후반~30대에 호발.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Diverticulitis</div>
+            <div class="pattern-split__metric-value">중장년 이상</div>
+            <div class="pattern-split__metric-detail">고령일수록 빈도 증가 — 한국인은 우측 결장 게실이 더 흔함.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 대한외과학회 · Korean Society of Coloproctology Guideline</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · DEFINITION (Appendicitis) · ASYMMETRIC SPLIT
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>APPENDICITIS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">급성충수염 (Acute Appendicitis) 이란</h2>
+      <p class="slide__subtitle">가장 흔한 외과적 응급 질환 — 충수돌기의 폐쇄·세균 증식으로 발생합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">맹장 끝에 달린 <em>충수돌기 (Appendix)</em> 가 막히고 염증이 생겨 부풀어 오르는 질환입니다.</p>
+          <p class="pattern-split__supporting">
+            대변 덩어리·림프조직 증식 등으로 충수돌기 입구가 막히면 내부 점액이 고이며 세균이 증식해 염증이 시작됩니다. 처음에는 배꼽 주변이 막연히 아프다가, 4~12시간 사이에 통증이 우하복부 (RLQ) 로 이동하는 것이 전형적인 양상입니다. 24시간 이상 방치하면 충수가 터져 복막염으로 진행할 수 있어 조기 진단이 핵심입니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Peak age</div>
+            <div class="pattern-split__metric-value">10 – 30대</div>
+            <div class="pattern-split__metric-detail">청장년층에서 가장 흔하지만 모든 연령에서 발생합니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Perforation risk</div>
+            <div class="pattern-split__metric-value">24시간 이후 ↑</div>
+            <div class="pattern-split__metric-detail">증상 발생 후 24시간이 지날수록 천공 위험이 급격히 증가.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — World Society of Emergency Surgery (WSES) Jerusalem Guideline 2020</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DEFINITION (Diverticulitis) · ASYMMETRIC SPLIT
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>DIVERTICULITIS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">급성 게실염 (Acute Diverticulitis) 이란</h2>
+      <p class="slide__subtitle">대장 벽이 약해진 부위가 주머니처럼 튀어나와 염증이 생기는 질환입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">대장 벽이 약해진 곳에 생긴 <em>게실 (Diverticulum)</em> 에 변 찌꺼기가 끼어 염증을 일으킨 상태입니다.</p>
+          <p class="pattern-split__supporting">
+            게실 자체는 무증상으로 평생 모르고 지내는 경우가 많지만, 게실 입구가 막히고 세균이 증식하면 급성 염증이 생깁니다. 서양인은 좌측 (S상결장) 게실염이 흔하고, 한국인은 우측 (맹장 부근) 게실염이 더 흔해 충수염과 헷갈리기 쉽습니다. 천공·농양·누공·협착 등 합병증으로 진행할 수 있어 정확한 영상 진단이 필요합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Korean pattern</div>
+            <div class="pattern-split__metric-value">우측 호발</div>
+            <div class="pattern-split__metric-detail">한국인은 우측 결장 게실이 더 흔해 충수염과 감별이 어렵습니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Onset age</div>
+            <div class="pattern-split__metric-value">중장년 이상</div>
+            <div class="pattern-split__metric-detail">고령·고지방 식이·변비·비만이 위험 인자로 알려져 있습니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 대한대장항문학회 · ACG Diverticulitis Guideline 2021</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · COMPARISON — Appendicitis vs Diverticulitis
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>HOW TO TELL APART</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">맹장염 vs 급성 게실염 비교</h2>
+      <p class="slide__subtitle">증상이 비슷해 보이지만 통증 부위·호발 연령이 다릅니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">A</span>
+            급성충수염 (Appendicitis)
+          </div>
+          <ul class="compare-col__list">
+            <li>통증 부위 — 오른쪽 아랫배 (RLQ)</li>
+            <li>배꼽 주변에서 시작해 우하복부로 이동</li>
+            <li>발병 연령 — 10~30대 청장년 호발</li>
+            <li>주요 증상 — 식욕 부진·오심·이동성 통증</li>
+            <li>치료 원칙 — 수술적 절제 (충수절제술) 표준</li>
+            <li>지연되면 복막염·패혈증 위험</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">B</span>
+            급성 게실염 (Diverticulitis)
+          </div>
+          <ul class="compare-col__list">
+            <li>통증 부위 — 좌측 (서양) 또는 우측 (한국)</li>
+            <li>한국인은 우측이 흔해 충수염과 감별 필요</li>
+            <li>발병 연령 — 중장년 이상 호발</li>
+            <li>주요 증상 — 국소 압통·발열·변비/설사</li>
+            <li>치료 원칙 — 생장식·항생제 (외래/입원)</li>
+            <li>합병성이면 배농·수술 고려</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — WSES Jerusalem 2020 · ACG Diverticulitis 2021 · 한국 임상 패턴</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — Appendicitis self-check signs
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>SELF-CHECK SIGNS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">집에서 의심해 볼 수 있는 6가지 신호</h2>
+      <p class="slide__subtitle">아래 양상이 한두 가지라도 해당되면 진료를 미루지 마세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">SIGN · 01</div>
+          <div class="tile__title">이동성 복통</div>
+          <div class="tile__body">처음에는 배꼽 주변이 막연히 아프다가 4~12시간 후 우하복부 (RLQ) 로 통증이 옮겨가는 양상은 충수염의 전형적 신호입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SIGN · 02</div>
+          <div class="tile__title">반발통 (Rebound)</div>
+          <div class="tile__body">우하복부를 손가락으로 천천히 누른 뒤 빠르게 떼었을 때 더 아프면 양성. 복막 자극을 시사하는 중요한 신호입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SIGN · 03</div>
+          <div class="tile__title">식욕 부진 · 오심</div>
+          <div class="tile__body">평소 즐기던 음식도 입맛이 없고 메스꺼움·구토를 동반하는 경우 — 단순 체기와 달리 시간이 지나도 호전되지 않습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SIGN · 04</div>
+          <div class="tile__title">기침·점프 시 악화</div>
+          <div class="tile__body">기침을 하거나 발뒤꿈치로 바닥을 찍을 때 우하복부가 찌릿하면 복막 자극을 시사 — 게실염에서도 같은 양상이 나타날 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SIGN · 05</div>
+          <div class="tile__title">국소 압통 (게실염)</div>
+          <div class="tile__body">한 지점을 손가락으로 정확히 짚을 수 있는 압통 — 한국인은 우측 결장 게실염일 때 충수염과 비슷한 위치에서 나타납니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SIGN · 06</div>
+          <div class="tile__title">미열 (37.5~38℃)</div>
+          <div class="tile__body">초기에는 미열로 시작해 시간이 지나면 38℃ 이상으로 올라갑니다. 발열이 높을수록 염증이 진행됐을 가능성이 큽니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Alvarado Score · WSES Jerusalem 2020</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · TIMELINE — Self-check rebound test
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>SELF-CHECK STEPS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">반발통 자가 점검 3단계</h2>
+      <p class="slide__subtitle">통증 부위를 확인하는 간단한 자가 점검 — 단, 진단은 의료진의 진찰이 필요합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">부드럽게 누르기</div>
+          <div class="timeline-step__body">우하복부 (배꼽과 오른쪽 골반뼈 사이) 를 손가락 끝으로 천천히 부드럽게 눌러 봅니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">잠시 유지하기</div>
+          <div class="timeline-step__body">2~3초간 눌렀던 상태를 유지하면서 자연스럽게 통증의 양상을 관찰합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">빠르게 떼기 (반발)</div>
+          <div class="timeline-step__body">눌렀던 손을 갑자기 떼었을 때 통증이 더 심해지면 양성 — 응급 진료가 필요합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">결과 판정 · DO NOT</div>
+          <div class="timeline-step__body">반복 검사는 통증·천공을 유발할 수 있으니 한 번만 해보고, 양성이면 즉시 병원으로 가세요.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">주의</span>
+        <span class="alert-strip__text">자가 검사는 참고용일 뿐입니다. 통증이 심하거나 지속되면 자가 검사 결과와 무관하게 의료진에게 진찰을 받으세요.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Rebound Tenderness Test · Patient Self-screening</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · STATS3 — CT vs Ultrasound diagnostic accuracy
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>DIAGNOSIS · IMAGING</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">진단 검사 — 복부 CT의 정확도</h2>
+      <p class="slide__subtitle">실제 임상에서 가장 표준적인 검사는 복부 CT — 초음파보다 모든 지표에서 우수합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">98<span style="font-size:1.4rem;">%</span></div>
+              <div class="stats3-cell__unit">CT</div>
+            </div>
+            <div class="stats3-cell__label">민감도 (Sensitivity)<br>실제 환자를 발견할 확률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">97<span style="font-size:1.4rem;">%</span></div>
+              <div class="stats3-cell__unit">CT</div>
+            </div>
+            <div class="stats3-cell__label">특이도 (Specificity)<br>비환자를 정확히 배제할 확률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">96<span style="font-size:1.4rem;">%</span></div>
+              <div class="stats3-cell__unit">CT</div>
+            </div>
+            <div class="stats3-cell__label">전체 정확도<br>(Diagnostic accuracy)</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          참고로 복부 초음파는 민감도 약 85%, 특이도 90%, 정확도 83%로 CT보다 낮지만 <strong>방사선 노출이 없고 임산부·소아에 1차 검사</strong>로 사용됩니다. 영상 검사만으로 100% 확진할 수 없으므로 진찰 (압통·반발통)·혈액 검사 (백혈구·CRP)·환자 병력과 함께 종합적으로 판단합니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — WSES Jerusalem 2020 · ACR Appropriateness Criteria</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · DENSITY GRID 2×2 — CT vs Ultrasound Pros/Cons
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>CT vs ULTRASOUND</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">CT와 초음파, 어떻게 선택할까요</h2>
+      <p class="slide__subtitle">각 검사의 장단점 — 환자 상황 (연령·임신·증상 정도) 에 따라 선택합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">CT · PROS</div>
+          <div class="tile__title">복부 CT 장점</div>
+          <div class="tile__body">가장 객관적이고 정확한 진단 — 합병증 (천공·농양) 평가에 유용. 성인·중증 의심·복부 둔진단 시 1차 권장 검사입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CT · CONS</div>
+          <div class="tile__title">복부 CT 단점</div>
+          <div class="tile__body">방사선 노출, 조영제 알레르기 가능. 임산부·소아·반복 검사 시 누적 피폭 부담이 있어 신중히 선택합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">US · PROS</div>
+          <div class="tile__title">복부 초음파 장점</div>
+          <div class="tile__body">방사선 노출 없음 — 임산부·소아·반복 추적에 안전. 검사 시간이 짧고 응급실에서 즉시 시행 가능합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">US · CONS</div>
+          <div class="tile__title">복부 초음파 단점</div>
+          <div class="tile__body">비만·가스가 많으면 관찰이 어려움. 검사자 숙련도에 따라 결과 차이 큼 (검사자 의존성). 소아·임산부 1차 선호.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ACR Appropriateness Criteria · WSES Jerusalem 2020</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · COMPARISON — Outpatient vs ER decision
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>WHERE TO GO</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">의원 외래 진료 vs 응급실, 어디로 가야 할까요</h2>
+      <p class="slide__subtitle">통증 시작 시간·동반 증상에 따라 의료기관 선택이 달라집니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            의원 외래 진료 가능
+          </div>
+          <ul class="compare-col__list">
+            <li>복통이 시작된 지 12~24시간 이내 경과</li>
+            <li>경미한 복통 (메스꺼움·미열 없거나 약함)</li>
+            <li>걸을 수 있을 정도의 압통</li>
+            <li>약간의 식욕 저하 정도</li>
+            <li>가능 검사 — 진찰·혈액 검사·복부 초음파</li>
+            <li>외래 결과에 따라 입원/수술 결정</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">!</span>
+            응급실로 가야 함
+          </div>
+          <ul class="compare-col__list">
+            <li>복통 6~12시간 경과 + 심한 통증</li>
+            <li>38℃ 이상 고열·오한 동반</li>
+            <li>누워있을 때보다 움직일 때 더 아픔</li>
+            <li>오른쪽 아랫배 국소 압통이 심함</li>
+            <li>가능 검사 — 응급 CT·혈액 검사 즉시 가능</li>
+            <li>응급 수술 (당일 결과 판정) 가능</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Korean Emergency Triage Practice · WSES 2020</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · ALERT STACK — Immediate 119 indications (4 red flags)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>CALL 119 NOW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이럴 때는 즉시 119, 6시간 안에 응급실</h2>
+      <p class="slide__subtitle">복막염·천공의 위험 신호 — 한 가지라도 해당되면 지체 없이 응급실로</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-alert-stack">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">배가 자갈처럼 딴딴해짐 (복벽 강직)</div>
+            <div class="alert-row__text">복부 전체가 판자처럼 굳어지면 복막염을 시사 — 천공된 충수·게실에서 장 내용물이 새어 나온 상태입니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">의식 저하 · 식은땀 · 빠른 심박</div>
+            <div class="alert-row__text">패혈증·쇼크의 신호로 즉각적인 응급 처치가 필요합니다. 환자 혼자 두지 말고 119 구급차로 이송하세요.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">통증이 갑자기 사라졌다 다시 심해짐</div>
+            <div class="alert-row__text">충수·게실이 터지는 순간 일시적으로 통증이 줄었다 전 복부로 퍼지는 양상 — 천공의 위험 신호입니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">대량 항문 출혈 또는 흑변</div>
+            <div class="alert-row__text">게실 출혈·합병성 게실염을 시사 — 어지럼증·실신 동반 시 즉시 119, 자가 운전 금지하고 물·음식 금식.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — WSES Peritonitis Guideline · Korean Emergency Practice</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">복통이 시작된 시간을 기억하면<br><em>진단에 큰 도움이 됩니다</em></h2>
+      <p class="slide__subtitle">갑작스러운 복통은 시간 싸움 — 위험 신호를 알면 더 빨리 결정할 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

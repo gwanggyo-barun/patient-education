@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>GLP-1 수용체 작용제 초진 문진표 — Gwanggyo Barun Internal Medicine</title>
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/handouts/forms/glp1-intake/">
+  <meta property="og:title" content="GLP-1 수용체 작용제(마운자로/위고비) 초진 문진표 — 광교바른내과">
+  <meta property="og:description" content="마운자로(Mounjaro) · 위고비(Wegovy) 등 GLP-1 수용체 작용제 처방 전 안전성 확인을 위한 1장짜리 문진표. 금기사항·만성질환·복용약·알레르기·임신/수유·체중 이력을 기록합니다.">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/handouts/forms/glp1-intake/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+
+  <!-- Form-specific overrides — keep checkboxes/inputs printable -->
+  <style>
+    /* Demographics row */
+    .demographics {
+      display: grid;
+      grid-template-columns: 1.4fr 1.4fr 1fr;
+      gap: 4mm;
+      padding: 2.5mm 3.5mm;
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+    .demographics__field { display: flex; align-items: baseline; gap: 2mm; }
+    .demographics__label {
+      font-size: 9pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      white-space: nowrap;
+    }
+    .demographics__line {
+      flex: 1;
+      border-bottom: 1px solid var(--color-slate);
+      height: 5mm;
+    }
+
+    /* Form section card — tighter padding to fit form rows */
+    .form-card { padding: 1.6mm 3.5mm; }
+    .form-card .card-label { margin-bottom: 1mm; }
+
+    /* Question row inside cards */
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.8mm 2.8mm;
+      font-size: 8.4pt;
+      line-height: 1.35;
+      padding: 0.3mm 0;
+    }
+    .form-row + .form-row {
+      border-top: 1px dashed var(--color-border);
+      padding-top: 0.8mm;
+      margin-top: 0.3mm;
+    }
+
+    .form-row__q {
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      min-width: 28mm;
+    }
+
+    /* Checkbox option */
+    .opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.3mm;
+      white-space: nowrap;
+    }
+    .opt::before {
+      content: "";
+      display: inline-block;
+      width: 3mm;
+      height: 3mm;
+      border: 1px solid var(--color-slate);
+      border-radius: 0.6mm;
+      background: var(--color-canvas);
+      flex-shrink: 0;
+    }
+    /* Bold red checkbox border for hard-stop contraindication options */
+    .form-card--danger .opt::before {
+      border: 1.4px solid var(--color-warning);
+    }
+
+    /* Inline fillable input line */
+    .inp {
+      display: inline-block;
+      border-bottom: 1px solid var(--color-slate);
+      min-width: 16mm;
+      height: 3.6mm;
+      vertical-align: bottom;
+    }
+    .inp--sm { min-width: 9mm; }
+    .inp--md { min-width: 22mm; }
+    .inp--lg { min-width: 32mm; }
+    .inp--xl { min-width: 50mm; }
+
+    /* Multi-line writing area for free-text questions */
+    .write-area {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas);
+      height: 10mm;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 5mm,
+        var(--color-border) 5mm,
+        var(--color-border) calc(5mm + 1px)
+      );
+      margin-top: 1mm;
+    }
+
+    /* Compact body gap for forms */
+    .page__body { gap: 1.2mm; }
+    .page__body > section { gap: 0.4mm; }
+    .section-heading { font-size: 9.8pt; margin-bottom: 0.3mm; padding-left: 2.5mm; }
+
+    /* GLP-1 contraindication danger card */
+    .card--danger {
+      background: var(--color-warning-bg);
+      border: 1.5px solid var(--color-warning);
+      padding: 1.5mm 3.5mm;
+    }
+    .card--danger .danger-title {
+      font-size: 9.4pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-warning);
+      margin-bottom: 0.6mm;
+      letter-spacing: -0.2px;
+    }
+    .card--danger .danger-note {
+      font-size: 7.8pt;
+      color: var(--color-warning);
+      font-weight: var(--weight-semibold);
+      margin-top: 0.6mm;
+      padding-top: 0.6mm;
+      border-top: 1px dashed var(--color-warning);
+    }
+
+    /* Compact GLP-1 prior-use mini table */
+    .glp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      margin-top: 0.8mm;
+    }
+    .glp-table th, .glp-table td {
+      border: 1px solid var(--color-border);
+      padding: 0.4mm 1.2mm;
+      text-align: center;
+      vertical-align: middle;
+      height: 4mm;
+    }
+    .glp-table th {
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+    }
+    .glp-table td:first-child {
+      text-align: left;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+    }
+
+    /* Signature block */
+    .sign-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4mm;
+      padding: 1.2mm 3.5mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      font-size: 8.2pt;
+      color: var(--color-navy);
+    }
+    .sign-block__statement { flex: 1; line-height: 1.45; }
+    .sign-block__sig {
+      display: flex;
+      align-items: baseline;
+      gap: 2mm;
+      font-weight: var(--weight-semibold);
+      white-space: nowrap;
+    }
+    .sign-block__sig .inp { min-width: 36mm; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- PAGE 1 — GLP-1 RA 초진 문진표 (단일 페이지)                     -->
+<!-- ============================================================ -->
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="page__header">
+    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
+    <div class="page__eyebrow">PATIENT INTAKE FORM · <strong>GLP-1 RA (MOUNJARO / WEGOVY)</strong></div>
+  </header>
+
+  <!-- TITLE BLOCK -->
+  <section class="page__title-block" style="gap:0.6mm;">
+    <h1 class="page__title" style="font-size:17pt;">GLP-1 수용체 작용제 초진 문진표</h1>
+    <p class="page__subtitle" style="font-size:8.6pt;">GLP-1 RA Initial Assessment — 마운자로 (Mounjaro / Tirzepatide) · 위고비 (Wegovy / Semaglutide) 처방 전 안전성 확인을 위해 정확하게 작성해 주세요.</p>
+  </section>
+
+  <!-- BODY -->
+  <main class="page__body">
+
+    <!-- 인적 / 체중 -->
+    <section>
+      <div class="demographics">
+        <div class="demographics__field">
+          <div class="demographics__label">성명 (Name)</div>
+          <div class="demographics__line"></div>
+        </div>
+        <div class="demographics__field">
+          <div class="demographics__label">생년월일 (DOB)</div>
+          <div class="demographics__line"></div>
+        </div>
+        <div class="demographics__field">
+          <div class="demographics__label">작성일 (Date)</div>
+          <div class="demographics__line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. 신체계측 -->
+    <section>
+      <h2 class="section-heading">1. 신체계측 (Anthropometrics) · 성별 · 연락처</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="form-row__q">성별 (Sex)</span>
+          <span class="opt">남 (M)</span>
+          <span class="opt">여 (F)</span>
+          <span class="form-row__q" style="min-width:18mm;">연락처</span>
+          <span><span class="inp inp--xl"></span></span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">신장 / 체중</span>
+          <span>키 <span class="inp inp--sm"></span> cm</span>
+          <span>체중 <span class="inp inp--sm"></span> kg</span>
+          <span>BMI <span class="inp inp--sm"></span></span>
+          <span>목표체중 <span class="inp inp--sm"></span> kg</span>
+          <span>허리둘레 <span class="inp inp--sm"></span> cm</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 금기사항 (HARD STOPS) -->
+    <section>
+      <h2 class="section-heading" style="color:var(--color-warning);">2. 금기사항 확인 (Contraindications) · 해당 시 처방 불가</h2>
+      <div class="card card--danger form-card form-card--danger">
+        <div class="danger-title">아래 항목에 해당하면 GLP-1 수용체 작용제(마운자로 · 위고비 · 삭센다 등)를 투여할 수 없습니다.</div>
+        <div class="form-row">
+          <span class="opt">갑상선 수질암 (Medullary Thyroid Carcinoma) 본인 병력</span>
+          <span class="opt">갑상선 수질암 가족력</span>
+        </div>
+        <div class="form-row">
+          <span class="opt">다발성 내분비 종양 2형 (MEN2) 본인 또는 가족력</span>
+          <span class="opt">급성 췌장염 (Acute pancreatitis) 병력</span>
+        </div>
+        <div class="form-row">
+          <span class="opt">현재 임신 중 (Pregnancy)</span>
+          <span class="opt">수유 중 (Breastfeeding)</span>
+          <span class="opt">임신 계획 중 (Planning pregnancy)</span>
+        </div>
+        <div class="danger-note">※ 위 항목 중 하나라도 해당되면 작성 즉시 의료진에게 알려주세요. 처방이 불가능할 수 있습니다.</div>
+      </div>
+    </section>
+
+    <!-- 3. 만성질환 -->
+    <section>
+      <h2 class="section-heading">3. 만성질환 및 과거 병력 (Comorbidities) · 해당 모두 체크</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="opt">고혈압 (HTN)</span>
+          <span class="opt">당뇨병 (DM)</span>
+          <span class="opt">고지혈증 (Dyslipidemia)</span>
+          <span class="opt">갑상선질환 (Thyroid)</span>
+          <span class="opt">심장질환 (CVD)</span>
+          <span class="opt">수면무호흡 (OSA)</span>
+        </div>
+        <div class="form-row">
+          <span class="opt">위장질환 (GI)</span>
+          <span class="opt">신장질환 (CKD)</span>
+          <span class="opt">간질환 (Liver dz)</span>
+          <span class="opt">담석/담낭 (Gallstone)</span>
+          <span class="opt">우울/불안 (Depression/Anxiety)</span>
+          <span class="opt">위마비 (Gastroparesis)</span>
+          <span>기타: <span class="inp inp--lg"></span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 현재 복용약 + 알레르기 -->
+    <section>
+      <h2 class="section-heading">4. 현재 복용 약물 (Current Medications) · 알레르기 (Allergies)</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="form-row__q">현재 복용 약물</span>
+          <span class="opt">없음</span>
+          <span class="opt">있음 → 약 이름: <span class="inp inp--xl"></span></span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">약물 / 주사 알레르기</span>
+          <span class="opt">없음</span>
+          <span class="opt">있음 → 약물명·증상: <span class="inp inp--lg"></span></span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">피부 알레르기 (주사 부위 발진 등)</span>
+          <span class="opt">없음</span>
+          <span class="opt">있음 → 부위·증상: <span class="inp inp--lg"></span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. GLP-1 사용 경험 -->
+    <section>
+      <h2 class="section-heading">5. GLP-1 수용체 작용제 사용 경험 (Prior GLP-1 RA Use) · 미사용 시 표 비워둠</h2>
+      <div class="card form-card">
+        <table class="glp-table">
+          <thead>
+            <tr>
+              <th style="width:32%;">약물명 (Drug)</th>
+              <th style="width:11%;">사용</th>
+              <th style="width:18%;">최대 용량</th>
+              <th style="width:17%;">사용 기간</th>
+              <th>부작용 (Side effects)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>삭센다 (Saxenda / Liraglutide)</td>
+              <td><span class="opt"></span></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>위고비 (Wegovy / Semaglutide)</td>
+              <td><span class="opt"></span></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>마운자로 (Mounjaro / Tirzepatide)</td>
+              <td><span class="opt"></span></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>기타: <span class="inp inp--md"></span></td>
+              <td><span class="opt"></span></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-size:7.4pt; color:var(--color-slate); margin-top:0.6mm;">* 부작용 예시: 오심·구토, 설사, 변비, 복통, 주사부위 반응, 두통 등</div>
+      </div>
+    </section>
+
+    <!-- 6. 체중 관리 이력 + 생활습관 -->
+    <section>
+      <h2 class="section-heading">6. 체중 관리 이력 (Weight Hx) · 생활습관 (Lifestyle)</h2>
+      <div class="card form-card">
+        <div class="form-row">
+          <span class="form-row__q">이전 감량 시도</span>
+          <span class="opt">식이</span>
+          <span class="opt">운동</span>
+          <span class="opt">한약/보조제</span>
+          <span class="opt">경구 비만약</span>
+          <span class="opt">주사치료</span>
+          <span class="opt">수술 (위밴드 등)</span>
+          <span>최대 <span class="inp inp--sm"></span> kg / 기간 <span class="inp inp--md"></span></span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">증가 시기 / 운동</span>
+          <span class="opt">소아기</span>
+          <span class="opt">청소년기</span>
+          <span class="opt">성인 이후</span>
+          <span class="opt">출산 후</span>
+          <span class="opt">운동 안 함</span>
+          <span class="opt">주 1–2회</span>
+          <span class="opt">주 3–4회</span>
+          <span class="opt">주 5회+</span>
+        </div>
+        <div class="form-row">
+          <span class="form-row__q">식습관 / 음주</span>
+          <span class="opt">규칙적</span>
+          <span class="opt">불규칙</span>
+          <span class="opt">과식/야식</span>
+          <span class="opt">감정적 식사</span>
+          <span>하루 <span class="inp inp--sm"></span> 회</span>
+          <span class="opt">음주 안 함</span>
+          <span class="opt">음주 (주 <span class="inp inp--sm"></span> 회)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. 동의 + 서명 -->
+    <section>
+      <div class="sign-block">
+        <div class="sign-block__statement">
+          위 내용을 사실대로 기재하였으며, GLP-1 수용체 작용제 (GLP-1 RA) 치료의 효과·부작용·금기사항에 대한 설명을 들었습니다.
+        </div>
+        <div class="sign-block__sig">
+          환자 서명 (Signature) <span class="inp"></span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER (mini QR + clinic info) -->
+  <footer class="page__footer">
+    <div class="page__footer-info">
+      <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">평일 08:30–18:30 · 토요일 08:30–13:30</div>
+      <div class="disclaimer">본 문진표는 안전한 처방을 위한 것이며, 기재 내용은 진료 외 목적으로 사용되지 않습니다.</div>
+    </div>
+    <div class="qr-mini">
+      <div class="qr-mini__code"></div>
+      <div class="qr-mini__label">집에서 다시 작성</div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

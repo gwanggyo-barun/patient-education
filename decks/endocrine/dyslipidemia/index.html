@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Dyslipidemia — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/dyslipidemia/">
+  <meta property="og:title" content="이상지질혈증 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="고지혈증(이상지질혈증)의 진단·치료 목표·약물·생활 관리를 한눈에 정리합니다">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/dyslipidemia/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (LDL target table + statin potency bars) -->
+  <style>
+    /* LDL target table for slide 5 (risk-based LDL goals) */
+    .pattern-target-table {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .target-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 140px 140px;
+      gap: var(--space-4);
+      align-items: center;
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+    .target-row--head {
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      border-color: var(--color-navy);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-body);
+      letter-spacing: var(--tracking-snug);
+    }
+    .target-row__risk {
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      font-size: var(--text-body-lg);
+      letter-spacing: var(--tracking-snug);
+    }
+    .target-row--head .target-row__risk { color: var(--color-canvas); }
+    .target-row__cond {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink-soft);
+      line-height: var(--lh-snug);
+    }
+    .target-row--head .target-row__cond { color: var(--color-canvas); opacity: 0.92; }
+    .target-row__ldl, .target-row__nonhdl {
+      font-size: var(--text-h3);
+      font-weight: var(--weight-black);
+      color: var(--color-navy);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .target-row--head .target-row__ldl,
+    .target-row--head .target-row__nonhdl {
+      color: var(--color-canvas);
+      font-size: var(--text-body);
+    }
+
+    /* Statin potency bars for slide 8 (LDL reduction comparison) */
+    .pattern-bars {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .bars-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr 90px;
+      gap: var(--space-3) var(--space-4);
+      align-items: center;
+    }
+    .bars-grid__name {
+      font-size: var(--text-body);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+    }
+    .bars-grid__bar-wrap {
+      position: relative;
+      height: 22px;
+      background: var(--color-canvas-warm);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .bars-grid__bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-steel) 0%, var(--color-navy) 100%);
+      border-radius: var(--radius-sm);
+    }
+    .bars-grid__value {
+      font-size: var(--text-body);
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      text-align: right;
+      letter-spacing: var(--tracking-tight);
+    }
+    .bars-note {
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Three-stat row for slide 2 */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 2.4rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">이상지질혈증,<br><em>수치를 알면 혈관이 보입니다</em></h1>
+      <p class="slide__subtitle">고지혈증 (이상지질혈증 · Dyslipidemia) — 진단 기준, 위험도별 치료 목표, 약물·생활 관리</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Dyslipidemia · LDL Targets · Statin Therapy · Lifestyle</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO NUMBER — LDL is the central target
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이상지질혈증은 혈관 안에서 천천히 진행하는 병입니다</h2>
+      <p class="slide__subtitle">LDL-콜레스테롤이 혈관벽에 쌓여 죽상경화반(plaque)을 만듭니다 — 증상 없이 수년에 걸쳐 진행</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="pattern-hero-number__value"><em>1</em>차 표적</div>
+          <div class="pattern-hero-number__caption">LDL-콜레스테롤(LDL-C)은 동맥경화의 핵심 원인이자 모든 가이드라인의 1차 치료 표적입니다 — 낮출수록 심혈관 사건이 줄어듭니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">Why LDL matters</div>
+          <div class="pattern-hero-number__detail-text">
+            정상 혈관은 매끈하지만, LDL이 침착되면 혈관벽이 두꺼워지고 좁아져 혈류가 줄어듭니다. 이 과정이 관상동맥에서 일어나면 협심증·심근경색, 뇌혈관에서 일어나면 뇌졸중으로 이어집니다. 증상이 나타나기 전에 수치를 관리해야 합니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 한국지질·동맥경화학회 가이드라인</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — Definition + atherosclerosis process
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이상지질혈증 (Dyslipidemia) 이란</h2>
+      <p class="slide__subtitle">총콜레스테롤·LDL·중성지방이 높거나 HDL이 낮은 상태 — 동맥경화의 출발점</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">혈액 속 지질(콜레스테롤·중성지방) 수치가 정상 범위를 <em>벗어난 상태</em> — 한 가지만 비정상이어도 진단됩니다.</p>
+          <p class="pattern-split__supporting">
+            과잉 LDL은 혈관 내피로 들어가 산화되고, 대식세포가 이를 삼켜 거품세포(foam cell)가 됩니다. 이들이 쌓여 죽상경화반(plaque)을 만들고 혈관을 좁히면 협심증·심근경색·뇌졸중·말초동맥질환으로 진행합니다. 핵심은 "혈관에 자국을 남기기 전에" 수치를 관리하는 것입니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Primary lipid target</div>
+            <div class="pattern-split__metric-value">LDL-C</div>
+            <div class="pattern-split__metric-detail">동맥경화의 주범 — 낮출수록 심혈관 사건 감소가 비례합니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Secondary target</div>
+            <div class="pattern-split__metric-value">Non-HDL-C</div>
+            <div class="pattern-split__metric-detail">중성지방이 높을 때 LDL 대신 보조 표적으로 사용합니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 · ESC/EAS 2019 Dyslipidemia Guidelines</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 2×2 — Korean diagnostic cut-offs
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>DIAGNOSTIC CRITERIA</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">한국인 이상지질혈증 진단 기준</h2>
+      <p class="slide__subtitle">아래 4개 항목 중 한 가지 이상 해당되면 이상지질혈증으로 진단합니다 (단위: mg/dL)</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">PANEL · 01</div>
+          <div class="tile__title">총콜레스테롤 (Total-C)</div>
+          <div class="tile__body">적정 &lt; 200 / 경계 200~239 / <strong>높음 ≥ 240</strong>. 총콜레스테롤은 LDL·HDL·VLDL 합으로, 단독 해석보다는 LDL과 함께 본다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PANEL · 02</div>
+          <div class="tile__title">LDL-콜레스테롤 (LDL-C)</div>
+          <div class="tile__body">적정 &lt; 100 / 정상 100~129 / 경계 130~159 / 높음 160~189 / <strong>매우 높음 ≥ 190</strong>. 모든 치료 결정의 1차 기준.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PANEL · 03</div>
+          <div class="tile__title">중성지방 (Triglyceride)</div>
+          <div class="tile__body">적정 &lt; 150 / 경계 150~199 / 높음 200~499 / <strong>매우 높음 ≥ 500</strong>. 500 이상이면 췌장염 위험으로 별도 치료 대상.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PANEL · 04</div>
+          <div class="tile__title">HDL-콜레스테롤 (HDL-C)</div>
+          <div class="tile__body"><strong>낮음 &lt; 40</strong> (위험 인자) / 높음 ≥ 60 (보호 인자). HDL은 높을수록 좋고, 60 이상이면 위험인자에서 1개 차감.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 한국인 이상지질혈증 진단 기준</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · TARGET TABLE — LDL goals by ASCVD risk
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>LDL TARGETS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">위험도별 LDL 치료 목표치</h2>
+      <p class="slide__subtitle">심혈관 위험도(ASCVD risk)에 따라 목표 수치가 달라집니다 — 위험이 높을수록 더 낮게</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-target-table">
+        <div class="target-row target-row--head">
+          <div class="target-row__risk">위험군</div>
+          <div class="target-row__cond">대표 동반 질환·조건</div>
+          <div class="target-row__ldl">LDL-C (mg/dL)</div>
+          <div class="target-row__nonhdl">Non-HDL-C</div>
+        </div>
+        <div class="target-row">
+          <div class="target-row__risk">초고위험군</div>
+          <div class="target-row__cond">관상동맥질환 · 급성 관상동맥증후군 · 허혈성 뇌졸중 · 일과성 뇌허혈발작 · 말초동맥질환</div>
+          <div class="target-row__ldl">&lt; 70</div>
+          <div class="target-row__nonhdl">&lt; 100</div>
+        </div>
+        <div class="target-row">
+          <div class="target-row__risk">고위험군</div>
+          <div class="target-row__cond">경동맥질환 · 복부동맥류 · 당뇨병</div>
+          <div class="target-row__ldl">&lt; 100</div>
+          <div class="target-row__nonhdl">&lt; 130</div>
+        </div>
+        <div class="target-row">
+          <div class="target-row__risk">중등도 위험군</div>
+          <div class="target-row__cond">주요 위험인자 2개 이상</div>
+          <div class="target-row__ldl">&lt; 130</div>
+          <div class="target-row__nonhdl">&lt; 160</div>
+        </div>
+        <div class="target-row">
+          <div class="target-row__risk">저위험군</div>
+          <div class="target-row__cond">주요 위험인자 1개 이하</div>
+          <div class="target-row__ldl">&lt; 160</div>
+          <div class="target-row__nonhdl">&lt; 190</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 한국지질·동맥경화학회 치료 가이드라인</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — Major risk factors
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>RISK FACTORS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">LDL을 제외한 심혈관질환의 5가지 주요 위험인자</h2>
+      <p class="slide__subtitle">아래 위험인자 개수로 위험도(저·중등도·고·초고위험군)를 분류합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">RISK · 01</div>
+          <div class="tile__title">연령 (Age)</div>
+          <div class="tile__body">남자 ≥ 45세, 여자 ≥ 55세. 폐경기 이후 여성은 에스트로겐 보호 효과가 사라지면서 LDL이 빠르게 상승합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 02</div>
+          <div class="tile__title">관상동맥질환 조기 가족력</div>
+          <div class="tile__body">부모·형제자매 중 남자 55세 미만 또는 여자 65세 미만에 관상동맥질환이 발병한 경우 — 유전성·환경적 요인 동반 가능.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 03</div>
+          <div class="tile__title">고혈압 (Hypertension)</div>
+          <div class="tile__body">수축기 ≥ 140 mmHg 또는 이완기 ≥ 90 mmHg, 또는 항고혈압제 복용 중. 고혈압은 혈관벽 손상을 가속화합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 04</div>
+          <div class="tile__title">흡연 (Smoking)</div>
+          <div class="tile__body">현재 흡연자. 니코틴은 혈관 내피를 손상시키고 LDL 산화를 촉진합니다. 금연은 가장 효과적인 위험 감소 수단.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 05</div>
+          <div class="tile__title">저 HDL-C (&lt; 40 mg/dL)</div>
+          <div class="tile__body">HDL이 낮으면 위험인자 1개로 가산. 반대로 HDL ≥ 60이면 보호 인자로 간주, 총 위험인자 수에서 1개를 차감합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SUMMARY · 06</div>
+          <div class="tile__title">위험인자 개수로 분류</div>
+          <div class="tile__body">0~1개 → 저위험 / 2개 이상 → 중등도 / 당뇨·CKD 등 동반 → 고위험 / 이미 ASCVD 발생 → 초고위험. 분류에 따라 LDL 목표가 결정됩니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 ASCVD Risk Stratification</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · DENSITY GRID 2×2 — Secondary causes
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>SECONDARY CAUSES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이차성 이상지질혈증의 원인</h2>
+      <p class="slide__subtitle">LDL·중성지방을 올릴 수 있는 식사·약물·동반 질환·대사 이상</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">CAUSE · 01 · 식사</div>
+          <div class="tile__title">식이 요인</div>
+          <div class="tile__body">포화지방·트랜스지방 과다 섭취, 에너지 과다 섭취 → LDL 상승. 음주·정제 탄수화물·과당 → 중성지방 상승. 식습관 개선이 1차 치료입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 02 · 약물</div>
+          <div class="tile__title">유발 약물</div>
+          <div class="tile__body">이뇨제·glucocorticoid·amiodarone·cyclosporin (LDL ↑) / 경구 estrogen·당질코르티코이드·레티노산·tamoxifene·thiazide (TG ↑). 처방 이력 확인 필요.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 03 · 질환</div>
+          <div class="tile__title">동반 질환</div>
+          <div class="tile__body">폐쇄성 간질환 · 신증후군 · 신경성 식욕부진 (LDL ↑) / 만성 콩팥병 · 신증후군 · 패혈증 (TG ↑). 원인 질환 치료가 우선됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 04 · 대사 이상</div>
+          <div class="tile__title">호르몬·대사 이상</div>
+          <div class="tile__body">비만 · 임신 · 갑상선 기능 저하증 (LDL ↑) / 비만 · 임신 · 조절되지 않은 당뇨병 (TG ↑). 갑상선·당뇨 검사 동반 권장.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 Secondary Causes of Dyslipidemia</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · STATIN POTENCY BARS — LDL reduction by statin/dose
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>STATIN POTENCY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">스타틴별 LDL 감소율</h2>
+      <p class="slide__subtitle">한국인에서 스타틴 종류·용량에 따른 LDL-C 평균 감소 효과 (%)</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-bars">
+        <div class="bars-grid">
+          <div class="bars-grid__name">Lovastatin 20 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 56%"></div></div>
+          <div class="bars-grid__value">−32~34%</div>
+
+          <div class="bars-grid__name">Pravastatin 40 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 51%"></div></div>
+          <div class="bars-grid__value">−28~33%</div>
+
+          <div class="bars-grid__name">Simvastatin 20 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 56%"></div></div>
+          <div class="bars-grid__value">−27~39%</div>
+
+          <div class="bars-grid__name">Atorvastatin 10 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 70%"></div></div>
+          <div class="bars-grid__value">−39~44%</div>
+
+          <div class="bars-grid__name">Atorvastatin 20 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 76%"></div></div>
+          <div class="bars-grid__value">−41~50%</div>
+
+          <div class="bars-grid__name">Atorvastatin 40 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 88%"></div></div>
+          <div class="bars-grid__value">−52~59%</div>
+
+          <div class="bars-grid__name">Rosuvastatin 10 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 78%"></div></div>
+          <div class="bars-grid__value">−42~50%</div>
+
+          <div class="bars-grid__name">Rosuvastatin 20 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 90%"></div></div>
+          <div class="bars-grid__value">−42~60%</div>
+
+          <div class="bars-grid__name">Pitavastatin 4 mg</div>
+          <div class="bars-grid__bar-wrap"><div class="bars-grid__bar" style="width: 70%"></div></div>
+          <div class="bars-grid__value">−39~45%</div>
+        </div>
+        <div class="bars-note">
+          고강도(High-intensity) — Atorvastatin 40·80 mg / Rosuvastatin 20 mg 이상. 중등도(Moderate-intensity) — Atorvastatin 10·20 mg / Rosuvastatin 5·10 mg / Pitavastatin 2·4 mg. 위험도가 높을수록 강한 강도가 권장됩니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 한국인 스타틴 LDL 감소 효과</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · DENSITY GRID 3×2 — Non-statin add-on options
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>BEYOND STATIN</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">스타틴만으로 부족할 때의 추가 약제</h2>
+      <p class="slide__subtitle">LDL 목표 미달, 부작용으로 증량이 어려운 경우 병합 요법 또는 새 계열 사용</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">DRUG · 01</div>
+          <div class="tile__title">Ezetimibe (에제티미브)</div>
+          <div class="tile__body">소장에서 콜레스테롤 흡수를 차단. 단독 시 LDL 약 15~20% 감소, 스타틴과 병합 시 추가 20% 감소. 근육 부작용이 적어 노인·당뇨에 자주 병합.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 02</div>
+          <div class="tile__title">Atorvastatin / Ezetimibe 복합제</div>
+          <div class="tile__body">두 약을 한 알로 — 복약 순응도 개선. 당뇨·노인, LDL·중성지방을 더 낮추고 싶을 때, 근육 부작용을 줄이고 싶을 때 권장됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 03</div>
+          <div class="tile__title">PCSK9 억제제 (alirocumab/evolocumab)</div>
+          <div class="tile__body">2주~4주 1회 피하 주사. LDL 추가 50~60% 감소. 가족성 고콜레스테롤혈증, 스타틴 최대 + ezetimibe로도 목표 미달인 초고위험군에 사용.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 04</div>
+          <div class="tile__title">Bempedoic acid · Inclisiran</div>
+          <div class="tile__body">스타틴 불내성 또는 추가 LDL 강하 필요 시 새로운 옵션. Inclisiran은 6개월 1회 피하 주사로 복약 부담이 적습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 05</div>
+          <div class="tile__title">Fibrate · Omega-3</div>
+          <div class="tile__body">중성지방이 매우 높을 때(≥ 500 mg/dL, 췌장염 위험) 사용. LDL보다는 TG·non-HDL 강하 목적. 스타틴과 병용 시 근병증 모니터링 필요.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 06</div>
+          <div class="tile__title">담즙산 제거제</div>
+          <div class="tile__body">담즙산을 결합·배설시켜 간이 콜레스테롤로 담즙산을 만들도록 유도 → LDL 강하. 변비·복부 불편감으로 사용 빈도는 낮습니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 · ESC/EAS 2019 Combination Therapy</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · COMPARISON — Lifestyle DO vs DON'T
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>LIFESTYLE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">생활 습관, 약만큼 중요합니다</h2>
+      <p class="slide__subtitle">LDL을 자연스럽게 낮추고 약효를 최대로 끌어올리는 식사·운동 원칙</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            이렇게 하세요 (DO)
+          </div>
+          <ul class="compare-col__list">
+            <li>채소·통곡물·콩·생선 위주 식단 (지중해식)</li>
+            <li>등푸른 생선 주 2회 이상 (오메가-3)</li>
+            <li>주당 150분 중강도 유산소 운동</li>
+            <li>체중 5~10% 감량 — LDL·TG 동시 개선</li>
+            <li>식이섬유 25~30 g/일 (귀리·콩·과일)</li>
+            <li>금연 — 가장 빠른 HDL 상승 효과</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            이것은 피하세요 (DON'T)
+          </div>
+          <ul class="compare-col__list">
+            <li>트랜스지방 — 마가린·튀김·과자류</li>
+            <li>포화지방 — 삼겹살·갈비·버터·치즈 과량</li>
+            <li>과당 음료·정제 탄수화물 (TG 상승)</li>
+            <li>음주 — 남성 2잔/여성 1잔 초과 (TG 상승)</li>
+            <li>임의로 약 중단 — 수치 반등하면 위험</li>
+            <li>건강기능식품 단독 의존 (효과 제한적)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSoLA 2022 생활습관 권고 · KDA 2023 동반 관리</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — Today's 8 essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">이상지질혈증은 평생 관리하는 만성질환 — 수치를 알면 위험을 줄일 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">LDL이 <strong>1차 표적</strong> — 낮출수록 심혈관 사건이 줄어듭니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">위험도(저·중등도·고·초고)에 따라 <strong>LDL 목표가 다름</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">초고위험군 LDL <strong>&lt; 70 mg/dL</strong>, 고위험군 &lt; 100, 당뇨도 고위험군</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">위험인자 5가지 — 연령·가족력·고혈압·흡연·저 HDL</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text"><strong>스타틴이 1차 약물</strong> — 위험도 따라 강도(중등도·고강도) 선택</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">목표 미달이면 <strong>ezetimibe·PCSK9i 병합</strong> — 단독 증량보다 안전</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">지중해식·운동·금연·체중 5~10% 감량은 <strong>약효를 배가</strong>시킵니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">스타틴은 <strong>임의 중단 금지</strong> — 정기 검사로 효과·간·근육 모니터링</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — know your number, hit the target, stay on therapy</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">건강한 혈관은<br><em>꾸준한 관리에서 시작됩니다</em></h2>
+      <p class="slide__subtitle">정기적인 검진과 약물·생활 관리를 함께 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>
