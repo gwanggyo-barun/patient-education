@@ -610,8 +610,10 @@ def main() -> int:
             qr_svg = make_qr_svg(target_url)
             injected = inject_qr(html, qr_svg, target_class=qr_class)
 
-            build_file = html_path.parent / "_build.html"
-            build_file.write_text(injected, encoding="utf-8")
+            # Write QR-injected HTML to the raw index.html so the live site
+            # (GH Pages) also gets the QR — not only the PDF.
+            html_path.write_text(injected, encoding="utf-8")
+            build_file = html_path  # PDF builder uses the same file
 
             try:
                 viewport = (
@@ -640,7 +642,7 @@ def main() -> int:
                 ctx.close()
                 print(f"  ✓ {kind}/{slug}  →  QR: {target_url}")
             finally:
-                build_file.unlink(missing_ok=True)
+                pass  # raw index.html keeps QR svg — desired for live site
 
             # Notion sync (best effort — never fails the build)
             if NOTION_ENABLED and "title" in t:
