@@ -563,6 +563,15 @@ TARGETS = [
         "title": "만성질환 초진 설문지",
         "category": "📝 동의서·서식", "audience": "환자/보호자", "disease": "만성질환 초진 설문지",
     },
+    {
+        "kind": "handouts", "slug": "sglt2-precautions",
+        "slug_path": "handouts/medication/sglt2-precautions/",
+        "html_path": ROOT / "handouts/medication/sglt2-precautions/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "💊 SGLT2 억제제 신규 처방 주의사항 (포시가·자디앙·슈글렛)",
+        "category": "💊 투약 안내", "audience": "환자/보호자",
+        "disease": "SGLT2 억제제 (다파글리플로진·엠파글리플로진·이프라글리플로진) 신규 처방 안전 복용 가이드 — DKA·푸르니에괴저·SSTOP 룰",
+    },
     # === Migration: 11 new patient lab reports (2026-05-08) ===
     {
         "kind": "lab-reports", "slug": "김종혁",
