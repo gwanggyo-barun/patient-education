@@ -592,6 +592,31 @@ TARGETS = [
 ]
 
 
+def _validate_css_paths() -> list[str]:
+    """Verify each material's CSS path actually resolves to a real file.
+
+    Catches the 4-level vs 3-level deep slug mismatch:
+    - decks/cardio/chest-pain/ (3-level) needs ../../../shared/
+    - decks/cardio/htn/morning/ (4-level) needs ../../../../shared/
+    """
+    import re
+    issues: list[str] = []
+    for t in TARGETS:
+        html_path = t.get("html_path")
+        if not html_path or not html_path.exists():
+            continue
+        text = html_path.read_text(encoding="utf-8")
+        for m in re.finditer(r'(?:href|src)="(\.\./[^"]*?(?:shared|assets)/[^"]*)"', text):
+            rel = m.group(1)
+            target = (html_path.parent / rel).resolve()
+            if not target.exists():
+                issues.append(
+                    f"{t['kind']}/{t['slug']}: '{rel}' resolves to missing {target}"
+                )
+                break  # one per file is enough
+    return issues
+
+
 def _validate_targets_routing() -> list[str]:
     """Validate every TARGETS entry — kind must match the slug_path prefix.
 
@@ -647,6 +672,14 @@ def main() -> int:
     if routing_issues:
         print("=== TARGETS routing errors (fix before build) ===", file=sys.stderr)
         for issue in routing_issues:
+            print(f"  ✗ {issue}", file=sys.stderr)
+        return 2
+
+    # Pre-flight: verify CSS/asset paths resolve (catches 4-level vs 3-level bugs)
+    css_issues = _validate_css_paths()
+    if css_issues:
+        print("=== CSS/asset path errors (fix before build) ===", file=sys.stderr)
+        for issue in css_issues:
             print(f"  ✗ {issue}", file=sys.stderr)
         return 2
 
