@@ -592,7 +592,64 @@ TARGETS = [
 ]
 
 
+def _validate_targets_routing() -> list[str]:
+    """Validate every TARGETS entry — kind must match the slug_path prefix.
+
+    This catches mis-routing at build time so a deck never ends up syncing to
+    the handouts DB, and a lab-report never lands in the decks DB.
+
+    Rules:
+    - slug_path must start with the kind directory ('decks/', 'handouts/',
+      'lab-reports/').
+    - html_path must be inside that directory.
+    - kind must be one of: decks | handouts | lab-reports.
+    - lab-reports must declare patient_name + chart_no (or legacy title with
+      [차트번호] prefix that _notion_sync.py can parse).
+    """
+    issues: list[str] = []
+    valid_kinds = {"decks", "handouts", "lab-reports"}
+    for i, t in enumerate(TARGETS):
+        kind = t.get("kind", "")
+        slug = t.get("slug", "")
+        slug_path = t.get("slug_path", "")
+        html_path = t.get("html_path")
+        prefix = f"TARGETS[{i}] {kind}/{slug}"
+
+        if kind not in valid_kinds:
+            issues.append(f"{prefix}: invalid kind '{kind}' (must be one of {valid_kinds})")
+            continue
+
+        if not slug_path.startswith(f"{kind}/"):
+            issues.append(f"{prefix}: slug_path '{slug_path}' does not start with kind '{kind}/'")
+
+        if html_path and f"/{kind}/" not in str(html_path):
+            issues.append(f"{prefix}: html_path '{html_path}' is not inside /{kind}/")
+
+        # lab-reports SHOULD declare patient meta — warn, don't fail
+        # (sample data like /lab-reports/lipid-panel/sample/ is exempt)
+        if kind == "lab-reports" and "/sample/" not in slug_path:
+            has_explicit = t.get("patient_name") and t.get("chart_no")
+            has_legacy = (t.get("title") or "").startswith("[")
+            if not (has_explicit or has_legacy):
+                # Print warning but don't add to issues (build proceeds)
+                import sys
+                print(
+                    f"⚠️  {prefix}: lab-reports recommended fields missing "
+                    f"(patient_name+chart_no or legacy '[chart_no] patient — note')",
+                    file=sys.stderr,
+                )
+    return issues
+
+
 def main() -> int:
+    # Pre-flight: validate kind routing — fail fast on misclassified TARGETS
+    routing_issues = _validate_targets_routing()
+    if routing_issues:
+        print("=== TARGETS routing errors (fix before build) ===", file=sys.stderr)
+        for issue in routing_issues:
+            print(f"  ✗ {issue}", file=sys.stderr)
+        return 2
+
     failures: list[str] = []
     notion_failures: list[str] = []
     today_iso = date.today().isoformat()
