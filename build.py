@@ -459,6 +459,14 @@ TARGETS = [
         "category": "🩺 시술·처치 후", "audience": "환자/보호자", "disease": "대장내시경 후 주의사항",
     },
     {
+        "kind": "handouts", "slug": "glp1ra-pre-procedure",
+        "slug_path": "handouts/endoscopy/glp1ra-pre-procedure/",
+        "html_path": ROOT / "handouts/endoscopy/glp1ra-pre-procedure/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "위고비·마운자로 사용 환자의 내시경·초음파 검사 안내",
+        "category": "🏥 내시경 관련", "audience": "환자/보호자", "disease": "GLP-1 RA (위고비·마운자로) 사용 환자 검사 전 주의사항",
+    },
+    {
         "kind": "handouts", "slug": "diabetes-intake",
         "slug_path": "handouts/forms/diabetes-intake/",
         "html_path": ROOT / "handouts/forms/diabetes-intake/index.html",
