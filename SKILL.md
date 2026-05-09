@@ -46,6 +46,82 @@ description: >
 
 ---
 
+## 📚 알려진 함정 (Known Gotchas) — 어떤 머신에서도 같은 실수를 하지 않도록
+
+이 섹션은 과거에 실제로 발생해서 라이브 사이트를 깨뜨렸던 버그들을 정리한다. 같은 패턴 반복 금지.
+
+### 1. CSS/asset 경로의 깊이 (`../` 개수)는 슬러그 깊이에 따라 달라진다
+
+자료마다 디렉터리 깊이가 다르므로 `<link href="../../...">` 의 `../` 개수가 자료마다 다르다.
+- **3-level deep** 자료 (`decks/cardio/chest-pain/`, `handouts/lifestyle/x/`, `lab-reports/kind/x/`) → `../../../shared/`
+- **4-level deep** 자료 (`decks/cardio/htn/morning/`, `decks/gi/h-pylori/eradication/` 등) → `../../../../shared/`
+
+**절대 일괄 sed 로 모든 자료의 `../` 개수를 바꾸지 말 것.** 슬러그 깊이를 따라가야 한다.
+
+자동 검증: `build.py` 의 `_validate_css_paths()` 가 빌드 전 모든 자료의 CSS/이미지 경로가 실제 file system 에 존재하는지 검증한다. 잘못된 경로 → 빌드 fail.
+
+### 2. `inject_qr()` 는 multi-class div 도 지원해야 한다
+
+자료별로 custom 클래스 (`<div class="qr-block__code takehome-side__qr">`) 가 있으므로, `inject_qr` 는 정확한 단일 클래스 매칭이 아니라 클래스 list 안에 target_class 가 포함되는지 검사한다 (`shared/_build_helpers.py`).
+
+### 3. `build.py` 는 raw HTML 의 QR div 도 갱신해야 한다
+
+옛 패턴은 `_build.html` 임시 파일만 만들어 PDF 빌드 후 unlink. 결과: 라이브 GH Pages 의 raw HTML 에는 빈 `<div class="qr-block__code"></div>` 가 그대로 → 라이브에서 QR 안 보임.
+
+현 패턴: `inject_qr` 결과를 raw `index.html` 에 직접 overwrite. SVG 가 deterministic 이라 매 빌드마다 같은 결과 → git diff drift 0.
+
+### 4. 모바일 viewport 는 fixed-width 로 (CSS zoom 사용 금지)
+
+표준 패턴:
+- decks: `<meta name="viewport" content="width=1280">`
+- handouts/lab-reports: `<meta name="viewport" content="width=794">`
+
+모바일 브라우저가 자동 fit-to-width + 핀치줌 정상 작동.
+
+⚠️ **CSS `zoom` 또는 `transform: scale()` 모바일 미디어 쿼리 사용 금지.** iOS Safari + 카카오톡 인앱 브라우저에서 핀치줌 차단되고 잘림이 더 심해진다 (실측 결과).
+
+### 5. Notion DB 는 `kind` 로 자동 라우팅 (3 DB 분리)
+
+| `kind` | DB | 분류 정의 |
+|---|---|---|
+| `decks` | 📋 진료 설명용 자료 (`a84f23489d...`) | 진료 시 환자에게 설명할 슬라이드. 환자별 X. |
+| `handouts` | 📨 환자 유인물 (`920b48c92d...`) | 한 장 안내문. 환자별 X. |
+| `lab-reports` | 🧪 환자 검사결과 (`c150b47d52...`) | 환자 개인 검사결과. 페이지 제목에 환자명+차트번호 필수. |
+
+`build.py` 의 `_validate_targets_routing()` 가 빌드 전 자동 검증. `slug_path` 가 `kind/` 로 시작 안 하면 빌드 fail.
+
+자료를 잘못된 DB 에 sync 하면 옛 sync 결과 + 신규 sync 결과로 중복·misclass 행이 쌓인다 (한 번 발생함, 37 행 정리해서 복구).
+
+### 6. lab-reports 는 환자명+차트번호 필수
+
+DB 행 제목이 `[차트번호] 환자명` 또는 `[차트번호] 환자명 — 부연` 형식. `_notion_sync.py` 가 자동 파싱하거나 explicit `patient_name`/`chart_no` 필드 사용.
+
+### 7. Notion API 는 페이지 본문 prepend (맨 위 삽입) 직접 지원 X
+
+새 콜아웃을 페이지 본문 맨 위에 삽입하려면 모든 children block 을 가져온 뒤 다시 작성해야 한다 (replace_content). 단순 PATCH /children 은 항상 끝에 append.
+
+### 8. NOTION_TOKEN 은 절대 채팅에 붙여넣지 않는다
+
+대화 로그에 영구 저장됨. 안전한 방법:
+- 로컬: `~/clinic-content-system/_migration/.env` 파일에만 저장 (.gitignore 등록됨)
+- CI: GitHub Secret 으로만
+- 노출 시 즉시 https://www.notion.so/my-integrations 에서 재발급
+
+### 9. page_id prefix 8자 매칭은 충돌한다
+
+다운로드·매칭 시 page_id 의 8자 접두사 (`343b8014` 같은) 는 자료 17개와 매칭됨. **항상 32자 전체 사용** (다운로드 파일명·매핑 키 등).
+
+### 10. 자동 검증의 한계
+
+`_validate_layout` (bbox) + HTTP 200 만 확인하면 시각적 깨짐 (CSS 미로드, font 안 보임 등) 못 잡는다. **`shared/_visual_audit.py`** 가 라이브 URL 을 Playwright 로 실제 렌더링해서 검증. CI 또는 push 후 수동 실행.
+
+```bash
+python -m shared._visual_audit              # all 66 materials
+python -m shared._visual_audit --kind=decks # decks only
+```
+
+---
+
 ## 🚀 배포 워크플로우 — 모든 머신 공통 (반드시 먼저 읽기)
 
 **Source of Truth**: https://github.com/gwanggyo-barun/patient-education (public)
