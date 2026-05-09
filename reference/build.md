@@ -11,6 +11,24 @@ playwright install chromium
 
 `qrcode`는 closing slide의 QR 코드 생성에 사용된다. 빌드 타임에 SVG로 만들어 HTML에 인라인 삽입하기 때문에 클라이언트 JS 의존성 없이 PDF에 안정적으로 들어간다.
 
+### AI 이미지 자산
+
+핸드아웃/검사 결과지에 AI 생성 그림을 넣을 때는 ChatGPT 웹에서 생성해 고른 PNG/WebP를 `shared/assets/generated/`에 저장하고 HTML에서 참조하는 흐름을 기본으로 한다.
+
+자동 생성이 필요할 때는 별도 Python SDK 없이 표준 라이브러리로 OpenAI Image API를 호출할 수 있다.
+
+```bash
+export OPENAI_API_KEY="..."
+
+python3 tools/generate_image_asset.py \
+  --prompt "A clean patient-friendly medical illustration with empty space for HTML labels." \
+  --output shared/assets/generated/example-handout-hero.png \
+  --size 1536x1024 \
+  --quality medium
+```
+
+세부 프롬프트/HTML 삽입 패턴은 `reference/image-assets.md`를 따른다.
+
 ### 호스팅 베이스 URL 설정
 
 `build.py` 상단의 `BASE_URL` 상수를 GitHub Pages 또는 자체 호스팅 URL로 설정한다. 이 값은 모든 덱의 QR 코드와 OG 메타태그(`og:url`, `og:image`)에 사용된다.

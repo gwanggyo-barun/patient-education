@@ -6,7 +6,7 @@
 
 ```bash
 # 1. 환경 셋업 (최초 1회)
-pip install playwright --break-system-packages
+pip install -r requirements.txt --break-system-packages
 playwright install chromium
 
 # 2. 빌드
@@ -31,6 +31,20 @@ python build.py
 이 시스템은 광교바른내과의 다른 스킬(`patient-handout-pdf`, `lab-report-infographic`,
 `patient-education-pptx`)도 공유한다.
 
+## AI 이미지 자산
+
+핸드아웃/검사 결과지에 그림을 넣을 때는 ChatGPT 웹에서 생성해 고른 이미지를
+`shared/assets/generated/` 아래에 저장한 뒤 HTML에서 상대 경로로 참조하는 흐름을 기본으로 한다.
+로컬 자동 생성이 필요할 때만 `tools/generate_image_asset.py`를 사용한다.
+
+```bash
+python3 tools/generate_image_asset.py \
+  --prompt "A friendly thyroid ultrasound exam illustration with empty space for HTML labels." \
+  --output shared/assets/generated/thyroid-ultrasound.png
+```
+
+자세한 삽입 패턴은 `reference/image-assets.md`를 따른다.
+
 ## 디렉토리 구조
 
 ```
@@ -43,7 +57,11 @@ clinic-content-system/
 │   ├── design-tokens.css          # 색상/폰트/간격 변수
 │   ├── clinic-slides.css          # 슬라이드 마스터 + 7개 패턴 컴포넌트
 │   └── assets/
-│       └── clinic_logo.png
+│       ├── clinic_logo.png
+│       └── generated/             # OpenAI 생성 이미지 자산
+│
+├── tools/
+│   └── generate_image_asset.py     # OpenAI Image API → 로컬 PNG/WebP
 │
 ├── decks/                         # 콘텐츠
 │   └── gi/
@@ -53,6 +71,7 @@ clinic-content-system/
 └── reference/                     # 가이드 문서
     ├── brand-design-system.md     # ★ 모든 스킬 공유, 단일 진실의 원천
     ├── patterns.md                # 7가지 본문 패턴 HTML 가이드
+    ├── image-assets.md            # AI 이미지 생성·삽입 가이드
     ├── content-template.md        # 12장 표준 구성
     ├── build.md                   # 빌드 환경 셋업
     └── migration.md               # 기존 3개 스킬 통합 가이드
