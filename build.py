@@ -579,6 +579,16 @@ TARGETS = [
         "title": "[1683] 윤종철 — 소변 검사 (2026-04-21)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "소변 검사 이상",
     },
+    {
+        # 신규 schema 예시 — explicit 환자 메타데이터 (lab-reports 권장 형식)
+        "kind": "lab-reports", "slug": "박순정",
+        "slug_path": "lab-reports/general-checkup/박순정/",
+        "html_path": ROOT / "lab-reports/general-checkup/박순정/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "patient_name": "박순정", "chart_no": "17492",
+        "exam_date": "2026-05-08", "doctor": "정지환",
+        "note": "종합검사 — 콜레스테롤 경계역",
+    },
 ]
 
 
@@ -645,17 +655,34 @@ def main() -> int:
                 pass  # raw index.html keeps QR svg — desired for live site
 
             # Notion sync (best effort — never fails the build)
-            if NOTION_ENABLED and "title" in t:
+            # Routes by `kind` to one of three DBs (see SKILL.md "Notion DB 라우팅"):
+            # - decks/handouts use {title, category, audience, [disease]}
+            # - lab-reports use {patient_name, chart_no, exam_date, doctor, [note]}
+            #   OR legacy title "[1063] 김종혁 — 골 대사 검사" (auto-parsed in _notion_sync)
+            sync_eligible = (
+                kind == "lab-reports" and ("patient_name" in t or "title" in t)
+            ) or (
+                kind in ("decks", "handouts") and "title" in t
+            )
+            if NOTION_ENABLED and sync_eligible:
                 pdf_url = f"{BASE_URL}/output/{kind}/{slug}.pdf"
                 try:
                     action, page_id = notion_upsert(
-                        title=t["title"],
-                        category=t["category"],
-                        audience=t["audience"],
-                        disease=t["disease"],
+                        kind=kind,
                         html_url=target_url,
                         pdf_url=pdf_url,
                         today_iso=today_iso,
+                        # decks / handouts
+                        title=t.get("title"),
+                        category=t.get("category"),
+                        audience=t.get("audience"),
+                        disease=t.get("disease"),
+                        # lab-reports (explicit fields override legacy title parse)
+                        patient_name=t.get("patient_name"),
+                        chart_no=t.get("chart_no"),
+                        exam_date=t.get("exam_date"),
+                        doctor=t.get("doctor"),
+                        note=t.get("note"),
                     )
                     print(f"      Notion {action}: {page_id}")
                 except Exception as e:  # noqa: BLE001
