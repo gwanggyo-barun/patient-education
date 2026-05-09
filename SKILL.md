@@ -36,6 +36,22 @@ description: >
 - **변경 작업 끝에 commit + push 자동 수행** (사용자 추가 지시 없어도). 사유: 머신 간 일관성 확보가 본 스킬의 무조건 규칙
 - 환자 콘텐츠(decks/handouts/lab-reports/) 자체 추가 시에도 동일 — 커밋 메시지에 환자명/주제 명시
 
+### 다른 머신에서 SKILL 업데이트 받기 (수신 측 절차)
+
+이 SKILL.md / `reference/` / `shared/` / `tools/` 변경은 GitHub origin/main 에 push되지만, Claude 가 실제로 로드하는 것은 **각 머신의 플러그인 폴더 안 SKILL.md** 다. 플러그인 폴더는 그 자체로 patient-education 의 git clone 이며 자동 업데이트되지 않으므로, push 한 머신 외 다른 머신에서는 다음 두 곳을 모두 pull 해야 최신 SKILL 이 로드된다.
+
+```bash
+# 1. 워킹 디렉토리 (작업용)
+cd ~/clinic-content-system && git pull --rebase
+
+# 2. 플러그인 폴더 (Claude 가 SKILL.md 로드하는 위치) — 한 줄로 자동 처리
+bash ~/clinic-content-system/tools/sync_plugin_clone.sh
+```
+
+`tools/sync_plugin_clone.sh` 는 `~/Library/Application Support/Claude/.../skills/clinic-content-system/` 아래 patient-education 리모트를 가진 clone 을 모두 찾아 `git pull --rebase` 를 돌린다. 플러그인 재설치 없이 SKILL 업데이트만 받을 때 사용. 플러그인 폴더는 머신마다 UUID 가 달라 경로 하드코딩이 불가능하므로 스크립트가 자동 탐색한다.
+
+새 머신 첫 세팅 직후에도 한 번 돌려두면 안전하다 (마켓플레이스 캐시가 옛 버전이면 즉시 최신화됨).
+
 ### 어겼을 때의 결과
 
 - 머신 A에서 추가한 새 워크플로우가 머신 B에서 동작 안 함
