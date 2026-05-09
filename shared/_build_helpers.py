@@ -48,14 +48,21 @@ def make_qr_svg(url: str, dark_color: str = BRAND_NAVY) -> str:
 
 
 def inject_qr(html: str, qr_svg: str, *, target_class: str = "qr-block__code") -> str:
-    """Replace the first <div class="{target_class}"></div> with QR SVG inside.
+    """Replace the first empty <div> whose class list contains target_class.
+
+    Multi-class divs (e.g. ``<div class="qr-block__code takehome-side__qr">``)
+    are matched too — the original class list is preserved, only the SVG is
+    inserted inside.
 
     Supports two target classes:
       - "qr-block__code"  → 16:9 deck closing slide
       - "qr-mini__code"   → A4 handout / lab-report footer mini-QR
     """
-    pattern = rf'<div class="{re.escape(target_class)}">\s*</div>'
-    return re.sub(pattern, f'<div class="{target_class}">{qr_svg}</div>', html, count=1)
+    # Match <div class="...{target_class}..."></div> regardless of other classes
+    # Group 1 captures the full opening tag so we can reuse it verbatim.
+    cls_pattern = rf'(?:[^"\s]+\s+)*{re.escape(target_class)}(?:\s+[^"]+)*'
+    pattern = rf'(<div class="{cls_pattern}">)\s*</div>'
+    return re.sub(pattern, rf'\1{qr_svg}</div>', html, count=1)
 
 
 # --------------------------------------------------------------------------- #
