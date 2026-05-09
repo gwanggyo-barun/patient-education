@@ -428,6 +428,14 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "복부초음파 검사 전 준비",
     },
     {
+        "kind": "handouts", "slug": "bone-density-prep",
+        "slug_path": "handouts/imaging/bone-density-prep/",
+        "html_path": ROOT / "handouts/imaging/bone-density-prep/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "골밀도 검사 안내",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "골밀도 검사(DXA) 준비 안내",
+    },
+    {
         "kind": "handouts", "slug": "blood-draw-prep",
         "slug_path": "handouts/screening/blood-draw-prep/",
         "html_path": ROOT / "handouts/screening/blood-draw-prep/index.html",
