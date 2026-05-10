@@ -436,6 +436,14 @@ TARGETS = [
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "골밀도 검사(DXA) 준비 안내",
     },
     {
+        "kind": "handouts", "slug": "pulmonary-function-test-prep",
+        "slug_path": "handouts/respiratory/pulmonary-function-test-prep/",
+        "html_path": ROOT / "handouts/respiratory/pulmonary-function-test-prep/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "폐기능 검사(PFT) 안내",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "폐기능 검사(PFT) 준비 안내",
+    },
+    {
         "kind": "handouts", "slug": "blood-draw-prep",
         "slug_path": "handouts/screening/blood-draw-prep/",
         "html_path": ROOT / "handouts/screening/blood-draw-prep/index.html",
