@@ -640,6 +640,16 @@ TARGETS = [
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "심혈관 위험",
     },
     {
+        "kind": "lab-reports", "slug": "0883646ddd",
+        "slug_path": "lab-reports/cv-screening/0883646ddd/",
+        "html_path": ROOT / "lab-reports/cv-screening/0883646ddd/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "심혈관 위험",
+        "patient_name": "곽정옥", "chart_no": "435",
+        "exam_date": "2026-05-09", "doctor": "정지환",
+        "note": "Lp(a) 상승 — 적극적 LDL 관리 권고",
+    },
+    {
         "kind": "lab-reports", "slug": "498a0b31ff",
         "slug_path": "lab-reports/diabetes-screening/498a0b31ff/",
         "html_path": ROOT / "lab-reports/diabetes-screening/498a0b31ff/index.html",
@@ -709,6 +719,9 @@ def _validate_css_paths() -> list[str]:
     return issues
 
 
+_HANGUL_RE = __import__("re").compile(r"[가-힯]")
+
+
 def _validate_targets_routing() -> list[str]:
     """Validate every TARGETS entry — kind must match the slug_path prefix.
 
@@ -722,6 +735,8 @@ def _validate_targets_routing() -> list[str]:
     - kind must be one of: decks | handouts | lab-reports.
     - lab-reports must declare patient_name + chart_no (or legacy title with
       [차트번호] prefix that _notion_sync.py can parse).
+    - lab-reports slug + slug_path must NOT contain Korean Hangul characters
+      (privacy guardrail — see Gotcha 11). Use lab_hash_slug() instead.
     """
     issues: list[str] = []
     valid_kinds = {"decks", "handouts", "lab-reports"}
@@ -741,6 +756,17 @@ def _validate_targets_routing() -> list[str]:
 
         if html_path and f"/{kind}/" not in str(html_path):
             issues.append(f"{prefix}: html_path '{html_path}' is not inside /{kind}/")
+
+        # Privacy guardrail: lab-reports must use a hash slug, never a patient
+        # name. Korean Hangul in slug or slug_path almost certainly means a
+        # patient name leaked in. Compute via lab_hash_slug() in _build_helpers.
+        if kind == "lab-reports":
+            if _HANGUL_RE.search(slug) or _HANGUL_RE.search(slug_path):
+                issues.append(
+                    f"{prefix}: lab-reports slug/slug_path contains Korean characters "
+                    f"— use lab_hash_slug(chart_no, patient_name, topic) instead "
+                    f"(slug='{slug}', slug_path='{slug_path}')"
+                )
 
         # lab-reports SHOULD declare patient meta — warn, don't fail
         # (sample data like /lab-reports/lipid-panel/sample/ is exempt)
