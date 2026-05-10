@@ -39,23 +39,23 @@
 - **lab-reports**: 환자 혈액검사 결과, 개인 설명용 결과지
 
 ### lab-reports 필수 메타데이터
-`build.py` TARGETS 항목에 다음 필드 필수:
+`build.py` TARGETS 항목에 다음 필드 필수 (slug 는 `lab_hash_slug` 로 생성한 hash, 환자명 직접 사용 금지 — privacy):
 ```python
 {
-    "kind": "lab-reports", "slug": "박순정",
-    "slug_path": "lab-reports/general-checkup/박순정/",
-    "html_path": ROOT / "lab-reports/general-checkup/박순정/index.html",
+    "kind": "lab-reports", "slug": "<hash10>",  # python lab_hash_slug(chart_no, patient_name, topic)
+    "slug_path": "lab-reports/general-checkup/<hash10>/",
+    "html_path": ROOT / "lab-reports/general-checkup/<hash10>/index.html",
     "qr_class": "qr-mini__code", "fmt": "a4-portrait",
-    "patient_name": "박순정",       # 필수
-    "chart_no": "17492",            # 필수
+    "patient_name": "<환자명>",     # 필수 — Notion 카드 매칭용
+    "chart_no": "<차트번호>",       # 필수
     "exam_date": "2026-05-08",      # 선택
     "doctor": "정지환",             # 선택
     "note": "종합검사 — 콜레스테롤 경계역",  # 선택
 },
 ```
-→ 노션 제목 자동 생성: `[17492] 박순정 — 종합검사 — 콜레스테롤 경계역`
+→ 노션 제목 자동 생성: `[<차트번호>] <환자명> — <note>`
 
-Legacy 제목(`[1063] 김종혁 — 골 대사 검사 (2026-04-29)`)도 `_notion_sync.py`가 자동 파싱.
+Legacy 제목(`[<차트번호>] <환자명> — <검사명> (YYYY-MM-DD)`)도 `_notion_sync.py`가 자동 파싱.
 
 ---
 
