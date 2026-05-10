@@ -41,15 +41,18 @@ description: >
 
 이 SKILL.md / `reference/` / `shared/` / `tools/` 변경은 GitHub origin/main 에 push되지만, Claude 가 실제로 로드하는 것은 **각 머신의 플러그인 폴더 안 SKILL.md** 다. 플러그인 폴더는 그 자체로 patient-education 의 git clone 이며 자동 업데이트되지 않으므로, push 한 머신 외 다른 머신에서는 다음 두 곳을 모두 pull 해야 최신 SKILL 이 로드된다.
 
+**터미널이 있으면 (macOS / Linux / Windows Git Bash):**
 ```bash
 # 1. 워킹 디렉토리 (작업용)
 cd ~/clinic-content-system && git pull --rebase
 
-# 2. 플러그인 폴더 (Claude 가 SKILL.md 로드하는 위치) — 한 줄로 자동 처리
+# 2. 플러그인 폴더 (Claude 가 SKILL.md 로드하는 위치)
 bash ~/clinic-content-system/tools/sync_plugin_clone.sh
 ```
 
-`tools/sync_plugin_clone.sh` 는 `~/Library/Application Support/Claude/.../skills/clinic-content-system/` 아래 patient-education 리모트를 가진 clone 을 모두 찾아 `git pull --rebase` 를 돌린다. 플러그인 재설치 없이 SKILL 업데이트만 받을 때 사용. 플러그인 폴더는 머신마다 UUID 가 달라 경로 하드코딩이 불가능하므로 스크립트가 자동 탐색한다.
+**터미널 없이 데스크톱 클로드 코드만 쓰는 경우 (예: Windows 데스크톱)**: 그냥 채팅창에 한국어로 **"다른 머신에서 작업했어. 동기화해줘"** 또는 **"clinic-content-system 동기화"** 라고 말하면 클로드가 위 두 명령어를 자동으로 실행한다. (Claude Code 의 Bash 도구가 OS 별 셸을 알아서 사용 — Windows 는 Git Bash, macOS·Linux 는 bash.)
+
+`tools/sync_plugin_clone.sh` 는 OS 별 Claude 데이터 디렉토리 (macOS `~/Library/Application Support/Claude`, Linux `~/.config/Claude`, Windows `%APPDATA%/Claude`) 아래에서 patient-education 리모트를 가진 clone 을 모두 자동 탐색해 `git pull --rebase`. 플러그인 재설치 없이 SKILL 업데이트만 받을 때 사용. 플러그인 폴더 UUID 는 머신마다 다르므로 스크립트가 알아서 찾는다.
 
 새 머신 첫 세팅 직후에도 한 번 돌려두면 안전하다 (마켓플레이스 캐시가 옛 버전이면 즉시 최신화됨).
 
