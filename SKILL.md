@@ -144,6 +144,7 @@ GH Pages 는 전체 공개 호스팅이라 lab-reports 의 환자명을 URL slug
 1. **Hash slug** — `slug` / `slug_path` 의 환자명 자리에 결정적 SHA-256 hex(10자) 사용. `_build_helpers.lab_hash_slug(chart_no, patient_name, topic)` 호출. 같은 입력이면 매번 같은 hash 라 재빌드해도 URL drift 0. 노션 카드는 `chart_no + 환자명` 으로 매칭하므로 카드 1개에 새 URL 만 덮어씀.
 2. **QR 제거** — `build.py` 가 `kind == "lab-reports"` 일 때 `make_qr_svg`/`inject_qr` 대신 `strip_qr_mini_block(html)` 으로 footer `<div class="qr-mini">…</div>` 통째 제거. PDF 인쇄물에서 URL 누출 차단.
 3. **noindex + robots.txt** — `inject_noindex_meta` 가 head 에 `<meta name="robots" content="noindex,nofollow,noarchive">` 자동 주입 + 루트 `robots.txt` 가 `/lab-reports/` Disallow. 검색엔진 인덱싱 차단.
+4. **빌드 단계 Korean-slug 차단** — `_validate_targets_routing()` 가 lab-reports entry 의 `slug` / `slug_path` 에 한글(가-힣)이 있으면 빌드 fail. 머신 동기화 깜빡하고 환자명 slug 로 만들어도 CI 가 push 단계에서 막음.
 
 새 lab-report 추가 절차:
 ```
