@@ -5,8 +5,10 @@ Used by build.py for decks, handouts, and lab-reports — single source for:
   - QR injection into HTML (replace empty .qr-block__code or .qr-mini__code)
   - Playwright render helpers (preview PNG + PDF, multiple page formats)
   - OG meta block standardization
+  - lab-reports privacy: hash slugs + QR strip + noindex meta
 """
 from __future__ import annotations
+import hashlib
 import re
 from io import BytesIO
 from pathlib import Path
@@ -128,3 +130,56 @@ def check_og_meta(html: str, slug: str) -> list[str]:
     if not re.search(rf'<meta\s+name="{re.escape(THEME_COLOR_REQUIRED)}"', html):
         missing.append(THEME_COLOR_REQUIRED)
     return missing
+
+
+# --------------------------------------------------------------------------- #
+# lab-reports privacy: hash slugs + QR strip + noindex
+# --------------------------------------------------------------------------- #
+
+def lab_hash_slug(chart_no: str, patient_name: str, topic: str) -> str:
+    """Deterministic 10-char hex slug for a lab-report URL.
+
+    Same (chart_no, patient_name, topic) always yields the same slug, so
+    re-builds and Notion upserts stay stable. Topic is the second segment of
+    slug_path (e.g. "diabetes-screening"), which keeps URLs grouped without
+    leaking identity.
+    """
+    if not chart_no or not patient_name:
+        raise ValueError("lab_hash_slug requires non-empty chart_no and patient_name")
+    seed = f"{chart_no}:{patient_name}:{topic}"
+    return hashlib.sha256(seed.encode("utf-8")).hexdigest()[:10]
+
+
+_QR_MINI_BLOCK_RE = re.compile(
+    r'\s*<div\s+class="qr-mini">.*?</div>\s*</div>',
+    re.DOTALL,
+)
+
+
+def strip_qr_mini_block(html: str) -> str:
+    """Remove the entire footer mini-QR aside (`<div class="qr-mini">…</div>`).
+
+    Used for lab-reports where rendering a QR pointing to a public URL would
+    expose patient-specific content via the printed PDF. Idempotent — already
+    stripped HTML is returned unchanged.
+    """
+    return _QR_MINI_BLOCK_RE.sub("", html, count=1)
+
+
+_NOINDEX_META = '<meta name="robots" content="noindex,nofollow,noarchive">'
+
+
+def inject_noindex_meta(html: str) -> str:
+    """Insert `<meta name="robots" content="noindex,…">` after `<head>` if absent.
+
+    Combined with /robots.txt this hides lab-report URLs from search engines.
+    The noarchive directive also blocks Google's cached-copy view.
+    """
+    if re.search(r'<meta\s+name="robots"', html, re.IGNORECASE):
+        return html
+    return re.sub(
+        r'(<head[^>]*>)',
+        rf'\1\n  {_NOINDEX_META}',
+        html,
+        count=1,
+    )

@@ -25,8 +25,10 @@ sys.path.insert(0, str(ROOT / "shared"))
 from _build_helpers import (  # noqa: E402
     make_qr_svg,
     inject_qr,
+    inject_noindex_meta,
     render,
     check_og_meta,
+    strip_qr_mini_block,
 )
 from _validate_layout import HANDOUT_VALIDATOR_JS, DECK_VALIDATOR_JS  # noqa: E402
 
@@ -125,9 +127,9 @@ TARGETS = [
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "지질패널",
     },
     {
-        "kind": "lab-reports", "slug": "박형주",
-        "slug_path": "lab-reports/diabetes-screening/박형주/",
-        "html_path": ROOT / "lab-reports/diabetes-screening/박형주/index.html",
+        "kind": "lab-reports", "slug": "842acd69b8",
+        "slug_path": "lab-reports/diabetes-screening/842acd69b8/",
+        "html_path": ROOT / "lab-reports/diabetes-screening/842acd69b8/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "patient_name": "박형주", "chart_no": "23512",
         "exam_date": "2026-05-06", "doctor": "정지환",
@@ -582,98 +584,98 @@ TARGETS = [
     },
     # === Migration: 11 new patient lab reports (2026-05-08) ===
     {
-        "kind": "lab-reports", "slug": "김종혁",
-        "slug_path": "lab-reports/bone-metabolism/김종혁/",
-        "html_path": ROOT / "lab-reports/bone-metabolism/김종혁/index.html",
+        "kind": "lab-reports", "slug": "13f629bf11",
+        "slug_path": "lab-reports/bone-metabolism/13f629bf11/",
+        "html_path": ROOT / "lab-reports/bone-metabolism/13f629bf11/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[1063] 김종혁 — 골 대사 검사 (2026-04-29)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "골다공증·골대사",
     },
     {
-        "kind": "lab-reports", "slug": "김현아",
-        "slug_path": "lab-reports/bone-metabolism/김현아/",
-        "html_path": ROOT / "lab-reports/bone-metabolism/김현아/index.html",
+        "kind": "lab-reports", "slug": "53abb9a8c8",
+        "slug_path": "lab-reports/bone-metabolism/53abb9a8c8/",
+        "html_path": ROOT / "lab-reports/bone-metabolism/53abb9a8c8/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[4693] 김현아 — 골 대사 검사 (2026-04-28)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "골다공증·골대사",
     },
     {
-        "kind": "lab-reports", "slug": "오완영",
-        "slug_path": "lab-reports/comprehensive-summary/오완영/",
-        "html_path": ROOT / "lab-reports/comprehensive-summary/오완영/index.html",
+        "kind": "lab-reports", "slug": "ea087af656",
+        "slug_path": "lab-reports/comprehensive-summary/ea087af656/",
+        "html_path": ROOT / "lab-reports/comprehensive-summary/ea087af656/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[12784] 오완영 — 종합 검진 요약 (2026-04-29)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "종합 검진",
     },
     {
-        "kind": "lab-reports", "slug": "정행년",
-        "slug_path": "lab-reports/comprehensive-summary/정행년/",
-        "html_path": ROOT / "lab-reports/comprehensive-summary/정행년/index.html",
+        "kind": "lab-reports", "slug": "e33c38ae14",
+        "slug_path": "lab-reports/comprehensive-summary/e33c38ae14/",
+        "html_path": ROOT / "lab-reports/comprehensive-summary/e33c38ae14/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[12357] 정행년 — 종합 검진 요약 (2026-04-21)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "종합 검진",
     },
     {
-        "kind": "lab-reports", "slug": "김양수",
-        "slug_path": "lab-reports/cv-screening/김양수/",
-        "html_path": ROOT / "lab-reports/cv-screening/김양수/index.html",
+        "kind": "lab-reports", "slug": "5e3ecd7635",
+        "slug_path": "lab-reports/cv-screening/5e3ecd7635/",
+        "html_path": ROOT / "lab-reports/cv-screening/5e3ecd7635/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[27474] 김양수 — 심혈관 위험 평가 (2026-04-21)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "심혈관 위험",
     },
     {
-        "kind": "lab-reports", "slug": "안미흥",
-        "slug_path": "lab-reports/cv-screening/안미흥/",
-        "html_path": ROOT / "lab-reports/cv-screening/안미흥/index.html",
+        "kind": "lab-reports", "slug": "f7aa074e4d",
+        "slug_path": "lab-reports/cv-screening/f7aa074e4d/",
+        "html_path": ROOT / "lab-reports/cv-screening/f7aa074e4d/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[11960] 안미흥 — 심혈관 위험 평가 (2026-04-28)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "심혈관 위험",
     },
     {
-        "kind": "lab-reports", "slug": "전상영",
-        "slug_path": "lab-reports/cv-screening/전상영/",
-        "html_path": ROOT / "lab-reports/cv-screening/전상영/index.html",
+        "kind": "lab-reports", "slug": "6560324c10",
+        "slug_path": "lab-reports/cv-screening/6560324c10/",
+        "html_path": ROOT / "lab-reports/cv-screening/6560324c10/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[8223] 전상영 — 심혈관 위험 평가 (2026-04-28)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "심혈관 위험",
     },
     {
-        "kind": "lab-reports", "slug": "김경태",
-        "slug_path": "lab-reports/diabetes-screening/김경태/",
-        "html_path": ROOT / "lab-reports/diabetes-screening/김경태/index.html",
+        "kind": "lab-reports", "slug": "498a0b31ff",
+        "slug_path": "lab-reports/diabetes-screening/498a0b31ff/",
+        "html_path": ROOT / "lab-reports/diabetes-screening/498a0b31ff/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[2555] 김경태 — 당뇨 검진 결과 (2026-04-22)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "당뇨병",
     },
     {
-        "kind": "lab-reports", "slug": "김양미",
-        "slug_path": "lab-reports/diabetes-screening/김양미/",
-        "html_path": ROOT / "lab-reports/diabetes-screening/김양미/index.html",
+        "kind": "lab-reports", "slug": "a8c908bd6d",
+        "slug_path": "lab-reports/diabetes-screening/a8c908bd6d/",
+        "html_path": ROOT / "lab-reports/diabetes-screening/a8c908bd6d/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[15870] 김양미 — 당뇨 검진 결과 (2026-04-29)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "당뇨병",
     },
     {
-        "kind": "lab-reports", "slug": "이강성",
-        "slug_path": "lab-reports/diabetes-screening/이강성/",
-        "html_path": ROOT / "lab-reports/diabetes-screening/이강성/index.html",
+        "kind": "lab-reports", "slug": "771ba246e9",
+        "slug_path": "lab-reports/diabetes-screening/771ba246e9/",
+        "html_path": ROOT / "lab-reports/diabetes-screening/771ba246e9/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[13305] 이강성 — 당뇨 검진 결과 (2026-04-22)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "당뇨병",
     },
     {
-        "kind": "lab-reports", "slug": "윤종철",
-        "slug_path": "lab-reports/urinalysis/윤종철/",
-        "html_path": ROOT / "lab-reports/urinalysis/윤종철/index.html",
+        "kind": "lab-reports", "slug": "5d03e28e70",
+        "slug_path": "lab-reports/urinalysis/5d03e28e70/",
+        "html_path": ROOT / "lab-reports/urinalysis/5d03e28e70/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "[1683] 윤종철 — 소변 검사 (2026-04-21)",
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "소변 검사 이상",
     },
     {
         # 신규 schema 예시 — explicit 환자 메타데이터 (lab-reports 권장 형식)
-        "kind": "lab-reports", "slug": "박순정",
-        "slug_path": "lab-reports/general-checkup/박순정/",
-        "html_path": ROOT / "lab-reports/general-checkup/박순정/index.html",
+        "kind": "lab-reports", "slug": "969f64d2bc",
+        "slug_path": "lab-reports/general-checkup/969f64d2bc/",
+        "html_path": ROOT / "lab-reports/general-checkup/969f64d2bc/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "patient_name": "박순정", "chart_no": "17492",
         "exam_date": "2026-05-08", "doctor": "정지환",
@@ -797,11 +799,26 @@ def main() -> int:
                 failures.append(f"{kind}/{slug}: missing meta → {', '.join(missing)}")
                 continue
 
-            qr_svg = make_qr_svg(target_url)
-            injected = inject_qr(html, qr_svg, target_class=qr_class)
+            if kind == "lab-reports":
+                # Privacy: lab-reports name patients; printed QR + public URL
+                # would let anyone scan the page and view personal results.
+                # Strip the footer QR block + add noindex meta. robots.txt
+                # disallows /lab-reports/ on the GH Pages side.
+                injected = strip_qr_mini_block(html)
+                injected = inject_noindex_meta(injected)
+                if 'class="qr-mini"' in injected:
+                    failures.append(
+                        f"{kind}/{slug}: qr-mini block survived strip — "
+                        f"check footer markup matches strip_qr_mini_block regex"
+                    )
+                    continue
+            else:
+                qr_svg = make_qr_svg(target_url)
+                injected = inject_qr(html, qr_svg, target_class=qr_class)
 
-            # Write QR-injected HTML to the raw index.html so the live site
-            # (GH Pages) also gets the QR — not only the PDF.
+            # Write back to raw index.html so the live GH Pages copy stays in
+            # sync with what we render to PDF (QR for decks/handouts, no QR
+            # for lab-reports).
             html_path.write_text(injected, encoding="utf-8")
             build_file = html_path  # PDF builder uses the same file
 
@@ -830,7 +847,10 @@ def main() -> int:
                     fmt=fmt,
                 )
                 ctx.close()
-                print(f"  ✓ {kind}/{slug}  →  QR: {target_url}")
+                if kind == "lab-reports":
+                    print(f"  ✓ {kind}/{slug}  →  no QR (privacy), noindex")
+                else:
+                    print(f"  ✓ {kind}/{slug}  →  QR: {target_url}")
             finally:
                 pass  # raw index.html keeps QR svg — desired for live site
 
