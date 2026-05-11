@@ -650,6 +650,16 @@ TARGETS = [
         "note": "Lp(a) 상승 — 적극적 LDL 관리 권고",
     },
     {
+        "kind": "lab-reports", "slug": "8a614fd8f2",
+        "slug_path": "lab-reports/cv-screening/8a614fd8f2/",
+        "html_path": ROOT / "lab-reports/cv-screening/8a614fd8f2/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "심혈관 위험",
+        "patient_name": "박성주", "chart_no": "29859",
+        "exam_date": "2026-05-09", "doctor": "정지환",
+        "note": "심근효소 정상 — 안정시 흉부 불편감은 비심장성. 고지혈(TC 264·LDL 144·TG 377) 적극 관리 권고",
+    },
+    {
         "kind": "lab-reports", "slug": "498a0b31ff",
         "slug_path": "lab-reports/diabetes-screening/498a0b31ff/",
         "html_path": ROOT / "lab-reports/diabetes-screening/498a0b31ff/index.html",
@@ -690,6 +700,16 @@ TARGETS = [
         "patient_name": "박순정", "chart_no": "17492",
         "exam_date": "2026-05-08", "doctor": "정지환",
         "note": "종합검사 — 콜레스테롤 경계역",
+    },
+    {
+        "kind": "lab-reports", "slug": "19f7fad6a4",
+        "slug_path": "lab-reports/comprehensive-summary/19f7fad6a4/",
+        "html_path": ROOT / "lab-reports/comprehensive-summary/19f7fad6a4/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "종합 검진",
+        "patient_name": "김수홍", "chart_no": "97",
+        "exam_date": "2026-05-09", "doctor": "정지환",
+        "note": "요산 8.6 ↑ (저퓨린 식이) · TSH 4.98 ↑ (불현성 갑상선 저하 — 추적)",
     },
 ]
 
@@ -754,7 +774,7 @@ def _validate_targets_routing() -> list[str]:
         if not slug_path.startswith(f"{kind}/"):
             issues.append(f"{prefix}: slug_path '{slug_path}' does not start with kind '{kind}/'")
 
-        if html_path and f"/{kind}/" not in str(html_path):
+        if html_path and f"/{kind}/" not in str(html_path).replace("\\", "/"):
             issues.append(f"{prefix}: html_path '{html_path}' is not inside /{kind}/")
 
         # Privacy guardrail: lab-reports must use a hash slug, never a patient
