@@ -299,6 +299,14 @@ TARGETS = [
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "폐기능검사(PFT) 환자교육",
     },
     {
+        "kind": "decks", "slug": "pft-interpretation",
+        "slug_path": "decks/pulmo/pft-interpretation/",
+        "html_path": ROOT / "decks/pulmo/pft-interpretation/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "폐기능검사 결과 해석",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "폐기능검사 결과 해석",
+    },
+    {
         "kind": "decks", "slug": "ibs",
         "slug_path": "decks/gi/ibs/",
         "html_path": ROOT / "decks/gi/ibs/index.html",
@@ -438,12 +446,28 @@ TARGETS = [
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "골밀도 검사(DXA) 준비 안내",
     },
     {
+        "kind": "handouts", "slug": "bone-density-room-guide",
+        "slug_path": "handouts/imaging/bone-density-room-guide/",
+        "html_path": ROOT / "handouts/imaging/bone-density-room-guide/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "골밀도 검사 진행 안내 (검사실 비치용)",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "골밀도 검사(DXA) 검사실 자세·진행 가이드",
+    },
+    {
         "kind": "handouts", "slug": "pulmonary-function-test-prep",
         "slug_path": "handouts/respiratory/pulmonary-function-test-prep/",
         "html_path": ROOT / "handouts/respiratory/pulmonary-function-test-prep/index.html",
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "폐기능 검사(PFT) 안내",
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "폐기능 검사(PFT) 준비 안내",
+    },
+    {
+        "kind": "handouts", "slug": "cold-return-visit",
+        "slug_path": "handouts/respiratory/cold-return-visit/",
+        "html_path": ROOT / "handouts/respiratory/cold-return-visit/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "감기약 복용 중 다시 진료가 필요한 증상",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "감기 재진 경고 증상 · 부비동염 의심 증상",
     },
     {
         "kind": "handouts", "slug": "blood-draw-prep",
@@ -915,6 +939,7 @@ def main() -> int:
                 try:
                     action, page_id = notion_upsert(
                         kind=kind,
+                        slug=slug,  # lab-reports: dedup by slug-in-URL
                         html_url=target_url,
                         pdf_url=pdf_url,
                         today_iso=today_iso,
