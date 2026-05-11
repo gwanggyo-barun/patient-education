@@ -614,6 +614,24 @@ TARGETS = [
         "category": "💊 투약 안내", "audience": "환자/보호자",
         "disease": "SGLT2 억제제 (다파글리플로진·엠파글리플로진·이프라글리플로진) 신규 처방 안전 복용 가이드 — DKA·푸르니에괴저·SSTOP 룰",
     },
+    {
+        "kind": "handouts", "slug": "iron-supplement",
+        "slug_path": "handouts/medication/iron-supplement/",
+        "html_path": ROOT / "handouts/medication/iron-supplement/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "💊 철분제 복용 시 주의사항 (흡수 부스터·차단제·복약 가이드)",
+        "category": "💊 투약 안내", "audience": "환자/보호자",
+        "disease": "경구 철분제 복약 가이드 — 비타민 C 시너지·탄닌·칼슘·제산제 흡수 방해·격일 복용·페리틴 회복",
+    },
+    {
+        "kind": "handouts", "slug": "htn-why-start",
+        "slug_path": "handouts/medication/htn-why-start/",
+        "html_path": ROOT / "handouts/medication/htn-why-start/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "💊 고혈압 약, 미루지 말아야 하는 이유 — 합병증 예방·감량 로드맵",
+        "category": "💊 투약 안내", "audience": "환자/보호자",
+        "disease": "고혈압 약물 치료의 목적 (혈관 합병증 예방) 안내 — 운동·영양제·체중감량으로 약 시작을 미루려는 환자 대상. 5대 합병증 인포그래픽(뇌·눈·심장·대혈관·신장), 흔한 오해 vs 사실, 약 감량·중단 3단계 로드맵.",
+    },
     # === Migration: 11 new patient lab reports (2026-05-08) ===
     {
         "kind": "lab-reports", "slug": "13f629bf11",
