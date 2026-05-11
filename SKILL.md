@@ -25,9 +25,10 @@ description: >
 2. ✅ **머신 종속 경로 하드코딩 금지** — `C:\Users\user\...`, `/Users/도현/...` 같은 절대 경로 금지. `~/`, `Path(__file__).parent`, 환경변수 사용
 3. ✅ **시크릿은 환경변수 / GitHub Secret으로** — `NOTION_TOKEN` 같은 토큰을 코드에 직접 쓰지 않음
 4. ✅ **fresh clone에서 동작 검증** — 새 머신에서 README의 3개 명령(`gh auth` → `git clone` → `pip install -r requirements.txt`)만으로 빌드되어야 함
-5. ✅ **변경 전 `git pull --rebase`, 변경 후 즉시 `git add . && git commit && git push`** — 다른 머신과의 충돌 방지 + 즉시 전파. 한 작업 = (pull) - 작업 - (push)
-6. ✅ **`output/` 디렉토리 커밋 금지** — `.gitignore`에 등록됨, CI가 매번 새로 빌드
-7. ✅ **새 의존성 추가 시 `requirements.txt` 갱신** — pip install로만 끝내면 다른 머신에서 ImportError
+5. ✅ **변경 전 `git pull --rebase`, 변경 후 즉시 명시적 stage → commit → push** — 다른 머신과의 충돌 방지 + 즉시 전파. 한 작업 = (pull) - 작업 - (push)
+6. ⭐ **한 대화창에서 만든 변경은 단독 commit으로만 push, 다른 작업과 절대 묶지 않음** — `git add .` / `git add -A` / `git add <디렉토리>` 절대 금지. **이번 작업에서 만든 파일만 한 줄씩 명시적으로 add**. commit 직전 `git status --short` 로 stage 영역에 다른 `A `/`M `/`D ` 표시 파일이 보이면 `git restore --staged <path>` 로 unstage 후 commit. **이유**: 원장님은 머신·대화창 여러 개에서 동시에 다른 자료를 진행한다. 다른 대화창의 staged/untracked 작업이 묶이면 미완성 작업물이 main 에 올라간다 (2026-05-11 iron-supplement commit 에 다른 대화창 htn-why-start 이 같이 묶여 정식 규칙화). 이전 세션에서 누군가 stage 해둔 파일도 동일하게 unstage 후 내 작업만 commit.
+7. ✅ **`output/` 디렉토리 커밋 금지** — `.gitignore`에 등록됨, CI가 매번 새로 빌드
+8. ✅ **새 의존성 추가 시 `requirements.txt` 갱신** — pip install로만 끝내면 다른 머신에서 ImportError
 
 ### Claude가 이 스킬을 사용할 때의 규칙
 
