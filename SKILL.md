@@ -26,7 +26,13 @@ description: >
 3. ✅ **시크릿은 환경변수 / GitHub Secret으로** — `NOTION_TOKEN` 같은 토큰을 코드에 직접 쓰지 않음
 4. ✅ **fresh clone에서 동작 검증** — 새 머신에서 README의 3개 명령(`gh auth` → `git clone` → `pip install -r requirements.txt`)만으로 빌드되어야 함
 5. ✅ **변경 전 `git pull --rebase`, 변경 후 즉시 명시적 stage → commit → push** — 다른 머신과의 충돌 방지 + 즉시 전파. 한 작업 = (pull) - 작업 - (push)
-6. ⭐ **한 대화창에서 만든 변경은 단독 commit으로만 push, 다른 작업과 절대 묶지 않음** — `git add .` / `git add -A` / `git add <디렉토리>` 절대 금지. **이번 작업에서 만든 파일만 한 줄씩 명시적으로 add**. commit 직전 `git status --short` 로 stage 영역에 다른 `A `/`M `/`D ` 표시 파일이 보이면 `git restore --staged <path>` 로 unstage 후 commit. **이유**: 원장님은 머신·대화창 여러 개에서 동시에 다른 자료를 진행한다. 다른 대화창의 staged/untracked 작업이 묶이면 미완성 작업물이 main 에 올라간다 (2026-05-11 iron-supplement commit 에 다른 대화창 htn-why-start 이 같이 묶여 정식 규칙화). 이전 세션에서 누군가 stage 해둔 파일도 동일하게 unstage 후 내 작업만 commit.
+6. ⭐ **한 대화창에서 만든 변경은 단독 commit으로만 push, 다른 작업과 절대 묶지 않음** — 다음 순서를 절대 건너뛰지 않는다.
+   - **(0)** 작업 시작 직후 `git status --short` 로 시작 상태 캡처. 이때 보이는 `A `/`M `/`D ` 표시 staged 항목은 모두 **다른 대화창의 잔재** (내가 아직 만지지 않음).
+   - **(1)** `git add .` / `git add -A` / `git add <디렉토리>` 절대 금지. **이번 작업에서 만든/수정한 파일만 한 줄씩 명시적으로 add**.
+   - **(2)** commit 명령 직전 다시 `git status --short` → staged 영역에 (0) 에서 본 항목 또는 내 작업 외 `A `/`M `/`D ` 가 있으면 **즉시 `git restore --staged <path>`** 로 unstage. **`git add ... && git commit ...` 한 줄로 체이닝 금지** — 사이에 audit 단계가 강제로 들어가야 한다. untracked (`??`) 는 그대로 둔다.
+   - **(3)** unstage 후 `git status --short` 한 번 더 → 정확히 내 작업 파일만 staged 인지 눈으로 확인 → 그제서야 `git commit`.
+   - **(4)** push 후 `git log -1 --stat` 로 실제 들어간 파일 확인 → 의도와 다르면 즉시 사용자에게 보고.
+   - **이유**: 원장님은 머신·대화창 여러 개에서 동시에 다른 자료를 진행한다. git index 는 워킹 디렉터리 단위로 공유되므로, **다른 대화창이 `git add` 만 해두고 떠난 staged 항목은 내 다음 commit 에 그대로 따라간다** — `git add SKILL.md` 만 호출해도 미완성 파일이 묶여 push 된다. 2026-05-11 한 세션에서 두 번 연속 발생 (htn-why-start, appendicitis-red-flags) 후 정식 규칙화.
 7. ✅ **`output/` 디렉토리 커밋 금지** — `.gitignore`에 등록됨, CI가 매번 새로 빌드
 8. ✅ **새 의존성 추가 시 `requirements.txt` 갱신** — pip install로만 끝내면 다른 머신에서 ImportError
 
