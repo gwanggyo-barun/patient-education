@@ -70,6 +70,34 @@ def _find_page_id_by_title(db_id: str, title_prop: str, title: str) -> str | Non
     return results[0]["id"] if results else None
 
 
+def _find_lab_report_existing(
+    db_id: str, slug: str, search_title: str
+) -> str | None:
+    """Find existing lab-report row using slug-based dedup.
+
+    The slug is a SHA-256 hash of (chart_no, patient_name, topic) — stable
+    across edits to note/title/patient_name formatting. It's embedded in
+    every 파일링크 URL the build emits, so `url contains slug` reliably
+    matches the same logical report even if the human-readable title or
+    URL format changed between builds.
+
+    Falls back to title equals for legacy entries created before slug-based
+    dedup landed.
+    """
+    res = _api(
+        "POST",
+        f"/databases/{db_id}/query",
+        {
+            "filter": {"property": "파일링크", "url": {"contains": slug}},
+            "page_size": 1,
+        },
+    )
+    results = res.get("results", [])
+    if results:
+        return results[0]["id"]
+    return _find_page_id_by_title(db_id, "환자명", search_title)
+
+
 def _clickable_links(html_url: str, pdf_url: str) -> list:
     """비고 컬럼용 — 한 번 클릭으로 열리는 HTML/PDF 링크."""
     return [
@@ -196,6 +224,7 @@ def upsert(
     exam_date: str | None = None,
     doctor: str | None = None,
     note: str | None = None,
+    slug: str | None = None,
     # common optional
     version: str = "v1.0",
     status: str = "✅ 사용중",
@@ -207,6 +236,9 @@ def upsert(
     For lab-reports, if explicit patient_name/chart_no are missing, this
     function falls back to parsing the legacy `title` form
     "[1063] 김종혁 — 골 대사 검사" so existing TARGETS keep working.
+
+    Dedup: lab-reports match by `slug` embedded in 파일링크 URL (stable
+    across note/title edits); decks/handouts match by title equals.
     """
     if kind not in DBS:
         raise ValueError(f"Unknown kind: {kind!r}. Expected one of {list(DBS)}")
@@ -250,7 +282,13 @@ def upsert(
             notes_rich=notes_rich,
         )
 
-    existing = _find_page_id_by_title(db_id, title_prop, search_title)
+    if kind == "lab-reports":
+        # Slug-based dedup — survives note/title edits between rebuilds.
+        # Fallback to slug derivation if caller didn't pass it (legacy callers).
+        dedup_slug = slug or pdf_url.rsplit("/", 1)[-1].removesuffix(".pdf")
+        existing = _find_lab_report_existing(db_id, dedup_slug, search_title)
+    else:
+        existing = _find_page_id_by_title(db_id, title_prop, search_title)
     if existing:
         _api("PATCH", f"/pages/{existing}", {"properties": properties})
         return ("updated", existing)

@@ -116,6 +116,8 @@ bash ~/clinic-content-system/tools/sync_plugin_clone.sh
 
 DB 행 제목이 `[차트번호] 환자명` 또는 `[차트번호] 환자명 — 부연` 형식. `_notion_sync.py` 가 자동 파싱하거나 explicit `patient_name`/`chart_no` 필드 사용.
 
+**dedup 키는 슬러그(파일링크 URL 안의 hash)** — 타이틀 아님. 같은 lab-report TARGETS 항목의 `note`/`patient_name` 표기를 편집하고 다시 빌드해도 슬러그가 같으면 동일 row 가 PATCH 된다 (중복 row 안 만들어짐). 한 번 깨졌던 적 있음 (2026-05-11 박성주 29859, title equals 만 보다가 note 편집되면 새 row 생성됨). decks/handouts 는 타이틀 안정 식별자라 그대로 title equals 매칭.
+
 ### 7. Notion API 는 페이지 본문 prepend (맨 위 삽입) 직접 지원 X
 
 새 콜아웃을 페이지 본문 맨 위에 삽입하려면 모든 children block 을 가져온 뒤 다시 작성해야 한다 (replace_content). 단순 PATCH /children 은 항상 끝에 append.
