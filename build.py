@@ -461,22 +461,8 @@ TARGETS = [
         "title": "폐기능 검사(PFT) 안내",
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "폐기능 검사(PFT) 준비 안내",
     },
-    {
-        "kind": "handouts", "slug": "cold-return-visit",
-        "slug_path": "handouts/respiratory/cold-return-visit/",
-        "html_path": ROOT / "handouts/respiratory/cold-return-visit/index.html",
-        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
-        "title": "감기약 복용 중 다시 진료가 필요한 증상",
-        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "감기 재진 경고 증상 · 부비동염 의심 증상",
-    },
-    {
-        "kind": "handouts", "slug": "abdominal-pain-appendicitis-red-flags",
-        "slug_path": "handouts/gi/abdominal-pain-appendicitis-red-flags/",
-        "html_path": ROOT / "handouts/gi/abdominal-pain-appendicitis-red-flags/index.html",
-        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
-        "title": "복통 감별진단: 맹장염을 놓치지 않기",
-        "category": "🫁 위장관", "audience": "환자/보호자", "disease": "복통 감별진단 · 급성충수염 경고 신호",
-    },
+    # NOTE: TARGETS for cold-return-visit + abdominal-pain-appendicitis-red-flags
+    # temporarily removed — HTML source still in progress (Codex). Re-add when ready.
     {
         "kind": "handouts", "slug": "blood-draw-prep",
         "slug_path": "handouts/screening/blood-draw-prep/",
