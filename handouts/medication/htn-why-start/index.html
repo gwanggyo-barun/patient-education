@@ -19,59 +19,74 @@
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
 
   <style>
-    /* 합병증 인포그래픽 전용 (인체 실루엣 + 5개 매핑) */
-    .htn-infogfx {
+    /* 합병증 인포그래픽: 중앙 이미지 + 좌2/우3 라벨 카드 */
+    .htn-bodymap {
       display: grid;
-      grid-template-columns: 52mm 1fr;
-      gap: 3mm;
+      grid-template-columns: 1fr 46mm 1fr;
+      gap: 2.5mm;
       align-items: stretch;
-      max-height: 56mm;
+      max-height: 66mm;
     }
-    .htn-infogfx__list { max-height: 56mm; overflow: hidden; }
-    /* DO/DON'T card list 압축 */
-    .htn-doflist { font-size: 8.6pt; line-height: 1.42; }
-    .htn-infogfx__figure {
-      background: linear-gradient(180deg, #F4F8FC 0%, #E8F1FA 100%);
-      border-radius: 3mm;
-      padding: 1.5mm;
-      position: relative;
-      max-height: 54mm;
+    .htn-bodymap__col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 2mm;
+    }
+    .htn-bodymap__col--left  { align-items: flex-end; }
+    .htn-bodymap__col--right { align-items: flex-start; }
+    .htn-bodymap__figure {
       display: flex;
       align-items: center;
       justify-content: center;
+      background: linear-gradient(180deg, #F4F8FC 0%, #E8F1FA 100%);
+      border-radius: 3mm;
     }
-    .htn-infogfx__svg { width: 100%; max-height: 52mm; display: block; }
-    .htn-infogfx__list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.4mm;
+    .htn-bodymap__figure img {
+      width: 100%;
+      max-height: 64mm;
+      object-fit: contain;
+      display: block;
     }
-    .complication {
+    .bodylabel {
       display: grid;
-      grid-template-columns: 7mm 1fr;
+      grid-template-columns: 6mm 1fr;
       gap: 1.8mm;
       align-items: start;
-      padding: 1.2mm 2.2mm;
+      width: 100%;
+      max-width: 62mm;
       background: #fff;
       border: 1px solid #E1E8F0;
       border-left: 3px solid var(--c-steel, #5B9BD5);
       border-radius: 2mm;
+      padding: 1.4mm 2mm;
     }
-    .complication--brain   { border-left-color: #C44; }
-    .complication--eye     { border-left-color: #B07A2A; }
-    .complication--heart   { border-left-color: #C44; }
-    .complication--aorta   { border-left-color: #8B2C2C; }
-    .complication--kidney  { border-left-color: #2A6BAA; }
-    .complication__num {
+    .bodylabel--brain  { border-left-color: #C44; }
+    .bodylabel--eye    { border-left-color: #B07A2A; }
+    .bodylabel--heart  { border-left-color: #C44; }
+    .bodylabel--aorta  { border-left-color: #8B2C2C; }
+    .bodylabel--kidney { border-left-color: #2A6BAA; }
+    .bodylabel__num {
+      width: 6mm; height: 6mm;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 700;
+      font-size: 8.5pt;
       display: flex; align-items: center; justify-content: center;
-      width: 6mm; height: 6mm; border-radius: 50%;
-      background: var(--c-navy, #003366); color: #fff;
-      font-weight: 700; font-size: 8.5pt;
-      margin-top: 0.3mm;
+      margin-top: 0.4mm;
     }
-    .complication__body { font-size: 8.6pt; line-height: 1.35; color: #1A2A3A; }
-    .complication__title { font-weight: 700; color: var(--c-navy, #003366); font-size: 9pt; display: inline; margin-right: 1mm; }
-    .complication__title::after { content: " — "; color: #7E97B0; font-weight: 500; }
+    .bodylabel__title {
+      font-weight: 700; color: var(--c-navy, #003366);
+      font-size: 9pt; display: block;
+      margin-bottom: 0.2mm;
+      line-height: 1.2;
+    }
+    .bodylabel__body {
+      color: #233040; font-size: 8.2pt; line-height: 1.32;
+      display: block;
+    }
+    /* DO/DON'T card list 압축 */
+    .htn-doflist { font-size: 8.6pt; line-height: 1.42; }
 
     /* 로드맵 3-step */
     .roadmap {
@@ -145,107 +160,59 @@
       </div>
     </section>
 
-    <!-- 합병증 인포그래픽: 인체 실루엣 + 5개 매핑 -->
+    <!-- 합병증 인포그래픽: 중앙 이미지 + 좌2/우3 라벨 카드 -->
     <section>
       <h2 class="section-heading">혈압을 방치하면 — 무증상으로 진행되는 5대 합병증 (Silent Damage)</h2>
-      <div class="htn-infogfx">
+      <div class="htn-bodymap">
 
-        <!-- 좌: 인체 실루엣 SVG -->
-        <div class="htn-infogfx__figure">
-          <svg class="htn-infogfx__svg" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" aria-label="고혈압 합병증 인체 매핑">
-            <!-- 인체 실루엣 (silhouette) -->
-            <g fill="#B8C9DC" stroke="#7E97B0" stroke-width="1">
-              <!-- 머리 -->
-              <ellipse cx="100" cy="38" rx="22" ry="26"/>
-              <!-- 목 -->
-              <rect x="92" y="60" width="16" height="14"/>
-              <!-- 몸통 -->
-              <path d="M 70 76 Q 60 80 58 100 L 56 170 Q 56 180 64 184 L 136 184 Q 144 180 144 170 L 142 100 Q 140 80 130 76 Z"/>
-              <!-- 어깨 -->
-              <ellipse cx="64" cy="90" rx="14" ry="10"/>
-              <ellipse cx="136" cy="90" rx="14" ry="10"/>
-              <!-- 팔 -->
-              <path d="M 52 92 Q 46 130 50 170 L 58 170 Q 58 130 64 96 Z"/>
-              <path d="M 148 92 Q 154 130 150 170 L 142 170 Q 142 130 136 96 Z"/>
-              <!-- 골반 / 다리 시작 -->
-              <path d="M 64 184 L 136 184 L 136 210 Q 130 220 100 220 Q 70 220 64 210 Z"/>
-              <!-- 다리 -->
-              <path d="M 72 220 L 70 305 L 92 305 L 96 220 Z"/>
-              <path d="M 104 220 L 108 305 L 130 305 L 128 220 Z"/>
-            </g>
-
-            <!-- 합병증 매핑 마커 + 라인 + 라벨 -->
-            <!-- 1. 뇌 (Brain) -->
-            <line x1="100" y1="32" x2="160" y2="20" stroke="#C44" stroke-width="1.2"/>
-            <circle cx="100" cy="32" r="6" fill="#C44" stroke="#fff" stroke-width="2"/>
-            <text x="100" y="36" font-size="8" font-weight="700" fill="#fff" text-anchor="middle" font-family="Pretendard Variable, sans-serif">1</text>
-            <text x="163" y="22" font-size="9" font-weight="700" fill="#C44" font-family="Pretendard Variable, sans-serif">뇌</text>
-
-            <!-- 2. 눈 (Eye) -->
-            <line x1="108" y1="42" x2="160" y2="48" stroke="#B07A2A" stroke-width="1.2"/>
-            <circle cx="108" cy="42" r="5" fill="#B07A2A" stroke="#fff" stroke-width="2"/>
-            <text x="108" y="45.5" font-size="7" font-weight="700" fill="#fff" text-anchor="middle" font-family="Pretendard Variable, sans-serif">2</text>
-            <text x="163" y="51" font-size="9" font-weight="700" fill="#B07A2A" font-family="Pretendard Variable, sans-serif">눈</text>
-
-            <!-- 3. 심장 (Heart) -->
-            <line x1="90" y1="118" x2="20" y2="110" stroke="#C44" stroke-width="1.2"/>
-            <circle cx="90" cy="118" r="6.5" fill="#C44" stroke="#fff" stroke-width="2"/>
-            <text x="90" y="122" font-size="8" font-weight="700" fill="#fff" text-anchor="middle" font-family="Pretendard Variable, sans-serif">3</text>
-            <text x="17" y="113" font-size="9" font-weight="700" fill="#C44" text-anchor="end" font-family="Pretendard Variable, sans-serif">심장</text>
-
-            <!-- 4. 대동맥 (Aorta) -->
-            <line x1="100" y1="148" x2="20" y2="160" stroke="#8B2C2C" stroke-width="1.2"/>
-            <circle cx="100" cy="148" r="5.5" fill="#8B2C2C" stroke="#fff" stroke-width="2"/>
-            <text x="100" y="151.5" font-size="7" font-weight="700" fill="#fff" text-anchor="middle" font-family="Pretendard Variable, sans-serif">4</text>
-            <text x="17" y="163" font-size="9" font-weight="700" fill="#8B2C2C" text-anchor="end" font-family="Pretendard Variable, sans-serif">대혈관</text>
-
-            <!-- 5. 신장 (Kidney) — both sides marker -->
-            <line x1="116" y1="172" x2="180" y2="180" stroke="#2A6BAA" stroke-width="1.2"/>
-            <circle cx="116" cy="172" r="6" fill="#2A6BAA" stroke="#fff" stroke-width="2"/>
-            <text x="116" y="176" font-size="8" font-weight="700" fill="#fff" text-anchor="middle" font-family="Pretendard Variable, sans-serif">5</text>
-            <text x="183" y="183" font-size="9" font-weight="700" fill="#2A6BAA" font-family="Pretendard Variable, sans-serif">신장</text>
-          </svg>
+        <!-- 좌측 라벨: 눈(상) / 대혈관(하) -->
+        <div class="htn-bodymap__col htn-bodymap__col--left">
+          <div class="bodylabel bodylabel--eye">
+            <div class="bodylabel__num" style="background:#B07A2A;">2</div>
+            <div>
+              <span class="bodylabel__title">고혈압성 망막병증</span>
+              <span class="bodylabel__body">눈 모세혈관 손상 → <strong>시야 흐림·출혈·실명</strong>. 본인은 못 느끼고 안저검사로만 발견.</span>
+            </div>
+          </div>
+          <div class="bodylabel bodylabel--aorta">
+            <div class="bodylabel__num" style="background:#8B2C2C;">4</div>
+            <div>
+              <span class="bodylabel__title">대동맥 박리 · 동맥류</span>
+              <span class="bodylabel__body">혈관 벽이 찢어지는 <strong>생명 응급</strong>. 갑작스러운 찢어지는 흉통·등 통증.</span>
+            </div>
+          </div>
         </div>
 
-        <!-- 우: 5개 합병증 카드 -->
-        <div class="htn-infogfx__list">
+        <!-- 가운데 이미지 -->
+        <figure class="htn-bodymap__figure">
+          <img src="../../../shared/assets/generated/htn-complications-body-map.png" alt="고혈압 합병증 5대 인체 매핑 — 뇌·눈·심장·대혈관·신장">
+        </figure>
 
-          <div class="complication complication--brain">
-            <div class="complication__num">1</div>
-            <div class="complication__body">
-              <span class="complication__title">뇌졸중 · 혈관성 치매</span>어느 날 갑자기 <strong>마비·언어장애·의식소실</strong>. 고혈압은 뇌졸중의 <strong>최대 위험인자 (3~5배)</strong>.
+        <!-- 우측 라벨: 뇌(상) / 심장(중) / 신장(하) -->
+        <div class="htn-bodymap__col htn-bodymap__col--right">
+          <div class="bodylabel bodylabel--brain">
+            <div class="bodylabel__num" style="background:#C44;">1</div>
+            <div>
+              <span class="bodylabel__title">뇌졸중 · 혈관성 치매</span>
+              <span class="bodylabel__body">어느 날 갑자기 <strong>마비·언어장애·의식소실</strong>. 고혈압은 뇌졸중 최대 위험인자 (3~5배).</span>
             </div>
           </div>
-
-          <div class="complication complication--eye">
-            <div class="complication__num">2</div>
-            <div class="complication__body">
-              <span class="complication__title">고혈압성 망막병증</span>눈 속 모세혈관 손상 → <strong>시야 흐림·출혈·실명</strong>. 본인은 못 느끼고 안저검사로만 발견되는 경우가 많음.
+          <div class="bodylabel bodylabel--heart">
+            <div class="bodylabel__num" style="background:#C44;">3</div>
+            <div>
+              <span class="bodylabel__title">심근경색 · 심부전</span>
+              <span class="bodylabel__body">관상동맥 동맥경화 가속 → <strong>흉통·돌연사·호흡곤란</strong>. 좌심실 비대로 심장이 굳어짐.</span>
             </div>
           </div>
-
-          <div class="complication complication--heart">
-            <div class="complication__num">3</div>
-            <div class="complication__body">
-              <span class="complication__title">심근경색 · 심부전</span>관상동맥 동맥경화 가속 → <strong>가슴 통증·돌연사·호흡곤란</strong>. 좌심실 비대로 심장이 점점 굳어짐.
+          <div class="bodylabel bodylabel--kidney">
+            <div class="bodylabel__num" style="background:#2A6BAA;">5</div>
+            <div>
+              <span class="bodylabel__title">만성신부전 · 투석</span>
+              <span class="bodylabel__body">사구체 손상 → 단백뇨·신기능 저하 → <strong>투석·이식</strong>. 당뇨와 함께 양대 원인.</span>
             </div>
           </div>
-
-          <div class="complication complication--aorta">
-            <div class="complication__num">4</div>
-            <div class="complication__body">
-              <span class="complication__title">대동맥 박리 · 동맥류</span>혈관 벽이 찢어지는 <strong>생명 응급</strong>. 갑작스러운 찢어지는 듯한 흉통·등 통증, 사망률이 매우 높음.
-            </div>
-          </div>
-
-          <div class="complication complication--kidney">
-            <div class="complication__num">5</div>
-            <div class="complication__body">
-              <span class="complication__title">만성신부전 · 투석</span>신장 사구체 손상 → 단백뇨·신기능 저하 → <strong>투석·이식</strong>. 당뇨와 함께 투석의 양대 원인.
-            </div>
-          </div>
-
         </div>
+
       </div>
     </section>
 
