@@ -752,6 +752,16 @@ TARGETS = [
         "note": "종합검사 — 콜레스테롤 경계역",
     },
     {
+        "kind": "lab-reports", "slug": "b461390696",
+        "slug_path": "lab-reports/general-checkup/b461390696/",
+        "html_path": ROOT / "lab-reports/general-checkup/b461390696/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "고지혈·빈혈",
+        "patient_name": "김은경", "chart_no": "29869",
+        "exam_date": "2026-05-11", "doctor": "정지환",
+        "note": "공단검진 — 심한 고지혈(TC 322·LDL 202·Lp(a) 94.8) 약물치료 권고 · 빈혈(Hb 9.5) 철결핍 확인 필요",
+    },
+    {
         "kind": "lab-reports", "slug": "19f7fad6a4",
         "slug_path": "lab-reports/comprehensive-summary/19f7fad6a4/",
         "html_path": ROOT / "lab-reports/comprehensive-summary/19f7fad6a4/index.html",
