@@ -422,6 +422,14 @@ TARGETS = [
         "category": "🏥 내시경 관련", "audience": "환자/보호자", "disease": "대장내시경 준비 안내문",
     },
     {
+        "kind": "handouts", "slug": "egd-prep",
+        "slug_path": "handouts/endoscopy/egd-prep/",
+        "html_path": ROOT / "handouts/endoscopy/egd-prep/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "위내시경(EGD) 검사 준비 안내문",
+        "category": "🏥 내시경 관련", "audience": "환자/보호자", "disease": "위내시경 검사 전 준비 · 금식 · GLP-1RA · 항혈전제",
+    },
+    {
         "kind": "handouts", "slug": "antithrombotic-pre-endoscopy",
         "slug_path": "handouts/endoscopy/antithrombotic-pre-endoscopy/",
         "html_path": ROOT / "handouts/endoscopy/antithrombotic-pre-endoscopy/index.html",
