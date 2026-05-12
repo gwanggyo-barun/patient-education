@@ -30,6 +30,12 @@ DBS = {
     "lab-reports": "c150b47d523c45c09108ac716009c49b",  # 🧪 환자 검사결과
 }
 
+# 👤 환자 마스터 DB — same parent page as lab-reports DB. Each patient
+# identified by chart_no (unique); lab-report rows link here via the
+# DUAL "환자" relation so a patient page auto-accumulates every test
+# they've ever had on the build pipeline.
+PATIENT_DB_ID = "b7e56e3433ee4ed4a28f24621590d1af"
+
 TITLE_PROPS = {
     "decks":       "자료명",
     "handouts":    "자료명",
@@ -68,6 +74,55 @@ def _find_page_id_by_title(db_id: str, title_prop: str, title: str) -> str | Non
     )
     results = res.get("results", [])
     return results[0]["id"] if results else None
+
+
+def _ensure_patient_page(chart_no: str, patient_name: str) -> str:
+    """Find patient page by chart_no, or create one. Returns page_id.
+
+    chart_no is the unique identifier (EMR chart number) — used for dedup so
+    name typos / 표기 흔들림 don't fragment the patient. If a row already
+    exists with this chart_no but a different 환자명, the existing 환자명 is
+    updated to the latest passed in (assumption: latest build is most correct).
+    """
+    res = _api(
+        "POST",
+        f"/databases/{PATIENT_DB_ID}/query",
+        {
+            "filter": {"property": "차트번호", "rich_text": {"equals": chart_no}},
+            "page_size": 1,
+        },
+    )
+    results = res.get("results", [])
+    if results:
+        existing_id = results[0]["id"]
+        title_prop = results[0].get("properties", {}).get("환자명", {})
+        existing_name = "".join(
+            t.get("plain_text", "") for t in title_prop.get("title", [])
+        )
+        if patient_name and existing_name != patient_name:
+            _api(
+                "PATCH",
+                f"/pages/{existing_id}",
+                {
+                    "properties": {
+                        "환자명": {"title": [{"text": {"content": patient_name}}]}
+                    }
+                },
+            )
+        return existing_id
+
+    res = _api(
+        "POST",
+        "/pages",
+        {
+            "parent": {"database_id": PATIENT_DB_ID},
+            "properties": {
+                "환자명": {"title": [{"text": {"content": patient_name}}]},
+                "차트번호": {"rich_text": [{"text": {"content": chart_no}}]},
+            },
+        },
+    )
+    return res["id"]
 
 
 def _find_lab_report_existing(
@@ -128,6 +183,7 @@ def _build_lab_report_props(
     note: str | None,
     pdf_url: str,
     notes_rich: list,
+    patient_page_id: str | None = None,
 ) -> tuple[dict, str]:
     """🧪 환자 검사결과 DB 속성 빌드. Returns (properties, search_title)."""
     if not (patient_name and chart_no):
@@ -149,6 +205,8 @@ def _build_lab_report_props(
         properties["검사일"] = {"date": {"start": exam_date}}
     if doctor:
         properties["담당의"] = {"rich_text": [{"text": {"content": doctor}}]}
+    if patient_page_id:
+        properties["환자"] = {"relation": [{"id": patient_page_id}]}
     return properties, full_title
 
 
@@ -256,6 +314,18 @@ def upsert(
             note = note or p_note
         # exam_date defaults to today if still unspecified
         exam_date = exam_date or today_iso
+        # Auto-link to 환자 마스터 DB — find by chart_no, create if missing.
+        # Best-effort: lab-report upsert still proceeds if patient link fails.
+        patient_page_id: str | None = None
+        if patient_name and chart_no:
+            try:
+                patient_page_id = _ensure_patient_page(chart_no, patient_name)
+            except Exception as e:  # noqa: BLE001
+                import sys as _sys
+                print(
+                    f"⚠️  patient master link failed for [{chart_no}] {patient_name}: {e}",
+                    file=_sys.stderr,
+                )
         properties, search_title = _build_lab_report_props(
             patient_name=patient_name or "",
             chart_no=chart_no or "",
@@ -264,6 +334,7 @@ def upsert(
             note=note,
             pdf_url=pdf_url,
             notes_rich=notes_rich,
+            patient_page_id=patient_page_id,
         )
     elif kind == "handouts":
         if not title:

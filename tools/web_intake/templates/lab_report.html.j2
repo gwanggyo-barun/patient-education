@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=794">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{ report_title }} — 광교바른내과</title>
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{{ base_url }}/lab-reports/{{ topic }}/{{ slug }}/">
+  <meta property="og:title" content="{{ report_title }} — 광교바른내과">
+  <meta property="og:description" content="{{ og_description }}">
+  <meta property="og:image" content="{{ base_url }}/lab-reports/{{ topic }}/{{ slug }}/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+</head>
+<body>
+
+<div class="page">
+
+  <header class="page__header">
+    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
+    <div class="page__eyebrow">LAB REPORT · <strong>{{ eyebrow_label }}</strong></div>
+  </header>
+
+  <section class="page__title-block">
+    <h1 class="page__title">{{ report_title }}</h1>
+    <p class="page__subtitle">{{ patient_name }} ({{ age_sex }}) · 차트번호 {{ chart_no }} · 검사일 {{ exam_date }} · 담당의 {{ doctor }} 원장</p>
+  </section>
+
+  <main class="page__body">
+
+    <section>
+      <h2 class="section-heading">핵심 수치 한눈에 보기</h2>
+      <div class="stats-row">
+        {%- for s in stats %}
+        <div class="stat-cell stat-cell--{{ s.status }}">
+          <div class="stat-cell__label">{{ s.label }}</div>
+          <div class="stat-cell__value">{{ s.value }}</div>
+          <div class="stat-cell__unit">{{ s.unit }}</div>
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-heading">전체 항목 상세</h2>
+      <div class="card" style="padding: 2.5mm 4mm;">
+        <div class="lab-row lab-row--header">
+          <div>항목</div>
+          <div style="text-align:right;">결과</div>
+          <div>참고치</div>
+          <div></div>
+        </div>
+        {%- for d in details %}
+        <div class="lab-row">
+          <div class="lab-row__label">{{ d.label }}</div>
+          <div class="lab-row__value">{{ d.value }}</div>
+          <div class="lab-row__range">{{ d.range }}</div>
+          <div class="lab-row__badge{% if d.badge_class %} lab-row__badge--{{ d.badge_class }}{% endif %}">{{ d.badge }}</div>
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-heading">해석 및 권장 사항</h2>
+      <div class="body-2col">
+        <div class="card card--warning">
+          <div class="card-label card-label--warning">의미</div>
+          <ul class="card-list" style="font-size:8.5pt;">
+            {%- for m in meanings %}
+            <li>· {{ m | safe }}</li>
+            {%- endfor %}
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label card-label--navy">생활·관리 계획</div>
+          <ul class="card-list" style="font-size:8.5pt;">
+            {%- for r in recommendations %}
+            <li>· {{ r | safe }}</li>
+            {%- endfor %}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="page__footer">
+    <div class="page__footer-info">
+      <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">소화기내과 · 일반내과 · 5대암 검진</div>
+      <div class="disclaimer">본 결과지는 환자 설명용 요약본입니다. 정확한 해석과 치료는 담당 의사 진료를 통해 결정합니다.</div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
