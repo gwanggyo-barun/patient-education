@@ -770,6 +770,16 @@ TARGETS = [
         "note": "공단검진 — 심한 고지혈(TC 322·LDL 202·Lp(a) 94.8) 약물치료 권고 · 빈혈(Hb 9.5) 철결핍 확인 필요",
     },
     {
+        "kind": "lab-reports", "slug": "58c4c71b86",
+        "slug_path": "lab-reports/general-checkup/58c4c71b86/",
+        "html_path": ROOT / "lab-reports/general-checkup/58c4c71b86/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "갑상선 기능저하",
+        "patient_name": "김정원", "chart_no": "26",
+        "exam_date": "2026-03-25", "doctor": "정지환",
+        "note": "종합검사 — 갑상선 반절제술 후 TSH 6.15 경도상승, 신지로이드 25μg 시작 · 그 외 모두 정상 (암표지자 4종·고지혈·당뇨 정상)",
+    },
+    {
         "kind": "lab-reports", "slug": "19f7fad6a4",
         "slug_path": "lab-reports/comprehensive-summary/19f7fad6a4/",
         "html_path": ROOT / "lab-reports/comprehensive-summary/19f7fad6a4/index.html",
