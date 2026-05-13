@@ -689,6 +689,15 @@ TARGETS = [
         "disease": "경구 철분제 복약 가이드 — 비타민 C 시너지·탄닌·칼슘·제산제 흡수 방해·격일 복용·페리틴 회복",
     },
     {
+        "kind": "handouts", "slug": "thyroid-hormone-taking",
+        "slug_path": "handouts/medication/thyroid-hormone-taking/",
+        "html_path": ROOT / "handouts/medication/thyroid-hormone-taking/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "💊 갑상선 호르몬제 복용법 — 씬지로이드, 씬지록신 공복 복용 안내",
+        "category": "💊 투약 안내", "audience": "환자/보호자",
+        "disease": "갑상선 기능저하증 및 갑상선암 수술 후 레보티록신 복용 교육 — 아침 공복, 복용 후 30~60분 금식, 칼슘·철분·제산제 4시간 분리, 저녁 복용 연구 근거.",
+    },
+    {
         "kind": "handouts", "slug": "htn-why-start",
         "slug_path": "handouts/medication/htn-why-start/",
         "html_path": ROOT / "handouts/medication/htn-why-start/index.html",
