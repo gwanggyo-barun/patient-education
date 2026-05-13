@@ -147,6 +147,14 @@ TARGETS = [
         "category": "🫁 위장관", "audience": "환자/보호자", "disease": "급성충수염 (Acute Appendicitis), 급성 게실염 (Acute Diverticulitis)",
     },
     {
+        "kind": "decks", "slug": "bowel-prep-low-volume",
+        "slug_path": "decks/gi/bowel-prep-low-volume/",
+        "html_path": ROOT / "decks/gi/bowel-prep-low-volume/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "저용량 장정결 (1L PEG-ascorbate) — 4L PEG와 동등 이상",
+        "category": "🫁 위장관", "audience": "환자/보호자", "disease": "대장내시경 장정결 · 1L PEG-ascorbate · Ann Intern Med 2026",
+    },
+    {
         "kind": "decks", "slug": "atrophic-gastritis",
         "slug_path": "decks/gi/atrophic-gastritis/",
         "html_path": ROOT / "decks/gi/atrophic-gastritis/index.html",
