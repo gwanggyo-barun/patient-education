@@ -16,9 +16,11 @@ python3 -m playwright install chromium   # 첫 실행 시
 
 ```bash
 cd ~/clinic-content-system
-set -a && source _migration/.env && set +a   # OPENAI_API_KEY + NOTION_TOKEN 로드
+set -a && source _migration/.env && set +a   # ANTHROPIC_API_KEY + NOTION_TOKEN 로드
 python3 -m streamlit run tools/web_intake/app.py
 ```
+
+`ANTHROPIC_API_KEY`가 있으면 **Claude Sonnet 4.5** + `SKILL.md` 캐시된 system prompt가 사용됩니다 (권장 — clinic-content-system 컨벤션 자동 반영). `ANTHROPIC_API_KEY`가 없고 `OPENAI_API_KEY`만 있으면 gpt-4o로 자동 fallback.
 
 브라우저가 자동으로 열림 (보통 http://localhost:8501).
 
@@ -50,7 +52,8 @@ python3 -m streamlit run tools/web_intake/app.py
 ```
 PDF (multi-page)
   → PyMuPDF rasterize (PNG @ 144dpi)
-  → OpenAI gpt-4o vision (structured JSON: 4 stats + 5~7 details + 3 meanings + 3 recs)
+  → Claude Sonnet 4.5 vision (SKILL.md cached system prompt → JSON: 4 stats + 5~7 details + 3 meanings + 3 recs)
+       │  OpenAI gpt-4o fallback if ANTHROPIC_API_KEY missing
   → Jinja2 template (clinic-content-system/lab-reports 컨벤션)
   → Playwright A4 portrait render (PDF + preview.png)
   → (옵션) Notion upsert via _notion_sync.upsert
@@ -60,9 +63,9 @@ PDF (multi-page)
 
 ## 보안 고려사항
 
-- **PDF 내용은 OpenAI API로 전송됩니다.** 환자명·차트번호·검사값이 포함되므로
-  공용 API 키 사용 시 비식별화를 고려하세요 (이름 마스킹 등). 현재는 OpenAI의
-  Zero Data Retention 정책을 기본 신뢰합니다.
+- **PDF 내용은 Claude API (또는 OpenAI fallback)로 전송됩니다.** 환자명·차트번호·검사값이
+  포함되므로 공용 API 키 사용 시 비식별화를 고려하세요 (이름 마스킹 등). Anthropic의
+  Zero Data Retention 정책 + workspace 설정을 기본 신뢰합니다.
 - **로컬 전용 PoC**: Streamlit이 0.0.0.0이 아닌 localhost에 바인딩되므로 같은
   머신에서만 접속 가능. 외부 공개 시 Cloudflare Access / 매직 링크 인증 + 한국
   리전 호스팅 + audit log 필수.
