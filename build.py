@@ -698,6 +698,15 @@ TARGETS = [
         "disease": "갑상선 기능저하증 및 갑상선암 수술 후 레보티록신 복용 교육 — 아침 공복, 복용 후 30~60분 금식, 칼슘·철분·제산제 4시간 분리, 저녁 복용 연구 근거.",
     },
     {
+        "kind": "handouts", "slug": "nasal-spray-allergic-rhinitis",
+        "slug_path": "handouts/medication/nasal-spray-allergic-rhinitis/",
+        "html_path": ROOT / "handouts/medication/nasal-spray-allergic-rhinitis/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "💧 알러지 비염 코 스프레이, 이렇게 사용하세요 — 자세·각도·흡입·매일",
+        "category": "💊 투약 안내", "audience": "환자/보호자",
+        "disease": "알러지 비염 환자를 위한 비강 스테로이드 스프레이 사용 4단계 — 턱 살짝 당기기(턱 들기 금지), 같은 쪽 눈 방향으로 비스듬히 분사(비중격 회피), 분사 후 코로 살짝 흡입, 매일 1~2회 꾸준히. 효과는 1~2주 누적 후 발현, 안전성은 전신 흡수 < 1%.",
+    },
+    {
         "kind": "handouts", "slug": "htn-why-start",
         "slug_path": "handouts/medication/htn-why-start/",
         "html_path": ROOT / "handouts/medication/htn-why-start/index.html",
