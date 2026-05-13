@@ -524,6 +524,7 @@ TARGETS = [
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "폐기능 검사(PFT) 안내",
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "폐기능 검사(PFT) 준비 안내",
+        "version": "v1.1",
     },
     {
         "kind": "handouts", "slug": "cold-return-visit",
@@ -1053,6 +1054,7 @@ def main() -> int:
                         html_url=target_url,
                         pdf_url=pdf_url,
                         today_iso=today_iso,
+                        version=t.get("version", "v1.0"),
                         # decks / handouts
                         title=t.get("title"),
                         category=t.get("category"),
