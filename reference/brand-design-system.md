@@ -209,6 +209,7 @@ fallback: -apple-system, BlinkMacSystemFont, system-ui, sans-serif
 이 디자인 시스템은 한 번 정착하면 자주 변경하지 않는다. 변경이 필요하면:
 
 1. 이 문서를 먼저 갱신
-2. `clinic-content-system/shared/design-tokens.css` 갱신
-3. 다른 스킬(patient-handout-pdf, lab-report-infographic, patient-education-pptx)의 디자인 토큰도 동기 갱신
-4. 변경 사유와 영향 범위를 Notion 클리닉 허브에 기록
+2. `clinic-content-system/shared/design-tokens.css` 갱신 — 모든 콘텐츠가 CSS 변수로 참조하므로 빌드만 다시 돌리면 일괄 적용됨
+3. 변경 사유와 영향 범위를 Notion 클리닉 허브에 기록
+
+> Note: 옛 별도 스킬(patient-handout-pdf, lab-report-infographic, patient-education-pptx)은 이제 `clinic-content-system`의 진입점 redirector이므로 별도 토큰 동기화 불필요.

@@ -73,57 +73,65 @@ clinic-content-system/
 <img src="../../../../shared/assets/clinic_logo.png">
 ```
 
-## 빌드 스크립트
+## 빌드 스크립트 (현재 schema)
 
-`build.py`를 프로젝트 루트에 둔다:
+`build.py`는 세 가지 콘텐츠 타입(decks/handouts/lab-reports)을 단일 TARGETS dict 리스트로 관리한다. **새 자료 추가는 이 리스트에 dict 한 항목을 append하는 것**.
 
 ```python
-from playwright.sync_api import sync_playwright
-from pathlib import Path
+TARGETS = [
+    # === 16:9 deck (12 slides) ===
+    {
+        "kind": "decks", "slug": "gerd",
+        "slug_path": "decks/gi/gerd/lifestyle/",
+        "html_path": ROOT / "decks/gi/gerd/lifestyle/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        # Notion DB 동기용 (decks/handouts 필수)
+        "title": "역류성 식도염 생활관리",
+        "category": "🫁 위장관", "audience": "환자/보호자", "disease": "GERD",
+    },
 
-ROOT = Path(__file__).parent
-OUT = ROOT / "output"
-OUT.mkdir(exist_ok=True)
+    # === A4 handout (1 page) ===
+    {
+        "kind": "handouts", "slug": "egd-prep",
+        "slug_path": "handouts/endoscopy/egd-prep/",
+        "html_path": ROOT / "handouts/endoscopy/egd-prep/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "위내시경(EGD) 검사 준비 안내문",
+        "category": "🏥 내시경 관련", "audience": "환자/보호자", "disease": "위내시경 준비",
+    },
 
-# 빌드할 덱 목록 (slug, HTML 경로)
-DECKS = [
-    ("gerd",     ROOT / "decks/gi/gerd/lifestyle/index.html"),
-    ("hpylori",  ROOT / "decks/gi/h-pylori/eradication/index.html"),
-    # 새 덱 추가 시 이 리스트에 한 줄 추가
+    # === A4 lab-report (1 page, 환자별) ===
+    {
+        "kind": "lab-reports", "slug": "<hash10>",        # lab_hash_slug() 결과
+        "slug_path": "lab-reports/general-checkup/<hash10>/",
+        "html_path": ROOT / "lab-reports/general-checkup/<hash10>/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        # 환자 메타 (lab-reports 필수, [차트번호] 환자명 자동 조합)
+        "patient_name": "홍길동", "chart_no": "12345",
+        "exam_date": "2026-05-13", "doctor": "정지환",
+        "note": "종합검진 — 콜레스테롤 경계역",
+    },
 ]
-
-with sync_playwright() as p:
-    browser = p.chromium.launch()
-    for slug, deck_path in DECKS:
-        url = f"file://{deck_path}"
-
-        # 데스크톱 풀스크린 미리보기 (검증용)
-        ctx = browser.new_context(viewport={"width": 1320, "height": 800})
-        page = ctx.new_page()
-        page.goto(url, wait_until="networkidle")
-        page.wait_for_timeout(2000)
-        page.screenshot(path=str(OUT / f"{slug}-preview.png"), full_page=True)
-        ctx.close()
-
-        # 환자 공유용 PDF (1280x720 native)
-        ctx = browser.new_context()
-        page = ctx.new_page()
-        page.goto(url, wait_until="networkidle")
-        page.wait_for_timeout(2000)
-        page.emulate_media(media="print")
-        page.pdf(path=str(OUT / f"{slug}.pdf"),
-                 width="1280px", height="720px", print_background=True,
-                 margin={"top": "0", "right": "0", "bottom": "0", "left": "0"})
-        ctx.close()
-
-        print(f"  built: {slug}")
-    browser.close()
 ```
 
-실행:
+빌드 실행:
 ```bash
 python build.py
 ```
+
+빌드는 다음을 한 번에 수행:
+1. **TARGETS 라우팅 검증** — `_validate_targets_routing()`이 `kind`와 `slug_path` 일치, Korean-slug(lab-reports) 차단
+2. **CSS 경로 검증** — `_validate_css_paths()`가 3-level vs 4-level 깊이 mismatch 검출
+3. **OG meta 검증** — `check_og_meta()`이 7종 메타태그 누락 검출
+4. **lab-reports 개인정보 처리** — QR strip + noindex meta inject
+5. **non-lab QR 주입** — `inject_qr()`이 빈 `<div class="qr-block__code">` 또는 `<div class="qr-mini__code">`에 SVG 삽입
+6. **Playwright 레이아웃 validation** — 페이지 overflow / 푸터 침범 검출
+7. **PDF + preview PNG 렌더** — `output/{kind}/{slug}.{pdf,png}`
+8. **Notion DB upsert** (NOTION_TOKEN 있을 때만) — `kind`에 따라 3개 DB 중 하나로 라우팅
+
+산출물:
+- `output/{kind}/{slug}.pdf` — 환자 공유용
+- `output/{kind}/{slug}-preview.png` — 데스크톱 풀스크린 미리보기
 
 ## 호스팅 (GitHub Pages)
 
@@ -142,16 +150,18 @@ https://gwanggyo-barun.github.io/patient-education/decks/gi/gerd/lifestyle/
 
 12장 슬라이드가 노션 페이지 안에서 세로 스크롤로 표시된다.
 
-## 새 덱 만들기 단계
+## 새 자료 만들기 단계 (deck/handout/lab-report 공통)
 
-1. `decks/{specialty}/{topic}/{slug}/index.html` 생성
-2. `decks/gi/gerd/lifestyle/index.html`을 템플릿으로 복사
-3. content-template.md의 12장 구성을 따라 본문 작성
-4. patterns.md의 패턴 HTML을 복붙해서 콘텐츠만 교체
-5. `build.py`의 DECKS 리스트에 한 줄 추가
-6. `python build.py` 실행
-7. `output/{slug}.pdf`와 `output/{slug}-preview.png` 검증
-8. git push → GitHub Pages 자동 갱신
+1. `{kind}/{specialty 또는 topic}/{slug}/index.html` 생성
+   - decks: `decks/gi/gerd/lifestyle/index.html`을 템플릿으로 복사
+   - handouts: 기존 핸드아웃 중 비슷한 카테고리 하나 복사
+   - lab-reports: `lab-reports/{panel}/template/`을 복사, `lab_hash_slug()`로 slug 생성
+2. content-template.md / patterns.md 참고해 본문 작성
+3. `build.py`의 `TARGETS` 리스트에 dict 한 항목 append (위 스키마 참조)
+4. `python -m shared._validate_layout <html_path>` 로 사전 검증
+5. (선택) `python build.py` 로컬 빌드 — `output/{kind}/{slug}-preview.png` 시각 점검
+6. `git add <명시 파일>` (절대 `.` 또는 `-A` 금지) → commit → push
+7. CI(~80초)가 PDF 빌드 + GH Pages 배포 + Notion DB 자동 동기
 
 ## 검증 체크리스트
 

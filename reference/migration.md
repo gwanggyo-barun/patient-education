@@ -1,6 +1,14 @@
-# 기존 스킬 마이그레이션 가이드
+# 기존 스킬 마이그레이션 가이드 (✅ 완료 — historical reference)
 
-> 이 문서는 광교바른내과의 기존 세 스킬(patient-education-pptx, patient-handout-pdf, lab-report-infographic)을 새 `clinic-content-system`의 디자인 시스템과 통일시키는 방법을 안내한다.
+> ⚠️ **이 문서는 2026-05-09 마이그레이션 완료 후 기록 보존용**입니다.
+> 현재 상태: `patient-handout-pdf`, `lab-report-infographic`은 `clinic-content-system` 진입점 redirector로 정착됨. `patient-education-pptx`는 legacy 트리거 ("PPTX 명시 요청 시"만 사용).
+> 작업 결과 요약은 [`_migration/MIGRATION_SUMMARY.md`](../_migration/MIGRATION_SUMMARY.md) 참조.
+>
+> 아래는 마이그레이션 당시 가이드 — 새 작업 시 참고할 필요 없음.
+
+---
+
+이 문서는 광교바른내과의 기존 세 스킬(patient-education-pptx, patient-handout-pdf, lab-report-infographic)을 새 `clinic-content-system`의 디자인 시스템과 통일시키는 방법을 안내한다.
 
 ## 목표
 
