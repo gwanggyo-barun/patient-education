@@ -698,6 +698,15 @@ TARGETS = [
         "disease": "갑상선 기능저하증 및 갑상선암 수술 후 레보티록신 복용 교육 — 아침 공복, 복용 후 30~60분 금식, 칼슘·철분·제산제 4시간 분리, 저녁 복용 연구 근거.",
     },
     {
+        "kind": "handouts", "slug": "thyroid-nodule-followup",
+        "slug_path": "handouts/endocrine/thyroid-nodule-followup/",
+        "html_path": ROOT / "handouts/endocrine/thyroid-nodule-followup/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "갑상선 결절 추적 안내 — K-TIRADS와 세침흡인검사 기준",
+        "category": "🩺 일반내과", "audience": "환자/보호자",
+        "disease": "갑상선 결절 초음파 추적 — K-TIRADS 등급, 세침흡인검사(FNA) 크기 기준, Bethesda class별 추적 계획",
+    },
+    {
         "kind": "handouts", "slug": "nasal-spray-allergic-rhinitis",
         "slug_path": "handouts/medication/nasal-spray-allergic-rhinitis/",
         "html_path": ROOT / "handouts/medication/nasal-spray-allergic-rhinitis/index.html",
