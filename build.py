@@ -75,6 +75,14 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "고혈압 (HTN)",
     },
     {
+        "kind": "decks", "slug": "htn-2025-aha-acc",
+        "slug_path": "decks/cardio/htn-2025-aha-acc/",
+        "html_path": ROOT / "decks/cardio/htn-2025-aha-acc/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "2025 AHA/ACC 고혈압 가이드라인 — 목표 <130/80",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "고혈압 (HTN) · 2025 AHA/ACC Guideline",
+    },
+    {
         "kind": "decks", "slug": "oh-management-2026",
         "slug_path": "decks/cardio/orthostatic-hypotension/management-2026/",
         "html_path": ROOT / "decks/cardio/orthostatic-hypotension/management-2026/index.html",
