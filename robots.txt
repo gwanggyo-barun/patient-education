@@ -1,6 +1,17 @@
 # Patient-specific lab report URLs are not for public consumption.
 # Hash slugs make the paths unguessable, this stops crawlers from
-# indexing any leaked link.
+# indexing any leaked link. Belt-and-suspenders alongside per-page
+# `<meta name="robots" content="noindex,nofollow,noarchive">`.
 User-agent: *
 Disallow: /lab-reports/
 Disallow: /output/lab-reports/
+
+# Defense-in-depth: even though CI no longer ships these paths to
+# Pages, keep robots blocking in case of accidental future regression.
+Disallow: /_migration/
+Disallow: /tools/
+Disallow: /reference/
+Disallow: /build.py
+Disallow: /SKILL.md
+Disallow: /AGENTS.md
+Disallow: /README.md

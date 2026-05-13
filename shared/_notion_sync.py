@@ -322,8 +322,11 @@ def upsert(
                 patient_page_id = _ensure_patient_page(chart_no, patient_name)
             except Exception as e:  # noqa: BLE001
                 import sys as _sys
+                # Never log chart_no, name, or full exception text — CI logs
+                # on public repos are world-readable. Exception class only.
                 print(
-                    f"⚠️  patient master link failed for [{chart_no}] {patient_name}: {e}",
+                    f"⚠️  patient master link failed (chart=*** name=***) "
+                    f"({type(e).__name__})",
                     file=_sys.stderr,
                 )
         properties, search_title = _build_lab_report_props(

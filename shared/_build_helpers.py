@@ -9,6 +9,7 @@ Used by build.py for decks, handouts, and lab-reports — single source for:
 """
 from __future__ import annotations
 import hashlib
+import os
 import re
 from io import BytesIO
 from pathlib import Path
@@ -143,10 +144,19 @@ def lab_hash_slug(chart_no: str, patient_name: str, topic: str) -> str:
     re-builds and Notion upserts stay stable. Topic is the second segment of
     slug_path (e.g. "diabetes-screening"), which keeps URLs grouped without
     leaking identity.
+
+    Set ``LAB_SLUG_SALT`` env var to inject a server-side secret salt.
+    Without the salt, the inputs (chart_no range, name, 8-topic enum) are
+    brute-forceable in under an hour on commodity GPU. Migrating existing
+    slugs requires re-running build.py + updating Notion 파일링크 URLs.
     """
     if not chart_no or not patient_name:
         raise ValueError("lab_hash_slug requires non-empty chart_no and patient_name")
-    seed = f"{chart_no}:{patient_name}:{topic}"
+    salt = os.environ.get("LAB_SLUG_SALT", "")
+    seed_parts = [chart_no.strip(), patient_name.strip(), topic]
+    if salt:
+        seed_parts.insert(0, salt)
+    seed = ":".join(seed_parts)
     return hashlib.sha256(seed.encode("utf-8")).hexdigest()[:10]
 
 
@@ -170,13 +180,21 @@ _NOINDEX_META = '<meta name="robots" content="noindex,nofollow,noarchive">'
 
 
 def inject_noindex_meta(html: str) -> str:
-    """Insert `<meta name="robots" content="noindex,…">` after `<head>` if absent.
+    """Insert `<meta name="robots" content="noindex,nofollow,noarchive">`.
 
     Combined with /robots.txt this hides lab-report URLs from search engines.
     The noarchive directive also blocks Google's cached-copy view.
+
+    Behaviour:
+      - no existing robots meta → insert canonical after <head>
+      - existing weak meta (missing noarchive) → replace with canonical
+      - existing canonical (already has noarchive) → no-op
     """
-    if re.search(r'<meta\s+name="robots"', html, re.IGNORECASE):
-        return html
+    existing = re.search(r'<meta\s+name="robots"[^>]*>', html, re.IGNORECASE)
+    if existing:
+        if "noarchive" in existing.group(0).lower():
+            return html
+        return html.replace(existing.group(0), _NOINDEX_META, 1)
     return re.sub(
         r'(<head[^>]*>)',
         rf'\1\n  {_NOINDEX_META}',

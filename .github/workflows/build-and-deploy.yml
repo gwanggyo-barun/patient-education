@@ -36,6 +36,34 @@ jobs:
         run: python build.py
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          LAB_SLUG_SALT: ${{ secrets.LAB_SLUG_SALT }}
+
+      - name: Stage public site content
+        # Pages must only serve public-safe content. Internal source (build.py,
+        # SKILL.md, _migration/, tools/) holds PHI references and must NOT ship.
+        run: |
+          mkdir -p site
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='_migration' \
+            --exclude='tools' \
+            --exclude='reference' \
+            --exclude='SKILL.md' \
+            --exclude='README.md' \
+            --exclude='AGENTS.md' \
+            --exclude='build.py' \
+            --exclude='*.py' \
+            --exclude='__pycache__' \
+            --exclude='requirements.txt' \
+            --exclude='site' \
+            --exclude='.gitignore' \
+            ./ site/
+          echo "--- site/ top-level ---"
+          ls -la site/
+          echo "--- verifying build.py NOT present in artifact ---"
+          test ! -f site/build.py || (echo "ERROR: build.py leaked into site/" && exit 1)
+          test ! -f site/SKILL.md || (echo "ERROR: SKILL.md leaked into site/" && exit 1)
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -43,7 +71,7 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: site
 
   deploy:
     needs: build

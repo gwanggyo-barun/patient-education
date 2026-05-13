@@ -2,11 +2,18 @@
 
 Run with:
     set -a && source ~/clinic-content-system/_migration/.env && set +a
-    python3 -m streamlit run ~/clinic-content-system/tools/web_intake/app.py
+    # Local-only (recommended):
+    python3 -m streamlit run ~/clinic-content-system/tools/web_intake/app.py \
+        --server.address=127.0.0.1
+    # LAN-shared: REQUIRES INTAKE_PASSWORD env var, never expose to open internet.
 
 The .env must define OPENAI_API_KEY (vision extraction) and, optionally,
 NOTION_TOKEN (auto-register the row in 🧪 환자 검사결과 DB so it also shows
 up under the patient's 👤 환자 마스터 page).
+
+Security: this app accepts patient PDFs and writes to the tracked lab-reports/
+tree. Without auth, anyone on the LAN can submit PHI and burn API keys.
+Set INTAKE_PASSWORD in env to require a shared secret before the UI loads.
 """
 from __future__ import annotations
 
@@ -26,6 +33,39 @@ from intake import (  # noqa: E402
 )
 
 st.set_page_config(page_title="검사결과 자료 생성", page_icon="🧪", layout="wide")
+
+
+def _require_password() -> bool:
+    """Gate the app behind INTAKE_PASSWORD shared secret if set.
+
+    Returns True when access is granted, False when the password prompt is
+    being shown (caller should st.stop()). If INTAKE_PASSWORD is unset, shows
+    a visible warning but allows entry — appropriate only for localhost runs.
+    """
+    expected = os.environ.get("INTAKE_PASSWORD")
+    if not expected:
+        st.warning(
+            "⚠️ INTAKE_PASSWORD 환경변수가 비어 있습니다. "
+            "현재 인증 없이 접근 가능한 상태입니다. "
+            "`--server.address=127.0.0.1` 로컬 전용 실행을 권장합니다."
+        )
+        return True
+    if st.session_state.get("_intake_auth_ok"):
+        return True
+    pwd = st.text_input("🔒 접근 비밀번호", type="password", key="_intake_pwd_input")
+    if not pwd:
+        st.info("이 앱은 환자 PDF를 처리합니다. 관리자가 공유한 비밀번호를 입력하세요.")
+        return False
+    if pwd != expected:
+        st.error("비밀번호가 일치하지 않습니다.")
+        return False
+    st.session_state["_intake_auth_ok"] = True
+    st.rerun()
+    return False
+
+
+if not _require_password():
+    st.stop()
 
 st.title("🧪 검사결과 자료 셀프 생성")
 st.caption(
