@@ -171,6 +171,14 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "갑상선기능항진증 (Hyperthyroidism)",
     },
     {
+        "kind": "decks", "slug": "prediabetes-remission",
+        "slug_path": "decks/endocrine/prediabetes-remission/",
+        "html_path": ROOT / "decks/endocrine/prediabetes-remission/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "전당뇨 관해 — 심혈관 위험 절반으로",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "전당뇨 (Prediabetes) · 심혈관 위험 감소 · Lancet 2026",
+    },
+    {
         "kind": "decks", "slug": "chest-pain",
         "slug_path": "decks/cardio/chest-pain/",
         "html_path": ROOT / "decks/cardio/chest-pain/index.html",
