@@ -724,6 +724,15 @@ TARGETS = [
         "category": "💊 투약 안내", "audience": "환자/보호자",
         "disease": "고혈압 약물 치료의 목적(혈관 합병증 예방) 안내 — 운동·영양제·체중감량으로 약 시작을 미루려는 환자 대상. 5대 합병증 인포그래픽(뇌·눈·심장·대혈관·신장), 흔한 오해 vs 사실, 약 감량·중단 3단계 로드맵.",
     },
+    {
+        "kind": "handouts", "slug": "insulin-start",
+        "slug_path": "handouts/medication/insulin-start/",
+        "html_path": ROOT / "handouts/medication/insulin-start/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "💉 인슐린 주사 처음 시작하시는 분께 — 보관·소독·부위·회전·용량",
+        "category": "💊 투약 안내", "audience": "환자/보호자",
+        "disease": "당뇨 환자가 처음 인슐린 자가 주사를 시작할 때 알아야 할 5가지 — 냉장→상온 보관, 알코올 소독 후 완전 건조, 권장 주사 부위 4곳·배꼽 5cm 회피, 2~3cm 회전 룰, 10단위 시작 후 공복혈당 140 초과 3~4일 연속 시 +2단위 증량 규칙.",
+    },
     # === Migration: 11 new patient lab reports (2026-05-08) ===
     {
         "kind": "lab-reports", "slug": "13f629bf11",
