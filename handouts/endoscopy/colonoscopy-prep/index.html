@@ -18,13 +18,109 @@
 
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+  <style>
+    .page--colonoscopy-prep { gap: 2mm; }
+    .page--colonoscopy-prep .page__body { gap: 1mm; }
+
+    /* Tighten existing primitives for this dense page */
+    .page--colonoscopy-prep .section-heading { font-size: 9pt; margin-bottom: 0.8mm; }
+    .page--colonoscopy-prep .checklist { gap: 0.8mm; }
+    .page--colonoscopy-prep .checklist__item { gap: 1.6mm; }
+    .page--colonoscopy-prep .checklist__text { font-size: 7.8pt; line-height: 1.28; }
+    .page--colonoscopy-prep .card { padding: 1mm 1.6mm; }
+    .page--colonoscopy-prep .card-list { gap: 0.15mm; }
+    .page--colonoscopy-prep .card-list li { font-size: 7.4pt; line-height: 1.24; }
+    .page--colonoscopy-prep .card-label { font-size: 7.4pt; margin-bottom: 0.5mm; }
+    .page--colonoscopy-prep .page__title-block { margin-bottom: 0; }
+    .page--colonoscopy-prep .page__subtitle { font-size: 8.4pt; line-height: 1.35; }
+
+    /* SECTION: Low-residue diet - text 2-col stacked + food grid image */
+    .colo-diet-row {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 2.5mm;
+      align-items: stretch;
+    }
+    .colo-diet-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4mm;
+    }
+    .colo-food-grid {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      padding: 0.6mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .colo-food-grid img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* SECTION: Stool clarity strip below bowel-prep cards */
+    .colo-stool-strip {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #F8FAFC;
+      padding: 0.6mm 2mm 0.8mm;
+      margin-top: 0.8mm;
+    }
+    .colo-stool-strip__title {
+      font-size: 7.4pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      text-align: center;
+      margin-bottom: 0.3mm;
+      letter-spacing: -0.01em;
+    }
+    .colo-stool-strip__title strong { color: #B91C1C; }
+    .colo-stool-strip__img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 11mm;
+    }
+    .colo-stool-strip__img img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* SECTION: Meds tile inside navy card */
+    .colo-meds-tile {
+      background: #FFFFFF;
+      border-radius: var(--radius-sm);
+      padding: 0.3mm;
+      margin-top: 0.5mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .colo-meds-tile img {
+      width: 100%;
+      height: 5mm;
+      object-fit: contain;
+      display: block;
+    }
+  </style>
 </head>
 <body>
 
 <!-- ============================================================ -->
 <!-- PAGE 1 — 3-day timeline + DO/DON'T food + meds + warning      -->
 <!-- ============================================================ -->
-<div class="page">
+<div class="page page--colonoscopy-prep">
 
   <!-- HEADER -->
   <header class="page__header">
@@ -60,37 +156,35 @@
       </div>
     </section>
 
-    <!-- 2-column: DO / DON'T food -->
+    <!-- 2-column: DO / DON'T food + food-grid illustration -->
     <section>
       <h2 class="section-heading">저잔사식 가이드 (Low-Residue Diet) — 3일 전부터</h2>
-      <div class="body-2col">
-
-        <!-- DO -->
-        <div class="card">
-          <div class="card-label card-label--steel">권장 · DO</div>
-          <ul class="card-list">
-            <li><strong>1. 흰밥·흰죽·흰빵·국수</strong> — 정제 탄수화물</li>
-            <li><strong>2. 두부·계란·닭가슴살·흰살생선</strong> — 부드러운 단백질</li>
-            <li><strong>3. 껍질·씨 제거한 사과·바나나</strong> 소량</li>
-            <li><strong>4. 맑은 국물</strong> (콩나물·미역국 제외, 건더기 X)</li>
-            <li><strong>5. 물·보리차·이온음료</strong> (투명·노란색)</li>
-            <li><strong>6. 꿀·설탕·잼</strong> 소량 (에너지 보충)</li>
-          </ul>
+      <div class="colo-diet-row">
+        <div class="colo-diet-text">
+          <!-- DO -->
+          <div class="card">
+            <div class="card-label card-label--steel">권장 · DO</div>
+            <ul class="card-list">
+              <li><strong>흰밥·흰죽·흰빵·국수</strong> — 정제 탄수화물</li>
+              <li><strong>두부·계란·닭가슴살·흰살생선</strong> — 부드러운 단백질</li>
+              <li><strong>껍질·씨 뺀 사과·바나나</strong>, <strong>맑은 국물</strong> (건더기 X)</li>
+              <li><strong>물·보리차·이온음료</strong> (투명·노란색)</li>
+            </ul>
+          </div>
+          <!-- DON'T -->
+          <div class="card card--warning">
+            <div class="card-label card-label--warning">금지 · DON'T</div>
+            <ul class="card-list">
+              <li><strong>잡곡밥·현미·보리·콩</strong>, <strong>김치·나물·채소 줄기</strong></li>
+              <li><strong>씨 있는 과일</strong> (포도·수박·참외·키위·딸기)</li>
+              <li><strong>견과·참깨·옥수수·미역·다시마·김</strong></li>
+              <li><strong>우유·요구르트·붉은/보라색 음료·커피</strong></li>
+            </ul>
+          </div>
         </div>
-
-        <!-- DON'T -->
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">금지 · DON'T</div>
-          <ul class="card-list">
-            <li><strong>1. 잡곡밥·현미·보리·콩</strong> — 섬유질 多</li>
-            <li><strong>2. 김치·나물·채소 줄기</strong> — 잔사 多</li>
-            <li><strong>3. 씨 있는 과일</strong> (포도·수박·참외·키위·딸기)</li>
-            <li><strong>4. 견과류·참깨·들깨·옥수수</strong></li>
-            <li><strong>5. 미역·다시마·김 등 해조류</strong></li>
-            <li><strong>6. 우유·요구르트·붉은/보라색 음료·커피</strong></li>
-          </ul>
+        <div class="colo-food-grid">
+          <img src="../../../shared/assets/generated/colonoscopy-prep-food-grid-20260514.png" alt="저잔사식 권장/금지 음식 비교 — 흰죽·식빵·두부·흰살생선·바나나·맑은국·삶은달걀 권장, 잡곡밥·브로콜리·김치·사과껍질·깨·우유·샐러드 금지">
         </div>
-
       </div>
     </section>
 
@@ -122,6 +216,14 @@
         </div>
 
       </div>
+
+      <!-- Stool clarity self-check strip -->
+      <div class="colo-stool-strip" aria-label="변 색깔 자가 체크 가이드 — 5단계 투명도 차트">
+        <div class="colo-stool-strip__title">변 색깔 자가 체크 — <strong>⑤ 맑은 노란 액체</strong>에 도달하면 검사 가능</div>
+        <div class="colo-stool-strip__img">
+          <img src="../../../shared/assets/generated/colonoscopy-prep-stool-clarity-20260514.png" alt="변 투명도 5단계 자가 체크 — ①짙은 갈색·②흐린 갈색·③노란 갈색은 더 비워야 함, ④노란 액체는 거의 완료, ⑤맑은 노란 액체는 검사 준비 완료">
+        </div>
+      </div>
     </section>
 
     <!-- Combined: meds warning + arrival info (2-col) -->
@@ -135,6 +237,9 @@
             <li>· <strong style="color:var(--color-sky);">항혈전제</strong> 사전 상담 필수 (자가 중단 금지)</li>
             <li>· 즉시 ☏ 031-893-4560 — 심한 구토·복통·혈변</li>
           </ul>
+          <div class="colo-meds-tile">
+            <img src="../../../shared/assets/generated/colonoscopy-prep-meds-cards-20260514.png" alt="약물 3분류 시각 카드 — 계속 복용 (혈압약), 중단 (당뇨약·인슐린), 의사 상담 필요 (항혈전제)">
+          </div>
         </div>
         <div class="card">
           <div class="card-label card-label--steel">내원 시 준비물 &amp; 도착</div>
