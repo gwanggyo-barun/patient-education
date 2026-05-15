@@ -50,7 +50,7 @@ integrator 가 specialist 를 호출할 때:
 ```
 Agent(
   description: "Clinical accuracy critique for {topic}",
-  subagent_type: "claude",        # Claude Code 환경. Codex 등은 그쪽 best reasoning model.
+  subagent_type: "general-purpose",   # Claude Code 환경. Tools:* + in-process (worktree X). "claude" 타입은 FleetView 함대 에이전트 — worktree isolation 강제이므로 비-git cwd 에서 실패. Codex 등은 그쪽 best reasoning model.
   prompt: """
 {specialist 의 reference/quality-agents/*.md 의 'Stage A' or 'Stage D' 섹션 텍스트}
 

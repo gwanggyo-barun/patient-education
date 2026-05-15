@@ -391,7 +391,7 @@ Stage A·D 만 LLM specialist, Stage C·F 는 결정적 도구, Stage B·E 는 i
 ### 모델 호출 룰
 
 - 모델 ID 하드코딩 금지. 호스트 default 또는 *available strongest reasoning model* 사용
-- Claude Code 환경: `Agent` 도구 `subagent_type: "claude"` (모델 inherit)
+- Claude Code 환경: `Agent` 도구 `subagent_type: "general-purpose"` (모델 inherit, Tools: *). `subagent_type: "claude"` 는 FleetView 함대 에이전트 — worktree isolation 강제 → 비-git cwd (예: `/Users/chungjihwan/Documents`) 에서 호출 시 즉시 실패하므로 specialist 호출에 부적합
 - 다른 환경 (Codex 등): 그쪽 best reasoning model
 - vision 필요 specialist (visual-design) 는 vision 모델 필수 — 미지원이면 그 specialist 자체 skip
 
