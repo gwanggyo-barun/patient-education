@@ -108,6 +108,41 @@ CI(GitHub Actions, ~80초)가 자동 처리:
 
 ---
 
+## 🤖 Multi-Agent Quality Pipeline (필수, 2026-05-15~)
+
+모든 콘텐츠 작성은 3-stage 멀티 에이전트 파이프라인을 거친다. integrator(메인 호출 AI) 1명 + kind별 specialist 4~5명이 병렬로 planning → drafting → critique. 상세 룰의 SoT는 [`SKILL.md`](./SKILL.md) §"Multi-Agent Quality Pipeline" + [`reference/multi-agent-quality.md`](reference/multi-agent-quality.md).
+
+```
+Stage A — Planning (specialist 병렬)
+   ↓
+Stage B — Drafting (integrator 만 파일 수정)
+   ↓
+Stage C — Deterministic gate (build.py + _validate_layout + _visual_audit)
+   ↓
+Stage D — Critique (specialist 병렬)
+   ↓
+Stage E — Integrator revision (evidence 기반 fix)
+   ↓
+Stage F — Final verification + push
+```
+
+| kind | Stage A · D specialist (병렬) |
+|---|---|
+| `decks` | clinical-accuracy + patient-readability + visual-design + narrative-flow |
+| `handouts` | clinical-accuracy + patient-readability + visual-design + density-hierarchy |
+| `lab-reports` | clinical-accuracy + patient-readability + visual-design + data-accuracy + **privacy-ops** |
+
+**환경별 호환성** (multi-agent-quality.md §9):
+- Claude Code: `Agent(subagent_type="general-purpose", ...)` 한 메시지 내 여러 호출 = 병렬
+- Codex 등 다른 환경: 그쪽 sub-agent / parallel-tool 메커니즘으로 mental adapter. **산출물 JSON 스키마·severity·logging redaction 룰은 환경 무관 동일**
+- 모델 ID 하드코딩 금지 — 호스트 default 또는 available strongest reasoning model 사용
+- vision specialist (`visual-design`) 는 vision 모델 필수 — 미지원이면 그 specialist 만 skip
+- Critique 로그는 `_local/quality-logs/` (gitignored) 에 PII redaction 후 저장. `tools/quality_gate.py::redact_pii()` 사용
+
+Codex 세션 이어받기용 핸드오프: [`docs/codex-handoff-multi-agent.md`](docs/codex-handoff-multi-agent.md)
+
+---
+
 ## ⛔ 절대 하지 말 것
 
 - ❌ 스킬 플러그인 폴더(`~/Library/Application Support/Claude/.../skills/clinic-content-system/`) 직접 편집
@@ -123,6 +158,10 @@ CI(GitHub Actions, ~80초)가 자동 처리:
 ## 📚 추가 참고
 
 - 전체 규칙·디자인 시스템·컴포넌트 사양: [`SKILL.md`](./SKILL.md)
+- Multi-agent pipeline 상세 사양: [`reference/multi-agent-quality.md`](./reference/multi-agent-quality.md)
+- Specialist 프롬프트 7종: [`reference/quality-agents/`](./reference/quality-agents/)
+- Quality gate 도우미: [`tools/quality_gate.py`](./tools/quality_gate.py)
+- **Codex 핸드오프 (이어받기용)**: [`docs/codex-handoff-multi-agent.md`](./docs/codex-handoff-multi-agent.md)
 - 디자인 토큰 SoT: [`reference/brand-design-system.md`](./reference/brand-design-system.md)
 - 7가지 본문 패턴: [`reference/patterns.md`](./reference/patterns.md)
 - 12장 표준 구성: [`reference/content-template.md`](./reference/content-template.md)
