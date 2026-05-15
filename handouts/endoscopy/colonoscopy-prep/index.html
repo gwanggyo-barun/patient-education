@@ -19,38 +19,68 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    .page--colonoscopy-prep { gap: 2mm; }
-    .page--colonoscopy-prep .page__body { gap: 1mm; }
+    .page--colonoscopy-prep { gap: 2.4mm; }
+    .page--colonoscopy-prep .page__body { gap: 1.6mm; }
 
-    /* Tighten existing primitives for this dense page */
-    .page--colonoscopy-prep .section-heading { font-size: 9pt; margin-bottom: 0.8mm; }
-    .page--colonoscopy-prep .checklist { gap: 0.8mm; }
-    .page--colonoscopy-prep .checklist__item { gap: 1.6mm; }
-    .page--colonoscopy-prep .checklist__text { font-size: 7.8pt; line-height: 1.28; }
-    .page--colonoscopy-prep .card { padding: 1mm 1.6mm; }
-    .page--colonoscopy-prep .card-list { gap: 0.15mm; }
-    .page--colonoscopy-prep .card-list li { font-size: 7.4pt; line-height: 1.24; }
-    .page--colonoscopy-prep .card-label { font-size: 7.4pt; margin-bottom: 0.5mm; }
-    .page--colonoscopy-prep .page__title-block { margin-bottom: 0; }
-    .page--colonoscopy-prep .page__subtitle { font-size: 8.4pt; line-height: 1.35; }
+    /* Slightly larger text — bigger card font + line-height for readability */
+    .page--colonoscopy-prep .section-heading { font-size: 9.6pt; margin-bottom: 1mm; }
+    .page--colonoscopy-prep .checklist { gap: 1.4mm; }
+    .page--colonoscopy-prep .checklist__item { gap: 2mm; }
+    .page--colonoscopy-prep .checklist__text { font-size: 9pt; line-height: 1.4; }
+    .page--colonoscopy-prep .checklist__num { font-size: 11pt; }
+    .page--colonoscopy-prep .card { padding: 1.6mm 2mm; }
+    .page--colonoscopy-prep .card-list { gap: 0.6mm; }
+    .page--colonoscopy-prep .card-list li { font-size: 8.2pt; line-height: 1.35; }
+    .page--colonoscopy-prep .card-label { font-size: 8pt; margin-bottom: 0.8mm; }
+    .page--colonoscopy-prep .page__subtitle { font-size: 9pt; line-height: 1.4; }
 
-    /* SECTION: Low-residue diet - text 2-col stacked + food grid image */
+    /* SECTION 1: Low-residue diet
+       2-col: 변 투명도 strip (좌) | 식품 신호등 이미지 (우)
+       Ratios: stool 1.78 (wide), food-grid 0.71 (tall) → grid 1.7:1 keeps similar heights */
     .colo-diet-row {
       display: grid;
-      grid-template-columns: 1.55fr 1fr;
-      gap: 2.5mm;
+      grid-template-columns: 1.7fr 1fr;
+      gap: 3mm;
       align-items: stretch;
     }
-    .colo-diet-text {
+    .colo-stool-strip {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #F8FAFC;
+      padding: 1.4mm 2mm 2mm;
       display: flex;
       flex-direction: column;
-      gap: 1.4mm;
+      gap: 1mm;
+      min-height: 0;
+    }
+    .colo-stool-strip__cap {
+      font-size: 8.4pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+    .colo-stool-strip__cap strong { color: #B91C1C; }
+    .colo-stool-strip__img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .colo-stool-strip__img img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
     }
     .colo-food-grid {
       border: 1px solid var(--color-border);
       border-radius: var(--radius-sm);
       background: #FFFFFF;
-      padding: 0.6mm;
+      padding: 1mm;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -66,52 +96,81 @@
       display: block;
     }
 
-    /* SECTION: Stool clarity strip below bowel-prep cards */
-    .colo-stool-strip {
+    /* SECTION 2: Meds + arrival — 3-col grid
+       복약 카드 (좌) | 약물 3분류 이미지 + 라벨 (가운데) | 내원 카드 (우)
+       Text cards use bigger font + line-height + gap to fill same height as middle pack */
+    .colo-meds-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3mm;
+      align-items: stretch;
+    }
+    .colo-meds-row > .card {
+      padding: 2.4mm 2.6mm;
+      display: flex;
+      flex-direction: column;
+    }
+    .colo-meds-row > .card .card-label {
+      font-size: 9pt;
+      margin-bottom: 1.6mm;
+    }
+    .colo-meds-row > .card .card-list {
+      gap: 1.8mm;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+    .colo-meds-row > .card .card-list li {
+      font-size: 9.2pt;
+      line-height: 1.45;
+    }
+    .colo-meds-pack {
       border: 1px solid var(--color-border);
       border-radius: var(--radius-sm);
-      background: #F8FAFC;
-      padding: 0.6mm 2mm 0.8mm;
-      margin-top: 0.8mm;
-    }
-    .colo-stool-strip__title {
-      font-size: 7.4pt;
-      font-weight: var(--weight-semibold);
-      color: var(--color-navy);
-      text-align: center;
-      margin-bottom: 0.3mm;
-      letter-spacing: -0.01em;
-    }
-    .colo-stool-strip__title strong { color: #B91C1C; }
-    .colo-stool-strip__img {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 11mm;
-    }
-    .colo-stool-strip__img img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      display: block;
-    }
-
-    /* SECTION: Meds tile inside navy card */
-    .colo-meds-tile {
       background: #FFFFFF;
-      border-radius: var(--radius-sm);
-      padding: 0.3mm;
-      margin-top: 0.5mm;
+      padding: 1mm 1mm 1.4mm;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      gap: 0.8mm;
       overflow: hidden;
     }
-    .colo-meds-tile img {
-      width: 100%;
-      height: 5mm;
+    .colo-meds-pack__img {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+    }
+    .colo-meds-pack__img img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
       object-fit: contain;
       display: block;
+    }
+    .colo-meds-pack__labels {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1mm;
+      padding: 0 1mm;
+      text-align: center;
+      color: var(--color-navy);
+    }
+    .colo-meds-pack__labels > div {
+      font-size: 7.4pt;
+      line-height: 1.25;
+    }
+    .colo-meds-pack__labels strong {
+      display: block;
+      font-size: 8pt;
+      font-weight: var(--weight-semibold);
+      margin-bottom: 0.2mm;
+    }
+    .colo-meds-pack__labels span {
+      font-size: 6.6pt;
+      color: var(--color-ink-700);
     }
   </style>
 </head>
@@ -156,30 +215,14 @@
       </div>
     </section>
 
-    <!-- 2-column: DO / DON'T food + food-grid illustration -->
+    <!-- 2-column: 변 투명도 strip (좌) | 식품 신호등 이미지 (우) — DO/DON'T 텍스트 카드는 식품 그리드와 중복이라 제거 -->
     <section>
-      <h2 class="section-heading">저잔사식 가이드 (Low-Residue Diet) — 3일 전부터</h2>
+      <h2 class="section-heading">저잔사식 가이드 (Low-Residue Diet) — 3일 전부터 · 변 색깔 자가 체크 (장정결제 복용법은 별도 안내문)</h2>
       <div class="colo-diet-row">
-        <div class="colo-diet-text">
-          <!-- DO -->
-          <div class="card">
-            <div class="card-label card-label--steel">권장 · DO</div>
-            <ul class="card-list">
-              <li><strong>흰밥·흰죽·흰빵·국수</strong> — 정제 탄수화물</li>
-              <li><strong>두부·계란·닭가슴살·흰살생선</strong> — 부드러운 단백질</li>
-              <li><strong>껍질·씨 뺀 사과·바나나</strong>, <strong>맑은 국물</strong> (건더기 X)</li>
-              <li><strong>물·보리차·이온음료</strong> (투명·노란색)</li>
-            </ul>
-          </div>
-          <!-- DON'T -->
-          <div class="card card--warning">
-            <div class="card-label card-label--warning">금지 · DON'T</div>
-            <ul class="card-list">
-              <li><strong>잡곡밥·현미·보리·콩</strong>, <strong>김치·나물·채소 줄기</strong></li>
-              <li><strong>씨 있는 과일</strong> (포도·수박·참외·키위·딸기)</li>
-              <li><strong>견과·참깨·옥수수·미역·다시마·김</strong></li>
-              <li><strong>우유·요구르트·붉은/보라색 음료·커피</strong></li>
-            </ul>
+        <div class="colo-stool-strip" aria-label="변 색깔 자가 체크 가이드 — 5단계 투명도 차트">
+          <div class="colo-stool-strip__cap">변 색깔 자가 체크 — <strong>⑤ 맑은 노란 액체</strong>에 도달하면 검사 가능</div>
+          <div class="colo-stool-strip__img">
+            <img src="../../../shared/assets/generated/colonoscopy-prep-stool-clarity-20260514.png" alt="변 투명도 5단계 자가 체크 — ①짙은 갈색·②흐린 갈색·③노란 갈색은 더 비워야 함, ④노란 액체는 거의 완료, ⑤맑은 노란 액체는 검사 준비 완료">
           </div>
         </div>
         <div class="colo-food-grid">
@@ -188,59 +231,32 @@
       </div>
     </section>
 
-    <!-- Bowel prep medication detail -->
+    <!-- 3-column: 복약 카드 (좌) | 약물 이미지+라벨 (가운데) | 내원 카드 (우) -->
     <section>
-      <h2 class="section-heading">장정결제 (Bowel Prep) 복용법 — 분할 복용 (Split-Dose)</h2>
-      <div class="body-2col">
-
-        <!-- 쿨프렙 -->
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">쿨프렙산 (CoolPrep) · PEG 4종</div>
-          <ul class="card-list">
-            <li><strong>1차 (D−1 저녁 19–21시):</strong> 1L + 물 1L</li>
-            <li><strong>2차 (당일 새벽 4–5시):</strong> 1L + 물 1L</li>
-            <li><strong>속도:</strong> 10–15분 간격 한 컵씩</li>
-            <li><strong>총 수분 4L</strong> · 신장·심장 환자 안전 · 표준</li>
-          </ul>
-        </div>
-
-        <!-- 솔린액 -->
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">솔린액 (Sodium Phosphate) · 선별 처방</div>
-          <ul class="card-list">
-            <li><strong>1차 (D−1 저녁):</strong> 45mL + 물 750mL+</li>
-            <li><strong>2차 (당일 새벽):</strong> 45mL + 물 750mL+</li>
-            <li><strong>금기:</strong> 신장질환·심부전·고령자</li>
-            <li><strong>추가 수분 1.5–2L</strong> 필수 (탈수 위험)</li>
-          </ul>
-        </div>
-
-      </div>
-
-      <!-- Stool clarity self-check strip -->
-      <div class="colo-stool-strip" aria-label="변 색깔 자가 체크 가이드 — 5단계 투명도 차트">
-        <div class="colo-stool-strip__title">변 색깔 자가 체크 — <strong>⑤ 맑은 노란 액체</strong>에 도달하면 검사 가능</div>
-        <div class="colo-stool-strip__img">
-          <img src="../../../shared/assets/generated/colonoscopy-prep-stool-clarity-20260514.png" alt="변 투명도 5단계 자가 체크 — ①짙은 갈색·②흐린 갈색·③노란 갈색은 더 비워야 함, ④노란 액체는 거의 완료, ⑤맑은 노란 액체는 검사 준비 완료">
-        </div>
-      </div>
-    </section>
-
-    <!-- Combined: meds warning + arrival info (2-col) -->
-    <section>
-      <div class="body-2col">
+      <h2 class="section-heading">복약·내원 가이드 · 약물 3분류 (계속 / 중단 / 의사 상담)</h2>
+      <div class="colo-meds-row">
+        <!-- 좌: 복약·항혈전제 카드 -->
         <div class="card card--navy">
           <div class="card-label">복약·항혈전제 · IMPORTANT</div>
           <ul class="card-list" style="color:var(--color-white-95);">
             <li>· <strong style="color:var(--color-sky);">혈압약</strong> 당일 아침 소량의 물과 복용 OK</li>
             <li>· <strong style="color:var(--color-sky);">당뇨약·인슐린</strong> 당일 중단 (저혈당 위험)</li>
             <li>· <strong style="color:var(--color-sky);">항혈전제</strong> 사전 상담 필수 (자가 중단 금지)</li>
-            <li>· 즉시 ☏ 031-893-4560 — 심한 구토·복통·혈변</li>
+            <li>· 즉시 ☏ 031-893-4560<br>&nbsp;&nbsp;&nbsp;심한 구토·복통·혈변</li>
           </ul>
-          <div class="colo-meds-tile">
+        </div>
+        <!-- 가운데: 약물 3분류 이미지 + 카드별 해당 약물 라벨 -->
+        <div class="colo-meds-pack">
+          <div class="colo-meds-pack__img">
             <img src="../../../shared/assets/generated/colonoscopy-prep-meds-cards-20260514.png" alt="약물 3분류 시각 카드 — 계속 복용 (혈압약), 중단 (당뇨약·인슐린), 의사 상담 필요 (항혈전제)">
           </div>
+          <div class="colo-meds-pack__labels">
+            <div><strong>혈압약</strong><br><span>심장·갑상선약</span></div>
+            <div><strong>당뇨약·인슐린</strong><br><span>경구 혈당강하제</span></div>
+            <div><strong>항혈전제</strong><br><span>아스피린·와파린</span></div>
+          </div>
         </div>
+        <!-- 우: 내원 시 준비물 -->
         <div class="card">
           <div class="card-label card-label--steel">내원 시 준비물 &amp; 도착</div>
           <ul class="card-list">
