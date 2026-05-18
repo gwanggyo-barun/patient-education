@@ -923,6 +923,16 @@ TARGETS = [
         "note": "종합검사 — 갑상선 반절제술 후 TSH 6.15 경도상승, 신지로이드 25μg 시작 · 그 외 모두 정상 (암표지자 4종·고지혈·당뇨 정상)",
     },
     {
+        "kind": "lab-reports", "slug": "d160ae37cb",
+        "slug_path": "lab-reports/general-checkup/d160ae37cb/",
+        "html_path": ROOT / "lab-reports/general-checkup/d160ae37cb/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "고지혈·당뇨전단계",
+        "patient_name": "김영미", "chart_no": "28262",
+        "exam_date": "2026-05-16", "doctor": "정지환",
+        "note": "공단검진 — 고지혈(TC 261·LDL 200) 약물치료 권고 · 공복혈당 경계(111)·HbA1c 5.5% 정상 · hs-CRP 2.7 평균 위험 · Hct·Na·소변비중 동반 상승(탈수 양상) · 갑상선·암표지자 5종 모두 정상",
+    },
+    {
         "kind": "lab-reports", "slug": "19f7fad6a4",
         "slug_path": "lab-reports/comprehensive-summary/19f7fad6a4/",
         "html_path": ROOT / "lab-reports/comprehensive-summary/19f7fad6a4/index.html",
