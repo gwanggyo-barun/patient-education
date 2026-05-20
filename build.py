@@ -942,6 +942,26 @@ TARGETS = [
         "exam_date": "2026-05-09", "doctor": "정지환",
         "note": "요산 8.6 ↑ (저퓨린 식이) · TSH 4.98 ↑ (불현성 갑상선 저하 — 추적)",
     },
+
+    # === Neurology — Migraine (2026-05-20) ===
+    {
+        "kind": "decks", "slug": "migraine-diagnosis",
+        "slug_path": "decks/neurology/migraine/diagnosis/",
+        "html_path": ROOT / "decks/neurology/migraine/diagnosis/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "편두통 — 위장 증상에 가려진 진짜 원인",
+        "category": "🩺 일반내과", "audience": "환자/보호자",
+        "disease": "편두통 (Migraine) — 소화불량·메스꺼움 주소 환자에서 의심해야 할 위장 표현 (전구기·gastroparesis·복부편두통·CVS 스펙트럼) · ICHD-3 진단기준 · 대한두통학회 2021",
+    },
+    {
+        "kind": "handouts", "slug": "migraine",
+        "slug_path": "handouts/neurology/migraine/",
+        "html_path": ROOT / "handouts/neurology/migraine/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "편두통 — 위장 증상에 가려진 진짜 원인 (A4 1장)",
+        "category": "🩺 일반내과", "audience": "환자/보호자",
+        "disease": "편두통 (Migraine) — 위장 증상 동반 편두통의 4가지 양상, 의심 단서 6가지, ICHD-3 진단·치료·red flag 한 장 요약",
+    },
 ]
 
 
