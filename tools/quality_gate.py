@@ -110,7 +110,7 @@ PII_PATTERNS = [
     (re.compile(r"\[(\d{4,6})\]"), "[REDACTED-CHART]"),
     (re.compile(r"\d{3}-\d{3,4}-\d{4}"), "[REDACTED-PHONE]"),
     (re.compile(r"\d{6}-\d{7}"), "[REDACTED-RRN]"),
-    (re.compile(r"(?:19|20)\d{2}[-./]\d{2}[-./]\d{2}"), "[REDACTED-DOB]"),
+    (re.compile(r"(?:19|20)\d{2}[-./]?\d{2}[-./]?\d{2}"), "[REDACTED-DOB]"),
     (re.compile(r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+"), "[REDACTED-EMAIL]"),
 ]
 
@@ -228,9 +228,21 @@ SPECIALIST_ROSTER: dict[str, list[str]] = {
 }
 
 
-def roster_for(kind: str, target_audience: str = "patient") -> list[str]:
-    """주어진 kind 에 호출할 specialist 목록. target_audience='clinician' 이면 patient-readability skip."""
+def roster_for(
+    kind: str,
+    topic: str | None = None,
+    target_audience: str = "patient",
+) -> list[str]:
+    """주어진 kind/topic 에 호출할 specialist 목록.
+
+    Args:
+        kind: decks / handouts / lab-reports
+        topic: optional topic slug. lab-reports/health-checkup 에서 extra specialist 추가.
+        target_audience: 'clinician' 이면 patient-readability skip.
+    """
     base = list(SPECIALIST_ROSTER.get(kind, []))
+    if kind == "lab-reports" and topic == "health-checkup":
+        base.append("checkup-completeness")
     if target_audience == "clinician" and "patient-readability" in base:
         base.remove("patient-readability")
     return base
@@ -244,12 +256,12 @@ def roster_for(kind: str, target_audience: str = "patient") -> list[str]:
 def _print_help() -> None:
     print(
         "usage:\n"
-        "  python tools/quality_gate.py gate [<html_path>]\n"
+        "  python3 tools/quality_gate.py gate [<html_path>]\n"
         "      run deterministic gate (validate_layout [+ build])\n"
-        "  python tools/quality_gate.py redact <text>\n"
+        "  python3 tools/quality_gate.py redact <text>\n"
         "      print redacted version of <text>\n"
-        "  python tools/quality_gate.py roster <kind> [clinician]\n"
-        "      print specialist roster for kind\n"
+        "  python3 tools/quality_gate.py roster <kind> [<topic>] [clinician]\n"
+        "      print specialist roster for kind/topic\n"
     )
 
 
@@ -270,8 +282,14 @@ def main(argv: list[str]) -> int:
         return 0
     if cmd == "roster":
         kind = argv[1]
-        audience = argv[2] if len(argv) > 2 else "patient"
-        print("\n".join(roster_for(kind, target_audience=audience)))
+        topic = None
+        audience = "patient"
+        for arg in argv[2:]:
+            if arg == "clinician":
+                audience = "clinician"
+            else:
+                topic = arg
+        print("\n".join(roster_for(kind, topic=topic, target_audience=audience)))
         return 0
 
     _print_help()
