@@ -29,6 +29,9 @@ from _build_helpers import (  # noqa: E402
     render,
     check_og_meta,
     strip_qr_mini_block,
+    load_asset_manifest,
+    resolve_data_asset,
+    collect_data_asset_keys,
 )
 from _validate_layout import HANDOUT_VALIDATOR_JS, DECK_VALIDATOR_JS  # noqa: E402
 
@@ -993,6 +996,95 @@ def _validate_css_paths() -> list[str]:
 _HANGUL_RE = __import__("re").compile(r"[가-힯]")
 
 
+def _sync_asset_manifest() -> None:
+    """Run shared/assets/manifest.json sync at build start. Best-effort —
+    a missing tools/sync_manifest.py shouldn't break the build."""
+    try:
+        sys.path.insert(0, str(ROOT / "tools"))
+        import sync_manifest  # noqa: E402
+        sync_manifest.sync(verbose=False)
+    except Exception as e:  # noqa: BLE001
+        print(f"⚠️  asset manifest sync skipped: {e}", file=sys.stderr)
+
+
+def _validate_data_assets() -> list[str]:
+    """Pre-flight: every data-asset="key" referenced in a TARGETS HTML
+    must resolve to a manifest entry whose file exists on disk. Catches
+    typos before Playwright renders a broken-image page."""
+    manifest = load_asset_manifest()
+    issues: list[str] = []
+    for t in TARGETS:
+        html_path = t.get("html_path")
+        if not html_path or not html_path.exists():
+            continue
+        text = html_path.read_text(encoding="utf-8")
+        keys = collect_data_asset_keys(text)
+        if not keys:
+            continue
+        if not manifest:
+            issues.append(
+                f"{t['kind']}/{t['slug']}: HTML uses data-asset but manifest "
+                f"is empty — run tools/sync_manifest.py"
+            )
+            continue
+        for key in keys:
+            entry = manifest.get(key)
+            if entry is None:
+                # check aliases
+                aliased = any(
+                    key in (v.get("aliases") or []) for v in manifest.values()
+                )
+                if not aliased:
+                    issues.append(
+                        f"{t['kind']}/{t['slug']}: unknown data-asset='{key}' "
+                        f"(not in manifest, no alias match)"
+                    )
+                    continue
+                entry = next(
+                    v for v in manifest.values() if key in (v.get("aliases") or [])
+                )
+            f = entry.get("file")
+            if f and not (ROOT / "shared" / "assets" / f).exists():
+                issues.append(
+                    f"{t['kind']}/{t['slug']}: data-asset='{key}' → file "
+                    f"missing on disk: shared/assets/{f}"
+                )
+    return issues
+
+
+def _validate_lab_report_no_webp() -> list[str]:
+    """Pre-flight: lab-reports must not embed WebP images — some PDF
+    renderers (esp. older Chromium / pdfkit fallbacks) drop them, leaving
+    blank rectangles on the printed page.  Allowed formats: png, jpg, svg."""
+    manifest = load_asset_manifest()
+    issues: list[str] = []
+    for t in TARGETS:
+        if t.get("kind") != "lab-reports":
+            continue
+        html_path = t.get("html_path")
+        if not html_path or not html_path.exists():
+            continue
+        text = html_path.read_text(encoding="utf-8")
+        # Direct <img src="…webp">
+        for m in __import__("re").finditer(r'<img[^>]*src="([^"]+\.webp)"', text, __import__("re").IGNORECASE):
+            issues.append(
+                f"{t['kind']}/{t['slug']}: lab-report references WebP src "
+                f"'{m.group(1)}' — use PNG/JPG/SVG (PDF embed safety)"
+            )
+        # data-asset → manifest lookup
+        for key in collect_data_asset_keys(text):
+            entry = manifest.get(key) or next(
+                (v for v in manifest.values() if key in (v.get("aliases") or [])),
+                None,
+            )
+            if entry and (entry.get("format") or "").lower() == "webp":
+                issues.append(
+                    f"{t['kind']}/{t['slug']}: data-asset='{key}' is WebP "
+                    f"— lab-reports must use PNG/JPG/SVG"
+                )
+    return issues
+
+
 def _validate_targets_routing() -> list[str]:
     """Validate every TARGETS entry — kind must match the slug_path prefix.
 
@@ -1056,11 +1148,31 @@ def _validate_targets_routing() -> list[str]:
 
 
 def main() -> int:
+    # Pre-flight: sync asset manifest before any HTML inspection so newly
+    # added image files are auto-registered.
+    _sync_asset_manifest()
+
     # Pre-flight: validate kind routing — fail fast on misclassified TARGETS
     routing_issues = _validate_targets_routing()
     if routing_issues:
         print("=== TARGETS routing errors (fix before build) ===", file=sys.stderr)
         for issue in routing_issues:
+            print(f"  ✗ {issue}", file=sys.stderr)
+        return 2
+
+    # Pre-flight: every data-asset="key" must resolve in manifest + on disk
+    asset_issues = _validate_data_assets()
+    if asset_issues:
+        print("=== data-asset errors (fix before build) ===", file=sys.stderr)
+        for issue in asset_issues:
+            print(f"  ✗ {issue}", file=sys.stderr)
+        return 2
+
+    # Pre-flight: lab-reports must not use WebP (PDF embed safety)
+    webp_issues = _validate_lab_report_no_webp()
+    if webp_issues:
+        print("=== lab-report WebP errors (fix before build) ===", file=sys.stderr)
+        for issue in webp_issues:
             print(f"  ✗ {issue}", file=sys.stderr)
         return 2
 
@@ -1090,6 +1202,17 @@ def main() -> int:
 
             target_url = f"{BASE_URL}/{slug_path}"
             html = html_path.read_text(encoding="utf-8")
+
+            # Resolve data-asset="key" → src + alt (idempotent; preserves the
+            # data-asset attribute as source-of-truth for future rebuilds).
+            html, asset_errs, asset_warns = resolve_data_asset(
+                html, html_path, strict_review=False
+            )
+            if asset_errs:
+                failures.append(f"{kind}/{slug}: data-asset → " + "; ".join(asset_errs))
+                continue
+            for w in asset_warns:
+                print(f"  ⚠️  {kind}/{slug}: {w}", file=sys.stderr)
 
             missing = check_og_meta(html, slug)
             if missing:

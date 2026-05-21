@@ -872,6 +872,8 @@ HTML 예시:
 
 규칙: 이미지 프롬프트나 파일명에 환자명/차트번호/생년월일/원본 검사 PDF를 넣지 않는다. 이미지 안의 한글 텍스트는 피하고, 모든 라벨은 HTML로 처리한다. 자세한 절차는 `reference/image-assets.md`.
 
+**자산 라이브러리 (권장)**: 신규 자료는 `<img data-asset="key">` 한 줄로 작성하면 `build.py` 가 `manifest.json` 을 보고 `src`·`alt` 를 자동 채운다. 디렉터리 깊이(`../../../`) 계산·alt 텍스트 통일·재이름 propagation 모두 자동. 새 이미지 추가 시 `tools/sync_manifest.py` 가 자동 등록한다. 운영 규칙·검수 게이트·`tools/asset_lint.py` 사용법은 **`shared/assets/README.md`** 참조.
+
 로컬 API 생성이 필요한 경우:
 
 ```bash
