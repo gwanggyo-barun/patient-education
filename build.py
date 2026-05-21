@@ -1208,10 +1208,10 @@ def main() -> int:
 
     if failures:
         print()
-        print("=== Failures ===", file=sys.stderr)
+        print("=== Failures (deploy continues for successful items) ===", file=sys.stderr)
         for line in failures:
             print(f"  ✗ {line}", file=sys.stderr)
-        return 1
+            print(f"::error::build failure: {line}", file=sys.stderr)
 
     return 0
 
