@@ -766,6 +766,15 @@ TARGETS = [
         "disease": "갑상선 결절 초음파 추적 — K-TIRADS 등급, 세침흡인검사(FNA) 크기 기준, Bethesda class별 추적 계획",
     },
     {
+        "kind": "handouts", "slug": "cgm-caresens365",
+        "slug_path": "handouts/endocrine/cgm-caresens365/",
+        "html_path": ROOT / "handouts/endocrine/cgm-caresens365/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "케어센스 365 연속혈당측정 안내 — 손가락 끝 한 방울로는 보이지 않는 것들",
+        "category": "🩺 일반내과", "audience": "환자/보호자",
+        "disease": "연속혈당측정 (CGM, CareSens 365) — 14일 블라인드(전문가) 모드 진단 검사, SMBG·HbA1c 한계, TIR, 비급여 안내",
+    },
+    {
         "kind": "handouts", "slug": "nasal-spray-allergic-rhinitis",
         "slug_path": "handouts/medication/nasal-spray-allergic-rhinitis/",
         "html_path": ROOT / "handouts/medication/nasal-spray-allergic-rhinitis/index.html",
