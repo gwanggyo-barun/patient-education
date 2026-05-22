@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=794">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="noindex,nofollow,noarchive">
   <title>{{ report_title }} — 광교바른내과</title>
   <meta property="og:type" content="article">
   <meta property="og:url" content="{{ base_url }}/lab-reports/{{ topic }}/{{ slug }}/">
   <meta property="og:title" content="{{ report_title }} — 광교바른내과">
   <meta property="og:description" content="{{ og_description }}">
-  <meta property="og:image" content="{{ base_url }}/lab-reports/{{ topic }}/{{ slug }}/preview.png">
+  <meta property="og:image" content="{{ base_url }}/shared/assets/clinic_logo.png">
   <meta property="og:site_name" content="광교바른내과">
   <meta name="theme-color" content="#003366">
 
@@ -39,7 +39,7 @@
       <h2 class="section-heading">핵심 수치 한눈에 보기</h2>
       <div class="stats-row">
         {%- for s in stats %}
-        <div class="stat-cell stat-cell--{{ s.status }}">
+        <div class="stat-cell {{ stat_class(s.status) }}">
           <div class="stat-cell__label">{{ s.label }}</div>
           <div class="stat-cell__value">{{ s.value }}</div>
           <div class="stat-cell__unit">{{ s.unit }}</div>
@@ -62,7 +62,7 @@
           <div class="lab-row__label">{{ d.label }}</div>
           <div class="lab-row__value">{{ d.value }}</div>
           <div class="lab-row__range">{{ d.range }}</div>
-          <div class="lab-row__badge{% if d.badge_class %} lab-row__badge--{{ d.badge_class }}{% endif %}">{{ d.badge }}</div>
+          <div class="lab-row__badge {{ badge_class(d.badge_class or d.status) }}">{{ d.badge }}</div>
         </div>
         {%- endfor %}
       </div>

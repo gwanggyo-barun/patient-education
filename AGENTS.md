@@ -15,7 +15,7 @@
 | 2 | 머신 종속 절대경로 금지 (`C:\Users\...`, `/Users/도현/...`). `~/`, `Path(__file__).parent`, 환경변수만 사용 |
 | 3 | 시크릿은 환경변수 / GitHub Secret만. 코드에 박지 말 것 |
 | 4 | fresh clone에서 `gh auth → git clone → pip install -r requirements.txt`만으로 빌드되어야 함 |
-| 5 | **변경 전 `git pull --rebase`, 변경 후 즉시 `git add . && git commit && git push`** — 사용자가 따로 지시하지 않아도 자동 수행 |
+| 5 | **변경 전 `git pull --rebase`, 변경 후 내가 만든/수정한 파일만 명시적으로 stage → audit → commit/push** — `git add .` / `git add -A` 금지 |
 | 6 | `output/` 디렉토리 커밋 금지 (.gitignore 등록됨) |
 | 7 | 새 의존성 추가 시 `requirements.txt` 갱신 |
 
@@ -42,7 +42,7 @@
 `build.py` TARGETS 항목에 다음 필드 필수 (slug 는 `lab_hash_slug` 로 생성한 hash, 환자명 직접 사용 금지 — privacy):
 ```python
 {
-    "kind": "lab-reports", "slug": "<hash10>",  # python lab_hash_slug(chart_no, patient_name, topic)
+    "kind": "lab-reports", "slug": "<hash10>",  # python3 lab_hash_slug(chart_no, patient_name, topic)
     "slug_path": "lab-reports/general-checkup/<hash10>/",
     "html_path": ROOT / "lab-reports/general-checkup/<hash10>/index.html",
     "qr_class": "qr-mini__code", "fmt": "a4-portrait",
@@ -65,14 +65,14 @@ A4 콘텐츠(handouts / lab-reports)는 본문이 넘쳐도 자동으로 다음 
 
 ### 1단계 — 자동 검증 (`_validate_layout`)
 ```bash
-python -m shared._validate_layout <html_path>   # 단일
-python -m shared._validate_layout               # 전체
+python3 -m shared._validate_layout <html_path>   # 단일
+python3 -m shared._validate_layout               # 전체
 ```
 검출 항목 (모두 0이어야 통과): `page_overflow`, `section_overlaps_footer`, `element_below_page` / `element_right_of_page`, `slide_overflow` (deck).
 
 ### 2단계 — 시각 확인
 ```bash
-python build.py
+python3 build.py
 # → output/{kind}/{slug}-preview.png 생성
 # → 이미지 뷰어 또는 IDE preview로 PNG 직접 확인
 ```
@@ -95,10 +95,14 @@ cd ~/clinic-content-system
 git pull --rebase                                # ① 다른 머신 변경분 받기
 # ② HTML 작성 (decks/handouts/lab-reports 중 하나)
 # ③ build.py TARGETS에 dict 항목 추가 (kind별 메타 포함)
-python -m shared._validate_layout                # ④ 레이아웃 검증
-python build.py                                  # ⑤ 로컬 빌드 (선택)
+python3 -m shared._validate_layout               # ④ 레이아웃 검증
+python3 build.py                                 # ⑤ 로컬 빌드 (선택)
 # → output/{kind}/{slug}-preview.png 시각 확인
-git add . && git commit -m "Add {topic}" && git push   # ⑥ 자동 푸시
+git status --short                               # ⑥ staged/untracked audit
+git add <이번 작업 파일만 한 줄씩 명시>          # ⑦ 절대 git add . 금지
+git diff --cached --name-only                    # ⑧ 내 파일만 staged 인지 확인
+git commit -m "Add {topic}"                      # ⑨ commit
+git push                                         # ⑩ push
 ```
 
 CI(GitHub Actions, ~80초)가 자동 처리:
@@ -131,6 +135,7 @@ Stage F — Final verification + push
 | `decks` | clinical-accuracy + patient-readability + visual-design + narrative-flow |
 | `handouts` | clinical-accuracy + patient-readability + visual-design + density-hierarchy |
 | `lab-reports` | clinical-accuracy + patient-readability + visual-design + data-accuracy + **privacy-ops** |
+| `lab-reports` / `topic=health-checkup` | lab-reports 5인 + checkup-extraction + checkup-completeness |
 
 **환경별 호환성** (multi-agent-quality.md §9):
 - Claude Code: `Agent(subagent_type="general-purpose", ...)` 한 메시지 내 여러 호출 = 병렬

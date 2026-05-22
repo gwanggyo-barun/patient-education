@@ -1,10 +1,9 @@
 """Core pipeline for the lab-report intake web app.
 
 Flow:
-  1. user uploads a lab-result PDF + emphasis text + patient metadata
-  2. PDF pages are rasterized to PNGs (PyMuPDF)
-  3. OpenAI gpt-4o-vision extracts structured data (4 key stats, 7 detail rows,
-     3 meaning bullets, 3 recommendation bullets) — biased by emphasis text
+  1. user provides PDF/image/text sources + emphasis + patient metadata
+  2. PDF pages and captures are normalized to PNGs (PyMuPDF)
+  3. Anthropic vision, or OpenAI fallback, extracts structured JSON
   4. structured data + metadata fill a Jinja template → A4 portrait HTML
   5. Playwright renders the HTML to PDF (+ preview PNG)
   6. (optional) Notion upsert via existing _notion_sync.upsert — patient master
@@ -40,10 +39,10 @@ from _validate_layout import HANDOUT_VALIDATOR_JS  # noqa: E402
 
 BASE_URL = "https://gwanggyo-barun.github.io/patient-education"
 
-# Claude vision model — Sonnet 4.5 is strong for Korean medical extraction
-# + structured JSON output, cheaper than Opus, and fast enough for the
-# 15-30s interactive UX target.
-ANTHROPIC_MODEL = "claude-sonnet-4-5"
+# Override on another machine with ANTHROPIC_MODEL / OPENAI_MODEL if provider
+# aliases change or a workspace pins a specific approved model.
+ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-5")
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o")
 
 # Path to clinic-content-system SKILL.md — injected (with prompt caching)
 # as system prompt so the model already knows the lab-report conventions,
@@ -52,6 +51,7 @@ SKILL_MD_PATH = ROOT / "SKILL.md"
 
 # Topic → human-readable eyebrow label shown in header
 TOPIC_LABELS = {
+    "health-checkup": "HEALTH CHECKUP",
     "general-checkup": "GENERAL CHECKUP",
     "comprehensive-summary": "COMPREHENSIVE SUMMARY",
     "lipid-panel": "LIPID PANEL",
@@ -64,6 +64,7 @@ TOPIC_LABELS = {
 
 # Default report title per topic — overridable from caller
 DEFAULT_TITLES = {
+    "health-checkup": "종합 건강검진 결과 안내",
     "general-checkup": "종합검사 결과 안내",
     "comprehensive-summary": "종합 검진 결과 요약",
     "lipid-panel": "지질 검사 결과 안내",
@@ -96,6 +97,13 @@ class IntakeResult:
     notion_page_id: str | None = None
 
 
+@dataclass
+class IntakeSource:
+    filename: str
+    content: bytes
+    media_type: str
+
+
 # --------------------------------------------------------------------------- #
 # Step 1-2: PDF rasterization
 # --------------------------------------------------------------------------- #
@@ -103,7 +111,7 @@ class IntakeResult:
 def pdf_to_images(pdf_bytes: bytes, dpi: int = 144) -> list[bytes]:
     """Convert each PDF page to a PNG byte string.
 
-    dpi=144 (~2x of default 72) is enough resolution for gpt-4o-vision to
+    dpi=144 (~2x of default 72) is enough resolution for vision extraction to
     OCR small lab table numbers without bloating tokens too much.
     """
     images: list[bytes] = []
@@ -115,6 +123,37 @@ def pdf_to_images(pdf_bytes: bytes, dpi: int = 144) -> list[bytes]:
             images.append(pix.tobytes("png"))
     finally:
         doc.close()
+    return images
+
+
+def image_to_png(image_bytes: bytes, filename: str = "capture.png", dpi: int = 144) -> bytes:
+    """Normalize PNG/JPEG/WebP captures to PNG for vision backends."""
+    suffix = Path(filename).suffix.lower().lstrip(".") or "png"
+    if suffix == "jpg":
+        suffix = "jpeg"
+    if suffix == "png":
+        return image_bytes
+    doc = fitz.open(stream=image_bytes, filetype=suffix)
+    try:
+        page = doc[0]
+        pix = page.get_pixmap(matrix=fitz.Matrix(dpi / 72, dpi / 72))
+        return pix.tobytes("png")
+    finally:
+        doc.close()
+
+
+def sources_to_images(sources: list[IntakeSource], dpi: int = 144) -> list[bytes]:
+    """Convert mixed PDF/image upload sources to PNG page/capture images."""
+    images: list[bytes] = []
+    for source in sources:
+        media = source.media_type.lower()
+        suffix = Path(source.filename).suffix.lower()
+        if media == "application/pdf" or suffix == ".pdf":
+            images.extend(pdf_to_images(source.content, dpi=dpi))
+        elif media.startswith("image/") or suffix in {".png", ".jpg", ".jpeg", ".webp"}:
+            images.append(image_to_png(source.content, source.filename, dpi=dpi))
+        else:
+            raise ValueError(f"unsupported source file type: {source.filename}")
     return images
 
 
@@ -163,6 +202,54 @@ EXTRACTION_SYSTEM = """\
 }
 """
 
+HEALTH_CHECKUP_EXTRACTION_SYSTEM = """\
+당신은 광교바른내과의 종합 건강검진 결과지 작성 전문가입니다. 텍스트, PDF, 캡쳐 이미지에
+흩어진 검진 결과를 A4 1~2페이지 결과지에 들어갈 표준 JSON으로 정리합니다.
+
+원칙:
+- 입력에 실제로 언급된 검사만 포함합니다. 시행하지 않은 검사를 추정해서 만들지 않습니다.
+- 수치, 단위, 판독명, 추적 시점은 원본 그대로 옮기고 불확실하면 "source_warnings"에 적습니다.
+- 환자명·차트번호는 메타데이터로만 사용하고 og_description, action 문장에는 넣지 않습니다.
+- 정상 항목은 묶고, 경계·이상·추적 필요 항목을 우선합니다.
+- 한국어로, 환자가 이해할 수 있는 표현을 사용합니다.
+
+출력은 반드시 JSON 형식이며 다음 스키마를 따릅니다:
+{
+  "report_title": "종합 건강검진 결과 안내",
+  "og_description": "환자 식별자 없는 60자 이내 요약",
+  "age_sex": "M/55 또는 F/53, 불명확하면 빈 문자열",
+  "performed_tests": ["혈액검사", "소변검사", "위내시경", "대장내시경", "상복부초음파"],
+  "overall": [
+    {"area": "대사·심혈관", "status": "ok|warn|alert", "value": "주의", "summary": "LDL·혈압 경계"}
+  ],
+  "vitals": [
+    {"label": "BMI", "value": "26.4", "unit": "kg/m² · 과체중", "status": "warn"}
+  ],
+  "labs": [
+    {"label": "지질 (TC / LDL / HDL / TG)", "value": "215 / 142 / 48 / 158", "range": "<200 / <130 / ≥40 / <150", "badge": "경계", "status": "warn"}
+  ],
+  "urinalysis": [
+    {"label": "단백 · 잠혈 · 당", "value": "trace · − · −", "range": "단백 trace 외 음성", "badge": "경계", "status": "warn"}
+  ],
+  "endoscopy": [
+    {"title": "위내시경 — H. pylori (+)", "items": ["소견", "조직검사/치료", "다음 검사 시점"]}
+  ],
+  "ultrasound": [
+    {"title": "갑상선 초음파", "items": ["결절 0.4cm TIRADS 3", "12개월 후 추적"]}
+  ],
+  "ekg": {"title": "정상 동율동", "items": ["심박수 72 bpm", "ST-T 변화 없음"], "status": "ok"},
+  "bmd": {
+    "lumbar": {"label": "요추", "value": "-1.6", "unit": "T-score · 골감소증", "status": "warn"},
+    "femoral": {"label": "대퇴 경부", "value": "-1.1", "unit": "T-score · 정상 경계", "status": "ok"},
+    "note": "비타민 D·칼슘·체중부하 운동, 2년 후 재검"
+  },
+  "action_plan": [
+    {"title": "최우선 권고", "text": "H. pylori 제균 치료 후 4주 뒤 박멸 확인"}
+  ],
+  "source_warnings": ["원본에서 갑상선 결절 크기 판독이 흐릿함"]
+}
+"""
+
 EXTRACTION_USER_TEMPLATE = """\
 환자: {patient_name} (차트번호 {chart_no}, 검사일 {exam_date})
 검사 카테고리: {topic}
@@ -170,10 +257,19 @@ EXTRACTION_USER_TEMPLATE = """\
 [강조점 — 의사가 환자에게 전달하고 싶은 핵심 메시지]
 {emphasis}
 
-위 검사 PDF 이미지를 분석해서 JSON으로 구조화해주세요. 강조점이 있으면 그 방향으로
-stats/details/meanings/recommendations 의 우선순위를 잡되, PDF에 적힌 수치는 그대로
-정확히 옮깁니다. 강조점이 비어있다면 PDF에서 가장 임상적으로 중요한 항목을 우선합니다.
+[추가 텍스트 / 캡쳐 필사 / EMR 복사 내용]
+{source_text}
+
+위 검사 자료를 분석해서 JSON으로 구조화해주세요. 강조점이 있으면 그 방향으로
+항목 우선순위를 잡되, 원본에 적힌 수치는 그대로 정확히 옮깁니다.
+강조점이 비어있다면 원본에서 가장 임상적으로 중요한 항목을 우선합니다.
 """
+
+
+def _system_for_topic(topic: str) -> str:
+    if topic == "health-checkup":
+        return HEALTH_CHECKUP_EXTRACTION_SYSTEM
+    return EXTRACTION_SYSTEM
 
 
 def _load_skill_md() -> str:
@@ -188,13 +284,16 @@ def _load_skill_md() -> str:
         return ""
 
 
-def _user_content_text(meta: PatientMeta, topic: str, emphasis: str) -> str:
+def _user_content_text(
+    meta: PatientMeta, topic: str, emphasis: str, source_text: str = ""
+) -> str:
     return EXTRACTION_USER_TEMPLATE.format(
         patient_name=meta.name,
         chart_no=meta.chart_no,
         exam_date=meta.exam_date,
         topic=topic,
         emphasis=emphasis.strip() or "(없음 — PDF에서 임상적 우선순위로 추출)",
+        source_text=source_text.strip() or "(없음)",
     )
 
 
@@ -211,9 +310,13 @@ def _parse_json_block(text: str) -> dict:
 
 
 def _extract_via_anthropic(
-    images: list[bytes], meta: PatientMeta, topic: str, emphasis: str
+    images: list[bytes],
+    meta: PatientMeta,
+    topic: str,
+    emphasis: str,
+    source_text: str = "",
 ) -> dict:
-    """Claude Sonnet 4.5 with SKILL.md cached system prompt + vision input.
+    """Anthropic vision with SKILL.md cached system prompt + image/text input.
 
     SKILL.md (~15K tokens) sits in the first system block with
     cache_control=ephemeral, so the first call pays full input cost but
@@ -234,7 +337,9 @@ def _extract_via_anthropic(
                 "source": {"type": "base64", "media_type": "image/png", "data": b64},
             }
         )
-    user_content.append({"type": "text", "text": _user_content_text(meta, topic, emphasis)})
+    user_content.append(
+        {"type": "text", "text": _user_content_text(meta, topic, emphasis, source_text)}
+    )
 
     skill_md = _load_skill_md()
     system_blocks: list[dict] = []
@@ -251,7 +356,7 @@ def _extract_via_anthropic(
                 "cache_control": {"type": "ephemeral"},
             }
         )
-    system_blocks.append({"type": "text", "text": EXTRACTION_SYSTEM})
+    system_blocks.append({"type": "text", "text": _system_for_topic(topic)})
 
     resp = client.messages.create(
         model=ANTHROPIC_MODEL,
@@ -278,13 +383,19 @@ def _extract_via_anthropic(
 
 
 def _extract_via_openai(
-    images: list[bytes], meta: PatientMeta, topic: str, emphasis: str
+    images: list[bytes],
+    meta: PatientMeta,
+    topic: str,
+    emphasis: str,
+    source_text: str = "",
 ) -> dict:
-    """OpenAI gpt-4o fallback — kept for environments without ANTHROPIC_API_KEY."""
+    """OpenAI fallback — kept for environments without ANTHROPIC_API_KEY."""
     from openai import OpenAI
 
     client = OpenAI()
-    content: list[dict] = [{"type": "text", "text": _user_content_text(meta, topic, emphasis)}]
+    content: list[dict] = [
+        {"type": "text", "text": _user_content_text(meta, topic, emphasis, source_text)}
+    ]
     for img_bytes in images:
         b64 = base64.b64encode(img_bytes).decode("ascii")
         content.append(
@@ -295,9 +406,9 @@ def _extract_via_openai(
         )
 
     resp = client.chat.completions.create(
-        model="gpt-4o",
+        model=OPENAI_MODEL,
         messages=[
-            {"role": "system", "content": EXTRACTION_SYSTEM},
+            {"role": "system", "content": _system_for_topic(topic)},
             {"role": "user", "content": content},
         ],
         response_format={"type": "json_object"},
@@ -307,20 +418,24 @@ def _extract_via_openai(
 
 
 def extract_structured(
-    images: list[bytes], meta: PatientMeta, topic: str, emphasis: str
+    images: list[bytes],
+    meta: PatientMeta,
+    topic: str,
+    emphasis: str,
+    source_text: str = "",
 ) -> dict:
-    """Extract structured lab-report data from PDF images.
+    """Extract structured lab-report data from PDF/image/text sources.
 
     Backend selection:
-    - ANTHROPIC_API_KEY set → Claude Sonnet 4.5 with SKILL.md system prompt
+    - ANTHROPIC_API_KEY set → Anthropic vision with SKILL.md system prompt
       (preferred — consistent with clinic-content-system, prompt caching).
-    - else OPENAI_API_KEY set → gpt-4o (legacy fallback).
+    - else OPENAI_API_KEY set → OpenAI vision fallback.
     - else RuntimeError.
     """
     if os.environ.get("ANTHROPIC_API_KEY"):
-        return _extract_via_anthropic(images, meta, topic, emphasis)
+        return _extract_via_anthropic(images, meta, topic, emphasis, source_text)
     if os.environ.get("OPENAI_API_KEY"):
-        return _extract_via_openai(images, meta, topic, emphasis)
+        return _extract_via_openai(images, meta, topic, emphasis, source_text)
     raise RuntimeError(
         "Neither ANTHROPIC_API_KEY nor OPENAI_API_KEY is set — "
         "source ~/clinic-content-system/_migration/.env before calling intake."
@@ -331,6 +446,35 @@ def extract_structured(
 # Step 4-5: HTML render + Playwright PDF
 # --------------------------------------------------------------------------- #
 
+def _stat_class(status: str | None) -> str:
+    return {
+        "ok": "stat-cell--ok",
+        "normal": "stat-cell--ok",
+        "warn": "stat-cell--low",
+        "low": "stat-cell--low",
+        "borderline": "stat-cell--low",
+        "alert": "stat-cell--high",
+        "high": "stat-cell--high",
+    }.get((status or "").strip().lower(), "")
+
+
+def _badge_class(status: str | None) -> str:
+    return {
+        "warn": "lab-row__badge--low",
+        "low": "lab-row__badge--low",
+        "borderline": "lab-row__badge--low",
+        "alert": "lab-row__badge--high",
+        "high": "lab-row__badge--high",
+    }.get((status or "").strip().lower(), "")
+
+
+def _items(value) -> list[str]:
+    if isinstance(value, list):
+        return [str(v) for v in value if str(v).strip()]
+    if isinstance(value, str) and value.strip():
+        return [value.strip()]
+    return []
+
 def render_html(
     extracted: dict, meta: PatientMeta, topic: str, slug: str, *, base_url: str = BASE_URL
 ) -> str:
@@ -338,7 +482,9 @@ def render_html(
         loader=FileSystemLoader(Path(__file__).parent / "templates"),
         autoescape=select_autoescape(["html"]),
     )
-    template = env.get_template("lab_report.html.j2")
+    env.globals.update(stat_class=_stat_class, badge_class=_badge_class, items=_items)
+    template_name = "health_checkup.html.j2" if topic == "health-checkup" else "lab_report.html.j2"
+    template = env.get_template(template_name)
     age_sex = extracted.get("age_sex") or meta.age_sex or ""
     report_title = extracted.get("report_title") or DEFAULT_TITLES.get(
         topic, "검사 결과 안내"
@@ -348,26 +494,51 @@ def render_html(
     )
     og_description = (
         extracted.get("og_description")
-        or f"{report_title} — {meta.name} · {meta.exam_date}"
+        or f"{report_title} — 핵심 결과 요약"
     )
 
-    html = template.render(
-        base_url=base_url,
-        slug=slug,
-        topic=topic,
-        report_title=report_title,
-        eyebrow_label=eyebrow_label,
-        og_description=og_description,
-        patient_name=meta.name,
-        chart_no=meta.chart_no,
-        exam_date=meta.exam_date,
-        doctor=meta.doctor,
-        age_sex=age_sex,
-        stats=extracted.get("stats", []),
-        details=extracted.get("details", []),
-        meanings=extracted.get("meanings", []),
-        recommendations=extracted.get("recommendations", []),
-    )
+    common = {
+        "base_url": base_url,
+        "slug": slug,
+        "topic": topic,
+        "report_title": report_title,
+        "eyebrow_label": eyebrow_label,
+        "og_description": og_description,
+        "patient_name": meta.name,
+        "chart_no": meta.chart_no,
+        "exam_date": meta.exam_date,
+        "doctor": meta.doctor,
+        "age_sex": age_sex,
+    }
+    if topic == "health-checkup":
+        performed = extracted.get("performed_tests") or []
+        page2_needed = any(
+            extracted.get(k)
+            for k in ("endoscopy", "ultrasound", "ekg", "bmd")
+        )
+        html = template.render(
+            **common,
+            performed_tests=performed,
+            overall=(extracted.get("overall") or [])[:4],
+            vitals=extracted.get("vitals", []),
+            labs=extracted.get("labs", []),
+            urinalysis=extracted.get("urinalysis", []),
+            endoscopy=extracted.get("endoscopy", []),
+            ultrasound=extracted.get("ultrasound", []),
+            ekg=extracted.get("ekg") or {},
+            bmd=extracted.get("bmd") or {},
+            action_plan=extracted.get("action_plan", []),
+            source_warnings=extracted.get("source_warnings", []),
+            page2_needed=page2_needed,
+        )
+    else:
+        html = template.render(
+            **common,
+            stats=extracted.get("stats", []),
+            details=extracted.get("details", []),
+            meanings=extracted.get("meanings", []),
+            recommendations=extracted.get("recommendations", []),
+        )
     # lab-reports privacy: ensure noindex (template already has it, but
     # inject_noindex_meta is idempotent — defense in depth)
     return inject_noindex_meta(html)
@@ -435,10 +606,12 @@ def register_notion(
 
 def run_intake(
     *,
-    pdf_bytes: bytes,
+    pdf_bytes: bytes | None = None,
+    sources: list[IntakeSource] | None = None,
     meta: PatientMeta,
     topic: str,
     emphasis: str,
+    source_text: str = "",
     register_to_notion: bool = False,
 ) -> IntakeResult:
     if not topic:
@@ -446,11 +619,20 @@ def run_intake(
     if not meta.name or not meta.chart_no:
         raise ValueError("patient name and chart_no are required")
 
-    images = pdf_to_images(pdf_bytes)
-    if not images:
-        raise ValueError("PDF has no pages")
+    all_sources = list(sources or [])
+    if pdf_bytes is not None:
+        all_sources.append(
+            IntakeSource(
+                filename="uploaded.pdf",
+                content=pdf_bytes,
+                media_type="application/pdf",
+            )
+        )
+    images = sources_to_images(all_sources) if all_sources else []
+    if not images and not source_text.strip():
+        raise ValueError("at least one PDF/image source or source_text is required")
 
-    extracted = extract_structured(images, meta, topic, emphasis)
+    extracted = extract_structured(images, meta, topic, emphasis, source_text)
 
     slug = lab_hash_slug(meta.chart_no, meta.name, topic)
 

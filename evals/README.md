@@ -21,9 +21,9 @@ jq -s 'map(.specialists[].findings_count.blocker // 0) | add' \
 
 ```bash
 cd ~/clinic-content-system
-python evals/eval_runner.py --mode multi-agent --kind decks
-python evals/eval_runner.py --mode baseline    --kind decks
-python evals/eval_runner.py --compare
+python3 evals/eval_runner.py run --mode multi-agent --kind decks
+python3 evals/eval_runner.py run --mode baseline    --kind decks
+python3 evals/eval_runner.py compare --kind decks
 ```
 
 ## Fixture 룰 (절대 룰)

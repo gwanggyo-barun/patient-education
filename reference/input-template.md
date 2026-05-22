@@ -205,5 +205,5 @@ Claude의 첫 산출물에서 수정이 필요하면 구체적으로 지시:
 이 경우 Claude가:
 1. HTML 작성
 2. `build.py`의 DECKS 리스트에 추가
-3. `python build.py` 실행
+3. `python3 build.py` 실행
 4. 결과 PDF 경로 안내

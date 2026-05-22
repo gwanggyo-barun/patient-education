@@ -23,8 +23,27 @@ lab-reports/
 ├── cv-screening/             # 심혈관 위험도
 ├── comprehensive-summary/    # 통합 요약
 ├── bone-metabolism/          # 골다공증 · Vit D · Ca/P
-└── urinalysis/               # 소변검사
+├── urinalysis/               # 소변검사
+└── health-checkup/template/  # ⭐ 종합 건강검진 결과지 (혈액·소변·내시경·초음파·심전도·골밀도 통합, 1~3페이지 가변)
 ```
+
+## health-checkup 가 다른 lab-reports topic 과 다른 점
+
+단일 패널 (cbc / lipid-panel / thyroid-function 등) 은 하나의 검사 카테고리 1페이지가 표준. **health-checkup 은 환자별로 시행 검사 갯수가 달라 1~3페이지로 가변**한다.
+
+| 항목 | 단일 패널 lab-reports | health-checkup |
+|---|---|---|
+| 페이지 수 | 1페이지 강제 | 1~3페이지 가변 |
+| 모듈 구성 | 고정 (해당 패널 수치만) | 8 모듈 ON/OFF (시행 검사만) |
+| 종합 판정 | 없음 (수치만) | §0 4영역 신호등 + 권장 사항 §9 |
+| 영상검사 narrative | 없음 | 내시경·초음파 card 본문 가능 |
+| 검사 항목 변동성 | 없음 | 매 환자 다름 |
+| Stage A·D specialist | 5인 (clinical/patient/visual/data/privacy) | 7인 (+ **checkup-extraction**, **checkup-completeness**) |
+
+`reference/quality-agents/checkup-extraction.md` 가 혼합 입력 추출 confidence 를, `reference/quality-agents/checkup-completeness.md` 가 모듈 누락·follow-up 일정·신호등 일관성을 점검.
+
+자세한 모듈 ON/OFF 룰·페이지 분할 가이드는 `reference/checkup-result-workflow.md` + `reference/checkup-result-schema.md` + SKILL.md "건강검진 결과지 (health-checkup)" 섹션 참조.
+
 
 ## 환자 인스턴스 생성 절차
 
@@ -32,7 +51,7 @@ lab-reports/
 cd ~/clinic-content-system
 
 # 1. hash slug 생성 (개인정보 보호 — Gotcha 11)
-python -c "import sys; sys.path.insert(0,'shared'); from _build_helpers import lab_hash_slug; print(lab_hash_slug('차트번호','환자명','cbc'))"
+python3 -c "import sys; sys.path.insert(0,'shared'); from _build_helpers import lab_hash_slug; print(lab_hash_slug('차트번호','환자명','cbc'))"
 # → 예: 8a3f1c9d2e
 
 # 2. template → hash 디렉토리 복사
@@ -58,7 +77,7 @@ cp -r lab-reports/cbc/template lab-reports/cbc/8a3f1c9d2e
 #    }
 
 # 5. 검증 + 빌드 + 푸시
-PYTHONIOENCODING=utf-8 python -m shared._validate_layout lab-reports/cbc/8a3f1c9d2e/index.html
+PYTHONIOENCODING=utf-8 python3 -m shared._validate_layout lab-reports/cbc/8a3f1c9d2e/index.html
 git add lab-reports/cbc/8a3f1c9d2e build.py
 git commit -m "Add lab-report 8a3f1c9d2e (cbc)"   # 환자명/차트번호 절대 금지
 git push

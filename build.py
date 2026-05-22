@@ -942,6 +942,16 @@ TARGETS = [
         "exam_date": "2026-05-09", "doctor": "정지환",
         "note": "요산 8.6 ↑ (저퓨린 식이) · TSH 4.98 ↑ (불현성 갑상선 저하 — 추적)",
     },
+    {
+        "kind": "lab-reports", "slug": "0d8f6f8adf",
+        "slug_path": "lab-reports/health-checkup/0d8f6f8adf/",
+        "html_path": ROOT / "lab-reports/health-checkup/0d8f6f8adf/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "종합 건강검진",
+        "patient_name": "검진가나", "chart_no": "DEMO01",
+        "exam_date": "2026-05-14", "doctor": "정지환",
+        "note": "DEMO 가공 환자 — 8 모듈 모두 활성, 2페이지 (혈액·소변·내시경·초음파·심전도·골밀도 통합) · H. pylori 제균 + LDL/HbA1c 경계 + 결절·골 follow-up",
+    },
 
     # === Neurology — Migraine (2026-05-20) ===
     {
@@ -991,6 +1001,7 @@ def _validate_css_paths() -> list[str]:
 
 
 _HANGUL_RE = __import__("re").compile(r"[가-힯]")
+_LAB_HASH_RE = __import__("re").compile(r"^[0-9a-f]{10}$")
 
 
 def _validate_targets_routing() -> list[str]:
@@ -1038,6 +1049,17 @@ def _validate_targets_routing() -> list[str]:
                     f"— use lab_hash_slug(chart_no, patient_name, topic) instead "
                     f"(slug='{slug}', slug_path='{slug_path}')"
                 )
+            if "/sample/" not in slug_path and not _LAB_HASH_RE.match(slug):
+                issues.append(
+                    f"{prefix}: lab-reports slug must be 10 lowercase hex chars "
+                    f"(got '{slug}')"
+                )
+            if "/sample/" not in slug_path and html_path and html_path.exists():
+                text = html_path.read_text(encoding="utf-8")
+                if "__HASH__" in text or "◯◯◯" in text or "「환자명」" in text:
+                    issues.append(
+                        f"{prefix}: placeholder remains in registered lab-report HTML"
+                    )
 
         # lab-reports SHOULD declare patient meta — warn, don't fail
         # (sample data like /lab-reports/lipid-panel/sample/ is exempt)

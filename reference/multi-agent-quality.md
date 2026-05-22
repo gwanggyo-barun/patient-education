@@ -31,7 +31,8 @@ Stage F — Final verification + push
 |---|---|
 | `decks` | clinical-accuracy + patient-readability + visual-design + **narrative-flow** = 4 |
 | `handouts` | clinical-accuracy + patient-readability + visual-design + **density-hierarchy** = 4 |
-| `lab-reports` | clinical-accuracy + patient-readability + visual-design + **data-accuracy** + **privacy-ops** = 5 |
+| `lab-reports` (단일 패널) | clinical-accuracy + patient-readability + visual-design + **data-accuracy** + **privacy-ops** = 5 |
+| `lab-reports` (`topic=health-checkup`) | 위 5인 + **checkup-extraction** + **checkup-completeness** = 7 (혼합 입력 추출·모듈 누락·follow-up·신호등 일관성) |
 
 고품질 모드 (사용자가 "고품질" / "정확하게" 등 명시):
 
@@ -63,7 +64,7 @@ doctor_input: |
 html: |
   {작성된 HTML}
 validate_layout_output: |
-  {python -m shared._validate_layout 출력}
+  {python3 -m shared._validate_layout 출력}
 """
 )
 ```
@@ -148,8 +149,8 @@ max 도달 후에도 blocker 남아있으면 *사용자에게 보고* 후 결정
 
 ### Stage F
 
-1. `python -m shared._validate_layout` — 통과 확인
-2. `python build.py` — preview.png 재생성
+1. `python3 -m shared._validate_layout` — 통과 확인
+2. `python3 build.py` — preview.png 재생성
 3. **A4 콘텐츠 (handouts / lab-reports) 는 preview.png 를 `Read` 도구로 직접 시각 확인** (메모리 룰)
 4. lab-reports 한정: PII 한 번 더 검사 — slug hash 형식, og meta, 커밋 메시지
 5. push (다른 세션 작업물 보호 — 명시적 stage 만)
@@ -159,7 +160,10 @@ max 도달 후에도 blocker 남아있으면 *사용자에게 보고* 후 결정
 ### 위치
 
 - `_local/quality-logs/critique-{YYYY-MM-DD}.jsonl` — gitignored, repo 밖으로 안 나감
+- `_local/quality-prompts/` / `_local/quality-runs/` — 실행 시 렌더된 specialist prompt 를 보관해야 할 때만 사용
 - `_local/` 디렉토리는 `.gitignore` 에 등록
+
+`reference/quality-agents/` 는 정적 prompt 템플릿 전용이다. doctor_input, 작성된 HTML, 검사 수치, 환자별 preview 경로가 합쳐진 실행 prompt 는 public repo 에 커밋될 수 있는 위치에 저장하지 않는다.
 
 ### Redaction 룰
 
