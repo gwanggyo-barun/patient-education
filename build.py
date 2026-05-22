@@ -705,6 +705,15 @@ TARGETS = [
         "category": "🏥 내시경 관련", "audience": "환자/보호자", "disease": "대변잠혈검사(FIT) 양성 안내문",
     },
     {
+        "kind": "handouts", "slug": "cvd-retinal-screening",
+        "slug_path": "handouts/screening/cvd-retinal-screening/",
+        "html_path": ROOT / "handouts/screening/cvd-retinal-screening/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "AI 망막 심혈관 위험 검사 안내",
+        "category": "🩺 일반내과", "audience": "환자/보호자",
+        "disease": "AI 망막 분석 심혈관 위험 검사 (CT·방사선 없이 90%+ 정확도, 70,000원, 실비 적용)",
+    },
+    {
         "kind": "handouts", "slug": "glp1-intake",
         "slug_path": "handouts/forms/glp1-intake/",
         "html_path": ROOT / "handouts/forms/glp1-intake/index.html",
