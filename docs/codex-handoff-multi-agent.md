@@ -14,14 +14,15 @@
 
 ---
 
-## 2. 변경된 commit 2개
+## 2. 변경 단위
 
-| commit | 날짜 | 요약 |
-|---|---|---|
-| `3effb90` | 2026-05-15 00:19 | Add multi-agent quality pipeline (7 specialists + orchestrator + gate) |
-| `13ff189` | 2026-05-15 23:48 | Switch specialist subagent_type from claude to general-purpose |
+멀티 에이전트 품질 파이프라인은 여러 차례 보정되었다. 최신 Source of Truth 는 commit 번호가 아니라 `SKILL.md` §"Multi-Agent Quality Pipeline" 과 `reference/multi-agent-quality.md` 이다.
 
-`13ff189` 는 Claude Code 환경 전용 fix (FleetView `claude` 함대 에이전트가 worktree isolation 을 강제하여 비-git cwd 에서 실패 → `general-purpose` 로 전환). Codex 환경에는 직접 적용되지 않지만, SKILL.md / multi-agent-quality.md 의 §"호출 환경" 텍스트가 같이 갱신된 것을 인지하면 됨.
+핵심 변경:
+- specialist prompt를 `reference/quality-agents/`에 분리
+- `tools/quality_gate.py`에 deterministic gate, PII redaction, specialist roster helper 추가
+- `lab-reports/topic=health-checkup` 전용 `checkup-extraction`, `checkup-completeness` specialist 추가
+- Claude Code plugin clone + Codex mirror 동기화 스크립트 추가
 
 ---
 
@@ -30,14 +31,16 @@
 ```
 SKILL.md                              §"🤖 Multi-Agent Quality Pipeline" 신설 (line 349~)
 reference/multi-agent-quality.md      상세 SoT — 11 섹션 (pipeline / specialist 라인업 / 호출 환경 / JSON 스키마 / severity / 충돌 해소 / logging / anti-pattern / 모드 trigger / 호환성 / eval)
-reference/quality-agents/             7 specialist 프롬프트
+reference/quality-agents/             9 specialist 프롬프트
   ├── clinical-accuracy.md
   ├── patient-readability.md
   ├── visual-design.md
   ├── narrative-flow.md         (decks 전용)
   ├── density-hierarchy.md      (handouts 전용)
   ├── data-accuracy.md          (lab-reports 전용)
-  └── privacy-ops.md            (lab-reports 전용 — push 차단 권한 보유)
+  ├── privacy-ops.md            (lab-reports 전용 — push 차단 권한 보유)
+  ├── checkup-extraction.md     (lab-reports/health-checkup 전용)
+  └── checkup-completeness.md   (lab-reports/health-checkup 전용)
 tools/quality_gate.py                 redact_pii() / run_deterministic_gate() / log_critique() / roster_for()
 evals/                                synthetic eval scaffold — host-binding-agnostic runner
 .gitignore                            _local/ 추가 (critique 로그 위치), evals/results/ 추가
@@ -55,7 +58,7 @@ evals/                                synthetic eval scaffold — host-binding-a
 2. **모델은 호스트 default 또는 available strongest reasoning model.** 모델 ID 하드코딩 금지.
 3. **vision specialist (`visual-design`)** 는 vision 지원 모델 필수. 미지원이면 그 specialist 만 skip — 다른 specialist 는 진행.
 4. **산출물 JSON 스키마·severity 의미·충돌 해소 우선순위·logging redaction 룰은 환경 무관 동일.**
-5. **결정적 gate (Stage C / F)** 는 LLM 호출 없이 그대로 사용: `python -m shared._validate_layout`, `python build.py`, lab-reports 한정 `_visual_audit`.
+5. **결정적 gate (Stage C / F)** 는 LLM 호출 없이 그대로 사용: `python3 -m shared._validate_layout`, `python3 build.py`, lab-reports 한정 `_visual_audit`.
 
 ### 콘텐츠 타입별 specialist 라인업
 
@@ -64,6 +67,7 @@ evals/                                synthetic eval scaffold — host-binding-a
 | `decks` | clinical-accuracy + patient-readability + visual-design + narrative-flow | 4 |
 | `handouts` | clinical-accuracy + patient-readability + visual-design + density-hierarchy | 4 |
 | `lab-reports` | clinical-accuracy + patient-readability + visual-design + data-accuracy + **privacy-ops** | 5 |
+| `lab-reports` / `topic=health-checkup` | lab-reports 5인 + **checkup-extraction** + **checkup-completeness** | 7 |
 
 `target_audience: "clinician"` 일 때만 `patient-readability` 자동 skip (학회·동료의사 자료).
 
@@ -103,8 +107,8 @@ ls reference/multi-agent-quality.md \
    tools/quality_gate.py
 
 # (b) Quality gate 도우미 동작 확인
-python -c "from tools.quality_gate import redact_pii, roster_for; \
-print(roster_for('lab-reports', 'patient')); \
+python3 -c "from tools.quality_gate import redact_pii, roster_for; \
+print(roster_for('lab-reports', topic='health-checkup')); \
 print(redact_pii('환자명 김OO 차트번호 [12345] 연락처 010-1234-5678'))"
 
 # (c) SKILL.md 와 multi-agent-quality.md 의 specialist 라인업 일치 확인

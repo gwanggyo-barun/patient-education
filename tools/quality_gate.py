@@ -237,12 +237,12 @@ def roster_for(
 
     Args:
         kind: decks / handouts / lab-reports
-        topic: optional topic slug. lab-reports/health-checkup 에서 extra specialist 추가.
+        topic: optional topic slug. lab-reports/health-checkup 에서 extraction/completeness specialists 추가.
         target_audience: 'clinician' 이면 patient-readability skip.
     """
     base = list(SPECIALIST_ROSTER.get(kind, []))
     if kind == "lab-reports" and topic == "health-checkup":
-        base.append("checkup-completeness")
+        base.extend(["checkup-extraction", "checkup-completeness"])
     if target_audience == "clinician" and "patient-readability" in base:
         base.remove("patient-readability")
     return base
@@ -256,8 +256,8 @@ def roster_for(
 def _print_help() -> None:
     print(
         "usage:\n"
-        "  python3 tools/quality_gate.py gate [<html_path>]\n"
-        "      run deterministic gate (validate_layout [+ build])\n"
+        "  python3 tools/quality_gate.py gate [<html_path>] [--build] [--visual-audit]\n"
+        "      run deterministic gate. Default is validate_layout only; --build may rewrite HTML via build.py.\n"
         "  python3 tools/quality_gate.py redact <text>\n"
         "      print redacted version of <text>\n"
         "  python3 tools/quality_gate.py roster <kind> [<topic>] [clinician]\n"
@@ -272,8 +272,16 @@ def main(argv: list[str]) -> int:
 
     cmd = argv[0]
     if cmd == "gate":
-        html_path = argv[1] if len(argv) > 1 else None
-        result = run_deterministic_gate(html_path=html_path, skip_build=False)
+        args = argv[1:]
+        run_build = "--build" in args
+        run_visual_audit = "--visual-audit" in args
+        paths = [arg for arg in args if not arg.startswith("--")]
+        html_path = paths[0] if paths else None
+        result = run_deterministic_gate(
+            html_path=html_path,
+            skip_build=not run_build,
+            skip_visual_audit=not run_visual_audit,
+        )
         print(result.to_context())
         return 0 if result.passed else 1
     if cmd == "redact":

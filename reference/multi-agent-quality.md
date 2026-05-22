@@ -32,7 +32,7 @@ Stage F — Final verification + push
 | `decks` | clinical-accuracy + patient-readability + visual-design + **narrative-flow** = 4 |
 | `handouts` | clinical-accuracy + patient-readability + visual-design + **density-hierarchy** = 4 |
 | `lab-reports` (단일 패널) | clinical-accuracy + patient-readability + visual-design + **data-accuracy** + **privacy-ops** = 5 |
-| `lab-reports` (`topic=health-checkup`) | 위 5인 + **checkup-completeness** = 6 (모듈 누락·follow-up·신호등 일관성) |
+| `lab-reports` (`topic=health-checkup`) | 위 5인 + **checkup-extraction** + **checkup-completeness** = 7 (혼합 입력 추출·모듈 누락·follow-up·신호등 일관성) |
 
 고품질 모드 (사용자가 "고품질" / "정확하게" 등 명시):
 

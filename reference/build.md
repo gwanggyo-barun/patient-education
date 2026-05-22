@@ -116,7 +116,7 @@ TARGETS = [
 
 빌드 실행:
 ```bash
-python build.py
+python3 build.py
 ```
 
 빌드는 다음을 한 번에 수행:
@@ -158,8 +158,8 @@ https://gwanggyo-barun.github.io/patient-education/decks/gi/gerd/lifestyle/
    - lab-reports: `lab-reports/{panel}/template/`을 복사, `lab_hash_slug()`로 slug 생성
 2. content-template.md / patterns.md 참고해 본문 작성
 3. `build.py`의 `TARGETS` 리스트에 dict 한 항목 append (위 스키마 참조)
-4. `python -m shared._validate_layout <html_path>` 로 사전 검증
-5. (선택) `python build.py` 로컬 빌드 — `output/{kind}/{slug}-preview.png` 시각 점검
+4. `python3 -m shared._validate_layout <html_path>` 로 사전 검증
+5. (선택) `python3 build.py` 로컬 빌드 — `output/{kind}/{slug}-preview.png` 시각 점검
 6. `git add <명시 파일>` (절대 `.` 또는 `-A` 금지) → commit → push
 7. CI(~80초)가 PDF 빌드 + GH Pages 배포 + Notion DB 자동 동기
 

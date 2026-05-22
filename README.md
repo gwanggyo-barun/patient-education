@@ -27,10 +27,26 @@ playwright install chromium
 cd ~/clinic-content-system
 git pull --rebase                     # 다른 머신 변경 받기
 # (콘텐츠 작성 — 아래 표준 워크플로우 참조)
-PYTHONIOENCODING=utf-8 python -m shared._validate_layout <path>   # 검증
-python build.py                       # 로컬 빌드 (선택, CI도 자동)
-git add <명시 파일> && git commit -m "..." && git push
+PYTHONIOENCODING=utf-8 python3 -m shared._validate_layout <path>  # 검증
+python3 build.py                      # 로컬 빌드 (선택, CI도 자동)
+git status --short                    # staged/untracked audit
+git add <이번 작업 파일만 명시>       # 절대 git add . 금지
+git diff --cached --name-only         # 내 파일만 staged 인지 확인
+git commit -m "..."
+git push
 ```
+
+## 스킬 동기화 (Claude Code + Codex)
+
+`~/clinic-content-system`이 main이고 tracked 변경이 없을 때:
+
+```bash
+cd ~/clinic-content-system
+bash tools/sync_all_agents.sh     # origin/main + Claude plugin clone + Codex managed mirror
+bash tools/verify_skill_sync.sh   # 4개 위치 HEAD/SKILL.md sha 확인
+```
+
+Codex mirror(`~/.codex/skills/clinic-content-system`)는 read-only 스킬 로딩 snapshot이다. 실제 편집·검증·빌드는 항상 `~/clinic-content-system`에서 한다.
 
 산출물 (CI 자동, ~80초):
 - `output/{kind}/{slug}.pdf` — 환자 공유용 PDF

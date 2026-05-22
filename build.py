@@ -971,6 +971,7 @@ def _validate_css_paths() -> list[str]:
 
 
 _HANGUL_RE = __import__("re").compile(r"[가-힯]")
+_LAB_HASH_RE = __import__("re").compile(r"^[0-9a-f]{10}$")
 
 
 def _validate_targets_routing() -> list[str]:
@@ -1018,6 +1019,17 @@ def _validate_targets_routing() -> list[str]:
                     f"— use lab_hash_slug(chart_no, patient_name, topic) instead "
                     f"(slug='{slug}', slug_path='{slug_path}')"
                 )
+            if "/sample/" not in slug_path and not _LAB_HASH_RE.match(slug):
+                issues.append(
+                    f"{prefix}: lab-reports slug must be 10 lowercase hex chars "
+                    f"(got '{slug}')"
+                )
+            if "/sample/" not in slug_path and html_path and html_path.exists():
+                text = html_path.read_text(encoding="utf-8")
+                if "__HASH__" in text or "◯◯◯" in text or "「환자명」" in text:
+                    issues.append(
+                        f"{prefix}: placeholder remains in registered lab-report HTML"
+                    )
 
         # lab-reports SHOULD declare patient meta — warn, don't fail
         # (sample data like /lab-reports/lipid-panel/sample/ is exempt)

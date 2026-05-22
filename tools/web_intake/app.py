@@ -27,6 +27,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from intake import (  # noqa: E402
     DEFAULT_TITLES,
+    IntakeSource,
     PatientMeta,
     TOPIC_LABELS,
     run_intake,
@@ -69,8 +70,8 @@ if not _require_password():
 
 st.title("🧪 검사결과 자료 셀프 생성")
 st.caption(
-    "환자 검사 PDF를 업로드하고 강조점을 입력하면, 광교바른내과 표준 스타일의 "
-    "A4 1장 인포그래픽 PDF를 생성합니다. 같은 환자의 검사는 👤 환자 마스터 페이지에 "
+    "환자 검사 PDF·캡쳐 이미지·텍스트를 입력하면, 광교바른내과 표준 스타일의 "
+    "검사 결과 HTML/PDF를 생성합니다. 같은 환자의 검사는 👤 환자 마스터 페이지에 "
     "자동 누적됩니다."
 )
 
@@ -112,12 +113,27 @@ with col_left:
         ),
         help="결과지 콘텐츠의 우선순위를 결정합니다. 비워두면 PDF에서 가장 임상적으로 중요한 항목 위주로 추출됩니다.",
     )
+    source_text = st.text_area(
+        "검사결과 텍스트 / EMR 복사 내용",
+        height=180,
+        placeholder=(
+            "예시:\n"
+            "위내시경: H. pylori 양성, 위축성 위염\n"
+            "갑상선초음파: 우엽 0.4cm TIRADS 3\n"
+            "혈액: LDL 142, HbA1c 6.0"
+        ),
+        help="PDF/캡쳐가 없거나, 이미지에서 잘 안 보이는 내용을 보강할 때 입력합니다.",
+    )
 
 with col_right:
-    pdf_file = st.file_uploader("검사결과 PDF *", type=["pdf"])
+    uploaded_files = st.file_uploader(
+        "검사결과 PDF / 캡쳐 이미지",
+        type=["pdf", "png", "jpg", "jpeg", "webp"],
+        accept_multiple_files=True,
+    )
     st.info(
-        "💡 검사센터/EMR에서 받은 원본 PDF 그대로 업로드. 여러 페이지여도 OK. "
-        "GPT-4o 비전이 각 페이지에서 수치를 읽어와 구조화합니다."
+        "💡 검사센터/EMR에서 받은 원본 PDF 또는 캡쳐 이미지를 여러 개 올릴 수 있습니다. "
+        "텍스트만 입력해도 생성 가능합니다."
     )
 
 st.divider()
@@ -126,11 +142,11 @@ st.divider()
 if st.button("📄 생성하기", type="primary", use_container_width=True):
     if not patient_name or not chart_no:
         st.error("환자명과 차트번호를 입력해주세요.")
-    elif not pdf_file:
-        st.error("검사결과 PDF 파일을 업로드해주세요.")
-    elif not os.environ.get("OPENAI_API_KEY"):
+    elif not uploaded_files and not source_text.strip():
+        st.error("검사결과 PDF/캡쳐 이미지 또는 텍스트를 입력해주세요.")
+    elif not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("OPENAI_API_KEY")):
         st.error(
-            "OPENAI_API_KEY 환경변수가 설정되지 않았습니다. "
+            "ANTHROPIC_API_KEY 또는 OPENAI_API_KEY 환경변수가 설정되지 않았습니다. "
             "터미널에서 `source _migration/.env` 후 streamlit을 다시 실행하세요."
         )
     else:
@@ -141,13 +157,21 @@ if st.button("📄 생성하기", type="primary", use_container_width=True):
             doctor=doctor.strip() or "정지환",
             age_sex=age_sex_hint.strip(),
         )
-        with st.spinner("PDF 분석 → 인포그래픽 생성 중… (15~30초)"):
+        with st.spinner("자료 분석 → 인포그래픽 생성 중… (15~30초)"):
             try:
                 result = run_intake(
-                    pdf_bytes=pdf_file.getvalue(),
+                    sources=[
+                        IntakeSource(
+                            filename=f.name,
+                            content=f.getvalue(),
+                            media_type=f.type or "",
+                        )
+                        for f in uploaded_files
+                    ],
                     meta=meta,
                     topic=topic,
                     emphasis=emphasis,
+                    source_text=source_text,
                     register_to_notion=register_notion,
                 )
             except Exception as e:  # noqa: BLE001
@@ -205,6 +229,8 @@ if st.button("📄 생성하기", type="primary", use_container_width=True):
                 "**다음 단계 (GH Pages 배포):**\n"
                 "1. `build.py`의 `TARGETS` 끝에 이 자료 dict 추가 "
                 f"(`slug='{result.slug}'`, `slug_path='lab-reports/{result.topic}/{result.slug}/'`)\n"
-                "2. `git add lab-reports/{topic}/{slug}/ build.py && git commit && git push`\n"
-                "3. GH Actions가 ~1분 20초 후 GH Pages에 배포 — Notion 카드 링크 자동 갱신"
+                "2. `git status --short`로 기존 staged 항목 확인\n"
+                "3. 새 HTML 파일과 `build.py`만 명시적으로 `git add <file>`\n"
+                "4. `git diff --cached --name-only` 확인 후 commit/push\n"
+                "5. GH Actions가 ~1분 20초 후 GH Pages에 배포 — Notion 카드 링크 자동 갱신"
             )

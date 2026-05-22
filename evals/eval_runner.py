@@ -5,10 +5,10 @@
 integrator 가 Agent 도구로 specialist 를 호출하며, 본 runner 는 결과 JSON 만 받아 metric 계산.)
 
 사용:
-  python evals/eval_runner.py --mode multi-agent --kind decks
-  python evals/eval_runner.py --mode baseline    --kind handouts
-  python evals/eval_runner.py --compare          --kind decks
-  python evals/eval_runner.py --list-fixtures
+  python3 evals/eval_runner.py run --mode multi-agent --kind decks
+  python3 evals/eval_runner.py run --mode baseline    --kind handouts
+  python3 evals/eval_runner.py compare --kind decks
+  python3 evals/eval_runner.py list-fixtures --kind decks
 
 산출:
   evals/results/{mode}-{kind}-{timestamp}.jsonl  — run 결과

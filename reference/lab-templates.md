@@ -38,11 +38,11 @@ lab-reports/
 | 종합 판정 | 없음 (수치만) | §0 4영역 신호등 + 권장 사항 §9 |
 | 영상검사 narrative | 없음 | 내시경·초음파 card 본문 가능 |
 | 검사 항목 변동성 | 없음 | 매 환자 다름 |
-| Stage A·D specialist | 5인 (clinical/patient/visual/data/privacy) | 6인 (+ **checkup-completeness**) |
+| Stage A·D specialist | 5인 (clinical/patient/visual/data/privacy) | 7인 (+ **checkup-extraction**, **checkup-completeness**) |
 
-`reference/quality-agents/checkup-completeness.md` 가 모듈 누락·follow-up 일정·신호등 일관성 점검.
+`reference/quality-agents/checkup-extraction.md` 가 혼합 입력 추출 confidence 를, `reference/quality-agents/checkup-completeness.md` 가 모듈 누락·follow-up 일정·신호등 일관성을 점검.
 
-자세한 모듈 ON/OFF 룰·페이지 분할 가이드는 `lab-reports/health-checkup/template/index.html` 상단 주석 + SKILL.md "건강검진 결과지 (health-checkup)" 섹션 참조.
+자세한 모듈 ON/OFF 룰·페이지 분할 가이드는 `reference/checkup-result-workflow.md` + `reference/checkup-result-schema.md` + SKILL.md "건강검진 결과지 (health-checkup)" 섹션 참조.
 
 
 ## 환자 인스턴스 생성 절차

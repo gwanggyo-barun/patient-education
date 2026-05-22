@@ -3,7 +3,7 @@
 #
 # Flow:
 #   [A] dirty guard on working repo
-#   [B] git fetch + ff-only pull
+#   [B] git fetch + ff-only pull from origin/main
 #   [C] Claude plugin clone sync (delegates to sync_plugin_clone.sh)
 #   [D] Codex managed mirror update (whitelist rsync to ~/.codex/skills/clinic-content-system)
 #   [E] write mirror metadata (.sync-info, MIRROR-NOTICE.md)
@@ -14,6 +14,7 @@
 #   - pull is --ff-only — non-fast-forward aborts; user must rebase/resolve manually.
 #   - rsync uses a strict whitelist — output/, decks/, handouts/, lab-reports/, .git/,
 #     _migration/, patient data, generated assets are NEVER copied to the mirror.
+#     web_intake code/templates are copied because health-checkup skill mode uses them.
 
 set -euo pipefail
 
@@ -39,6 +40,14 @@ case "$remote_url" in
     *"$EXPECTED_REMOTE_FRAGMENT"*) ;;
     *) err "Not the expected repo. origin = $remote_url"; exit 1 ;;
 esac
+
+# Guard: this script syncs the canonical main branch only.
+branch="$(git branch --show-current 2>/dev/null || echo "")"
+if [ "$branch" != "main" ]; then
+    err "sync_all_agents.sh must run from main, but current branch is '$branch'."
+    err "Switch to main after your work is merged/pushed, then re-run."
+    exit 1
+fi
 
 # [A] dirty guard — only modified tracked files block, untracked files OK
 echo
@@ -106,12 +115,42 @@ rsync -a --delete --prune-empty-dirs \
     --include='/tools/' \
     --include='/tools/sync_plugin_clone.sh' \
     --include='/tools/generate_image_asset.py' \
+    --include='/tools/quality_gate.py' \
+    --include='/tools/checkup_schema_validate.py' \
+    --include='/tools/web_intake/' \
+    --include='/tools/web_intake/README.md' \
+    --include='/tools/web_intake/app.py' \
+    --include='/tools/web_intake/intake.py' \
+    --include='/tools/web_intake/requirements.txt' \
+    --include='/tools/web_intake/templates/' \
+    --include='/tools/web_intake/templates/**' \
     --exclude='*' \
     "$REPO/" "$CODEX_MIRROR/"
 
 # [E] metadata
 synced_sha="$(git rev-parse HEAD)"
 synced_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+
+if [ -f "$CODEX_MIRROR/AGENTS.md" ]; then
+    agents_tmp="$CODEX_MIRROR/AGENTS.md.tmp"
+    cat > "$agents_tmp" <<EOF
+# AGENTS.md — Codex Managed Mirror
+
+This directory is a **read-only skill-loading snapshot** generated from
+\`$REPO\` by \`tools/sync_all_agents.sh\`.
+
+Do not edit files here. All real editing, validation, builds, commits, and
+pushes must happen in \`$REPO\`.
+
+The source AGENTS.md content follows for reference.
+
+---
+
+EOF
+    cat "$REPO/AGENTS.md" >> "$agents_tmp"
+    mv "$agents_tmp" "$CODEX_MIRROR/AGENTS.md"
+fi
+
 cat > "$CODEX_MIRROR/.sync-info" <<EOF
 synced_at=$synced_at
 synced_sha=$synced_sha
@@ -129,11 +168,12 @@ Edits here are wiped on next sync. All real editing happens in \`$REPO\`.
 - Last synced: ${synced_at} (UTC)
 - Source commit: ${synced_sha}
 
-What lives here: SKILL.md, AGENTS.md, README.md, build.py, reference/, shared/*.{css,py},
-shared/assets/clinic_logo.png, tools/sync_plugin_clone.sh, tools/generate_image_asset.py.
+What lives here: SKILL.md, AGENTS.md, README.md, build.py, reference/,
+shared/*.{css,py}, shared/assets/clinic_logo.png, selected tools/ helpers,
+and web_intake code/templates needed by health-checkup skill mode.
 
 What does NOT live here (by design): .git/, output/, decks/, handouts/, lab-reports/,
-_migration/, generated assets, patient data, tools/web_intake/, secrets.
+_migration/, evals/, generated assets, patient data, secrets.
 EOF
 
 ok "Codex mirror updated → $synced_sha"

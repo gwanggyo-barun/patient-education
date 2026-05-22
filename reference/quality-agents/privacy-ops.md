@@ -96,7 +96,7 @@
       "severity": "blocker",
       "affected_section": "TARGETS / slug_path",
       "evidence": "slug_path 에 한글 포함됨 — _validate_targets_routing 이 push 차단함. hash slug 로 교체 필요.",
-      "fix_suggestion": "python -c \"import sys; sys.path.insert(0,'shared'); from _build_helpers import lab_hash_slug; print(lab_hash_slug('차트번호','환자명','topic'))\" 로 hash 생성 후 slug/slug_path/디렉토리 모두 교체.",
+      "fix_suggestion": "python3 -c \"import sys; sys.path.insert(0,'shared'); from _build_helpers import lab_hash_slug; print(lab_hash_slug('{차트번호}','{환자명}','topic'))\" 로 hash 생성 후 slug/slug_path/디렉토리 모두 교체.",
       "confidence": 1.0
     }
   ],
