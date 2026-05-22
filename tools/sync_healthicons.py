@@ -219,6 +219,26 @@ def load_seed_alt() -> dict[str, str]:
         return {}
 
 
+def _seed_lookup(seed_alt: dict[str, str], key: str) -> str:
+    """Return the Korean alt for `key`, with cross-style fallback.
+
+    If the requested style (filled/outline) has no seed entry but the opposite
+    style does, reuse it. Same icon glyph in different stroke style → same
+    Korean meaning. Halves authoring effort: write one alt for `hi-filled-X`
+    and both `hi-filled-X` and `hi-outline-X` get it.
+    """
+    direct = seed_alt.get(key)
+    if direct:
+        return direct.strip()
+    if key.startswith("hi-outline-"):
+        twin = "hi-filled-" + key[len("hi-outline-"):]
+    elif key.startswith("hi-filled-"):
+        twin = "hi-outline-" + key[len("hi-filled-"):]
+    else:
+        return ""
+    return (seed_alt.get(twin) or "").strip()
+
+
 def build_manifest(upstream: Path, ref: str, commit_date: str) -> dict[str, Any]:
     """Walk vendored healthicons/, emit a manifest dict ready to dump."""
     collisions = _scan_collisions(upstream)
@@ -233,7 +253,7 @@ def build_manifest(upstream: Path, ref: str, commit_date: str) -> dict[str, Any]
         style, topic, name_with_ext = rel_in_hi[0], rel_in_hi[1], rel_in_hi[-1]
         name = name_with_ext[:-4]
         key = _key_for(style, topic, name, collisions)
-        alt_ko = (seed_alt.get(key) or "").strip()
+        alt_ko = _seed_lookup(seed_alt, key)
         assets[key] = {
             "file": rel,
             "format": "svg",

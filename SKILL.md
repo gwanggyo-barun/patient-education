@@ -874,6 +874,16 @@ HTML 예시:
 
 **자산 라이브러리 (권장)**: 신규 자료는 `<img data-asset="key">` 한 줄로 작성하면 `build.py` 가 `manifest.json` 을 보고 `src`·`alt` 를 자동 채운다. 디렉터리 깊이(`../../../`) 계산·alt 텍스트 통일·재이름 propagation 모두 자동. 새 이미지 추가 시 `tools/sync_manifest.py` 가 자동 등록한다. 운영 규칙·검수 게이트·`tools/asset_lint.py` 사용법은 **`shared/assets/README.md`** 참조.
 
+**Healthicons (벤더된 의료 SVG 아이콘 ~1,500개)**: 큐레이션 자산과 같은 `data-asset` 패턴을 그대로 쓰면 된다. 키는 `hi-<style>-<name>` (style ∈ `filled`/`outline`). 약 1,000개는 한국어 alt 가 시드되어 있고, 나머지는 use site 에서 `alt="..."` 직접 지정 권장. 예시:
+
+```html
+<img data-asset="hi-filled-heart-organ" class="icon-md">                <!-- alt="심장" 자동 -->
+<img data-asset="hi-outline-blood-pressure_monitor" class="icon-md">    <!-- alt="혈압계" 자동 (filled→outline fallback) -->
+<img data-asset="hi-filled-syringe-vaccine" alt="독감 예방접종 안내">      <!-- use-site override -->
+```
+
+신규 시드 추가는 `tools/healthicons_alt_ko.json` 에 `"<key>": "<한글>"` 한 줄 더 후 `python3 tools/sync_healthicons.py` 재실행. 카테고리 분포·운영·갱신 절차는 **`shared/assets/README.md` § Healthicons** 참조.
+
 로컬 API 생성이 필요한 경우:
 
 ```bash
