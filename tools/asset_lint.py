@@ -36,6 +36,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent.resolve()
 ASSETS_DIR = ROOT / "shared" / "assets"
 MANIFEST_PATH = ASSETS_DIR / "manifest.json"
+HEALTHICONS_MANIFEST_PATH = ASSETS_DIR / "healthicons.manifest.json"
 MATERIAL_DIRS = ("handouts", "decks", "lab-reports")
 
 IMG_RE = re.compile(r"<img\b[^>]{0,800}>", re.IGNORECASE | re.DOTALL)
@@ -55,13 +56,22 @@ SIZE_WARN = 1_500 * 1024
 SIZE_ERR = 4_000 * 1024
 
 
-def load_manifest() -> dict:
-    if not MANIFEST_PATH.exists():
+def _read_manifest(path: Path) -> dict:
+    if not path.exists():
         return {"assets": {}}
     try:
-        return json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return {"assets": {}}
+
+
+def load_manifest() -> dict:
+    """Merge healthicons.manifest.json + manifest.json into a single
+    {"assets": …} shape. Curated manifest wins on key collisions."""
+    merged: dict = {"assets": {}}
+    merged["assets"].update(_read_manifest(HEALTHICONS_MANIFEST_PATH).get("assets", {}))
+    merged["assets"].update(_read_manifest(MANIFEST_PATH).get("assets", {}))
+    return merged
 
 
 def iter_html() -> list[Path]:
@@ -149,6 +159,11 @@ def check_filesystem(errors: list[str], warnings: list[str]) -> None:
             continue
         if p.name.startswith("."):
             continue
+        # Vendored icon library is upstream-curated, all-ASCII, all-small.
+        # Skip to avoid 1000+ pointless iterations and to keep manifest
+        # PII checks focused on assets we author or commission.
+        if p.relative_to(ASSETS_DIR).parts[:1] == ("healthicons",):
+            continue
         name = p.name
         rel = p.relative_to(ROOT)
 
@@ -186,6 +201,12 @@ def check_manifest(manifest: dict, errors: list[str], warnings: list[str]) -> No
                 f"manifest['{key}']: file '{f}' no longer on disk — remove or restore"
             )
         if not entry.get("alt_ko") and entry.get("review_status") == "approved":
+            # Healthicons icons intentionally ship without alt_ko unless they
+            # appear in the seed translation. Per-use alt at the use site is
+            # the design — resolve_data_asset emits a warning if the use site
+            # also has no alt. Don't double-warn on every unused icon here.
+            if key.startswith("hi-"):
+                continue
             warnings.append(
                 f"manifest['{key}']: approved but alt_ko empty"
             )

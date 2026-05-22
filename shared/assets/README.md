@@ -8,10 +8,15 @@
 
 ```
 shared/assets/
-  clinic_logo.png           # 의원 로고 (전 자료 공통)
-  generated/                # AI 생성 / 수작업 자산 (현재 모두 여기)
-  manifest.json             # 자산 메타데이터 (자동 동기화)
-  README.md                 # 이 문서
+  clinic_logo.png             # 의원 로고 (전 자료 공통)
+  generated/                  # AI 생성 / 수작업 자산
+  healthicons/                # Healthicons 벤더 SVG (자동 관리)
+    LICENSE                   # MIT 라이선스 사본 (attribution)
+    filled/<topic>/*.svg
+    outline/<topic>/*.svg
+  manifest.json               # 큐레이션 자산 메타데이터 (수동·자동 혼합)
+  healthicons.manifest.json   # Healthicons 메타데이터 (전부 자동 생성)
+  README.md                   # 이 문서
 ```
 
 신규 카테고리 폴더(`medical/`, `lifestyle/`, `ui/` 등)는 자산이 의미적으로 그룹화
@@ -116,6 +121,56 @@ build 가 비어있지 않은 alt 는 건드리지 않습니다.
 CI prod job 에서는 `python3 tools/asset_lint.py --strict` 로 호출하여
 `pending` 자산이 환자 자료에 섞이지 않도록 합니다.
 
+## Healthicons (벤더된 의료 아이콘 라이브러리)
+
+[Healthicons](https://github.com/resolvetosavelives/healthicons) (MIT,
+Resolve to Save Lives / WHO 협업)을 **약 1,500개 SVG** 벤더링한 상태입니다.
+시각적으로 가볍고(<10KB/icon) 임상 정확도가 사전 검증된 아이콘이라 슬라이드,
+핸드아웃, 검사결과 모두에서 그대로 사용할 수 있습니다.
+
+### 사용
+
+큐레이션 자산과 똑같은 `data-asset` 패턴입니다.
+
+```html
+<img data-asset="hi-filled-heart-organ" class="icon-md">
+<img data-asset="hi-outline-blood-pressure_monitor" alt="가정 혈압계 — 매일 같은 시간 측정">
+```
+
+- 키 네이밍: `hi-<style>-<name>` (style ∈ {`filled`, `outline`}).
+  같은 name이 여러 topic에 존재할 때만 `hi-<style>-<topic>-<name>` 형태로 확장.
+- 자주 쓰는 약 100개 아이콘은 한국어 alt가 시드되어 있음 (`tools/healthicons_alt_ko.json`).
+  나머지는 use site에서 alt 직접 작성 권장 — 빈 alt 상태에서 빌드는 `data-asset='X'
+  has no alt_ko in manifest` warning을 띄움.
+- 매니페스트 자체는 `shared/assets/healthicons.manifest.json` 에 분리 보관 — PR diff
+  깨끗하게, 큐레이션 풀과 검수 게이트를 분리.
+
+### 갱신 / 재현
+
+```bash
+python3 tools/sync_healthicons.py          # 핀된 SHA로 sparse fetch + 매니페스트 재생성
+python3 tools/sync_healthicons.py --check  # 매니페스트와 디스크 일치 검사 (write 없음)
+```
+
+`tools/sync_healthicons.py` 의 `HEALTHICONS_REF` 상수를 갱신하면 다음 sync 때 새
+업스트림 SHA로 교체됩니다. 재현성을 위해 항상 **커밋 SHA**로 핀하며 `main` 같은
+이동 ref는 피합니다.
+
+### 한국어 alt 시드 추가
+
+`tools/healthicons_alt_ko.json` 에 `"<manifest-key>": "<한글 alt>"` 추가 → 
+`python3 tools/sync_healthicons.py` 실행.  존재하지 않는 키를 적으면 sync가 
+경고(`⚠️ N seed alt key(s) not in manifest`)를 출력하므로 오타가 silent 되지 
+않습니다.
+
+### 큐레이션 manifest로 오버라이드
+
+`shared/assets/manifest.json` 에 같은 키를 추가하면 해당 엔트리가 healthicons.manifest.json
+보다 우선합니다.  현장에서 특정 아이콘의 alt나 category를 의원 컨벤션에 맞게
+바꿔야 할 때 사용 — 단, **파일 자체를 교체하려면** healthicons 폴더 밖에 두고
+`file` 필드를 그쪽으로 가리키게 해야 합니다 (다음 sync 가 healthicons/ 하위
+파일을 덮어쓰기 때문).
+
 ## lab-reports 특수 규칙
 
 - **WebP 금지** — 일부 PDF 렌더러에서 빈 사각형으로 출력됨. `png/jpg/svg` 만.
@@ -145,8 +200,10 @@ CI prod job 에서는 `python3 tools/asset_lint.py --strict` 로 호출하여
 
 | 명령 | 용도 |
 |------|------|
-| `python3 tools/sync_manifest.py` | manifest ↔ 디스크 동기화 (build.py 가 자동 호출) |
-| `python3 tools/asset_lint.py` | 자산 위생 점검 (경고 1, 에러 2, 정상 0 exit) |
+| `python3 tools/sync_manifest.py` | 큐레이션 manifest ↔ 디스크 동기화 (build.py 가 자동 호출, healthicons/ 서브트리는 제외) |
+| `python3 tools/sync_healthicons.py` | Healthicons upstream sparse fetch + healthicons.manifest.json 재생성 (수동 실행) |
+| `python3 tools/sync_healthicons.py --check` | 벤더된 트리가 healthicons.manifest.json 과 일치하는지 검증 (write 없음) |
+| `python3 tools/asset_lint.py` | 자산 위생 점검 (경고 1, 에러 2, 정상 0 exit) — 두 매니페스트 모두 검사 |
 | `python3 tools/asset_lint.py --strict` | 경고를 에러로 승격 (CI prod 게이트용) |
 | `python3 tools/asset_lint.py --warn-only` | 에러여도 0 반환 (정보용) |
 

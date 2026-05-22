@@ -133,6 +133,11 @@ def discover_files() -> list[tuple[str, Path]]:
         if p.name.startswith("."):
             continue
         rel = p.relative_to(ASSETS_DIR).as_posix()
+        # Vendored healthicons/ has its own manifest (healthicons.manifest.json)
+        # built by tools/sync_healthicons.py. Skip so we don't drown the
+        # curated manifest in 1000+ icon entries.
+        if rel.startswith("healthicons/"):
+            continue
         out.append((rel, p))
     return out
 
