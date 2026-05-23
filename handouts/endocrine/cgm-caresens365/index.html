@@ -31,40 +31,57 @@
   .page__footer { padding-top: 1mm; }
   .section-heading { font-size: 9.8pt; margin-bottom: 0.8mm; padding-left: 2.5mm; }
 
-  /* Limits / SMBG·HbA1c row */
-  .limits-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
-  .limits-row .card { padding: 2.5mm 3.5mm; }
-  .limits-row .card-label { margin-bottom: 1mm; font-size: 7pt; }
-  .limits-row .card-text { font-size: 8.6pt; line-height: 1.38; color: var(--color-ink); }
+  /* Limits / SMBG·HbA1c row — compact */
+  .limits-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm; }
+  .limits-row .card { padding: 2mm 3mm; }
+  .limits-row .card-label { margin-bottom: 0.5mm; font-size: 6.8pt; }
+  .limits-row .card-text { font-size: 8pt; line-height: 1.3; color: var(--color-ink); }
   .limits-row .card-text strong { color: var(--color-navy); font-weight: 700; }
 
-  /* Hero — 24h CGM chart + 2x2 cards */
+  /* Hero — 24h CGM chart (left) + 4 cards (right column, 4-row stack) */
   .hero-section { gap: 1.5mm; }
-  .hero-chart {
-    height: 30mm; min-height: 0;
-    border: 1px solid var(--color-navy);
-    border-radius: 2mm;
+  .hero-row {
+    display: grid;
+    grid-template-columns: 110mm 1fr;
+    gap: 3mm;
+    align-items: stretch;
   }
-  .hero-chart .ai-visual__image { object-fit: contain; padding: 1mm; background: var(--color-canvas); }
+  .hero-chart {
+    width: 110mm;
+    height: 62mm;
+    min-height: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 2mm;
+    overflow: hidden;
+  }
+  .hero-chart .ai-visual__image { object-fit: cover; padding: 0; background: var(--color-canvas); }
   .hero-chart .ai-visual__caption {
     background: rgba(0, 51, 102, 0.92);
     color: #fff;
     border: none;
-    font-size: 7pt;
+    font-size: 7.2pt;
     padding: 1mm 2mm;
-    left: 3mm; bottom: 2mm;
+    left: 2.5mm; bottom: 2mm;
   }
-  .cgm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; }
-  .cgm-grid .card { padding: 2mm 3mm; }
-  .cgm-grid .card-label { font-size: 6.8pt; margin-bottom: 0.3mm; color: var(--color-steel); letter-spacing: 0.04em; font-weight: 700; }
-  .cgm-grid .card-title { font-size: 9.5pt; font-weight: 700; color: var(--color-navy); margin-bottom: 0.5mm; letter-spacing: -0.01em; }
-  .cgm-grid .card-text { font-size: 7.8pt; line-height: 1.32; color: var(--color-ink-soft); }
+  .cgm-grid {
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1.5mm;
+    height: 62mm;
+  }
+  .cgm-grid .card {
+    padding: 1.5mm 2.5mm;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .cgm-grid .card-label { font-size: 6.5pt; margin-bottom: 0; color: var(--color-steel); letter-spacing: 0.04em; font-weight: 700; }
+  .cgm-grid .card-title { font-size: 9.2pt; font-weight: 700; color: var(--color-navy); margin: 0 0 0.3mm; letter-spacing: -0.01em; line-height: 1.15; }
+  .cgm-grid .card-text { font-size: 7.2pt; line-height: 1.28; color: var(--color-ink-soft); }
   .cgm-grid .card-text strong { color: var(--color-navy); }
 
-  /* Blind mode — illustration + steps */
+  /* Blind mode — illustration (92×60mm 3:2) + steps */
   .blind-section { gap: 1.5mm; }
-  .blind-row { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 2.5mm; align-items: stretch; }
-  .blind-illust { min-height: 0; height: auto; }
+  .blind-row { display: grid; grid-template-columns: 92mm 1fr; gap: 3mm; align-items: stretch; }
+  .blind-illust { width: 92mm; height: 60mm; min-height: 0; overflow: hidden; }
   .blind-illust .ai-visual__image { object-fit: cover; }
   .blind-illust .ai-visual__caption { font-size: 6.8pt; padding: 0.6mm 1.5mm; left: 2mm; bottom: 1.5mm; }
   .blind-copy { display: flex; flex-direction: column; gap: 1.2mm; padding: 2mm 3mm; }
@@ -192,11 +209,11 @@
       <div class="limits-row">
         <div class="card">
           <div class="card-label">SMBG · 자가혈당측정</div>
-          <div class="card-text">손가락 끝에서 <strong>찌른 그 순간</strong>만 — 자는 동안, 식후, 운동 직후 변동은 그 사이에 비어 있습니다.</div>
+          <div class="card-text">손가락 끝에서 <strong>찌른 그 순간</strong>만 — 자는 동안·식후 변동은 비어 있습니다.</div>
         </div>
         <div class="card">
           <div class="card-label">HbA1c · 당화혈색소</div>
-          <div class="card-text">지난 <strong>2~3개월 평균</strong>만 — 평균은 좋아도 하루 안에 얼마나 출렁였는지는 보이지 않습니다. CGM은 이를 보완합니다.</div>
+          <div class="card-text">지난 <strong>2~3개월 평균</strong>만 — 하루 안의 출렁임은 보이지 않습니다. CGM이 이를 보완합니다.</div>
         </div>
       </div>
     </section>
@@ -205,9 +222,10 @@
     <section class="hero-section">
       <div class="section-heading">케어센스 365가 14일간 보여드리는 4가지</div>
 
+      <div class="hero-row">
       <figure class="ai-visual hero-chart">
         <img class="ai-visual__image"
-             src="../../../shared/assets/generated/cgm-24h-tir-chart-20260522.png"
+             src="../../../shared/assets/generated/cgm-24h-tir-chart-v2-20260523.png"
              alt="24시간 연속혈당측정 그래프 — 목표 범위(70~180 mg/dL) 안에 머문 시간(TIR), 식후 상승, 새벽 저혈당 패턴 예시">
         <figcaption class="ai-visual__caption">24시간 혈당 흐름 · 목표 범위(녹색) · 저혈당(분홍)</figcaption>
       </figure>
@@ -234,15 +252,16 @@
           <div class="card-text">하루 중 <strong>70~180 mg/dL</strong> 안에 머문 시간 비율. ※ <strong>당뇨 환자 기준</strong>, 임신·고령·비당뇨 검사는 진료 때 함께 정합니다.</div>
         </div>
       </div>
+      </div><!-- /.hero-row -->
     </section>
 
     <!-- Section 3 — 블라인드(전문가) 모드 -->
     <section class="blind-section">
       <div class="section-heading">왜 ‘블라인드(전문가) 모드’ 인가</div>
       <div class="blind-row">
-        <figure class="ai-visual ai-visual--compact blind-illust">
+        <figure class="ai-visual blind-illust">
           <img class="ai-visual__image"
-               src="../../../shared/assets/generated/cgm-blind-mode-consult-20260522.png"
+               src="../../../shared/assets/generated/cgm-blind-mode-consult-v2-20260523.png"
                alt="진료실에서 의사와 환자가 태블릿으로 14일간의 혈당 그래프를 함께 보는 모습">
           <figcaption class="ai-visual__caption">14일 데이터를 진료 때 함께 확인</figcaption>
         </figure>
