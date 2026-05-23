@@ -942,6 +942,16 @@ TARGETS = [
         "exam_date": "2026-05-14", "doctor": "정지환",
         "note": "DEMO 가공 환자 — 8 모듈 모두 활성, 2페이지 (혈액·소변·내시경·초음파·심전도·골밀도 통합) · H. pylori 제균 + LDL/HbA1c 경계 + 결절·골 follow-up",
     },
+    {
+        "kind": "lab-reports", "slug": "19b619182b",
+        "slug_path": "lab-reports/health-checkup/19b619182b/",
+        "html_path": ROOT / "lab-reports/health-checkup/19b619182b/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "종합 건강검진",
+        "patient_name": "정상각", "chart_no": "13713",
+        "exam_date": "2026-05-22", "doctor": "정지환",
+        "note": "공단검진+추가 — 간기능 ALT 249↑·갑상선 항진(TSH↓/fT4↑)·당뇨 고위험(HbA1c 6.1) 3건 동반 · 복부초음파·TRAb·간염표지자 즉시 권고",
+    },
 ]
 
 
