@@ -20,6 +20,28 @@ description: >
 
 # Clinic Content System — Unified Patient Content (HTML + PDF)
 
+## ⭐ 메타 룰 — 스킬 자체의 업데이트는 항상 이 repo 안에 저장 (최우선의 최우선)
+
+**스킬·시스템 룰/사양/워크플로우의 단일 진실의 원천(SoT)은 이 GitHub repo 안의 다음 파일들이다.**
+
+- `SKILL.md` — 핵심 룰·워크플로우·메타 룰
+- `reference/*.md` — 상세 가이드 (image-assets, patterns, brand-design-system 등)
+- `tools/*.py` — 자동화 도구
+- `shared/*.py|*.css` — 공유 헬퍼
+
+**금지**: 머신 종속 위치(예: macOS의 `~/.claude/projects/.../memory/`, Windows의 `%APPDATA%\Claude\...`, 로컬 dotfile 등)에 스킬 룰/사양을 SoT로 저장하지 말 것. 그렇게 하면:
+- 다른 머신의 Claude는 그 룰을 영원히 모름 (메모리는 머신별 격리)
+- Codex 등 **다른 에이전트는 그 룰을 영원히 모름** (메모리는 Claude 전용)
+- repo의 SKILL.md가 옛 룰이면 다른 곳에서 옛 룰로 동작 → 분기 행동
+
+**적용**: 사용자가 "스킬 업데이트해줘" / "이 룰 추가해줘" / "이렇게 바꿔줘" 요청하면 → **첫 행동은 이 repo 안 파일 편집 + git commit + push**. 다른 머신·에이전트는 `git pull --rebase`로 룰을 받는다. 메모리에는 요약/포인터/사용자 개인 선호만 (예: "이 사용자는 이런 톤을 선호한다") — 시스템 룰의 SoT는 항상 repo.
+
+**예외**: 사용자 개인 선호(톤, 호출명, 우선순위 등 사용자 자체의 속성)는 메모리에 두는 게 맞음 — 다른 머신에서도 같은 사용자라 같은 선호 적용. 단 "스킬이 어떻게 동작해야 한다"는 시스템 룰은 무조건 repo.
+
+이 룰은 향후 모든 스킬 업데이트 요청에 자동 적용. 사용자가 매번 알려줄 필요 없음.
+
+---
+
 ## 🔒 무조건 규칙 — Cross-Machine Consistency (최우선)
 
 **원장님은 머신 2~3개를 사용한다. 이 스킬의 모든 업데이트(SKILL.md, build.py, `_notion_sync.py`, reference/, shared/, 모든 콘텐츠 파일 포함)는 머신이 바뀌어도 동일한 결과가 나오도록 작성해야 한다. 절대 예외 없음.**
@@ -187,6 +209,50 @@ GH Pages 는 전체 공개 호스팅이라 lab-reports 의 환자명을 URL slug
 ```
 
 **남는 위험**: git history 에 옛 환자명 디렉토리 자취가 남는다 (public repo 인 경우 이슈). 완전 제거하려면 `git filter-repo` 또는 BFG 사용 + force-push 필요 — 별도 작업.
+
+### 12. 이미지 슬롯 비율 mismatch — 일반 비율(4:3, 16:9, 1:1) 추천 금지, 슬롯 실측 strict ratio 사용
+
+ChatGPT/DALL-E에 일반 라운드 비율로 이미지를 만들어 받으면, 실제 figure 슬롯 비율과 어긋나서 양옆이나 위아래에 어색한 여백이 생긴다. 이를 CSS `max-width` 강제, `padding` 0 override 같은 hack으로 끼워맞추는 건 미봉책. 매번 다시 발생한다.
+
+**올바른 절차** (§3.5.b 참조):
+1. HTML 확정 후 슬롯 폭/높이 mm 측정 (handouts 본문 폭 = 182mm, body-2col = 88mm 등)
+2. `ratio = width / height` 소수 둘째 자리까지 산출
+3. 프롬프트에 `aspect ratio strictly W:H (px_w x px_h pixels)` 명시
+4. `Illustration must SPAN THE ENTIRE CANVAS evenly — no empty side panels` 강제 문구 포함
+
+발견 시점: 2026-05-23 `handouts/screening/cvd-retinal-screening` 작업 중. Flow 4단계 이미지를 `3:1` 일반 비율로 요청했는데 GPT가 `1.78:1`(16:9)에 가깝게 생성. 결국 figure max-width 118mm로 줄여 가운데 정렬하는 hack으로 해결. 정식 룰화.
+
+### 13. Multi-column 비주얼 — 아이콘 위치와 HTML 라벨 grid 정렬 보장
+
+N-column 흐름도/매트릭스(4단계 흐름, 3개 결과 등)의 경우, 이미지 안 아이콘 중심이 HTML 라벨 grid의 column 중심과 정확히 일치해야 시각적 정렬이 깨지지 않는다.
+
+**프롬프트** (§3.5.b.4 참조):
+```
+4 circular icons of EQUAL SIZE evenly distributed across the canvas width.
+Icon CENTER positions must be precisely at:
+  • x = 12.5%, x = 37.5%, x = 62.5%, x = 87.5%
+```
+
+**HTML**: figure와 라벨 grid 둘 다 동일 `max-width` + `margin:0 auto`로 가운데 정렬. column 폭이 같아야 매칭.
+
+```html
+<figure class="ai-visual" style="max-width:118mm; margin:0 auto; ...">…</figure>
+<div style="display:grid; grid-template-columns: repeat(4, 1fr); max-width:118mm; margin:0 auto;">…</div>
+```
+
+### 14. 이미지에 한글 텍스트 굽지 말 것 — HTML Pretendard 오버레이만
+
+GPT가 생성한 이미지 안 한글 텍스트는 (1) 폰트가 Pretendard 아니라 자료 일관성 깨짐 (2) 저해상도에서 흐림 (3) 오타·수정 시 이미지 재생성 필요. 모든 한글 라벨/캡션/번호는 HTML로 처리.
+
+**프롬프트 마지막 블록 필수**:
+```
+ABSOLUTELY NO TEXT:
+Do NOT include any letters, numbers, words, labels, captions, 
+or any characters in any language anywhere on the canvas.
+HTML will overlay Korean labels using Pretendard font separately.
+```
+
+라벨 배치 옵션: (1) 이미지 아래 grid, (2) 이미지 위 `.ai-visual__pin` absolute, (3) `body-2col` 우측 카드 (일석이조 패턴).
 
 ---
 
@@ -537,13 +603,13 @@ python3 build.py
 - `output/{slug}.pdf` — 환자 공유용 PDF (1280×720 페이지)
 - `output/{slug}-preview.png` — 데스크톱 풀스크린 미리보기
 
-### Step 3.5 — 인포그래픽 자동 제안 (decks / handouts 전용, lab-reports 제외)
+### Step 3.5 — 인포그래픽 자동 제안 (decks / handouts 기본, lab-reports 필요시)
 
-**언제**: 초안 HTML + `build.py` + `_validate_layout` 가 통과한 직후. 텍스트와 레이아웃이 일단 확정된 지점에서 한 번 멈춘다.
+**언제**: 초안 HTML + `build.py` + `_validate_layout` 가 통과한 직후. 텍스트와 레이아웃이 일단 확정된 지점에서 한 번 멈춘다 — **레이아웃 확정 후에야 정확한 슬롯 폭/높이 측정 가능** (§3.5.b 참조).
 
 **왜**: 환자 교육 자료는 인포그래픽이 들어가면 이해도가 크게 올라간다. 그러나 *어디에 어떤 그림이 들어가야 효과적인지*는 콘텐츠를 다 본 뒤에야 판단할 수 있어, 빌드 후에 후보를 골라 사용자에게 제안한다. 사용자는 받은 영문 프롬프트로 ChatGPT 웹에서 이미지를 생성해 채팅창에 다시 공유하고, Claude 가 알아서 슬롯에 배치한다.
 
-**lab-reports 제외**: 검사 결과지는 정확한 수치·이름 시각화가 핵심 → Step 3.5 건너뛰고 바로 Step 4.
+**lab-reports**: 검사 결과지는 정확한 수치·이름 시각화가 핵심이라 일반 인포그래픽이 들어갈 슬롯이 거의 없다. 기본 흐름은 Step 3.5 건너뛰고 바로 Step 4. 단 결과지 시각화(예: 망막 fundus 모식도, 체성분 그래픽)가 도움이 되는 경우 동일 룰(§3.5.b)로 적용 가능.
 
 #### 3.5.a — 인포그래픽 후보 식별
 
@@ -562,32 +628,120 @@ python3 build.py
 
 **수량 가이드**: 한 자료당 최소 1개, 보통 2–3개 후보. 12장 deck 도 4개 초과 권장 X (자료가 어수선해짐). 1장 handout 은 1–2개.
 
-#### 3.5.b — 영문 프롬프트 작성 규칙
+#### 3.5.b — 영문 프롬프트 작성 규칙 (슬롯 실측 우선)
 
-ChatGPT 웹 / DALL-E 는 한국어 의료 프롬프트를 잘 못 따른다 → **영문**으로 작성한다. 다음 골격을 그대로 채워 출력 (사용자가 복붙해 그대로 쓰도록 ```` ```text ```` 코드블록으로 묶음):
+⚠️ **일반 비율 추천 금지** (`4:3`, `16:9`, `1:1` 등 라운드 비율). 모든 이미지 프롬프트는 **HTML 작성 후 실제 슬롯의 폭/높이를 mm 단위로 측정**한 다음, 그 정확한 비율과 픽셀을 strict하게 명시한다. 라운드 비율이 슬롯과 어긋나면 양옆/위아래에 어색한 여백이 생기고, 결국 CSS hack(`max-width` 강제, `padding` 줄임)으로 끼워맞춰야 한다. 2026-05-23 cvd-retinal-screening 핸드아웃에서 한 번 발생 후 정식 룰화.
 
-```text
-Create a clean, patient-friendly medical illustration for a Korean clinic {kind}.
-Subject: {one-line subject description in English}.
-Style: premium hospital patient education infographic, warm white background,
-restrained navy (#003366) and steel-blue (#5B9BD5) accents, soft shadows,
-{view_angle}.
-Composition: subject {position}, with generous whitespace {whitespace_zone} for HTML label pins.
-Do not include any text, letters, numbers, logos, watermarks, or patient information.
-Aspect ratio: {ratio}.
+##### 3.5.b.1 — 슬롯 폭 측정 (필수)
+
+A4 핸드아웃 (handouts / lab-reports) — 페이지 14mm padding 기준:
+- **본문 폭 (풀폭) = 182mm** (= 210 − 14×2)
+- **body-2col 좌/우 = 88mm** 각 (= (182 − gap 6mm) / 2)
+- **body-3col 각 = 58mm** (= (182 − gap 4mm×2) / 3)
+
+deck slide (decks) — 1280×720 기준 (좌우 padding 80px):
+- **본문 폭 = 1120px**
+- **body-2col 좌/우 = 536px** 각
+
+높이는 해당 figure에 명시한 `height` (예: `height:62mm`) 그대로 사용. **HTML이 확정된 후에 측정**한다 — 추정 금지.
+
+##### 3.5.b.2 — 비율·픽셀 산출
+
+```
+ratio = slot_width_mm / slot_height_mm    (소수점 둘째 자리)
+px_w  = slot_width_mm  × 12               (300 DPI 인쇄 품질)
+px_h  = slot_height_mm × 12
 ```
 
-채우는 값:
+예시:
+| 슬롯 폭 × 높이 | ratio | 권장 px |
+|---|---|---|
+| 182mm × 50mm | **3.64:1** → 프롬프트엔 `3.6:1` | 2200 × 610 |
+| 182mm × 40mm | **4.55:1** → `4.5:1` | 2200 × 490 |
+| 88mm × 78mm | **1.13:1** | 1300 × 1150 |
+| 88mm × 88mm | 1:1 | 1100 × 1100 |
+| 58mm × 58mm | 1:1 | 800 × 800 |
 
-| 토큰 | 값 |
+##### 3.5.b.3 — 새 프롬프트 골격
+
+```text
+Create a {style descriptor}, 
+aspect ratio strictly {W}:{H} ({px_w} x {px_h} pixels), white background.
+
+{LAYOUT / COMPOSITION SPEC — describe exact regions, icon positions with %, sizes}
+
+STYLE:
+Clean flat modern medical {kind}, premium hospital aesthetic,
+strict palette: navy #003366 and steel blue #5B9BD5 only,
+white background, soft gradients allowed.
+
+CRITICAL CONSTRAINTS:
+- Illustration must SPAN THE ENTIRE CANVAS evenly — no empty side panels, 
+  no centered cluster with empty margins on left/right or top/bottom.
+- All depicted elements must use the full available canvas dimensions.
+{additional constraints — N-column positions if applicable}
+
+ABSOLUTELY NO TEXT:
+Do NOT include any letters, numbers, words, labels, captions, 
+or any characters in any language (Korean, English, Chinese, etc.) 
+anywhere on the canvas. Pure visual only.
+HTML will overlay Korean labels using Pretendard font separately.
+```
+
+##### 3.5.b.4 — N-column / N-row 시각 (다단계 흐름도, 비교 매트릭스, N개 결과)
+
+균등 분포가 필요한 비주얼은 **각 요소의 중심 좌표를 % 단위로 명시**한다. HTML 라벨 grid와 매칭해 자동 정렬 보장.
+
+| N | 중심 위치 (%) |
 |---|---|
-| `{kind}` | `deck slide` (decks) / `A4 portrait handout` (handouts) |
-| `{ratio}` | deck Hero/Asymmetric → `4:3` · deck Density 슬롯 → `3:2` · handout hero (가로) → `16:9` · handout 보조 (사각) → `1:1` |
-| `{view_angle}` | 해부도/장비 → `isometric 3/4 view` · 자세/행동 → `front view` · 식판/오버헤드 → `overhead top-down view` · 절차 → `side view` |
-| `{position}` | Asymmetric Split 우측 → `centered` · Hero → `slightly off-center` · Density 슬롯 → `centered` |
-| `{whitespace_zone}` | Asymmetric → `on left and right` · Hero → `above and below` · Density → `on all sides` |
+| 2 | 25 · 75 |
+| 3 | 16.7 · 50 · 83.3 |
+| 4 | 12.5 · 37.5 · 62.5 · 87.5 |
+| 5 | 10 · 30 · 50 · 70 · 90 |
 
-카테고리별 상세 프롬프트 템플릿은 `reference/image-assets.md §Phase 1` 참조.
+세로 분포(y 좌표)도 동일 공식.
+
+프롬프트 예 (4-column flow):
+
+```text
+4 circular icons of EQUAL SIZE evenly distributed across the canvas width.
+Icon CENTER positions must be precisely at:
+  • x = 12.5%, x = 37.5%, x = 62.5%, x = 87.5%
+All 4 icons vertically centered at y = 50%.
+Icon diameter: approximately 60% of canvas height.
+```
+
+대응하는 HTML (이미지 바로 아래 캡션 grid):
+```html
+<figure class="ai-visual" style="height:62mm; max-width:118mm; margin:0 auto; padding:0; ...">
+  <img src="..." style="width:100%; height:100%; object-fit:contain;">
+</figure>
+<div style="display:grid; grid-template-columns: repeat(4, 1fr); max-width:118mm; margin:0 auto;">
+  <div>① 라벨1</div><div>② 라벨2</div><div>③ 라벨3</div><div>④ 라벨4</div>
+</div>
+```
+`max-width`가 figure와 캡션 grid 둘 다 같아야 4 column 중심이 4 아이콘 중심과 정확히 매칭.
+
+##### 3.5.b.5 — 한글 라벨은 HTML 오버레이 (Pretendard) — 이미지에 굽지 말 것
+
+이미지에 텍스트(특히 한글)를 굽는 것 절대 금지:
+- ❌ 폰트 불일치 (이미지 안 폰트 vs HTML Pretendard) → 자료 일관성 깨짐
+- ❌ 가독성 저하 (저해상도에서 흐림)
+- ❌ 수정 불가 (이미지 새로 생성해야)
+- ✅ HTML로 오버레이: 폰트 일관성, 수정 즉시 반영, 정렬 정확
+
+라벨 위치 옵션:
+- **이미지 바로 아래 grid** — 가장 simple. N-col 흐름도/매트릭스에 권장. figure max-width와 grid max-width 일치 필수
+- **이미지 위 absolute pin** — `.ai-visual__pin` 활용. 해부도에 라벨 핀 박을 때
+- **우측 별도 card** — `body-2col` 우측에 체크리스트 카드 (일석이조 패턴)
+
+##### 3.5.b.6 — lab-reports 도 필요시 적용
+
+기존 SKILL.md는 lab-reports에서 Step 3.5 skip이라 명시했으나, 결과지 시각화(예: 망막 fundus 모식도, 체성분 그래픽)가 필요한 경우 동일 룰 적용 가능. 단 정확한 수치 시각화가 핵심이므로 일반 인포그래픽 남용 금지.
+
+##### 3.5.b.7 — 카테고리별 보조 토큰 (선택)
+
+`reference/image-assets.md §Phase 1`에 카테고리(해부도·기전·절차·장비·자세·비교)별 상세 프롬프트 템플릿 보강. 슬롯 실측값을 그 템플릿에 채워 사용.
 
 #### 3.5.c — 사용자에게 제시하는 출력 형식
 
