@@ -990,6 +990,16 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자",
         "disease": "편두통 (Migraine) — 위장 증상 동반 편두통의 4가지 양상, 의심 단서 6가지, ICHD-3 진단·치료·red flag 한 장 요약",
     },
+    {
+        "kind": "lab-reports", "slug": "19b619182b",
+        "slug_path": "lab-reports/health-checkup/19b619182b/",
+        "html_path": ROOT / "lab-reports/health-checkup/19b619182b/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "종합 건강검진",
+        "patient_name": "정상각", "chart_no": "13713",
+        "exam_date": "2026-05-22", "doctor": "정지환",
+        "note": "공단검진+추가 — 간기능 ALT 249↑·갑상선 항진(TSH↓/fT4↑)·당뇨 고위험(HbA1c 6.1) 3건 동반 · 복부초음파·TRAb·간염표지자 즉시 권고",
+    },
 ]
 
 
