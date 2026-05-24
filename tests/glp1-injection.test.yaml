@@ -1,0 +1,73 @@
+test_id: glp1-injection-deck-v02
+skill_ref: GBIM-skill-glp1-injection-v02
+
+must_include:
+  - "복부"
+  - "허벅지"
+  - "90도"
+  - "주 1회"
+  - "냉장 보관 2-8"
+  - "광교바른내과"
+
+forbidden_terms:
+  - "근육 주사"
+  - "동일 부위 매번 같은 곳"
+  - "한 번에 최대 용량"
+  - "냉동 보관"
+  - "임의 용량 증량"
+
+style_rules:
+  - rule: "Pretendard Variable"
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - rule: "Navy + Steel Blue + Warning"
+    check_type: css_color_whitelist
+    check: ["#003366", "#5B9BD5", "#F97316", "#FFFFFF"]
+    severity: major
+
+layout_rules:
+  - rule: "16:9 deck"
+    check_type: viewport
+    check: "width=1280"
+    severity: blocker
+  - rule: "12 슬라이드"
+    check_type: section_count
+    check: 12
+    severity: blocker
+
+safety_rules:
+  - rule: "용량 점진 증량 명시"
+    check_type: html_contains
+    check: "용량 점진 증량"
+    severity: blocker
+  - rule: "이상반응 시 응급실 안내"
+    check_type: html_contains
+    check: "응급실"
+    severity: blocker
+  - rule: "췌장염 증상 안내"
+    check_type: html_contains
+    check: "심한 복통"
+    severity: blocker
+  - rule: "전환 시 1주 간격"
+    check_type: case_specific
+    check: "T02 switching → '이전 약 마지막 투여 후 1주'"
+    severity: blocker
+  - rule: "노인 저용량 시작"
+    check_type: case_specific
+    check: "T03 patient_age>=70 → '0.25mg 시작'"
+    severity: major
+
+medical_accuracy:
+  - rule: "주사 부위 회전"
+    check_type: html_contains
+    check: "부위 매주 다르게"
+    severity: major
+  - rule: "보관 온도 2-8°C"
+    check_type: html_contains
+    check: "2-8"
+    severity: blocker
+  - rule: "임신 금기 (특정 약)"
+    check_type: html_contains
+    check: "임신·수유"
+    severity: blocker

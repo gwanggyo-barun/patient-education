@@ -1,0 +1,107 @@
+prompt_id: GBIM-skill-colonoscopy-prep-v04
+title: 대장내시경 장정결 안내
+category: endoscopy
+subcategory: pre-procedure
+persona: patient-friendly
+task_type: handout
+output_format: a4-portrait
+
+expected_length:
+  pages: 1
+  word_count_range: [220, 350]
+
+tags:
+  - a4
+  - patient-friendly
+  - korean
+  - print-ready
+  - infographic
+  - safety-high
+  - has-warning-block
+  - senior-readable
+  - qr-mini
+
+brand_profile: gwanggyo-bareun-print-v1
+
+image_constraints:
+  style: flat-medical
+  palette: [navy-003366, steel-blue-5B9BD5, warning-F97316]
+  required_visuals:
+    - bowel-prep-stool-clarity-comparison
+    - fluid-allowed-icons
+  no_text: true
+  min_dpi: 300
+
+temperature: 0.2
+
+model_family:
+  primary: claude-opus-4-7
+  fallback: claude-sonnet-4-6
+
+reusable_blocks:
+  - safety/fasting-warning-deep-sedation
+  - safety/anticoagulant-warning-standard
+  - content/bowel-prep-schedule-2day
+  - content/bowel-prep-fluids-allowed
+  - content/bowel-prep-stool-clarity-check
+  - content/clinic-contact-footer
+  - visual/qr-mini-footer
+
+test_inputs:
+  - case_id: T01-pm-procedure
+    description: 오후 검사 (split-dose)
+    procedure_time: PM
+    patient_age: 60
+    prep_drug: polyethylene-glycol
+  - case_id: T02-am-procedure
+    description: 오전 검사 (전날 저녁 모두 복용)
+    procedure_time: AM
+    patient_age: 65
+    prep_drug: polyethylene-glycol
+  - case_id: T03-low-volume-prep
+    description: 저용량 prep (sodium picosulfate)
+    procedure_time: AM
+    patient_age: 75
+    prep_drug: sodium-picosulfate
+
+expected_outputs:
+  - case_id: T01-pm-procedure
+    must_include:
+      - "전날 저녁 6시"
+      - "맑은 물 같은 변"
+      - "노란 액체"
+      - "split-dose"
+    forbidden_terms:
+      - "검은 변 OK"
+      - "고형 변"
+      - "음식물 잔여물 OK"
+  - case_id: T02-am-procedure
+    must_include:
+      - "전날 저녁"
+      - "물 같은 변"
+      - "검사 4시간 전"
+  - case_id: T03-low-volume-prep
+    must_include:
+      - "노인"
+      - "탈수 주의"
+      - "추가 물 섭취"
+
+safety_level: high
+
+version: v04
+created_at: 2026-05-14T09:00:00+09:00
+updated_at: 2026-05-25T08:25:00+09:00
+
+authors: [정지환, claude-opus-4-7]
+license: GBIM-internal-v1
+
+notion_sync:
+  enabled: true
+  db_id: 920b48c92d674186a370afcaa81ce788
+  category_select: "🏥 내시경 관련"
+  audience_select: "환자/보호자"
+
+output_path: handouts/endoscopy/colonoscopy-prep/index.html
+build_target_kind: handouts
+build_qr_class: qr-mini__code
+build_fmt: a4-portrait

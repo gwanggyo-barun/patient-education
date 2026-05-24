@@ -1,0 +1,70 @@
+test_id: ibs-fodmap-deck-v02
+skill_ref: GBIM-skill-ibs-fodmap-v02
+
+must_include:
+  - "FODMAP"
+  - "3단계"
+  - "elimination"
+  - "reintroduction"
+  - "Monash University"
+  - "2-6주"
+  - "광교바른내과"
+
+forbidden_terms:
+  - "완치 가능"
+  - "평생 모든 음식 금지"
+  - "자가 진단 충분"
+  - "약물 불필요"
+  - "음식만으로 모든 IBS 해결"
+
+style_rules:
+  - rule: "Pretendard Variable"
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - rule: "Navy + Steel Blue 팔레트"
+    check_type: css_color_whitelist
+    check: ["#003366", "#5B9BD5", "#FFFFFF", "#F4F6F8"]
+    severity: major
+
+layout_rules:
+  - rule: "16:9 deck (1280×720)"
+    check_type: viewport
+    check: "width=1280"
+    severity: blocker
+  - rule: "12 슬라이드"
+    check_type: section_count
+    check: 12
+    severity: blocker
+  - rule: "closing slide QR"
+    check_type: css_class_exists
+    check: ".qr-block__code"
+    severity: blocker
+
+safety_rules:
+  - rule: "FODMAP 단독 치료 X 명시"
+    check_type: html_contains
+    check: "약물 또는 의사 상의"
+    severity: major
+  - rule: "탈수 주의 (IBS-D)"
+    check_type: case_specific
+    check: "T02 ibs-d → '수분 섭취'"
+    severity: major
+  - rule: "임의 자가 진단 금지"
+    check_type: html_contains
+    check: "의사 확진"
+    severity: blocker
+
+medical_accuracy:
+  - rule: "Monash 출처 명시"
+    check_type: footer_contains
+    check: "Monash University"
+    severity: major
+  - rule: "Elimination 기간"
+    check_type: html_contains
+    check: "2-6주"
+    severity: major
+  - rule: "Reintroduction 3 카테고리"
+    check_type: html_contains
+    check: "fructans"
+    severity: minor

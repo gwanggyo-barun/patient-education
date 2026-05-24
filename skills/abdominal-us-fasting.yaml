@@ -1,0 +1,103 @@
+prompt_id: GBIM-skill-abdominal-us-fasting-v01
+title: 복부초음파 금식 안내
+category: imaging
+subcategory: ultrasound/abdominal
+persona: patient-friendly
+task_type: handout
+output_format: a4-portrait
+
+expected_length:
+  pages: 1
+  word_count_range: [180, 250]
+
+tags:
+  - a4
+  - patient-friendly
+  - korean
+  - print-ready
+  - infographic
+  - safety-medium
+  - qr-mini
+
+brand_profile: gwanggyo-bareun-print-v1
+
+image_constraints:
+  style: flat-medical
+  palette: [navy-003366, steel-blue-5B9BD5]
+  required_visuals:
+    - fasting-clock-8h
+    - allowed-fluids-icons
+  no_text: true
+  min_dpi: 300
+
+temperature: 0.2
+
+model_family:
+  primary: claude-opus-4-7
+  fallback: claude-sonnet-4-6
+
+reusable_blocks:
+  - safety/fasting-warning-standard
+  - content/water-allowed-up-to-2h
+  - content/smoking-no-gum-warning
+  - content/clinic-contact-footer
+  - visual/qr-mini-footer
+
+test_inputs:
+  - case_id: T01-morning
+    description: 오전 검사
+    procedure_time: AM
+    patient_age: 50
+  - case_id: T02-afternoon
+    description: 오후 검사
+    procedure_time: PM
+    patient_age: 60
+  - case_id: T03-diabetes
+    description: 당뇨 환자 (저혈당 주의)
+    procedure_time: AM
+    patient_age: 65
+    diabetes: true
+    insulin: true
+
+expected_outputs:
+  - case_id: T01-morning
+    must_include:
+      - "전날 저녁 9시"
+      - "8시간 금식"
+      - "물 가능"
+      - "검사 2시간 전까지"
+    forbidden_terms:
+      - "껌·사탕 OK"
+      - "흡연 가능"
+      - "12시간 금식"
+  - case_id: T02-afternoon
+    must_include:
+      - "오전 6시"
+      - "맑은 물"
+      - "검사 2시간 전"
+  - case_id: T03-diabetes
+    must_include:
+      - "저혈당"
+      - "사탕 휴대"
+      - "주치의 상의"
+      - "인슐린 용량"
+
+safety_level: medium
+
+version: v01
+created_at: 2026-05-12T09:00:00+09:00
+updated_at: 2026-05-25T08:25:00+09:00
+
+authors: [정지환, claude-opus-4-7]
+license: GBIM-internal-v1
+
+notion_sync:
+  enabled: true
+  db_id: 920b48c92d674186a370afcaa81ce788
+  category_select: "🏥 내시경 관련"
+  audience_select: "환자/보호자"
+
+output_path: handouts/imaging/abdominal-us-fasting/index.html
+build_target_kind: handouts
+build_qr_class: qr-mini__code
+build_fmt: a4-portrait

@@ -1,0 +1,89 @@
+test_id: egd-fasting-handout-v03
+skill_ref: GBIM-skill-egd-fasting-v03
+
+must_include:
+  - "8시간"
+  - "금식"
+  - "물 한 모금"
+  - "보호자 동반"
+  - "광교바른내과"
+  - "수면내시경"
+
+forbidden_terms:
+  - "12시간 금식"
+  - "물 절대 금지"
+  - "임의로 약 중단"
+  - "의사 상의 없이"
+  - "껌 OK"
+
+style_rules:
+  - rule: "Pretendard Variable 폰트 사용"
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - rule: "Navy + Steel Blue 팔레트만"
+    check_type: css_color_whitelist
+    check: ["#003366", "#5B9BD5", "#F97316", "#FFFFFF", "#F4F6F8"]
+    severity: major
+  - rule: "QR mini footer 포함"
+    check_type: css_class_exists
+    check: ".qr-mini__code"
+    severity: blocker
+
+layout_rules:
+  - rule: "A4 1페이지 (794×1123px)"
+    check_type: viewport
+    check: "width=794"
+    severity: blocker
+  - rule: "Footer에 광교바른내과"
+    check_type: footer_contains
+    check: "광교바른내과"
+    severity: blocker
+  - rule: "본문 padding 14mm"
+    check_type: css_padding
+    check: "14mm"
+    severity: major
+
+safety_rules:
+  - rule: "항응고제 환자 별도 안내 필수 (T02·T03)"
+    check_type: case_specific
+    check: "anticoagulant flag → '주치의 상의' 또는 'warfarin 5일' 포함"
+    severity: blocker
+  - rule: "임의 약 중단 금지 명시"
+    check_type: html_contains
+    check: "주치의 상의"
+    severity: blocker
+
+medical_accuracy:
+  - rule: "warfarin 중단 시점 정확"
+    check_type: case_specific
+    check: "T02 anticoagulant=warfarin → '5일 전'"
+    severity: blocker
+  - rule: "DOAC 중단 시점 정확"
+    check_type: case_specific
+    check: "T03 anticoagulant=DOAC → '24-48시간 전'"
+    severity: blocker
+  - rule: "운전 금지 안내"
+    check_type: case_specific
+    check: "sedation=true → '운전 금지'"
+    severity: major
+
+accessibility:
+  - rule: "본문 최소 10pt"
+    check_type: css_min_font_size
+    check: "10pt"
+    severity: major
+  - rule: "색상 대비 4.5:1 이상"
+    check_type: contrast_ratio
+    check: 4.5
+    severity: major
+
+brand_compliance:
+  - rule: "로고 자르기 X"
+    check_type: image_aspect_preserved
+    check: "logo.png"
+    severity: major
+  - rule: "Navy #003366 정확 사용"
+    check_type: css_exact_color
+    check: "#003366"
+    severity: minor

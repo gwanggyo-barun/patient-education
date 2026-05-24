@@ -1,0 +1,46 @@
+test_id: abdominal-us-fasting-handout-v01
+skill_ref: GBIM-skill-abdominal-us-fasting-v01
+
+must_include:
+  - "8시간 금식"
+  - "맑은 물"
+  - "검사 2시간 전까지"
+  - "광교바른내과"
+
+forbidden_terms:
+  - "껌·사탕 OK"
+  - "흡연 가능"
+  - "12시간 금식"
+  - "콜라·주스 가능"
+
+style_rules:
+  - rule: "Pretendard Variable"
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - rule: "Navy 팔레트"
+    check_type: css_color_whitelist
+    check: ["#003366", "#5B9BD5", "#FFFFFF"]
+    severity: major
+
+layout_rules:
+  - rule: "A4 1페이지"
+    check_type: viewport
+    check: "width=794"
+    severity: blocker
+
+safety_rules:
+  - rule: "당뇨 환자 저혈당 주의"
+    check_type: case_specific
+    check: "T03 diabetes=true → '저혈당' 또는 '사탕 휴대'"
+    severity: blocker
+  - rule: "당뇨약·인슐린 용량 주치의 상의"
+    check_type: case_specific
+    check: "T03 insulin=true → '주치의 상의'"
+    severity: blocker
+
+medical_accuracy:
+  - rule: "오전·오후 검사 시간별 안내 다름"
+    check_type: case_specific
+    check: "AM vs PM 시간 다름"
+    severity: major

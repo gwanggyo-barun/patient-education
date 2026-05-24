@@ -1,0 +1,57 @@
+test_id: colonoscopy-prep-handout-v04
+skill_ref: GBIM-skill-colonoscopy-prep-v04
+
+must_include:
+  - "장정결"
+  - "맑은 물 같은 변"
+  - "노란 액체"
+  - "광교바른내과"
+  - "보호자"
+  - "수면내시경"
+
+forbidden_terms:
+  - "검은 변 OK"
+  - "고형 변"
+  - "음식물 잔여물 OK"
+  - "임의로 약 중단"
+  - "관장 없이"
+
+style_rules:
+  - rule: "Pretendard Variable"
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - rule: "Navy 팔레트 + Warning 강조"
+    check_type: css_color_whitelist
+    check: ["#003366", "#5B9BD5", "#F97316", "#FFFFFF"]
+    severity: major
+
+layout_rules:
+  - rule: "A4 1페이지"
+    check_type: viewport
+    check: "width=794"
+    severity: blocker
+
+safety_rules:
+  - rule: "split-dose 명확"
+    check_type: case_specific
+    check: "T01 PM → 'split-dose' 또는 '전날 저녁 6시'"
+    severity: blocker
+  - rule: "노인 탈수 주의"
+    check_type: case_specific
+    check: "T03 patient_age>=70 → '탈수 주의'"
+    severity: major
+  - rule: "항응고제 별도 안내"
+    check_type: html_contains
+    check: "주치의 상의"
+    severity: blocker
+
+medical_accuracy:
+  - rule: "검사 4시간 전 절식"
+    check_type: case_specific
+    check: "T02 AM procedure → '검사 4시간 전'"
+    severity: major
+  - rule: "장정결 약 종류별 가이드"
+    check_type: case_specific
+    check: "prep_drug에 따른 안내 다름"
+    severity: minor

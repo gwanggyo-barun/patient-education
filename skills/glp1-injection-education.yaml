@@ -1,0 +1,118 @@
+prompt_id: GBIM-skill-glp1-injection-v02
+title: GLP-1 주사 (오젬픽·위고비·맙젠다) 자가 주사 교육
+category: injections
+subcategory: glp-1
+persona: patient-friendly
+task_type: deck
+output_format: 16x9
+
+expected_length:
+  slide_count: 12
+
+tags:
+  - 16x9
+  - deck-16x9
+  - patient-friendly
+  - korean
+  - infographic
+  - medication-info
+  - safety-high
+  - has-warning-block
+
+brand_profile: gwanggyo-bareun-web-v1
+
+image_constraints:
+  style: flat-medical
+  palette: [navy-003366, steel-blue-5B9BD5, warning-F97316]
+  required_visuals:
+    - injection-site-abdomen
+    - injection-site-thigh
+    - injection-90-degree-angle
+    - pen-storage-fridge
+  no_text: true
+  aspect_ratio: 16x9
+  min_dpi: 200
+
+temperature: 0.2
+
+model_family:
+  primary: claude-opus-4-7
+  fallback: claude-sonnet-4-6
+
+reusable_blocks:
+  - visual/brand-color-palette
+  - safety/emergency-warning-block
+  - content/glp1-injection-sites-anatomy
+  - content/glp1-titration-schedule
+  - content/glp1-side-effects-grid
+  - content/glp1-storage-rules
+  - content/clinic-contact-footer
+  - visual/clinic-logo-header
+  - visual/slide-footer-standard
+
+test_inputs:
+  - case_id: T01-first-time-semaglutide
+    description: 첫 주사·세마글루타이드
+    patient_first_injection: true
+    drug: semaglutide
+    indication: t2dm
+  - case_id: T02-switching-tirzepatide
+    description: 다른 GLP-1에서 티르제파타이드 전환
+    patient_first_injection: false
+    drug: tirzepatide
+    previous_drug: liraglutide
+    indication: obesity
+  - case_id: T03-elderly-careful-start
+    description: 노인·천천히 증량
+    patient_first_injection: true
+    drug: semaglutide
+    patient_age: 75
+    indication: t2dm
+
+expected_outputs:
+  - case_id: T01-first-time-semaglutide
+    must_include:
+      - "복부"
+      - "허벅지"
+      - "90도"
+      - "주 1회"
+      - "냉장 보관 2-8°C"
+      - "용량 점진 증량"
+    forbidden_terms:
+      - "근육 주사"
+      - "동일 부위 매번 같은 곳"
+      - "한 번에 최대 용량"
+  - case_id: T02-switching-tirzepatide
+    must_include:
+      - "전환"
+      - "이전 약 마지막 투여 후 1주"
+      - "새 약 시작 용량 0.5mg"
+    forbidden_terms:
+      - "이전 약 용량 그대로"
+      - "두 약 동시 사용"
+  - case_id: T03-elderly-careful-start
+    must_include:
+      - "노인"
+      - "0.25mg 시작"
+      - "주 1회"
+      - "8주 천천히 증량"
+
+safety_level: high
+
+version: v02
+created_at: 2026-03-20T09:00:00+09:00
+updated_at: 2026-05-25T08:25:00+09:00
+
+authors: [정지환, claude-opus-4-7]
+license: GBIM-internal-v1
+
+notion_sync:
+  enabled: true
+  db_id: a84f23489df54e8fbe34b9818d6109e5
+  category_select: "💊 투약·생활습관"
+  audience_select: "환자/보호자"
+
+output_path: decks/injections/glp1-injection/index.html
+build_target_kind: decks
+build_qr_class: qr-block__code
+build_fmt: deck-16x9

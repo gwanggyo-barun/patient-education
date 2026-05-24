@@ -1,0 +1,121 @@
+prompt_id: GBIM-skill-egd-fasting-v03
+title: 위내시경 금식 안내
+category: endoscopy
+subcategory: pre-procedure
+persona: patient-friendly
+task_type: handout
+output_format: a4-portrait
+
+expected_length:
+  pages: 1
+  word_count_range: [180, 280]
+  slide_count: null
+
+tags:
+  - a4
+  - patient-friendly
+  - korean
+  - print-ready
+  - infographic
+  - no-text-in-image
+  - safety-high
+  - qr-mini
+  - has-warning-block
+  - medication-info
+
+brand_profile: gwanggyo-bareun-print-v1
+
+image_constraints:
+  style: flat-medical
+  palette: [navy-003366, steel-blue-5B9BD5, warning-F97316]
+  no_text: true
+  aspect_ratio: strict-measured
+  min_dpi: 300
+
+temperature: 0.2
+
+model_family:
+  primary: claude-opus-4-7
+  fallback: claude-sonnet-4-6
+  alt_provider: gpt-4o
+
+reusable_blocks:
+  - safety/fasting-warning-standard
+  - safety/sedation-aftercare-standard
+  - safety/anticoagulant-warning-standard
+  - content/clinic-contact-footer
+  - visual/brand-color-palette
+  - visual/qr-mini-footer
+
+test_inputs:
+  - case_id: T01-routine
+    description: 일반 환자, 진정 O, 항응고제 X
+    patient_age: 55
+    sedation: true
+    anticoagulant: false
+  - case_id: T02-anticoagulant
+    description: 항응고제 복용 (warfarin)
+    patient_age: 70
+    sedation: true
+    anticoagulant: warfarin
+  - case_id: T03-doac
+    description: DOAC 복용 (rivaroxaban)
+    patient_age: 65
+    sedation: true
+    anticoagulant: rivaroxaban
+  - case_id: T04-no-sedation
+    description: 비진정 (수면 X)
+    patient_age: 45
+    sedation: false
+
+expected_outputs:
+  - case_id: T01-routine
+    must_include:
+      - "8시간 금식"
+      - "물 한 모금 가능"
+      - "보호자 동반"
+      - "검사 당일 운전 금지"
+    forbidden_terms:
+      - "12시간 금식"
+      - "물 절대 금지"
+      - "임의로 약 중단"
+  - case_id: T02-anticoagulant
+    must_include:
+      - "warfarin"
+      - "5일 전"
+      - "주치의 상의"
+      - "출혈 위험"
+  - case_id: T03-doac
+    must_include:
+      - "DOAC"
+      - "24-48시간 전"
+      - "주치의 상의"
+  - case_id: T04-no-sedation
+    must_include:
+      - "운전 가능"
+      - "보호자 동반 불필요"
+    forbidden_terms:
+      - "운전 금지"
+
+safety_level: high
+
+version: v03
+created_at: 2026-05-13T09:00:00+09:00
+updated_at: 2026-05-25T08:25:00+09:00
+
+authors:
+  - 정지환
+  - claude-opus-4-7
+
+license: GBIM-internal-v1
+
+notion_sync:
+  enabled: true
+  db_id: 920b48c92d674186a370afcaa81ce788
+  category_select: "🏥 내시경 관련"
+  audience_select: "환자/보호자"
+
+output_path: handouts/endoscopy/egd-fasting/index.html
+build_target_kind: handouts
+build_qr_class: qr-mini__code
+build_fmt: a4-portrait
