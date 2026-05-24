@@ -99,6 +99,49 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "의료진", "disease": "응급처치 (CPR)",
     },
 
+
+    # === 2026-05-24 Top 5 논문 ===
+    {
+        "kind": "decks", "slug": "baxdrostat-baxhtn",
+        "slug_path": "decks/general/papers-20260524/baxdrostat-baxhtn/",
+        "html_path": ROOT / "decks/general/papers-20260524/baxdrostat-baxhtn/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "Baxdrostat — 알도스테론 합성효소 억제제 FDA 승인 (BaxHTN)",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "저항성 고혈압",
+    },
+    {
+        "kind": "decks", "slug": "tramadol-bmj",
+        "slug_path": "decks/general/papers-20260524/tramadol-bmj/",
+        "html_path": ROOT / "decks/general/papers-20260524/tramadol-bmj/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "트라마돌 — 만성 통증 효과 미미·심혈관 위험 증가 (BMJ 메타분석)",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "만성 통증",
+    },
+    {
+        "kind": "decks", "slug": "sglt2-glp1-combo",
+        "slug_path": "decks/general/papers-20260524/sglt2-glp1-combo/",
+        "html_path": ROOT / "decks/general/papers-20260524/sglt2-glp1-combo/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "SGLT-2i + GLP-1RA 병용 — 심혈관·신장 30% 개선",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "제2형 당뇨 (T2DM)",
+    },
+    {
+        "kind": "decks", "slug": "soy-legumes-htn",
+        "slug_path": "decks/general/papers-20260524/soy-legumes-htn/",
+        "html_path": ROOT / "decks/general/papers-20260524/soy-legumes-htn/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "콩·두류 섭취와 고혈압 — 최적 섭취량 정량화 (BMJ Nutrition)",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "고혈압 예방 식이",
+    },
+    {
+        "kind": "decks", "slug": "rsv-realworld",
+        "slug_path": "decks/general/papers-20260524/rsv-realworld/",
+        "html_path": ROOT / "decks/general/papers-20260524/rsv-realworld/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "RSV 백신 — 실사용 근거 기반 가이드 (JAMA Internal Med)",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "RSV 백신",
+    },
+
     # === A4 portrait single-page handouts ===
     {
         "kind": "handouts", "slug": "cpr-flowchart",
