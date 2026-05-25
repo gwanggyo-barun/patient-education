@@ -142,6 +142,25 @@ TARGETS = [
         "category": "📰 논문 리뷰", "audience": "의료진", "disease": "RSV 백신",
     },
 
+
+    # === 2026-05-25 Top 5 — 3번 & 5번 (병렬 에이전트 작성) ===
+    {
+        "kind": "decks", "slug": "once-weekly-insulin",
+        "slug_path": "decks/general/papers-20260525/once-weekly-insulin/",
+        "html_path": ROOT / "decks/general/papers-20260525/once-weekly-insulin/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "주1회 기저인슐린 (Efsitora·Icodec) 메타분석",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "제2형 당뇨 인슐린 요법",
+    },
+    {
+        "kind": "decks", "slug": "cpap-personalized-cv",
+        "slug_path": "decks/general/papers-20260525/cpap-personalized-cv/",
+        "html_path": ROOT / "decks/general/papers-20260525/cpap-personalized-cv/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "CPAP 개인 맞춤 심혈관 효과 — Mount Sinai AI (SAVE 재분석)",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "수면무호흡 (OSA) · CPAP",
+    },
+
     # === A4 portrait single-page handouts ===
     {
         "kind": "handouts", "slug": "cpr-flowchart",
