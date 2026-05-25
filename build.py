@@ -126,6 +126,14 @@ TARGETS = [
         "category": "📰 논문 리뷰", "audience": "의료진", "disease": "제2형 당뇨 (T2DM)",
     },
     {
+        "kind": "decks", "slug": "teen-height-growth",
+        "slug_path": "decks/general/teen-height-growth/",
+        "html_path": ROOT / "decks/general/teen-height-growth/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "중1 남학생 키 성장 영양제 가이드 — 비타민D·칼슘·아연·HT042 + 수면·운동",
+        "category": "🌿 생활습관·식이", "audience": "환자/보호자", "disease": "청소년 성장 (사춘기 성장급등)",
+    },
+    {
         "kind": "decks", "slug": "soy-legumes-htn",
         "slug_path": "decks/general/papers-20260524/soy-legumes-htn/",
         "html_path": ROOT / "decks/general/papers-20260524/soy-legumes-htn/index.html",
