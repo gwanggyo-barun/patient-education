@@ -1,0 +1,214 @@
+template_id: GBIM-template-lab-report-a4-v01
+display_name: A4 Portrait Lab Result Infographic
+version: v01
+effective_date: 2026-05-25
+applies_to:
+  task_type: lab-report
+  output_format: a4-portrait
+  audiences: [patient-friendly, senior-readable]
+  kinds: [lab-reports]
+description: |
+  A4 1페이지 검사 결과 인포그래픽. 환자 친화적 신호등(녹/주/적) 시각화 +
+  수치 표 + 해석 좌4·우3 + 의사 권고 박스. QR 없음 (URL 노출 차단),
+  noindex meta 자동 삽입, footer 침범 방지 위해 콘텐츠 상한 엄격.
+  Privacy: PII 마스킹·hash slug·noarchive 필수.
+
+# ---------------------------------------------------------------------------
+# 1. 뷰포트 · 치수
+# ---------------------------------------------------------------------------
+viewport:
+  meta: "width=794, initial-scale=1.0"
+  width_px: 794
+  height_px: 1123
+  paper_size: A4
+  paper_orientation: portrait
+  aspect_ratio: "1:1.414"
+  scaling: print-fit
+  dpr_target: 2
+
+dimensions:
+  paper_width_mm: 210
+  paper_height_mm: 297
+  print_format: a4-portrait
+  bleed_mm: 0
+  safe_zone_mm: 5
+
+padding:
+  outer_horizontal_mm: 12     # 본문 영역 최대 확보 (수치 표 가독성)
+  outer_top_mm: 12
+  outer_bottom_mm: 10
+  body_max_width_mm: 186
+  section_gap_mm: 4
+
+# ---------------------------------------------------------------------------
+# 2. 마스터 그리드 — 4-region
+# ---------------------------------------------------------------------------
+master_grid:
+  regions:
+    - id: header
+      role: brand + patient masked meta
+      height_mm: 16
+      content: [clinic-logo-mini, panel-title, masked-chart-no, sample-date]
+      align: row-between
+    - id: title-block
+      role: panel-headline + traffic-light
+      height_mm: 26
+      content: [h1-panel-name, traffic-light-overall, key-finding-pill]
+      align: row-between
+    - id: body
+      role: table + interpretation + recommendation
+      height_mm: 225          # 297 - header 16 - title 26 - footer 18 - paddings 12
+      content: [pattern-instance]
+      align: depends-on-pattern
+    - id: footer
+      role: provenance + copyright micro (NO QR)
+      height_mm: 18
+      content: [physician-name-credentials, doc-version-date, copyright-micro, noindex-text]
+      align: row-between
+
+# ---------------------------------------------------------------------------
+# 3. 1-page 표준 섹션 — 상한 엄격 (CI auto-validator)
+# ---------------------------------------------------------------------------
+required_sections:
+  count: 1
+  enforce: strict
+  content_caps:
+    table_rows_max: 7         # 8행 이상 → blocker (footer 침범 방지)
+    interpretation_left_bullets_max: 4
+    interpretation_right_bullets_max: 3
+    physician_note_lines_max: 3
+    chars_per_bullet_max: 60
+  sequence:
+    - role: panel-header
+      required: true
+      requires_one_of: [h1-panel-name]
+    - role: traffic-light-summary
+      required: true
+      pattern: traffic-light-3-state
+      states: [normal-green, borderline-amber, abnormal-red]
+    - role: result-table
+      required: true
+      pattern: lab-result-table-compact
+      max_rows: 7
+      columns: [marker-name, value, unit, ref-range, status-icon]
+    - role: interpretation
+      required: true
+      pattern: interpretation-2col-4-3
+      left_max_bullets: 4     # 좌 = 의미·원인
+      right_max_bullets: 3    # 우 = 권고·다음 단계
+    - role: physician-recommendation
+      required: true
+      pattern: physician-note-box
+      max_lines: 3
+    - role: footer
+      required: true
+      pattern: lab-footer-no-qr
+
+# ---------------------------------------------------------------------------
+# 4. 선택 가능한 layout patterns
+# ---------------------------------------------------------------------------
+optional_patterns:
+  - id: traffic-light-3-state
+    description: 녹·황·적 3 상태 신호등 (overall + per-marker)
+  - id: lab-result-table-compact
+    description: 5열 표 (marker·value·unit·range·icon), 최대 7행
+  - id: interpretation-2col-4-3
+    description: 좌 4 bullet (의미·원인) + 우 3 bullet (권고·next step)
+  - id: physician-note-box
+    description: 의사 직접 메모 박스 (3줄 이내, italic 금지)
+  - id: trend-mini-chart
+    description: 12개월 추세 미니 sparkline (3개 마커 이하)
+  - id: range-bar-marker
+    description: 정상 범위 bar + 환자값 마커 (수직선)
+  - id: lab-footer-no-qr
+    description: footer (의사명·자격·문서버전·copyright micro·noindex 텍스트), QR 절대 X
+
+# ---------------------------------------------------------------------------
+# 5. QR · OG · 정책 — Privacy 우선
+# ---------------------------------------------------------------------------
+qr_position: none             # lab-reports는 QR 없음 (URL 노출 차단)
+qr_target_class: null
+qr_block_strip: true          # build.py strip_qr_mini_block() 호출 강제
+
+og_meta_required:
+  - og:type
+  - og:url
+  - og:title
+  - og:description
+  - og:image
+  - og:site_name
+  - theme-color
+
+privacy:
+  noindex: true               # build.py inject_noindex_meta() 호출 강제
+  noindex_meta: '<meta name="robots" content="noindex,nofollow,noarchive">'
+  strip_qr: true
+  pii_check: strict
+  hash_slug: true             # build.py lab_hash_slug() 사용
+  slug_length: 10             # 10-char hex
+  required_redactions:
+    - patient_full_name        # 마스킹 (예: 정○○)
+    - resident_registration_no # 절대 노출 X
+    - phone_number             # 절대 노출 X
+    - address                  # 절대 노출 X
+  chart_no_masking: partial    # 일부 자릿수만 표시 (예: ****-12)
+
+# ---------------------------------------------------------------------------
+# 6. 검증 룰 — CI auto-validator
+# ---------------------------------------------------------------------------
+validation_rules:
+  - id: viewport-width
+    check_type: viewport
+    check: "width=794"
+    severity: blocker
+  - id: pretendard-loaded
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - id: noindex-meta-present
+    check_type: html_contains
+    check: 'name="robots" content="noindex'
+    severity: blocker
+  - id: noarchive-flag
+    check_type: html_contains
+    check: "noarchive"
+    severity: blocker
+  - id: no-qr-block
+    check_type: css_class_absent
+    check: ".qr-mini__code, .qr-block__code"
+    severity: blocker
+  - id: clinic-name-in-footer
+    check_type: footer_contains
+    check: "광교바른내과"
+    severity: blocker
+  - id: single-page-no-overflow
+    check_type: page_count
+    check: 1
+    severity: blocker
+  - id: table-rows-cap
+    check_type: table_row_count_max
+    check: 7
+    severity: blocker
+  - id: interpretation-bullets-cap-left
+    check_type: bullet_count_max_in
+    check: { selector: ".interpretation-left", max: 4 }
+    severity: blocker
+  - id: interpretation-bullets-cap-right
+    check_type: bullet_count_max_in
+    check: { selector: ".interpretation-right", max: 3 }
+    severity: blocker
+  - id: no-resident-reg-no
+    check_type: regex_absent
+    check: '\d{6}-?\d{7}'      # 주민등록번호 패턴
+    severity: blocker
+  - id: copyright-footer-micro
+    check_type: html_contains
+    check: "© 2026"
+    severity: major
+  - id: physician-credentials-present
+    check_type: footer_contains
+    check: "M.D."
+    severity: minor
+
+default_brand_profile: gwanggyo-bareun-print-v1
+allowed_brand_profile_overrides: []

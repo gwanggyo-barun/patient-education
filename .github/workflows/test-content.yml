@@ -1,0 +1,213 @@
+name: Content Regression Tests
+
+# PromptOps Phase 1 — PR/push regression test pipeline.
+#
+# Jobs:
+#   1. build-and-test  → build.py + tools/run_tests.py --severity blocker
+#                        blocker fail = exit 1 = PR merge 차단
+#                        non-blocker = 경고만, 빌드 성공
+#   2. validate-layout → shared/_validate_layout.py 풀 검증 (병렬)
+#   3. notion-sync     → NOTION_TOKEN secret 있고 main push 일 때만
+#
+# 사용자 요청 (2026-05-25): blocker만 fail, non-blocker는 경고 + 빌드 성공.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: content-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ------------------------------------------------------------------------ #
+  # JOB 1 — Build + run_tests (regression gate)
+  # ------------------------------------------------------------------------ #
+  build-and-test:
+    name: Build & Regression Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONUNBUFFERED: "1"
+      LAB_SLUG_SALT: ${{ secrets.LAB_SLUG_SALT }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyyaml
+
+      - name: Install Playwright Chromium
+        run: python -m playwright install --with-deps chromium
+
+      - name: Build all artifacts (HTML + PDF + preview)
+        # build.py renders every registered deck/handout/lab-report. Even if
+        # Notion sync env vars are absent, the build itself must succeed so
+        # downstream tests have HTML to evaluate.
+        run: python3 build.py
+        env:
+          NOTION_TOKEN: ""        # explicit empty — skip Notion in test job
+
+      - name: Run regression tests (blocker severity → exit on fail)
+        id: run_tests_blocker
+        # --severity blocker means only blocker-level rules are enforced as
+        # failing. Major/minor/nit findings are still reported in the next
+        # step but do not break the build.
+        run: |
+          python3 tools/run_tests.py --all --severity blocker | tee test-results-blocker.log
+          rc=${PIPESTATUS[0]}
+          echo "blocker_exit_code=$rc" >> $GITHUB_OUTPUT
+          if [ "$rc" -ne 0 ]; then
+            echo "::error title=Regression blocker::1+ blocker test failed — PR merge blocked"
+            exit "$rc"
+          fi
+
+      - name: Run full test suite (non-blocker warnings only)
+        # Non-blocker run does NOT fail the job, only annotates findings so
+        # reviewers see them inline on the PR.
+        continue-on-error: true
+        run: |
+          python3 tools/run_tests.py --all | tee test-results-full.log
+          if grep -qE '\[(major|minor|nit)\]' test-results-full.log; then
+            echo "::warning title=Non-blocker findings::Major/minor findings detected — review test-results-full.log artifact"
+          fi
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-results-blocker.log
+            test-results-full.log
+          retention-days: 14
+
+      - name: Upload built artifacts (HTML + PDF) for inspection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-content
+          path: |
+            decks/**/index.html
+            handouts/**/index.html
+            lab-reports/**/index.html
+            output/**/*.pdf
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ------------------------------------------------------------------------ #
+  # JOB 2 — Layout validator (parallel, independent gate)
+  # ------------------------------------------------------------------------ #
+  validate-layout:
+    name: Layout Validator
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: []     # parallel with build-and-test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies (minimal — no Playwright)
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml beautifulsoup4 lxml
+
+      - name: Run shared/_validate_layout.py (full check)
+        # _validate_layout.py 는 HTML 정적 검증 전용 — Playwright 불요.
+        run: |
+          python3 shared/_validate_layout.py | tee layout-validation.log
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then
+            echo "::error title=Layout validator::shared/_validate_layout.py reported failures"
+            exit "$rc"
+          fi
+
+      - name: Upload layout log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layout-validation
+          path: layout-validation.log
+          retention-days: 14
+
+  # ------------------------------------------------------------------------ #
+  # JOB 3 — Notion sync (opt-in, main branch only)
+  # ------------------------------------------------------------------------ #
+  notion-sync:
+    name: Notion DB Sync (optional)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build-and-test, validate-layout]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Skip if no NOTION_TOKEN secret
+        id: gate
+        run: |
+          if [ -z "${{ secrets.NOTION_TOKEN }}" ]; then
+            echo "has_token=false" >> $GITHUB_OUTPUT
+            echo "::notice title=Notion sync skipped::NOTION_TOKEN secret not configured"
+          else
+            echo "has_token=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Python 3.12
+        if: steps.gate.outputs.has_token == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        if: steps.gate.outputs.has_token == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Notion sync
+        if: steps.gate.outputs.has_token == 'true'
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          LAB_SLUG_SALT: ${{ secrets.LAB_SLUG_SALT }}
+        run: |
+          python3 - <<'PY'
+          # Import sync entry point and run upsert for every artifact.
+          # _notion_sync exposes a sync_all() helper or equivalent.
+          import sys
+          sys.path.insert(0, "shared")
+          try:
+              import _notion_sync as ns
+              if hasattr(ns, "sync_all"):
+                  ns.sync_all()
+              else:
+                  print("[notion-sync] _notion_sync.sync_all not found — skipping")
+          except Exception as e:
+              print(f"[notion-sync] non-fatal error: {e}")
+              # Notion API hiccups must NOT block merges — log and continue.
+          PY

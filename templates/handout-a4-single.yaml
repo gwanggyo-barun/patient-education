@@ -1,0 +1,188 @@
+template_id: GBIM-template-handout-a4-single-v01
+display_name: A4 Portrait Single-Page Handout
+version: v01
+effective_date: 2026-05-25
+applies_to:
+  task_type: handout
+  output_format: a4-portrait
+  audiences: [patient-friendly, senior-readable, family-readable]
+  kinds: [handouts]
+description: |
+  광교바른내과 표준 A4 1페이지 핸드아웃 골격 (210×297mm).
+  header → title-block → body(2-3 section) → safety-callout → footer(QR mini + 연락처).
+  brand_profile=gwanggyo-bareun-print-v1 강제. 인쇄 300DPI 가독성 우선.
+
+# ---------------------------------------------------------------------------
+# 1. 뷰포트 · 치수 (A4 portrait)
+# ---------------------------------------------------------------------------
+viewport:
+  meta: "width=794, initial-scale=1.0"     # 794px ≈ 210mm @ 96dpi
+  width_px: 794
+  height_px: 1123
+  paper_size: A4
+  paper_orientation: portrait
+  aspect_ratio: "1:1.414"
+  scaling: print-fit
+  dpr_target: 2
+
+dimensions:
+  paper_width_mm: 210
+  paper_height_mm: 297
+  print_format: a4-portrait                 # build.py PageFormat literal
+  bleed_mm: 0
+  safe_zone_mm: 5
+
+padding:
+  outer_horizontal_mm: 14
+  outer_top_mm: 14
+  outer_bottom_mm: 12
+  body_max_width_mm: 182
+  section_gap_mm: 6
+
+# ---------------------------------------------------------------------------
+# 2. 마스터 그리드 — 4-region
+# ---------------------------------------------------------------------------
+master_grid:
+  regions:
+    - id: header
+      role: brand-anchor
+      height_mm: 18
+      content: [clinic-logo, doc-kind-label, version-date-micro]
+      align: row-between
+    - id: title-block
+      role: doc-headline
+      height_mm: 32
+      content: [h1-title, h2-subtitle-optional, accent-bar-navy]
+      align: column-start
+    - id: body
+      role: main-content
+      height_mm: 215           # 297 - header 18 - title 32 - footer 20 - paddings 12
+      content: [pattern-instance]
+      align: depends-on-pattern
+      max_sections: 4
+    - id: footer
+      role: provenance + QR mini + contact
+      height_mm: 20
+      content: [qr-mini, clinic-contact-1line, copyright-micro, page-1of1]
+      align: row-between
+
+# ---------------------------------------------------------------------------
+# 3. 1-page 표준 섹션 (required + optional)
+# ---------------------------------------------------------------------------
+required_sections:
+  count: 1                    # = 1 page (multi-page는 별도 template)
+  enforce: strict             # 2페이지 침범은 blocker
+  sequence:
+    - role: title-block
+      required: true
+      requires_one_of: [h1-title]
+    - role: intro-or-hero-illustration
+      required: false
+      max_height_mm: 50
+    - role: main-instructions
+      required: true
+      pattern: numbered-steps OR icon-grid-6 OR text-2col-info
+      min_density_pct: 35      # 너무 빈약 차단
+      max_density_pct: 78      # 너무 빽빽 차단 (lab-report는 별도)
+    - role: safety-callout
+      required: true_if_safety_level_>=high
+      pattern: warning-block-amber
+      required_blocks: [safety/fasting-warning-standard OR safety/anticoagulant-warning-* OR safety/sedation-aftercare-standard]
+    - role: faq-or-tips
+      required: false
+      pattern: tip-list-3
+    - role: footer
+      required: true
+      pattern: footer-with-qr-mini-and-contact
+
+# ---------------------------------------------------------------------------
+# 4. 선택 가능한 layout patterns
+# ---------------------------------------------------------------------------
+optional_patterns:
+  - id: numbered-steps
+    description: 1·2·3 순서 박스 (체크리스트형)
+  - id: icon-grid-6
+    description: 6칸 아이콘 그리드 (시계·물·금연 등)
+  - id: text-2col-info
+    description: 2열 텍스트 + 좌측 시각 요소
+  - id: hero-illustration-top
+    description: 상단 일러스트레이션 + 하단 텍스트
+  - id: timeline-horizontal
+    description: 좌→우 가로 타임라인 (전날·당일 등)
+  - id: warning-block-amber
+    description: 황색 border + 아이콘 + 경고 본문
+  - id: tip-list-3
+    description: 3개 팁 (TLDR 미니카드)
+  - id: footer-with-qr-mini-and-contact
+    description: 좌하 클리닉 정보 + 우하 QR mini 24mm
+  - id: faq-2col
+    description: Q1·Q2·Q3 2열 짧은 FAQ
+  - id: dosage-table-compact
+    description: 약물 용량 표 (4행 이하)
+
+# ---------------------------------------------------------------------------
+# 5. QR · OG · 정책
+# ---------------------------------------------------------------------------
+qr_position: footer-mini
+qr_target_class: qr-mini__code
+qr_size_mm: 24
+qr_color: navy-003366
+qr_background: white
+
+og_meta_required:
+  - og:type
+  - og:url
+  - og:title
+  - og:description
+  - og:image
+  - og:site_name
+  - theme-color
+
+privacy:
+  noindex: false              # handouts는 공개
+  strip_qr: false
+  pii_check: standard
+
+# ---------------------------------------------------------------------------
+# 6. 검증 룰
+# ---------------------------------------------------------------------------
+validation_rules:
+  - id: viewport-width
+    check_type: viewport
+    check: "width=794"
+    severity: blocker
+  - id: pretendard-loaded
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - id: qr-mini-block
+    check_type: css_class_exists
+    check: ".qr-mini__code"
+    severity: blocker
+  - id: clinic-name-in-footer
+    check_type: footer_contains
+    check: "광교바른내과"
+    severity: blocker
+  - id: a4-padding-14mm
+    check_type: css_padding
+    check: "14mm"
+    severity: major
+  - id: single-page-no-overflow
+    check_type: page_count
+    check: 1
+    severity: blocker
+  - id: og-meta-complete
+    check_type: og_meta_present
+    check: all
+    severity: major
+  - id: min-font-size-print
+    check_type: css_min_font_size
+    check: "10pt"
+    severity: major
+  - id: copyright-footer-micro
+    check_type: html_contains
+    check: "© 2026"
+    severity: major
+
+default_brand_profile: gwanggyo-bareun-print-v1
+allowed_brand_profile_overrides: []          # 핸드아웃은 print 변형 강제

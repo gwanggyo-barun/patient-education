@@ -1,0 +1,166 @@
+prompt_id: GBIM-skill-teen-height-growth-v01
+title: 중고등학생 키 성장 영양·생활 가이드
+category: patient-education
+subcategory: lifestyle
+persona: patient-friendly
+task_type: deck
+output_format: 16x9
+
+template_id: GBIM-template-deck-16x9-12slides-v01
+
+expected_length:
+  slide_count: 12
+  word_count_range: null
+  pages: null
+
+tags:
+  - 16x9
+  - deck-16x9
+  - patient-friendly
+  - family-readable
+  - korean
+  - kor-formal
+  - infographic
+  - medication-info
+  - safety-medium
+  - has-warning-block
+  - requires-physician-review
+
+brand_profile: gwanggyo-bareun-web-v1
+
+image_constraints:
+  style: flat-medical
+  palette: [navy-003366, steel-blue-5B9BD5, success-15803D]
+  required_visuals:
+    - growth-plate-anatomy-side-view
+    - sleep-cycle-22-to-06
+    - protein-portion-plate-icon
+    - vitamin-d-sunlight-icon
+    - resistance-exercise-icon
+    - growth-chart-bell-curve
+  no_text: true
+  aspect_ratio: 16x9
+  min_dpi: 200
+
+temperature: 0.25
+
+model_family:
+  primary: claude-opus-4-7
+  fallback: claude-sonnet-4-6
+  alt_provider: gpt-4o
+
+reusable_blocks:
+  - visual/brand-color-palette
+  - visual/clinic-logo-header
+  - visual/slide-footer-standard
+  - visual/qr-block-standard
+  - content/take-home-4-cards
+  - content/clinic-contact-footer
+  - safety/red-flag-grid-6                # 성조숙증·성장 정체 red flag
+  - safety/emergency-warning-block        # 영양제 과용 경고
+
+test_inputs:
+  - case_id: T01-middle1-male
+    description: 중학교 1학년 남학생, 또래보다 10cm 작음, 사춘기 시작 전
+    age: 13
+    sex: male
+    pubertal_stage: pre-tanner-2
+    current_height_percentile: 15
+    target_concern: catch-up-growth
+  - case_id: T02-middle3-female-late
+    description: 중학교 3학년 여학생, 초경 12개월 경과, 키 성장 정체
+    age: 15
+    sex: female
+    pubertal_stage: post-menarche-1y
+    current_height_percentile: 35
+    target_concern: slowing-growth
+  - case_id: T03-high1-male-tall-parents
+    description: 고1 남학생, 부모 평균 175cm, 본인 165cm, 성장판 검사 희망
+    age: 16
+    sex: male
+    pubertal_stage: tanner-4
+    current_height_percentile: 50
+    target_concern: assess-remaining-growth
+  - case_id: T04-supplement-question
+    description: 학부모가 시중 키 성장 영양제 효과·안전성 문의
+    age: 14
+    sex: any
+    pubertal_stage: tanner-2-3
+    parent_question: "키 영양제 사도 되나요?"
+    target_concern: supplement-safety
+
+expected_outputs:
+  - case_id: T01-middle1-male
+    must_include:
+      - "성장판"
+      - "수면 8-10시간"
+      - "단백질"
+      - "비타민 D"
+      - "운동"
+      - "사춘기"
+      - "키 성장 황금기"
+    forbidden_terms:
+      - "보장합니다"
+      - "100% 키 큰다"
+      - "성장호르몬 자가 주사"
+      - "성장판 영원히 열려"
+  - case_id: T02-middle3-female-late
+    must_include:
+      - "초경 후"
+      - "성장판 닫힘"
+      - "2-3년"
+      - "잔여 성장"
+      - "주치의 상의"
+    forbidden_terms:
+      - "초경 후 키 자라지 않는다"
+      - "이미 늦었다"
+  - case_id: T03-high1-male-tall-parents
+    must_include:
+      - "유전 키 (MPH)"
+      - "성장판 X-ray"
+      - "잔여 성장"
+      - "Tanner"
+      - "성장 호르몬 검사는 의학적 적응증"
+    forbidden_terms:
+      - "성장호르몬 누구나"
+      - "정상 키도 호르몬 추천"
+  - case_id: T04-supplement-question
+    must_include:
+      - "근거 부족"
+      - "FDA 식약처 허가 X"
+      - "단백질·칼슘·비타민 D 충분 시 효과 미미"
+      - "성조숙증 위험"
+      - "주치의 상의"
+    forbidden_terms:
+      - "키 영양제 강력 추천"
+      - "효과 보장"
+      - "부작용 없음"
+
+safety_rules_summary:
+  - 성장호르몬 치료는 의학적 적응증 (GHD·터너·SGA 등)에만 — 정상 키 적응증 X
+  - 성조숙증 의심 시 즉시 소아내분비 의뢰
+  - 시중 영양제 효과 근거 부족·부작용 가능성 명시
+  - 키 보장 광고·과장 표현 절대 금지
+
+safety_level: medium
+
+version: v01
+created_at: 2026-05-25T10:00:00+09:00
+updated_at: 2026-05-25T10:00:00+09:00
+
+authors:
+  - 정지환
+  - claude-opus-4-7
+
+license: GBIM-internal-v1
+
+notion_sync:
+  enabled: true
+  db_id: a84f23489df54e8fbe34b9818d6109e5
+  category_select: "🌿 생활습관·식이"
+  audience_select: "환자/보호자"
+
+output_path: decks/general/teen-height-growth/index.html
+build_target_kind: decks
+build_qr_class: qr-block__code
+build_fmt: deck-16x9

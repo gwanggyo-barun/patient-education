@@ -1,0 +1,209 @@
+template_id: GBIM-template-deck-16x9-12slides-v01
+display_name: 16:9 12-Slide Standard Deck
+version: v01
+effective_date: 2026-05-25
+applies_to:
+  task_type: deck
+  output_format: 16x9
+  audiences: [patient-friendly, family-readable, clinician-internal-medicine]
+  kinds: [decks]
+description: |
+  광교바른내과 표준 12장 16:9 슬라이드 deck 골격.
+  cover → TL;DR → body (8장) → take-home(4 카드) → closing(QR) 구성.
+  brand_profile=gwanggyo-bareun-web-v1 디폴트 (필요시 print-v1로 override).
+
+# ---------------------------------------------------------------------------
+# 1. 뷰포트 · 치수
+# ---------------------------------------------------------------------------
+viewport:
+  meta: "width=1280, initial-scale=1.0"
+  width_px: 1280
+  height_px: 720
+  aspect_ratio: "16:9"
+  scaling: fixed
+  dpr_target: 2
+
+dimensions:
+  slide_width: 1280
+  slide_height: 720
+  print_format: deck-16x9      # build.py PageFormat literal
+  pdf_size: 1280x720
+
+padding:
+  outer_horizontal: 56          # px — 좌우 본문 padding
+  outer_top: 32
+  outer_bottom: 32
+  inner_block_gap: 24
+  body_to_footer_gap: 16
+
+# ---------------------------------------------------------------------------
+# 2. 마스터 그리드 — 4-region
+# ---------------------------------------------------------------------------
+master_grid:
+  regions:
+    - id: header
+      role: brand-anchor
+      height_px: 44
+      content: [clinic-logo, chapter-label, slide-counter]
+      align: row-between
+    - id: title-block
+      role: slide-headline
+      height_px: 96
+      content: [h2-title, h3-subtitle-optional, accent-bar]
+      align: column-start
+    - id: body
+      role: main-content
+      height_px: 504           # 720 - 44 - 96 - footer 40 - gaps
+      content: [pattern-instance]   # see optional_patterns
+      align: depends-on-pattern
+    - id: footer
+      role: provenance + brand mark
+      height_px: 40
+      content: [source-citation, page-number, copyright-micro]
+      align: row-between
+
+# ---------------------------------------------------------------------------
+# 3. 12-slide 표준 시퀀스 (required)
+# ---------------------------------------------------------------------------
+required_slides:
+  count: 12
+  enforce: strict           # 11/13 슬라이드는 blocker fail
+  sequence:
+    - index: 1
+      role: cover
+      pattern: cover-with-hero-illustration
+      required_blocks: [visual/clinic-logo-header, visual/brand-color-palette]
+    - index: 2
+      role: tldr-or-hero-stat
+      pattern: tldr-3-bullets OR hero-stat-with-metric
+    - index: 3
+      role: definition-or-context
+      pattern: text-2col-with-icon
+    - index: 4
+      role: epidemiology-or-why-matter
+      pattern: stat-grid-3
+    - index: 5
+      role: mechanism-or-pathophysiology
+      pattern: diagram-with-callouts
+    - index: 6
+      role: presentation-or-symptoms
+      pattern: symptom-grid-6
+    - index: 7
+      role: diagnosis-or-workup
+      pattern: flowchart-vertical
+    - index: 8
+      role: treatment-overview
+      pattern: tier-table OR comparison-2col
+    - index: 9
+      role: medication-or-procedure-detail
+      pattern: medication-table-template
+    - index: 10
+      role: lifestyle-or-prevention
+      pattern: lifestyle-grid-6
+    - index: 11
+      role: take-home-4-cards
+      pattern: take-home-4-cards
+      required_blocks: [content/take-home-4-cards]
+    - index: 12
+      role: closing-with-qr-and-contact
+      pattern: closing-qr-contact
+      required_blocks: [visual/qr-block-standard, content/clinic-contact-footer]
+
+# ---------------------------------------------------------------------------
+# 4. 선택 가능한 layout patterns
+# ---------------------------------------------------------------------------
+optional_patterns:
+  - id: cover-with-hero-illustration
+    description: 좌측 타이틀+서브, 우측 일러스트레이션
+  - id: tldr-3-bullets
+    description: 3개 핵심 메시지 카드
+  - id: hero-stat-with-metric
+    description: 거대 숫자 1개 + 캡션
+  - id: text-2col-with-icon
+    description: 2열 텍스트 + 좌측 아이콘
+  - id: stat-grid-3
+    description: 3개 통계 타일 (가로 배열)
+  - id: diagram-with-callouts
+    description: 중앙 다이어그램 + 콜아웃 4개
+  - id: symptom-grid-6
+    description: 6칸 증상 아이콘 그리드
+  - id: flowchart-vertical
+    description: 세로 진행 화살표 5-7 노드
+  - id: tier-table
+    description: 1st·2nd·3rd line 비교 표
+  - id: comparison-2col
+    description: "좌·우 비교 (예: 정상 vs 이상)"
+  - id: medication-table-template
+    description: 약물명·용량·부작용 표
+  - id: lifestyle-grid-6
+    description: 6 생활관리 타일
+  - id: take-home-4-cards
+    description: 4 카드형 핵심 정리
+  - id: closing-qr-contact
+    description: QR 144×144 + 클리닉 연락처
+  - id: red-flag-grid-6
+    description: 응급 증상 6 alert 타일 (warning border)
+
+# ---------------------------------------------------------------------------
+# 5. QR · OG · 정책
+# ---------------------------------------------------------------------------
+qr_position: closing-slide
+qr_target_class: qr-block__code
+qr_size_px: 144
+qr_color: navy-003366
+qr_background: white
+
+og_meta_required:
+  - og:type
+  - og:url
+  - og:title
+  - og:description
+  - og:image
+  - og:site_name
+  - theme-color
+
+privacy:
+  noindex: false              # decks는 공개
+  strip_qr: false
+  pii_check: standard
+
+# ---------------------------------------------------------------------------
+# 6. 검증 룰 — build.py + run_tests.py 가 사용
+# ---------------------------------------------------------------------------
+validation_rules:
+  - id: viewport-width
+    check_type: viewport
+    check: "width=1280"
+    severity: blocker
+  - id: viewport-height
+    check_type: html_contains
+    check: "1280"
+    severity: blocker
+  - id: slide-count
+    check_type: section_count
+    check: 12
+    severity: blocker
+  - id: pretendard-loaded
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - id: closing-qr-block
+    check_type: css_class_exists
+    check: ".qr-block__code"
+    severity: blocker
+  - id: clinic-name-in-footer
+    check_type: footer_contains
+    check: "광교바른내과"
+    severity: blocker
+  - id: og-meta-complete
+    check_type: og_meta_present
+    check: all
+    severity: major
+  - id: theme-color-set
+    check_type: html_contains
+    check: "theme-color"
+    severity: major
+
+default_brand_profile: gwanggyo-bareun-web-v1
+allowed_brand_profile_overrides:
+  - gwanggyo-bareun-print-v1   # 인쇄용 deck (드물지만 허용)

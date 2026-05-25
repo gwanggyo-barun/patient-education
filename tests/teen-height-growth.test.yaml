@@ -1,0 +1,160 @@
+test_id: teen-height-growth-deck-v01
+skill_ref: GBIM-skill-teen-height-growth-v01
+
+must_include:
+  - "성장판"
+  - "수면"
+  - "단백질"
+  - "비타민 D"
+  - "운동"
+  - "사춘기"
+  - "Tanner"
+  - "주치의 상의"
+  - "광교바른내과"
+
+forbidden_terms:
+  - "100% 키 큰다"
+  - "보장합니다"
+  - "키 보장"
+  - "성장호르몬 누구나"
+  - "성장판 영원히 열려"
+  - "초경 후 키 자라지 않는다"
+  - "이미 늦었다"
+  - "키 영양제 강력 추천"
+  - "효과 보장"
+  - "부작용 없음"
+  - "성장호르몬 자가 주사"
+
+style_rules:
+  - rule: "Pretendard Variable"
+    check_type: html_contains
+    check: "pretendardvariable"
+    severity: blocker
+  - rule: "Navy + Steel Blue + Success palette only"
+    check_type: css_color_whitelist
+    check: ["#003366", "#5B9BD5", "#15803D", "#FFFFFF", "#F4F6F8", "#FAF7F2"]
+    severity: major
+  - rule: "Navy #003366 exact use"
+    check_type: css_exact_color
+    check: "#003366"
+    severity: minor
+
+layout_rules:
+  - rule: "16:9 deck viewport (1280×720)"
+    check_type: viewport
+    check: "width=1280"
+    severity: blocker
+  - rule: "12 슬라이드 정확"
+    check_type: section_count
+    check: 12
+    severity: blocker
+  - rule: "Closing slide QR 144×144"
+    check_type: css_class_exists
+    check: ".qr-block__code"
+    severity: blocker
+  - rule: "Take-home 4 cards (slide 11)"
+    check_type: css_class_exists
+    check: ".takehome"
+    severity: major
+  - rule: "Footer 광교바른내과 + 출처"
+    check_type: footer_contains
+    check: "광교바른내과"
+    severity: blocker
+
+safety_rules:
+  - rule: "성장호르몬 적응증 명시 (정상 키 X)"
+    check_type: html_contains
+    check: "의학적 적응증"
+    severity: blocker
+  - rule: "성조숙증 red flag 안내"
+    check_type: html_contains
+    check: "성조숙증"
+    severity: blocker
+  - rule: "시중 영양제 근거 부족 명시"
+    check_type: case_specific
+    check: "T04 supplement → '근거 부족' 또는 'FDA 식약처 허가 X'"
+    severity: blocker
+  - rule: "성장판 닫힘 후 한계 안내"
+    check_type: html_contains
+    check: "성장판 닫힘"
+    severity: major
+  - rule: "초경 후 잔여 성장 정직 안내"
+    check_type: case_specific
+    check: "T02 post-menarche → '2-3년 잔여 성장'"
+    severity: major
+  - rule: "임의 영양제 과용 경고"
+    check_type: html_contains
+    check: "과용"
+    severity: blocker
+  - rule: "주치의/소아내분비 의뢰 안내"
+    check_type: html_contains
+    check: "소아내분비"
+    severity: major
+  - rule: "키 보장·과장 광고 금지"
+    check_type: html_contains
+    check: "보장 광고"
+    severity: minor
+
+medical_accuracy:
+  - rule: "수면 시간 8-10시간 정확"
+    check_type: html_contains
+    check: "수면 8-10시간"
+    severity: major
+  - rule: "단백질 권장량 명시 (1.0-1.2g/kg)"
+    check_type: html_contains
+    check: "g/kg"
+    severity: major
+  - rule: "비타민 D 800-1000 IU 범위"
+    check_type: html_contains
+    check: "IU"
+    severity: major
+  - rule: "Tanner 단계 정확 사용"
+    check_type: html_contains
+    check: "Tanner"
+    severity: blocker
+  - rule: "MPH (Mid-parental height) 공식 언급"
+    check_type: case_specific
+    check: "T03 tall-parents → 'MPH' 또는 '유전 키' 공식"
+    severity: major
+  - rule: "성장판 X-ray (bone age) 검사 안내"
+    check_type: html_contains
+    check: "성장판 X-ray"
+    severity: major
+  - rule: "체중부하 운동 강조"
+    check_type: html_contains
+    check: "체중부하"
+    severity: minor
+
+accessibility:
+  - rule: "본문 최소 16px (deck 화면 가독성)"
+    check_type: css_min_font_size
+    check: "16px"
+    severity: major
+  - rule: "색상 대비 4.5:1 이상"
+    check_type: contrast_ratio
+    check: 4.5
+    severity: major
+  - rule: "이미지 alt 텍스트 필수"
+    check_type: html_contains
+    check: "alt="
+    severity: major
+
+brand_compliance:
+  - rule: "Clinic logo aspect ratio preserved"
+    check_type: image_aspect_preserved
+    check: "logo"
+    severity: major
+  - rule: "Take-home slide present (slide 11)"
+    check_type: html_contains
+    check: "핵심 정리"
+    severity: major
+  - rule: "Copyright micro footer"
+    check_type: html_contains
+    check: "© 2026"
+    severity: major
+
+og_meta:
+  - rule: "All 7 OG meta tags present"
+    check_type: og_meta_present
+    check: all
+    severity: major
