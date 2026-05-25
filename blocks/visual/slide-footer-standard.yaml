@@ -1,0 +1,85 @@
+block_id: slide-footer-standard
+version: v02
+display_name: 슬라이드 푸터 표준 (출처 + 페이지)
+description: |
+  16x9 deck 또는 multi-page handout의 footer 표준.
+  좌: 출처 (논문·가이드라인), 중: 클리닉명, 우: 페이지 번호.
+applies_to:
+  - decks/*
+  - handouts/multi-page/*
+
+content:
+  html_template: |
+    <footer class="slide-footer">
+      <div class="slide-footer__source">
+        <span class="slide-footer__label">출처</span>
+        <span class="slide-footer__citation">{{ citation_text }}</span>
+      </div>
+      <div class="slide-footer__brand">
+        광교바른내과 · {{ deck_title }}
+      </div>
+      <div class="slide-footer__page">
+        <span class="slide-footer__current">{{ current_page }}</span>
+        <span class="slide-footer__sep">/</span>
+        <span class="slide-footer__total">{{ total_pages }}</span>
+      </div>
+    </footer>
+  css: |
+    .slide-footer {
+      display: grid;
+      grid-template-columns: 2fr 1fr 60px;
+      gap: 16px;
+      align-items: center;
+      padding: 8px 24px;
+      border-top: 1px solid var(--gb-border);
+      background: var(--gb-white);
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-muted);
+    }
+    .slide-footer__label {
+      display: inline-block;
+      padding: 1px 6px;
+      background: var(--gb-light-gray);
+      color: var(--gb-ink-soft);
+      border-radius: 4px;
+      font-weight: var(--gb-fw-semibold);
+      margin-right: 6px;
+    }
+    .slide-footer__citation {
+      color: var(--gb-ink-soft);
+    }
+    .slide-footer__brand {
+      text-align: center;
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-medium);
+    }
+    .slide-footer__page {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-semibold);
+    }
+
+visual_constraints:
+  height_px: 32
+  border_top: "1px solid #E5E8EB"
+  font_size_pt: 9
+  forbidden:
+    - "footer body overlap"
+    - "page number missing"
+    - "citation missing on evidence-based slide"
+
+safety_check:
+  must_include_korean:
+    - "광교바른내과"
+    - "출처"
+  forbidden_terms: []
+
+source_references:
+  - "광교바른내과 Brand Design System v1"
+  - "reference/copyright-protection.md"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

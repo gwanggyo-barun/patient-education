@@ -1,0 +1,109 @@
+block_id: water-allowed-up-to-2h
+version: v01
+display_name: 검사 2시간 전까지 물 허용 안내
+description: |
+  복부초음파·내시경 등 금식 중에도 검사 2시간 전까지
+  맑은 물(생수)을 소량 마실 수 있음을 명시하는 블록.
+applies_to:
+  - imaging/ultrasound/abdominal
+  - endoscopy/pre-procedure
+
+content:
+  ko: |
+    💧 물 — 검사 2시간 전까지 소량 가능
+
+    ✅ 가능 (검사 2시간 전까지)
+    - 생수·보리차·맑은 물 (한 모금~반 컵 정도)
+    - 처방받은 약 복용을 위한 한 모금 물
+    - 입 헹구는 물 (삼키지 않으면 시간 제한 없음)
+
+    ❌ 금지
+    - 우유·주스·이온 음료
+    - 미음·죽·맑은 국 (음식으로 분류)
+    - 커피·홍차 (위산 자극 + 일부 카페인 흡수)
+    - 사탕·껌·담배 (위 분비물 자극)
+
+    ⏰ 시간 기준
+    - 검사 8시간 전부터 음식 금지
+    - 검사 2시간 전부터 물도 금지 (마지막 한 모금)
+    - 예: 09:00 검사 → 07:00부터 물도 금지
+
+    💊 평소 약 복용
+    - 고혈압·심장 약·갑상선 약은 보통 검사 당일 아침 한 모금 물과 복용
+    - 당뇨 약·인슐린은 반드시 주치의와 상의
+    - 임의로 약 중단 X
+
+  html_template: |
+    <section class="water-rules">
+      <h2>💧 물 — 검사 2시간 전까지 가능</h2>
+      <div class="water-rules__cols">
+        <div class="water-rules__col water-rules__col--ok">
+          <h3>✅ OK</h3>
+          <ul>
+            <li>생수·보리차 (소량)</li>
+            <li>약 복용용 한 모금</li>
+            <li>입 헹구는 물 (안 삼킴)</li>
+          </ul>
+        </div>
+        <div class="water-rules__col water-rules__col--ng">
+          <h3>❌ NG</h3>
+          <ul>
+            <li>우유·주스·이온 음료</li>
+            <li>미음·죽·국 (음식)</li>
+            <li>커피·홍차·사탕·껌·담배</li>
+          </ul>
+        </div>
+      </div>
+      <p class="water-rules__time">
+        ⏰ 예: 09:00 검사 → <strong>07:00</strong>부터 물 금지
+      </p>
+    </section>
+  css: |
+    .water-rules__cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .water-rules__col--ok {
+      background: var(--gb-success-bg);
+      border-left: 4px solid var(--gb-success);
+      padding: 12px 16px;
+      border-radius: 8px;
+    }
+    .water-rules__col--ng {
+      background: var(--gb-danger-bg);
+      border-left: 4px solid var(--gb-danger);
+      padding: 12px 16px;
+      border-radius: 8px;
+    }
+    .water-rules__time {
+      margin-top: 10px;
+      font-size: var(--gb-fs-body-lg);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      text-align: center;
+    }
+
+visual_constraints:
+  layout_columns: 2
+  emphasis_time: true
+
+safety_check:
+  must_include_korean:
+    - "2시간"
+    - "물"
+    - "주치의"
+    - "약"
+  forbidden_terms:
+    - "검사 직전까지 음식 OK"
+    - "우유 한 모금 OK"
+    - "임의로 약 중단"
+
+source_references:
+  - "ASA Fasting Guideline 2023"
+  - "대한마취통증의학회 금식 권고 2024"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

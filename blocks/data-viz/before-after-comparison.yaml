@@ -1,0 +1,170 @@
+block_id: before-after-comparison
+version: v02
+display_name: Before-After 비교 시각화 템플릿
+description: |
+  치료 전·후 또는 시술 전·후의 수치·증상·이미지 비교를 보여주는
+  표준 블록. 슬릭한 split 패널 + 값 차이 강조.
+applies_to:
+  - patient-education/*
+  - paper-reviews/*
+
+content:
+  html_template: |
+    <section class="ba-compare">
+      <h2 class="ba-compare__title">{{ comparison_title }}</h2>
+      <div class="ba-compare__panels">
+        <div class="ba-compare__panel ba-compare__panel--before">
+          <span class="ba-compare__label">Before</span>
+          <div class="ba-compare__value">{{ before_value }}<span class="ba-compare__unit">{{ unit }}</span></div>
+          <p class="ba-compare__detail">{{ before_detail }}</p>
+        </div>
+        <div class="ba-compare__arrow">
+          <div class="ba-compare__delta">
+            <span class="ba-compare__delta-sign">{{ delta_sign }}</span>
+            <span class="ba-compare__delta-value">{{ delta_value }}</span>
+          </div>
+          <span class="ba-compare__period">{{ period_label }}</span>
+        </div>
+        <div class="ba-compare__panel ba-compare__panel--after">
+          <span class="ba-compare__label">After</span>
+          <div class="ba-compare__value">{{ after_value }}<span class="ba-compare__unit">{{ unit }}</span></div>
+          <p class="ba-compare__detail">{{ after_detail }}</p>
+        </div>
+      </div>
+      <p class="ba-compare__source">출처: {{ source_citation }}</p>
+    </section>
+  example_data_yaml: |
+    comparison_title: "12주 후 HbA1c 변화"
+    unit: "%"
+    before_value: 8.2
+    before_detail: "당화혈색소 (목표 ≤ 7.0)"
+    after_value: 6.4
+    after_detail: "치료 후 (세마글루타이드 1.0 mg)"
+    delta_sign: "−"
+    delta_value: "1.8%"
+    period_label: "12주"
+    source_citation: "SUSTAIN-2 Trial, NEJM 2024"
+  css: |
+    .ba-compare {
+      padding: 16px 20px;
+      background: var(--gb-canvas-warm);
+      border-radius: 12px;
+    }
+    .ba-compare__title {
+      font-size: var(--gb-fs-h3);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      margin: 0 0 12px 0;
+      text-align: center;
+    }
+    .ba-compare__panels {
+      display: grid;
+      grid-template-columns: 1fr 100px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .ba-compare__panel {
+      background: var(--gb-white);
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-align: center;
+    }
+    .ba-compare__panel--before {
+      border-top: 4px solid var(--gb-muted);
+    }
+    .ba-compare__panel--after {
+      border-top: 4px solid var(--gb-success);
+    }
+    .ba-compare__label {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: var(--gb-light-gray);
+      color: var(--gb-ink-soft);
+      font-size: var(--gb-fs-caption);
+      font-weight: var(--gb-fw-semibold);
+      letter-spacing: var(--gb-ls-tight);
+    }
+    .ba-compare__panel--after .ba-compare__label {
+      background: var(--gb-success-bg);
+      color: var(--gb-success);
+    }
+    .ba-compare__value {
+      font-size: 42px;
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-black);
+      letter-spacing: var(--gb-ls-mega);
+      line-height: 1.1;
+      margin: 8px 0 4px 0;
+    }
+    .ba-compare__panel--after .ba-compare__value {
+      color: var(--gb-success);
+    }
+    .ba-compare__unit {
+      font-size: 18px;
+      color: var(--gb-ink-soft);
+      font-weight: var(--gb-fw-bold);
+      margin-left: 4px;
+    }
+    .ba-compare__detail {
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-ink-soft);
+      margin: 0;
+    }
+    .ba-compare__arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .ba-compare__delta {
+      font-size: 28px;
+      color: var(--gb-success);
+      font-weight: var(--gb-fw-black);
+      letter-spacing: var(--gb-ls-tight);
+    }
+    .ba-compare__period {
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-muted);
+      margin-top: 4px;
+    }
+    .ba-compare__source {
+      margin-top: 10px;
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-muted);
+      text-align: right;
+    }
+
+visual_constraints:
+  layout_columns: 3
+  required_fields:
+    - before_value
+    - after_value
+    - delta_value
+    - unit
+    - source_citation
+  must_show_source: true
+  must_show_period: true
+  forbidden:
+    - "출처 누락"
+    - "단위 누락"
+    - "오해 소지 있는 cherry-picked 예시"
+
+safety_check:
+  must_include_korean:
+    - "출처"
+  forbidden_terms:
+    - "100% 효과"
+    - "모든 환자에서 동일"
+    - "부작용 없이"
+  required_disclaimers:
+    - "개인 차 있음"
+
+source_references:
+  - "BMJ Visual Abstracts Guide 2024"
+  - "Cleveland 'Visualizing Data' 1993"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

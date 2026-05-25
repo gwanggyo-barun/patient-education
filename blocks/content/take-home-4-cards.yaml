@@ -1,0 +1,112 @@
+block_id: take-home-4-cards
+version: v02
+display_name: Take-home 4 카드 (deck closing)
+description: |
+  12장 deck의 11번째 슬라이드(또는 closing 직전)에 들어가는
+  "오늘 기억할 4가지" 카드 그리드. 2x2 layout, 각 카드 80 글자 이내.
+applies_to:
+  - decks/*
+  - patient-education/*
+
+content:
+  html_template: |
+    <section class="take-home">
+      <h2 class="take-home__title">오늘 기억할 4가지</h2>
+      <div class="take-home__grid">
+        {% for card in cards %}
+        <div class="take-home__card">
+          <div class="take-home__num">{{ loop.index }}</div>
+          <div class="take-home__icon">{{ card.icon }}</div>
+          <h3 class="take-home__headline">{{ card.headline }}</h3>
+          <p class="take-home__body">{{ card.body }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  example_cards_yaml: |
+    cards:
+      - icon: "💊"
+        headline: "약은 정해진 시간에"
+        body: "임의 중단·용량 조절 금지. 부작용은 의료진과 상의."
+      - icon: "🥗"
+        headline: "식단·운동 일관성"
+        body: "주 5회 30분 유산소 + 저염식. 작은 변화부터 꾸준히."
+      - icon: "📅"
+        headline: "정기 검진"
+        body: "3개월마다 외래 방문, 6개월마다 혈액 검사."
+      - icon: "🆘"
+        headline: "응급 증상 시 119"
+        body: "가슴 통증·뇌졸중 증상·심한 출혈은 즉시 응급실."
+  css: |
+    .take-home {
+      padding: 32px 40px;
+      background: var(--gb-canvas-warm);
+    }
+    .take-home__title {
+      font-size: var(--gb-fs-h2);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      letter-spacing: var(--gb-ls-tight);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .take-home__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .take-home__card {
+      background: var(--gb-white);
+      border-left: 4px solid var(--gb-steel-blue);
+      border-radius: 8px;
+      padding: 20px 24px;
+      position: relative;
+    }
+    .take-home__num {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 28px;
+      font-weight: var(--gb-fw-black);
+      color: var(--gb-steel-blue-light);
+    }
+    .take-home__icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .take-home__headline {
+      font-size: var(--gb-fs-h3);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      margin: 0 0 6px 0;
+    }
+    .take-home__body {
+      font-size: var(--gb-fs-body);
+      color: var(--gb-ink-soft);
+      line-height: var(--gb-lh-normal);
+      margin: 0;
+    }
+
+visual_constraints:
+  card_count: 4
+  grid_columns: 2
+  grid_rows: 2
+  card_min_height_px: 140
+  card_body_max_chars: 80
+  card_headline_max_chars: 16
+
+safety_check:
+  must_include_korean:
+    - "오늘 기억할"
+  forbidden_terms:
+    - "완치"
+    - "100%"
+    - "자가 진단"
+
+source_references:
+  - "광교바른내과 Deck Template v1"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

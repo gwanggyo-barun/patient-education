@@ -1,0 +1,83 @@
+block_id: ownership-mark-print
+version: v02
+display_name: 저작권 표시 (인쇄용 footer center)
+description: |
+  A4 handout·lab-report·deck PDF의 footer 중앙에 표시되는
+  저작권·재배포 금지 안내. 8pt opacity 0.30.
+applies_to:
+  - handouts/*
+  - lab-reports/*
+  - decks/*
+
+content:
+  html_template: |
+    <div class="ownership-mark">
+      <span class="ownership-mark__text">
+        © {{ year }} 광교바른내과 의원 · 무단 수정/재배포 금지 ·
+        본 자료는 {{ author_doctor }} 작성, AI 보조 ({{ ai_model }})
+      </span>
+      <span class="ownership-mark__en">
+        © {{ year }} Gwanggyo Bareun Internal Medicine ·
+        No unauthorized redistribution
+      </span>
+    </div>
+  css: |
+    .ownership-mark {
+      position: absolute;
+      bottom: 6mm;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      opacity: 0.30;
+      font-size: 8pt;
+      line-height: var(--gb-lh-snug);
+      color: var(--gb-ink-soft);
+      letter-spacing: var(--gb-ls-snug);
+      pointer-events: none;
+      user-select: none;
+    }
+    .ownership-mark__text {
+      display: block;
+    }
+    .ownership-mark__en {
+      display: block;
+      font-size: 7pt;
+      margin-top: 1px;
+    }
+    @media print {
+      .ownership-mark {
+        position: fixed;
+        bottom: 6mm;
+      }
+    }
+
+visual_constraints:
+  font_size_pt: 8
+  opacity: 0.30
+  position: footer-center
+  bottom_margin_mm: 6
+  forbidden:
+    - "ownership mark removed"
+    - "opacity > 0.40 (becomes obtrusive)"
+    - "footer body overlap"
+  must_include_year: true
+  year_format: "YYYY"
+
+safety_check:
+  must_include_korean:
+    - "광교바른내과"
+    - "무단 수정"
+    - "재배포 금지"
+    - "©"
+  forbidden_terms: []
+  required_disclaimers:
+    - "© 광교바른내과"
+
+source_references:
+  - "reference/copyright-protection.md"
+  - "광교바른내과 저작권 정책 2026"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

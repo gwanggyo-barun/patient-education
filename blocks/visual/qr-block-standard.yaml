@@ -1,0 +1,101 @@
+block_id: qr-block-standard
+version: v02
+display_name: QR 블록 표준 (deck closing slide)
+description: |
+  12장 deck의 closing slide (마지막 페이지)에 사용하는
+  표준 QR 블록 144×144px. 자료 URL + 클리닉 정보 + 면책.
+applies_to:
+  - decks/*
+  - patient-education/*
+  - injections/glp-1
+
+content:
+  html_template: |
+    <section class="qr-block">
+      <div class="qr-block__visual">
+        <div class="qr-block__code"
+             data-url="{{ deck_canonical_url }}"
+             data-size="144"></div>
+        <div class="qr-block__caption">QR로 모바일에서 다시 보기</div>
+      </div>
+      <div class="qr-block__info">
+        <h3 class="qr-block__clinic">광교바른내과 의원</h3>
+        <p class="qr-block__address">경기도 수원시 영통구 광교중앙로 145 광교아브뉴프랑 3층</p>
+        <p class="qr-block__phone">📞 031-217-5878</p>
+        <p class="qr-block__hours">월-금 09:00-18:00 · 토 09:00-13:00</p>
+        <p class="qr-block__disclaimer">
+          본 자료는 일반 의학 정보로, 개별 진료를 대체할 수 없습니다.
+          증상이 있다면 반드시 의료기관을 방문해 주세요.
+        </p>
+      </div>
+    </section>
+  css: |
+    .qr-block {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 32px;
+      align-items: center;
+      padding: 32px;
+      background: var(--gb-canvas-warm);
+      border-radius: 16px;
+    }
+    .qr-block__code {
+      width: 144px;
+      height: 144px;
+      background: #FFFFFF;
+      padding: 8px;
+      border: 2px solid var(--gb-navy);
+      border-radius: 8px;
+    }
+    .qr-block__caption {
+      margin-top: 12px;
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-ink-soft);
+      text-align: center;
+    }
+    .qr-block__clinic {
+      font-size: var(--gb-fs-h3);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      margin: 0 0 8px 0;
+    }
+    .qr-block__phone {
+      font-size: var(--gb-fs-body-lg);
+      font-weight: var(--gb-fw-bold);
+      color: var(--gb-navy);
+    }
+    .qr-block__disclaimer {
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-muted);
+      margin-top: 16px;
+      line-height: var(--gb-lh-normal);
+    }
+
+visual_constraints:
+  qr_size_px: 144
+  qr_padding_px: 8
+  qr_border: "2px solid #003366"
+  qr_color: navy-003366
+  qr_background: "#FFFFFF"
+  min_quiet_zone_px: 4
+  error_correction_level: M
+  forbidden_qr_color_on_dark_bg: true
+
+safety_check:
+  must_include_korean:
+    - "광교바른내과"
+    - "031-217-5878"
+    - "의학 정보"
+    - "진료를 대체할 수 없"
+  forbidden_terms:
+    - "치료 확정"
+    - "100% 효과"
+
+source_references:
+  - "광교바른내과 Brand Design System v1"
+  - "reference/copyright-protection.md"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

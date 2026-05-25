@@ -1,0 +1,131 @@
+block_id: lifestyle-grid-6
+version: v02
+display_name: 생활 관리 6가지 그리드
+description: |
+  만성질환·생활습관 교육 자료에 사용하는 "일상 관리 6가지"
+  타일 그리드. 식사·운동·수면·스트레스·금연·금주 6분야 표준.
+applies_to:
+  - patient-education/chronic-disease
+  - patient-education/lifestyle
+  - nutrition/*
+
+content:
+  html_template: |
+    <section class="lifestyle">
+      <h2 class="lifestyle__title">🌿 일상에서 챙길 6가지</h2>
+      <div class="lifestyle__grid">
+        {% for item in items %}
+        <div class="lifestyle__tile">
+          <div class="lifestyle__icon">{{ item.icon }}</div>
+          <h3 class="lifestyle__head">{{ item.head }}</h3>
+          <ul class="lifestyle__list">
+            {% for line in item.bullets %}
+            <li>{{ line }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  default_items_yaml: |
+    items:
+      - icon: "🥗"
+        head: "균형 잡힌 식사"
+        bullets:
+          - 채소·통곡물 + 단백질 (생선·콩·살코기)
+          - 가공식품·당류 음료 줄이기
+          - 하루 소금 5 g (티스푼 1) 이하
+      - icon: "🏃"
+        head: "주 5회 운동"
+        bullets:
+          - 빠른 걷기 30분 또는 자전거 20분
+          - 주 2회 근력 운동 (자기 체중)
+          - 무리하지 말고 점진적으로
+      - icon: "😴"
+        head: "수면 7-8시간"
+        bullets:
+          - 매일 같은 시간 취침·기상
+          - 자기 1시간 전 휴대전화·블루라이트 회피
+          - 침실은 조용·어둡고 18-22°C
+      - icon: "🧘"
+        head: "스트레스 관리"
+        bullets:
+          - 하루 10분 호흡 명상 또는 산책
+          - 일과 휴식 균형 (보호 시간 확보)
+          - 도움 필요 시 전문 상담 권유
+      - icon: "🚭"
+        head: "금연"
+        bullets:
+          - 모든 종류의 흡연·전자담배 중단
+          - 의원 금연 클리닉 약물 처방 가능
+          - 가족과 함께 금연 환경 조성
+      - icon: "🍷"
+        head: "절주"
+        bullets:
+          - 남성 주 2회·각 2잔 이하 권고
+          - 여성 주 1회·각 1잔 이하 권고
+          - 간 질환·임신·당뇨 시 금주
+  css: |
+    .lifestyle {
+      padding: 24px 32px;
+      background: var(--gb-white);
+    }
+    .lifestyle__title {
+      font-size: var(--gb-fs-h2);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      margin-bottom: 16px;
+    }
+    .lifestyle__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .lifestyle__tile {
+      background: var(--gb-canvas-warm);
+      border-left: 3px solid var(--gb-steel-blue);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .lifestyle__icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+    .lifestyle__head {
+      font-size: var(--gb-fs-body-lg);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      margin: 0 0 6px 0;
+    }
+    .lifestyle__list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-ink-soft);
+      line-height: var(--gb-lh-snug);
+    }
+
+visual_constraints:
+  tile_count: 6
+  grid_columns: 3
+  grid_rows: 2
+
+safety_check:
+  must_include_korean:
+    - "운동"
+    - "식사"
+    - "수면"
+  forbidden_terms:
+    - "단식만이 답"
+    - "극단적 다이어트"
+    - "운동 절대 금지"
+
+source_references:
+  - "KDA 당뇨병 진료지침 2024"
+  - "대한고혈압학회 진료지침 2024"
+  - "WHO Healthy Lifestyle 2023"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

@@ -1,0 +1,138 @@
+block_id: medication-table-template
+version: v02
+display_name: 약물 비교 표 템플릿
+description: |
+  같은 적응증의 여러 약물을 한눈에 비교하는 표 블록.
+  성분명·상품명·용량·복용 횟수·주요 부작용·신기능 보정·임신.
+applies_to:
+  - patient-education/medication-info
+
+content:
+  html_template: |
+    <section class="med-table">
+      <h2 class="med-table__title">{{ table_title }}</h2>
+      <p class="med-table__caption">{{ table_caption }}</p>
+      <table class="med-table__grid">
+        <thead>
+          <tr>
+            <th>성분명</th>
+            <th>상품명</th>
+            <th>표준 용량</th>
+            <th>복용 횟수</th>
+            <th>주요 부작용</th>
+            <th>주의·금기</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for drug in drugs %}
+          <tr>
+            <td><strong>{{ drug.generic }}</strong></td>
+            <td>{{ drug.brand }}</td>
+            <td>{{ drug.dose }}</td>
+            <td>{{ drug.frequency }}</td>
+            <td>{{ drug.adverse }}</td>
+            <td>{{ drug.cautions }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="med-table__footnote">
+        * 본 표는 일반 정보로, 개별 처방은 환자 상태에 따라 의사와 상의 후 결정합니다.
+      </p>
+    </section>
+  example_drugs_yaml: |
+    drugs:
+      - generic: "메트포르민 (Metformin)"
+        brand: "글루코파지·다이아벡스"
+        dose: "500–2000 mg/일"
+        frequency: "분복 1-2회 (식사 직후)"
+        adverse: "위장 장애·설사·금속 맛"
+        cautions: "신기능 저하(eGFR <30) 금기·조영제 24h 전후 중단"
+      - generic: "엠파글리플로진 (Empagliflozin)"
+        brand: "자디앙"
+        dose: "10–25 mg/일"
+        frequency: "1일 1회"
+        adverse: "비뇨생식기 감염·탈수·DKA"
+        cautions: "eGFR <20 금기·심부전·CKD 적응 확대"
+      - generic: "리나글립틴 (Linagliptin)"
+        brand: "트라젠타"
+        dose: "5 mg/일"
+        frequency: "1일 1회"
+        adverse: "비인두염·관절통"
+        cautions: "신기능 보정 불필요"
+  css: |
+    .med-table {
+      padding: 16px 0;
+    }
+    .med-table__title {
+      font-size: var(--gb-fs-h2);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      margin: 0 0 4px 0;
+    }
+    .med-table__caption {
+      font-size: var(--gb-fs-body);
+      color: var(--gb-ink-soft);
+      margin: 0 0 12px 0;
+    }
+    .med-table__grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--gb-fs-body);
+    }
+    .med-table__grid th {
+      background: var(--gb-navy);
+      color: var(--gb-white);
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: var(--gb-fw-semibold);
+      letter-spacing: var(--gb-ls-tight);
+    }
+    .med-table__grid td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--gb-border);
+      vertical-align: top;
+      color: var(--gb-ink);
+    }
+    .med-table__grid tbody tr:nth-child(even) td {
+      background: var(--gb-canvas-warm);
+    }
+    .med-table__footnote {
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-muted);
+      margin-top: 8px;
+    }
+
+visual_constraints:
+  required_columns:
+    - 성분명
+    - 상품명
+    - 용량
+    - 복용 횟수
+    - 부작용
+    - 주의·금기
+  header_background: "#003366"
+  header_color: "#FFFFFF"
+  zebra_stripe: "#FAF7F2"
+
+safety_check:
+  must_include_korean:
+    - "성분명"
+    - "용량"
+    - "주의"
+    - "의사와 상의"
+  forbidden_terms:
+    - "100% 안전"
+    - "부작용 없음"
+    - "임의 복용 OK"
+  required_disclaimers:
+    - "개별 처방은 의사와 상의"
+
+source_references:
+  - "KIMS Korea 2024"
+  - "Lexicomp 2024"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

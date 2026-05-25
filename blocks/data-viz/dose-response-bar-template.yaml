@@ -1,0 +1,149 @@
+block_id: dose-response-bar-template
+version: v02
+display_name: 용량-반응 막대 그래프 템플릿
+description: |
+  논문 리뷰 slide·환자 교육에 사용하는 dose-response bar chart.
+  각 막대 길이는 numeric value에 비례 검증 + 95% CI 에러바 옵션.
+applies_to:
+  - paper-reviews/*
+  - patient-education/medication-info
+
+content:
+  html_template: |
+    <section class="dose-bar">
+      <h3 class="dose-bar__title">{{ chart_title }}</h3>
+      <p class="dose-bar__caption">{{ chart_caption }}</p>
+      <div class="dose-bar__chart" role="img"
+           aria-label="{{ aria_summary }}">
+        {% for bar in bars %}
+        <div class="dose-bar__row">
+          <span class="dose-bar__label">{{ bar.label }}</span>
+          <div class="dose-bar__track">
+            <div class="dose-bar__fill"
+                 style="width: {{ (bar.value / max_value * 100) | round(1) }}%;
+                        background: {{ bar.color }};">
+              <span class="dose-bar__value">{{ bar.value }}{{ unit }}</span>
+            </div>
+            {% if bar.ci_low and bar.ci_high %}
+            <div class="dose-bar__ci"
+                 style="left: {{ (bar.ci_low / max_value * 100) | round(1) }}%;
+                        right: {{ 100 - (bar.ci_high / max_value * 100) | round(1) }}%;">
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <p class="dose-bar__source">출처: {{ source_citation }}</p>
+    </section>
+  example_data_yaml: |
+    chart_title: "HbA1c 감소 — 세마글루타이드 용량별"
+    unit: "%"
+    max_value: 2.0
+    bars:
+      - label: "Placebo"
+        value: 0.2
+        ci_low: 0.0
+        ci_high: 0.4
+        color: "#8B95A1"
+      - label: "Sema 0.5 mg"
+        value: 1.2
+        ci_low: 1.0
+        ci_high: 1.4
+        color: "#5B9BD5"
+      - label: "Sema 1.0 mg"
+        value: 1.6
+        ci_low: 1.4
+        ci_high: 1.8
+        color: "#003366"
+      - label: "Sema 2.0 mg"
+        value: 1.9
+        ci_low: 1.7
+        ci_high: 2.1
+        color: "#001F44"
+    source_citation: "SUSTAIN-FORTE Trial, NEJM 2024"
+  css: |
+    .dose-bar {
+      padding: 16px 20px;
+    }
+    .dose-bar__title {
+      font-size: var(--gb-fs-h3);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      margin: 0 0 4px 0;
+    }
+    .dose-bar__chart {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .dose-bar__row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+    .dose-bar__label {
+      font-size: var(--gb-fs-body);
+      color: var(--gb-ink-soft);
+      font-weight: var(--gb-fw-medium);
+    }
+    .dose-bar__track {
+      position: relative;
+      height: 24px;
+      background: var(--gb-light-gray);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .dose-bar__fill {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      color: var(--gb-white);
+      font-size: var(--gb-fs-caption);
+      font-weight: var(--gb-fw-bold);
+      transition: width 600ms ease-out;
+    }
+    .dose-bar__ci {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-left: 2px solid var(--gb-ink);
+      border-right: 2px solid var(--gb-ink);
+      pointer-events: none;
+    }
+    .dose-bar__source {
+      margin-top: 8px;
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-muted);
+    }
+
+visual_constraints:
+  required_axes_check: "bar width must scale proportionally to value"
+  width_tolerance: "±0.5%"
+  must_include_source: true
+  must_include_ci_if_published: true
+  forbidden:
+    - "y축 0이 아닌 곳에서 시작 (truncated axis)"
+    - "값 표기 누락"
+    - "출처 누락"
+
+safety_check:
+  must_include_korean:
+    - "출처"
+  forbidden_terms:
+    - "확정 효과"
+    - "100% 효과 보장"
+    - "부작용 없이"
+
+source_references:
+  - "BMJ Visual Abstracts Guide 2024"
+  - "Spiegelhalter 'The Art of Statistics' 2019"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

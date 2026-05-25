@@ -1,0 +1,150 @@
+block_id: forest-plot-template
+version: v02
+display_name: Forest Plot 템플릿 (메타분석)
+description: |
+  메타분석 forest plot 템플릿. 각 study의 effect size + 95% CI
+  + study weight + diamond summary + heterogeneity I² 포함.
+applies_to:
+  - paper-reviews/*
+  - paper-reviews/thematic
+
+content:
+  svg_template: |
+    <svg viewBox="0 0 900 {{ 60 + study_count * 40 + 80 }}" class="forest" role="img">
+      <!-- 헤더 -->
+      <text x="20"  y="24" font-size="13" font-weight="700" fill="#003366">Study</text>
+      <text x="280" y="24" font-size="13" font-weight="700" fill="#003366">{{ effect_metric }} (95% CI)</text>
+      <text x="540" y="24" font-size="13" font-weight="700" fill="#003366">Weight</text>
+      <text x="680" y="24" font-size="13" font-weight="700" fill="#003366">RR (95% CI)</text>
+
+      <!-- 중앙 선 (null effect) -->
+      <line x1="380" y1="40" x2="380" y2="{{ 40 + study_count * 40 + 30 }}"
+            stroke="#8B95A1" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- X축 -->
+      <line x1="280" y1="{{ 40 + study_count * 40 + 20 }}"
+            x2="500" y2="{{ 40 + study_count * 40 + 20 }}"
+            stroke="#1C2025" stroke-width="1.5"/>
+
+      <!-- 각 study -->
+      {% for study in studies %}
+        <!-- Study label -->
+        <text x="20" y="{{ 50 + loop.index0 * 40 }}" font-size="12" fill="#1C2025">
+          {{ study.author }} {{ study.year }}
+        </text>
+
+        <!-- CI line -->
+        <line x1="{{ ci_x(study.ci_low) }}" y1="{{ 46 + loop.index0 * 40 }}"
+              x2="{{ ci_x(study.ci_high) }}" y2="{{ 46 + loop.index0 * 40 }}"
+              stroke="#003366" stroke-width="1.5"/>
+
+        <!-- Effect square (size proportional to weight) -->
+        <rect x="{{ ci_x(study.effect) - study.weight_px / 2 }}"
+              y="{{ 46 + loop.index0 * 40 - study.weight_px / 2 }}"
+              width="{{ study.weight_px }}" height="{{ study.weight_px }}"
+              fill="#003366"/>
+
+        <!-- Weight text -->
+        <text x="540" y="{{ 50 + loop.index0 * 40 }}" font-size="11" fill="#4E5968">
+          {{ study.weight }}%
+        </text>
+
+        <!-- RR + CI text -->
+        <text x="680" y="{{ 50 + loop.index0 * 40 }}" font-size="11" fill="#1C2025">
+          {{ study.effect }} ({{ study.ci_low }}-{{ study.ci_high }})
+        </text>
+      {% endfor %}
+
+      <!-- Diamond summary -->
+      {% set y_summary = 40 + study_count * 40 + 30 %}
+      <polygon points="{{ ci_x(summary.ci_low) }},{{ y_summary + 5 }}
+                       {{ ci_x(summary.effect) }},{{ y_summary }}
+                       {{ ci_x(summary.ci_high) }},{{ y_summary + 5 }}
+                       {{ ci_x(summary.effect) }},{{ y_summary + 10 }}"
+               fill="#001F44" stroke="#001F44"/>
+      <text x="20" y="{{ y_summary + 8 }}" font-size="13" font-weight="700" fill="#001F44">
+        Pooled (Random)
+      </text>
+      <text x="680" y="{{ y_summary + 8 }}" font-size="12" font-weight="700" fill="#001F44">
+        {{ summary.effect }} ({{ summary.ci_low }}-{{ summary.ci_high }})
+      </text>
+
+      <!-- Heterogeneity -->
+      <text x="20" y="{{ y_summary + 35 }}" font-size="11" fill="#4E5968">
+        Heterogeneity: I² = {{ heterogeneity.i_squared }}%,
+        τ² = {{ heterogeneity.tau_squared }},
+        p = {{ heterogeneity.p_value }}
+      </text>
+    </svg>
+  example_data_yaml: |
+    effect_metric: "Risk Ratio"
+    study_count: 5
+    studies:
+      - author: "Marso SP"
+        year: 2024
+        effect: 0.74
+        ci_low: 0.58
+        ci_high: 0.94
+        weight: 22.5
+        weight_px: 14
+      - author: "Gerstein HC"
+        year: 2024
+        effect: 0.88
+        ci_low: 0.79
+        ci_high: 0.99
+        weight: 28.1
+        weight_px: 16
+      - author: "Hernandez AF"
+        year: 2023
+        effect: 0.87
+        ci_low: 0.78
+        ci_high: 0.97
+        weight: 25.4
+        weight_px: 15
+    summary:
+      effect: 0.84
+      ci_low: 0.79
+      ci_high: 0.89
+    heterogeneity:
+      i_squared: 28
+      tau_squared: 0.01
+      p_value: 0.18
+  css: |
+    .forest {
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+    }
+
+visual_constraints:
+  must_include_null_line: true
+  null_line_x_position: "centered at effect=1 for RR, centered at 0 for MD"
+  effect_square_size: "proportional to study weight"
+  must_include_diamond: true
+  diamond_must_be_separate_color: true
+  must_include_heterogeneity: true
+  required_heterogeneity_metrics:
+    - "I²"
+    - "τ²"
+    - "p-value"
+  forbidden:
+    - "weight 없이 균일한 정사각형"
+    - "diamond 누락"
+    - "I² 표기 누락"
+    - "null line 누락"
+
+safety_check:
+  must_include_korean:
+    - "출처"
+  forbidden_terms:
+    - "확정 결과"
+    - "메타분석 무관 단정"
+
+source_references:
+  - "PRISMA 2020 — Reporting Items for Systematic Reviews"
+  - "Cochrane Handbook for Systematic Reviews 6.4 (2024)"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

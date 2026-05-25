@@ -1,0 +1,145 @@
+block_id: kaplan-meier-template
+version: v02
+display_name: Kaplan-Meier 생존 곡선 템플릿
+description: |
+  논문 리뷰 slide에 사용하는 Kaplan-Meier survival curve 템플릿.
+  계단 함수 + censoring tick + 95% CI 음영 + at-risk 표.
+applies_to:
+  - paper-reviews/*
+
+content:
+  svg_template: |
+    <svg viewBox="0 0 800 400" class="km-curve" role="img"
+         aria-label="{{ aria_summary }}">
+      <!-- 축 -->
+      <line x1="80" y1="340" x2="760" y2="340" stroke="#1C2025" stroke-width="1.5"/>
+      <line x1="80" y1="40"  x2="80"  y2="340" stroke="#1C2025" stroke-width="1.5"/>
+
+      <!-- Y축 라벨 (생존율 %) -->
+      <text x="40" y="46"  font-size="11" fill="#4E5968">100</text>
+      <text x="40" y="116" font-size="11" fill="#4E5968">75</text>
+      <text x="40" y="190" font-size="11" fill="#4E5968">50</text>
+      <text x="40" y="264" font-size="11" fill="#4E5968">25</text>
+      <text x="40" y="344" font-size="11" fill="#4E5968">0</text>
+
+      <!-- X축 라벨 (시간, 개월) -->
+      <text x="80"  y="360" font-size="11" fill="#4E5968" text-anchor="middle">0</text>
+      <text x="240" y="360" font-size="11" fill="#4E5968" text-anchor="middle">12</text>
+      <text x="400" y="360" font-size="11" fill="#4E5968" text-anchor="middle">24</text>
+      <text x="560" y="360" font-size="11" fill="#4E5968" text-anchor="middle">36</text>
+      <text x="720" y="360" font-size="11" fill="#4E5968" text-anchor="middle">48</text>
+
+      <!-- 곡선: Treatment (Navy) -->
+      <path d="{{ treatment_step_path }}"
+            fill="none" stroke="#003366" stroke-width="2.5"/>
+      <!-- CI 음영: Treatment -->
+      <path d="{{ treatment_ci_path }}" fill="#003366" fill-opacity="0.10"/>
+
+      <!-- 곡선: Control (Steel Blue) -->
+      <path d="{{ control_step_path }}"
+            fill="none" stroke="#5B9BD5" stroke-width="2.5"
+            stroke-dasharray="6,4"/>
+
+      <!-- Censoring ticks -->
+      {{ censoring_ticks_svg }}
+
+      <!-- Legend -->
+      <rect x="560" y="60" width="190" height="40" fill="#FFFFFF" stroke="#E5E8EB"/>
+      <line x1="568" y1="74" x2="588" y2="74" stroke="#003366" stroke-width="2.5"/>
+      <text x="594" y="78" font-size="11" fill="#1C2025">{{ treatment_label }}</text>
+      <line x1="568" y1="92" x2="588" y2="92" stroke="#5B9BD5" stroke-width="2.5" stroke-dasharray="6,4"/>
+      <text x="594" y="96" font-size="11" fill="#1C2025">{{ control_label }}</text>
+
+      <!-- HR + p-value -->
+      <text x="100" y="80" font-size="13" fill="#003366" font-weight="700">
+        HR {{ hazard_ratio }} ({{ hr_ci_low }}–{{ hr_ci_high }})
+      </text>
+      <text x="100" y="100" font-size="11" fill="#4E5968">
+        Log-rank p = {{ p_value }}
+      </text>
+    </svg>
+  at_risk_table_template: |
+    <table class="km-curve__at-risk">
+      <caption>Number at risk</caption>
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>0</th>
+          <th>12</th>
+          <th>24</th>
+          <th>36</th>
+          <th>48</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ treatment_label }}</td>
+          {% for n in treatment_at_risk %}<td>{{ n }}</td>{% endfor %}
+        </tr>
+        <tr>
+          <td>{{ control_label }}</td>
+          {% for n in control_at_risk %}<td>{{ n }}</td>{% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  css: |
+    .km-curve {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+    }
+    .km-curve__at-risk {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--gb-fs-caption);
+      margin-top: 8px;
+    }
+    .km-curve__at-risk caption {
+      text-align: left;
+      color: var(--gb-ink-soft);
+      font-weight: var(--gb-fw-semibold);
+      margin-bottom: 4px;
+    }
+    .km-curve__at-risk th,
+    .km-curve__at-risk td {
+      padding: 4px 8px;
+      border-bottom: 1px solid var(--gb-border);
+      text-align: center;
+    }
+    .km-curve__at-risk th:first-child,
+    .km-curve__at-risk td:first-child {
+      text-align: left;
+      font-weight: var(--gb-fw-semibold);
+    }
+
+visual_constraints:
+  must_be_step_function: true
+  must_include_censoring_ticks: true
+  must_include_at_risk_table: true
+  must_include_hr_with_ci: true
+  must_include_p_value: true
+  must_include_log_rank_label: true
+  forbidden:
+    - "smooth curve (KM은 step function)"
+    - "at-risk 표 누락"
+    - "HR 없이 곡선만"
+    - "축 라벨 누락"
+  y_axis_range: "0-100% or 0.0-1.0"
+  x_axis_unit_required: true
+
+safety_check:
+  must_include_korean:
+    - "출처"
+  forbidden_terms:
+    - "확정 결과"
+    - "효과 보장"
+
+source_references:
+  - "Bland & Altman BMJ 1998 — Survival probabilities"
+  - "Pocock SJ et al. Lancet 2004 — KM curves reporting"
+  - "STROBE 2023 — reporting guideline"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

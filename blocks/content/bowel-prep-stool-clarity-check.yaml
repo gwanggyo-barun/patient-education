@@ -1,0 +1,124 @@
+block_id: bowel-prep-stool-clarity-check
+version: v01
+display_name: 장정결 변 색·투명도 자가 확인표
+description: |
+  환자가 장정결 진행 중 변 상태를 보고 검사 가능 여부를
+  스스로 확인할 수 있도록 하는 5단계 색·투명도 비교표.
+applies_to:
+  - endoscopy/pre-procedure
+
+content:
+  ko: |
+    👁️ 변 색·투명도 자가 확인 — 검사 진행 가능 여부
+
+    1단계 · 갈색 고형 변
+    - 정상 변 색·고형. 장정결 부족.
+    - 조치: 장정결제 추가 + 수분 섭취 + 의료진 연락
+
+    2단계 · 갈색 묽은 변
+    - 진행 중이나 부족.
+    - 조치: 1-2시간 더 기다리며 수분 섭취
+
+    3단계 · 황갈색 액체 + 작은 조각
+    - 거의 다 비워졌으나 잔여물 존재.
+    - 조치: 30-60분 더 기다리거나 추가 복용
+
+    4단계 · 노란 액체 (orange juice 색)
+    - 검사 가능 수준. 잔여 음식물 거의 없음.
+    - 조치: 검사 진행 가능
+
+    5단계 · 맑은 노란·옅은 액체 (lemonade 색)
+    - 이상적인 상태. 시야 우수.
+    - 조치: 검사 진행 가능
+
+    💡 한 가지라도 의심되면 의료진에게 사진을 보내거나 전화 문의
+    📞 광교바른내과 031-217-5878
+
+  html_template: |
+    <section class="stool-check">
+      <h2>👁️ 변 자가 확인 — 검사 가능 여부</h2>
+      <div class="stool-check__scale">
+        <div class="stool-check__step stool-check__step--1" data-stage="1">
+          <div class="stool-check__swatch" style="background:#8B5A3C"></div>
+          <span class="stool-check__label">갈색 고형</span>
+          <span class="stool-check__verdict">⛔ 부족</span>
+        </div>
+        <div class="stool-check__step stool-check__step--2" data-stage="2">
+          <div class="stool-check__swatch" style="background:#B8866B"></div>
+          <span class="stool-check__label">갈색 묽은</span>
+          <span class="stool-check__verdict">⚠️ 진행</span>
+        </div>
+        <div class="stool-check__step stool-check__step--3" data-stage="3">
+          <div class="stool-check__swatch" style="background:#D8A55B"></div>
+          <span class="stool-check__label">황갈색 액체</span>
+          <span class="stool-check__verdict">⚠️ 거의</span>
+        </div>
+        <div class="stool-check__step stool-check__step--4" data-stage="4">
+          <div class="stool-check__swatch" style="background:#F4C150"></div>
+          <span class="stool-check__label">노란 액체</span>
+          <span class="stool-check__verdict">✅ 가능</span>
+        </div>
+        <div class="stool-check__step stool-check__step--5" data-stage="5">
+          <div class="stool-check__swatch" style="background:#FFE680"></div>
+          <span class="stool-check__label">맑은 노란</span>
+          <span class="stool-check__verdict">✅ 최상</span>
+        </div>
+      </div>
+    </section>
+  css: |
+    .stool-check__scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+    .stool-check__step {
+      border: 1px solid var(--gb-border);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+    }
+    .stool-check__swatch {
+      width: 100%;
+      height: 40px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.08);
+      margin-bottom: 6px;
+    }
+    .stool-check__label {
+      display: block;
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-ink-soft);
+      font-weight: var(--gb-fw-medium);
+    }
+    .stool-check__verdict {
+      display: block;
+      font-size: var(--gb-fs-body);
+      font-weight: var(--gb-fw-bold);
+      margin-top: 4px;
+    }
+
+visual_constraints:
+  stage_count: 5
+  layout_columns: 5
+  must_include_swatches: true
+  swatch_aspect: "wide"
+
+safety_check:
+  must_include_korean:
+    - "노란"
+    - "맑은"
+    - "검사 가능"
+    - "031-217-5878"
+  forbidden_terms:
+    - "갈색 변 OK"
+    - "고형 변 OK"
+    - "임의 판단"
+
+source_references:
+  - "Boston Bowel Preparation Scale (BBPS) 2024"
+  - "ASGE Bowel Prep Guideline 2023"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25

@@ -1,0 +1,98 @@
+block_id: clinic-logo-header
+version: v02
+display_name: 클리닉 로고 헤더 (deck/handout)
+description: |
+  좌상단에 광교바른내과 로고 + 우측 chapter 라벨이 들어가는
+  표준 헤더 블록. deck 16x9 + A4 handout 모두 호환.
+applies_to:
+  - decks/*
+  - handouts/*
+
+content:
+  html_template: |
+    <header class="clinic-header">
+      <div class="clinic-header__left">
+        <img src="{{ logo_path }}"
+             alt="광교바른내과"
+             class="clinic-header__logo">
+        <div class="clinic-header__title">
+          <span class="clinic-header__name">광교바른내과 의원</span>
+          <span class="clinic-header__tagline">환자 중심 일차 진료</span>
+        </div>
+      </div>
+      <div class="clinic-header__right">
+        <span class="clinic-header__chapter">{{ chapter_label }}</span>
+        <span class="clinic-header__doctor">{{ author_doctor }} · {{ specialty }}</span>
+      </div>
+    </header>
+  css: |
+    .clinic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      border-bottom: 2px solid var(--gb-navy);
+      background: var(--gb-white);
+    }
+    .clinic-header__left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .clinic-header__logo {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+    }
+    .clinic-header__name {
+      display: block;
+      font-size: var(--gb-fs-body-lg);
+      color: var(--gb-navy);
+      font-weight: var(--gb-fw-bold);
+      letter-spacing: var(--gb-ls-tight);
+    }
+    .clinic-header__tagline {
+      display: block;
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-ink-soft);
+    }
+    .clinic-header__right {
+      text-align: right;
+    }
+    .clinic-header__chapter {
+      display: block;
+      font-size: var(--gb-fs-body);
+      color: var(--gb-steel-blue);
+      font-weight: var(--gb-fw-semibold);
+    }
+    .clinic-header__doctor {
+      display: block;
+      font-size: var(--gb-fs-caption);
+      color: var(--gb-muted);
+    }
+
+visual_constraints:
+  logo_height_px: 36
+  logo_aspect_ratio: preserved
+  logo_min_padding_px: 8
+  border_bottom: "2px solid #003366"
+  forbidden:
+    - "logo distortion"
+    - "logo recolor"
+    - "logo overlap with body content"
+
+safety_check:
+  must_include_korean:
+    - "광교바른내과"
+  forbidden_terms:
+    - "광교바름내과"
+    - "광교 바른내과"
+
+source_references:
+  - "광교바른내과 Brand Design System v1"
+  - "reference/copyright-protection.md"
+
+audit:
+  created_at: 2026-05-25T09:00:00+09:00
+  reviewed_by: 정지환
+  next_review_due: 2026-11-25
