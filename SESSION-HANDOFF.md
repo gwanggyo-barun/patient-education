@@ -16,6 +16,7 @@
 8. **lab-reports 커밋 메시지**: 환자명/차트번호 금지.
 9. **`07_Prompts/`**: gitignored, 외부 push 금지.
 10. **SKILL.md SoT**: GitHub repo. 메모리는 개인 선호만.
+11. **광교바른내과 연락 정보**: ⚠️ SoT는 `blocks/content/clinic-contact-footer.yaml` v03. 정확한 주소: **경기도 용인시 수지구 광교중앙로 298, 4층 402-404호 · 031-893-4560**. ❌ 절대 금지: "수원시 영통구"·"광교중앙로 145"·"아브뉴프랑"·"031-217-5878". sub-agent hallucination 사례 5/24-5/25 발생 → 일괄 수정 완료.
 
 ---
 
@@ -65,6 +66,13 @@
   - Slide 02·04·05 텍스트 겹침 fix (font·padding tightening)
 - Notion deck DB 중복 정리 (인슐린·키성장 자동 sync row 유지, 제가 만든 dup 2개 workspace로 이동)
 - 미용실 예약 Akiflow Inbox 등록 (5/26 마감)
+- **🚨 광교바른내과 주소 일괄 정정** (sub-agent hallucination 사건):
+  - SoT block `clinic-contact-footer.yaml` v03로 갱신 (정확한 주소·전화·forbidden_terms 가드)
+  - 4개 blocks (bowel-prep·emergency·qr-mini·qr-block-standard) 정정
+  - reference/copyright-protection.md 정정
+  - 7개 deck (papers-20260524 5개 + papers-20260525 2개) closing-grid contact 제거 + qr-only 패턴
+  - 7개 PDF 재빌드 + grep 검증 0건
+  - 메모리 `feedback_clinic_contact_sot.md` 신설
 
 ---
 
