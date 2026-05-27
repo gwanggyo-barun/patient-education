@@ -210,6 +210,224 @@ def _build_lab_report_props(
     return properties, full_title
 
 
+# ===========================================================================
+# Patient hub auto-update (👤 환자 마스터 DB) — chart_no 기반 누적 조회 시스템
+# ===========================================================================
+# Each lab-report row links to a patient hub via "환자" relation. After every
+# row create/update, the hub page's body is fully regenerated from all linked
+# lab rows (sorted by exam_date desc), and its summary properties are patched
+# from the latest row. Manual edits to the hub body are not preserved — this
+# is the explicit design decision (전체 자동 SoT).
+# Per Gotcha 11, patient names/chart numbers go into Notion page content only
+# via Notion API properties — never into git logs or stderr prints.
+
+
+def _list_patient_labs(patient_page_id: str) -> list[dict]:
+    """Return all lab-report rows linked to this patient hub, exam_date desc."""
+    res = _api(
+        "POST",
+        f"/databases/{DBS['lab-reports']}/query",
+        {
+            "filter": {
+                "property": "환자",
+                "relation": {"contains": patient_page_id},
+            },
+            "sorts": [{"property": "검사일", "direction": "descending"}],
+            "page_size": 100,
+        },
+    )
+    return res.get("results", [])
+
+
+def _extract_lab_fields(lab: dict) -> dict:
+    """Pull callout-relevant fields out of a lab-report row page object."""
+    props = lab.get("properties", {})
+    title = "".join(
+        t.get("plain_text", "")
+        for t in props.get("환자명", {}).get("title", [])
+    )
+    exam_date = (props.get("검사일", {}).get("date") or {}).get("start") or ""
+    html_url = (props.get("HTML 링크", {}) or {}).get("url") or ""
+    pdf_url = (
+        (props.get("PDF 링크", {}) or {}).get("url")
+        or (props.get("파일링크", {}) or {}).get("url")
+        or ""
+    )
+    return {
+        "title": title,
+        "exam_date": exam_date,
+        "html_url": html_url,
+        "pdf_url": pdf_url,
+    }
+
+
+def _build_lab_callout_block(fields: dict) -> dict:
+    """One lab row → callout block for hub body."""
+    date_str = fields["exam_date"] or "(검사일 미정)"
+    title = fields["title"] or "검사 결과"
+    html_url = fields["html_url"]
+    pdf_url = fields["pdf_url"]
+
+    rich_text: list = [
+        {
+            "type": "text",
+            "text": {"content": f"{date_str}  ·  "},
+            "annotations": {"bold": True},
+        },
+        {"type": "text", "text": {"content": f"{title}\n"}},
+    ]
+    if html_url:
+        rich_text.append(
+            {"type": "text", "text": {"content": "🌐 HTML 보기", "link": {"url": html_url}}}
+        )
+    if html_url and pdf_url:
+        rich_text.append({"type": "text", "text": {"content": "  ·  "}})
+    if pdf_url:
+        rich_text.append(
+            {"type": "text", "text": {"content": "📄 PDF 다운로드", "link": {"url": pdf_url}}}
+        )
+    return {
+        "object": "block",
+        "type": "callout",
+        "callout": {"icon": {"emoji": "🧪"}, "rich_text": rich_text},
+    }
+
+
+def _build_hub_index_blocks(labs: list[dict]) -> list[dict]:
+    """Build the hub body children: heading + callout per lab."""
+    blocks: list = [
+        {
+            "object": "block",
+            "type": "heading_2",
+            "heading_2": {
+                "rich_text": [
+                    {"type": "text", "text": {"content": "📅 검사 이력 — 최신순"}}
+                ],
+            },
+        }
+    ]
+    for lab in labs:
+        blocks.append(_build_lab_callout_block(_extract_lab_fields(lab)))
+    if not labs:
+        blocks.append(
+            {
+                "object": "block",
+                "type": "paragraph",
+                "paragraph": {
+                    "rich_text": [
+                        {"type": "text", "text": {"content": "아직 등록된 검사 결과가 없습니다."}}
+                    ],
+                },
+            }
+        )
+    return blocks
+
+
+def _replace_page_children(page_id: str, new_blocks: list[dict]) -> None:
+    """Wipe existing top-level children and append new ones.
+
+    Notion API has no prepend; "전체 자동 SoT" 디자인이라 매번 통째 재작성.
+    Max 100 children per PATCH call — chunk if larger.
+    """
+    res = _api("GET", f"/blocks/{page_id}/children?page_size=100", None)
+    for block in res.get("results", []):
+        try:
+            _api("DELETE", f"/blocks/{block['id']}", None)
+        except Exception:  # noqa: BLE001
+            pass  # best-effort; orphaned archived blocks are harmless
+    if new_blocks:
+        for i in range(0, len(new_blocks), 100):
+            _api(
+                "PATCH",
+                f"/blocks/{page_id}/children",
+                {"children": new_blocks[i : i + 100]},
+            )
+
+
+def _refresh_patient_hub_props(patient_page_id: str, latest_lab: dict) -> None:
+    """Patch 최근 검사일·요약·HTML on the hub from the newest lab row."""
+    f = _extract_lab_fields(latest_lab)
+    summary = f["title"]
+    if " — " in summary:
+        summary = summary.split(" — ", 1)[1]
+    elif "] " in summary:
+        summary = summary.split("] ", 1)[1]
+    summary = summary[:200]
+
+    patch_props: dict = {}
+    if f["exam_date"]:
+        patch_props["최근 검사일"] = {"date": {"start": f["exam_date"]}}
+    if f["html_url"]:
+        patch_props["최근 HTML 링크"] = {"url": f["html_url"]}
+    if summary:
+        patch_props["최근 검사요약"] = {"rich_text": [{"text": {"content": summary}}]}
+    if patch_props:
+        _api("PATCH", f"/pages/{patient_page_id}", {"properties": patch_props})
+
+
+def _refresh_patient_hub(patient_page_id: str) -> None:
+    """Full hub refresh — body rebuild + summary props. Best-effort."""
+    try:
+        labs = _list_patient_labs(patient_page_id)
+        if not labs:
+            return
+        _replace_page_children(patient_page_id, _build_hub_index_blocks(labs))
+        _refresh_patient_hub_props(patient_page_id, labs[0])
+    except Exception as e:  # noqa: BLE001
+        import sys as _sys
+        # PII never enters stderr — class name only.
+        print(
+            f"⚠️  patient hub refresh failed ({type(e).__name__})",
+            file=_sys.stderr,
+        )
+
+
+def _build_lab_report_body(
+    html_url: str, pdf_url: str, patient_page_id: str | None
+) -> list[dict]:
+    """Lab-report row body — 자료 callout + (있으면) 환자 hub link callout."""
+    blocks: list = [
+        {
+            "object": "block",
+            "type": "callout",
+            "callout": {
+                "icon": {"emoji": "📋"},
+                "rich_text": [
+                    {"type": "text", "text": {"content": "검사 자료 — "}},
+                    {
+                        "type": "text",
+                        "text": {"content": "🌐 HTML 보기", "link": {"url": html_url}},
+                    },
+                    {"type": "text", "text": {"content": "  ·  "}},
+                    {
+                        "type": "text",
+                        "text": {"content": "📄 PDF 다운로드", "link": {"url": pdf_url}},
+                    },
+                ],
+            },
+        }
+    ]
+    if patient_page_id:
+        hub_url = f"https://www.notion.so/{patient_page_id.replace('-', '')}"
+        blocks.append(
+            {
+                "object": "block",
+                "type": "callout",
+                "callout": {
+                    "icon": {"emoji": "👤"},
+                    "rich_text": [
+                        {"type": "text", "text": {"content": "이 환자의 검사 이력 전체 보기 → "}},
+                        {
+                            "type": "text",
+                            "text": {"content": "환자 마스터 페이지 열기", "link": {"url": hub_url}},
+                        },
+                    ],
+                },
+            }
+        )
+    return blocks
+
+
 def _build_handout_props(
     *,
     title: str,
@@ -365,11 +583,45 @@ def upsert(
         existing = _find_page_id_by_title(db_id, title_prop, search_title)
     if existing:
         _api("PATCH", f"/pages/{existing}", {"properties": properties})
+        if kind == "lab-reports":
+            # Backfill: if existing row has no body yet (e.g. created before
+            # auto-body rollout), inject the standard 2-callout body now.
+            # Best-effort — never fail the build on this.
+            try:
+                ch = _api(
+                    "GET", f"/blocks/{existing}/children?page_size=1", None
+                )
+                if not ch.get("results"):
+                    body = _build_lab_report_body(
+                        html_url, pdf_url, patient_page_id
+                    )
+                    if body:
+                        _api(
+                            "PATCH",
+                            f"/blocks/{existing}/children",
+                            {"children": body},
+                        )
+            except Exception as e:  # noqa: BLE001
+                import sys as _sys
+                print(
+                    f"⚠️  lab-report body backfill failed ({type(e).__name__})",
+                    file=_sys.stderr,
+                )
+            # Refresh patient hub (body + summary props) — best-effort.
+            if patient_page_id:
+                _refresh_patient_hub(patient_page_id)
         return ("updated", existing)
 
-    res = _api(
-        "POST",
-        "/pages",
-        {"parent": {"database_id": db_id}, "properties": properties},
-    )
-    return ("created", res["id"])
+    post_body: dict = {
+        "parent": {"database_id": db_id},
+        "properties": properties,
+    }
+    if kind == "lab-reports":
+        body = _build_lab_report_body(html_url, pdf_url, patient_page_id)
+        if body:
+            post_body["children"] = body
+    res = _api("POST", "/pages", post_body)
+    new_id = res["id"]
+    if kind == "lab-reports" and patient_page_id:
+        _refresh_patient_hub(patient_page_id)
+    return ("created", new_id)
