@@ -957,6 +957,16 @@ TARGETS = [
         "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "당뇨병",
     },
     {
+        "kind": "lab-reports", "slug": "be7a11579c",
+        "slug_path": "lab-reports/diabetes-followup/be7a11579c/",
+        "html_path": ROOT / "lab-reports/diabetes-followup/be7a11579c/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "당뇨병",
+        "patient_name": "김경태", "chart_no": "2555",
+        "exam_date": "2026-05-26", "doctor": "정지환",
+        "note": "추적 검사 (04-22 대비) — 공복혈당 208→143, HbA1c 8.6→7.8, TG 244→119 큰 호전. 소변당 3+·ALT 53 추가 관리",
+    },
+    {
         "kind": "lab-reports", "slug": "a8c908bd6d",
         "slug_path": "lab-reports/diabetes-screening/a8c908bd6d/",
         "html_path": ROOT / "lab-reports/diabetes-screening/a8c908bd6d/index.html",

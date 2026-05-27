@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=794">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>검사 결과 비교 — 광교바른내과</title>
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/lab-reports/diabetes-followup/be7a11579c/">
+  <meta property="og:title" content="검사 결과 비교 — 광교바른내과">
+  <meta property="og:description" content="한 달 사이 변화 한눈에 보기 — 혈당·HbA1c·지질·전해질 추적">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/lab-reports/diabetes-followup/be7a11579c/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+
+  <style>
+    /* === Comparison-specific styles === */
+
+    /* HERO — 4 compare cells (prev → curr) */
+    .compare-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3mm;
+    }
+    .compare-cell {
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: 4mm;
+      padding: 2.5mm 2.8mm;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6mm;
+    }
+    .compare-cell--good { background: #ECFDF5; border-color: #A7F3D0; }
+    .compare-cell--mid  { background: #FFF7ED; border-color: #FED7AA; }
+    .compare-cell--bad  { background: var(--color-danger-bg); border-color: #FECACA; }
+    .compare-cell__label {
+      font-size: 8.5pt;
+      font-weight: 600;
+      color: var(--color-navy);
+      letter-spacing: -0.005em;
+    }
+    .compare-cell__nums {
+      display: flex;
+      align-items: baseline;
+      gap: 2mm;
+      margin-top: 0.8mm;
+    }
+    .compare-cell__prev {
+      font-size: 11pt;
+      color: var(--color-slate);
+      text-decoration: line-through;
+      font-variant-numeric: tabular-nums;
+    }
+    .compare-cell__arrow {
+      font-size: 12pt;
+      color: var(--color-slate);
+      font-weight: 600;
+    }
+    .compare-cell__curr {
+      font-size: 21pt;
+      font-weight: 700;
+      color: var(--color-navy);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .compare-cell--good .compare-cell__curr { color: #047857; }
+    .compare-cell--mid  .compare-cell__curr { color: var(--color-warning); }
+    .compare-cell--bad  .compare-cell__curr { color: var(--color-danger); }
+    .compare-cell__unit { font-size: 8pt; color: var(--color-slate); }
+    .compare-cell__delta { font-size: 8.5pt; font-weight: 600; margin-top: 0.5mm; }
+    .compare-cell--good .compare-cell__delta { color: #047857; }
+    .compare-cell--mid  .compare-cell__delta { color: var(--color-warning); }
+    .compare-cell--bad  .compare-cell__delta { color: var(--color-danger); }
+
+    /* TREND TABLE — full item comparison */
+    .trend-row {
+      display: grid;
+      grid-template-columns: 52mm 20mm 20mm 32mm 22mm;
+      align-items: center;
+      gap: 3mm;
+      padding: 1.3mm 0;
+      border-bottom: 1px solid var(--color-border-soft);
+      font-size: 8.8pt;
+    }
+    .trend-row:last-child { border-bottom: none; }
+    .trend-row--header {
+      font-size: 7.5pt;
+      font-weight: 600;
+      color: var(--color-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.8mm 0 1.5mm;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .trend-row__label { font-weight: 500; color: var(--color-navy); line-height: 1.25; }
+    .trend-row__sub { color: var(--color-slate); font-size: 7.5pt; font-weight: 400; }
+    .trend-row__prev { text-align: right; color: var(--color-ink-soft); font-variant-numeric: tabular-nums; }
+    .trend-row__curr { text-align: right; font-weight: 600; color: var(--color-navy); font-variant-numeric: tabular-nums; }
+    .trend-row__range { text-align: right; color: var(--color-slate); font-size: 7.8pt; font-variant-numeric: tabular-nums; }
+    .trend-row__delta {
+      text-align: center;
+      font-weight: 600;
+      font-size: 8pt;
+      padding: 0.6mm 1.2mm;
+      border-radius: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .trend-row__delta--good { color: #047857; background: #ECFDF5; }
+    .trend-row__delta--bad  { color: var(--color-danger); background: var(--color-danger-bg); }
+    .trend-row__delta--mid  { color: var(--color-warning); background: #FFF7ED; }
+    .trend-row__delta--flat { color: var(--color-slate); background: var(--color-canvas-warm); }
+
+    /* Tighten overall vertical rhythm for this comparison layout */
+    .page__body { gap: 4mm; }
+    .page__body > section { gap: 2mm; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="page__header">
+    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
+    <div class="page__eyebrow">LAB REPORT · <strong>DIABETES FOLLOW-UP · 변화 추적</strong></div>
+  </header>
+
+  <!-- TITLE BLOCK -->
+  <section class="page__title-block">
+    <h1 class="page__title">한 달 사이 어떻게 변했나</h1>
+    <p class="page__subtitle">김경태 (M/49) · 차트번호 2555 · 2026-04-22 → 2026-05-26 · 담당의 정지환 원장</p>
+  </section>
+
+  <!-- BODY -->
+  <main class="page__body">
+
+    <!-- HERO: 4 compare cells -->
+    <section>
+      <h2 class="section-heading">핵심 4 지표 — 한 달 전 vs 이번</h2>
+      <div class="compare-row">
+        <div class="compare-cell compare-cell--mid">
+          <div class="compare-cell__label">공복혈당</div>
+          <div class="compare-cell__nums">
+            <span class="compare-cell__prev">208</span>
+            <span class="compare-cell__arrow">→</span>
+            <span class="compare-cell__curr">143</span>
+          </div>
+          <div class="compare-cell__unit">mg/dL · 정상 &lt;100</div>
+          <div class="compare-cell__delta">↓ 65 · 큰 호전</div>
+        </div>
+        <div class="compare-cell compare-cell--mid">
+          <div class="compare-cell__label">당화혈색소 (HbA1c)</div>
+          <div class="compare-cell__nums">
+            <span class="compare-cell__prev">8.6</span>
+            <span class="compare-cell__arrow">→</span>
+            <span class="compare-cell__curr">7.8</span>
+          </div>
+          <div class="compare-cell__unit">% · 당뇨 목표 ≤6.5</div>
+          <div class="compare-cell__delta">↓ 0.8 · 호전 진행</div>
+        </div>
+        <div class="compare-cell compare-cell--good">
+          <div class="compare-cell__label">중성지방 (TG)</div>
+          <div class="compare-cell__nums">
+            <span class="compare-cell__prev">244</span>
+            <span class="compare-cell__arrow">→</span>
+            <span class="compare-cell__curr">119</span>
+          </div>
+          <div class="compare-cell__unit">mg/dL · 정상 &lt;150</div>
+          <div class="compare-cell__delta">↓ 125 · 정상화</div>
+        </div>
+        <div class="compare-cell compare-cell--good">
+          <div class="compare-cell__label">전해질 (Na · Cl)</div>
+          <div class="compare-cell__nums">
+            <span class="compare-cell__prev">134/97</span>
+            <span class="compare-cell__arrow">→</span>
+            <span class="compare-cell__curr">138/100</span>
+          </div>
+          <div class="compare-cell__unit">mmol/L · 정상 138~146 / 101~109</div>
+          <div class="compare-cell__delta">↑ 정상 회복</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TREND TABLE -->
+    <section>
+      <h2 class="section-heading">전체 항목 변화표</h2>
+      <div class="card" style="padding: 2.5mm 4mm;">
+        <div class="trend-row trend-row--header">
+          <div>항목</div>
+          <div style="text-align:right;">이전 (04-22)</div>
+          <div style="text-align:right;">이번 (05-26)</div>
+          <div style="text-align:right;">정상범위</div>
+          <div style="text-align:center;">변화</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">공복혈당 <span class="trend-row__sub">Glucose</span></div>
+          <div class="trend-row__prev">208</div>
+          <div class="trend-row__curr">143</div>
+          <div class="trend-row__range">&lt;100 mg/dL</div>
+          <div class="trend-row__delta trend-row__delta--good">↓ 65</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">당화혈색소 <span class="trend-row__sub">HbA1c</span></div>
+          <div class="trend-row__prev">8.6</div>
+          <div class="trend-row__curr">7.8</div>
+          <div class="trend-row__range">≤5.6 %</div>
+          <div class="trend-row__delta trend-row__delta--good">↓ 0.8</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">중성지방 <span class="trend-row__sub">Triglyceride</span></div>
+          <div class="trend-row__prev">244</div>
+          <div class="trend-row__curr">119</div>
+          <div class="trend-row__range">&lt;150 mg/dL</div>
+          <div class="trend-row__delta trend-row__delta--good">↓ 125</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">콜레스테롤 (TC · HDL) <span class="trend-row__sub">LDL 검사중</span></div>
+          <div class="trend-row__prev">132 · 50</div>
+          <div class="trend-row__curr">122 · 43</div>
+          <div class="trend-row__range">&lt;200 / 40~60</div>
+          <div class="trend-row__delta trend-row__delta--flat">유사</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">간수치 (ALT) <span class="trend-row__sub">SGPT</span></div>
+          <div class="trend-row__prev">51</div>
+          <div class="trend-row__curr">53</div>
+          <div class="trend-row__range">≤40 U/L</div>
+          <div class="trend-row__delta trend-row__delta--mid">↑ 2 · 정체</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">전해질 (Na · Cl) <span class="trend-row__sub">Sodium · Chloride</span></div>
+          <div class="trend-row__prev">134 · 97</div>
+          <div class="trend-row__curr">138 · 100</div>
+          <div class="trend-row__range">136~146 / 101~109</div>
+          <div class="trend-row__delta trend-row__delta--good">↑ 정상</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">신장 (Cr · eGFR) <span class="trend-row__sub">Creatinine · GFR</span></div>
+          <div class="trend-row__prev">0.76 · 111</div>
+          <div class="trend-row__curr">0.83 · 검사중</div>
+          <div class="trend-row__range">0.74~1.26 / &gt;59</div>
+          <div class="trend-row__delta trend-row__delta--flat">정상 유지</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">혈구 (Hb · WBC · PLT) <span class="trend-row__sub">CBC 핵심</span></div>
+          <div class="trend-row__prev">15.4 · 6.3 · 226</div>
+          <div class="trend-row__curr">15.9 · 5.5 · 233</div>
+          <div class="trend-row__range">모두 정상범위</div>
+          <div class="trend-row__delta trend-row__delta--flat">정상 유지</div>
+        </div>
+        <div class="trend-row">
+          <div class="trend-row__label">소변당 <span class="trend-row__sub">Urine glucose</span></div>
+          <div class="trend-row__prev">—</div>
+          <div class="trend-row__curr">3+</div>
+          <div class="trend-row__range">음성</div>
+          <div class="trend-row__delta trend-row__delta--bad">양성</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERPRETATION 2-COL -->
+    <section>
+      <h2 class="section-heading">의미 — 호전된 것 / 아직 남은 과제</h2>
+      <div class="body-2col">
+        <div class="card" style="border-color:#A7F3D0; background:#F0FDF4;">
+          <div class="card-label" style="color:#047857; font-weight:600;">✓ 한 달 노력의 결과 — 호전된 항목</div>
+          <ul class="card-list" style="font-size:9pt;">
+            <li>· <strong>공복혈당 208 → 143 (↓65)</strong> — 한 달만에 큰 호전, 식이·운동 효과 명확</li>
+            <li>· <strong>HbA1c 8.6 → 7.8 (↓0.8)</strong> — 평균혈당이 실제로 내려가는 중</li>
+            <li>· <strong>중성지방 244 → 119 (↓125)</strong> — 고지혈증에서 정상범위 회복</li>
+            <li>· <strong>전해질 정상화</strong> — Na 134→138, Cl 97→100. 탈수·식이 개선 흔적</li>
+          </ul>
+        </div>
+        <div class="card card--warning">
+          <div class="card-label card-label--warning">! 아직 남은 과제 — 다음 한 달 목표</div>
+          <ul class="card-list" style="font-size:9pt;">
+            <li>· <strong>HbA1c 7.8 — 여전히 당뇨 범주</strong> (목표 ≤6.5). 현재 페이스 유지하면 2~3개월 후 6.5 진입 가능</li>
+            <li>· <strong>소변에 당 3+ 검출</strong> — 혈당이 신장 역치(약 180) 넘는 시간이 있다는 신호. 식후·간식 혈당 관리 필요</li>
+            <li>· <strong>ALT 53 — 거의 변화 없음</strong>. 지방간·약물성 가능성, 금주·체중 감량 병행</li>
+            <li>· <strong>다음 검사 2~3개월 후</strong> — HbA1c·ALT·소변당 + 합병증(눈·신장·발)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="page__footer">
+    <div class="page__footer-info">
+      <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">소화기내과 · 일반내과 · 5대암 검진</div>
+      <div class="disclaimer">본 결과지는 환자 설명용 요약본입니다. 정확한 해석과 치료는 담당 의사 진료를 통해 결정합니다.</div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
