@@ -1070,6 +1070,16 @@ TARGETS = [
         "exam_date": "2026-05-22", "doctor": "정지환",
         "note": "공단검진+추가 — 간기능 ALT 249↑·갑상선 항진(TSH↓/fT4↑)·당뇨 고위험(HbA1c 6.1) 3건 동반 · 복부초음파·TRAb·간염표지자 즉시 권고",
     },
+    {
+        "kind": "lab-reports", "slug": "ca40e9a838",
+        "slug_path": "lab-reports/igra-followup/ca40e9a838/",
+        "html_path": ROOT / "lab-reports/igra-followup/ca40e9a838/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "잠복결핵·IGRA 추적",
+        "patient_name": "이순열", "chart_no": "4798",
+        "exam_date": "2026-05-21", "doctor": "정지환",
+        "note": "잠복결핵 IGRA 2년 추적 — 0.487(Pos)→0.302(Neg) reversion · 두 값 모두 uncertainty zone(0.35~0.70) 내 측정 변동성으로 해석 · LTBI 진단 유지 (대한결핵학회 4판·WHO 2024·CDC)",
+    },
 ]
 
 
