@@ -48,7 +48,7 @@ bash tools/verify_skill_sync.sh   # 4개 위치 HEAD/SKILL.md sha 확인
 
 Codex mirror(`~/.codex/skills/clinic-content-system`)는 read-only 스킬 로딩 snapshot이다. 실제 편집·검증·빌드는 항상 `~/clinic-content-system`에서 한다.
 
-산출물 (CI 자동, ~80초):
+산출물 (CI 자동):
 - `output/{kind}/{slug}.pdf` — 환자 공유용 PDF
 - `output/{kind}/{slug}-preview.png` — 데스크톱 풀스크린 미리보기
 - GitHub Pages 자동 배포

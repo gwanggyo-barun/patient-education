@@ -380,9 +380,9 @@ rm ~/Library/LaunchAgents/io.github.gwanggyo-barun.clinic-content.daily-fetch.pl
 빌드 + 노션 등록 + Pages 배포 모두 한 번의 `git push`로 자동 실행:
 
 1. 로컬에서 HTML 작성 + `build.py` TARGETS 추가
-2. `git pull --rebase` 후 이번 lab-report 파일과 `build.py`만 명시적으로 `git add <file>` → `git diff --cached --name-only` audit → `git commit -m "Add lab-report 969f64d2bc (general-checkup)"` → `git push`
+2. `git pull --rebase` 후 이번 작업 파일과 `build.py`만 명시적으로 `git add <file>` → `git diff --cached --name-only` audit → `git commit -m "Add {kind} {slug}"` → `git push`
    (lab-reports 커밋 메시지는 hash slug 만 — 환자명/차트번호 금지, [Gotcha 11])
-3. CI(GitHub Actions, ~80초 안에 완료):
+3. CI(GitHub Actions):
    - Playwright PDF 빌드
    - GitHub Pages 배포 → `https://gwanggyo-barun.github.io/patient-education/lab-reports/general-checkup/969f64d2bc/` (hash slug)
    - **kind에 따라 자동 라우팅 → 해당 DB에 행 upsert**
@@ -488,7 +488,7 @@ diabetes-first-visit 에서 발견·정정). 새 자료에 이 값을 절대 복
 
 4. **이미지 자산 적극 활용 (3가지 옵션)**:
    - (a) `shared/assets/generated/` 정독해 **paper 내용과 정확히 매칭되는** 자산만 사용. 키워드만으로 무관 슬라이드 끼워넣기 절대 금지.
-   - (b) 매칭 자산 없으면 §3.5.b 룰대로 영문 프롬프트 작성해 사용자에게 제안 → 사용자가 ChatGPT 웹에서 생성·공유 → 정확한 슬롯 배치.
+   - (b) 매칭 자산 없으면 §3.5.b 룰대로 HTML 슬롯을 만들고 영문 프롬프트 작성 → `$imagegen`으로 직접 생성 → `shared/assets/generated/`에 복사 → 정확한 슬롯 배치.
    - (c) 데이터 시각화(MCID bar, dose-response curve 등)는 **막대 폭이 실제 수치에 비례**해야 함 — 비례 안 맞으면 critique blocker.
 
 5. **풀 quality HTML 작성**: 700+줄 목표, 12장 표준 + 슬라이드별 **다른 layout** (pattern-stats3 / pattern-table / pattern-split / pattern-grid / pattern-timeline / pattern-checklist / mech-flow / takehome-grid 등). 같은 layout은 deck당 **2회 이하**.
@@ -864,7 +864,7 @@ Step 3 build + validate_layout + (lab-reports 한정) _visual_audit  ← Stage C
    ↓
 [Stage E — integrator fix (blocker / major 우선)]
    ↓
-Step 3.5 인포그래픽 자동 제안 (decks / handouts 만)
+Step 3.5 인포그래픽 슬롯 설계 + `$imagegen` 생성 (decks / handouts / lab-reports)
 Step 4 git push (커밋 시 다른 세션 작업물 보호 — 명시적 stage 만)
 ```
 
@@ -1142,14 +1142,14 @@ Icon diameter: approximately 60% of canvas height.
 
 `reference/image-assets.md §Phase 1`에 카테고리(해부도·기전·절차·장비·자세·비교)별 상세 프롬프트 템플릿 보강. 슬롯 실측값을 그 템플릿에 채워 사용.
 
-#### 3.5.c — 사용자에게 제시하는 출력 형식
+#### 3.5.c — `$imagegen` 실행 기록 형식
 
-빌드 통과 메시지 직후, 다음 형식으로 채팅창에 한 번에 정리해 전달한다:
+빌드 통과 직후, 사용자에게 다시 이미지를 만들어오라고 맡기지 않는다. Codex가 다음 형식으로 내부 판단을 정리하고 곧바로 `$imagegen`을 호출한다. 중간 보고가 필요하면 위치·왜·파일명·프롬프트만 짧게 공유한다.
 
 ```
-📸 인포그래픽 제안 — {topic-slug}
+📸 인포그래픽 생성 — {topic-slug}
 
-문서 초안이 빌드·검증을 통과했습니다. 다음 위치에 인포그래픽을 추가하면 이해도가 크게 올라갑니다. ChatGPT 웹에서 각 프롬프트로 이미지를 생성하신 뒤 채팅창에 공유해 주십시오. 받는 즉시 알맞은 슬롯에 배치하고 재빌드·푸시합니다.
+문서 초안이 빌드·검증을 통과했습니다. 다음 위치에 인포그래픽 슬롯을 만들고, 슬롯 크기에 맞춘 프롬프트로 `$imagegen`을 호출합니다.
 
 ────────────────────────
 ### 1. 슬라이드 3 / Definition — 갑상선 해부도
@@ -1157,7 +1157,7 @@ Icon diameter: approximately 60% of canvas height.
 **슬롯**: `.ai-visual--hero` (Asymmetric Split 우측, 4:3)
 **저장 파일명**: `shared/assets/generated/thyroid-nodule-anatomy.png`
 
-ChatGPT 웹에 복붙:
+$imagegen 프롬프트:
 ​```text
 Create a clean, patient-friendly medical illustration for a Korean clinic deck slide.
 Subject: anatomy of the thyroid gland, butterfly-shaped, located in front of the trachea,
@@ -1175,13 +1175,13 @@ Aspect ratio: 4:3.
 ...
 ```
 
-각 항목은 (1) 위치 (2) 왜 필요한지 한 줄 (3) 슬롯 클래스 + aspect ratio (4) 미리 정한 저장 파일명 (5) 복붙용 프롬프트 — 다섯 가지를 항상 포함한다.
+각 항목은 (1) 위치 (2) 왜 필요한지 한 줄 (3) 슬롯 클래스 + aspect ratio (4) 미리 정한 저장 파일명 (5) `$imagegen` 프롬프트 — 다섯 가지를 항상 포함한다.
 
-#### 3.5.d — 이미지 수령 후 처리 (Pass 2 시작)
+#### 3.5.d — 생성 이미지 배치 처리 (Pass 2 시작)
 
-사용자가 이미지를 채팅창에 공유하면:
+`$imagegen` 결과가 생성되면:
 
-1. 받은 PNG/WebP/JPEG 를 **제안 시 알려준 파일명 그대로** `shared/assets/generated/{topic-slug}-{slot-key}.png` 에 저장. 이름 임의 변경 금지 (재배치·재생성 추적 위해).
+1. 선택한 PNG/WebP/JPEG 를 **제안 시 정한 파일명 그대로** `shared/assets/generated/{topic-slug}-{slot-key}.png` 에 복사한다. `$imagegen` 기본 생성 폴더의 원본은 삭제하지 않는다.
 2. 해당 슬라이드/섹션 HTML 의 placeholder (또는 텍스트 카드) 위치에 `.ai-visual` 컴포넌트 삽입. 컴포넌트 변형(`--hero` / `--portrait` / `--compact` / `--contain`)은 3.5.b 에서 정한 슬롯 그대로.
 3. `python3 -m shared._validate_layout <html_path>` 재실행 → `OK` 확인.
 4. `python3 build.py` 재실행 → PDF/PNG 갱신, `output/{kind}/{slug}-preview.png` 로 시각 점검.
@@ -1193,6 +1193,11 @@ Aspect ratio: 4:3.
 
 **원클릭 배포**: Pass 2 까지 끝났으면 git 한 번으로 라이브 사이트 반영 + Notion DB 행 자동 등록까지 모두 처리된다.
 
+원클릭 원칙:
+- 로컬 `NOTION_TOKEN`이 없어도 수동 Notion 생성으로 우회하지 않는다. 기본 경로는 `git push` → GitHub Actions → Pages 배포 + Notion upsert다.
+- 수동 Notion 커넥터 생성/수정은 CI가 실패했거나 `NOTION_TOKEN` secret 누락이 확인된 경우의 fallback으로만 사용하고, 그 사실을 사용자에게 보고한다.
+- HTML/PDF 링크는 CI가 배포한 GitHub Pages URL을 기준으로 한다.
+
 ```bash
 git pull --rebase                           # 다른 머신 변경 먼저 받기
 git status --short                           # staged 영역 audit (다른 대화창 잔재 확인)
@@ -1203,7 +1208,7 @@ git push
 git log -1 --stat                            # 의도한 파일만 들어갔는지 검증
 ```
 
-CI(GitHub Actions, ~80초):
+CI(GitHub Actions):
 - Playwright Chromium 으로 최종 PDF 빌드 (인포그래픽 포함)
 - GitHub Pages 배포 → `https://gwanggyo-barun.github.io/patient-education/{kind}/{slug_path}/`
 - `kind` 에 따라 자동 라우팅 → 해당 Notion DB 에 행 upsert (제목·분류·대상·작성일·HTML/PDF 링크)

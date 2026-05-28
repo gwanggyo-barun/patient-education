@@ -141,7 +141,7 @@ HTML will overlay Korean labels using Pretendard font separately.
 
 ### 영문 프롬프트 기본 골격 (Strict Ratio · 빈 사이드 패널 금지 · 텍스트 0)
 
-ChatGPT 웹 / DALL-E 는 한국어 의료 프롬프트를 잘 못 따른다. 항상 영문으로 작성. **§0 슬롯 측정에서 산출한 strict ratio와 픽셀을 그대로 채워 사용**한다.
+`$imagegen`은 한국어 의료 프롬프트보다 구조화된 영문 프롬프트를 더 안정적으로 따른다. 항상 영문으로 작성하고, **§0 슬롯 측정에서 산출한 strict ratio와 픽셀을 그대로 채워 사용**한다.
 
 ```text
 Create a {style descriptor — e.g., "clean medical illustration", 
@@ -289,7 +289,7 @@ Aspect ratio: 16:9.
 📸 인포그래픽 제안 — {topic-slug}
 
 문서 초안이 빌드·검증을 통과했습니다. 다음 위치에 인포그래픽을 추가하면 이해도가 크게 올라갑니다.
-각 프롬프트로 ChatGPT 웹에서 이미지를 생성하신 뒤 채팅창에 공유해 주십시오.
+아래 프롬프트로 Codex가 `$imagegen`을 직접 호출한다.
 받는 즉시 알맞은 슬롯에 배치하고 재빌드·푸시합니다.
 
 ────────────────────────
@@ -299,7 +299,7 @@ Aspect ratio: 16:9.
 **슬롯**: `.ai-visual--{hero|portrait|compact|contain}` — **{폭mm} × {높이mm}** → **strict ratio {W}:{H}** ({px_w} × {px_h} px)
 **저장 파일명**: `shared/assets/generated/{topic-slug}-{slot-key}.png`
 
-ChatGPT 웹에 복붙:
+$imagegen 프롬프트:
 ​```text
 {슬롯 실측값으로 채운 영문 프롬프트 — §영문 프롬프트 기본 골격 참조}
 ​```
@@ -307,16 +307,16 @@ ChatGPT 웹에 복붙:
 ### 2. ...
 ```
 
-각 항목 5요소 (위치 / 왜 / 카테고리 / 슬롯+ratio / 파일명) + 복붙용 영문 프롬프트를 항상 포함한다.
+각 항목 5요소 (위치 / 왜 / 카테고리 / 슬롯+ratio / 파일명) + `$imagegen` 영문 프롬프트를 항상 포함한다.
 
 ---
 
-## Phase 2 — 이미지 수령 후 배치 & 최종화
+## Phase 2 — 생성 이미지 배치 & 최종화
 
-사용자가 이미지를 채팅창에 공유하면 다음을 자동 수행:
+`$imagegen` 결과가 생성되면 다음을 자동 수행:
 
-1. 받은 PNG/WebP/JPEG 를 **제안 시 알려준 파일명 그대로** `shared/assets/generated/{topic-slug}-{slot-key}.{ext}` 에 저장. 이름 임의 변경 금지.
-2. ChatGPT 원본 프롬프트가 보존되어 있으면 같은 이름의 `.prompt.md` 도 함께 저장 (재생성 추적).
+1. 선택한 PNG/WebP/JPEG 를 **제안 시 정한 파일명 그대로** `shared/assets/generated/{topic-slug}-{slot-key}.{ext}` 에 복사한다. `$imagegen` 기본 생성 폴더의 원본은 삭제하지 않는다.
+2. 원본 프롬프트가 보존되어 있으면 같은 이름의 `.prompt.md` 도 함께 저장 (재생성 추적).
 3. 해당 슬라이드/섹션 HTML 의 placeholder 위치(또는 텍스트 카드 자리)에 `.ai-visual` 컴포넌트 삽입 — 변형(`--hero` / `--portrait` / `--compact` / `--contain`)은 Phase 1 에서 정한 슬롯 그대로.
 4. 이미지 안에 텍스트가 끼어 들어왔으면 다시 생성 요청 (라벨은 모두 HTML).
 5. `python3 -m shared._validate_layout <html_path>` 재실행 → `OK` 확인.
@@ -325,15 +325,15 @@ ChatGPT 웹에 복붙:
 
 ---
 
-## 기본 워크플로우: ChatGPT 웹 이미지 제공
+## 기본 워크플로우: `$imagegen` 직접 생성
 
-1. ChatGPT 웹에서 이미지를 생성한다.
-2. 가장 좋은 컷을 PNG/WebP로 저장한다.
-3. 에이전트에게 이미지 파일 경로 또는 업로드 이미지를 전달하며 삽입할 HTML을 지정한다.
-4. 에이전트는 이미지를 `shared/assets/generated/`에 복사하고, `.ai-visual` 컴포넌트로 효율적으로 배치한다.
-5. 에이전트는 `python3 -m shared._validate_layout <html_path>`와 `python3 build.py` 또는 대상별 시각 확인을 수행한다.
+1. HTML에 이미지 슬롯을 만든다.
+2. 슬롯 실측값으로 영문 프롬프트를 작성한다.
+3. Codex가 `$imagegen`을 호출한다.
+4. 가장 좋은 컷을 `shared/assets/generated/`에 복사하고, `.ai-visual` 컴포넌트로 배치한다.
+5. `python3 -m shared._validate_layout <html_path>`와 `python3 build.py` 또는 대상별 시각 확인을 수행한다.
 
-ChatGPT 웹 프롬프트 예시:
+$imagegen 프롬프트 예시:
 
 ```text
 Create a clean, patient-friendly medical illustration for an A4 Korean clinic handout.
@@ -343,9 +343,9 @@ Composition: leave clear empty areas for HTML labels and captions.
 Do not include any text, letters, numbers, logos, watermarks, patient names, chart numbers, or personal information.
 ```
 
-## 선택 워크플로우: API로 생성
+## 선택 워크플로우: API/CLI로 생성
 
-로컬 파이프라인 안에서 자동 생성해야 할 때만 사용한다. ChatGPT 구독 한도와 API 과금/한도는 별도다.
+사용자가 명시적으로 CLI/API 경로를 요구하거나 `$imagegen` 기본 도구가 실패했을 때만 사용한다. API 과금/한도는 별도다.
 
 ```bash
 export OPENAI_API_KEY="..."
