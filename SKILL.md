@@ -408,6 +408,35 @@ rm ~/Library/LaunchAgents/io.github.gwanggyo-barun.clinic-content.daily-fetch.pl
 - 라디우스: 8px / 16px만
 - Hero 그라데이션은 표지 1장에만 적용
 
+## 🏥 클리닉 연락처 (SoT — 모든 자료 공통, 머신 무관)
+
+모든 자료의 마무리 슬라이드(decks) · 푸터(handouts / lab-reports) `contact-card` 는
+아래 값을 **글자 그대로** 사용한다. 새로 타이핑하지 말고 여기서 복사한다. 이 블록이
+유일한 출처(SoT)이며, 값이 바뀌면 **이 표만 고친 뒤 기존 자료를 일괄 갱신**한다. 이
+SKILL.md 는 공유 repo(origin/main)에 있으므로 commit·push 하면 모든 머신이 `git pull`
+로 동일하게 받는다.
+
+| 항목 | 값 |
+|---|---|
+| 의원명 | 광교바른내과 |
+| **진료시간** | **평일(월–금) 08:30~18:30 · 토요일 08:30~13:30** · 일요일·공휴일 휴진 |
+| 주소 | 경기 용인 수지구 광교중앙로 298, 4층 |
+| 전화 | 031-893-4560 |
+| 진료과 | 소화기내과 · 일반내과 · 5대암 검진 |
+
+표준 마크업 — decks closing-grid (한 줄형):
+```html
+<div class="contact-card__main">평일 08:30~18:30 · 토 08:30~13:30</div>
+```
+handouts / lab-reports 푸터 (줄바꿈형)도 허용:
+```html
+<div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+```
+
+⚠️ **금지(과거 오류)**: `평일 09:00 ~ 18:30` / `토 09:00 ~ 14:00` 는 **틀린 값**이다
+(2026-05 4개 덱 iron-deficiency-anemia · gout · diabetes-mellitus-type2 ·
+diabetes-first-visit 에서 발견·정정). 새 자료에 이 값을 절대 복붙하지 않는다.
+
 ## 입력 형식
 
 사용자는 다음과 같이 콘텐츠를 전달한다:
@@ -1231,7 +1260,7 @@ exit code 0 → 통과, 1 → 실패 (CI gate에 그대로 사용 가능).
 6. **로고는 텍스트가 아닌 PNG 이미지** (`shared/assets/clinic_logo.png`)
 7. **의학 용어 영문 병기** (예: 역류성 식도염 (GERD))
 8. **출처 명시** (푸터의 source 영역에 가이드라인명 + 연도)
-9. **마무리 슬라이드는 closing-grid 패턴 강제** — contact-card + qr-block. QR은 빌드 시 자동 생성.
+9. **마무리 슬라이드는 closing-grid 패턴 강제** — contact-card + qr-block. QR은 빌드 시 자동 생성. **contact-card 값(진료시간·주소·전화)은 반드시 § 클리닉 연락처(SoT) 표에서 복사** — 직접 타이핑 금지.
 10. **OG 메타태그 7종 표준 포함** — 카톡 공유 미리보기 카드 자동 작동을 위해 필수.
 
 ## Alert(붉은 강조) 사용 룰
