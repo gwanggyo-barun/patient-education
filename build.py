@@ -308,6 +308,14 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "제2형 당뇨병 (Type 2 Diabetes Mellitus)",
     },
     {
+        "kind": "decks", "slug": "diabetes-first-visit",
+        "slug_path": "decks/endocrine/diabetes-first-visit/",
+        "html_path": ROOT / "decks/endocrine/diabetes-first-visit/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "당뇨 첫 외래 안내",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "제2형 당뇨병 신환 오리엔테이션 (Type 2 Diabetes First Visit)",
+    },
+    {
         "kind": "decks", "slug": "gout",
         "slug_path": "decks/endocrine/gout/",
         "html_path": ROOT / "decks/endocrine/gout/index.html",
