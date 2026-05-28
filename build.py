@@ -829,6 +829,15 @@ TARGETS = [
         "disease": "경구 철분제 복약 가이드 — 비타민 C 시너지·탄닌·칼슘·제산제 흡수 방해·격일 복용·페리틴 회복",
     },
     {
+        "kind": "handouts", "slug": "creatine-guide",
+        "slug_path": "handouts/lifestyle/creatine-guide/",
+        "html_path": ROOT / "handouts/lifestyle/creatine-guide/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "크레아틴 복용 가이드 — 효과·부작용·복용 주의사항",
+        "category": "🌿 생활습관·식이", "audience": "환자/보호자",
+        "disease": "크레아틴 모노하이드레이트 보충제 — 운동 수행능력, 복용량, 신장 기능 검사 해석, 탈모 논란, 복용 전 상담 대상",
+    },
+    {
         "kind": "handouts", "slug": "thyroid-hormone-taking",
         "slug_path": "handouts/medication/thyroid-hormone-taking/",
         "html_path": ROOT / "handouts/medication/thyroid-hormone-taking/index.html",
