@@ -891,6 +891,15 @@ TARGETS = [
         "category": "💊 투약 안내", "audience": "환자/보호자",
         "disease": "당뇨 환자가 처음 인슐린 자가 주사를 시작할 때 알아야 할 5가지 — 냉장→상온 보관, 알코올 소독 후 완전 건조, 권장 주사 부위 4곳·배꼽 5cm 회피, 2~3cm 회전 룰, 10단위 시작 후 공복혈당 140 초과 3~4일 연속 시 +2단위 증량 규칙.",
     },
+    {
+        "kind": "handouts", "slug": "hand-eczema-steroid-potency",
+        "slug_path": "handouts/medication/hand-eczema-steroid-potency/",
+        "html_path": ROOT / "handouts/medication/hand-eczema-steroid-potency/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "손 습진 스테로이드 연고 효능 순서 — 역가별 선택·step-down",
+        "category": "💊 투약 안내", "audience": "의료진",
+        "disease": "손 습진(hand eczema) 외용제 선택 — 두꺼운 손바닥은 초강력·강력 국소 스테로이드를 짧게 충분히 사용하고 호전 후 중등도 제제로 step-down, TCI·알리트레티노인·보습·장갑 차단까지 한 장 요약.",
+    },
     # === Migration: 11 new patient lab reports (2026-05-08) ===
     {
         "kind": "lab-reports", "slug": "13f629bf11",
