@@ -46,11 +46,19 @@ for sub in ("decks", "handouts", "lab-reports"):
 
 # Hosting base URL — change once here when GitHub Pages URL is finalized
 BASE_URL = "https://gwanggyo-barun.github.io/patient-education"
+ACTIVE_STATUS = "✅ 사용중"
+ARCHIVED_STATUS = "⏸️ 보류"
+VALID_NOTION_STATUSES = {
+    ACTIVE_STATUS,
+    "🔄 수정중",
+    "📝 초안",
+    ARCHIVED_STATUS,
+}
 
 
 # Each target dict carries everything needed to build + sync to Notion.
 # Required: kind, slug, slug_path, html_path, qr_class, fmt
-# Notion (optional but recommended): title, category, audience, disease
+# Notion (optional but recommended): title, category, audience, disease, status
 TARGETS = [
     # === 16:9 multi-slide decks ===
     {
@@ -135,6 +143,7 @@ TARGETS = [
         "qr_class": "qr-block__code", "fmt": "deck-16x9",
         "title": "중1 남학생 키 성장 영양제 가이드 — 비타민D·칼슘·아연·HT042 + 수면·운동",
         "category": "🌿 생활습관·식이", "audience": "환자/보호자", "disease": "청소년 성장 (사춘기 성장급등)",
+        "status": ARCHIVED_STATUS,
     },
     {
         "kind": "decks", "slug": "soy-legumes-htn",
@@ -314,6 +323,70 @@ TARGETS = [
         "qr_class": "qr-block__code", "fmt": "deck-16x9",
         "title": "당뇨 첫 외래 안내",
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "제2형 당뇨병 신환 오리엔테이션 (Type 2 Diabetes First Visit)",
+    },
+    {
+        "kind": "decks", "slug": "glp1-week-01-start",
+        "slug_path": "decks/endocrine/glp1-weight-management/week-01-start/",
+        "html_path": ROOT / "decks/endocrine/glp1-weight-management/week-01-start/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "마운자로·위고비 1회차 — 치료 시작 전 이해",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비만 약물치료 · GLP-1/GIP-GLP-1 생활관리",
+    },
+    {
+        "kind": "decks", "slug": "glp1-week-02-aerobic",
+        "slug_path": "decks/endocrine/glp1-weight-management/week-02-aerobic/",
+        "html_path": ROOT / "decks/endocrine/glp1-weight-management/week-02-aerobic/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "마운자로·위고비 2회차 — 걷기와 활동량",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비만 약물치료 · 유산소 운동",
+    },
+    {
+        "kind": "decks", "slug": "glp1-week-03-strength",
+        "slug_path": "decks/endocrine/glp1-weight-management/week-03-strength/",
+        "html_path": ROOT / "decks/endocrine/glp1-weight-management/week-03-strength/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "마운자로·위고비 3회차 — 근육 보존",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비만 약물치료 · 근력운동 · 근육 보존",
+    },
+    {
+        "kind": "decks", "slug": "glp1-week-04-nutrition",
+        "slug_path": "decks/endocrine/glp1-weight-management/week-04-nutrition/",
+        "html_path": ROOT / "decks/endocrine/glp1-weight-management/week-04-nutrition/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "마운자로·위고비 4회차 — 식단 기본",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비만 약물치료 · 식단 · 단백질",
+    },
+    {
+        "kind": "decks", "slug": "glp1-week-05-gi-effects",
+        "slug_path": "decks/endocrine/glp1-weight-management/week-05-gi-effects/",
+        "html_path": ROOT / "decks/endocrine/glp1-weight-management/week-05-gi-effects/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "마운자로·위고비 5회차 — 위장관 부작용 줄이기",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비만 약물치료 · 오심 · 변비 · 탈수",
+    },
+    {
+        "kind": "decks", "slug": "glp1-week-06-injection",
+        "slug_path": "decks/endocrine/glp1-weight-management/week-06-injection/",
+        "html_path": ROOT / "decks/endocrine/glp1-weight-management/week-06-injection/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "마운자로·위고비 6회차 — 주사·보관·놓쳤을 때",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비만 약물치료 · 주사법 · 보관",
+    },
+    {
+        "kind": "decks", "slug": "glp1-week-07-safety",
+        "slug_path": "decks/endocrine/glp1-weight-management/week-07-safety/",
+        "html_path": ROOT / "decks/endocrine/glp1-weight-management/week-07-safety/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "마운자로·위고비 7회차 — 위험 신호와 진료 연락",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비만 약물치료 · 안전성 · Red flags",
+    },
+    {
+        "kind": "decks", "slug": "glp1-week-08-maintenance",
+        "slug_path": "decks/endocrine/glp1-weight-management/week-08-maintenance/",
+        "html_path": ROOT / "decks/endocrine/glp1-weight-management/week-08-maintenance/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "마운자로·위고비 8회차 — 감량 이후 유지 전략",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비만 약물치료 · 체중 유지 · 요요 예방",
     },
     {
         "kind": "decks", "slug": "gout",
@@ -1269,6 +1342,21 @@ def _validate_targets_routing() -> list[str]:
             issues.append(f"{prefix}: invalid kind '{kind}' (must be one of {valid_kinds})")
             continue
 
+        notion_sync = t.get("notion_sync", True)
+        if not isinstance(notion_sync, bool):
+            issues.append(f"{prefix}: notion_sync must be a boolean when present")
+
+        if kind == "lab-reports" and "status" in t:
+            issues.append(
+                f"{prefix}: lab-reports DB has no status field; use "
+                "notion_sync=False or remove the row manually"
+            )
+
+        status = t.get("status", ACTIVE_STATUS)
+        if kind != "lab-reports" and status not in VALID_NOTION_STATUSES:
+            valid = ", ".join(sorted(VALID_NOTION_STATUSES))
+            issues.append(f"{prefix}: invalid status '{status}' (must be one of: {valid})")
+
         if not slug_path.startswith(f"{kind}/"):
             issues.append(f"{prefix}: slug_path '{slug_path}' does not start with kind '{kind}/'")
 
@@ -1445,10 +1533,13 @@ def main() -> int:
             # - decks/handouts use {title, category, audience, [disease]}
             # - lab-reports use {patient_name, chart_no, exam_date, doctor, [note]}
             #   OR legacy title "[1063] 김종혁 — 골 대사 검사" (auto-parsed in _notion_sync)
-            sync_eligible = (
-                kind == "lab-reports" and ("patient_name" in t or "title" in t)
-            ) or (
-                kind in ("decks", "handouts") and "title" in t
+            notion_sync = t.get("notion_sync", True)
+            sync_eligible = notion_sync and (
+                (
+                    kind == "lab-reports" and ("patient_name" in t or "title" in t)
+                ) or (
+                    kind in ("decks", "handouts") and "title" in t
+                )
             )
             if NOTION_ENABLED and sync_eligible:
                 pdf_url = f"{BASE_URL}/output/{kind}/{slug}.pdf"
@@ -1460,6 +1551,7 @@ def main() -> int:
                         pdf_url=pdf_url,
                         today_iso=today_iso,
                         version=t.get("version", "v1.0"),
+                        status=t.get("status", ACTIVE_STATUS),
                         # decks / handouts
                         title=t.get("title"),
                         category=t.get("category"),

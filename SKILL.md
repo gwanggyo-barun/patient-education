@@ -299,13 +299,31 @@ rm ~/Library/LaunchAgents/io.github.gwanggyo-barun.clinic-content.daily-fetch.pl
 1. `cd ~/clinic-content-system` (스킬 트리거되면 Claude가 여기로 이동)
 2. `git pull` (다른 머신에서 푸시한 것 받기)
 3. 새 HTML 작성 — `decks/{specialty}/{topic}/{slug}/index.html` 또는 `handouts/...` 또는 `lab-reports/...`
-4. `build.py`의 `TARGETS` 리스트에 새 항목 추가 (kind, slug, slug_path, html_path, qr_class, fmt, **+ Notion 메타: title, category, audience, disease**)
+4. `build.py`의 `TARGETS` 리스트에 새 항목 추가 (kind, slug, slug_path, html_path, qr_class, fmt, **+ Notion 메타: title, category, audience, disease, status**)
 5. (선택) 로컬 검증: `python3 build.py` — Playwright 설치되어 있다면
 6. `git status --short`로 staged/untracked 상태 audit → 이번 작업 파일만 `git add <file>`로 명시 stage → `git diff --cached --name-only` 재확인 → `git commit` → `git push`
 7. CI(GitHub Actions)가 ~1분 20초에 자동 처리:
    - PDF 빌드 (Playwright Chromium)
    - GitHub Pages 배포 (HTML + PDF 라이브)
    - Notion DB 자동 행 upsert (📋 진료 설명용 자료 DB)
+
+### 콘텐츠 보관 / 공유페이지 숨김
+
+Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 `TARGETS`를 기준으로 다시 만들어질 수 있다. 공개/보관 의도는 `build.py`에 기록한다.
+
+```python
+{
+    "kind": "decks", "slug": "example",
+    ...
+    "status": ARCHIVED_STATUS,  # Notion 상태 = ⏸️ 보류
+}
+```
+
+- decks/handouts의 기본값은 `ACTIVE_STATUS` (`✅ 사용중`)이다.
+- decks/handouts에서 `status: ARCHIVED_STATUS`는 자료와 링크는 보존하지만 Notion 상태를 `⏸️ 보류`로 유지한다. 공유 페이지의 “사용중 자료만” 뷰에서 숨길 때 이 값을 쓴다.
+- `notion_sync: False`는 모든 kind에서 해당 TARGETS 항목을 Notion에 생성/갱신하지 않는다. 기존 Notion 행을 휴지통으로 보낸 뒤 다시 생성되지 않게 할 때 쓴다.
+- lab-reports DB에는 `상태` 속성이 없으므로 `status`를 쓰지 않는다. 필요하면 `notion_sync: False`로 sync를 끄고 행은 수동 정리한다.
+- GitHub Pages의 직접 URL까지 없애려면 source HTML 또는 공개 인덱스 카드도 별도 정리해야 한다. Notion 상태는 Notion 공유 페이지 표시만 제어한다.
 
 ### 라이브 URL
 

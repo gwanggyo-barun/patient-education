@@ -88,6 +88,8 @@ TARGETS = [
         # Notion DB 동기용 (decks/handouts 필수)
         "title": "역류성 식도염 생활관리",
         "category": "🫁 위장관", "audience": "환자/보호자", "disease": "GERD",
+        # 선택: 공유 페이지에서 숨기고 보관할 때
+        "status": ARCHIVED_STATUS,
     },
 
     # === A4 handout (1 page) ===
@@ -113,6 +115,12 @@ TARGETS = [
     },
 ]
 ```
+
+### Notion 공개/보관 제어
+
+decks/handouts 항목은 기본적으로 Notion에 `✅ 사용중`으로 upsert된다. 자료를 지우지 않고 공유 페이지의 “사용중 자료만” 뷰에서 숨기려면 해당 항목에 `"status": ARCHIVED_STATUS`를 둔다. 행 자체를 휴지통에 보내고 다시 생성도 막아야 할 때는 모든 kind에서 `"notion_sync": False`를 사용한다. lab-reports DB에는 `상태` 속성이 없으므로 `status`를 쓰지 않는다.
+
+이 설정은 Notion DB 표시만 제어한다. GitHub Pages 직접 URL 노출까지 중단하려면 source HTML이나 공개 인덱스 링크를 별도 정리해야 한다.
 
 빌드 실행:
 ```bash
