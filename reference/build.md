@@ -171,6 +171,8 @@ https://gwanggyo-barun.github.io/patient-education/decks/gi/gerd/lifestyle/
 6. `git add <명시 파일>` (절대 `.` 또는 `-A` 금지) → commit → push
 7. CI(~80초)가 PDF 빌드 + GH Pages 배포 + Notion DB 자동 동기
 
+사용자가 "검수 후 올려줘", "올려줘", "노션에 올려줘", "공유되게 해줘"라고 말하면 `push`까지 포함한다. `commit`에서 멈추면 GitHub Pages URL은 404가 날 수 있다. 사용자가 명시적으로 "푸시하지 마" 또는 "커밋만"이라고 한 경우에만 push를 생략한다.
+
 ## 검증 체크리스트
 
 빌드 후 PDF를 열어서 확인:

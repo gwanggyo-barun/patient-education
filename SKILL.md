@@ -69,6 +69,7 @@ description: >
 - **변경 시작 전 `git pull --rebase` 필수** — 다른 머신에서의 변경을 먼저 받기. 충돌 안 나는 게 정상
 - **변경 작업 끝에는 명시적 stage/audit 후 commit/push 또는 사용자 승인 요청까지 처리**. 호스트 정책이 자동 commit/push를 금지하면 변경 범위와 검증 결과를 요약하고 승인을 받는다.
 - decks/handouts 추가 시 동일 — 커밋 메시지에 주제 명시
+- **사용자가 슬라이드/자료를 만들고 "검수 후 올려줘", "올려줘", "노션에 올려줘", "공유되게 해줘"처럼 배포 의도를 말하면 `commit`에서 멈추지 말고 `git push origin main`까지 완료한다.** 이 repo에서 "올리기"는 GitHub Pages 404를 없애기 위한 push까지 포함한다. 단, 사용자가 명시적으로 "푸시하지 마", "커밋만"이라고 했거나, staged 영역에 내 작업 외 파일이 있어 분리 불가능하거나, push가 보호/인증/충돌로 실패하면 즉시 보고하고 필요한 확인을 받는다.
 - **lab-reports 커밋 메시지에는 환자명/차트번호 절대 금지** — repo 가 public 이라 git log 가 노출됨. `Add lab-report 842acd69b8 (diabetes-screening)` 처럼 hash 만 쓴다 ([Gotcha 11] 참조)
 
 ### 다른 머신에서 SKILL 업데이트 받기 (수신 측 절차)
