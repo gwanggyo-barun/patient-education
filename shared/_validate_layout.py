@@ -108,7 +108,8 @@ def validate_html_file(html_path: Path, kind: str = "auto") -> list[dict]:
     """Validate a single HTML file. kind: 'handout' | 'deck' | 'auto' (sniff)."""
     if kind == "auto":
         text = html_path.read_text(encoding="utf-8")
-        if "clinic-handout-a4.css" in text or "lab-report" in str(html_path) or "handouts/" in str(html_path):
+        path_parts = set(html_path.resolve().parts)
+        if "clinic-handout-a4.css" in text or "lab-reports" in path_parts or "handouts" in path_parts:
             kind = "handout"
         else:
             kind = "deck"
