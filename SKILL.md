@@ -335,9 +335,11 @@ rm ~/Library/LaunchAgents/io.github.gwanggyo-barun.clinic-content.daily-fetch.pl
    - GitHub Pages 배포 (HTML + PDF 라이브)
    - Notion DB 자동 행 upsert (📋 진료 설명용 자료 DB)
 
-### 콘텐츠 보관 / 공유페이지 숨김
+### 콘텐츠 삭제 / 보관 / 공유페이지 숨김
 
-Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 `TARGETS`를 기준으로 다시 만들어질 수 있다. 공개/보관 의도는 `build.py`에 기록한다.
+Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 `_notion_sync.py`가 같은 DB 안의 같은 제목/환자검사 행을 search로 다시 확인한다. 휴지통 상태(`in_trash`/`archived`)가 감지되면 `skipped_deleted`로 처리하고 새 행을 만들지 않는다.
+
+자료를 삭제하지 않고 공유페이지에서만 숨길 때는 공개/보관 의도를 `build.py`에 기록한다.
 
 ```python
 {
@@ -349,7 +351,7 @@ Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 
 
 - decks/handouts의 기본값은 `ACTIVE_STATUS` (`✅ 사용중`)이다.
 - decks/handouts에서 `status: ARCHIVED_STATUS`는 자료와 링크는 보존하지만 Notion 상태를 `⏸️ 보류`로 유지한다. 공유 페이지의 “사용중 자료만” 뷰에서 숨길 때 이 값을 쓴다.
-- `notion_sync: False`는 모든 kind에서 해당 TARGETS 항목을 Notion에 생성/갱신하지 않는다. 기존 Notion 행을 휴지통으로 보낸 뒤 다시 생성되지 않게 할 때 쓴다.
+- `notion_sync: False`는 모든 kind에서 해당 TARGETS 항목을 Notion에 생성/갱신하지 않는다. Notion search로도 삭제 상태를 찾을 수 없는 항목까지 완전히 끊을 때 쓴다.
 - lab-reports DB에는 `상태` 속성이 없으므로 `status`를 쓰지 않는다. 필요하면 `notion_sync: False`로 sync를 끄고 행은 수동 정리한다.
 - GitHub Pages의 직접 URL까지 없애려면 source HTML 또는 공개 인덱스 카드도 별도 정리해야 한다. Notion 상태는 Notion 공유 페이지 표시만 제어한다.
 

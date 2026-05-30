@@ -47,6 +47,40 @@ TITLE_PROPS = {
 _LAB_TITLE_RE = re.compile(r"^\[(\d+)\]\s*([^—\-]+?)(?:\s*[—\-]\s*(.+))?$")
 
 
+def _normalize_notion_id(value: str | None) -> str:
+    return (value or "").replace("-", "").lower()
+
+
+def _page_is_trashed(page: dict) -> bool:
+    return bool(
+        page.get("in_trash")
+        or page.get("archived")
+        or page.get("is_archived")
+    )
+
+
+def _page_parent_matches(page: dict, db_id: str) -> bool:
+    parent = page.get("parent", {})
+    parent_id = parent.get("database_id") or parent.get("data_source_id")
+    return _normalize_notion_id(parent_id) == _normalize_notion_id(db_id)
+
+
+def _title_prop_text(page: dict, prop_name: str) -> str:
+    prop = page.get("properties", {}).get(prop_name, {})
+    return "".join(t.get("plain_text", "") for t in prop.get("title", []))
+
+
+def _rich_text_prop_text(page: dict, prop_name: str) -> str:
+    prop = page.get("properties", {}).get(prop_name, {})
+    return "".join(t.get("plain_text", "") for t in prop.get("rich_text", []))
+
+
+def _first_live_or_any(pages: list[dict]) -> dict | None:
+    if not pages:
+        return None
+    return next((page for page in pages if not _page_is_trashed(page)), pages[0])
+
+
 def _api(method: str, path: str, body: dict | None = None) -> dict:
     token = os.environ["NOTION_TOKEN"]
     url = f"https://api.notion.com/v1{path}"
@@ -63,20 +97,54 @@ def _api(method: str, path: str, body: dict | None = None) -> dict:
         raise RuntimeError(f"Notion {method} {path} → {e.code}: {err_body}") from e
 
 
-def _find_page_id_by_title(db_id: str, title_prop: str, title: str) -> str | None:
+def _search_pages_by_title(title: str) -> list[dict]:
+    body: dict = {
+        "query": title,
+        "filter": {"property": "object", "value": "page"},
+        "page_size": 100,
+    }
+    pages: list[dict] = []
+    while True:
+        res = _api("POST", "/search", body)
+        pages.extend(res.get("results", []))
+        if not res.get("has_more"):
+            return pages
+        body["start_cursor"] = res["next_cursor"]
+
+
+def _find_page_by_title(db_id: str, title_prop: str, title: str) -> dict | None:
     res = _api(
         "POST",
         f"/databases/{db_id}/query",
         {
             "filter": {"property": title_prop, "title": {"equals": title}},
-            "page_size": 1,
+            "page_size": 10,
         },
     )
     results = res.get("results", [])
-    return results[0]["id"] if results else None
+    existing = _first_live_or_any(results)
+    if existing:
+        return existing
+
+    matches = [
+        page for page in _search_pages_by_title(title)
+        if _page_parent_matches(page, db_id)
+        and _title_prop_text(page, title_prop) == title
+    ]
+    return _first_live_or_any(matches)
 
 
-def _ensure_patient_page(chart_no: str, patient_name: str) -> str:
+def _find_patient_page_by_search(chart_no: str, patient_name: str) -> dict | None:
+    matches = [
+        page for page in _search_pages_by_title(patient_name)
+        if _page_parent_matches(page, PATIENT_DB_ID)
+        and _title_prop_text(page, "환자명") == patient_name
+        and _rich_text_prop_text(page, "차트번호") == chart_no
+    ]
+    return _first_live_or_any(matches)
+
+
+def _ensure_patient_page(chart_no: str, patient_name: str) -> str | None:
     """Find patient page by chart_no, or create one. Returns page_id.
 
     chart_no is the unique identifier (EMR chart number) — used for dedup so
@@ -89,16 +157,16 @@ def _ensure_patient_page(chart_no: str, patient_name: str) -> str:
         f"/databases/{PATIENT_DB_ID}/query",
         {
             "filter": {"property": "차트번호", "rich_text": {"equals": chart_no}},
-            "page_size": 1,
+            "page_size": 10,
         },
     )
     results = res.get("results", [])
     if results:
-        existing_id = results[0]["id"]
-        title_prop = results[0].get("properties", {}).get("환자명", {})
-        existing_name = "".join(
-            t.get("plain_text", "") for t in title_prop.get("title", [])
-        )
+        existing = _first_live_or_any(results)
+        if existing is None or _page_is_trashed(existing):
+            return None
+        existing_id = existing["id"]
+        existing_name = _title_prop_text(existing, "환자명")
         if patient_name and existing_name != patient_name:
             _api(
                 "PATCH",
@@ -110,6 +178,12 @@ def _ensure_patient_page(chart_no: str, patient_name: str) -> str:
                 },
             )
         return existing_id
+
+    deleted_or_missed = _find_patient_page_by_search(chart_no, patient_name)
+    if deleted_or_missed:
+        if _page_is_trashed(deleted_or_missed):
+            return None
+        return deleted_or_missed["id"]
 
     res = _api(
         "POST",
@@ -127,7 +201,7 @@ def _ensure_patient_page(chart_no: str, patient_name: str) -> str:
 
 def _find_lab_report_existing(
     db_id: str, slug: str, search_title: str
-) -> str | None:
+) -> dict | None:
     """Find existing lab-report row using slug-based dedup.
 
     The slug is a SHA-256 hash of (chart_no, patient_name, topic) — stable
@@ -144,13 +218,14 @@ def _find_lab_report_existing(
         f"/databases/{db_id}/query",
         {
             "filter": {"property": "파일링크", "url": {"contains": slug}},
-            "page_size": 1,
+            "page_size": 10,
         },
     )
     results = res.get("results", [])
-    if results:
-        return results[0]["id"]
-    return _find_page_id_by_title(db_id, "환자명", search_title)
+    existing = _first_live_or_any(results)
+    if existing:
+        return existing
+    return _find_page_by_title(db_id, "환자명", search_title)
 
 
 def _clickable_links(html_url: str, pdf_url: str) -> list:
@@ -522,6 +597,7 @@ def upsert(
     db_id = DBS[kind]
     title_prop = TITLE_PROPS[kind]
     notes_rich = _clickable_links(html_url, pdf_url)
+    patient_page_id: str | None = None
 
     if kind == "lab-reports":
         # Legacy fallback: parse "[chart] name — note" out of title
@@ -532,21 +608,6 @@ def upsert(
             note = note or p_note
         # exam_date defaults to today if still unspecified
         exam_date = exam_date or today_iso
-        # Auto-link to 환자 마스터 DB — find by chart_no, create if missing.
-        # Best-effort: lab-report upsert still proceeds if patient link fails.
-        patient_page_id: str | None = None
-        if patient_name and chart_no:
-            try:
-                patient_page_id = _ensure_patient_page(chart_no, patient_name)
-            except Exception as e:  # noqa: BLE001
-                import sys as _sys
-                # Never log chart_no, name, or full exception text — CI logs
-                # on public repos are world-readable. Exception class only.
-                print(
-                    f"⚠️  patient master link failed (chart=*** name=***) "
-                    f"({type(e).__name__})",
-                    file=_sys.stderr,
-                )
         properties, search_title = _build_lab_report_props(
             patient_name=patient_name or "",
             chart_no=chart_no or "",
@@ -578,10 +639,40 @@ def upsert(
         # Slug-based dedup — survives note/title edits between rebuilds.
         # Fallback to slug derivation if caller didn't pass it (legacy callers).
         dedup_slug = slug or pdf_url.rsplit("/", 1)[-1].removesuffix(".pdf")
-        existing = _find_lab_report_existing(db_id, dedup_slug, search_title)
+        existing_page = _find_lab_report_existing(db_id, dedup_slug, search_title)
     else:
-        existing = _find_page_id_by_title(db_id, title_prop, search_title)
-    if existing:
+        existing_page = _find_page_by_title(db_id, title_prop, search_title)
+
+    if existing_page and _page_is_trashed(existing_page):
+        return ("skipped_deleted", existing_page["id"])
+
+    if kind == "lab-reports" and patient_name and chart_no:
+        # Auto-link to 환자 마스터 DB — find by chart_no, create if missing.
+        # Best-effort: lab-report upsert still proceeds if patient link fails.
+        try:
+            patient_page_id = _ensure_patient_page(chart_no, patient_name)
+        except Exception as e:  # noqa: BLE001
+            import sys as _sys
+            # Never log chart_no, name, or full exception text — CI logs
+            # on public repos are world-readable. Exception class only.
+            print(
+                f"⚠️  patient master link failed (chart=*** name=***) "
+                f"({type(e).__name__})",
+                file=_sys.stderr,
+            )
+        properties, search_title = _build_lab_report_props(
+            patient_name=patient_name,
+            chart_no=chart_no,
+            exam_date=exam_date,
+            doctor=doctor,
+            note=note,
+            pdf_url=pdf_url,
+            notes_rich=notes_rich,
+            patient_page_id=patient_page_id,
+        )
+
+    if existing_page:
+        existing = existing_page["id"]
         _api("PATCH", f"/pages/{existing}", {"properties": properties})
         if kind == "lab-reports":
             # Backfill: if existing row has no body yet (e.g. created before
