@@ -167,9 +167,10 @@ https://gwanggyo-barun.github.io/patient-education/decks/gi/gerd/lifestyle/
 2. content-template.md / patterns.md 참고해 본문 작성
 3. `build.py`의 `TARGETS` 리스트에 dict 한 항목 append (위 스키마 참조)
 4. `python3 -m shared._validate_layout <html_path>` 로 사전 검증
-5. (선택) `python3 build.py` 로컬 빌드 — `output/{kind}/{slug}-preview.png` 시각 점검
-6. `git add <명시 파일>` (절대 `.` 또는 `-A` 금지) → commit → push
-7. CI(~80초)가 PDF 빌드 + GH Pages 배포 + Notion DB 자동 동기
+5. 이미지가 필요하면 `reference/image-assets.md`의 품질 우선 slot-first 순서를 따른다: 실제 slide/section 문구 기반 visual intent 작성 → 중복 subject/구도 없음 확인 → HTML/CSS 슬롯 확정 → 슬롯 치수 실측 → 그 비율로 이미지 생성 → `.prompt.md` 추적 → slot 비율 crop/resize → 다시 `_validate_layout`. 이미지 수량은 목표가 아니며, 무관하거나 가독성을 낮추는 이미지는 생략한다.
+6. (선택) `python3 build.py` 로컬 빌드 — `output/{kind}/{slug}-preview.png` 시각 점검
+7. `git add <명시 파일>` (절대 `.` 또는 `-A` 금지) → commit → push
+8. CI(~80초)가 PDF 빌드 + GH Pages 배포 + Notion DB 자동 동기
 
 사용자가 "검수 후 올려줘", "올려줘", "노션에 올려줘", "공유되게 해줘"라고 말하면 `push`까지 포함한다. `commit`에서 멈추면 GitHub Pages URL은 404가 날 수 있다. 사용자가 명시적으로 "푸시하지 마" 또는 "커밋만"이라고 한 경우에만 push를 생략한다.
 
@@ -182,6 +183,8 @@ https://gwanggyo-barun.github.io/patient-education/decks/gi/gerd/lifestyle/
 - [ ] 12장 모두 푸터(출처 + 페이지 번호) 위치 동일
 - [ ] 표지 외 슬라이드에 그라데이션 배경이 없음
 - [ ] 색상이 디자인 토큰 외 추가되지 않음
+- [ ] 이미지가 있으면 각 이미지의 subject 가 해당 슬라이드 본문과 직접 맞고, 같은 deck/series 안에서 파일/구도/subject 중복이 없음
+- [ ] 이미지를 넣느라 본문 폰트·카드 간격·footer clearance 가 나빠지지 않음
 - [ ] Pretendard 폰트가 정상 로드됨 (CDN 차단 시 fallback 확인)
 - [ ] 의학 용어 영문 병기됨
 - [ ] 출처 명시됨
