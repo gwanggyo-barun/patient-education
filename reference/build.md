@@ -13,16 +13,16 @@ playwright install chromium
 
 ### AI 이미지 자산
 
-핸드아웃/검사 결과지에 그림을 넣을 때는 먼저 HTML/CSS 안에 실제 슬롯을 만든 뒤, 그 슬롯 치수에 맞춘 `$imagegen` 래스터 이미지(PNG/WebP/JPEG)를 `shared/assets/generated/`에 저장하고 HTML에서 참조한다. 제목 뒤 장식 이미지, 투명 배경 배너, 작은 SVG icon strip/context strip은 핸드아웃 이미지 보강으로 인정하지 않는다.
+슬라이드 덱/핸드아웃/검사 결과지에 그림을 넣을 때는 모두 같은 방식을 쓴다. 먼저 HTML/CSS 안에 실제 슬롯을 만든 뒤, 그 슬롯 치수에 맞춘 `$imagegen` 래스터 이미지(PNG/WebP/JPEG)를 `shared/assets/generated/`에 저장하고 HTML에서 참조한다. 제목 뒤 장식 이미지, 투명 배경 배너, 작은 SVG icon strip/context strip은 어떤 콘텐츠 타입에서도 이미지 보강으로 인정하지 않는다.
 
-CLI/API 경로가 명시적으로 필요할 때는 별도 Python SDK 없이 표준 라이브러리로 OpenAI Image API를 호출할 수 있다. 일반 handout 보강은 built-in `$imagegen`을 우선 사용하고, 같은 이름의 `.prompt.md`에 slot size/ratio, source text summary, visual intent, unique subject 를 남긴다.
+CLI/API 경로가 명시적으로 필요할 때는 별도 Python SDK 없이 표준 라이브러리로 OpenAI Image API를 호출할 수 있다. 일반 이미지 보강은 built-in `$imagegen`을 우선 사용하고, 같은 이름의 `.prompt.md`에 slot size/ratio, source text summary, visual intent, unique subject 를 남긴다.
 
 ```bash
 export OPENAI_API_KEY="..."
 
 python3 tools/generate_image_asset.py \
   --prompt "A clean patient-friendly medical illustration with empty space for HTML labels." \
-  --output shared/assets/generated/example-handout-hero.png \
+  --output shared/assets/generated/example-ai-visual.png \
   --size 1536x1024 \
   --quality medium
 ```
