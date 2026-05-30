@@ -2,6 +2,14 @@
 
 Generated with built-in imagegen for a deck visual slot.
 
+## Placement Audit
+
+- Slide: 3, `통풍 (Gout) 이란`
+- Source text summary: 혈중 요산이 포화 농도를 넘으면 바늘 모양 MSU 결정이 관절에 침착되고 면역세포가 이를 인식해 급성 염증 발작을 일으킵니다.
+- Visual intent: Mechanism
+- Unique subject: Inflamed big-toe joint cross-section with urate crystals and immune cells.
+- Negative constraints: no generic clinic background, no repeated organ strip, no text inside image.
+
 ## Prompt
 
 Full-bleed 16:9 gout pathophysiology illustration with inflamed big-toe joint cross-section, urate crystals and immune cells, edge-to-edge, no text.

@@ -2,6 +2,14 @@
 
 Generated with built-in imagegen for a deck visual slot.
 
+## Placement Audit
+
+- Slide: 6, `편두통의 4단계`
+- Source text summary: 전구기, 전조기, 두통기, 회복기로 이어지는 시간 흐름을 알면 조기 대응이 가능합니다.
+- Visual intent: Process
+- Unique subject: Continuous four-phase migraine attack path from prodrome to recovery.
+- Negative constraints: no generic brain background, no repeated prevention routine scene, no text inside image.
+
 ## Prompt
 
 Full-bleed 16:9 migraine four phases continuous visual path: prodrome, aura, headache sensitivity, recovery, without labels, no text.

@@ -2,6 +2,14 @@
 
 Generated with built-in imagegen for a deck visual slot.
 
+## Placement Audit
+
+- Slide: 3, `철결핍성 빈혈 (IDA) 이란`
+- Source text summary: 저장철 고갈로 헤모글로빈 합성이 줄고 작고 창백한 적혈구가 만들어져 산소 운반 능력이 떨어집니다.
+- Visual intent: Mechanism
+- Unique subject: Pale red blood cells with reduced hemoglobin and oxygen delivery.
+- Negative constraints: no generic blood-drop icon strip, no repeated anemia cause scene, no text inside image.
+
 ## Prompt
 
 Full-bleed 16:9 scientific-medical illustration of iron deficiency anemia with pale red blood cells, hemoglobin/oxygen delivery concept, fatigue tissue oxygen cues, edge-to-edge composition, no margins, no text.

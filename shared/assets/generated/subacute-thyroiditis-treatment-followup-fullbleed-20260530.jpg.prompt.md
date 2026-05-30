@@ -2,6 +2,14 @@
 
 Generated with built-in imagegen for a deck visual slot.
 
+## Placement Audit
+
+- Slide: 9, `치료 2단계 — 스테로이드 감량 프로토콜`
+- Source text summary: NSAIDs 효과가 부족하면 프레드니솔론을 시작하고 증상·염증 수치에 따라 천천히 감량해 재발을 줄입니다.
+- Visual intent: Process
+- Unique subject: Steroid taper and follow-up pathway for subacute thyroiditis pain control.
+- Negative constraints: no generic medication background, no repeated diagnosis-tools scene, no text inside image.
+
 ## Prompt
 
 Full-bleed 16:9 subacute thyroiditis treatment and follow-up pathway with pain relief medicine, calming heart symbol, tapering pills, blank calendar and tubes, no text.

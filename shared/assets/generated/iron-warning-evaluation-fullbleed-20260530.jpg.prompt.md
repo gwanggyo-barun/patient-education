@@ -2,6 +2,14 @@
 
 Generated with built-in imagegen for a deck visual slot.
 
+## Placement Audit
+
+- Slide: 10, `즉시 평가가 필요한 신호 — 단순 빈혈로 보지 말 것`
+- Source text summary: 남성·폐경 후 여성 IDA, 흑색변·혈변·토혈, 체중감소 등은 출혈원·악성 평가가 필요합니다.
+- Visual intent: Action
+- Unique subject: Evaluation pathway from anemia warning signs to endoscopy and urgent assessment.
+- Negative constraints: no generic hospital corridor, no repeated oral-iron scene, no text inside image.
+
 ## Prompt
 
 Full-bleed 16:9 iron deficiency red flag evaluation scene with severe fatigue, dizziness, clinician, blood test, GI evaluation cues, edge-to-edge, no text.

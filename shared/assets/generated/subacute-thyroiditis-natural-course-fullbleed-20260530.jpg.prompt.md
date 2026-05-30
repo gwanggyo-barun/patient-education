@@ -2,6 +2,14 @@
 
 Generated with built-in imagegen for a deck visual slot.
 
+## Placement Audit
+
+- Slide: 5, `자연경과 — 4단계 패턴`
+- Source text summary: 갑상선중독기, 정상 회복기, 일시적 저하증, 완전 회복으로 이어지는 6~18개월 경과를 설명합니다.
+- Visual intent: Process
+- Unique subject: Four-stage natural course of subacute thyroiditis from hormone release to recovery.
+- Negative constraints: no generic thyroid inflammation scene, no repeated diagnosis-tools layout, no text inside image.
+
 ## Prompt
 
 Full-bleed 16:9 subacute thyroiditis natural course as continuous unlabeled stages: hormone release, normalization, low-hormone fatigue, recovery, no text.

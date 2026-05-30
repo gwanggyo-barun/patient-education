@@ -2,6 +2,14 @@
 
 Generated with built-in imagegen for a deck visual slot.
 
+## Placement Audit
+
+- Slide: 3, `왜 생길까요? — 바이러스 감염이 방아쇠`
+- Source text summary: 감기 등 바이러스 감염 후 갑상선 여포 세포가 손상되고 면역 반응이 과도해져 통증과 염증이 생깁니다.
+- Visual intent: Mechanism
+- Unique subject: Inflamed thyroid following viral immune trigger.
+- Negative constraints: no generic thyroid anatomy background, no repeated natural-course timeline, no text inside image.
+
 ## Prompt
 
 Full-bleed 16:9 subacute thyroiditis inflamed thyroid after viral infection, neck anatomy, immune response, jaw/ear pain radiation, no text.

@@ -2,6 +2,14 @@
 
 Generated with built-in imagegen for a deck visual slot.
 
+## Placement Audit
+
+- Slide: 7, `1차 치료 — 경구 철분제 + 흡수 최적화`
+- Source text summary: 경구 철분제는 공복·비타민 C와 함께 복용하고 차·우유·칼슘제와 간격을 두며, 격일 복용이 흡수에 유리할 수 있습니다.
+- Visual intent: Process
+- Unique subject: Oral iron absorption timing with helpful and interfering intake cues.
+- Negative constraints: no generic pill image, no repeated anemia blood-cell scene, no text inside image.
+
 ## Prompt
 
 Full-bleed 16:9 oral iron absorption concept with capsule, water, vitamin C, stomach/intestine, and separated coffee/tea/calcium interference cues, no text.
