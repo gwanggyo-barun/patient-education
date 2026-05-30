@@ -255,28 +255,31 @@ HTML will overlay Korean labels using Pretendard font separately.
 
 라벨 배치 옵션: (1) 이미지 아래 grid, (2) 이미지 위 `.ai-visual__pin` absolute, (3) `body-2col` 우측 카드 (일석이조 패턴).
 
-### 15. 이미지 생성 순서 — layout slot 먼저, image는 그 다음
+### 15. 이미지 생성 순서 — layout slot 먼저, imagegen raster는 그 다음
 
 핸드아웃/검사결과지/덱에 이미지를 추가할 때는 **절대 이미지를 먼저 만들고 나중에 끼워 맞추지 않는다.** 순서는 항상 다음과 같다.
 
-1. HTML 레이아웃을 먼저 확정하고, 실제 이미지 슬롯을 만든다. 슬롯은 `width`, `height`, `aspect-ratio`, `max-width` 중 하나 이상으로 크기가 안정되어야 한다.
+0. 기존 좋은 핸드아웃 이미지 사례를 먼저 비교한다. 최소 2개 이상: `handouts/imaging/bone-density-prep`, `handouts/endoscopy/colonoscopy-prep`, `handouts/medication/nasal-spray-allergic-rhinitis`, `handouts/medication/insulin-start`, `handouts/lifestyle/creatine-guide`, `handouts/lifestyle/dyslipidemia-diet`.
+1. HTML 레이아웃을 먼저 확정하고, 실제 이미지 슬롯을 만든다. 슬롯은 `.ai-visual` 계열 또는 동급의 큰 figure 영역이어야 하며 `width`, `height`, `aspect-ratio`, `max-width` 중 하나 이상으로 크기가 안정되어야 한다.
 2. Playwright 또는 CSS 실측으로 슬롯의 실제 폭·높이를 mm/px 단위로 확인한다.
-3. 그 슬롯 비율을 프롬프트에 `aspect ratio strictly W:H (px_w x px_h pixels)`로 명시한 뒤 이미지를 생성한다.
+3. 그 슬롯 비율을 프롬프트에 `aspect ratio strictly W:H (px_w x px_h pixels)`로 명시한 뒤 **built-in `$imagegen`으로 PNG/WebP/JPEG 래스터 이미지를 생성한다.**
 4. 생성 결과는 필요하면 슬롯 비율로 crop/resize한 뒤 `shared/assets/generated/`에 저장한다.
-5. HTML에 이미지를 배치한 뒤 `_validate_layout`와 preview PNG로 겹침·잘림·여백을 확인한다.
+5. HTML에 이미지를 배치한 뒤 `_validate_layout`와 preview PNG 육안 검수로 겹침·잘림·여백·그림 자체의 퀄리티를 확인한다.
 
 특히 Notion DB나 build target 전체를 대상으로 기존 자료에 이미지를 보강할 때는 **이미지 개수를 채우는 것이 목표가 아니다.** 가독성과 슬라이드/문서 퀄리티가 올라가는 경우에만 추가한다. 로고/QR을 제외한 의미 있는 이미지가 이미 있고 새 이미지가 같은 정보를 반복하면 스킵한다. 이미지가 없는 자료도 내용에 직접 맞는 Anatomy/Mechanism/Process/Equipment/Action/Comparison 후보가 없으면 텍스트 레이아웃을 개선하고 이미지는 넣지 않는다.
 
-핸드아웃 보강에서는 제목 배경, 투명 장식, 범용 장기 배너처럼 구조만 유지하고 분위기만 더하는 이미지를 금지한다. 먼저 본문 안에 `.ai-visual` 또는 자료별 고정 figure 슬롯을 만들고, 그 슬롯이 설명할 문장·표·체크리스트를 정한 뒤 이미지를 생성한다. 필요하면 한 장이 아니라 여러 장을 넣어도 되지만, 각 이미지는 서로 다른 행동·절차·장비·비교 포인트를 설명해야 하며 같은 구도나 generic strip 반복은 실패다.
+핸드아웃 보강에서는 제목 배경, 투명 장식, 범용 장기 배너처럼 구조만 유지하고 분위기만 더하는 이미지를 금지한다. 먼저 본문 안에 `.ai-visual` 또는 자료별 고정 figure 슬롯을 만들고, 그 슬롯이 설명할 문장·표·체크리스트를 정한 뒤 `$imagegen`으로 래스터 이미지를 생성한다. 필요하면 한 장이 아니라 여러 장을 넣어도 되지만, 각 이미지는 서로 다른 행동·절차·장비·비교 포인트를 설명해야 하며 같은 구도나 generic strip 반복은 실패다.
+
+**중요 실패 사례**: handout에 작은 code-native SVG icon strip 또는 context strip을 만들어 넣고 "이미지 추가"로 간주하는 것은 금지한다. 이런 strip은 `imagegen` 래스터 설명 이미지의 대체물이 아니며, 골밀도 검사·대장내시경 준비·비강 스프레이·인슐린 시작 핸드아웃 수준의 환자 이해도와 시각 품질을 만들지 못하면 실패다. 코드 네이티브 SVG는 수치 그래프, 단순 로고/아이콘, manifest asset, QR처럼 deterministic vector가 본질인 경우에만 쓴다.
 
 ### 16. 이미지 내용 적합성 + 중복 금지
 
 생성 이미지는 장식이 아니라 설명 도구다. 다음을 모두 만족하지 못하면 **생성하지 않거나 제거**한다.
 
 1. **슬라이드 본문과 직접 연결**: 프롬프트의 subject가 해당 슬라이드의 제목·핵심 문장·표/카드 내용에서 온 구체적 개념이어야 한다. "medical infographic", "clinic background", "organ-themed banner" 같은 범용 이미지는 실패로 본다.
-2. **가독성 향상**: 이미지가 텍스트를 대체하거나 압축해 이해를 돕는 경우에만 사용한다. 제목 뒤 장식, 투명 배경, 분위기용 배너는 가독성 향상으로 보지 않는다. 이미지를 넣느라 본문이 작아지거나 카드 간격이 무너지면 이미지를 버린다.
+2. **가독성 향상**: 이미지가 텍스트를 대체하거나 압축해 이해를 돕는 경우에만 사용한다. 제목 뒤 장식, 투명 배경, 분위기용 배너, 작은 SVG icon strip은 가독성 향상으로 보지 않는다. 이미지를 넣느라 본문이 작아지거나 카드 간격이 무너지면 이미지를 버린다.
 3. **중복 이미지 금지**: 같은 파일을 재사용하지 않는다. 파일명만 바꾼 동일 구도, 같은 generic strip, 같은 장기 배경 반복도 중복이다. deck/series 검수 시 `placements == unique_assets` 이어야 하고 reused count 는 0 이어야 한다.
-4. **프롬프트 추적**: 생성본 옆의 `.prompt.md`에는 slide 번호, slide title, source text summary, visual intent, unique subject, slot size/ratio, negative constraints 를 남긴다. 코드 네이티브 SVG 도식도 동일하게 `.prompt.md` 또는 `.spec.md`를 남긴다.
+4. **프롬프트 추적**: 생성본 옆의 `.prompt.md`에는 slide 번호, slide title, source text summary, visual intent, unique subject, slot size/ratio, negative constraints 를 남긴다.
 5. **불확실하면 생략**: 정확히 맞는 그림을 만들 수 없으면 "no image added: reason"으로 기록하고 텍스트 위계·표·아이콘·여백을 개선한다. 이미지 수량 부족은 실패가 아니지만, 무관한 이미지는 실패다.
 
 ---
@@ -1034,7 +1037,7 @@ python3 build.py
 - `output/{slug}.pdf` — 환자 공유용 PDF (1280×720 페이지)
 - `output/{slug}-preview.png` — 데스크톱 풀스크린 미리보기
 
-### Step 3.5 — 인포그래픽 슬롯 설계 + 이미지/spec 생성
+### Step 3.5 — 인포그래픽 슬롯 설계 + `$imagegen` 래스터 생성
 
 **언제**: 초안 HTML + `build.py` + `_validate_layout` 가 통과한 직후. 텍스트와 레이아웃이 일단 확정된 지점에서 한 번 멈춘다 — **레이아웃 확정 후에야 정확한 슬롯 폭/높이 측정 가능** (§3.5.b 참조).
 
@@ -1045,6 +1048,7 @@ python3 build.py
 - **handouts / lab-reports**: 보통 0~2개지만, A4 안에서 여백·가독성이 유지되고 각 이미지가 다른 포인트를 설명하면 여러 개도 허용한다. handout은 기전·행동·비교·안전 확인, lab-report는 검사 원리·장기 모식도·결과 이해 보조처럼 PII가 없는 이미지로 제한한다.
 - **decks**: Definition, Mechanism, Process, Action, Comparison 중 내용상 그림이 가장 강한 슬라이드에만 배치한다. 최소 개수는 없다.
 - 이미지 안에는 글자를 굽지 않는다. 라벨·캡션·숫자·주의 문구는 HTML Pretendard 텍스트로 배치한다.
+- **handouts 이미지 보강의 기본 산출물은 `$imagegen`으로 만든 PNG/WebP/JPEG 래스터 자산이다.** 코드 네이티브 SVG strip, healthicon 묶음, 단순 아이콘 행은 handout "이미지 보강"으로 인정하지 않는다.
 
 #### 3.5.a — 인포그래픽 후보 식별
 
@@ -1061,16 +1065,18 @@ python3 build.py
 
 **스킵 조건** (이미지가 오히려 노이즈): 순수 숫자(Hero Number 단독), 약물 조합표(Regimen Tile), 7가지 액션 Checklist, 경고 alert strip.
 
-**선정 가이드**: handouts / lab-reports 는 대개 0~2개, decks 는 이해를 돕는 만큼만 사용한다. 단, handout이라도 서로 다른 행동·절차·장비·비교 포인트를 짧은 전용 슬롯으로 나누면 여러 개를 넣을 수 있다. 숫자보다 visual intent 가 중요하다. 각 후보는 슬라이드/섹션 제목·핵심 문장과 직접 연결되어야 하며, 같은 deck/series 안에서 같은 구도·같은 subject 를 반복하지 않는다.
+**선정 가이드**: handouts / lab-reports 는 대개 0~2개, decks 는 이해를 돕는 만큼만 사용한다. 단, handout이라도 서로 다른 행동·절차·장비·비교 포인트를 전용 이미지 섹션으로 나누면 여러 개를 넣을 수 있다. 숫자보다 visual intent 와 이미지 품질이 중요하다. 각 후보는 슬라이드/섹션 제목·핵심 문장과 직접 연결되어야 하며, 같은 deck/series 안에서 같은 구도·같은 subject 를 반복하지 않는다.
 
 #### 3.5.a.1 — `$imagegen` 생성·저장 절차
 
-1. HTML에 먼저 `.ai-visual` 또는 handout 전용 fixed figure 슬롯을 만든다. 슬롯 폭/높이는 mm 또는 px로 고정한다.
-2. 슬롯 실측값으로 영문 프롬프트 또는 SVG spec 을 작성한다. deck 의 split/strip 이미지처럼 고정 프레임에 들어가면 full-bleed 구도를 요구하고, “fill the entire frame edge to edge, no blank side gutters, no centered small vignette”를 명시한다. PII, 제품명, 브랜드명, 이미지 내부 텍스트는 금지한다.
-3. 사진·질감·복잡한 해부 일러스트는 `$imagegen` 기본 내장 모드로 이미지별 1회씩 생성한다. 단순 절차/장비/행동 요약처럼 정확한 아이콘 정렬이 더 중요한 경우에는 코드 네이티브 SVG를 `shared/assets/generated/`에 직접 생성해도 된다. 서로 다른 이미지는 하나의 batch가 아니라 별도 프롬프트/spec 으로 만든다.
-4. 생성 결과를 확인한 뒤, 선택본을 `shared/assets/generated/{topic-slug}-{purpose}-YYYYMMDD.{png|webp|jpg|svg}`로 저장한다. `$imagegen` 원본은 삭제하지 않는다. deck split/strip 슬롯은 슬롯 비율로 crop/fit 저장해 좌우 여백이 남지 않게 한다.
+0. 좋은 선례를 먼저 연다: 골밀도 검사, 대장내시경 준비, 비강 스프레이, 인슐린 시작, 크레아틴, 이상지질혈증 식단 중 최소 2개를 preview로 확인한다.
+1. HTML에 먼저 `.ai-visual` 또는 handout 전용 fixed figure 슬롯을 만든다. 슬롯 폭/높이는 mm 또는 px로 고정하고, 작은 장식 strip이 아니라 자료의 주요 교육 섹션이 되게 한다.
+2. 슬롯 실측값으로 영문 프롬프트를 작성한다. deck 의 split/strip 이미지처럼 고정 프레임에 들어가면 full-bleed 구도를 요구하고, “fill the entire frame edge to edge, no blank side gutters, no centered small vignette”를 명시한다. PII, 제품명, 브랜드명, 이미지 내부 텍스트는 금지한다.
+3. `$imagegen` 기본 내장 모드로 이미지별 1회씩 생성한다. 서로 다른 이미지는 하나의 batch가 아니라 별도 프롬프트로 만든다. handout 보강에서 코드 네이티브 SVG는 `$imagegen` 대체물로 쓰지 않는다.
+4. 생성 결과를 확인한 뒤, 선택본을 `shared/assets/generated/{topic-slug}-{purpose}-YYYYMMDD.{png|webp|jpg}`로 저장한다. `$imagegen` 원본은 삭제하지 않는다. deck split/strip 슬롯은 슬롯 비율로 crop/fit 저장해 좌우 여백이 남지 않게 한다.
 5. HTML에 `<figure class="ai-visual">` 또는 handout 전용 figure 로 삽입하고, 필요한 설명은 `.ai-visual__caption`, `.ai-visual__pin`, 또는 `figcaption`으로 얹는다. 슬롯을 꽉 채워야 하는 generated deck image에는 `.ai-visual--fill`을 함께 붙인다.
 6. `python3 -m shared._validate_layout <html_path>` → `python3 build.py` 또는 단일 타깃 빌드 → preview PNG 육안 확인까지 완료한다.
+7. preview가 선례 핸드아웃 대비 작은 아이콘 행, 얇은 strip, 장식 배너처럼 보이면 실패로 보고 재생성·재배치한다.
 
 #### 3.5.b — 영문 프롬프트 작성 규칙 (슬롯 실측 우선)
 
