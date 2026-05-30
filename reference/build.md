@@ -13,9 +13,9 @@ playwright install chromium
 
 ### AI 이미지 자산
 
-핸드아웃/검사 결과지에 AI 생성 그림을 넣을 때는 ChatGPT 웹에서 생성해 고른 PNG/WebP를 `shared/assets/generated/`에 저장하고 HTML에서 참조하는 흐름을 기본으로 한다.
+핸드아웃/검사 결과지에 그림을 넣을 때는 먼저 HTML/CSS 안에 실제 슬롯을 만든 뒤, 그 슬롯 치수에 맞춘 PNG/WebP/JPEG 또는 코드 네이티브 SVG를 `shared/assets/generated/`에 저장하고 HTML에서 참조한다. 제목 뒤 장식 이미지나 투명 배경 배너는 금지한다.
 
-자동 생성이 필요할 때는 별도 Python SDK 없이 표준 라이브러리로 OpenAI Image API를 호출할 수 있다.
+사진·질감·복잡한 해부 일러스트처럼 raster 생성이 필요할 때는 별도 Python SDK 없이 표준 라이브러리로 OpenAI Image API를 호출할 수 있다. 단순 절차/장비/행동 도식은 코드 네이티브 SVG로 생성할 수 있으며, 이 경우에도 같은 이름의 `.prompt.md`에 slot size/ratio, source text summary, visual intent, unique subject 를 남긴다.
 
 ```bash
 export OPENAI_API_KEY="..."
@@ -27,7 +27,7 @@ python3 tools/generate_image_asset.py \
   --quality medium
 ```
 
-세부 프롬프트/HTML 삽입 패턴은 `reference/image-assets.md`를 따른다.
+세부 프롬프트/spec/HTML 삽입 패턴은 `reference/image-assets.md`를 따른다.
 
 ### 호스팅 베이스 URL 설정
 
