@@ -180,6 +180,38 @@ TARGETS = [
         "title": "CPAP 개인 맞춤 심혈관 효과 — Mount Sinai AI (SAVE 재분석)",
         "category": "📰 논문 리뷰", "audience": "의료진", "disease": "수면무호흡 (OSA) · CPAP",
     },
+    {
+        "kind": "decks", "slug": "acs-crc-screening-blood-test-2026",
+        "slug_path": "decks/general/papers-20260530/acs-crc-screening-blood-test-2026/",
+        "html_path": ROOT / "decks/general/papers-20260530/acs-crc-screening-blood-test-2026/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "ACS 2026 대장암 검진 가이드라인 — 혈액검사 신규 추가",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "대장암 검진 · 혈액 기반 cfDNA 검사",
+    },
+    {
+        "kind": "decks", "slug": "finerenone-t1d-ckd-fine-one",
+        "slug_path": "decks/general/papers-20260530/finerenone-t1d-ckd-fine-one/",
+        "html_path": ROOT / "decks/general/papers-20260530/finerenone-t1d-ckd-fine-one/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "Finerenone in Type 1 Diabetes and CKD — FINE-ONE",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "제1형 당뇨병 · 만성콩팥병 · 알부민뇨",
+    },
+    {
+        "kind": "decks", "slug": "easo-obesity-pharmacotherapy-2026",
+        "slug_path": "decks/general/papers-20260530/easo-obesity-pharmacotherapy-2026/",
+        "html_path": ROOT / "decks/general/papers-20260530/easo-obesity-pharmacotherapy-2026/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "EASO 2026 비만 약물치료 알고리즘 업데이트",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "비만 · GLP-1RA · GIP/GLP-1RA",
+    },
+    {
+        "kind": "decks", "slug": "calcium-vitamin-d-fracture-falls-bmj",
+        "slug_path": "decks/general/papers-20260530/calcium-vitamin-d-fracture-falls-bmj/",
+        "html_path": ROOT / "decks/general/papers-20260530/calcium-vitamin-d-fracture-falls-bmj/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "BMJ 2026 칼슘·비타민 D 보충제와 골절·낙상 예방",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "골절 예방 · 낙상 예방 · 칼슘 · 비타민 D",
+    },
 
     # === A4 portrait single-page handouts ===
     {
