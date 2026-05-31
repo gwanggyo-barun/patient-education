@@ -124,6 +124,47 @@ CSS = """
     .qr-block__code { width: 86px; height: 86px; display: flex; align-items: center; justify-content: center; }
     .qr-block__code svg { width: 86px !important; height: 86px !important; }
     .qr-block__caption { font-size: 0.68rem; color: var(--color-slate); line-height: 1.2; text-align: center; }
+
+    .slide__body--visual-focus { grid-template-columns: minmax(0, 1fr) minmax(430px, 0.86fr); gap: var(--space-4); }
+    .slide__body--visual-focus > .paper-visual { position: relative; align-self: stretch; height: 100%; min-height: 0; aspect-ratio: auto; border-color: rgba(91, 155, 213, 0.55); box-shadow: 0 14px 32px rgba(0, 51, 102, 0.12); background: #f8fbff; }
+    .paper-visual img { object-fit: cover; filter: saturate(0.92) hue-rotate(3deg); }
+    .paper-visual .ai-visual__caption { position: absolute; left: 14px; right: 14px; bottom: 12px; padding: 7px 10px; border-radius: 10px; background: rgba(255, 255, 255, 0.86); color: var(--color-navy); font-size: 0.68rem; line-height: 1.25; font-weight: var(--weight-semibold); box-shadow: 0 8px 18px rgba(0, 51, 102, 0.10); }
+    .slide__body--visual-focus .stat-grid { grid-template-columns: 1fr; gap: 8px; }
+    .slide__body--visual-focus .stat-card { padding: 10px 12px; gap: 5px; }
+    .slide__body--visual-focus .stat-card__label { font-size: 0.66rem; }
+    .slide__body--visual-focus .stat-card__value { font-size: 1.45rem; }
+    .slide__body--visual-focus .stat-card__body { font-size: 0.72rem; line-height: 1.28; }
+    .slide__body--visual-focus .card-grid { gap: 8px; }
+    .slide__body--visual-focus .card-grid--6 { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
+    .slide__body--visual-focus .review-card { padding: 10px; gap: 5px; border-radius: 12px; }
+    .slide__body--visual-focus .review-card__kicker { font-size: 0.58rem; }
+    .slide__body--visual-focus .review-card__title { font-size: 0.78rem; line-height: 1.18; }
+    .slide__body--visual-focus .review-card__body { font-size: 0.66rem; line-height: 1.24; }
+    .slide__body--visual-focus .review-card__metric { font-size: 0.95rem; }
+    .slide__body--visual-focus .split { gap: 12px; }
+    .slide__body--visual-focus .split-col__title { font-size: 0.96rem; margin-bottom: 7px; }
+    .slide__body--visual-focus .line-list li { padding: 4px 0; font-size: 0.7rem; line-height: 1.24; }
+    .slide__body--visual-focus .timeline { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 8px; }
+    .slide__body--visual-focus .step { padding: 10px; gap: 5px; }
+    .slide__body--visual-focus .step__num { font-size: 1.15rem; }
+    .slide__body--visual-focus .step__title { font-size: 0.78rem; line-height: 1.18; }
+    .slide__body--visual-focus .step__body { font-size: 0.66rem; line-height: 1.24; }
+    .slide__body--visual-focus .bar-wrap { grid-template-columns: 1fr; gap: 8px; }
+    .slide__body--visual-focus .bars { padding: 12px; gap: 8px; }
+    .slide__body--visual-focus .bar-row { grid-template-columns: 108px 1fr 54px; gap: 8px; }
+    .slide__body--visual-focus .bar-row__label { font-size: 0.7rem; }
+    .slide__body--visual-focus .bar-row__value { font-size: 0.72rem; }
+    .slide__body--visual-focus .bar-track { height: 18px; }
+    .slide__body--visual-focus .table-wrap { gap: 5px; justify-content: start; }
+    .slide__body--visual-focus .tbl-row { gap: 7px; padding: 6px 9px; border-radius: 10px; }
+    .slide__body--visual-focus .tbl-cell { font-size: 0.64rem; line-height: 1.22; }
+    .slide__body--visual-focus .tbl-row--head .tbl-cell { font-size: 0.62rem; }
+    .slide__body--visual-focus .flow { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .slide__body--visual-focus .flow-card { padding: 10px; gap: 4px; }
+    .slide__body--visual-focus .flow-card__label { font-size: 0.58rem; }
+    .slide__body--visual-focus .flow-card__title { font-size: 0.76rem; }
+    .slide__body--visual-focus .flow-card__body { font-size: 0.64rem; line-height: 1.24; }
+    .slide__body--visual-focus .note { margin-top: 8px; padding: 8px 10px; font-size: 0.7rem; line-height: 1.28; border-left-width: 4px; border-radius: 10px; }
 """
 
 
@@ -206,12 +247,23 @@ def cover(deck: dict, total: int) -> str:
 
 
 def slide_shell(slide: dict, body: str, idx: int, total: int) -> str:
+    body_class = "slide__body"
+    visual = ""
+    if slide.get("image"):
+        body_class += " slide__body--visual-focus"
+        caption = slide.get("image_caption", "")
+        caption_html = f'\n        <figcaption class="ai-visual__caption">{caption}</figcaption>' if caption else ""
+        visual = f"""
+      <figure class="ai-visual ai-visual--focus ai-visual--fill paper-visual">
+        <img src="{REL}shared/assets/generated/{slide["image"]}" alt="{slide.get("image_alt", "")}">{caption_html}
+      </figure>"""
     return f"""
   <section class="slide">
 {header(slide["chapter"])}
 {title_block(slide["title"], slide["subtitle"])}
-    <div class="slide__body">
+    <div class="{body_class}">
 {body}
+{visual}
     </div>
 {footer(slide["source"], idx, total)}
   </section>
@@ -406,6 +458,8 @@ DECKS = [
                 "title": "한 문장으로: 혈액검사는 '거부군 구조용' 옵션",
                 "subtitle": "검진 시작·종료 원칙은 그대로, 선택지는 넓어졌지만 우선순위는 바뀌지 않았다.",
                 "source": "ACS press release 2026-05-27 · CA Cancer J Clin 2026",
+                "image": "acs-crc-screening-pathways-20260531.jpg",
+                "image_alt": "대장내시경, 분변검사, 채혈 검진 경로가 확인 표시로 연결되는 파란색 의료 일러스트",
                 "stats": [
                     {"label": "START", "value": "45세", "body": "평균위험 성인은 45세부터 정기 검진 시작. 2018 권고 유지.", "tone": "navy"},
                     {"label": "CONTINUE", "value": "75세", "body": "기대여명 10년 이상이면 75세까지 지속. 76-85세는 개별화.", "tone": "steel"},
@@ -468,6 +522,8 @@ DECKS = [
                 "title": "Shield 혈액검사는 무엇을 보나",
                 "subtitle": "혈액 속 cell-free DNA에서 종양 관련 변화를 찾는 방식이다.",
                 "source": "FDA Shield P230009 · NCI Cancer Currents 2024",
+                "image": "acs-crc-cfdna-biology-20260531.jpg",
+                "image_alt": "파란색 채혈관 속 DNA 조각과 대장 실루엣을 연결한 cfDNA 검사 일러스트",
                 "cards": [
                     {"title": "cfDNA", "body": "종양 또는 전암성 병변에서 유래할 수 있는 cell-free DNA를 혈장 내에서 분석.", "tone": "steel"},
                     {"title": "Mutation", "body": "암세포에서 생긴 somatic mutation 신호를 탐지.", "tone": "navy"},
@@ -482,6 +538,8 @@ DECKS = [
                 "title": "성능: 암은 잡지만, 전암 병변은 많이 놓친다",
                 "subtitle": "ECLIPSE 연구의 핵심 수치를 환자 설명용으로 단순화한다.",
                 "source": "ECLIPSE study · NEJM 2024;390:973-983 · NCI 2024",
+                "image": "acs-crc-adenoma-limitation-20260531.jpg",
+                "image_alt": "대장 점막의 작은 선종과 진행 병변을 대비한 파란색 의료 단면 일러스트",
                 "bars": [
                     {"label": "대장암 민감도", "value": "83%", "width": 83, "tone": "good"},
                     {"label": "진행성 전암 병변", "value": "13%", "width": 13, "tone": "danger"},
@@ -545,6 +603,8 @@ DECKS = [
                 "title": "양성 결과는 검진 완료가 아니다",
                 "subtitle": "양성 후 대장내시경 누락은 선별검사의 가장 큰 실패 지점이다.",
                 "source": "ACS 2026 update · NCI Shield review",
+                "image": "acs-crc-positive-followup-20260531.jpg",
+                "image_alt": "검사 양성 확인 뒤 대장내시경 예약과 완료로 이어지는 병원 흐름 일러스트",
                 "steps": [
                     {"title": "결과 설명", "body": "양성은 암 확진이 아니라 암/전암 병변 가능성. 불안을 낮추되 지연 금지.", "tone": "warn"},
                     {"title": "내시경 예약", "body": "가능하면 6개월 이내. 일정·장정결·항혈전제 조정까지 한 번에 계획.", "tone": "danger"},
@@ -646,6 +706,8 @@ DECKS = [
                 "title": "한 문단·세 숫자로 요약",
                 "subtitle": "T2D CKD 근거가 T1D 알부민뇨 환자로 확장되는 첫 phase 3 근거다.",
                 "source": "NEJM 2026;394:947-957",
+                "image": "finerenone-glomerulus-albuminuria-20260531.jpg",
+                "image_alt": "당뇨병성 사구체에서 알부민 누출이 줄어드는 과정을 보여주는 파란색 신장 일러스트",
                 "stats": [
                     {"label": "RANDOMIZED", "value": "242명", "body": "T1D + CKD + UACR 200-5000 mg/g, ACEi/ARB 복용 중.", "tone": "navy"},
                     {"label": "PRIMARY", "value": "25%", "body": "6개월 UACR 위약 대비 추가 감소. geometric mean ratio 0.75.", "tone": "good"},
@@ -707,6 +769,8 @@ DECKS = [
                 "title": "안전성: 고칼륨혈증과 초기 eGFR dip",
                 "subtitle": "비슷한 계열의 해석 원칙: 효과는 기대하되, 칼륨은 반드시 본다.",
                 "source": "NEJM 2026 FINE-ONE safety",
+                "image": "finerenone-potassium-safety-20260531.jpg",
+                "image_alt": "채혈관, 전해질 입자, 신장과 심전도 선을 연결한 고칼륨혈증 안전성 일러스트",
                 "columns": ["항목", "Finerenone", "Placebo", "실무 해석"],
                 "rows": [
                     {"cells": ["<strong>고칼륨혈증</strong>", "10.1%", "3.3%", "가장 흔한 이상반응. 시작 전·초기 추적 K 확인"], "tone": "warn"},
@@ -720,6 +784,8 @@ DECKS = [
                 "title": "Finerenone의 위치",
                 "subtitle": "비스테로이드성 mineralocorticoid receptor antagonist로 염증·섬유화 축을 겨냥한다.",
                 "source": "FINE-ONE rationale · FIDELIO/FIGARO background",
+                "image": "finerenone-mr-fibrosis-blockade-20260531.jpg",
+                "image_alt": "신장 세포에서 MR 신호와 섬유화 진행이 차단되는 파란색 기전 일러스트",
                 "cards": [
                     {"title": "MR blockade", "body": "Mineralocorticoid receptor 과활성을 막아 신장 염증·섬유화 신호를 줄인다.", "tone": "navy"},
                     {"title": "Nonsteroidal", "body": "Spironolactone과 달리 비스테로이드성 구조. T2D CKD에서 outcome 근거 축적.", "tone": "steel"},
@@ -732,6 +798,8 @@ DECKS = [
                 "title": "진료실 모니터링 흐름",
                 "subtitle": "허가·보험 적용 전이라도, 적용 후보를 생각할 때 필요한 안전 프레임이다.",
                 "source": "Finerenone label principles · FINE-ONE safety",
+                "image": "finerenone-uacr-monitoring-20260531.jpg",
+                "image_alt": "소변검체, 분석기, 신장, 추적 그래프가 연결된 UACR 모니터링 일러스트",
                 "steps": [
                     {"title": "Baseline", "body": "K, eGFR, UACR, 혈압, ACEi/ARB 용량 확인. K 높으면 시작 보류.", "tone": "navy"},
                     {"title": "4주", "body": "K/eGFR 재확인. 칼륨 상승 시 용량 조절·식이·병용약 검토.", "tone": "warn"},
@@ -830,6 +898,8 @@ DECKS = [
                 "title": "한 문단·세 숫자로 요약",
                 "subtitle": "이제 비만약 선택은 '어느 약이 더 세냐'가 아니라 '목표와 합병증이 무엇인가'다.",
                 "source": "Nature Medicine 2026 · EASO update · SURMOUNT-5 NEJM 2025",
+                "image": "easo-obesity-goal-planning-20260531.jpg",
+                "image_alt": "비만 환자와 의료진이 체중감량 목표 그래프를 함께 보는 파란색 상담 일러스트",
                 "stats": [
                     {"label": "EVIDENCE BASE", "value": "62 RCT", "body": "2025.11.21까지의 새 근거를 반영한 living guidance 업데이트.", "tone": "navy"},
                     {"label": "SURMOUNT-5", "value": "20.2% vs 13.7%", "body": "Tirzepatide vs semaglutide 72주 평균 체중감량.", "tone": "good"},
@@ -873,6 +943,8 @@ DECKS = [
                 "title": "목표 감량률로 먼저 나누기",
                 "subtitle": "환자에게 먼저 물을 질문은 '얼마나 빼야 합병증이 좋아지는가'다.",
                 "source": "EASO 2026 framework · SURMOUNT-5",
+                "image": "easo-obesity-drug-paths-20260531.jpg",
+                "image_alt": "두 가지 주사 펜 경로가 서로 다른 체중감량 목표로 이어지는 파란색 의사결정 일러스트",
                 "steps": [
                     {"label": "5-10%", "title": "초기 대사 개선", "body": "혈당·혈압·지질 개선 목적. 생활요법+약물 선택 폭 넓음.", "tone": "steel"},
                     {"label": "10-15%", "title": "Semaglutide zone", "body": "GLP-1RA 단독으로 충분한 목표. CV 보호 근거도 고려.", "tone": "good"},
@@ -886,6 +958,8 @@ DECKS = [
                 "title": "합병증별 약물 선택 프레임",
                 "subtitle": "체중감량률만 보지 말고, 어떤 합병증을 함께 치료하려는지 본다.",
                 "source": "EASO 2026 update · Nature Medicine",
+                "image": "easo-obesity-complications-map-20260531.jpg",
+                "image_alt": "비만 환자 실루엣 주변에 심장, 간, 수면, 관절 합병증이 배치된 파란색 지도형 일러스트",
                 "columns": ["합병증/목표", "Tirzepatide", "Semaglutide", "실무 포인트"],
                 "rows": [
                     {"cells": ["<strong>체중감량 주목표</strong>", "근거 더 강함", "강함", "큰 감량 필요 시 tirzepatide 우선 검토"], "tone": "good"},
@@ -932,6 +1006,8 @@ DECKS = [
                 "title": "효과만큼 중요한 지속 가능성",
                 "subtitle": "감량 폭이 커도 중단하면 만성질환 치료가 아니다.",
                 "source": "SURMOUNT-5 NEJM 2025 · EASO 2026 update",
+                "image": "easo-obesity-sustainability-20260531.jpg",
+                "image_alt": "주사 펜, 식사, 운동, 달력이 순환 화살표로 연결된 장기 비만 치료 일러스트",
                 "cards": [
                     {"title": "위장관 부작용", "body": "오심·구토·변비·설사. 증량 속도와 식사 패턴 조정이 핵심.", "tone": "warn"},
                     {"title": "담낭/췌장", "body": "담석·췌장염 증상 교육. 심한 지속 복통은 즉시 평가.", "tone": "danger"},
@@ -1019,6 +1095,8 @@ DECKS = [
                 "title": "한 문단·세 숫자로 요약",
                 "subtitle": "보충제 자동 권고보다 결핍 확인, 식이 평가, 낙상 예방이 먼저다.",
                 "source": "BMJ 2026;393:e088050",
+                "image": "bmj-calcium-vitd-evidence-shift-20260531.jpg",
+                "image_alt": "보충제 병과 낙상 예방 체크리스트가 방패와 함께 보이는 파란색 근거 재평가 일러스트",
                 "stats": [
                     {"label": "TRIALS", "value": "69 RCT", "body": "칼슘·비타민 D·병합 보충제를 placebo/no treatment와 비교.", "tone": "navy"},
                     {"label": "PARTICIPANTS", "value": "153,902명", "body": "대부분 일반 성인·지역사회 거주 고령자 근거가 중심.", "tone": "steel"},
@@ -1064,6 +1142,8 @@ DECKS = [
                 "title": "그래도 보충제가 필요한 경우",
                 "subtitle": "결론은 '전면 금지'가 아니라 '무차별 권고 중단'이다.",
                 "source": "BMJ 2026 meta-analysis · osteoporosis practice context",
+                "image": "bmj-bone-risk-assessment-20260531.jpg",
+                "image_alt": "고관절, 척추, 골밀도 장비와 뼈 단면을 보여주는 파란색 골절 위험 평가 일러스트",
                 "columns": ["환자군", "칼슘", "비타민 D", "실무 포인트"],
                 "rows": [
                     {"cells": ["<strong>명확한 결핍</strong>", "식이 우선+필요시", "보충 적응", "25(OH)D, 식이 섭취, 원인 평가"], "tone": "good"},
@@ -1090,6 +1170,8 @@ DECKS = [
                 "title": "골절·낙상 예방의 우선순위",
                 "subtitle": "낙상을 줄이는 개입은 보충제보다 행동과 환경에 가깝다.",
                 "source": "Geriatric fall prevention principles · BMJ 2026 context",
+                "image": "bmj-fall-prevention-action-20260531.jpg",
+                "image_alt": "고령자가 균형운동을 하고 주변에 손잡이, 조명, 운동도구가 배치된 파란색 낙상 예방 일러스트",
                 "cards": [
                     {"title": "저항운동", "body": "하지 근력과 균형을 높이는 운동. 주 2-3회가 실질적 낙상 예방.", "tone": "good"},
                     {"title": "균형훈련", "body": "한발서기, 보행훈련, Tai chi 등. 낙상 공포까지 줄인다.", "tone": "good"},
@@ -1124,6 +1206,8 @@ DECKS = [
                 "title": "외래 처방·검사 세트 재정리",
                 "subtitle": "자동 처방보다 평가 기반 처방으로 바꾼다.",
                 "source": "Clinic implementation draft",
+                "image": "bmj-individualized-supplementation-20260531.jpg",
+                "image_alt": "식이 칼슘, 비타민 D 검사, 신장 주의 표시를 함께 보여주는 파란색 개별화 처방 일러스트",
                 "columns": ["상황", "검사/평가", "처방", "추적"],
                 "rows": [
                     {"cells": ["<strong>일반 50대</strong>", "식이·운동·위험평가", "자동 보충 X", "건강검진/DEXA 적응증"], "tone": "warn"},
