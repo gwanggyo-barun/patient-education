@@ -181,6 +181,14 @@ TARGETS = [
         "category": "📰 논문 리뷰", "audience": "의료진", "disease": "수면무호흡 (OSA) · CPAP",
     },
     {
+        "kind": "decks", "slug": "bepirovirsen-hbv-phase3",
+        "slug_path": "decks/general/papers-20260528/bepirovirsen-hbv-phase3/",
+        "html_path": ROOT / "decks/general/papers-20260528/bepirovirsen-hbv-phase3/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "베피로비르센 3상 — 만성 B형간염 기능적 완치",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "만성 B형간염 (CHB)",
+    },
+    {
         "kind": "decks", "slug": "acs-crc-screening-blood-test-2026",
         "slug_path": "decks/general/papers-20260530/acs-crc-screening-blood-test-2026/",
         "html_path": ROOT / "decks/general/papers-20260530/acs-crc-screening-blood-test-2026/index.html",
