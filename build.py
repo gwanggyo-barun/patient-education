@@ -654,6 +654,7 @@ TARGETS = [
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "고혈압 초진 설문지",
         "category": "📝 동의서·서식", "audience": "환자/보호자", "disease": "고혈압 초진 설문지",
+        "notion_sync": False,
     },
     {
         "kind": "handouts", "slug": "colonoscopy-prep",
@@ -793,6 +794,7 @@ TARGETS = [
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "위내시경 후 주의사항",
         "category": "🩺 시술·처치 후", "audience": "환자/보호자", "disease": "위내시경 후 주의사항",
+        "notion_sync": False,
     },
     {
         "kind": "handouts", "slug": "hypertension-low-salt",
@@ -817,6 +819,7 @@ TARGETS = [
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "대장내시경 후 주의사항",
         "category": "🩺 시술·처치 후", "audience": "환자/보호자", "disease": "대장내시경 후 주의사항",
+        "notion_sync": False,
     },
     {
         "kind": "handouts", "slug": "post-polypectomy",
@@ -889,6 +892,7 @@ TARGETS = [
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "당뇨병 초진 설문지",
         "category": "📝 동의서·서식", "audience": "환자/보호자", "disease": "당뇨병 초진 설문지",
+        "notion_sync": False,
     },
     {
         "kind": "handouts", "slug": "fit-positive",
@@ -914,6 +918,7 @@ TARGETS = [
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "💉 GLP-1 수용체 작용제(마운자로/위고비) 초진 문진표",
         "category": "📝 동의서·서식", "audience": "환자/보호자", "disease": "💉 GLP-1 수용체 작용제(마운자로/위고비) 초진 문진표",
+        "notion_sync": False,
     },
     {
         "kind": "handouts", "slug": "chronic-disease-intake",
