@@ -974,6 +974,15 @@ TARGETS = [
         "disease": "갑상선 결절 초음파 추적 — K-TIRADS 등급, 세침흡인검사(FNA) 크기 기준, Bethesda class별 추적 계획",
     },
     {
+        "kind": "handouts", "slug": "hyperprolactinemia-protocol",
+        "slug_path": "handouts/endocrine/hyperprolactinemia-protocol/",
+        "html_path": ROOT / "handouts/endocrine/hyperprolactinemia-protocol/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "프로락틴 상승 시 진료 프로토콜",
+        "category": "🩺 일반내과", "audience": "환자/보호자",
+        "disease": "프로락틴 상승 환자 공통 안내 — 재검 조건, 약물·임신·갑상선·신장 기능 확인, 지속 상승 시 뇌하수체 평가 흐름",
+    },
+    {
         "kind": "handouts", "slug": "cgm-caresens365",
         "slug_path": "handouts/endocrine/cgm-caresens365/",
         "html_path": ROOT / "handouts/endocrine/cgm-caresens365/index.html",
