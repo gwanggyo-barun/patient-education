@@ -1,21 +1,19 @@
 ---
 name: clinic-content-system
 description: >
-  광교바른내과 통합 환자 교육 콘텐츠 생성 스킬 (HTML + PDF). 세 가지 콘텐츠 타입을
-  단일 디자인 시스템·단일 빌드 파이프라인으로 생산한다: (1) 16:9 멀티슬라이드 환자
-  교육 덱, (2) A4 세로 1장 진료실 핸드아웃, (3) A4 세로 1장 검사 결과 인포그래픽.
-  공통 인프라: Navy #003366 + Steel Blue #5B9BD5, Pretendard Variable, Python qrcode
-  SVG 자동 QR 생성, OG meta 7개 head 등록. 사용자가 "환자 교육 슬라이드/PDF",
-  "유인물 만들어줘", "주의사항 PDF", "비치용 안내문", "검사 결과지 인포그래픽",
-  "결과지 시각화", "종합검진 결과지", "건강검진 결과", "검진 결과지",
-  "위/대장 내시경 + 초음파 + 혈액검사 종합", "경동맥/갑상선/상복부 초음파 결과",
-  "심전도/골밀도 포함 검진 결과", "텍스트/PDF/캡쳐로 검사결과지 생성",
-  "환자한테 보낼 자료", "카톡으로 보낼 자료" 등을 만들어 달라고
-  할 때 트리거된다. 특히 `lab-reports/health-checkup` 모드는 환자별로 시행
-  검사가 다른 종합 건강검진 결과지를 1~3페이지 HTML/PDF로 만든다.
-  기존 patient-education-pptx, patient-handout-pdf,
-  lab-report-infographic 세 스킬의 HTML 통합 후속 버전이며, PPTX가 명시적으로
-  요구되지 않는 한 이 스킬을 우선 사용한다.
+  광교바른내과 통합 환자 교육 콘텐츠 생성 엔진 (HTML + PDF). 단일 디자인 시스템·단일
+  빌드 파이프라인으로 4가지 호출 분류의 콘텐츠를 생산한다: (1) 슬라이드제작 = 16:9
+  멀티슬라이드 환자 교육 덱, (2) 핸드아웃제작 = A4 세로 1장 진료실 유인물, (3) 검사결과지제작
+  = A4 세로 1장 단일 검사 결과 인포그래픽, (4) 검진결과지제작 = 환자별 종합 건강검진 결과지
+  (`lab-reports/health-checkup` 모드, 1~3페이지). 4개 분류는 각각 별도 wrapper 스킬
+  (patient-education-deck / patient-handout-pdf / lab-report-infographic / health-checkup-report)
+  로도 호출되며, 모두 이 엔진을 SSOT로 위임한다. 공통 인프라: Navy #003366 + Steel Blue
+  #5B9BD5, Pretendard Variable, Python qrcode SVG 자동 QR 생성, OG meta 7개 head 등록.
+  사용자가 "환자 교육 슬라이드/PDF", "유인물 만들어줘", "주의사항 PDF", "검사 결과지
+  인포그래픽", "건강검진 결과지", "환자한테 보낼 자료" 등을 만들어 달라고 하거나, 위 4개
+  분류 중 어디에 속하는지 모호할 때 트리거된다. 기존 patient-education-pptx,
+  patient-handout-pdf, lab-report-infographic 세 스킬의 HTML 통합 후속 버전이며,
+  PPTX가 명시적으로 요구되지 않는 한 이 스킬을 우선 사용한다.
 ---
 
 # Clinic Content System — Unified Patient Content (HTML + PDF)
@@ -270,7 +268,12 @@ HTML will overlay Korean labels using Pretendard font separately.
 
 슬라이드·핸드아웃·검사 설명 자료 보강에서는 제목 배경, 투명 장식, 범용 장기 배너처럼 구조만 유지하고 분위기만 더하는 이미지를 금지한다. 먼저 본문 안에 `.ai-visual` 또는 자료별 고정 figure 슬롯을 만들고, 그 슬롯이 설명할 문장·표·체크리스트를 정한 뒤 `$imagegen`으로 래스터 이미지를 생성한다. 필요하면 한 장이 아니라 여러 장을 넣어도 되지만, 각 이미지는 서로 다른 행동·절차·장비·비교 포인트를 설명해야 하며 같은 구도나 generic strip 반복은 실패다.
 
-**중요 실패 사례**: decks/handouts/lab-reports 어디에서든 작은 code-native SVG icon strip 또는 context strip을 만들어 넣고 "이미지 추가"로 간주하는 것은 금지한다. 이런 strip은 `imagegen` 래스터 설명 이미지의 대체물이 아니며, 골밀도 검사·대장내시경 준비·비강 스프레이·인슐린 시작 자료 수준의 환자 이해도와 시각 품질을 만들지 못하면 실패다. 코드 네이티브 SVG는 수치 그래프, 단순 로고/아이콘, manifest asset, QR처럼 deterministic vector가 본질인 경우에만 쓴다.
+**SVG vs imagegen 역할 분리 (2026-06-05 원장님 명시 — 최우선)**:
+- **코드 네이티브 SVG는 "이모티콘/아이콘 스케일"로만 쓴다.** 카드·헤더·리스트·셀 옆 작은 보조 아이콘(Step 2.5 아이콘 패스), 수치 그래프, 로고/QR/manifest asset 같은 deterministic vector가 본질인 경우 한정. SVG가 그 슬라이드·핸드아웃의 "시각적 핵심"이 되어선 안 된다.
+- **핸드아웃·슬라이드의 시각적 핵심은 반드시 `$imagegen` 래스터 설명 이미지다.** 전체 내용을 설명하는 그림(Anatomy/Mechanism/Process/Equipment/Action/Comparison)을 `$imagegen`으로 생성해 본문의 중심 figure로 배치한다. 골밀도 검사·대장내시경 준비·비강 스프레이·인슐린 시작 자료 수준의 환자 이해도·시각 품질이 기준.
+- **금지(실패)**: decks/handouts/lab-reports 어디에서든 작은 code-native SVG icon strip / context strip / 장식 배너를 만들어 넣고 "이미지 추가"로 간주하는 것. 이런 strip은 `$imagegen` 핵심 이미지의 대체물이 아니다.
+
+> ⚠️ **기존 자산 마이그레이션 필요 (2026-06-05 발견)**: 2026-05-30 일괄 작업에서 다수 deck/handout에 `*-context-strip-*.svg` 데코 strip이 핵심 비주얼 자리에 들어갔다. 이는 위 규칙 위반이다. 차기 콘텐츠 작업/감사 시 해당 자료를 만나면 strip을 제거하고 `$imagegen` 핵심 이미지로 교체한다(또는 적합한 이미지가 없으면 텍스트 레이아웃 개선 + "no image" 기록). 한 번에 전수 재생성하지 말고 자료를 손볼 때마다 점진 교체.
 
 ### 16. 이미지 내용 적합성 + 중복 금지
 
@@ -373,20 +376,23 @@ Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 
 
 ---
 
-## 콘텐츠 타입 3종
+## 콘텐츠 타입 — 4가지 호출 분류 (2026-06-05 원장님 정의)
 
-이 스킬은 광교바른내과 모든 환자 콘텐츠를 단일 디자인 시스템과 단일 빌드 파이프라인으로 생산한다:
+사용자 관점에서 콘텐츠는 **4가지로 분류**하며, 각각 별도 wrapper 스킬로 호출할 수 있다. 단, 빌드/Notion 라우팅의 내부 `kind`는 3종(`decks`/`handouts`/`lab-reports`)을 유지한다 — **검사결과지·검진결과지는 둘 다 `kind=lab-reports`이고 `topic`으로만 갈린다** (아래 "분류 정의 — 변경 금지" 블록은 그대로 유효).
 
-| 타입 | 디렉터리 | 페이지 포맷 | 용도 | 마무리 QR 위치 |
-|---|---|---|---|---|
-| **decks** | `decks/{specialty}/{topic}/{slug}/` | 16:9 1280×720, 12장 | 진료실 환자 설명, 카톡 공유, 노션 임베드 | closing slide (`.qr-block__code`) |
-| **handouts** | `handouts/{specialty}/{slug}/` | A4 세로, 1장 | 진료실 비치, 환자 인쇄물 | footer mini-QR (`.qr-mini__code`) |
-| **lab-reports** | `lab-reports/{topic}/{hash10}/` | A4 세로, 1장 | 검사 결과 시각화, 환자 설명 첨부 | **QR 없음 (개인정보 보호)** |
+| 호출 분류 | wrapper 스킬 | 내부 `kind` / `topic` | 디렉터리 | 페이지 포맷 | 마무리 QR |
+|---|---|---|---|---|---|
+| **① 슬라이드제작** | `patient-education-deck` | `decks` | `decks/{specialty}/{topic}/{slug}/` | 16:9 1280×720, 12장 | closing slide (`.qr-block__code`) |
+| **② 핸드아웃제작** | `patient-handout-pdf` | `handouts` | `handouts/{specialty}/{slug}/` | A4 세로, 1장 | footer mini-QR (`.qr-mini__code`) |
+| **③ 검사결과지제작** | `lab-report-infographic` | `lab-reports` / 단일검사 (lipid, thyroid, CBC …) | `lab-reports/{topic}/{hash10}/` | A4 세로, 1장 | **QR 없음 (개인정보 보호)** |
+| **④ 검진결과지제작** | `health-checkup-report` | `lab-reports` / `health-checkup` | `lab-reports/health-checkup/{hash10}/` | A4 세로, 1~3장 | **QR 없음 (개인정보 보호)** |
 
 요청 키워드별 자동 라우팅:
-- "환자 교육 슬라이드", "질환 안내 PPT", "12장 자료" → **decks/**
-- "유인물", "비치용 안내문", "주의사항 PDF", "A4 한 장" → **handouts/**
-- "검사 결과지 인포그래픽", "결과지 시각화", "혈액검사 PPT/PDF" → **lab-reports/**
+- "환자 교육 슬라이드", "질환 안내 PPT", "12장 자료" → **① 슬라이드 (decks)**
+- "유인물", "비치용 안내문", "주의사항 PDF", "A4 한 장", "접종/시술 후 안내" → **② 핸드아웃 (handouts)**
+- "검사 결과지 인포그래픽", "혈액검사/지질/갑상선 결과 PDF" (단일 검사 PDF 입력) → **③ 검사결과지 (lab-reports)**
+- "건강검진/종합검진 결과지", "위·대장내시경+초음파+혈액 종합", "여러 검사 묶음" → **④ 검진결과지 (lab-reports/health-checkup)**
+- 4개 중 모호하면 이 엔진(`clinic-content-system`)이 직접 받아 판단한다.
 
 ## Notion DB 라우팅 — 콘텐츠 타입별 3개 DB
 
@@ -1337,9 +1343,21 @@ exit code 0 → 통과, 1 → 실패 (CI gate에 그대로 사용 가능).
 9. **마무리 슬라이드는 closing-grid 패턴 강제** — contact-card + qr-block. QR은 빌드 시 자동 생성. **contact-card 값(진료시간·주소·전화)은 반드시 § 클리닉 연락처(SoT) 표에서 복사** — 직접 타이핑 금지.
 10. **OG 메타태그 7종 표준 포함** — 카톡 공유 미리보기 카드 자동 작동을 위해 필수.
 
-## Alert(붉은 강조) 사용 룰
+## Alert(경고색) 사용 룰
 
-디자인 컨셉은 Navy + Steel Blue 베이스. 붉은 alert(`tile--alert`, `alert-row`, `alert-strip`, `card--warning`)는 **소량 액센트**로만 쓴다. 과용하면 "응급실 게시판" 처럼 보여 Navy 베이스 톤이 흐려진다.
+디자인 컨셉은 Navy + Steel Blue 베이스. 경고색은 **소량 액센트**로만 쓴다. 과용하면 "응급실 게시판" 처럼 보여 Navy 베이스 톤이 흐려진다.
+
+### 경고색 2단계 규약 — decks / handouts / lab-reports 공통 (색 통일)
+
+같은 "경고" 개념이 매체마다 다른 색으로 렌더되지 않도록, 세 콘텐츠 타입 모두 아래 2단계를 동일하게 쓴다.
+
+| 단계 | 의미 | 토큰 | deck 컴포넌트 | handout / lab-report 컴포넌트 |
+|---|---|---|---|---|
+| **1단계 · 주의(caution)** | 주의·권고·DON'T | `--color-warning` (주황 #C2410C) | `tile--warning`, `alert-strip--warning` | `card--warning`, `card-label--warning`, `stat-cell--low` |
+| **2단계 · 위험(danger)** | 진짜 위험·Red Flag·즉시 119/응급실 | `--color-danger` (빨강 #B91C1C) | `tile--alert`, `alert-strip` | `card`(빨강 라벨), `stat-cell--high` |
+
+- **기본은 1단계(주황).** 빨강은 진짜 응급/Red Flag에만. 과거 deck들이 일반 "주의"에 `tile--alert`(빨강)를 남용해 handout(주황)과 색이 어긋났다 → 일반 주의는 `tile--warning`(주황)으로.
+- lab-reports 신호등은 별도 체계: 정상=`stat-cell--ok`(녹색, 브랜드 예외) / 경계=`--low`(주황) / 이상=`--high`(빨강).
 
 **룰**:
 - **한 슬라이드 안에서 alert tile은 0개 또는 최대 2개**. 6개 모두 alert 같은 패턴은 금지.

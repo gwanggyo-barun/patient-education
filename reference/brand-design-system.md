@@ -72,8 +72,15 @@
 | `--color-warning-bg` | `#FFF7ED` | 주의 카드 배경 |
 | `--color-danger` | `#B91C1C` | 진짜 위험 (Red Flag, 알람) |
 | `--color-danger-bg` | `#FEF2F2` | 위험 카드 배경 |
+| `--color-ok` | `#047857` | 신호등 "정상" 라벨 — **lab-reports status 셀 전용 예외** |
+| `--color-ok-bg` | `#ECFDF5` | 신호등 "정상" 배경 — **lab-reports status 셀 전용 예외** |
 
 > ⚠️ **녹색·파스텔·여러 액센트 색 사용 금지**. 의미적 의도 없이 색상 추가하지 않는다.
+>
+> **명시 예외 — lab-reports 신호등 status 셀 한정**: 검사/검진 결과지의 정상/경계/이상 판정은
+> 환자 직관성을 위해 신호등(녹색=정상 / 주황=경계 / 빨강=이상)을 쓴다. 이때만 `--color-ok`/`--color-ok-bg`
+> 토큰을 사용하며, decks·handouts 본문 장식이나 그 외 어떤 용도로도 녹색을 쓰지 않는다.
+> (하드코딩 `#ECFDF5`/`#047857` 금지 — 반드시 토큰 경유.)
 
 ## 3. 타이포그래피
 
