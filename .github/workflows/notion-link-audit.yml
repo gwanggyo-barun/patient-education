@@ -1,0 +1,37 @@
+name: Notion Link Audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "report (dry-run) or fix (patch broken Notion links)"
+        required: true
+        default: "report"
+        type: choice
+        options:
+          - report
+          - fix
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run link audit (${{ inputs.mode }})
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          python3 tools/notion_link_audit.py --${{ inputs.mode }}
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-audit-report
+          path: docs/link-audit-*.json
+          if-no-files-found: warn
