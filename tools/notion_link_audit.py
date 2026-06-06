@@ -27,7 +27,19 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "shared"))
 
-from build import BASE_URL, TARGETS  # noqa: E402
+try:
+    from build import BASE_URL, TARGETS  # noqa: E402
+except ModuleNotFoundError:
+    # CI(workflow_dispatch)는 빌드 의존성(playwright/qrcode)을 설치하지 않는다.
+    # build.py는 상수(BASE_URL/TARGETS) 접근에만 필요하므로 빌드 전용 모듈을 스텁으로 대체.
+    import types
+
+    for _name in ("playwright", "playwright.sync_api", "qrcode", "qrcode.image", "qrcode.image.svg"):
+        _mod = sys.modules.setdefault(_name, types.ModuleType(_name))
+        if _name == "playwright.sync_api" and not hasattr(_mod, "sync_playwright"):
+            _mod.sync_playwright = None
+    from build import BASE_URL, TARGETS  # noqa: E402
+
 from _notion_sync import DBS, NOTION_VERSION  # noqa: E402
 
 REPORT_PATH = ROOT / "docs/link-audit-20260607.json"
