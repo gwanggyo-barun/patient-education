@@ -154,3 +154,19 @@ Per-deck fixes:
 - `decks/vaccines/pneumococcal-comparison/index.html`: `body_overlaps_footer` -> compacted slide 4 tri-column vaccine cards/lists.
 
 Remaining unresolved issues: none.
+
+## Round 3
+
+Date: 2026-06-07
+
+Scope: fixed the final 3 deck-local layout violations reported by CI. Changes were CSS/layout-only; medical copy, shared blocks, and validator scripts were not changed.
+
+Validation:
+- `PYTHONIOENCODING=utf-8 python3 shared/_validate_layout.py decks/general/papers-20260528/bepirovirsen-hbv-phase3/index.html decks/endocrine/achieve3-oral-glp1/index.html decks/endocrine/subacute-thyroiditis/index.html` passed for all 3 Round 3 decks.
+
+Per-deck fixes:
+- `decks/general/papers-20260528/bepirovirsen-hbv-phase3/index.html`: raised slide 4 step body text above the 15px deck minimum and stretched step cards; expanded slide 9 compare columns to fill the body; raised and vertically balanced slide 10 review-card bodies.
+- `decks/endocrine/achieve3-oral-glp1/index.html`: compacted slide 6 split visual/metric stack to clear the footer; stretched slide 8 hero-number blocks to the slide body; compacted slide 10 limitation grid and alert strip to clear the footer.
+- `decks/endocrine/subacute-thyroiditis/index.html`: changed slide 3 metric cards from centered fixed fill to full-height space-between/stretch layout so CI font metrics cannot leave the metric boxes underfilled.
+
+Remaining unresolved issues: none.
