@@ -512,6 +512,7 @@ def _build_handout_props(
     version: str,
     status: str,
     notes_rich: list,
+    pdf_url: str = "",
 ) -> tuple[dict, str]:
     """📨 환자 유인물 DB 속성 빌드. Returns (properties, search_title)."""
     properties: dict = {
@@ -522,6 +523,9 @@ def _build_handout_props(
         "비고": {"rich_text": notes_rich},
         "최종수정일": {"date": {"start": today_iso}},
     }
+    if pdf_url:
+        # 사용자 요구 (2026-06-06): 링크 칸(파일링크)이 비면 안 됨
+        properties["파일링크"] = {"url": pdf_url}
     if category:
         properties["카테고리"] = {"select": {"name": category}}
     if audience:
@@ -539,6 +543,7 @@ def _build_deck_props(
     version: str,
     status: str,
     notes_rich: list,
+    pdf_url: str = "",
 ) -> tuple[dict, str]:
     """📋 진료 설명용 자료 DB 속성 빌드. Returns (properties, search_title)."""
     properties: dict = {
@@ -549,6 +554,9 @@ def _build_deck_props(
         "비고": {"rich_text": notes_rich},
         "최종수정일": {"date": {"start": today_iso}},
     }
+    if pdf_url:
+        # 사용자 요구 (2026-06-06): 링크 칸(파일링크)이 비면 안 됨
+        properties["파일링크"] = {"url": pdf_url}
     if category:
         properties["카테고리"] = {"select": {"name": category}}
     if audience:
@@ -624,7 +632,7 @@ def upsert(
         properties, search_title = _build_handout_props(
             title=title, category=category, audience=audience,
             today_iso=today_iso, version=version, status=status,
-            notes_rich=notes_rich,
+            notes_rich=notes_rich, pdf_url=pdf_url,
         )
     else:  # decks
         if not title:
@@ -632,7 +640,7 @@ def upsert(
         properties, search_title = _build_deck_props(
             title=title, category=category, audience=audience, disease=disease,
             today_iso=today_iso, version=version, status=status,
-            notes_rich=notes_rich,
+            notes_rich=notes_rich, pdf_url=pdf_url,
         )
 
     if kind == "lab-reports":

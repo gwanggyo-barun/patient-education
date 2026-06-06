@@ -333,7 +333,7 @@ rm ~/Library/LaunchAgents/io.github.gwanggyo-barun.clinic-content.daily-fetch.pl
 7. CI(GitHub Actions)가 ~1분 20초에 자동 처리:
    - PDF 빌드 (Playwright Chromium)
    - GitHub Pages 배포 (HTML + PDF 라이브)
-   - Notion DB 자동 행 upsert (📋 진료 설명용 자료 DB)
+   - Notion DB 자동 행 upsert (📋 진료 설명용 자료 DB) — ⚠️ `파일링크`(PDF URL) 칸 필수 채움 (2026-06-06 사용자 룰, decks/handouts 빌더에 반영; 빈 칸 발견 시 버그)
 
 ### 콘텐츠 삭제 / 보관 / 공유페이지 숨김
 
@@ -914,6 +914,7 @@ Step 3 build + validate_layout + (lab-reports 한정) _visual_audit  ← Stage C
 [Stage E — integrator fix (blocker / major 우선)]
    ↓
 Step 3.5 인포그래픽 슬롯 설계 + `$imagegen` 생성 (decks / handouts / lab-reports)
+Step 3.8 ⚠️ 푸시 전 전수 육안검수 (2026-06-06 사용자 룰) — `python3 tools/slide_screens.py <html>` 로 슬라이드를 한 장씩 캡처해 integrator 가 직접 전부 열어보고 겹침·잘림·이미지 크롭·라벨 정렬을 확인한다. bbox 검사(_validate_layout)만으로 끝내지 않는다. 문제 발견 시 수정→재캡처. 통과 후에만 Step 4 진행하며, 사용자 추가 지시 없이 커밋·푸시까지 완료한다.
 Step 4 git push (커밋 시 다른 세션 작업물 보호 — 명시적 stage 만)
 ```
 
