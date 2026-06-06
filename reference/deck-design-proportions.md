@@ -76,5 +76,19 @@
 - ⭐ **ground-truth = 실제 PDF 픽셀.** 의심되면 PyMuPDF(`fitz`)로 PDF 페이지를 3x 렌더해 카드 rect 겹침을 직접 확인 (DOM getBoundingClientRect ≠ PDF 래스터라이저).
 - ⭐ **Step 3.8: PDF가 아니라 슬라이드별 PNG를 한 장씩 전부 눈으로 확인. 검증기 통과 ≠ 시각 통과.** 체크: 박스 대칭·내용 넘침·카드 겹침·폰트 스케일·거터·표 정렬·희소박스.
 
+## 7. 2026-06-06 후속 수정 (논문 4덱 전수 감수 — 사용자 컨펌)
+PDF 픽셀/렌더좌표로 4덱을 한 장씩 검수하며 잡은, 검증기 bbox만으로는 안 잡히던 3가지 구조 결함과 그 표준 해법:
+
+1. **6칸 카드(`card-grid--6`) visual-focus 푸터 침범** — 좌측 6카드를 `grid-template-rows: repeat(3,1fr)`로 강제 채우면 본문 많은 맨 아래 카드가 `overflow:hidden`으로 잘리며 푸터선과 시각적으로 붙는다(검증기 `box_content_overflow` overflow≈6px). → **6칸 그리드 전용으로만** 카드를 조인다: `.card-grid--6 .review-card { padding: 11px 16px; gap: 6px; }` + `__title line-height:1.2` + `__body line-height:1.38`. (다른 카드 그리드는 건드리지 말 것 — 6칸만 빡빡함.)
+
+2. **마무리(`slide--closing`) 슬라이드 상단 빈 띠** — 공유 마스터의 `.slide--closing`은 표지처럼 **title 행이 `1fr`**(`grid-template-rows: auto 1fr auto auto` + `title margin-top:auto`)이라, 본문(takehome 4박스+클리닉노트)이 있는 논문덱 마무리에선 제목 아래에 죽은 여백이 생긴다. → 본문 있는 마무리는 **body를 1fr로 되돌린다**: `.slide--closing { grid-template-rows: auto auto 1fr auto; } .slide--closing .slide__title { margin-top:0; } .slide--closing .slide__body { justify-content: flex-start; } .takehome-grid { flex:1 1 auto } .takehome-card { align-items:center } .closing-grid { flex:0 0 auto }`. → 4박스가 공간 채우고 노트+QR이 하단 고정.
+
+3. **2단 비교(`split`+`line-list`) 슬라이드 하단 대량 여백** — 하단 note가 없는 2단 리스트는 항목이 위로 몰려 아래 ~30%가 빈다(검증기가 **놓쳤던** 케이스: 투명 full-height 래퍼 `split-col` 하단이 푸터에 닿아 underfill 미검출). → **리스트를 칼럼에 균등 분배**: `.split { height:auto; flex:1 1 auto; min-height:0 } .line-list { flex:1 1 auto; display:flex; flex-direction:column; justify-content:space-between }`. (note 추가는 ⚠️ note를 body 밖<footer 앞>에 넣으면 grid 빈 행으로 새어 푸터 침범 — note는 반드시 `.slide__body` 안에.) 예외 슬라이드는 `nth-of-type(N)`으로 국소 적용.
+
+### 검증기 정밀화 (`_validate_layout.py`, 같은 날)
+- `body_overlaps_footer`: 임계 `gap < -3`. **footer.top은 푸터 '상단 경계선'이고 실제 텍스트는 그 아래 `padding-top:16px`+border 만큼 떨어져 있다** → 박스 하단이 footer.top에 닿는(gap 0) 건 정상(17px 여유). 경계선을 실제로 가로지를 때만(−3px↓) 침범. 잘려 넘치는 텍스트는 `box_content_overflow`가 따로 잡음.
+- `body_underfills`: 최하단 콘텐츠 측정 시 **투명 full-height 래퍼(`split-col`)는 제외**하고 그 안의 실제 콘텐츠(`line-list li` 등)를 본다. ⚠️ **단, `li`는 마지막 항목 `border-bottom:none`이라도 '보이는 텍스트'이므로 paint(배경·테두리) 여부로 거르면 안 된다** — 거르면 실제로 채웠는데 false underfill 난다. (BMJ s3 false-positive 교훈.)
+- 이미지 검수 한계: per-slide PNG는 scale 1(1280×720)로 렌더해도 한 세션에 누적 다량이면 Read API가 막힌다. 의심 슬라이드는 playwright 좌표 probe(콘텐츠 최하단 bottom vs footer.top)로 픽셀 없이 정밀 확인 가능.
+
 ## 적용
 visual-focus 강제 축소 블록을 위 스케일로 교체. 신규 덱은 처음부터 이 룰로. 예외 슬라이드만 deck-local override.

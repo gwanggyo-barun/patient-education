@@ -119,7 +119,13 @@ DECK_VALIDATOR_JS = r"""
       // '보이는 콘텐츠 박스'(배경/테두리 있는 카드·행·패널)의 최하단을 본다.
       // 투명 full-height 래퍼(table-wrap 등)에 속지 않고, 채워진 패널(bars·step)이
       // 푸터까지 닿으면 underfill 아님 / 투명하게 떠 있는 행이면 underfill 로 잡힘.
-      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.split-col,.closing-contact,.qr-block';
+      // 실제 '콘텐츠' 최하단을 본다. split-col 같은 투명 full-height 래퍼는
+      // 배경/테두리가 없어 푸터까지 닿아도 시각적으로 안 채워진다 → 측정에서
+      // 빼고, 대신 그 안의 실제 콘텐츠(line-list li 등)를 본다. (BMJ s3 사례:
+      // 래퍼는 푸터까지 닿지만 리스트는 60%에서 끝나 underfill 을 놓쳤다.)
+      // ⚠️ li 는 마지막 항목이 border-bottom:none 이라도 '보이는 텍스트'이므로
+      // paint 여부로 거르지 말 것 — 거르면 실제로 채웠는데 false underfill 난다.
+      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.closing-contact,.qr-block,.line-list li';
       let maxBottom = 0, deepest = '';
       s.querySelectorAll(BOXSEL).forEach((c) => {
         if (c.closest && c.closest('figure, .bg-image-split__visual, .ai-visual, .slide__footer')) return;
@@ -138,9 +144,14 @@ DECK_VALIDATOR_JS = r"""
         });
       }
       if (maxBottom > 0) {
-        const gap = fr.top - maxBottom;            // 음수 = footer 침범
+        const gap = fr.top - maxBottom;            // 음수 = footer 침범, 0~3 = 닿음
+        // footer.top 은 푸터 '상단 경계선'이고 실제 텍스트는 그 아래 padding-top
+        // (16px)+border 만큼 떨어져 있다. 따라서 박스 하단이 footer.top 에 닿는
+        // (gap 0) 건 구조상 정상(텍스트와 17px 여유)이고, 박스가 그 경계선을
+        // 실제로 가로지를 때(gap < -3)만 진짜 침범이다. 잘려 넘치는 텍스트는
+        // 아래 box_content_overflow 가 따로 잡는다.
         if (gap < -3) {
-          issues.push({slide: sn, kind: 'body_overlaps_footer', detail: `${Math.round(-gap)}px`, sample: String(deepest).slice(0,40)});
+          issues.push({slide: sn, kind: 'body_overlaps_footer', detail: `gap ${Math.round(gap)}px (crosses footer line)`, sample: String(deepest).slice(0,40)});
         } else if (gap > 72) {
           // 본문 최하단~푸터 여백이 72px 초과 = 언더필 (24~56 적정, <16 과밀)
           issues.push({slide: sn, kind: 'body_underfills', detail: `${Math.round(gap)}px`, sample: String(deepest).slice(0,40)});
@@ -161,10 +172,9 @@ DECK_VALIDATOR_JS = r"""
         // 겹친다(슬라이드2 사례 — getBoundingClientRect 1px 여유였는데 PDF 겹침).
         // 따라서 최소 4px 여유를 요구한다.
         const slack = box.clientHeight - box.scrollHeight;   // 양수 = 여유, 음수 = 넘침
-        const ov = getComputedStyle(box).overflow;
-        // 실제 넘침(음수 slack)만 차단. 슬라이드2 squeeze 사례는 min-height 로
-        // 양의 여유 확보해 PDF 픽셀 검증 통과. (DOM slack≥0 이면 PDF 안전 확인됨)
-        if (slack < 0 && ov !== 'hidden') {
+        // 음수 slack = 내용이 박스보다 큼. overflow:hidden 이어도 텍스트가 잘려
+        // 사라지거나(내용 손실) PDF 에서 footer/이웃으로 삐져나가므로 항상 차단.
+        if (slack < 0) {
           issues.push({slide: sn, kind: 'box_content_overflow', detail: `overflow ${-slack}px`, sample: (typeof box.className==='string'?box.className:'').split(' ')[0]});
         }
         // 박스 내부 텍스트 최상단/최하단
