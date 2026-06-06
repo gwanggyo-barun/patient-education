@@ -77,6 +77,40 @@
       font-size: var(--text-body-lg); font-weight: var(--weight-450);
       color: var(--color-ink); line-height: var(--lh-relaxed);
     }
+
+    /* ── 이미지 중심 슬라이드용: 와이드 스트립 + HTML 라벨 정렬 (Gotcha 13) ── */
+    .visual-stack {
+      display: flex; flex-direction: column; gap: var(--space-4);
+      height: 100%; position: relative; z-index: 1;
+    }
+    .visual-strip {
+      margin: 0; border-radius: var(--radius-lg); overflow: hidden;
+      border: 1px solid var(--color-border); flex: 0 0 auto;
+    }
+    .visual-strip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .visual-strip--mech { height: 222px; }
+    .visual-strip--routine { height: 196px; }
+    .strip-labels {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4);
+    }
+    .strip-label { text-align: center; }
+    .strip-label__num {
+      display: inline-flex; width: 30px; height: 30px; border-radius: 50%;
+      background: var(--color-navy); color: var(--color-canvas);
+      align-items: center; justify-content: center;
+      font-weight: var(--weight-black); font-size: var(--text-body);
+      margin-bottom: var(--space-2);
+    }
+    .strip-label__title {
+      font-size: var(--text-body-lg); font-weight: var(--weight-bold);
+      color: var(--color-navy); letter-spacing: var(--tracking-snug);
+      margin-bottom: var(--space-1);
+    }
+    .strip-label__body {
+      font-size: var(--text-body); font-weight: var(--weight-450);
+      color: var(--color-ink-soft); line-height: var(--lh-snug);
+    }
+    .pattern-compare--short .pattern-compare__list li { padding: 6px 0; }
   </style>
 </head>
 <body>
@@ -153,26 +187,31 @@
       <p class="slide__subtitle">원래는 주사로만 가능했던 치료입니다 — 약이 몸에서 하는 일은 세 가지입니다</p>
     </div>
     <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">식사를 시작하면</div>
-          <div class="timeline-step__body">원래 우리 장에서 GLP-1 호르몬이 나옵니다. 이 약은 그 호르몬의 역할을 더 강하고 길게 대신합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">인슐린 분비를 돕고</div>
-          <div class="timeline-step__body">혈당이 높을 때만 인슐린이 잘 나오도록 도와, 저혈당 위험을 크게 늘리지 않으면서 혈당을 내립니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">위를 천천히 비우고</div>
-          <div class="timeline-step__body">음식이 위에서 천천히 내려가 식후 혈당이 급하게 오르지 않습니다. 메스꺼움이 생기는 이유이기도 합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">식욕을 줄입니다</div>
-          <div class="timeline-step__body">뇌의 포만감 신호를 도와 덜 배고프게 합니다 — 혈당과 체중에 함께 작용하는 배경입니다.</div>
+      <div class="visual-stack">
+        <figure class="ai-visual visual-strip visual-strip--mech">
+          <img src="../../../shared/assets/generated/achieve3-glp1-mechanism-flow-20260606.png" alt="GLP-1 작용 기전 4단계: 장에서 분비, 췌장 인슐린 보조, 위 배출 지연, 뇌 포만감">
+        </figure>
+        <div class="strip-labels">
+          <div class="strip-label">
+            <div class="strip-label__num">1</div>
+            <div class="strip-label__title">식사를 시작하면</div>
+            <div class="strip-label__body">장에서 GLP-1 호르몬 분비 — 이 약이 그 역할을 더 강하고 길게 대신</div>
+          </div>
+          <div class="strip-label">
+            <div class="strip-label__num">2</div>
+            <div class="strip-label__title">인슐린 분비를 돕고</div>
+            <div class="strip-label__body">혈당 높을 때만 작동 — 저혈당 위험 없이 혈당을 내림</div>
+          </div>
+          <div class="strip-label">
+            <div class="strip-label__num">3</div>
+            <div class="strip-label__title">위를 천천히 비우고</div>
+            <div class="strip-label__body">식후 혈당 급상승 방지 — 메스꺼움이 생기는 이유이기도</div>
+          </div>
+          <div class="strip-label">
+            <div class="strip-label__num">4</div>
+            <div class="strip-label__title">식욕을 줄입니다</div>
+            <div class="strip-label__body">뇌 포만감 신호 보조 — 혈당·체중에 함께 작용하는 배경</div>
+          </div>
         </div>
       </div>
     </div>
@@ -229,32 +268,33 @@
       <p class="slide__subtitle">두 약 모두 좋은 선택지입니다 — 다만 일상에 얹는 부담이 다릅니다</p>
     </div>
     <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="pattern-compare__col pattern-compare__col--navy">
-          <div class="pattern-compare__head">
-            <div class="pattern-compare__label">기존 먹는 약 · 세마글루타이드</div>
-            <div class="pattern-compare__title">빈속 규칙을 지켜야 효과가 납니다</div>
+      <div class="visual-stack">
+        <figure class="ai-visual visual-strip visual-strip--routine">
+          <img src="../../../shared/assets/generated/achieve3-morning-routine-comparison-20260606.png" alt="아침 복용 루틴 비교: 빈속·시계·물 제한 대기 장면 vs 자유로운 아침 식사 장면">
+        </figure>
+        <div class="pattern-compare pattern-compare--short" style="flex:1; min-height:0;">
+          <div class="pattern-compare__col pattern-compare__col--navy">
+            <div class="pattern-compare__head">
+              <div class="pattern-compare__label">기존 먹는 약 · 세마글루타이드</div>
+              <div class="pattern-compare__title">빈속 규칙을 지켜야 효과가 납니다</div>
+            </div>
+            <ul class="pattern-compare__list">
+              <li><strong>아침 빈속에</strong> — 물은 반 컵 이하로</li>
+              <li><strong>복용 후 30분 금식</strong> — 음식·음료·다른 약 대기</li>
+              <li><strong>규칙을 지키면</strong> — 검증된 혈당 강하 효과</li>
+            </ul>
           </div>
-          <ul class="pattern-compare__list">
-            <li><strong>아침 빈속에</strong> — 일어나자마자, 식사 전 복용</li>
-            <li><strong>물은 반 컵 이하</strong> — 많이 마시면 흡수가 떨어집니다</li>
-            <li><strong>복용 후 30분 금식</strong> — 음식·음료·다른 약 모두 대기</li>
-            <li><strong>매일 같은 루틴</strong> — 시간이 들쭉날쭉하면 효과 저하</li>
-            <li><strong>규칙을 지키면</strong> — 검증된 혈당 강하 효과</li>
-          </ul>
-        </div>
-        <div class="pattern-compare__col pattern-compare__col--steel">
-          <div class="pattern-compare__head">
-            <div class="pattern-compare__label">신약 · 오포글리프론 (국내 승인 전)</div>
-            <div class="pattern-compare__title">음식·물 제한 없이 하루 한 알</div>
+          <div class="pattern-compare__col pattern-compare__col--steel">
+            <div class="pattern-compare__head">
+              <div class="pattern-compare__label">신약 · 오포글리프론 (국내 승인 전)</div>
+              <div class="pattern-compare__title">음식·물 제한 없이 하루 한 알</div>
+            </div>
+            <ul class="pattern-compare__list">
+              <li><strong>식사·물과 무관</strong> — 하루 1회 아무 때나</li>
+              <li><strong>금식 대기 없음</strong> — 복용 후 바로 일상 그대로</li>
+              <li><strong>대신 위장 적응 필요</strong> — 메스꺼움 관리가 과제</li>
+            </ul>
           </div>
-          <ul class="pattern-compare__list">
-            <li><strong>식사와 무관</strong> — 밥 먹기 전·후 어느 때나</li>
-            <li><strong>물 양 제한 없음</strong> — 평소처럼 마셔도 됩니다</li>
-            <li><strong>금식 대기 없음</strong> — 복용 후 바로 일상 그대로</li>
-            <li><strong>하루 1회</strong> — 본인 생활 리듬에 맞춰서</li>
-            <li><strong>대신 위장 적응 필요</strong> — 메스꺼움 관리가 과제</li>
-          </ul>
         </div>
       </div>
     </div>
@@ -283,6 +323,9 @@
           </p>
         </div>
         <div class="pattern-split__detail">
+          <figure class="ai-visual ai-visual--split ai-visual--fill">
+            <img src="../../../shared/assets/generated/achieve3-randomization-diagram-20260606.png" alt="1,698명이 네 그룹으로 무작위 배정되는 다이어그램">
+          </figure>
           <div class="pattern-split__metric">
             <div class="pattern-split__metric-label">Participants</div>
             <div class="pattern-split__metric-value">n = 1,698</div>
