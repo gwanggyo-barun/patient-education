@@ -61,8 +61,11 @@
 - 본문 WCAG AA 대비 ≥ 4.5:1. Steel Blue(#5B9BD5) 위 흰 텍스트는 크기·굵기 확인(작은 본문은 위험 → navy 사용).
 
 ## 6. 검증기 자동 탐지 (`shared/_validate_layout.py` DECK)
-- `body_overlaps_footer`, `body_underfills`(보이는 박스 최하단 기준 `>72px`), `box_underfill`(하단공백 비대칭 `>28px AND 상단보다 >24px`), `box_content_overflow`(내용 넘침), `font_too_small`(본문 `<15px` 차단, kicker/label/value 면제), `content_image_gutter`(`<24px`), **`sparse_box`(대칭이지만 inner_fill < 0.55 — 경고)**.
-- ⭐ **Step 3.8: PDF가 아니라 슬라이드별 PNG를 한 장씩 전부 눈으로 확인. 검증기 통과 ≠ 시각 통과.** 체크: 박스 대칭·내용 넘침·폰트 스케일·거터·표 정렬·희소박스.
+- `body_overlaps_footer`, `body_underfills`(보이는 박스 최하단 기준 `>72px`), `box_underfill`(하단공백 비대칭 `>28px AND 상단보다 >24px`), `box_content_overflow`(음수 slack=실제 넘침), `sibling_box_overlap`(형제 카드 물리 겹침), `font_too_small`(본문 `<15px` 차단, kicker/label/value 면제), `content_image_gutter`(`<24px`), `sparse_box`(대칭이지만 inner_fill < 0.48 — 경고).
+- ⭐⭐ **검증·캡처는 PDF와 동일한 `print` 미디어로 (2026-06-06 슬라이드2 겹침 사고).** PDF는 `emulate_media('print')`로 렌더되는데, screen 미디어 검증은 print 의 미세 폰트 메트릭 차이로 생기는 카드 겹침(DOM 1px 여유 → PDF 2~3px 넘침)을 놓친다. `_validate_layout`·build·`slide_screens` 모두 deck 은 print 모드 + 폰트 로딩 1.2s 대기.
+- ⭐ **squeeze된 박스(고정/grid 높이로 콘텐츠가 꽉 끼는 경우)는 min-height 로 양의 여유(4px+) 확보.** stat-grid 3카드+note 같은 빡빡한 칸 필수.
+- ⭐ **ground-truth = 실제 PDF 픽셀.** 의심되면 PyMuPDF(`fitz`)로 PDF 페이지를 3x 렌더해 카드 rect 겹침을 직접 확인 (DOM getBoundingClientRect ≠ PDF 래스터라이저).
+- ⭐ **Step 3.8: PDF가 아니라 슬라이드별 PNG를 한 장씩 전부 눈으로 확인. 검증기 통과 ≠ 시각 통과.** 체크: 박스 대칭·내용 넘침·카드 겹침·폰트 스케일·거터·표 정렬·희소박스.
 
 ## 적용
 visual-focus 강제 축소 블록을 위 스케일로 교체. 신규 덱은 처음부터 이 룰로. 예외 슬라이드만 deck-local override.
