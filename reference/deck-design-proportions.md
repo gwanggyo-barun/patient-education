@@ -4,7 +4,7 @@
 
 ## 0. 최종 핵심 룰 (코덱스 2차 감수 — 멀티디바이스 영구)
 1. **이미지 figure = "카드"가 아니라 "media surface"**: cover 이미지 figure 배경 = **흰색/투명**(`#f8fbff` 회색 금지 — 또 하나의 카드처럼 보여 "겹쳐보임" 유발). `#f8fbff`는 contain/투명PNG/로딩실패 fallback 일 때만. figure 내부 텍스트·캡션·패딩 넣어 카드화 금지.
-2. **radius는 figure 한 곳에서만** + `overflow:hidden`. 내부 `img`에 독립 radius 숫자 금지(0 또는 inherit). **media radius(12px) ≤ 카드 radius**. figure 그림자는 `blur≤9·opacity≤0.08·spread 0·x-offset 0·y-offset 2~4`.
+2. **radius·그림자는 `<img>` 자체에** (Chromium PDF gotcha): Chromium은 print PDF에서 figure의 `overflow:hidden`으로 자식 `<img>`를 figure radius로 못 깎는다 → figure border/배경이 sharp box로 남아 "또 하나의 카드"처럼 보임. 따라서 **figure는 투명(border·bg·shadow 없음), `<img>`에 직접 `border-radius:12px` + `box-shadow`**. media radius(12px) ≤ 카드 radius. figure 그림자는 `blur≤9·opacity≤0.08·spread 0·x-offset 0·y-offset 2~4`.
 3. **브랜드 토큰 정합**: 일반 교육 슬라이드 제목 36~40px, **표지/hero만 48px+**. 카드 radius **12px 기본**, 큰 컨테이너만 16px, 작은 요소 8px. 한글 본문/카드 `letter-spacing:0`(hero 영문·숫자 장식만 예외).
 4. **표 4행↑ 균등 채움(equal rows/controlled gap)** — `space-between` 큰 빈틈 금지, **row-gap 상한 18~22px**. 2~3행은 박스높이=내용+48~72.
 5. **paint 겹침 = 실패**: DOM rect 안 겹쳐도 PDF에서 figure 그림자/배경이 거터를 침범해 카드와 시각적으로 붙으면 실패. 검증은 print 미디어 + 실제 PDF 픽셀(PyMuPDF). 거터 기본 32px·media surface figure 36px·차단 24px.
