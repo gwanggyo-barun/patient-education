@@ -1576,7 +1576,13 @@ def main() -> int:
                 page = ctx.new_page()
                 page.goto(f"file://{build_file}")
                 page.wait_for_load_state("networkidle")
-                # Layout validation BEFORE rendering — catch overflows/overlaps
+                page.wait_for_timeout(1200)  # ensure Pretendard web font applied
+                # Layout validation BEFORE rendering — catch overflows/overlaps.
+                # ⭐ deck PDF는 print 미디어로 렌더되므로 검증도 print 로 (screen
+                # 에서만 보면 print 폰트 메트릭 차이로 생기는 카드 겹침을 놓침).
+                if fmt == "deck-16x9":
+                    page.emulate_media(media="print")
+                    page.wait_for_timeout(300)
                 validator_js = DECK_VALIDATOR_JS if fmt == "deck-16x9" else HANDOUT_VALIDATOR_JS
                 issues = page.evaluate(validator_js)
                 if issues:

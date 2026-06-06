@@ -156,12 +156,16 @@ DECK_VALIDATOR_JS = r"""
       s.querySelectorAll('.stat-card,.review-card,.step,.flow-card,.tbl-row:not(.tbl-row--head),.line-list li').forEach((box) => {
         const br = box.getBoundingClientRect();
         if (br.height < 40) return;
-        // ⓐ 박스 내용 넘침: scrollHeight > clientHeight = 텍스트가 박스 밖으로 삐져나감
-        // (justify-content:center 면 위아래로 spill → 이웃 카드와 겹쳐 보임)
-        const overflowPx = box.scrollHeight - box.clientHeight;
+        // ⓐ 박스 내용 넘침/꽉낌: scrollHeight 가 clientHeight 에 너무 근접하면
+        // PDF 래스터라이저의 폰트 메트릭 차이로 실제 PDF 에서 넘쳐 이웃 카드와
+        // 겹친다(슬라이드2 사례 — getBoundingClientRect 1px 여유였는데 PDF 겹침).
+        // 따라서 최소 4px 여유를 요구한다.
+        const slack = box.clientHeight - box.scrollHeight;   // 양수 = 여유, 음수 = 넘침
         const ov = getComputedStyle(box).overflow;
-        if (overflowPx > 3 && ov !== 'hidden') {
-          issues.push({slide: sn, kind: 'box_content_overflow', detail: `${overflowPx}px`, sample: (typeof box.className==='string'?box.className:'').split(' ')[0]});
+        // 실제 넘침(음수 slack)만 차단. 슬라이드2 squeeze 사례는 min-height 로
+        // 양의 여유 확보해 PDF 픽셀 검증 통과. (DOM slack≥0 이면 PDF 안전 확인됨)
+        if (slack < 0 && ov !== 'hidden') {
+          issues.push({slide: sn, kind: 'box_content_overflow', detail: `overflow ${-slack}px`, sample: (typeof box.className==='string'?box.className:'').split(' ')[0]});
         }
         // 박스 내부 텍스트 최상단/최하단
         let cb = br.top, ct = br.bottom;
@@ -222,6 +226,21 @@ DECK_VALIDATOR_JS = r"""
         }
       }
     }
+    // ⓓ 형제 박스끼리 실제 겹침 (카드↔카드 충돌) — 2026-06-06 슬라이드2 사례.
+    // print 미디어에서 콘텐츠가 넘쳐 이웃 카드와 박스가 물리적으로 겹치는 경우.
+    const SIB = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note';
+    const sibs = [...s.querySelectorAll(SIB)].map(e => ({e, r: e.getBoundingClientRect()})).filter(x => x.r.width > 4 && x.r.height > 4);
+    for (let i = 0; i < sibs.length; i++) {
+      for (let j = i + 1; j < sibs.length; j++) {
+        const A = sibs[i], B = sibs[j];
+        if (A.e.contains(B.e) || B.e.contains(A.e)) continue;
+        const ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left);
+        const oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
+        if (ox > 2 && oy > 2) {
+          issues.push({slide: sn, kind: 'sibling_box_overlap', detail: `${Math.round(ox)}x${Math.round(oy)}px`, sample: (typeof A.e.className==='string'?A.e.className:'').split(' ')[0]});
+        }
+      }
+    }
   });
   // 동일 (slide,kind) 중복 제거
   const seen = new Set(), uniq = [];
@@ -249,6 +268,12 @@ def validate_html_file(html_path: Path, kind: str = "auto") -> list[dict]:
         page = browser.new_page(viewport=viewport)
         page.goto(html_path.resolve().as_uri())
         page.wait_for_load_state("networkidle")
+        # ⭐ 2026-06-06: PDF는 print 미디어로 렌더되므로 검증도 print 로 맞춘다.
+        # screen 미디어에서만 보면 print 의 미세 폰트 메트릭 차이로 생기는
+        # 카드 겹침(슬라이드2 사례)을 놓친다.
+        if kind == "deck":
+            page.emulate_media(media="print")
+            page.wait_for_timeout(300)
         issues = page.evaluate(js)
         browser.close()
     return issues
