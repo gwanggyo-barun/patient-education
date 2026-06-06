@@ -282,6 +282,17 @@ HTML will overlay Korean labels using Pretendard font separately.
 4. **프롬프트 추적**: 생성본 옆의 `.prompt.md`에는 slide 번호, slide title, source text summary, visual intent, unique subject, slot size/ratio, negative constraints 를 남긴다.
 5. **불확실하면 생략**: 정확히 맞는 그림을 만들 수 없으면 "no image added: reason"으로 기록하고 텍스트 위계·표·아이콘·여백을 개선한다. 이미지 수량 부족은 실패가 아니지만, 무관한 이미지는 실패다.
 
+### 18. deck 슬라이드는 '보기 좋게' 꽉 채우고, 박스 안 텍스트는 정렬을 맞춘다 (2026-06-06 사용자 지적)
+
+사용자 검수에서 발견된 두 부류의 실패 — 둘 다 _validate_layout 의 신규 체크(`body_overlaps_footer`/`body_underfills`)로 자동 감지된다:
+
+1. **푸터 침범**: stats3 원·visual-strip·closing-grid 등 큰 블록이 본문 높이를 넘겨 footer(출처·페이지번호)를 덮음. → 블록 크기(원 지름·strip height·카드 padding)를 줄여 본문이 footer 위에서 끝나게 한다. 측정: 슬라이드별 `footer.top − 본문최하단 ≥ 0`.
+2. **언더필 + 과소 폰트**: 표(table-wrap)·목록(pattern-compare) 등 텍스트 컴포넌트가 `justify-content:center`로 가운데 몰리고 폰트가 작아 위아래 여백이 큼. → ① `justify-content: space-between`/`flex-start`로 펴고 ② 폰트를 키운다(표 셀 ~1rem, 목록 항목 ~1.05rem, 제목 ~1.2rem 수준) ③ 행/항목 padding·line-height를 늘려 슬라이드를 **'꽉'이 아니라 '보기 좋게'** 채운다(footer 위 여백 슬라이드 높이의 9% 이내).
+
+**박스 활용 + 정렬**: 텍스트는 가능하면 박스(card/col/tile) 안에 담고, 박스 안에서 라벨·본문의 시작점(좌측 정렬)과 줄간격을 일관되게 맞춘다. 같은 행의 여러 박스는 등높이로(`align-items: stretch` 또는 `height:100%`) 만들어 구분선이 수직이 되게 한다([Gotcha 17]도 같은 맥락).
+
+deck-local override 예: `bepirovirsen-hbv-phase3/index.html` 의 `.slide:nth-of-type(N)` 블록(slide 2·7·8·9·12 교정).
+
 ### 17. 수치용 lab-row 를 텍스트 목록 표에 재사용 금지 (2026-06-06 사용자 지적)
 
 `clinic-handout-a4.css`의 `.lab-row` 는 **검사 수치 표** 전용이다 — `lab-row__value { text-align: right }` + 열폭 `1.4fr 0.7fr 1fr auto` (분류 넓게, 수치 좁게)가 숫자 비교에 최적화돼 있다. 이걸 음식 목록·문장형 셀에 그대로 쓰면 **value 가 우측으로 쏠리고 줄바꿈이 삐뚤빼뚤**해진다 (IBS 신호등 표 사고 — 사용자 즉시 지적).
@@ -920,7 +931,7 @@ Step 3 build + validate_layout + (lab-reports 한정) _visual_audit  ← Stage C
 [Stage E — integrator fix (blocker / major 우선)]
    ↓
 Step 3.5 인포그래픽 슬롯 설계 + `$imagegen` 생성 (decks / handouts / lab-reports)
-Step 3.8 ⚠️ 푸시 전 전수 육안검수 (2026-06-06 사용자 룰) — `python3 tools/slide_screens.py <html>` 로 슬라이드를 한 장씩 캡처해 integrator 가 직접 전부 열어보고 겹침·잘림·이미지 크롭·라벨 정렬을 확인한다. bbox 검사(_validate_layout)만으로 끝내지 않는다. 문제 발견 시 수정→재캡처. 통과 후에만 Step 4 진행하며, 사용자 추가 지시 없이 커밋·푸시까지 완료한다.
+Step 3.8 ⚠️ 푸시 전 전수 육안검수 (2026-06-06 사용자 룰, 강화) — `python3 tools/slide_screens.py <html>` 로 **모든 슬라이드를 한 장씩 캡처해 Read 도구로 한 장 한 장 전부 직접 열어본다** (요약/대표 몇 장만 보는 것 금지). bbox 검사(_validate_layout)만으로 끝내지 않는다. _validate_layout 은 이제 `body_overlaps_footer`(본문이 푸터 침범)·`body_underfills`(푸터 위 9%↑ 빈 여백)도 잡으므로 **먼저 통과시킨 뒤** 육안검수한다. 각 슬라이드에서 확인: ① 푸터/페이지번호 가림 없음 ② 본문이 슬라이드를 보기 좋게 채움(언더필·과여백 없음) ③ 이미지 크롭·라벨 정렬 ④ **박스 안 텍스트 정렬·여백 균형** ([Gotcha 18]). 문제 발견 시 수정→재캡처→재검수. 통과 후에만 Step 4 진행하며, 사용자 추가 지시 없이 커밋·푸시까지 완료한다.
 Step 4 git push (커밋 시 다른 세션 작업물 보호 — 명시적 stage 만)
 ```
 
