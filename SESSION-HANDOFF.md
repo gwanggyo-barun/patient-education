@@ -1,6 +1,19 @@
-# 세션 인계 — 2026-05-29 (KST 00:25)
+# 세션 인계 — 2026-06-06 (KST 17:40) · 직전판 2026-05-29
 
-> 이 문서를 새 세션 시작 시 `Read /Users/chungjihwan/clinic-content-system/SESSION-HANDOFF.md` 또는 노션 페이지 링크로 전달하면, 진행 중 작업·룰·환경을 한 번에 복구할 수 있습니다.
+> 이 문서를 새 세션 시작 시 `Read ~/clinic-content-system/SESSION-HANDOFF.md` 또는 노션 페이지 링크로 전달하면, 진행 중 작업·룰·환경을 한 번에 복구할 수 있습니다. (주 작업 호스트는 Mac mini로 이전됨 — 경로 `/Users/jihwan/...`)
+
+---
+
+## 🆕 2026-06-06 업데이트 (Mac mini 마라톤 세션)
+
+1. **🚨 연락처 SoT 정정 — `blocks/content/clinic-contact-footer.yaml` v04**: 부원장 진료로 **평일(월–금) 전일 운영** (08:30–18:30 · 토 08:30–13:30). 원장 개인 휴무(수 오후)와 병원 휴진을 혼동한 v03의 "수요일 오후 휴진" 표기는 **금지** — 6/6 원장 직접 확인. 아래 절대 룰 11번의 v03 언급은 v04로 대체됨.
+2. **슬라이드 스킬 v2 (SKILL.md)**: ① deck당 이미지 4–6장이 내용의 핵심 축 ② 텍스트는 절대 이미지에 굽지 않고 HTML 오버레이 ③ 스타일 = semi-realistic (플랫 벡터 금지, `reference/image-assets.md` STYLE 블록) ④ slot-first: HTML 슬롯 실측 후 비율 맞춰 생성 ⑤ Step 3.8 페이지별 Playwright 시각 QA + 자동 commit·push ⑥ Notion 동기화 시 "파일링크" 칸 필수 (`shared/_notion_sync.py` pdf_url). 벤치마크 산출물: `decks/endocrine/achieve3-oral-glp1/` (e28fafd).
+3. **Claude↔Codex 오케스트레이션**: `reference/agent-orchestration.md` + `tools/codex_imagen.sh` (codex /imagen 헤드리스 래퍼 — `</dev/null` 필수, imagen 시간당 rate limit 존재, 생성 간 75초+ 간격). `tools/slide_screens.py` = per-slide 캡처.
+4. **멀티엔진 리서치 가동**: Claude + Codex(gpt-5.5) + Gemini CLI(울트라 OAuth, `GEMINI_CLI_TRUST_WORKSPACE=true gemini -p`) + Perplexity Sonar API(`~/.claude/.perplexity_api_key`, Pro 무료크레딧 폐지됨—충전식). 1호전: IBS 식단 (Codex 1위). TODO: 딥리서치 스킬 repo화 (pplx는 sonar-deep-research 모델로).
+5. **IBS 저FODMAP A4 핸드아웃 신규**: `handouts/lifestyle/ibs-fodmap-diet/` — 4엔진 리서치 통합본, imagen 이미지 4장 중심 구성 (v2 룰 첫 핸드아웃 적용).
+6. **사진 자동 컬링 v1**: 별도 repo `minyunpapa/family-media-pipeline` — 통덤프→연사 클러스터→품질 채점→XMP 별점. 1,076장 실전 1차 통과 (★5 299장/228초).
+7. **클라우드 루틴**: 논문Top5 v2(06:00) · 아침브리핑 v2(06:05) · KBO 결과 리포트(23:00, etcRecords+wRC+) — 모두 6/7 첫 자동실행 검증 필요. 야구 시즌 성적 인용 시 wRC+ 필수(statiz).
+8. **할일 컨벤션 재확인**: 할일 → Notion "📥 Akiflow Inbox" DB (To-do 캘린더 아님!), 일정 → 구글캘린더.
 
 ---
 
