@@ -9,7 +9,7 @@ decks, handouts, lab-reports 의 인포그래픽은 두 단계로 운영된다:
 - **품질·가독성 우선**: 이미지 개수를 채우지 않는다. 삽입 후 텍스트가 작아지거나 정보 위계가 흐려지면 만들지 않는다.
 - **공통 방식**: decks, handouts, lab-reports 모두 레이아웃 슬롯 먼저 → 슬롯 실측 → built-in `$imagegen` PNG/WebP/JPEG 래스터 생성 → preview 검수 순서를 따른다.
 - **handouts / lab-reports**: 보통 0~2개지만, 각 이미지가 다른 교육 포인트를 설명하고 레이아웃이 유지되면 여러 개도 허용한다. lab-reports 는 환자 PII 없는 검사 원리·해부·결과 이해 보조 이미지로 제한한다.
-- **decks**: Definition, Mechanism, Process, Action, Comparison 중 그림이 없으면 이해가 떨어지는 슬라이드에만 배치한다. 최소 개수 할당은 없다.
+- **decks**: ⚠️ 2026-06-06 사용자 룰 — **deck당 4~6장, 이미지가 전체 내용의 핵심 시각 축**. Definition, Mechanism, Process, Action, Comparison 슬라이드에서 적합성 게이트를 통과하는 unique subject 4~6개를 설계한다. 텍스트는 절대 이미지에 굽지 않고 HTML 오버레이(.ai-visual__pin, 라벨 grid)로 얹는다. 적합 subject가 4개 미만이면 억지로 채우지 말고 사유를 보고에 남긴다.
 
 PDF 빌드 시 이미지는 일반 파일로 렌더링되므로 Playwright 빌드와 GitHub Pages 배포 흐름을 바꾸지 않는다.
 
