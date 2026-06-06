@@ -282,6 +282,12 @@ HTML will overlay Korean labels using Pretendard font separately.
 4. **프롬프트 추적**: 생성본 옆의 `.prompt.md`에는 slide 번호, slide title, source text summary, visual intent, unique subject, slot size/ratio, negative constraints 를 남긴다.
 5. **불확실하면 생략**: 정확히 맞는 그림을 만들 수 없으면 "no image added: reason"으로 기록하고 텍스트 위계·표·아이콘·여백을 개선한다. 이미지 수량 부족은 실패가 아니지만, 무관한 이미지는 실패다.
 
+### 19. deck 폰트·박스·여백은 황금비율 룰을 따른다 (2026-06-06 사용자 컨펌, 코덱스 감수)
+
+비주얼-포커스(좌측 박스 + 우측 큰 이미지) 레이아웃에서 ① 박스가 이미지 높이에 stretch되며 내용이 위로 몰려 아래 30~64% 빈 비대칭 여백 ② 폰트 0.58~0.78rem 과소 ③ 박스가 이미지에 바짝 붙어 겹쳐 보임 — 세 문제를 모듈러 타입 스케일 + 황금비율로 해결한다. **상세 수치는 `reference/deck-design-proportions.md`가 SoT.**
+
+핵심: 박스 본문 16~17px(하한 15)·제목 20~22px·표셀 15~16px(0.58~0.78rem 강제축소 폐기) / 박스 늘릴 땐 `justify-content:center`로 여백 대칭(위몰림 금지), 기본은 내용기반 높이 / 본문:이미지 콘텐츠 의존 분할(표·6카드는 콘텐츠 ≥520px, 기본 0.72:1) + 거터 28~32px / 카드 radius 8~12·border 중심 / 한글 좌측정렬. `_validate_layout`이 `box_underfill`(하단공백 비대칭)·`font_too_small`(<15px, kicker/label/value 면제)·`content_image_gutter`(<24px)를 자동 차단.
+
 ### 18. deck 슬라이드는 '보기 좋게' 꽉 채우고, 박스 안 텍스트는 정렬을 맞춘다 (2026-06-06 사용자 지적)
 
 사용자 검수에서 발견된 두 부류의 실패 — 둘 다 _validate_layout 의 신규 체크(`body_overlaps_footer`/`body_underfills`)로 자동 감지된다:

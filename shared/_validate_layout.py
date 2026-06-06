@@ -128,16 +128,73 @@ DECK_VALIDATOR_JS = r"""
       });
       if (maxBottom > 0) {
         const gap = fr.top - maxBottom;            // 음수 = footer 침범
-        const gapPct = (gap / slideH) * 100;
         if (gap < -3) {
           issues.push({slide: sn, kind: 'body_overlaps_footer', detail: `${Math.round(-gap)}px`, sample: String(deepest).slice(0,40)});
-        } else if (gapPct > 9) {
-          issues.push({slide: sn, kind: 'body_underfills', detail: `${Math.round(gap)}px (${gapPct.toFixed(0)}%)`, sample: String(deepest).slice(0,40)});
+        } else if (gap > 72) {
+          // 본문 최하단~푸터 여백이 72px 초과 = 언더필 (24~56 적정, <16 과밀)
+          issues.push({slide: sn, kind: 'body_underfills', detail: `${Math.round(gap)}px`, sample: String(deepest).slice(0,40)});
+        }
+      }
+
+      // 2026-06-06 황금비율 룰 (reference/deck-design-proportions.md):
+      // ① box_underfill: 박스 하단 빈공간 >28px AND >25% (px+비율 병행)
+      // ② font_too_small: 박스/표 본문 <15px 차단
+      // ③ content_image_gutter: 콘텐츠 열↔이미지 <24px 차단
+      const cssNum = (el, prop) => parseFloat(getComputedStyle(el)[prop]) || 0;
+      // ① + ② : 콘텐츠 박스 순회
+      s.querySelectorAll('.stat-card,.review-card,.step,.flow-card,.tbl-row:not(.tbl-row--head),.line-list li').forEach((box) => {
+        const br = box.getBoundingClientRect();
+        if (br.height < 40) return;
+        // 박스 내부 텍스트 최상단/최하단
+        let cb = br.top, ct = br.bottom;
+        box.querySelectorAll('*').forEach((t) => {
+          if (t.children.length) return;
+          if (!t.textContent.trim()) return;
+          const r = t.getBoundingClientRect();
+          if (r.bottom > cb) cb = r.bottom;
+          if (r.top < ct) ct = r.top;
+          // 폰트 하한 (값 텍스트/숫자 메트릭 제외: 큰 숫자는 짧아 OK)
+          const fs = cssNum(t, 'fontSize');
+          const cls = (typeof t.className === 'string') ? t.className : '';
+          // 큰 숫자/메트릭과 대문자 마이크로 라벨(kicker·label·eyebrow·num)은 본문 하한 면제
+          if (fs > 0 && fs < 15 && !/value|metric|__num|stars|kicker|label|eyebrow/.test(cls)) {
+            issues.push({slide: sn, kind: 'font_too_small', detail: `${fs.toFixed(1)}px`, sample: cls.slice(0,30) || t.tagName});
+          }
+        });
+        const padBottom = cssNum(box, 'paddingBottom');
+        const padTop = cssNum(box, 'paddingTop');
+        const emptyBottom = br.bottom - cb - padBottom;      // 패딩 제외 하단 빈공간
+        const emptyTop = ct - br.top - padTop;               // 패딩 제외 상단 빈공간
+        // 언더필 = 비대칭(내용이 위로 몰림): 하단 공백이 28px↑이고, 상단보다 24px↑ 더 큼.
+        // 세로 중앙정렬(상·하단 공백 비슷)은 대칭이므로 통과.
+        if (emptyBottom > 28 && (emptyBottom - emptyTop) > 24) {
+          issues.push({slide: sn, kind: 'box_underfill', detail: `bottom ${Math.round(emptyBottom)}px vs top ${Math.round(emptyTop)}px`, sample: (typeof box.className==='string'?box.className:'').split(' ')[0]});
+        }
+      });
+      // ③ content_image_gutter: visual-focus 2열에서 좌측 콘텐츠 우측 끝 ↔ 이미지 좌측
+      const vf = s.querySelector('.slide__body--visual-focus');
+      if (vf) {
+        const img = s.querySelector('.paper-visual, figure.ai-visual');
+        if (img) {
+          const ir = img.getBoundingClientRect();
+          let maxRight = 0;
+          vf.querySelectorAll('.stat-card,.review-card,.step,.flow-card,.tbl-row,.bars,.line-list,.split-col,.note').forEach((el) => {
+            if (img.contains(el)) return;
+            const r = el.getBoundingClientRect();
+            if (r.left < ir.left && r.right > maxRight && r.right <= ir.left + 2) maxRight = r.right;
+          });
+          if (maxRight > 0) {
+            const gutter = ir.left - maxRight;
+            if (gutter < 24) issues.push({slide: sn, kind: 'content_image_gutter', detail: `${Math.round(gutter)}px`, sample: 'visual-focus'});
+          }
         }
       }
     }
   });
-  return issues;
+  // 동일 (slide,kind) 중복 제거
+  const seen = new Set(), uniq = [];
+  issues.forEach((it) => { const k = it.slide+'|'+it.kind+'|'+(it.sample||''); if (!seen.has(k)) { seen.add(k); uniq.push(it); } });
+  return uniq;
 })()
 """
 
