@@ -52,10 +52,13 @@ for r in "${CANDIDATE_ROOTS[@]}"; do
 done
 
 if [ ${#ROOTS[@]} -eq 0 ]; then
-    echo "No Claude data dir found. Tried:" >&2
+    echo "No Claude data dir found — skipping plugin clone sync (nothing to update on this machine)." >&2
+    echo "Tried:" >&2
     for r in "${CANDIDATE_ROOTS[@]}"; do echo "  $r" >&2; done
-    echo "(install Claude Code first, or adjust CANDIDATE_ROOTS in this script)" >&2
-    exit 1
+    # exit 0 (skip), not 1: 데스크톱 Claude 플러그인이 없는 머신(예: 헤드리스 Mac mini의
+    # CLI 전용 환경)에서도 sync_all_agents.sh 가 [D] Codex mirror 단계로 진행해야 한다.
+    # 2026-06-06 mini에서 실측: exit 1 이 set -e 체인을 끊어 Codex mirror 가 안 만들어짐.
+    exit 0
 fi
 
 found_any=0
