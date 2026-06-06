@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+cd "$(dirname "$0")/.."
+
+targets=(
+  "decks/heme/iron-deficiency-anemia/index.html"
+  "decks/neurology/migraine/diagnosis/index.html"
+  "decks/gi/ibs/index.html"
+  "decks/gi/bowel-prep-low-volume/index.html"
+  "decks/gi/gerd/lifestyle/index.html"
+  "decks/gi/hpylori-overview/index.html"
+  "decks/gi/h-pylori/eradication/index.html"
+  "decks/gi/atrophic-gastritis/index.html"
+  "decks/gi/chronic-constipation/index.html"
+  "decks/gi/acute-gastroenteritis-diet/index.html"
+  "decks/gi/post-polypectomy/index.html"
+  "decks/gi/appendicitis-diverticulitis/index.html"
+  "decks/general/papers-20260524/baxdrostat-baxhtn/index.html"
+  "decks/general/papers-20260524/soy-legumes-htn/index.html"
+  "decks/general/papers-20260524/tramadol-bmj/index.html"
+  "decks/general/papers-20260524/rsv-realworld/index.html"
+  "decks/general/papers-20260524/sglt2-glp1-combo/index.html"
+  "decks/general/papers-20260525/once-weekly-insulin/index.html"
+  "decks/general/papers-20260525/cpap-personalized-cv/index.html"
+  "decks/general/teen-height-growth/index.html"
+  "decks/pulmo/post-infectious-cough/index.html"
+  "decks/pulmo/asthma/index.html"
+  "decks/pulmo/pft/index.html"
+  "decks/pulmo/osa/index.html"
+  "decks/pulmo/pft-interpretation/index.html"
+  "decks/cardio/chest-pain/index.html"
+  "decks/cardio/eye-cardiovascular/index.html"
+  "decks/cardio/htn-2025-aha-acc/index.html"
+  "decks/cardio/orthostatic-hypotension/management-2026/index.html"
+  "decks/cardio/htn/morning/index.html"
+  "decks/cardio/vasovagal-syncope/index.html"
+  "decks/cardio/antihypertensive-classes/index.html"
+  "decks/emergency/endoscopy/cpr-training/index.html"
+  "decks/endocrine/diabetes-first-visit/index.html"
+  "decks/endocrine/hyperthyroidism/index.html"
+  "decks/endocrine/dyslipidemia/index.html"
+  "decks/endocrine/glp1-weight-management/week-06-injection/index.html"
+  "decks/endocrine/glp1-weight-management/week-02-aerobic/index.html"
+  "decks/endocrine/glp1-weight-management/week-03-strength/index.html"
+  "decks/endocrine/glp1-weight-management/week-04-nutrition/index.html"
+  "decks/endocrine/glp1-weight-management/week-07-safety/index.html"
+  "decks/endocrine/glp1-weight-management/week-01-start/index.html"
+  "decks/endocrine/glp1-weight-management/week-05-gi-effects/index.html"
+  "decks/endocrine/glp1-weight-management/week-08-maintenance/index.html"
+  "decks/endocrine/osteoporosis/index.html"
+  "decks/endocrine/hypothyroidism/index.html"
+  "decks/endocrine/gout/index.html"
+  "decks/endocrine/prediabetes-remission/index.html"
+  "decks/endocrine/diabetes-mellitus-type2/index.html"
+  "decks/endocrine/subacute-thyroiditis/index.html"
+  "decks/endocrine/advanced-lipid-biomarkers/index.html"
+  "decks/derm/chronic-urticaria/index.html"
+  "decks/infectious/ltbi-treatment/index.html"
+  "decks/infectious/ltbi-overview/index.html"
+  "decks/infectious/herpes-zoster/index.html"
+  "decks/infectious/influenza-antivirals/index.html"
+  "decks/vaccines/pneumococcal-comparison/index.html"
+  "decks/vaccines/pneumococcal/index.html"
+  "decks/injections/glp1-injection/index.html"
+  "decks/uro/microscopic-hematuria/index.html"
+)
+
+status=0
+for target in "${targets[@]}"; do
+  if ! PYTHONIOENCODING=utf-8 python3 shared/_validate_layout.py "$target"; then
+    status=1
+  fi
+done
+
+exit "$status"
