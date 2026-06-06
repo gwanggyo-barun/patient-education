@@ -286,7 +286,9 @@ HTML will overlay Korean labels using Pretendard font separately.
 
 비주얼-포커스(좌측 박스 + 우측 큰 이미지) 레이아웃에서 ① 박스가 이미지 높이에 stretch되며 내용이 위로 몰려 아래 30~64% 빈 비대칭 여백 ② 폰트 0.58~0.78rem 과소 ③ 박스가 이미지에 바짝 붙어 겹쳐 보임 — 세 문제를 모듈러 타입 스케일 + 황금비율로 해결한다. **상세 수치는 `reference/deck-design-proportions.md`가 SoT.**
 
-핵심: 박스 본문 16~17px(하한 15)·제목 20~22px·표셀 15~16px(0.58~0.78rem 강제축소 폐기) / 박스 늘릴 땐 `justify-content:center`로 여백 대칭(위몰림 금지), 기본은 내용기반 높이 / 본문:이미지 콘텐츠 의존 분할(표·6카드는 콘텐츠 ≥520px, 기본 0.72:1) + 거터 28~32px / 카드 radius 8~12·border 중심 / 한글 좌측정렬. `_validate_layout`이 `box_underfill`(하단공백 비대칭)·`font_too_small`(<15px, kicker/label/value 면제)·`content_image_gutter`(<24px)를 자동 차단.
+핵심: 박스 본문 16~17px(하한 15)·제목 20~22px·표셀 15~16px(0.58~0.78rem 강제축소 폐기) / 박스 늘릴 땐 `justify-content:center`로 여백 대칭(위몰림 금지), 기본은 내용기반 높이 / 본문:이미지 콘텐츠 의존 분할(표·6카드는 콘텐츠 ≥520px, 기본 0.72:1) + 거터 28~32px / 카드 radius 8~12·border 중심 / 한글 좌측정렬.
+
+**v2 보강 (코덱스 2차 감수):** ① 박스 내용 넘침 금지(`box_content_overflow`, scrollHeight>clientHeight) — 긴 비교값은 폰트 축소보다 라벨/값 분리 ② "대칭이면 OK 아님 — 박스가 콘텐츠 무게와 맞아야". **inner_fill(내용/박스)** ≥55 A방치 / 40~55 B확대(폰트 아닌 패딩·행간·막대·아이콘) / 28~40 C박스축소+중앙배치 / <28 D재설계. 순서 B→C→D ③ 표 4행↑ space-between(행간상한), 2~3행 금지(박스=내용+48~72px) ④ 막대 두께14~20·행44~56·채움50~70% ⑤ 카드2개 높이상한 220~260px·full-height stretch 금지. `_validate_layout`이 `box_underfill`·`box_content_overflow`·`font_too_small`·`content_image_gutter`·`body_underfills`(보이는박스 기준)·`sparse_box`(대칭이나 inner_fill<55%)를 차단/경고. **검증기 통과 ≠ 시각 통과 — Step 3.8 PNG 한장씩 전수 육안 필수.**
 
 ### 18. deck 슬라이드는 '보기 좋게' 꽉 채우고, 박스 안 텍스트는 정렬을 맞춘다 (2026-06-06 사용자 지적)
 

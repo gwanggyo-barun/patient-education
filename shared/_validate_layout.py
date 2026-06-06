@@ -116,16 +116,27 @@ DECK_VALIDATOR_JS = r"""
         const cn = (typeof el.className === 'string' ? el.className : '');
         return /__visual|bg-image|ai-visual|hero-img|full-bleed|-image\b|__img/.test(cn);
       };
+      // '보이는 콘텐츠 박스'(배경/테두리 있는 카드·행·패널)의 최하단을 본다.
+      // 투명 full-height 래퍼(table-wrap 등)에 속지 않고, 채워진 패널(bars·step)이
+      // 푸터까지 닿으면 underfill 아님 / 투명하게 떠 있는 행이면 underfill 로 잡힘.
+      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.split-col,.closing-contact,.qr-block';
       let maxBottom = 0, deepest = '';
-      body.querySelectorAll('*').forEach((c) => {
-        if (c.classList.contains('slide__bg-num')) return;
+      s.querySelectorAll(BOXSEL).forEach((c) => {
+        if (c.closest && c.closest('figure, .bg-image-split__visual, .ai-visual, .slide__footer')) return;
         const cs = getComputedStyle(c);
-        if (cs.position === 'absolute' || cs.position === 'fixed') return; // 장식 핀 제외
-        if (isVisual(c)) return;                 // 풀블리드 이미지/배경 제외
-        if (c.closest && c.closest('figure, .bg-image-split__visual')) return; // 비주얼 컨테이너 내부도 제외
+        if (cs.position === 'absolute' || cs.position === 'fixed') return;
         const r = c.getBoundingClientRect();
-        if (r.height > 0 && r.bottom > maxBottom) { maxBottom = r.bottom; deepest = c.className; }
+        if (r.height > 6 && r.bottom > maxBottom) { maxBottom = r.bottom; deepest = (typeof c.className==='string'?c.className:''); }
       });
+      // 텍스트 leaf 폴백 (박스 없는 슬라이드)
+      if (maxBottom === 0) {
+        body.querySelectorAll('*').forEach((c) => {
+          if (c.children.length > 0 || !c.textContent.trim()) return;
+          if (c.closest && c.closest('figure, .ai-visual, .slide__footer')) return;
+          const r = c.getBoundingClientRect();
+          if (r.height > 0 && r.bottom > maxBottom) { maxBottom = r.bottom; deepest = (c.parentElement&&typeof c.parentElement.className==='string')?c.parentElement.className:''; }
+        });
+      }
       if (maxBottom > 0) {
         const gap = fr.top - maxBottom;            // 음수 = footer 침범
         if (gap < -3) {
@@ -145,6 +156,13 @@ DECK_VALIDATOR_JS = r"""
       s.querySelectorAll('.stat-card,.review-card,.step,.flow-card,.tbl-row:not(.tbl-row--head),.line-list li').forEach((box) => {
         const br = box.getBoundingClientRect();
         if (br.height < 40) return;
+        // ⓐ 박스 내용 넘침: scrollHeight > clientHeight = 텍스트가 박스 밖으로 삐져나감
+        // (justify-content:center 면 위아래로 spill → 이웃 카드와 겹쳐 보임)
+        const overflowPx = box.scrollHeight - box.clientHeight;
+        const ov = getComputedStyle(box).overflow;
+        if (overflowPx > 3 && ov !== 'hidden') {
+          issues.push({slide: sn, kind: 'box_content_overflow', detail: `${overflowPx}px`, sample: (typeof box.className==='string'?box.className:'').split(' ')[0]});
+        }
         // 박스 내부 텍스트 최상단/최하단
         let cb = br.top, ct = br.bottom;
         box.querySelectorAll('*').forEach((t) => {
@@ -169,6 +187,20 @@ DECK_VALIDATOR_JS = r"""
         // 세로 중앙정렬(상·하단 공백 비슷)은 대칭이므로 통과.
         if (emptyBottom > 28 && (emptyBottom - emptyTop) > 24) {
           issues.push({slide: sn, kind: 'box_underfill', detail: `bottom ${Math.round(emptyBottom)}px vs top ${Math.round(emptyTop)}px`, sample: (typeof box.className==='string'?box.className:'').split(' ')[0]});
+        }
+        // sparse_box (코덱스 2차): 대칭이어도 박스가 콘텐츠보다 과하게 큼.
+        // inner_fill = 보이는 내용높이 / 박스 내부높이. <0.55 면 경고(작은 박스·라벨류 제외).
+        const innerH = box.clientHeight - padTop - padBottom;
+        const contentH = cb - ct;
+        if (innerH > 90 && contentH > 0) {
+          const innerFill = contentH / innerH;
+          // 큰 숫자 메트릭 카드(stat-card)는 값이 짧아 자연히 낮으므로 더 관대(0.40)
+          const cl = (typeof box.className==='string'?box.className:'');
+          // 코덱스 권고 카드 목표 0.50~0.68 → 0.48 미만만 경고(0.51 등 경계 통과), stat 0.40
+          const floor = /stat-card/.test(cl) ? 0.40 : 0.48;
+          if (innerFill < floor) {
+            issues.push({slide: sn, kind: 'sparse_box', detail: `fill ${(innerFill*100).toFixed(0)}% (box ${Math.round(box.clientHeight)}px)`, sample: cl.split(' ')[0]});
+          }
         }
       });
       // ③ content_image_gutter: visual-focus 2열에서 좌측 콘텐츠 우측 끝 ↔ 이미지 좌측
