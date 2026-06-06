@@ -14,6 +14,8 @@
 6. **사진 자동 컬링 v1**: 별도 repo `minyunpapa/family-media-pipeline` — 통덤프→연사 클러스터→품질 채점→XMP 별점. 1,076장 실전 1차 통과 (★5 299장/228초).
 7. **클라우드 루틴**: 논문Top5 v2(06:00) · 아침브리핑 v2(06:05) · KBO 결과 리포트(23:00, etcRecords+wRC+) — 모두 6/7 첫 자동실행 검증 필요. 야구 시즌 성적 인용 시 wRC+ 필수(statiz).
 8. **할일 컨벤션 재확인**: 할일 → Notion "📥 Akiflow Inbox" DB (To-do 캘린더 아님!), 일정 → 구글캘린더.
+9. **🆕 덱 황금비율 디자인 룰 (6/6 저녁, 사용자 컨펌 + 코덱스 감수)**: `reference/deck-design-proportions.md` 신설(SoT) + SKILL Gotcha 19. 비주얼-포커스 박스 폰트 0.58~0.78rem→15~17px, 박스 세로중앙 대칭여백, 거터 28~32px. `_validate_layout`에 `box_underfill`(하단공백 비대칭)·`font_too_small`(<15px)·`content_image_gutter`(<24px) 자동 차단 추가 + Step 3.8 한장한장 스크린샷 전수검수 강화. EASO/BMJ/FINE-ONE/ACS 4덱 적용 완료.
+   - **⚠️ 미완 — 라이브러리 전체 스윕 TODO**: 신규 검증기가 기존 덱 ~20개(achieve3·bepirovirsen 포함)에서 같은 잠복 문제(작은폰트·언더필·푸터겹침) 적발. build.py는 `::error` 주석만 내고 `return 0`(deploy 계속)이라 CI는 안 깨지지만, 점진적으로 황금비율 룰로 일괄 수정 필요. `python3 shared/_validate_layout.py` 가 대상 목록.
 
 ---
 
