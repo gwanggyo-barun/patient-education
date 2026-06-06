@@ -1,6 +1,14 @@
 # 덱 레이아웃 디자인 비율 룰 (황금비율 / 모듈러 스케일)
 
-> 2026-06-06 제정. 사용자 검수 + 코덱스(시니어 디자이너 관점) 감수 반영. 대상: clinic-content-system **deck (1280×720)**. 목적: "폰트 적당(작지도 크지도 않게)·여백 대칭·박스와 이미지 안 붙음"을 수치로 보장. 근거: A List Apart 모듈러 스케일, Figma 황금비율, Cieden type-scale(1.618 고대비/1.333 고밀도).
+> 2026-06-06 제정. 사용자 검수 + 코덱스(시니어 디자이너) 2회 감수 반영. 대상: clinic-content-system **deck (1280×720)**. 목적: "폰트 적당(작지도 크지도 않게)·여백 대칭·박스와 이미지 안 붙음"을 수치로 보장. 근거: A List Apart 모듈러 스케일, Figma 황금비율, Cieden type-scale.
+
+## 0. 최종 핵심 룰 (코덱스 2차 감수 — 멀티디바이스 영구)
+1. **이미지 figure = "카드"가 아니라 "media surface"**: cover 이미지 figure 배경 = **흰색/투명**(`#f8fbff` 회색 금지 — 또 하나의 카드처럼 보여 "겹쳐보임" 유발). `#f8fbff`는 contain/투명PNG/로딩실패 fallback 일 때만. figure 내부 텍스트·캡션·패딩 넣어 카드화 금지.
+2. **radius는 figure 한 곳에서만** + `overflow:hidden`. 내부 `img`에 독립 radius 숫자 금지(0 또는 inherit). **media radius(12px) ≤ 카드 radius**. figure 그림자는 `blur≤9·opacity≤0.08·spread 0·x-offset 0·y-offset 2~4`.
+3. **브랜드 토큰 정합**: 일반 교육 슬라이드 제목 36~40px, **표지/hero만 48px+**. 카드 radius **12px 기본**, 큰 컨테이너만 16px, 작은 요소 8px. 한글 본문/카드 `letter-spacing:0`(hero 영문·숫자 장식만 예외).
+4. **표 4행↑ 균등 채움(equal rows/controlled gap)** — `space-between` 큰 빈틈 금지, **row-gap 상한 18~22px**. 2~3행은 박스높이=내용+48~72.
+5. **paint 겹침 = 실패**: DOM rect 안 겹쳐도 PDF에서 figure 그림자/배경이 거터를 침범해 카드와 시각적으로 붙으면 실패. 검증은 print 미디어 + 실제 PDF 픽셀(PyMuPDF). 거터 기본 32px·media surface figure 36px·차단 24px.
+6. **폰트 렌더 안정성**: 검증/렌더 전 `document.fonts.ready` 대기(Pretendard CDN). viewport `width=1280` 고정(CSS scale/zoom 금지 — PDF↔화면 분리 방지). Steel 배경 위 흰 텍스트는 18px bold↑ 또는 navy.
 
 ## 1. 타입 스케일 (base 16px=1rem, Perfect Fourth 1.333 + 타이틀 황금 강조)
 노안 환자 포함 가독성 우선. **현재 visual-focus의 0.58~0.78rem 강제 축소는 전면 폐기.**
