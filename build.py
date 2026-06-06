@@ -620,6 +620,14 @@ TARGETS = [
         "title": "진료설명 — 아급성 갑상선염",
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "아급성 갑상선염 (de Quervain's Thyroiditis)",
     },
+    {
+        "kind": "decks", "slug": "achieve3-oral-glp1",
+        "slug_path": "decks/endocrine/achieve3-oral-glp1/",
+        "html_path": ROOT / "decks/endocrine/achieve3-oral-glp1/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "ACHIEVE-3 — 먹는 GLP-1 직접비교 (오포글리프론 vs 세마글루타이드)",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "제2형 당뇨병 · 경구 GLP-1 (ACHIEVE-3)",
+    },
 
     # === Migration: 14 new handouts ===
 
