@@ -282,6 +282,12 @@ HTML will overlay Korean labels using Pretendard font separately.
 4. **프롬프트 추적**: 생성본 옆의 `.prompt.md`에는 slide 번호, slide title, source text summary, visual intent, unique subject, slot size/ratio, negative constraints 를 남긴다.
 5. **불확실하면 생략**: 정확히 맞는 그림을 만들 수 없으면 "no image added: reason"으로 기록하고 텍스트 위계·표·아이콘·여백을 개선한다. 이미지 수량 부족은 실패가 아니지만, 무관한 이미지는 실패다.
 
+### 17. 수치용 lab-row 를 텍스트 목록 표에 재사용 금지 (2026-06-06 사용자 지적)
+
+`clinic-handout-a4.css`의 `.lab-row` 는 **검사 수치 표** 전용이다 — `lab-row__value { text-align: right }` + 열폭 `1.4fr 0.7fr 1fr auto` (분류 넓게, 수치 좁게)가 숫자 비교에 최적화돼 있다. 이걸 음식 목록·문장형 셀에 그대로 쓰면 **value 가 우측으로 쏠리고 줄바꿈이 삐뚤빼뚤**해진다 (IBS 신호등 표 사고 — 사용자 즉시 지적).
+
+룰: 셀 내용이 숫자/짧은 값이 아니라 **목록·문장이면** deck/handout 로컬 CSS 로 스코프 오버라이드를 만들어 ① `text-align: left` ② 내용 길이에 맞는 열폭 재배분(라벨 좁게, 본문 넓게) ③ `line-height ≥1.4` 를 적용한다. 예: `handouts/lifestyle/ibs-fodmap-diet`의 `.ibs-food-table`.
+
 ---
 
 ## 🚀 배포 워크플로우 — 모든 머신 공통 (반드시 먼저 읽기)
