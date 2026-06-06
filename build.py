@@ -656,6 +656,14 @@ TARGETS = [
         "category": "🌿 생활습관·식이", "audience": "환자/보호자", "disease": "당뇨 환자를 위한 식이요법 가이드",
     },
     {
+        "kind": "handouts", "slug": "ibs-fodmap-diet",
+        "slug_path": "handouts/lifestyle/ibs-fodmap-diet/",
+        "html_path": ROOT / "handouts/lifestyle/ibs-fodmap-diet/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "과민성장증후군(IBS) 식사 가이드 — 저FODMAP 3단계",
+        "category": "🌿 생활습관·식이", "audience": "환자/보호자", "disease": "과민성장증후군 (IBS) — 저FODMAP 식이요법",
+    },
+    {
         "kind": "handouts", "slug": "hypertension-intake",
         "slug_path": "handouts/forms/hypertension-intake/",
         "html_path": ROOT / "handouts/forms/hypertension-intake/index.html",
