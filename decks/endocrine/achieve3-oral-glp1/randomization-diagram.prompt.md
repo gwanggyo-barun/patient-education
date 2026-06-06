@@ -7,7 +7,7 @@ why_this_improves_readability: '머리를 맞댄 직접비교'의 구조(한 집
 slot: pattern-split__detail figure ≈480×175px (cover-crop from 2.7:1 generation)
 -->
 
-Flat vector-style clinical trial diagram, on a clean white background, navy (#003366) and steel blue (#5B9BD5) two-tone palette, smooth rounded shapes, modern medical infographic style.
+Semi-realistic clinical trial diagram with soft volumetric shading, glossy dimensional pills and softly rendered person figures, on a clean white background, cool blue tonal palette anchored on navy (#003366) and steel blue (#5B9BD5) with natural tints and shades, premium hospital aesthetic, soft white-to-light-blue gradient background.
 
 LEFT THIRD: a compact group of many small simple person silhouettes (a crowd cluster, mixed navy and steel blue).
 CENTER: the crowd funnels into a single branching point, then FOUR clean arrows fan out to the right.

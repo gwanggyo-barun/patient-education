@@ -192,9 +192,16 @@ aspect ratio strictly {W}:{H} ({px_w} x {px_h} pixels), white background.
 - Subject must depict this slide/section's concrete source text, not a generic medical background.
 
 STYLE:
-Clean flat modern medical {kind}, premium hospital aesthetic,
-strict palette: navy #003366 and steel blue #5B9BD5 only,
-white background, soft gradients allowed.
+Rich semi-realistic medical illustration {kind} — soft volumetric shading,
+translucent glossy anatomical structures, gentle depth and dimensionality,
+detailed equipment/people rendering when the scene calls for it,
+premium hospital aesthetic. Cool blue tonal palette anchored on
+navy #003366 and steel blue #5B9BD5 (tints/shades of these allowed),
+soft white-to-light-blue gradient background.
+
+⚠️ 2026-06-06 사용자 확정: **플랫 벡터/아이콘 스타일 금지** — 기존 자산
+(bone-density-room-guide, acs-crc-cfdna-biology 등)과 같은 입체감 있는
+세미리얼 일러스트가 하우스 스타일이다. 새 이미지는 이 스타일을 따른다.
 
 CRITICAL CONSTRAINTS:
 - Illustration must SPAN THE ENTIRE CANVAS evenly — no empty side panels, 

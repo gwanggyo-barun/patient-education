@@ -7,7 +7,7 @@ why_this_improves_readability: 복용 규칙의 '체감 부담 차이'는 목록
 slot: full-width strip 1120×196px (cover-crop from 3:1 generation), trimmed compare columns below
 -->
 
-Flat vector-style lifestyle illustration, horizontal two-panel comparison scene on a clean white background, navy (#003366) and steel blue (#5B9BD5) two-tone palette with soft light-blue tints, smooth rounded shapes, modern clinical infographic style, divided by a thin vertical line in the exact center.
+Rich semi-realistic lifestyle medical illustration with soft volumetric shading, softly detailed people and gentle painterly depth, horizontal two-panel comparison scene on a clean white background, cool blue tonal palette anchored on navy (#003366) and steel blue (#5B9BD5) with natural tints and shades with soft light-blue tints, premium hospital aesthetic like a high-end medical textbook illustration, soft white-to-light-blue gradient background, divided by a thin vertical line in the exact center.
 
 LEFT PANEL (navy mood): a strict early-morning pill ritual — a single pill on an empty plate, a small half-filled water glass with a limiting measure mark, a prominent clock face with a waiting arc, and a simple seated person silhouette waiting with hands on lap; conveys restriction and waiting.
 

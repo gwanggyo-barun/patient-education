@@ -8,7 +8,7 @@ slot: pattern-split__detail figure (≈482×260px) — aspect 1.85:1
 generated_at: 2026-06-06 (codex /imagen via tools/codex_imagen.sh)
 -->
 
-Flat vector-style medical infographic illustration, two-panel side-by-side comparison on a clean white background, navy (#003366) and steel blue (#5B9BD5) two-tone palette with soft light-blue tints, smooth rounded shapes, modern clinical infographic style.
+Rich semi-realistic medical illustration with soft volumetric shading, translucent glossy anatomical structures and gentle depth, two-panel side-by-side comparison on a clean white background, cool blue tonal palette anchored on navy (#003366) and steel blue (#5B9BD5) with natural tints and shades with soft light-blue tints, premium hospital aesthetic like a high-end medical textbook illustration, soft white-to-light-blue gradient background.
 
 LEFT PANEL: a large navy capsule-shaped pill made of a chain of small linked spheres (representing a fragile peptide chain), surrounded by a protective glowing halo ring (representing an absorption-enhancer coating), floating above a stylized stomach outline with gentle acid wave shapes at the bottom — conveying that this pill is delicate and needs protection.
 
