@@ -3,9 +3,15 @@
 > 모든 슬라이드는 동일한 4-region master grid (header / title-block / body / footer)를 따른다.
 > 본문 영역(`.slide__body`)에만 패턴을 적용한다. 패턴은 슬라이드당 하나만 사용한다.
 
+> **범위 메모.** "7종"은 본문 코어 패턴(§1–§7: Hero Number, Asymmetric Split, Density Grid, Density Grid 2×2, Comparison, Timeline, Checklist)을 가리킨다. 여기에 본문 변형인 §8 Regimen Tile, 마무리 전용 §9 Closing Slide를 더해 이 문서는 총 9개 블록을 정의한다. SKILL.md §"본문 패턴 7종"의 번호 매김(8 Regimen Tile 포함)과 본 문서가 일치한다.
+>
+> **모든 클래스는 `shared/clinic-slides.css`(정본 CSS)에 정의되어 있다.** 각 패턴마다 "핵심 클래스" 줄에 컨테이너·자식 클래스를 명시했다. 새 레이아웃이 필요하면 임의 클래스를 만들지 말고 먼저 정본 CSS에 추가한 뒤 이 문서를 갱신한다(§"새 패턴 추가 시"). 단, `decks/general/papers-*`(논문 리뷰 덱)은 환자 교육 덱과 별도 장르로, 자체 인라인 컴포넌트(`stat-card`·`review-card`·`tbl-row` 등)를 쓰며 본문 7종 패턴을 적용하지 않는다.
+
 ## 1. Hero Number
 
 **적합한 콘텐츠**: 단일 핵심 숫자가 메시지를 압도하는 슬라이드 — 유병률, 위험 감소율, 5년 생존율, 성공률 등.
+
+**핵심 클래스**: `pattern-hero-number`(컨테이너, grid 5fr:4fr) → `pattern-hero-number__numeric`(좌측) {`__value` `<em>`로 부분 강조, `__caption`} + `pattern-hero-number__detail`(우측, steel 좌측 보더) {`__detail-label` `__detail-text`}.
 
 **레이아웃**: 좌 5 : 우 4 비대칭. 좌측에 거대한 숫자 + 캡션, 우측에 "Why it matters" 보충 설명.
 
@@ -32,6 +38,8 @@
 ## 2. Asymmetric Split
 
 **적합한 콘텐츠**: 정의 + 보조 메트릭, 핵심 개념 + 통계, 주요 메시지 + 근거 데이터.
+
+**핵심 클래스**: `pattern-split`(컨테이너, grid 11fr:9fr) → `pattern-split__primary` {`__statement` `<em>` 강조, `__supporting`} + `pattern-split__detail` {`pattern-split__metric` × 2 {`__metric-label` `__metric-value` `__metric-detail`}}. 우측에 일러스트를 넣을 때는 `pattern-split--with-visual` 변형(컬럼 비율·메트릭 패딩 축소) 사용.
 
 **레이아웃**: 좌 11 : 우 9. 좌측에 큰 statement + 보조 본문, 우측에 metric card 2개.
 
@@ -67,6 +75,8 @@
 
 **적합한 콘텐츠**: 6개 동등 위계 항목 — 증상, 위험 요인, 진단 방법, 적응증, 생활습관, Red Flags 등.
 
+**핵심 클래스**: `pattern-grid pattern-grid--3`(3열 × 2행 = 6칸) + `tile`(반복) {`tile__index` `tile__title` `tile__body`}.
+
 ```html
 <div class="pattern-grid pattern-grid--3">
   <div class="tile">
@@ -85,8 +95,14 @@
 
 **Mixed grid**: 한 grid 안에 일반 tile + alert tile 혼용 가능. 슬라이드 10(부작용)에서 일반 5개 + Red Flag 1개 같은 방식.
 
+**grid 종류 (정본 CSS에 정의된 modifier)**:
+- `pattern-grid--3` — 3열 × 2행 = **6칸** (이 패턴의 기본)
+- `pattern-grid--2` — 2열 × 2행 = **4칸** (→ §4 Density Grid 2×2)
+- `pattern-grid--2x4` — 4열 × 2행 = **8칸**. 항목이 8개로 동등할 때만 사용(예: 약물 분류 8종, 검사 항목 8가지). 6개 기본을 넘는 고밀도이므로 카드 본문을 1–2문장으로 더 압축하고 `_validate_layout`로 overflow 확인 필수.
+- modifier 없이 `pattern-grid`만 쓰고 인라인 `grid-template-columns`로 열 수를 직접 지정하는 방식도 가능(§8 Regimen Tile이 그 예: 3열 1행).
+
 **가이드**:
-- 정확히 6개 항목 권장 (4개나 8개로 늘리면 grid 종류 변경)
+- 정확히 6개 항목 권장 (4개는 `--2`, 8개는 `--2x4`로 grid 종류 변경)
 - 각 카드 본문 2-3문장 이내
 - 인덱스 라벨은 `CATEGORY · NN` 형식 (영문 uppercase)
 
@@ -94,6 +110,8 @@
 
 **적합한 콘텐츠**: 4개 핵심 규칙 또는 큰 위계 항목 — 복용 주의사항, 핵심 원칙, 검사 방법 4가지 등.
 경고 메시지가 동반될 때 alert strip을 본문 하단에 추가 가능.
+
+**핵심 클래스**: `pattern-grid pattern-grid--2`(2열 × 2행 = 4칸) + `tile` × 4. 하단 경고 추가 시 인라인 `grid-template-rows: 1fr 1fr auto;` + `alert-strip` {`alert-strip__label` `alert-strip__text`}.
 
 ```html
 <div class="pattern-grid pattern-grid--2" style="grid-template-rows: 1fr 1fr auto;">
@@ -118,6 +136,8 @@
 ## 5. Comparison
 
 **적합한 콘텐츠**: DO vs DON'T, 권장 vs 피하기, 옵션 A vs B.
+
+**핵심 클래스**: `pattern-compare`(컨테이너, grid 1fr:1fr) → `compare-col compare-col--avoid`(좌, Navy 헤더) / `compare-col compare-col--prefer`(우, Steel 헤더). 각 컬럼: `compare-col__header` {`compare-col__marker`} + `compare-col__list`(li 항목, `::before` 마커는 avoid=`—` / prefer=`+` 자동).
 
 **컬러 규칙 (디자인 시스템 §4.9)**: 좌측은 Navy, 우측은 Steel Blue. 환자 직관용 초록/빨강 사용 안 함.
 
@@ -156,6 +176,8 @@
 
 **적합한 콘텐츠**: 진단 경로, 치료 일정, 시간 흐름, 단계별 프로세스 (정확히 4단계).
 
+**핵심 클래스**: `pattern-timeline`(컨테이너, grid 4열) + `timeline-step` × 4 {`timeline-step__node`(번호 원형) `timeline-step__title` `timeline-step__body`}. 단계 사이 화살표(`→`)는 `.timeline-step:not(:last-child)::after`가 자동 렌더.
+
 ```html
 <div class="pattern-timeline">
   <div class="timeline-step">
@@ -176,6 +198,8 @@
 ## 7. Checklist
 
 **적합한 콘텐츠**: 환자 행동 항목 (보통 7가지), 핵심 요약, 일일 체크 리스트.
+
+**핵심 클래스**: `pattern-checklist`(컨테이너, 2열 grid) + `check-item`(반복) {`check-item__num` `check-item__text`(`<strong>`으로 navy 강조)}.
 
 ```html
 <div class="pattern-checklist">
@@ -199,6 +223,8 @@
 ## 8. Regimen Tile (약물 조합)
 
 **적합한 콘텐츠**: 약물 처방 조합 — 1차 치료, 2차 치료, 표준 요법 등. tile 안에 약물명-용량-빈도 표시.
+
+**핵심 클래스**: §3의 `pattern-grid` + `tile`을 재사용하되 `tile__regimen`(ul) {`tile__regimen-name` `tile__regimen-dose`} 리스트와 `tile__duration`(하단 steel 라인)을 추가. PREFERRED 옵션은 `tile--accent`. 가로 칸 수는 인라인 `grid-template-columns: repeat(3, 1fr)`로 지정(전용 modifier 없음).
 
 ```html
 <div class="pattern-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr;">
@@ -228,6 +254,8 @@
 ## 9. Closing Slide (마무리 슬라이드 + QR)
 
 **적합한 콘텐츠**: 덱의 마지막 슬라이드. 클리닉 contact + QR 코드로 환자가 자료를 다시 볼 수 있게.
+
+**핵심 클래스**: `slide--closing`(섹션 modifier) → 본문에 `closing-grid`(grid 2.4fr:1fr) → `contact-card`(closing-grid 안에서는 1열 세로 stack) {`contact-card__item` {`__label` `__value`}} + `qr-block` {`qr-block__code`(빈 div, 빌드가 SVG 주입) `qr-block__text` {`__label` `__heading` `__hint`}}.
 
 **레이아웃**: 좌 2.4 : 우 1 비대칭. 좌측에 contact-card (Phone/Address/Specialty 세로 stack), 우측에 qr-block.
 

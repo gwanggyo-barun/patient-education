@@ -9,6 +9,27 @@
   Schedule: weekdays 09:00 local time (Mon=1 through Fri=5).
   Behavior on a sleeping mac: launchd defers until the next wake, so
   the fetch will run when the machine resumes if it was off at 09:00.
+
+  ──────────────────────────────────────────────────────────────────
+  ⚠️ OPERATOR NOTES (added 2026-06-10 — see docs/launchd-notion-audit-20260610.md)
+
+  • THIS IS A TEMPLATE, NOT A READY plist. It still contains the
+    @@HOME@@ / @@REPO_DIR@@ placeholders. Install ONLY via
+    `bash scripts/bootstrap-machine.sh`, which sed-substitutes them.
+    Do NOT `launchctl bootstrap` this file directly — launchd would
+    fail to resolve the paths.
+
+  • DO NOT hand-copy this plist into ~/Library/LaunchAgents to "register
+    a second copy". bootstrap-machine.sh already prevents duplicate
+    registration (it does `launchctl bootout` before `bootstrap`), so
+    re-running bootstrap is idempotent and self-replacing.
+
+  • SCOPE: this job runs a READ-ONLY `git fetch` only (scripts/daily-fetch.sh).
+    It never writes files, never calls the Notion API, and therefore is
+    NOT a cause of any Notion orphan/duplicate-row issue. Look at the
+    build -> Notion sync pipeline (build.py / shared/_notion_sync.py /
+    .github/workflows) for those, per the audit report above.
+  ──────────────────────────────────────────────────────────────────
 -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

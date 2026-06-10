@@ -24,6 +24,14 @@ forbidden_terms:
   - "효과 보장"
   - "부작용 없음"
   - "성장호르몬 자가 주사"
+  # ── 클리닉 연락처 오기재(stale contact) 금지 — SoT: blocks/content/clinic-contact-footer.yaml v04
+  - "영통구"
+  - "수원시"
+  - "031-217-5878"
+  - "아브뉴프랑"
+  - "광교중앙로 145"
+  - "304-1호"
+  - "광교바름내과"
 
 style_rules:
   - rule: "Pretendard Variable"
@@ -152,7 +160,39 @@ brand_compliance:
     check_type: html_contains
     check: "© 2026"
     severity: major
+  # ── OG meta 7종 — 실행 가능한 html_contains 버전 (아래 og_meta 섹션은 러너 미지원 check_type)
+  - rule: "OG meta: og:type"
+    check_type: html_contains
+    check: 'property="og:type"'
+    severity: major
+  - rule: "OG meta: og:url"
+    check_type: html_contains
+    check: 'property="og:url"'
+    severity: major
+  - rule: "OG meta: og:title"
+    check_type: html_contains
+    check: 'property="og:title"'
+    severity: major
+  - rule: "OG meta: og:description"
+    check_type: html_contains
+    check: 'property="og:description"'
+    severity: major
+  - rule: "OG meta: og:image"
+    check_type: html_contains
+    check: 'property="og:image"'
+    severity: major
+  - rule: "OG meta: og:site_name = 광교바른내과"
+    check_type: html_contains
+    check: 'property="og:site_name" content="광교바른내과"'
+    severity: major
+  - rule: "OG meta: theme-color Navy #003366"
+    check_type: html_contains
+    check: 'name="theme-color" content="#003366"'
+    severity: major
 
+# NOTE: 아래 og_meta 섹션은 run_tests.py가 순회하지 않는 top-level key이며
+# og_meta_present check_type도 미구현이라 무시됨 (기존 룰 보존 차원에서 유지).
+# 실제 검증은 위 brand_compliance의 OG meta 7종 html_contains 룰이 수행함.
 og_meta:
   - rule: "All 7 OG meta tags present"
     check_type: og_meta_present

@@ -159,5 +159,6 @@ clinic-content-system/
 
 - 전체 규칙·11가지 알려진 함정·시스템 구조: [`SKILL.md`](./SKILL.md)
 - 디자인 시스템 SoT: [`reference/brand-design-system.md`](./reference/brand-design-system.md)
+- HTML vs PPTX(legacy) 선택 기준: [`reference/skill-routing.md`](./reference/skill-routing.md)
 - lab-report 템플릿 사용법: [`reference/lab-templates.md`](./reference/lab-templates.md)
 - 환경 셋업 트러블슈팅: [`reference/build.md`](./reference/build.md)
