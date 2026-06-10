@@ -205,12 +205,191 @@ def fix_link(page_id: str, record: LinkRecord, new_url: str, dry_run: bool) -> b
     raise RuntimeError(f"unsupported link location: {record.location}")
 
 
+# ===========================================================================
+# Orphan reconcile (F3 / R3) — rows whose build-managed 파일링크 PDF now 404s
+# ===========================================================================
+# The link-audit path above only *repairs* mismatched links; it never removes
+# a row whose target file is gone. An "orphan" is a Notion row whose 파일링크
+# (= {BASE_URL}/output/{kind}/{slug}.pdf) no longer resolves (hard 404) because
+# its TARGET was deleted or its slug changed. This pass closes that gap.
+#
+# Safety model (deliberately conservative — see docs/notion-sync-operations.md):
+#   • Only rows whose 파일링크 starts with {BASE_URL}/output/{kind}/ are even
+#     considered. Manual rows / non-build links are never touched.
+#   • A row is archived ONLY on a hard 404 AND absence from the current TARGETS
+#     expected set. 200 (still live) and 0/5xx (transient) are reported, never
+#     archived.
+#   • lab-reports are PHI → NEVER auto-archived. Reported by page_id (+ hash
+#     slug URL, which carries no name) with the title redacted, for manual
+#     human review.
+#   • Archiving requires --reconcile-archive AND a live base URL. A 404/0 base
+#     would make every row look orphaned, so the mass-archive guard in main()
+#     disables archiving in that case.
+
+
+def _page_archived(page: dict) -> bool:
+    return bool(page.get("archived") or page.get("in_trash") or page.get("is_archived"))
+
+
+def _file_link_url(page: dict) -> str:
+    prop = (page.get("properties", {}) or {}).get("파일링크", {}) or {}
+    return prop.get("url") or ""
+
+
+def _expected_pdf_urls_by_kind() -> dict:
+    """pdf_urls that SHOULD have a row, per kind.
+
+    Mirrors build.py's sync_eligible gate (build.py:1653-1660): notion_sync
+    truthy + required identifying fields present. A TARGET that is built but
+    not sync-eligible (e.g. notion_sync=False) is intentionally absent here —
+    its PDF stays live (200), so the 404 requirement below spares its row.
+    """
+    by_kind: dict = {kind: set() for kind in DBS}
+    for target in TARGETS:
+        if target.get("notion_sync", True) is False:
+            continue
+        kind = target.get("kind")
+        if kind not in DBS:
+            continue
+        if kind in ("decks", "handouts") and not target.get("title"):
+            continue
+        if kind == "lab-reports" and not (target.get("patient_name") or target.get("title")):
+            continue
+        slug = target.get("slug")
+        if slug:
+            by_kind[kind].add(f"{BASE_URL}/output/{kind}/{slug}.pdf")
+    return by_kind
+
+
+def _build_reconcile_report(
+    *, base_status: int, archive: bool, archive_blocked_reason: str | None
+) -> dict:
+    expected = _expected_pdf_urls_by_kind()
+    summary = {
+        "scanned": 0, "healthy": 0, "orphan": 0, "orphan_archived": 0,
+        "live_unsynced": 0, "uncertain": 0, "lab_reports_orphan_manual": 0,
+    }
+    orphans: list = []
+    for kind, db_id in DBS.items():
+        prefix = f"{BASE_URL}/output/{kind}/"
+        for page in iter_db_rows(db_id):
+            if _page_archived(page):
+                continue
+            url = _file_link_url(page)
+            if not url or not url.startswith(prefix):
+                continue  # not a build-managed PDF row — leave alone
+            summary["scanned"] += 1
+            if url in expected[kind]:
+                summary["healthy"] += 1
+                continue
+            status = check_url(url)
+            is_lab = kind == "lab-reports"
+            entry = {
+                "page_id": page["id"],
+                "kind": kind,
+                "url": url,             # hash slug for lab-reports — no PHI
+                "status_code": status,
+                "archived": False,
+                "action": None,
+            }
+            if not is_lab:
+                entry["page_title"] = _page_title(page)  # public material name
+            if status == 200:
+                summary["live_unsynced"] += 1
+                entry["action"] = "skip_live_unsynced"
+                orphans.append(entry)
+                continue
+            if status != 404:
+                summary["uncertain"] += 1
+                entry["action"] = "skip_uncertain"
+                orphans.append(entry)
+                continue
+            # confirmed orphan — hard 404, absent from expected set
+            summary["orphan"] += 1
+            if is_lab:
+                summary["lab_reports_orphan_manual"] += 1
+                entry["action"] = "manual_review_required_phi"
+            elif archive:
+                try:
+                    _notion_request("PATCH", f"/pages/{page['id']}", {"archived": True})
+                    entry["archived"] = True
+                    entry["action"] = "archived"
+                    summary["orphan_archived"] += 1
+                except Exception as exc:  # noqa: BLE001
+                    entry["action"] = "archive_failed"
+                    entry["archive_error"] = type(exc).__name__
+            else:
+                entry["action"] = "would_archive"
+            orphans.append(entry)
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "mode": "reconcile-archive" if archive else "reconcile",
+        "live_base_url": BASE_URL,
+        "live_base_status": base_status,
+        "archive_enabled": archive,
+        "archive_blocked_reason": archive_blocked_reason,
+        "summary": summary,
+        "orphans": orphans,
+    }
+
+
+def _write_reconcile_report(report: dict) -> Path:
+    date_str = datetime.now(timezone.utc).date().isoformat()
+    path = ROOT / "docs" / f"notion-reconcile-{date_str}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return path
+
+
+def _run_reconcile(*, base_status: int, want_archive: bool) -> int:
+    archive = want_archive
+    archive_blocked_reason = None
+    if archive and base_status != 200:
+        archive = False
+        archive_blocked_reason = (
+            f"live base URL status {base_status} (≠200) — archiving disabled "
+            "to avoid mass-archiving every row while the site is down"
+        )
+    report = _build_reconcile_report(
+        base_status=base_status, archive=archive,
+        archive_blocked_reason=archive_blocked_reason,
+    )
+    path = _write_reconcile_report(report)
+    s = report["summary"]
+    if archive_blocked_reason:
+        print(f"⚠️  reconcile-archive blocked: {archive_blocked_reason}", file=sys.stderr)
+    print(
+        "reconcile complete: "
+        f"scanned={s['scanned']} healthy={s['healthy']} orphan={s['orphan']} "
+        f"archived={s['orphan_archived']} live_unsynced={s['live_unsynced']} "
+        f"uncertain={s['uncertain']} lab_manual={s['lab_reports_orphan_manual']} "
+        f"report={path.relative_to(ROOT)}"
+    )
+    for o in report["orphans"]:
+        action = o["action"]
+        if action == "manual_review_required_phi":
+            # PHI: page_id + hash-slug URL only, never the title.
+            print(f"  [MANUAL/PHI] lab-reports page={o['page_id']} status={o['status_code']}")
+        elif action in ("would_archive", "archived", "archive_failed"):
+            print(f"  [{action}] {o['kind']}: {o.get('page_title', '')} ({o['status_code']})")
+    return 2 if archive_blocked_reason else 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Audit Notion DB links for broken GitHub Pages URLs.")
     parser.add_argument("--report", action="store_true", help="write docs/link-audit-20260607.json")
     parser.add_argument("--fix", action="store_true", help="patch fixable Notion links")
+    parser.add_argument(
+        "--reconcile", action="store_true",
+        help="report build-managed DB rows whose 파일링크 PDF now 404s (orphans). Dry-run; never writes to Notion.",
+    )
+    parser.add_argument(
+        "--reconcile-archive", action="store_true",
+        help="archive confirmed orphans — decks/handouts only; lab-reports are reported for manual review (PHI). Requires a live base URL.",
+    )
     args = parser.parse_args()
-    if not args.report and not args.fix:
+    reconcile_mode = args.reconcile or args.reconcile_archive
+    if not args.report and not args.fix and not reconcile_mode:
         args.report = True
 
     try:
@@ -222,6 +401,10 @@ def main() -> int:
     _TOKEN = token
 
     base_status = check_url(BASE_URL + "/")
+
+    if reconcile_mode:
+        return _run_reconcile(base_status=base_status, want_archive=args.reconcile_archive)
+
     if args.fix and base_status == 404:
         report = _build_report(base_status=base_status, dry_run=False, fix_blocked_reason="live base URL is 404")
         _write_report(report)

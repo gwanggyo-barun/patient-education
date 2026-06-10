@@ -1,16 +1,43 @@
 name: Notion Link Audit
 
+# Detection + repair for Notion ↔ GitHub Pages drift (F3/F4 visibility).
+#
+#   report          (dry-run) — broken-link census, writes docs/link-audit-*.json
+#   fix             — patch fixable broken Notion links to their expected URL
+#   reconcile       (dry-run) — find orphan rows (build-managed 파일링크 that 404),
+#                    writes docs/notion-reconcile-*.json. Never writes to Notion.
+#   reconcile-archive — archive confirmed decks/handouts orphans; lab-reports are
+#                    reported for manual review only (PHI). Requires a live base URL.
+#
+# R4: a weekly schedule runs `report` so drift is surfaced even if nobody clicks
+#     Run. Writing modes (fix / reconcile-archive) stay manual (workflow_dispatch).
+
 on:
+  schedule:
+    - cron: "0 0 * * 1"   # Mondays 00:00 UTC = 09:00 KST — read-only report
   workflow_dispatch:
     inputs:
       mode:
-        description: "report (dry-run) or fix (patch broken Notion links)"
+        description: "report / reconcile (dry-run) · fix / reconcile-archive (writes Notion)"
         required: true
         default: "report"
         type: choice
         options:
           - report
+          - reconcile
           - fix
+          - reconcile-archive
+
+# R6: serialize every run of this workflow so two writing runs (fix /
+# reconcile-archive) can never overlap and race the same DB. cancel-in-progress
+# is false so a running write is allowed to finish rather than being killed
+# mid-PATCH. NOTE: this does not serialize against build-and-deploy.yml's
+# `python build.py` sync (that workflow must own concurrency group `pages` for
+# the Pages deploy). Operational rule: do not dispatch fix / reconcile-archive
+# while a deploy is in flight — see docs/notion-sync-operations.md.
+concurrency:
+  group: notion-write
+  cancel-in-progress: false
 
 jobs:
   audit:
@@ -22,16 +49,23 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run link audit (${{ inputs.mode }})
+      - name: Run link audit / reconcile
+        # Schedule events carry no inputs → default to the read-only report.
+        # The tool only needs NOTION_TOKEN; build.py constants import via a
+        # build-dep stub (no playwright/qrcode install needed).
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: |
-          python3 tools/notion_link_audit.py --${{ inputs.mode }}
+          MODE="${{ inputs.mode || 'report' }}"
+          echo "::notice title=Notion audit::mode=$MODE"
+          python3 tools/notion_link_audit.py --"$MODE"
 
-      - name: Upload report artifact
+      - name: Upload report artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: link-audit-report
-          path: docs/link-audit-*.json
+          name: notion-audit-reports
+          path: |
+            docs/link-audit-*.json
+            docs/notion-reconcile-*.json
           if-no-files-found: warn

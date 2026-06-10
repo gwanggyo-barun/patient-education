@@ -382,6 +382,21 @@ Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 
 - lab-reports DB에는 `상태` 속성이 없으므로 `status`를 쓰지 않는다. 필요하면 `notion_sync: False`로 sync를 끄고 행은 수동 정리한다.
 - GitHub Pages의 직접 URL까지 없애려면 source HTML 또는 공개 인덱스 카드도 별도 정리해야 한다. Notion 상태는 Notion 공유 페이지 표시만 제어한다.
 
+#### Orphan(파일 404 + row 잔존) 자동 탐지·정리
+
+`build.py`의 upsert는 create/update만 한다 — TARGET을 삭제하거나 slug가 바뀌면 옛 row가
+파일 404인 채 **orphan**으로 남는다. 이를 위한 별도 도구가 `tools/notion_link_audit.py`다:
+
+- `--reconcile` (dry-run): 빌드 관리 row 중 파일링크 PDF가 404인 orphan을 리포트(쓰기 없음).
+- `--reconcile-archive`: **decks/handouts** 확정 orphan만 휴지통 이동. **lab-reports는 PHI라
+  자동 아카이브 금지** — page_id로만 리포트되고 사람이 수동 처리한다.
+- 매주 월 09:00 KST `notion-link-audit.yml`이 `report`로 자동 실행(탐지 공백 방지).
+
+⚠️ **Notion sync는 `build-and-deploy.yml`(`python build.py`)이 단독 담당**한다.
+`test-content.yml`에 sync 잡을 다시 넣지 말 것(과거 병렬 업서트로 중복 row 유발).
+reconcile 절차·`LAB_SLUG_SALT` 회전 시 대량 중복 주의·동시 실행 수칙은
+**`docs/notion-sync-operations.md`** 참조.
+
 ### 라이브 URL
 
 | 자원 | URL |

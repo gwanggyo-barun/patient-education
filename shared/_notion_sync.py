@@ -134,6 +134,44 @@ def _find_page_by_title(db_id: str, title_prop: str, title: str) -> dict | None:
     return _first_live_or_any(matches)
 
 
+def _find_page_by_url(db_id: str, url_prop: str, url: str) -> dict | None:
+    """Find a row whose `url_prop` URL exactly equals `url` (live preferred)."""
+    if not url:
+        return None
+    res = _api(
+        "POST",
+        f"/databases/{db_id}/query",
+        {
+            "filter": {"property": url_prop, "url": {"equals": url}},
+            "page_size": 10,
+        },
+    )
+    return _first_live_or_any(res.get("results", []))
+
+
+def _find_deck_handout_existing(
+    db_id: str, title_prop: str, title: str, pdf_url: str
+) -> dict | None:
+    """Dedup for decks/handouts — title first, stable 파일링크 URL as fallback.
+
+    Primary key is the human title (자료명): fast, and matches the common
+    rebuild-without-rename case. But a title edit (even a one-character fix to
+    자료명) would otherwise fail the title lookup, leaving the old row orphaned
+    and creating a duplicate. So when the title lookup misses we fall back to
+    the 파일링크 URL — which is `{BASE_URL}/output/{kind}/{slug}.pdf`, derived
+    from the slug (stable across title edits). 파일링크 has been populated for
+    every deck/handout build since 2026-06-06, so recently-built rows are
+    covered without any schema change.
+
+    Purely additive: the URL lookup only runs when the title lookup returns
+    nothing, so behavior is identical whenever the title is unchanged.
+    """
+    existing = _find_page_by_title(db_id, title_prop, title)
+    if existing:
+        return existing
+    return _find_page_by_url(db_id, "파일링크", pdf_url)
+
+
 def _find_patient_page_by_search(chart_no: str, patient_name: str) -> dict | None:
     matches = [
         page for page in _search_pages_by_title(patient_name)
@@ -597,7 +635,8 @@ def upsert(
     "[1063] 김종혁 — 골 대사 검사" so existing TARGETS keep working.
 
     Dedup: lab-reports match by `slug` embedded in 파일링크 URL (stable
-    across note/title edits); decks/handouts match by title equals.
+    across note/title edits); decks/handouts match by title equals, then fall
+    back to the stable 파일링크 URL so a title edit doesn't create a duplicate.
     """
     if kind not in DBS:
         raise ValueError(f"Unknown kind: {kind!r}. Expected one of {list(DBS)}")
@@ -649,7 +688,11 @@ def upsert(
         dedup_slug = slug or pdf_url.rsplit("/", 1)[-1].removesuffix(".pdf")
         existing_page = _find_lab_report_existing(db_id, dedup_slug, search_title)
     else:
-        existing_page = _find_page_by_title(db_id, title_prop, search_title)
+        # decks / handouts: title equals, then stable 파일링크 URL fallback so a
+        # title edit doesn't orphan the old row + create a duplicate (F4/R5).
+        existing_page = _find_deck_handout_existing(
+            db_id, title_prop, search_title, pdf_url
+        )
 
     if existing_page and _page_is_trashed(existing_page):
         return ("skipped_deleted", existing_page["id"])

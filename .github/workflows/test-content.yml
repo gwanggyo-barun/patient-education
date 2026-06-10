@@ -7,9 +7,15 @@ name: Content Regression Tests
 #                        blocker fail = exit 1 = PR merge 차단
 #                        non-blocker = 경고만, 빌드 성공
 #   2. validate-layout → shared/_validate_layout.py 풀 검증 (병렬)
-#   3. notion-sync     → NOTION_TOKEN secret 있고 main push 일 때만
 #
 # 사용자 요청 (2026-05-25): blocker만 fail, non-blocker는 경고 + 빌드 성공.
+#
+# ⚠️ Notion DB sync는 이 워크플로에서 하지 않는다. main push 시 Notion 업서트는
+#    build-and-deploy.yml(`python build.py`)이 단독으로 담당한다(SoT 일원화).
+#    과거 여기 있던 notion-sync 잡은 (a) 존재하지 않는 _notion_sync.sync_all()을
+#    호출하는 죽은 코드였고, (b) build-and-deploy와 concurrency group이 달라
+#    같은 main push에서 병렬 업서트 → dedup TOCTOU 중복 row 위험이 있었다.
+#    재도입 금지 — 자세한 근거는 docs/launchd-notion-audit-20260610.md(F1/F2) 참조.
 
 on:
   pull_request:
@@ -156,62 +162,3 @@ jobs:
           name: layout-validation
           path: layout-validation.log
           retention-days: 14
-
-  # ------------------------------------------------------------------------ #
-  # JOB 3 — Notion sync (opt-in, main branch only)
-  # ------------------------------------------------------------------------ #
-  notion-sync:
-    name: Notion DB Sync (optional)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [build-and-test, validate-layout]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Skip if no NOTION_TOKEN secret
-        id: gate
-        run: |
-          if [ -z "${{ secrets.NOTION_TOKEN }}" ]; then
-            echo "has_token=false" >> $GITHUB_OUTPUT
-            echo "::notice title=Notion sync skipped::NOTION_TOKEN secret not configured"
-          else
-            echo "has_token=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Setup Python 3.12
-        if: steps.gate.outputs.has_token == 'true'
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
-
-      - name: Install dependencies
-        if: steps.gate.outputs.has_token == 'true'
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run Notion sync
-        if: steps.gate.outputs.has_token == 'true'
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          LAB_SLUG_SALT: ${{ secrets.LAB_SLUG_SALT }}
-        run: |
-          python3 - <<'PY'
-          # Import sync entry point and run upsert for every artifact.
-          # _notion_sync exposes a sync_all() helper or equivalent.
-          import sys
-          sys.path.insert(0, "shared")
-          try:
-              import _notion_sync as ns
-              if hasattr(ns, "sync_all"):
-                  ns.sync_all()
-              else:
-                  print("[notion-sync] _notion_sync.sync_all not found — skipping")
-          except Exception as e:
-              print(f"[notion-sync] non-fatal error: {e}")
-              # Notion API hiccups must NOT block merges — log and continue.
-          PY
