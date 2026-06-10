@@ -18,6 +18,15 @@ from pathlib import Path
 import os
 import sys
 
+# Windows consoles default to cp949/cp1252 and raise UnicodeEncodeError when
+# printing ✓ ✗ ⚠️ status glyphs. Force UTF-8 so Mac and Windows runs print
+# identically (SKILL.md rule #1: cross-machine consistency).
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).parent.resolve()
@@ -181,6 +190,30 @@ TARGETS = [
         "category": "📰 논문 리뷰", "audience": "의료진", "disease": "수면무호흡 (OSA) · CPAP",
     },
     {
+        "kind": "decks", "slug": "lp-a-cardiovascular-risk",
+        "slug_path": "decks/general/papers-20260525/lp-a-cardiovascular-risk/",
+        "html_path": ROOT / "decks/general/papers-20260525/lp-a-cardiovascular-risk/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "Lp(a)와 심혈관 위험 — 보편적 1회 선별 (2026 ACC/AHA 가이드라인)",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "Lp(a) · 이상지질혈증 · 심혈관 위험 보편 선별",
+    },
+    {
+        "kind": "decks", "slug": "surmount5-tirzepatide-vs-semaglutide",
+        "slug_path": "decks/general/papers-20260525/surmount5-tirzepatide-vs-semaglutide/",
+        "html_path": ROOT / "decks/general/papers-20260525/surmount5-tirzepatide-vs-semaglutide/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "SURMOUNT-5 — 터제파타이드 vs 세마글루타이드 비만 직접 비교",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "비만 약물치료 · Tirzepatide · Semaglutide · 직접 비교 RCT",
+    },
+    {
+        "kind": "decks", "slug": "vutrisiran-attr-cm-helios-b",
+        "slug_path": "decks/general/papers-20260525/vutrisiran-attr-cm-helios-b/",
+        "html_path": ROOT / "decks/general/papers-20260525/vutrisiran-attr-cm-helios-b/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "Vutrisiran ATTR-CM — HELIOS-B 3상",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "트랜스티레틴 아밀로이드 심근병증(ATTR-CM) · Vutrisiran · RNAi",
+    },
+    {
         "kind": "decks", "slug": "bepirovirsen-hbv-phase3",
         "slug_path": "decks/general/papers-20260528/bepirovirsen-hbv-phase3/",
         "html_path": ROOT / "decks/general/papers-20260528/bepirovirsen-hbv-phase3/index.html",
@@ -219,6 +252,14 @@ TARGETS = [
         "qr_class": "qr-block__code", "fmt": "deck-16x9",
         "title": "BMJ 2026 칼슘·비타민 D 보충제와 골절·낙상 예방",
         "category": "📰 논문 리뷰", "audience": "의료진", "disease": "골절 예방 · 낙상 예방 · 칼슘 · 비타민 D",
+    },
+    {
+        "kind": "decks", "slug": "t1d-glp1-cardiorenal",
+        "slug_path": "decks/general/papers-20260530/t1d-glp1-cardiorenal/",
+        "html_path": ROOT / "decks/general/papers-20260530/t1d-glp1-cardiorenal/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "제1형 당뇨병 GLP-1RA — 심혈관·신장 사건 감소 (Nature Medicine 2026)",
+        "category": "📰 논문 리뷰", "audience": "의료진", "disease": "제1형 당뇨병 · GLP-1RA · 심혈관·신장 보호 · target trial emulation",
     },
 
     # === A4 portrait single-page handouts ===

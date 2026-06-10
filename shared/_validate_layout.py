@@ -17,6 +17,15 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
+# Windows consoles default to cp949/cp1252 and raise UnicodeEncodeError when
+# printing ✓ ❌ status glyphs. Force UTF-8 so Mac and Windows runs print
+# identically (SKILL.md rule #1: cross-machine consistency).
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+
 ROOT = Path(__file__).resolve().parent.parent
 
 # A4 portrait at 96dpi: 210mm × 297mm = 794 × 1123 px

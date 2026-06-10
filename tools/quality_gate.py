@@ -22,6 +22,15 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
 
+# Windows consoles default to cp949/cp1252 and raise UnicodeEncodeError when
+# printing ✓ ✗ ⚠️ status glyphs. Force UTF-8 so Mac and Windows runs print
+# identically (SKILL.md rule #1: cross-machine consistency).
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+
 ROOT = Path(__file__).resolve().parent.parent  # ~/clinic-content-system/
 LOG_DIR = ROOT / "_local" / "quality-logs"
 KST = timezone(timedelta(hours=9))
