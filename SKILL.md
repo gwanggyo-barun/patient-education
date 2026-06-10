@@ -20,6 +20,8 @@ description: >
 
 # Clinic Content System — Unified Patient Content (HTML + PDF)
 
+> **📌 정비 노트 — 2026-06-10**: 문서 staleness 정리 라운드. ① 강화된 deck 검증기 규칙(본문 폰트 ≥15px·`body_underfills`>72px·`box_underfill`·`sparse_box`)을 § 검증 워크플로우에 명문화 ② 의료 표기 통일 SoT [`reference/medical-notation-style.md`](reference/medical-notation-style.md) 참조 추가(≥…이상→`≥`, `6.5 %`→`6.5%`, 정량 "X% 감소"→`X% ↓`, `UACR`/지표 `ACR`→`uACR`) ③ Notion DB 자동 등록(Phase 4)이 `build.py`+CI 에서 이미 동작함을 명시(= 완료) ④ 레거시 PPTX 스킬과의 우선순위 한 줄 명확화. 룰 삭제 없이 보강·통합만. (편집 범위: SKILL.md 단독)
+
 ## ⭐ 메타 룰 — 스킬 자체의 업데이트는 항상 이 repo 안에 저장 (최우선의 최우선)
 
 **스킬·시스템 룰/사양/워크플로우의 단일 진실의 원천(SoT)은 이 GitHub repo 안의 다음 파일들이다.**
@@ -400,6 +402,8 @@ Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 
 
 ## 콘텐츠 타입 3종
 
+> **레거시 PPTX 스킬과의 관계**: 새 환자 콘텐츠는 **이 스킬(clinic-content-system, HTML+PDF)을 우선** 사용한다. 레거시 `patient-education-pptx` 는 `.pptx` 파일 자체가 명시적으로 필요한 경우(동료 의사 직접 편집·학회 발표 템플릿·외부 협업자에게 .pptx 전달)에만 사용한다.
+
 이 스킬은 광교바른내과 모든 환자 콘텐츠를 단일 디자인 시스템과 단일 빌드 파이프라인으로 생산한다:
 
 | 타입 | 디렉터리 | 페이지 포맷 | 용도 | 마무리 QR 위치 |
@@ -414,6 +418,8 @@ Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 
 - "검사 결과지 인포그래픽", "결과지 시각화", "혈액검사 PPT/PDF" → **lab-reports/**
 
 ## Notion DB 라우팅 — 콘텐츠 타입별 3개 DB
+
+> ✅ **Phase 4 (Notion DB 자동 등록) = 완료.** 노션 행 upsert 는 이미 운영 중이다 — `build.py` 가 `_notion_sync.upsert()` 를 호출하고, `kind` 로 3개 DB 에 자동 라우팅하며, GitHub Actions CI 에 `NOTION_TOKEN` secret 이 등록되어 매 push 마다 자동 실행된다(로컬은 `NOTION_TOKEN` env 설정 시에만). 따라서 별도 수동 노션 생성은 **불필요** — `git push` 한 번이 빌드+Pages 배포+노션 upsert 를 모두 끝낸다(원클릭). 수동 커넥터 작업은 CI 실패/secret 누락 시의 fallback 으로만.
 
 광교바른내과 노션에는 **3개의 분리된 DB**가 있고, 각 콘텐츠 타입은 정확히 한 DB에 자동 라우팅된다 (`build.py`의 `kind` 필드 기반).
 
@@ -1317,10 +1323,23 @@ Notion DB 매핑은 §"Notion DB 라우팅" 표를 따른다. lab-reports 커밋
 
 콘텐츠 작성·수정 후 반드시 레이아웃 검증을 거친다. 자동 검증 도구가 다음을 잡아낸다:
 
+**A4 (handouts / lab-reports) 공통 체크:**
 - **page overflow** — `.page` 가 클립되어 콘텐츠가 잘림 (특히 핸드아웃 297mm 초과)
 - **section ↔ footer overlap** — body 마지막 섹션이 footer 영역으로 침범 (인쇄 시 텍스트 겹침)
 - **element below/right of page** — 카드·타일·표 행이 페이지 bbox 밖으로 나감
+
+**deck (1280×720) 전용 강화 체크 (2026-06-06 추가, `shared/_validate_layout.py` DECK 경로):**
+deck 은 위 overflow 검사 외에 황금비율·모듈러 스케일 룰([Gotcha 19], **SoT = [`reference/deck-design-proportions.md`](reference/deck-design-proportions.md) §6**)을 자동 강제한다. ⚠️ 검증·캡처는 PDF 와 동일한 `print` 미디어 + Pretendard 폰트 로딩 대기로 수행한다(screen 미디어로는 print 의 미세 폰트 메트릭 차이로 생기는 카드 겹침을 놓침).
+
 - **slide overflow** — deck 슬라이드가 1280×720 안에 안 들어감
+- **`font_too_small`** — 박스/표 **본문 폰트가 15px 미만이면 차단** (노안 환자 가독성 하한; kicker·label·value 는 면제). 0.58~0.78rem 강제 축소는 폐기됨 — 본문 16~17px·표셀 15~16px 가 기준.
+- **`body_underfills`** — 본문 최하단~푸터 상단 여백이 **72px 초과**(보이는 박스 기준)면 언더필 경고. 적정 24~56px, 16px 미만은 과밀.
+- **`box_underfill`** — 박스 하단 빈 공간이 상단보다 비대칭으로 큼(하단 >28px AND 상단보다 >24px). 위로 몰린 내용 → `justify-content:center` 또는 박스 높이를 내용에 맞춤.
+- **`box_content_overflow`** — 박스 내용이 `scrollHeight > clientHeight`로 실제 잘림. 긴 비교값은 폰트 축소가 아니라 라벨/값 분리로 해결.
+- **`sparse_box`** — 대칭이어도 박스가 콘텐츠보다 과하게 큼(`inner_fill` < 0.48, stat 카드는 < 0.40 — **경고**). 처리 우선순위 B(콘텐츠 확대)→C(박스 축소+중앙배치)→D(재설계). 임계 수치 전체는 SoT §4 표 참조.
+- **`content_image_gutter`** / **`sibling_box_overlap`** — 본문↔이미지 거터 24px 미만, 형제 카드 물리 겹침.
+
+> ⚠️ **검증기 통과 ≠ 시각 통과.** deck 은 Step 3.8 에서 `python3 tools/slide_screens.py <html>` 로 **모든 슬라이드 PNG 를 한 장씩 전수 육안검수**해야 끝난다(요약 몇 장만 보는 것 금지). bbox·픽셀 검증으로 못 잡는 박스 대칭·희소 박스·라벨 정렬을 사람이 확인한다.
 
 ### 실행 명령
 
@@ -1348,6 +1367,9 @@ exit code 0 → 통과, 1 → 실패 (CI gate에 그대로 사용 가능).
 | `page_overflow` | A4 297mm를 콘텐츠가 직접 넘김 | 1페이지 가정을 버리고 2페이지로 분할 |
 | `element_below_page` | 특정 카드 padding/font 과다 | 그 카드 항목 수 줄이거나 폰트 행간 조정 |
 | `slide_overflow` (deck) | 12장 표준에 안 맞는 콘텐츠 | 슬라이드 분할 또는 카드 수 줄임 |
+| `font_too_small` (deck) | 본문 폰트 <15px 강제 축소 | 폰트 키우기 — 표셀 15~16px·본문 16~17px (콘텐츠 줄여 공간 확보, 폰트 축소 금지) |
+| `body_underfills` (deck) | 푸터 위 >72px 빈 여백 | `space-between`/패딩·행간으로 펴기, 콘텐츠 보강 (SoT §4) |
+| `box_underfill` / `sparse_box` (deck) | 박스가 콘텐츠보다 과대 | 박스 높이를 내용에 맞춤 또는 `justify-content:center`, B→C→D 순서 |
 
 **원칙**: 글자 크기를 줄여 억지로 끼워넣지 않는다. 콘텐츠를 분리하거나 페이지를 추가한다.
 
@@ -1365,6 +1387,11 @@ exit code 0 → 통과, 1 → 실패 (CI gate에 그대로 사용 가능).
 8. **출처 명시** (푸터의 source 영역에 가이드라인명 + 연도)
 9. **마무리 슬라이드는 closing-grid 패턴 강제** — contact-card + qr-block. QR은 빌드 시 자동 생성. **contact-card 값(진료시간·주소·전화)은 반드시 § 클리닉 연락처(SoT) 표에서 복사** — 직접 타이핑 금지.
 10. **OG 메타태그 7종 표준 포함** — 카톡 공유 미리보기 카드 자동 작동을 위해 필수.
+11. **의료 표기 통일 — SoT = [`reference/medical-notation-style.md`](reference/medical-notation-style.md)** (원장 결정 2026-06-07). 모든 신규/수정 콘텐츠에 적용:
+    - 수치 기준은 부등호로만 — `≥`/`≤`/`<`/`>` + "이상/이하" 텍스트 **중복 금지** (O `uACR ≥30 mg/g` · X `uACR ≥30 mg/g 이상`). 단 자연어 "65세 이상" 등 비수치 서술은 유지.
+    - 수치–단위 공백: `6.5%` (not `6.5 %`); `mg/dL` 등 슬래시 단위만 한 칸 띄움.
+    - 정량 "감소"는 `↓` 화살표 — `LDL 15~20% ↓`, `위험 56% ↓` (문장 동사형 "…를 50% 감소시킵니다"는 텍스트 유지).
+    - 소변 알부민/크레아티닌 비는 **`uACR`** (소문자 u + 대문자 ACR)로 통일 — `UACR`·지표 의미의 `ACR` 금지. **예외**: 학회/기관 고유명(ACR 2020·ACR/EULAR 등)은 그대로 둔다.
 
 ## Alert(붉은 강조) 사용 룰
 
@@ -1414,8 +1441,8 @@ exit code 0 → 통과, 1 → 실패 (CI gate에 그대로 사용 가능).
 1. 해당 덱의 `decks/{specialty}/{topic}/{slug}/index.html` 파일을 view 또는 read한다
 2. 수정 사항이 디자인 시스템(`reference/brand-design-system.md`)을 위반하지 않는지 확인한다
 3. `str_replace`로 정확한 부분만 수정한다 (전체 재작성하지 않는다)
-4. `python3 build.py` 실행해서 새 PDF 생성
-5. 변경된 슬라이드의 PDF 페이지를 추출해서 시각 검증
+4. `python3 -m shared._validate_layout <html>` 통과 후 `python3 build.py` 실행해서 새 PDF 생성 — deck 강화 검증기(`font_too_small`·`body_underfills`·`box_underfill`·`sparse_box`, § 검증 워크플로우)도 함께 통과시킨다
+5. 변경된 슬라이드를 시각 검증 — Step 3.8 룰대로 `python3 tools/slide_screens.py <html>` 로 영향받은 슬라이드 PNG 를 직접 육안 확인(검증기 통과 ≠ 시각 통과)
 6. 결과 PDF와 변경 요약을 사용자에게 전달
 
 수정 요청 시 권장 표현 형식:
@@ -1826,5 +1853,7 @@ clinic-content-system/
 - `reference/patterns.md` — 16:9 덱 7가지 본문 패턴의 HTML 사양과 사용 가이드
 - `reference/content-template.md` — 16:9 덱 12장 표준 구성과 슬라이드별 콘텐츠 가이드
 - `reference/build.md` — Playwright 빌드 환경 셋업과 명령어
+- `reference/medical-notation-style.md` — 의료 콘텐츠 표기 통일 규칙 (부등호·단위 공백·`↓`·`uACR` 등, 원장 결정 2026-06-07)
+- `reference/deck-design-proportions.md` — deck 황금비율·모듈러 스케일·검증기 임계 수치 SoT (§6)
 - `reference/migration.md` — 기존 PPTX 스킬에서 마이그레이션 가이드
 - `shared/clinic-handout-a4.css` — A4 1장 컴포넌트 사양 (handouts / lab-reports)
