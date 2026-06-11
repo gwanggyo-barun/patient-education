@@ -13,6 +13,11 @@
 #       codex exec 로 /imagen 호출 (후처리 금지 가드 자동 첨부) → 파일 존재 +
 #       SHA1 출력. 후처리(sips/ImageMagick/재인코딩)는 Codex 측에도 금지시킨다.
 #
+# ⚠️ 순차 호출만 (2026-06-12 ABYSS 작업 중 실측): 이 스크립트를 여러 장에 대해 동시(병렬)로
+#    돌리지 말 것. Codex 가 생성 원본을 공유 폴더(~/.codex/generated_images/)에 떨구는데,
+#    병렬 실행 시 두 프로세스가 같은 최신 파일을 집어가 타깃이 중복된다. 4장이면 4번 순차
+#    실행하고 끝나면 shasum 으로 전부 고유한지 확인한다.
+#
 # Cross-machine: 어떤 머신이든 `codex` CLI + 로그인만 돼 있으면 동작한다.
 # codex 가 없으면 exit 3 — 호출자(Claude)는 reference/agent-orchestration.md 의
 # fallback 절차(이미지 생략 + "no image added: codex unavailable" 기록)를 따른다.

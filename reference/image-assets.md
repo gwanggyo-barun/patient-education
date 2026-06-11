@@ -192,6 +192,7 @@ HTML will overlay Korean labels using Pretendard font separately.
 3. 같은 deck/series 안의 기존 이미지 파일·프롬프트와 비교해 중복 subject/구도가 아닌지 확인한다.
 4. 슬롯 실측값으로 영문 프롬프트를 작성한다. 텍스트·숫자·PII는 이미지에 넣지 않는다.
 5. `$imagegen` 기본 내장 모드로 후보별 1장씩 생성한다. decks/handouts/lab-reports 보강에서는 코드 네이티브 SVG를 `$imagegen` 대체물로 쓰지 않는다. 서로 다른 이미지를 하나의 프롬프트에 묶지 않는다.
+   - ⚠️ **`tools/codex_imagen.sh` 는 순차 호출만** (2026-06-12 ABYSS 작업 중 실측): 여러 장을 동시(병렬)로 돌리면 Codex 공유 출력폴더(`~/.codex/generated_images/`)에서 레이스가 나 **두 타깃이 같은 이미지를 집어가 중복**이 된다. 4장이면 4번 순차 실행하고, 끝나면 `shasum`으로 전부 고유한지 반드시 확인한다.
 6. 생성 이미지를 확인하고, 선택본을 `shared/assets/generated/`에 저장한다.
 7. 같은 이름의 `.prompt.md`에 slide/section, source text summary, visual intent, unique subject, slot size/ratio, negative constraints 를 저장한다.
 8. HTML 라벨·캡션·핀을 얹고, `_validate_layout` + preview PNG 육안 확인까지 끝낸다. preview가 작은 아이콘 행이나 얇은 strip처럼 보이면 실패로 보고 재생성한다.
