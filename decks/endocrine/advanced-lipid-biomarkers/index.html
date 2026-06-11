@@ -259,7 +259,7 @@
     .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
     .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
     .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 20px 24px; gap: 8px; }
+    .tile { padding: 18px 24px 14px; gap: 8px; }
     .tile__body { font-size: 1.02rem; line-height: 1.5; }
     .alert-strip, .alert-row { padding: 13px 16px; }
     .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
@@ -310,10 +310,32 @@
     .metric-card { padding: 12px 16px; }
     .mech-card__note { max-height: 96px; overflow: hidden; }
     .lesson-card { padding: 10px 14px; }
-    /* readability fixes 2026-06: no mid-word breaks in Korean titles/labels */
+    /* readability fixes 2026-06: no mid-word breaks in Korean text (eojeol wrapping) */
     .slide__title, .slide__subtitle, .tile__title { word-break: keep-all; }
+    .slide__body { word-break: keep-all; overflow-wrap: break-word; }
+    /* closing slide: spread contact items horizontally to fill the card */
+    .closing-grid > .contact-card { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: var(--space-6); }
+    /* slide 2: caption sits directly under the hero number; note card anchors the bottom */
+    .hero-lead { display: flex; flex-direction: column; gap: var(--space-4); }
+    .pattern-hero-number__value { font-size: 7rem; }
+    .hero-note {
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-steel);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: 1.5;
+      word-break: keep-all;
+    }
     /* slide 3: center the split primary column instead of leaving a bottom void */
     .pattern-split__primary { display: flex; flex-direction: column; justify-content: center; gap: var(--space-5); }
+    /* slide 3: metric cards share the column height instead of floating apart */
+    .pattern-split__detail { justify-content: stretch; gap: var(--space-5); }
+    .pattern-split__metric { flex: 1 1 0; display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); }
+    .pattern-split__metric-value { font-size: 2.2rem; }
   </style>
 </head>
 <body>
@@ -355,8 +377,11 @@
     <div class="slide__body">
       <div class="pattern-hero-number">
         <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>8&ndash;23</em>%</div>
-          <div class="pattern-hero-number__caption">LDL-C와 ApoB의 불일치(discordance) 발생 비율 — 같은 LDL-C 수치라도 입자 수(ApoB)가 다르면 심혈관 위험은 크게 달라집니다.</div>
+          <div class="hero-lead">
+            <div class="pattern-hero-number__value"><em>8&ndash;23</em>%</div>
+            <div class="pattern-hero-number__caption">LDL-C와 ApoB의 불일치(discordance) 발생 비율 — 같은 LDL-C 수치라도 입자 수(ApoB)가 다르면 심혈관 위험은 크게 달라집니다.</div>
+          </div>
+          <div class="hero-note">특히 <strong>당뇨·대사증후군·비만·고중성지방</strong> 환자에서 불일치가 흔합니다 — LDL-C가 정상이어도 ApoB 추가 확인이 권고되는 이유입니다.</div>
         </div>
         <div class="pattern-hero-number__detail">
           <div class="pattern-hero-number__detail-label">Why beyond LDL-C matters</div>
@@ -368,7 +393,7 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — UK Biobank (n=290,000) · 2026 ACC/AHA Lipid Guideline</span>
-      <span class="slide__page">02 / 12</span>
+      <span class="slide__page">02 / 11</span>
     </footer>
   </section>
 
@@ -410,7 +435,7 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — UK Biobank Lancet 2021 · 2026 ACC/AHA Beyond LDL-C</span>
-      <span class="slide__page">03 / 12</span>
+      <span class="slide__page">03 / 11</span>
     </footer>
   </section>
 
@@ -466,7 +491,7 @@
       </figure></div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — 2026 ACC/AHA Lipid Guideline · ESC/EAS 2024 ApoB Position</span>
-      <span class="slide__page">04 / 12</span>
+      <span class="slide__page">04 / 11</span>
     </footer>
   </section>
 
@@ -520,7 +545,7 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — 2026 ACC/AHA Cholesterol Guideline · KSLA 2022</span>
-      <span class="slide__page">05 / 12</span>
+      <span class="slide__page">05 / 11</span>
     </footer>
   </section>
 
@@ -577,7 +602,7 @@
       </figure></div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — 2026 ACC/AHA Lp(a) Class I · 강북삼성 코호트(n=270,000)</span>
-      <span class="slide__page">06 / 12</span>
+      <span class="slide__page">06 / 11</span>
     </footer>
   </section>
 
@@ -634,7 +659,7 @@
       </figure></div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — 2026 ACC/AHA Lp(a) Class I · ESC/EAS 2022 Risk Tiers</span>
-      <span class="slide__page">07 / 12</span>
+      <span class="slide__page">07 / 11</span>
     </footer>
   </section>
 
@@ -667,7 +692,7 @@
         <div class="tile">
           <div class="tile__index">FACT · 03</div>
           <div class="tile__title">CSPPT (n=20,702) — 양성</div>
-          <div class="tile__body">중국 고혈압 환자에서 엽산 보충이 <strong>뇌졸중 21% ↓</strong>. 곡물 엽산 강화 미시행 인구에서 효과가 확인되었습니다.</div>
+          <div class="tile__body">중국 고혈압 환자에서 엽산 보충이 <strong>뇌졸중 21%&nbsp;↓</strong>. 곡물 엽산 강화 미시행 인구에서 효과가 확인되었습니다.</div>
         </div>
         <div class="tile">
           <div class="tile__index">KOREA · 04</div>
@@ -688,65 +713,19 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — HOPE-2 · CSPPT · Cochrane Review (n=71,422)</span>
-      <span class="slide__page">08 / 12</span>
+      <span class="slide__page">08 / 11</span>
     </footer>
   </section>
 
 
   <!-- ========================================================================
-       SLIDE 09 · DENSITY GRID 2×2 — Korean clinical reality (cost & insurance)
+       SLIDE 09 · COMPARISON — ApoB vs Lp(a) clinical positioning
        ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">09</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>KOREAN CONTEXT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한국 검사 비용·보험 급여 안내</h2>
-      <p class="slide__subtitle">실제 진료에서 알아두어야 할 비용과 적용 기준</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">COST · 01</div>
-          <div class="tile__title">ApoB 검사 (수가 C2462)</div>
-          <div class="tile__body">사례별 심사로 보험 급여 결정. 비급여 시 약 <strong>15,000~30,000원</strong>. 당뇨·대사증후군·고중성지방 환자에서 추가 검사 가치가 큽니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">COST · 02</div>
-          <div class="tile__title">Lp(a) 검사 (수가 D2620)</div>
-          <div class="tile__body">사례별 심사 — 가족력·조기 ASCVD·반복 이벤트 시 적용 가능. 비급여 시 약 <strong>20,000~40,000원</strong>이며, 평생 1회로 충분합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">COST · 03</div>
-          <div class="tile__title">Homocysteine (수가 누514)</div>
-          <div class="tile__body">B12 결핍 시 급여, 그 외 선별급여(80%) 적용. 일상적 선별검사로는 권고되지 않으며 특수 상황(고혈압+엽산 부족)에서만 고려합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">COST · 04</div>
-          <div class="tile__title">PCSK9 억제제 보험 기준</div>
-          <div class="tile__body">ASCVD 초고위험·가족성 고콜레스테롤혈증·스타틴 불내성에서 급여. 최대 스타틴+에제티미브 후 LDL-C ≥70이어야 적용 — 연 약 513만원(본인부담 30%).</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Measurement">
-        <img src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s09-measurement-lipid-640a67ae-20260530-raster-20260531.jpg" alt="한국 검사 비용·보험 급여 안내 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 건강보험심사평가원 수가 · KSLA 2022 · 보험급여기준 2024</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · COMPARISON — ApoB vs Lp(a) clinical positioning
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>HOW TO USE EACH</strong></div>
+      <div class="slide__chapter">CHAPTER 05 · <strong>HOW TO USE EACH</strong></div>
     </header>
     <div class="slide__title-block">
       <h2 class="slide__title">ApoB vs Lp(a) — 임상적 위치 비교</h2>
@@ -786,19 +765,19 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — 2026 ACC/AHA Lipid Guideline · ESC/EAS 2022</span>
-      <span class="slide__page">10 / 12</span>
+      <span class="slide__page">09 / 11</span>
     </footer>
   </section>
 
 
   <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — Today's 8 essentials
+       SLIDE 10 · CHECKLIST — Today's 8 essentials
        ======================================================================== -->
   <section class="slide">
-    <div class="slide__bg-num">11</div>
+    <div class="slide__bg-num">10</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>ACTION</strong></div>
+      <div class="slide__chapter">CHAPTER 06 · <strong>ACTION</strong></div>
     </header>
     <div class="slide__title-block">
       <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
@@ -842,13 +821,13 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">Daily action plan — beyond LDL-C, sharper risk assessment</span>
-      <span class="slide__page">11 / 12</span>
+      <span class="slide__page">10 / 11</span>
     </footer>
   </section>
 
 
   <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       SLIDE 11 · CLOSING — soft canvas, contact card + QR
        ======================================================================== -->
   <section class="slide slide--closing">
     <header class="slide__header">
@@ -887,7 +866,7 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
+      <span class="slide__page">11 / 11</span>
     </footer>
   </section>
 
