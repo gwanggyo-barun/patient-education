@@ -38,7 +38,7 @@
     }
     .risk-row {
       display: grid;
-      grid-template-columns: 96px 86px 74px minmax(0, 1fr);
+      grid-template-columns: 92px 90px 76px minmax(0, 1fr);
       gap: var(--space-2);
       align-items: center;
       padding: var(--space-2) var(--space-3);
@@ -63,6 +63,7 @@
       color: var(--color-navy);
       font-size: var(--text-body);
       letter-spacing: var(--tracking-snug);
+      white-space: nowrap;
     }
     .risk-row--head .risk-row__class { color: var(--color-canvas); }
     .risk-row--alert .risk-row__class { color: var(--color-danger); }
@@ -72,6 +73,7 @@
       color: var(--color-navy);
       text-align: center;
       letter-spacing: var(--tracking-tight);
+      white-space: nowrap;
     }
     .risk-row--head .risk-row__nmol,
     .risk-row--head .risk-row__mg {
@@ -83,23 +85,27 @@
       color: var(--color-danger);
     }
     .risk-row__meaning {
-      font-size: var(--text-sm);
+      font-size: 0.95rem;
       font-weight: var(--weight-450);
       color: var(--color-ink-soft);
-      line-height: var(--lh-tight);
+      line-height: 1.32;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     .risk-row--head .risk-row__meaning { color: var(--color-canvas); opacity: 0.92; }
     .risk-row--alert .risk-row__meaning { color: var(--color-ink); }
     .slide__body--risk-tiers {
       grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
       gap: var(--space-5);
-      align-items: start;
+      align-items: stretch;
     }
     .slide__body--risk-tiers .pattern-risk-table {
-      height: auto;
+      height: 100%;
     }
+    .slide__body--risk-tiers .risk-row { flex: 1 1 0; min-height: 0; }
+    .slide__body--risk-tiers .risk-row--head { flex: 0 0 auto; }
     .slide__body--risk-tiers > .ai-visual--focus {
-      align-self: start;
+      align-self: center;
       height: auto;
       aspect-ratio: 16 / 9;
     }
@@ -218,7 +224,7 @@
     .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
     .qr-block { min-height: 0; }
     .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__title { font-size: 1.2rem; line-height: 1.25; }
     .tile__body { font-size: 0.97rem; line-height: 1.34; }
     .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
     .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
@@ -243,7 +249,7 @@
     .slide__title-block { margin-bottom: 24px; }
     .slide__footer { padding-top: 8px; font-size: 12px; }
     .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__supporting { font-size: 1rem; line-height: 1.46; }
     .pattern-split__metric { padding: 14px 18px; }
     .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
     .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
@@ -253,8 +259,8 @@
     .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
     .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
     .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .tile { padding: 20px 24px; gap: 8px; }
+    .tile__body { font-size: 1.02rem; line-height: 1.5; }
     .alert-strip, .alert-row { padding: 13px 16px; }
     .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
     .pattern-bars, .bars { min-height: 0; }
@@ -304,8 +310,10 @@
     .metric-card { padding: 12px 16px; }
     .mech-card__note { max-height: 96px; overflow: hidden; }
     .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(7) .risk-grid { height: 100%; align-content: space-between; }
-    .slide:nth-of-type(7) .risk-row { min-height: 76px; display: flex; align-items: center; }
+    /* readability fixes 2026-06: no mid-word breaks in Korean titles/labels */
+    .slide__title, .slide__subtitle, .tile__title { word-break: keep-all; }
+    /* slide 3: center the split primary column instead of leaving a bottom void */
+    .pattern-split__primary { display: flex; flex-direction: column; justify-content: center; gap: var(--space-5); }
   </style>
 </head>
 <body>
@@ -604,8 +612,8 @@
         </div>
         <div class="risk-row">
           <div class="risk-row__class">회색지대</div>
-          <div class="risk-row__nmol">75 ~ 125</div>
-          <div class="risk-row__mg">30 ~ 50</div>
+          <div class="risk-row__nmol">75~125</div>
+          <div class="risk-row__mg">30~50</div>
           <div class="risk-row__meaning">다른 위험인자(LDL-C, 혈압, 혈당, 가족력)를 함께 고려해 치료 강도 결정.</div>
         </div>
         <div class="risk-row risk-row--alert">
