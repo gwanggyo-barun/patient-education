@@ -53,10 +53,21 @@ python3 evals/eval_runner.py compare --kind decks
 evals/
   README.md                  # this
   eval_runner.py             # 비교 실행
+  gates/
+    run_gate_evals.py        # handouts v2 게이트 결정론 회귀 (aboutness·visual-diff·tone, §7)
   synthetic/
     decks/                   # 가공된 decks fixture
     handouts/                # 가공된 handouts fixture
     lab-reports/             # 가공된 lab-reports fixture (실환자 X)
+```
+
+## 게이트 회귀 evals (결정론)
+
+LLM 비교와 별개로, handouts v2 게이트(`shared/_image_gate`·`_visual_diff`·`_tone_score`)의
+회귀를 fixture 로 고정한다 (`PRD/handout-visual-v2/04_PROJECT_SPEC.md` §7):
+
+```bash
+python3 evals/gates/run_gate_evals.py   # 전부 통과 시 exit 0 — CI 게이트로 사용 가능
 ```
 
 ## Caveat

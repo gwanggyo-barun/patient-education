@@ -286,6 +286,8 @@ HTML will overlay Korean labels using Pretendard font separately.
 4. **프롬프트 추적**: 생성본 옆의 `.prompt.md`에는 slide 번호, slide title, source text summary, visual intent, unique subject, slot size/ratio, negative constraints 를 남긴다.
 5. **불확실하면 생략**: 정확히 맞는 그림을 만들 수 없으면 "no image added: reason"으로 기록하고 텍스트 위계·표·아이콘·여백을 개선한다. 이미지 수량 부족은 실패가 아니지만, 무관한 이미지는 실패다.
 
+> ⛔ **v2 게이트화 (2026-06-12)**: 위 1·2·5 항은 handouts 에서 더 이상 주관 판단에 맡기지 않는다 — 슬롯마다 `ImageIntent`(설명할 본문 1개 + visual_type + must_show) 의무 + 생성 이미지의 **aboutness 교차검증**(VLM 0~100, T_about=70 미달 채택 금지)으로 강제하고, `shared/_image_gate.py` 가 기록 정합성을 차단 게이트한다. 상세 절차는 §3.5.a(ImageIntent)·§3.5.e(채택 게이트).
+
 ### 19. deck 폰트·박스·여백은 황금비율 룰을 따른다 (2026-06-06 사용자 컨펌, 코덱스 감수)
 
 비주얼-포커스(좌측 박스 + 우측 큰 이미지) 레이아웃에서 ① 박스가 이미지 높이에 stretch되며 내용이 위로 몰려 아래 30~64% 빈 비대칭 여백 ② 폰트 0.58~0.78rem 과소 ③ 박스가 이미지에 바짝 붙어 겹쳐 보임 — 세 문제를 모듈러 타입 스케일 + 황금비율로 해결한다. **상세 수치는 `reference/deck-design-proportions.md`가 SoT.**
@@ -947,7 +949,7 @@ Step 3 build + validate_layout + (lab-reports 한정) _visual_audit  ← Stage C
 [Stage E — integrator fix (blocker / major 우선)]
    ↓
 Step 3.5 인포그래픽 슬롯 설계 + `$imagegen` 생성 (decks / handouts / lab-reports)
-Step 3.8 ⚠️ 푸시 전 전수 육안검수 (2026-06-06 사용자 룰, 강화) — `python3 tools/slide_screens.py <html>` 로 **모든 슬라이드를 한 장씩 캡처해 Read 도구로 한 장 한 장 전부 직접 열어본다** (요약/대표 몇 장만 보는 것 금지). bbox 검사(_validate_layout)만으로 끝내지 않는다. _validate_layout 은 이제 `body_overlaps_footer`(본문이 푸터 침범)·`body_underfills`(푸터 위 9%↑ 빈 여백)도 잡으므로 **먼저 통과시킨 뒤** 육안검수한다. 각 슬라이드에서 확인: ① 푸터/페이지번호 가림 없음 ② 본문이 슬라이드를 보기 좋게 채움(언더필·과여백 없음) ③ 이미지 크롭·라벨 정렬 ④ **박스 안 텍스트 정렬·여백 균형** ([Gotcha 18]). 문제 발견 시 수정→재캡처→재검수. 통과 후에만 Step 4 진행하며, 사용자 추가 지시 없이 커밋·푸시까지 완료한다.
+Step 3.8 ⚠️ 푸시 전 전수 육안검수 (2026-06-06 사용자 룰, 강화) — `python3 tools/slide_screens.py <html>` 로 **모든 슬라이드를 한 장씩 캡처해 Read 도구로 한 장 한 장 전부 직접 열어본다** (요약/대표 몇 장만 보는 것 금지). bbox 검사(_validate_layout)만으로 끝내지 않는다. _validate_layout 은 이제 `body_overlaps_footer`(본문이 푸터 침범)·`body_underfills`(푸터 위 9%↑ 빈 여백)도 잡으므로 **먼저 통과시킨 뒤** 육안검수한다. 각 슬라이드에서 확인: ① 푸터/페이지번호 가림 없음 ② 본문이 슬라이드를 보기 좋게 채움(언더필·과여백 없음) ③ 이미지 크롭·라벨 정렬 ④ **박스 안 텍스트 정렬·여백 균형** ([Gotcha 18]). 문제 발견 시 수정→재캡처→재검수. 통과 후에만 Step 4 진행하며, 사용자 추가 지시 없이 커밋·푸시까지 완료한다. **handouts v2**: §3.5.e 의 visual diff 가 회귀를 가리킨 페이지가 있으면 그 페이지부터 우선 육안 확인한다(전수 검수 자체는 유지 — diff 는 우선순위 보조이지 대체가 아니다).
 Step 4 git push (커밋 시 다른 세션 작업물 보호 — 명시적 stage 만)
 ```
 
@@ -1083,6 +1085,8 @@ python3 build.py
 
 **실행 경로 (driver 자동 감지 — 2026-06-06 v2)**: Codex 주도 세션이면 built-in `$imagegen` 직접 호출(기존). **Claude 주도 세션이면 `bash tools/codex_imagen.sh <prompt.md> <target.png>` 로 Codex CLI를 헤드리스 자동 호출** — 슬롯 설계·후보 식별·프롬프트 작성 책임은 그대로 integrator(Claude)에게 있고, Codex는 프롬프트→래스터 변환만 한다. codex CLI 없음/미로그인이면 이미지를 생략하고 `no image added: codex unavailable` 기록(빈 슬롯 HTML은 남기지 않음). 위임(품앗이) 모드·실패 처리·환경별 주의는 `reference/agent-orchestration.md` 참조.
 
+**⛔ handouts v2 이미지 게이트 (2026-06-12, SoT=`PRD/handout-visual-v2/`)**: handouts 는 Step 3.5 전 과정에 다음 4중 게이트가 **의무**다 — ① 슬롯마다 `ImageIntent` 작성(§3.5.a — explains·visual_type·must_show·prompt_en, 적합 visual_type 없으면 슬롯 생성 금지) ② 생성 후보 전부 **aboutness 교차검증**(§3.5.e — 미달이면 채택 금지) ③ 삽입 전/후 스냅샷 **visual diff + `_validate_layout` AND 게이트**(§3.5.e) ④ 빌드 시 **ToneScore ≥ T_tone**(§검증 워크플로우). 게이트는 기본 ON이며 환경변수 `HANDOUT_V2_GATES=0`으로만 관찰 모드 전환 가능. **decks / lab-reports 확장은 P5(후속)** — 그 전까지 decks/lab-reports 는 기존 §3.5.a 0.a 적합성 게이트대로 운용한다.
+
 **판단 기준**:
 - 이미지는 수량 목표가 아니라 가독성 개선 수단이다. 삽입 후 본문이 작아지거나 정보 구조가 흐려지면 만들지 않는다.
 - **decks / handouts / lab-reports 공통**: 이미지 활용 방식은 동일하다. 레이아웃 슬롯을 먼저 만들고, 슬롯을 실측한 뒤, built-in `$imagegen`으로 PNG/WebP/JPEG 래스터 설명 이미지를 생성한다. 작은 SVG icon/context strip, healthicon 묶음, 단순 아이콘 행은 어떤 콘텐츠 타입에서도 이미지 보강으로 인정하지 않는다.
@@ -1107,13 +1111,22 @@ python3 build.py
 
 **선정 가이드**: handouts / lab-reports 는 대개 0~2개, **decks 는 4~6장 (2026-06-06 사용자 룰 — 이미지가 핵심 축)**. A4 자료라도 서로 다른 행동·절차·장비·비교 포인트를 전용 이미지 섹션으로 나누면 여러 개를 넣을 수 있다. visual intent 와 이미지 품질 게이트는 수량 룰과 무관하게 전부 적용 — 각 후보는 슬라이드/섹션 제목·핵심 문장과 직접 연결되어야 하며, 같은 deck/series 안에서 같은 구도·같은 subject 를 반복하지 않는다. 라벨·텍스트는 HTML 로만 (이미지에 굽기 금지).
 
+**ImageIntent 의무화 (handouts v2 — 슬롯을 만들기 전에 작성)**: handouts 는 이미지 슬롯마다 다음 4필드를 가진 `ImageIntent` 를 먼저 작성하고, 같은 베이스네임의 사이드카 `shared/assets/generated/{topic-slug}-{slot-key}-YYYYMMDD.intent.json` 으로 남긴다 (스키마·예시는 `shared/_image_gate.py` docstring = SoT):
+
+- `explains` — **이 이미지가 설명할 본문 문장/표/체크리스트 정확히 1개** (자유서술, 필수). 본문에 대응 문장이 없으면 그 이미지는 "겉도는 이미지"다 — 만들지 않는다.
+- `visual_type` — Anatomy / Mechanism / Process / Equipment / Action / Comparison 중 하나. **이 6개에 들어맞지 않으면 슬롯 자체를 만들지 말고** 텍스트 위계·표·여백 개선으로 대체한다 (기존 §15/§16 룰의 코드 게이트화).
+- `must_show[]` — 이미지에 반드시 보여야 할 요소 ≥1개 (aboutness 검증 기준이 된다).
+- `prompt_en` — 슬롯 실측 비율을 명시한 영문 프롬프트 (§3.5.b).
+
+intent 없는 생성·채택은 게이트 위반이다: `python3 -m shared._image_gate <html_path>` 가 HTML 이 참조하는 generated 이미지의 intent 존재·스키마·채택 불변식을 검증한다(빌드/푸시 전 필수, exit 1 = 차단). 슬롯을 명시적으로 생략한 경우에도 intent.json 에 `adopted: null + skipped_reason` 으로 남긴다.
+
 #### 3.5.a.1 — `$imagegen` 생성·저장 절차
 
 0. 좋은 선례를 먼저 연다: 골밀도 검사, 대장내시경 준비, 비강 스프레이, 인슐린 시작, 크레아틴, 이상지질혈증 식단 중 최소 2개를 preview로 확인한다.
 1. HTML에 먼저 `.ai-visual` 또는 자료별 fixed figure/frame 슬롯을 만든다. 슬롯 폭/높이는 mm 또는 px로 고정하고, 작은 장식 strip이 아니라 자료의 주요 교육 섹션이 되게 한다.
 2. 슬롯 실측값으로 영문 프롬프트를 작성한다. deck 의 split/strip 이미지처럼 고정 프레임에 들어가면 full-bleed 구도를 요구하고, “fill the entire frame edge to edge, no blank side gutters, no centered small vignette”를 명시한다. PII, 제품명, 브랜드명, 이미지 내부 텍스트는 금지한다.
-3. `$imagegen` 기본 내장 모드로 이미지별 1회씩 생성한다. 서로 다른 이미지는 하나의 batch가 아니라 별도 프롬프트로 만든다. decks/handouts/lab-reports 보강에서 코드 네이티브 SVG는 `$imagegen` 대체물로 쓰지 않는다.
-4. 생성 결과를 확인한 뒤, 선택본을 `shared/assets/generated/{topic-slug}-{purpose}-YYYYMMDD.{png|webp|jpg}`로 저장한다. `$imagegen` 원본은 삭제하지 않는다. deck split/strip 슬롯은 슬롯 비율로 crop/fit 저장해 좌우 여백이 남지 않게 한다.
+3. 이미지별 별도 프롬프트로 생성한다(batch 금지). **handouts 는 슬롯당 후보 2~3장 생성이 기본**이고, 호출이 실패하면 같은 경로로 **≥2회 재시도** 후 fallback 체인을 따른다 — `tools/codex_imagen.sh` ↔ built-in `$imagegen` (driver 반대 경로로 1회 전환) → 둘 다 불가하면 **명시적 생략 + intent.json 에 `skipped_reason` 기록** (`no image added: <사유>`, 빈 슬롯 HTML 잔존 금지). 후보별 사용 경로(`gen_path`)와 실패 이력은 intent.json `candidates[]` 에 남긴다. decks/handouts/lab-reports 보강에서 코드 네이티브 SVG는 `$imagegen` 대체물로 쓰지 않는다. (`codex_imagen.sh` 는 순차 호출만 — `reference/image-assets.md` §생성·저장 절차 ⚠️ 레이스 주의.)
+4. **handouts: 후보 전부를 §3.5.e aboutness 교차검증에 올리고, 게이트 통과 후보 중 `aboutness × quality` 최고 1장만** 선택본으로 `shared/assets/generated/{topic-slug}-{purpose}-YYYYMMDD.{png|webp|jpg}`에 저장한다. 전 후보 미달이면 프롬프트 보강(must_show 구체화) 후 재생성 1회 → 그래도 미달이면 생략+사유. `$imagegen` 원본은 삭제하지 않는다. deck split/strip 슬롯은 슬롯 비율로 crop/fit 저장해 좌우 여백이 남지 않게 한다.
 5. HTML에 `<figure class="ai-visual">` 또는 자료별 figure/frame 으로 삽입하고, 필요한 설명은 `.ai-visual__caption`, `.ai-visual__pin`, 또는 `figcaption`으로 얹는다. 슬롯을 꽉 채워야 하는 generated deck image에는 `.ai-visual--fill`을 함께 붙인다.
 6. `python3 -m shared._validate_layout <html_path>` → `python3 build.py` 또는 단일 타깃 빌드 → preview PNG 육안 확인까지 완료한다.
 7. preview가 좋은 선례 대비 작은 아이콘 행, 얇은 strip, 장식 배너처럼 보이면 실패로 보고 재생성·재배치한다.
@@ -1177,6 +1190,8 @@ or any characters in any language (Korean, English, Chinese, etc.)
 anywhere on the canvas. Pure visual only.
 HTML will overlay Korean labels using Pretendard font separately.
 ```
+
+⚠️ **STYLE 블록 = 브랜드 스타일 디스크립터 표준 (v2 P4 — 모든 프롬프트에 항상 삽입)**: 위 골격의 STYLE 단락은 자료 간 이미지 톤 통일 장치다. 실제 문구는 `reference/image-assets.md` §영문 프롬프트 기본 골격의 **세미리얼 하우스 스타일 디스크립터** (rich semi-realistic, navy `#003366` + steel blue `#5B9BD5` 팔레트 — 플랫 벡터/아이콘 스타일 금지, 2026-06-06 사용자 확정)를 그대로 쓰고, 색·토큰의 SoT 는 `reference/brand-design-system.md` 다. 디스크립터를 빼먹거나 임의 변형하면 ToneScore `image_style_ok` 감점 대상.
 
 ##### 3.5.b.4 — N-column / N-row 시각 (다단계 흐름도, 비교 매트릭스, N개 결과)
 
@@ -1272,13 +1287,54 @@ Aspect ratio: 4:3.
 
 `$imagegen` 결과가 생성되면:
 
-1. 선택한 PNG/WebP/JPEG 를 **제안 시 정한 파일명 그대로** `shared/assets/generated/{topic-slug}-{slot-key}.png` 에 복사한다. `$imagegen` 기본 생성 폴더의 원본은 삭제하지 않는다.
-2. 해당 슬라이드/섹션 HTML 의 placeholder (또는 텍스트 카드) 위치에 `.ai-visual` 컴포넌트 삽입. 컴포넌트 변형(`--hero` / `--portrait` / `--compact` / `--contain`)은 3.5.b 에서 정한 슬롯 그대로.
-3. `python3 -m shared._validate_layout <html_path>` 재실행 → `OK` 확인.
-4. `python3 build.py` 재실행 → PDF/PNG 갱신, `output/{kind}/{slug}-preview.png` 로 시각 점검.
-5. Step 4 (git commit + push) 로 진행.
+1. 선택한 PNG/WebP/JPEG 를 **제안 시 정한 파일명 그대로** `shared/assets/generated/{topic-slug}-{slot-key}.png` 에 복사한다. `$imagegen` 기본 생성 폴더의 원본은 삭제하지 않는다. (handouts: 같은 베이스네임의 `.intent.json` 사이드카에 후보·verdict·채택 기록 완료 상태여야 한다 — §3.5.a.)
+2. **(handouts 필수) 삽입 전 스냅샷**: `python3 -m shared._visual_diff capture <html_path> /tmp/{slug}-before.png` — 이미지가 들어가기 직전의 확정 레이아웃을 기준선으로 잡는다.
+3. 해당 슬라이드/섹션 HTML 의 placeholder (또는 텍스트 카드) 위치에 `.ai-visual` 컴포넌트 삽입. 컴포넌트 변형(`--hero` / `--portrait` / `--compact` / `--contain`)은 3.5.b 에서 정한 슬롯 그대로.
+4. **(handouts 필수) 삽입 후 스냅샷 + 회귀 diff**: after 캡처 후 `python3 -m shared._visual_diff compare before.png after.png --slot-bbox X,Y,W,H` — 슬롯 영역 밖 변화(본문 밀림·겹침·잘림·푸터 침범)가 잡히면 회귀다. §3.5.e AND 게이트로 처리.
+5. `python3 -m shared._validate_layout <html_path>` 재실행 → `OK` 확인. (handouts: visual diff 와 **둘 다** 통과해야 채택 — §3.5.e.)
+6. `python3 build.py` 재실행 → PDF/PNG 갱신, `output/{kind}/{slug}-preview.png` 로 시각 점검. (handouts: `python3 -m shared._tone_score <html_path>` 로 ToneScore ≥ T_tone 확인 — §검증 워크플로우.)
+7. Step 4 (git commit + push) 로 진행.
 
 상세 컴포넌트·삽입 예시는 `reference/image-assets.md §HTML 삽입` 참조. 이미지 안에는 텍스트를 절대 넣지 않으며, 라벨·캡션은 모두 HTML `figcaption` / `.ai-visual__pin` 으로 얹는다.
+
+#### 3.5.e — handouts v2 채택 게이트: aboutness 교차검증 + 레이아웃 회귀 가드 (2026-06-12)
+
+**1) aboutness 교차검증 (P1 — "겉도는 이미지" 원천차단)**
+
+생성 후보마다, 검증 주체(VLM)가 후보 이미지를 **Read 도구로 직접 열어 보고** intent 와 대조 판정한다. 프롬프트를 쓴 에이전트의 자기 채점이 아니라 *이미지 실물 vs intent* 교차검증이다:
+
+> "이 이미지가 `{explains}` 를 실제로 묘사하는가? `{must_show[]}` 각 요소가 보이는가?
+> `depicts_intent`(Y/N) · `aboutness`(0~100) · `quality`(0~100: 해상도·왜곡·한글텍스트 혼입 여부) · 근거를 판정하라."
+
+판정 결과는 intent.json `candidates[].verdict` 에 기록하고, **채택 조건(하드 게이트)**:
+
+- 채택 ⇔ `depicts_intent == true ∧ aboutness ≥ T_about(70, 초기값·캘리브레이션 대상) ∧ quality OK(한글텍스트 0 · 왜곡 없음 · 저해상도 아님)`
+- 미달 = 재생성 1회(프롬프트의 must_show 구체화) → 그래도 미달이면 **빈 슬롯을 남기지 말고 슬롯 제거 + `skipped_reason` 기록**.
+- **"이미지 개수 채우기" 금지**(기존 §15/§16): generic·장식·같은 정보 반복·SVG strip 은 aboutness 와 무관하게 보강 불인정.
+- 기록 정합성은 `python3 -m shared._image_gate <html_path>` 가 결정론 검증한다 (intent 누락·불변식 위반 = exit 1 차단).
+
+**2) 레이아웃 회귀 가드 (P3 — AND 게이트)**
+
+이미지 채택 = `visual diff 무회귀 ∧ _validate_layout OK` **둘 다** 통과. 하나라도 실패하면:
+
+1. 슬롯 크기/배치 자동 보정 (figure height·max-width 조정, 라벨 grid 재정렬) 후 **재검 (최대 2회)**.
+2. 2회 보정 후에도 실패 → 이미지 생략 + `skipped_reason: "layout regression"` 기록, 레이아웃은 삽입 전 상태로 복원.
+3. diff 회귀 임계(슬롯 밖 변화 0.2%·겹침/잘림 0 허용)는 `shared/_visual_diff.py` 상수 = 초기값·캘리브레이션 대상.
+
+Step 3.8 전수 육안검수는 그대로 유지하되, **diff 가 가리키는 페이지를 우선 확인**한다.
+
+**3) 완료 보고 포맷 (P1~P4 집계 — handouts 완료 시 이 형식으로 사용자에게 요약)**
+
+```
+✅ {topic} 핸드아웃 — verified
+🖼 이미지: N장 채택 / M장 생략
+  • slot1 [Process] aboutness 88 — "{explains}"
+  • slot2 생략 — 적합 visual_type 없음
+📐 레이아웃: 0 깨짐 (validator pass, diff regress 0)
+🎨 톤: 92/100
+```
+
+검증기 통과만으로 "완성" 보고 금지 — aboutness·diff·톤 게이트 결과가 이 포맷에 전부 들어가야 완료다.
 
 ### Step 4 — git push (Pages 배포 + Notion DB upsert 자동)
 
@@ -1354,6 +1410,28 @@ python3 -m shared._validate_layout
 ```
 
 exit code 0 → 통과, 1 → 실패 (CI gate에 그대로 사용 가능).
+
+### handouts v2 게이트 — 이미지·레이아웃·톤 (2026-06-12, SoT=`PRD/handout-visual-v2/`)
+
+handouts 는 `_validate_layout` 외에 다음 3개 게이트를 빌드/푸시 전에 통과해야 한다 (전부 exit 0/1, 기본 ON — `HANDOUT_V2_GATES=0` 일 때만 관찰 모드):
+
+```bash
+# ① ImageIntent + aboutness 채택 불변식 (intent 누락·미달 채택 차단) — §3.5.a / §3.5.e
+python3 -m shared._image_gate handouts/{specialty}/{slug}/index.html
+
+# ② 이미지 삽입 전/후 visual diff (슬롯 밖 변화 = 회귀) — §3.5.d / §3.5.e
+python3 -m shared._visual_diff capture <html> /tmp/before.png   # 삽입 전
+python3 -m shared._visual_diff compare /tmp/before.png /tmp/after.png --slot-bbox X,Y,W,H
+
+# ③ ToneScore — 색 팔레트·Pretendard·이미지 스타일 vs brand 토큰 (T_tone=80)
+python3 -m shared._tone_score handouts/{specialty}/{slug}/index.html
+```
+
+- **AND 게이트**: 이미지 채택은 ②diff 무회귀 ∧ `_validate_layout` OK 둘 다 필요 (§3.5.e). ③ToneScore 는 빌드 게이트 — 미달이면 색·폰트·이미지 스타일을 brand 토큰으로 교정 후 재산출.
+- 임계 초기값: `T_about=70` · `T_tone=80` · diff 슬롯 밖 변화 0.2%(겹침/잘림 0 허용) — **전부 캘리브레이션 대상**, 사람 스팟체크로 조정하며 상수 SoT 는 각 `shared/_*.py` 모듈.
+- `_tone_score` 의 `image_style_ok` 는 VLM 판정 주입형 stub — 판정 전이면 `unjudged` 로 표기되니 완료 보고에 그대로 안 옮기고 직접 판정해 `--image-style-ok` 로 주입한다.
+- **레거시 하위호환**: 게이트는 **이번 작업에서 새로 만들거나 수정한 이미지 슬롯**에 적용한다. 기존 핸드아웃의 2026-06-12 이전 이미지(intent.json 없는 자산)는 grandfathered — 그 자료를 손대지 않는 한 게이트 실행 대상이 아니며, 손댈 때 해당 슬롯만 intent 백필한다. 전 자산 일괄 백필은 캘리브레이션 단계 과제.
+- **P5(후속)**: 이 3개 게이트의 decks / lab-reports 확장 + evals 회귀 케이스(aboutness 탈락·의도 깨짐 차단·브랜드 외 색 감점) 추가. 그 전까지 decks/lab-reports 는 기존 검증기·육안 워크플로우 그대로 (하위호환).
 
 ### 자동화 (CI 통합 권장)
 

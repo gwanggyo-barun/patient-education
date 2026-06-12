@@ -84,6 +84,21 @@ why_this_improves_readability:
 - 작은 SVG icon strip, context strip, healthicon row 로 충분하다고 판단되면 탈락이다.
 - 이미지가 들어가면서 본문 폰트, 카드 간격, footer clearance 가 나빠지면 탈락이다.
 
+### 0.a.1. handouts v2 — ImageIntent 의무화 (2026-06-12, SoT=`PRD/handout-visual-v2/`)
+
+**handouts 는 위 5줄 게이트를 통과한 후보를 기계검증 가능한 `ImageIntent` 로 승격해 사이드카로 남기는 것까지가 의무다.** 채택 이미지(또는 명시적 생략 슬롯)마다 `shared/assets/generated/{topic-slug}-{slot-key}-YYYYMMDD.intent.json` 작성:
+
+| 필드 | 내용 |
+|---|---|
+| `explains` | **이 이미지가 설명할 본문 문장/표/체크리스트 정확히 1개** — 본문에 대응 문장이 없으면 "겉도는 이미지", 만들지 않는다 |
+| `visual_type` | Anatomy / Mechanism / Process / Equipment / Action / Comparison 중 하나 — **그 외면 슬롯 생성 금지**(텍스트 레이아웃 개선으로 대체). SVG icon/context strip 은 visual_type 에 미포함 |
+| `must_show[]` | 이미지에 반드시 보여야 할 요소 ≥1 — aboutness 검증의 채점 기준 |
+| `prompt_en` | 슬롯 실측 비율(§0)을 명시한 영문 프롬프트 |
+| `candidates[]` | 생성 후보별 `file` / `gen_path` / `verdict`(aboutness 교차검증 결과) |
+| `adopted` / `skipped_reason` | 채택 1장 또는 null+생략 사유 (빈 슬롯 HTML 잔존 금지) |
+
+전체 스키마·예시 = `shared/_image_gate.py` docstring. 검증: `python3 -m shared._image_gate <html_path>` (intent 누락·스키마 위반·미달 채택 = exit 1 차단). decks / lab-reports 확장은 P5 — 그 전까지는 위 0.a 5줄 게이트만 적용.
+
 #### 슬롯 폭 표준 (A4 핸드아웃 / 검사결과지)
 
 페이지 14mm padding 기준:
@@ -197,6 +212,27 @@ HTML will overlay Korean labels using Pretendard font separately.
 7. 같은 이름의 `.prompt.md`에 slide/section, source text summary, visual intent, unique subject, slot size/ratio, negative constraints 를 저장한다.
 8. HTML 라벨·캡션·핀을 얹고, `_validate_layout` + preview PNG 육안 확인까지 끝낸다. preview가 작은 아이콘 행이나 얇은 strip처럼 보이면 실패로 보고 재생성한다.
 
+### handouts v2 — 안정 생성 루프 + aboutness 교차검증 (2026-06-12)
+
+handouts 는 위 절차의 5~8단계를 다음 게이트 루프로 강화한다 (SKILL.md §3.5.e 가 정본):
+
+**안정 생성 루프 (P2)**
+1. 슬롯당 **후보 2~3장** 생성 (후보별 별도 호출). 호출 실패 시 같은 경로 **재시도 ≥2**.
+2. 경로 자체가 죽으면 **fallback 체인**: `tools/codex_imagen.sh` ↔ built-in `$imagegen` (driver 반대 경로 1회 전환) → 둘 다 불가면 **명시적 생략 + `skipped_reason`** (`no image added: <사유>`). 사용 경로는 intent.json `candidates[].gen_path` 에 기록 — 무엇이 왜 실패했는지 재현 가능해야 한다.
+
+**aboutness 교차검증 (P1)** — 후보마다 VLM 이 이미지 실물을 직접 보고 판정:
+```text
+이 이미지가 "{explains}" 를 실제로 묘사하는가?
+{must_show[]} 각 요소가 화면에 보이는가?
+→ depicts_intent(Y/N) · aboutness(0~100) · quality(0~100) · 근거
+```
+- **quality 체크 항목**: 한글(또는 어떤 언어든) 텍스트 혼입 = 즉시 탈락(`korean_text_in_image`), 해부학적/구도 왜곡, 저해상도·블러.
+- **채택 = `depicts_intent ∧ aboutness ≥ T_about(70) ∧ quality OK` 후보 중 `aboutness × quality` 최고 1장.**
+- 전 후보 미달 → must_show 를 구체화해 재생성 1회 → 그래도 미달이면 생략+사유. 임계는 초기값·캘리브레이션 대상.
+- 판정은 intent.json `candidates[].verdict` 에 기록하고 `python3 -m shared._image_gate` 로 정합성 검증.
+
+**레이아웃 회귀 가드 (P3)** — 삽입 전/후 `shared/_visual_diff` 스냅샷 비교 + `_validate_layout` **AND 게이트**. 실패 시 슬롯 보정 후 재검(최대 2회) → 그래도 실패면 생략+복원. 상세는 SKILL.md §3.5.d/§3.5.e.
+
 ### 영문 프롬프트 기본 골격 (Strict Ratio · 빈 사이드 패널 금지 · 텍스트 0)
 
 `$imagegen`은 한국어 의료 프롬프트보다 구조화된 영문 프롬프트를 더 안정적으로 따른다. 항상 영문으로 작성하고, **§0 슬롯 측정에서 산출한 strict ratio와 픽셀을 그대로 채워 사용**한다.
@@ -223,6 +259,11 @@ soft white-to-light-blue gradient background.
 ⚠️ 2026-06-06 사용자 확정: **플랫 벡터/아이콘 스타일 금지** — 기존 자산
 (bone-density-room-guide, acs-crc-cfdna-biology 등)과 같은 입체감 있는
 세미리얼 일러스트가 하우스 스타일이다. 새 이미지는 이 스타일을 따른다.
+
+⚠️ **v2 P4 (2026-06-12)**: 위 STYLE 단락이 **브랜드 스타일 디스크립터 표준 문구**다 —
+모든 `$imagegen`/`codex_imagen` 프롬프트에 **항상 그대로 삽입**한다(자료 간 이미지 톤
+통일 장치). 색·토큰 SoT 는 `reference/brand-design-system.md`. 누락·임의 변형 시
+`shared/_tone_score.py` ToneScore(`image_style_ok`) 감점 대상.
 
 CRITICAL CONSTRAINTS:
 - Illustration must SPAN THE ENTIRE CANVAS evenly — no empty side panels, 
@@ -484,3 +525,12 @@ python3 build.py
 
 `build.py`는 HTML 안의 `../../../shared/assets/generated/...` 경로가 실제 파일로 존재하는지 사전 검증한다.
 이미지가 깨지면 PDF 생성 전에 CSS/asset path error로 실패해야 정상이다.
+
+**handouts v2 추가 게이트** (기본 ON, `HANDOUT_V2_GATES=0` = 관찰 모드 — SKILL.md §검증 워크플로우 참조):
+
+```bash
+python3 -m shared._image_gate handouts/{specialty}/{slug}/index.html     # ImageIntent + aboutness 불변식
+python3 -m shared._visual_diff capture <html> /tmp/before.png            # 삽입 전 스냅샷
+python3 -m shared._visual_diff compare /tmp/before.png /tmp/after.png --slot-bbox X,Y,W,H
+python3 -m shared._tone_score handouts/{specialty}/{slug}/index.html     # ToneScore ≥ 80
+```
