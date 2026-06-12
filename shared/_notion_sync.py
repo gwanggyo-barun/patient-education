@@ -47,6 +47,80 @@ def git_last_modified_iso(path: str | Path, fallback_iso: str) -> str:
     except Exception:
         return fallback_iso
 
+
+# --- Content-aware 최종수정일 (ignores CSS/layout-only commits) -------------
+# A bulk layout-sweep commit touches every deck's <style>/markup but not the
+# patient-facing meaning. We fingerprint only the *content* — visible text +
+# the set of embedded image files — and walk git history to find the date that
+# fingerprint last changed. So 최종수정일 reflects real content edits, not
+# every restyle. (User request 2026-06-12.)
+
+import hashlib  # noqa: E402
+
+_STRIP_BLOCKS = (
+    re.compile(r"<head\b.*?</head>", re.S | re.I),
+    re.compile(r"<style\b.*?</style>", re.S | re.I),
+    re.compile(r"<script\b.*?</script>", re.S | re.I),
+    re.compile(r"<!--.*?-->", re.S),
+)
+_IMG_SRC_RE = re.compile(r"<img\b[^>]*?\bsrc\s*=\s*[\"']([^\"']+)[\"']", re.I)
+_TAG_RE = re.compile(r"<[^>]+>")
+_WS_RE = re.compile(r"\s+")
+
+
+def _content_fingerprint(html_text: str) -> str:
+    """Hash of patient-facing content only: visible text + image basenames.
+
+    Deliberately blind to CSS, class names, inline <style>, and HTML structure
+    so that pure restyle/layout commits do not count as content changes.
+    """
+    import html as _html
+
+    imgs = sorted({src.rsplit("/", 1)[-1] for src in _IMG_SRC_RE.findall(html_text)})
+    body = html_text
+    for rx in _STRIP_BLOCKS:
+        body = rx.sub(" ", body)
+    body = _TAG_RE.sub(" ", body)
+    body = _WS_RE.sub(" ", _html.unescape(body)).strip()
+    blob = body + "\n IMGS " + "|".join(imgs)
+    return hashlib.sha1(blob.encode("utf-8")).hexdigest()
+
+
+def content_last_modified_iso(file_rel_path: str, fallback_iso: str) -> str:
+    """Date the material's *content* last changed in git (YYYY-MM-DD).
+
+    Walks the file's commit history oldest→newest, hashing the content
+    fingerprint of each revision, and returns the date of the most recent
+    commit where the fingerprint differs from the prior one. Restyle-only
+    commits are skipped. Falls back to the plain git date, then `fallback_iso`,
+    if history can't be read.
+    """
+    try:
+        log = subprocess.run(
+            ["git", "log", "--format=%H %cs", "--", file_rel_path],
+            cwd=str(_ROOT), capture_output=True, text=True, timeout=30,
+        )
+        lines = [ln for ln in log.stdout.splitlines() if ln.strip()]
+        if not lines:
+            return git_last_modified_iso(file_rel_path, fallback_iso)
+        commits = [(ln.split(" ", 1)[0], ln.split(" ", 1)[1]) for ln in lines]
+        prev_fp = None
+        last_change = commits[-1][1]  # default: creation date (oldest commit)
+        for h, d in reversed(commits):  # oldest → newest
+            blob = subprocess.run(
+                ["git", "show", f"{h}:{file_rel_path}"],
+                cwd=str(_ROOT), capture_output=True, text=True, timeout=30,
+            )
+            if blob.returncode != 0:
+                continue
+            fp = _content_fingerprint(blob.stdout)
+            if fp != prev_fp:
+                last_change = d
+                prev_fp = fp
+        return last_change
+    except Exception:
+        return git_last_modified_iso(file_rel_path, fallback_iso)
+
 # Database routing — see SKILL.md "Notion DB 라우팅" for the full mapping spec.
 DBS = {
     "decks":       "a84f23489df54e8fbe34b9818d6109e5",  # 📋 진료 설명용 자료

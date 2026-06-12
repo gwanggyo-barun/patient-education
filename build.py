@@ -47,7 +47,7 @@ from _validate_layout import HANDOUT_VALIDATOR_JS, DECK_VALIDATOR_JS  # noqa: E4
 NOTION_ENABLED = bool(os.environ.get("NOTION_TOKEN"))
 if NOTION_ENABLED:
     from _notion_sync import upsert as notion_upsert  # noqa: E402
-    from _notion_sync import git_last_modified_iso  # noqa: E402
+    from _notion_sync import content_last_modified_iso  # noqa: E402
 
 OUT = ROOT / "output"
 OUT.mkdir(exist_ok=True)
@@ -1669,9 +1669,16 @@ def main() -> int:
             )
             if NOTION_ENABLED and sync_eligible:
                 pdf_url = f"{BASE_URL}/output/{kind}/{slug}.pdf"
-                # 최종수정일 = the material's git last-commit date (real content
-                # change), not today — so a rebuild doesn't restamp every row.
-                modified_iso = git_last_modified_iso(t["slug_path"], today_iso)
+                # 최종수정일 = date the material's *content* (visible text +
+                # images) last changed in git — CSS/layout-only commits are
+                # ignored. Not today, so a rebuild/restyle doesn't restamp rows.
+                modified_iso = (
+                    content_last_modified_iso(
+                        str(t["html_path"].relative_to(ROOT)), today_iso
+                    )
+                    if kind in ("decks", "handouts")
+                    else None
+                )
                 try:
                     action, page_id = notion_upsert(
                         kind=kind,
