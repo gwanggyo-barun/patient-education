@@ -47,6 +47,7 @@ from _validate_layout import HANDOUT_VALIDATOR_JS, DECK_VALIDATOR_JS  # noqa: E4
 NOTION_ENABLED = bool(os.environ.get("NOTION_TOKEN"))
 if NOTION_ENABLED:
     from _notion_sync import upsert as notion_upsert  # noqa: E402
+    from _notion_sync import git_last_modified_iso  # noqa: E402
 
 OUT = ROOT / "output"
 OUT.mkdir(exist_ok=True)
@@ -364,6 +365,14 @@ TARGETS = [
         "qr_class": "qr-block__code", "fmt": "deck-16x9",
         "title": "흉통 환자교육",
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "흉통 (Chest Pain)",
+    },
+    {
+        "kind": "decks", "slug": "abyss-betablocker-mi",
+        "slug_path": "decks/cardio/abyss-betablocker-mi/",
+        "html_path": ROOT / "decks/cardio/abyss-betablocker-mi/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "심근경색 후 베타차단제, 계속 vs 중단 — ABYSS 연구",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "심근경색 후 베타차단제 (ABYSS Trial · NEJM 2024)",
     },
     {
         "kind": "decks", "slug": "ltbi-overview",
@@ -1660,6 +1669,9 @@ def main() -> int:
             )
             if NOTION_ENABLED and sync_eligible:
                 pdf_url = f"{BASE_URL}/output/{kind}/{slug}.pdf"
+                # 최종수정일 = the material's git last-commit date (real content
+                # change), not today — so a rebuild doesn't restamp every row.
+                modified_iso = git_last_modified_iso(t["slug_path"], today_iso)
                 try:
                     action, page_id = notion_upsert(
                         kind=kind,
@@ -1667,6 +1679,7 @@ def main() -> int:
                         html_url=target_url,
                         pdf_url=pdf_url,
                         today_iso=today_iso,
+                        modified_iso=modified_iso,
                         version=t.get("version", "v1.0"),
                         status=t.get("status", ACTIVE_STATUS),
                         # decks / handouts

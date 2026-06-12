@@ -20,6 +20,11 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6
+        with:
+          # Full history so build.py's git_last_modified_iso() can read each
+          # material's real last-commit date for Notion 최종수정일. A shallow
+          # (depth-1) checkout would make every path resolve to the push commit.
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v6

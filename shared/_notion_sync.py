@@ -18,10 +18,34 @@ from __future__ import annotations
 import json
 import os
 import re
+import subprocess
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 NOTION_VERSION = "2022-06-28"
+
+# Repo root (shared/_notion_sync.py → parent.parent).
+_ROOT = Path(__file__).resolve().parent.parent
+
+
+def git_last_modified_iso(path: str | Path, fallback_iso: str) -> str:
+    """`최종수정일` = the date the material's content last changed in git.
+
+    Returns YYYY-MM-DD of the most recent commit touching <path> (committer
+    date), or `fallback_iso` (usually today) when the path has no git history
+    yet — e.g. a brand-new, not-yet-committed material. This makes 최종수정일
+    track real content edits instead of every build/sync run.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%cs", "--", str(path)],
+            cwd=str(_ROOT), capture_output=True, text=True, timeout=10,
+        )
+        d = out.stdout.strip()
+        return d if d else fallback_iso
+    except Exception:
+        return fallback_iso
 
 # Database routing — see SKILL.md "Notion DB 라우팅" for the full mapping spec.
 DBS = {
@@ -572,6 +596,9 @@ def upsert(
     html_url: str,
     pdf_url: str,
     today_iso: str,
+    # decks/handouts 최종수정일 source — material's git last-commit date.
+    # Falls back to today_iso when not provided (e.g. legacy callers).
+    modified_iso: str | None = None,
     # decks / handouts
     title: str | None = None,
     category: str | None = None,
@@ -631,7 +658,7 @@ def upsert(
             raise ValueError("handouts requires title")
         properties, search_title = _build_handout_props(
             title=title, category=category, audience=audience,
-            today_iso=today_iso, version=version, status=status,
+            today_iso=modified_iso or today_iso, version=version, status=status,
             notes_rich=notes_rich, pdf_url=pdf_url,
         )
     else:  # decks
@@ -639,7 +666,7 @@ def upsert(
             raise ValueError("decks requires title")
         properties, search_title = _build_deck_props(
             title=title, category=category, audience=audience, disease=disease,
-            today_iso=today_iso, version=version, status=status,
+            today_iso=modified_iso or today_iso, version=version, status=status,
             notes_rich=notes_rich, pdf_url=pdf_url,
         )
 
