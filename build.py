@@ -85,7 +85,9 @@ TARGETS = [
         "html_path": ROOT / "decks/gi/h-pylori/eradication/index.html",
         "qr_class": "qr-block__code", "fmt": "deck-16x9",
         "title": "헬리코박터 제균 치료 안내",
-        "category": "🫁 위장관", "audience": "환자/보호자", "disease": "H. pylori",
+        "category": "🫁 위장관", "audience": "환자/보호자",
+        "disease": "H. pylori 제균치료 / 약 복용법 / 부작용 / 제균 확인",
+        "note": "구분: 제균 치료 전용. 감염 의미·내시경 소견·진단 개요는 별도 '진료설명 — 헬리코박터 파일로리 개요·진단 안내' 사용.",
     },
     {
         "kind": "decks", "slug": "morning-htn",
@@ -387,8 +389,10 @@ TARGETS = [
         "slug_path": "decks/gi/hpylori-overview/",
         "html_path": ROOT / "decks/gi/hpylori-overview/index.html",
         "qr_class": "qr-block__code", "fmt": "deck-16x9",
-        "title": "진료설명 — 헬리코박터 파일로리",
-        "category": "🫁 위장관", "audience": "환자/보호자", "disease": "헬리코박터 파일로리 (Helicobacter pylori)",
+        "title": "진료설명 — 헬리코박터 파일로리 개요·진단 안내",
+        "category": "🫁 위장관", "audience": "환자/보호자",
+        "disease": "H. pylori 개요 / 감염 의미 / 내시경 소견 / 진단검사 / 치료 필요성",
+        "note": "병합본: 기존 '진료설명 — 헬리코박터 파일로리'와 '헬리코박터 파일로리 개요·진단 안내'의 중복을 하나로 정리. 제균 약 복용법·부작용은 별도 '헬리코박터 제균 치료 안내' 사용.",
     },
     {
         "kind": "decks", "slug": "dyslipidemia",
@@ -1694,12 +1698,12 @@ def main() -> int:
                         category=t.get("category"),
                         audience=t.get("audience"),
                         disease=t.get("disease"),
+                        note=t.get("note"),
                         # lab-reports (explicit fields override legacy title parse)
                         patient_name=t.get("patient_name"),
                         chart_no=t.get("chart_no"),
                         exam_date=t.get("exam_date"),
                         doctor=t.get("doctor"),
-                        note=t.get("note"),
                     )
                     print(f"      Notion {action}: {page_id}")
                 except Exception as e:  # noqa: BLE001

@@ -706,6 +706,11 @@ def upsert(
     db_id = DBS[kind]
     title_prop = TITLE_PROPS[kind]
     notes_rich = _clickable_links(html_url, pdf_url)
+    if kind in ("decks", "handouts") and note:
+        notes_rich.extend([
+            {"type": "text", "text": {"content": "\n"}},
+            {"type": "text", "text": {"content": note}},
+        ])
     patient_page_id: str | None = None
 
     if kind == "lab-reports":
