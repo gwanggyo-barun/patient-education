@@ -134,13 +134,14 @@ DECK_VALIDATOR_JS = r"""
       // 래퍼는 푸터까지 닿지만 리스트는 60%에서 끝나 underfill 을 놓쳤다.)
       // ⚠️ li 는 마지막 항목이 border-bottom:none 이라도 '보이는 텍스트'이므로
       // paint 여부로 거르지 말 것 — 거르면 실제로 채웠는데 false underfill 난다.
-      // 타임라인 카드(timeline-step/step-card)는 grid stretch라 footer까지 닿아 body-fill 측정에 포함.
-      // .tile 은 제외 — 이미지 짝(visual-focus) 슬라이드에서 타일 열이 이미지보다 짧으면
-      // 이미지가 하단을 채우는데도 거짓 body_underfills 가 난다(이미지는 figure라 측정 제외됨).
-      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.closing-contact,.qr-block,.line-list li,.timeline-step,.step-card';
+      // ⚠️ 타임라인 카드(timeline-step/step-card)·.tile 은 body-fill(BOXSEL) 측정에서 제외한다.
+      // 새 표준에서 카드 내용은 '중앙 정렬'이고, 이미지 짝(visual-focus) 슬라이드에선 카드 열이
+      // 이미지보다 짧다 — 이미지가 하단을 채우는데도(이미지는 figure라 측정 제외) 카드 바닥이
+      // footer 위 100px+ 라 거짓 body_underfills 가 난다. (timeline 카드 넘침은 아래 per-box 루프가 잡음.)
+      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.closing-contact,.qr-block,.line-list li';
       let maxBottom = 0, deepest = '';
       s.querySelectorAll(BOXSEL).forEach((c) => {
-        if (c.closest && c.closest('figure, .bg-image-split__visual, .ai-visual, .slide__footer')) return;
+        if (c.closest && c.closest('figure, .bg-image-split__visual, .ai-visual, .slide__footer, .pattern-timeline')) return;
         const cs = getComputedStyle(c);
         if (cs.position === 'absolute' || cs.position === 'fixed') return;
         const r = c.getBoundingClientRect();
@@ -150,7 +151,7 @@ DECK_VALIDATOR_JS = r"""
       if (maxBottom === 0) {
         body.querySelectorAll('*').forEach((c) => {
           if (c.children.length > 0 || !c.textContent.trim()) return;
-          if (c.closest && c.closest('figure, .ai-visual, .slide__footer')) return;
+          if (c.closest && c.closest('figure, .ai-visual, .slide__footer, .pattern-timeline')) return;
           const r = c.getBoundingClientRect();
           if (r.height > 0 && r.bottom > maxBottom) { maxBottom = r.bottom; deepest = (c.parentElement&&typeof c.parentElement.className==='string')?c.parentElement.className:''; }
         });
