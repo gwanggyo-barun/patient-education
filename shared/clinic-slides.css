@@ -600,6 +600,7 @@ body {
   padding: var(--space-6);
   display: flex;
   flex-direction: column;
+  justify-content: center;   /* 2026-06-13: 핵심문구+본문을 한 묶음으로 박스 가운데에 (Gotcha 20) */
   gap: var(--space-3);
   position: relative;
   transition: border-color 0.15s ease, transform 0.15s ease;
@@ -634,7 +635,7 @@ body {
   font-weight: var(--weight-450);
   color: var(--color-ink-soft);
   line-height: var(--lh-normal);
-  margin-top: auto;
+  /* 2026-06-13: margin-top:auto 제거 — 제목(핵심문구)과 본문은 붙어 있어야 한다 (Gotcha 20) */
 }
 
 .tile--alert {
@@ -807,7 +808,7 @@ body {
 .pattern-timeline {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
+  gap: var(--space-7);   /* 2026-06-13: 화살표가 카드 사이 간격 정중앙에 (Gotcha 20) */
   height: 100%;
   position: relative;
   z-index: 1;
@@ -817,6 +818,7 @@ body {
 .timeline-step {
   display: flex;
   flex-direction: column;
+  justify-content: center;   /* 2026-06-13: node+제목+본문을 한 묶음으로 카드 가운데에 (Gotcha 20) */
   gap: var(--space-3);
   padding: var(--space-5);
   background: var(--color-canvas);
@@ -856,13 +858,15 @@ body {
 .timeline-step:not(:last-child)::after {
   content: "→";
   position: absolute;
-  right: -22px;
+  right: calc(-1 * var(--space-7));   /* 2026-06-13: 카드 사이 간격 정중앙 정렬 */
+  width: var(--space-7);
+  text-align: center;
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.5rem;
-  color: var(--color-border-strong);
+  color: var(--color-steel);
   z-index: 2;
-  font-weight: var(--weight-light);
+  font-weight: var(--weight-540);
 }
 
 

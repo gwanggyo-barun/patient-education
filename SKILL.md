@@ -288,6 +288,18 @@ HTML will overlay Korean labels using Pretendard font separately.
 
 > ⛔ **v2 게이트화 (2026-06-12)**: 위 1·2·5 항은 handouts 에서 더 이상 주관 판단에 맡기지 않는다 — 슬롯마다 `ImageIntent`(설명할 본문 1개 + visual_type + must_show) 의무 + 생성 이미지의 **aboutness 교차검증**(VLM 0~100, T_about=70 미달 채택 금지)으로 강제하고, `shared/_image_gate.py` 가 기록 정합성을 차단 게이트한다. 상세 절차는 §3.5.a(ImageIntent)·§3.5.e(채택 게이트).
 
+### 20. 박스 안 "핵심 문구 + 설명"은 한 묶음 — 떼어 놓지 말 것 (2026-06-13 진료설명 리뷰)
+
+카드/박스 안의 **제목(핵심 문구)과 바로 아래 작은 설명 글씨는 하나의 의미 단위**다. 이 둘을 `justify-content: space-between` 이나 `.tile__body { margin-top:auto }` 로 박스의 위·아래 끝까지 벌리면, 둘 사이에 큰 빈 여백이 생겨 "제목 따로, 설명 따로"로 읽힌다 (hpylori-overview slides 2·3·5·6·7 사용자 지적: "네모 박스 안의 중심 문구랑 아래 작은 글씨들 사이 여백이 너무 많다").
+
+규칙:
+1. **묶음은 타이트하게, 박스 안에서 가운데로** — `.tile`·`.timeline-step` 등 카드는 `justify-content: center`, 본문은 `margin-top:auto` 금지(간격은 박스 `gap` 8~12px 하나로). 이미 `shared/clinic-slides.css` 기본값에 반영됨.
+2. **§18 의 `space-between` 는 "독립 항목"용** — 표의 행, 나란한 카드들처럼 *서로 다른 항목*을 분배할 때만 쓴다. **한 박스 안의 제목↔설명에는 절대 쓰지 않는다** (이게 §18 과 본 항의 경계).
+3. **footer 언더필(`body_underfills`)과 충돌하면 — 제목·설명을 떼지 말고 "박스"를 채운다.** 짧은 콘텐츠를 가운데로 모으면 박스 위·아래에 여백이 남아 `body_underfills` 가 뜬다. 해법: ① 카드는 `min-height`(또는 stretch)로 세로를 채우고 그 **안에서** 콘텐츠를 가운데 정렬, ② hero 숫자 등 단독 강조 요소는 **폰트를 키워** 컬럼을 채움, ③ split 의 metric 2박스는 `flex:1 1 0` 등높이로 컬럼을 채우고 박스 안은 `justify-content:center`. 즉 **"박스는 채우되, 묶음은 박스 가운데"** — "박스 가운데 배치" 와 "footer 까지 채움"을 동시에 만족시킨다.
+4. **timeline 화살표**: 카드 사이 간격(`--space-7`) 정중앙에 `right: calc(-1*var(--space-7)); width: var(--space-7); text-align:center` 로 놓고 **steel 색·540 weight** (옅은 border-strong 회색 → 또렷한 steel 로).
+
+deck-local override 예: `decks/gi/hpylori-overview/index.html` 의 `box-spacing fix 2026-06-13` 블록(slide 2 hero 확대+캡션 묶음, 3·11 metric 등높이, 5 timeline `min-height`+가운데, 6·7 tile 가운데+제목 확대).
+
 ### 19. deck 폰트·박스·여백은 황금비율 룰을 따른다 (2026-06-06 사용자 컨펌, 코덱스 감수)
 
 비주얼-포커스(좌측 박스 + 우측 큰 이미지) 레이아웃에서 ① 박스가 이미지 높이에 stretch되며 내용이 위로 몰려 아래 30~64% 빈 비대칭 여백 ② 폰트 0.58~0.78rem 과소 ③ 박스가 이미지에 바짝 붙어 겹쳐 보임 — 세 문제를 모듈러 타입 스케일 + 황금비율로 해결한다. **상세 수치는 `reference/deck-design-proportions.md`가 SoT.**
@@ -301,7 +313,7 @@ HTML will overlay Korean labels using Pretendard font separately.
 사용자 검수에서 발견된 두 부류의 실패 — 둘 다 _validate_layout 의 신규 체크(`body_overlaps_footer`/`body_underfills`)로 자동 감지된다:
 
 1. **푸터 침범**: stats3 원·visual-strip·closing-grid 등 큰 블록이 본문 높이를 넘겨 footer(출처·페이지번호)를 덮음. → 블록 크기(원 지름·strip height·카드 padding)를 줄여 본문이 footer 위에서 끝나게 한다. 측정: 슬라이드별 `footer.top − 본문최하단 ≥ 0`.
-2. **언더필 + 과소 폰트**: 표(table-wrap)·목록(pattern-compare) 등 텍스트 컴포넌트가 `justify-content:center`로 가운데 몰리고 폰트가 작아 위아래 여백이 큼. → ① `justify-content: space-between`/`flex-start`로 펴고 ② 폰트를 키운다(표 셀 ~1rem, 목록 항목 ~1.05rem, 제목 ~1.2rem 수준) ③ 행/항목 padding·line-height를 늘려 슬라이드를 **'꽉'이 아니라 '보기 좋게'** 채운다(footer 위 여백 슬라이드 높이의 9% 이내).
+2. **언더필 + 과소 폰트**: 표(table-wrap)·목록(pattern-compare) 등 텍스트 컴포넌트가 `justify-content:center`로 가운데 몰리고 폰트가 작아 위아래 여백이 큼. → ① `justify-content: space-between`/`flex-start`로 펴고 ② 폰트를 키운다(표 셀 ~1rem, 목록 항목 ~1.05rem, 제목 ~1.2rem 수준) ③ 행/항목 padding·line-height를 늘려 슬라이드를 **'꽉'이 아니라 '보기 좋게'** 채운다(footer 위 여백 슬라이드 높이의 9% 이내). ⚠️ **단 `space-between` 은 "독립 항목(표 행·나란한 카드)" 분배에만** — 한 박스 안의 제목↔설명 묶음을 떼는 데 쓰면 안 된다(→ [Gotcha 20]).
 
 **박스 활용 + 정렬**: 텍스트는 가능하면 박스(card/col/tile) 안에 담고, 박스 안에서 라벨·본문의 시작점(좌측 정렬)과 줄간격을 일관되게 맞춘다. 같은 행의 여러 박스는 등높이로(`align-items: stretch` 또는 `height:100%`) 만들어 구분선이 수직이 되게 한다([Gotcha 17]도 같은 맥락).
 
