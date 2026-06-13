@@ -293,7 +293,7 @@ HTML will overlay Korean labels using Pretendard font separately.
 카드/박스 안의 **제목(핵심 문구)과 바로 아래 작은 설명 글씨는 하나의 의미 단위**다. 이 둘을 `justify-content: space-between` 이나 `.tile__body { margin-top:auto }` 로 박스의 위·아래 끝까지 벌리면, 둘 사이에 큰 빈 여백이 생겨 "제목 따로, 설명 따로"로 읽힌다 (hpylori-overview slides 2·3·5·6·7 사용자 지적: "네모 박스 안의 중심 문구랑 아래 작은 글씨들 사이 여백이 너무 많다").
 
 규칙:
-1. **묶음은 타이트하게, 박스 안에서 가운데로** — `.tile`·`.timeline-step` 등 카드는 `justify-content: center`, 본문은 `margin-top:auto` 금지(간격은 박스 `gap` 8~12px 하나로). 이미 `shared/clinic-slides.css` 기본값에 반영됨.
+1. **묶음은 타이트하게, 박스 안에서 가운데로** — `.tile`·`.timeline-step` 등 카드는 `justify-content: center`, 본문은 `margin-top:auto` **금지**(간격은 박스 `gap` 8~12px 하나로). ⚠️ **deck-local 로 적용한다 — shared 기본값을 바꾸지 말 것.** `shared/clinic-slides.css` 의 `.tile__body{margin-top:auto}`(본문 바닥 고정으로 채움)를 전역으로 제거하면, 기존 '내용 짧음 + 타일 키 큼' deck 들이 일제히 `body_underfills` **회귀**를 낸다(2026-06-13 `pneumococcal-comparison` s5·s6 확인 → 즉시 revert). 따라서 deck 생성·수정 시 그 deck 안에서만 override 한다. hpylori-overview 가 참조 구현.
 2. **§18 의 `space-between` 는 "독립 항목"용** — 표의 행, 나란한 카드들처럼 *서로 다른 항목*을 분배할 때만 쓴다. **한 박스 안의 제목↔설명에는 절대 쓰지 않는다** (이게 §18 과 본 항의 경계).
 3. **footer 언더필(`body_underfills`)과 충돌하면 — 제목·설명을 떼지 말고 "박스"를 채운다.** 짧은 콘텐츠를 가운데로 모으면 박스 위·아래에 여백이 남아 `body_underfills` 가 뜬다. 해법: ① 카드는 `min-height`(또는 stretch)로 세로를 채우고 그 **안에서** 콘텐츠를 가운데 정렬, ② hero 숫자 등 단독 강조 요소는 **폰트를 키워** 컬럼을 채움, ③ split 의 metric 2박스는 `flex:1 1 0` 등높이로 컬럼을 채우고 박스 안은 `justify-content:center`. 즉 **"박스는 채우되, 묶음은 박스 가운데"** — "박스 가운데 배치" 와 "footer 까지 채움"을 동시에 만족시킨다.
 4. **timeline 화살표**: 카드 사이 간격(`--space-7`) 정중앙에 `right: calc(-1*var(--space-7)); width: var(--space-7); text-align:center` 로 놓고 **steel 색·540 weight** (옅은 border-strong 회색 → 또렷한 steel 로).
