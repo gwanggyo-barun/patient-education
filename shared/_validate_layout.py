@@ -134,7 +134,7 @@ DECK_VALIDATOR_JS = r"""
       // 래퍼는 푸터까지 닿지만 리스트는 60%에서 끝나 underfill 을 놓쳤다.)
       // ⚠️ li 는 마지막 항목이 border-bottom:none 이라도 '보이는 텍스트'이므로
       // paint 여부로 거르지 말 것 — 거르면 실제로 채웠는데 false underfill 난다.
-      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.closing-contact,.qr-block,.line-list li';
+      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.closing-contact,.qr-block,.line-list li,.timeline-step,.step-card,.tile';
       let maxBottom = 0, deepest = '';
       s.querySelectorAll(BOXSEL).forEach((c) => {
         if (c.closest && c.closest('figure, .bg-image-split__visual, .ai-visual, .slide__footer')) return;
@@ -173,7 +173,7 @@ DECK_VALIDATOR_JS = r"""
       // ③ content_image_gutter: 콘텐츠 열↔이미지 <24px 차단
       const cssNum = (el, prop) => parseFloat(getComputedStyle(el)[prop]) || 0;
       // ① + ② : 콘텐츠 박스 순회
-      s.querySelectorAll('.stat-card,.review-card,.step,.flow-card,.tbl-row:not(.tbl-row--head),.line-list li').forEach((box) => {
+      s.querySelectorAll('.stat-card,.review-card,.step,.flow-card,.tbl-row:not(.tbl-row--head),.line-list li,.timeline-step,.step-card').forEach((box) => {
         const br = box.getBoundingClientRect();
         if (br.height < 40) return;
         // ⓐ 박스 내용 넘침/꽉낌: scrollHeight 가 clientHeight 에 너무 근접하면
@@ -217,12 +217,16 @@ DECK_VALIDATOR_JS = r"""
         const contentH = cb - ct;
         if (innerH > 90 && contentH > 0) {
           const innerFill = contentH / innerH;
-          // 큰 숫자 메트릭 카드(stat-card)는 값이 짧아 자연히 낮으므로 더 관대(0.40)
           const cl = (typeof box.className==='string'?box.className:'');
-          // 코덱스 권고 카드 목표 0.50~0.68 → 0.48 미만만 경고(0.51 등 경계 통과), stat 0.40
-          const floor = /stat-card/.test(cl) ? 0.40 : 0.48;
-          if (innerFill < floor) {
-            issues.push({slide: sn, kind: 'sparse_box', detail: `fill ${(innerFill*100).toFixed(0)}% (box ${Math.round(box.clientHeight)}px)`, sample: cl.split(' ')[0]});
+          // 타임라인 카드(timeline-step/step-card)는 grid stretch + 의도적 중앙정렬이라
+          // 내용이 짧으면 자연히 sparse 해 보인다 → sparse_box 면제(넘침은 위 box_content_overflow 가 잡음).
+          if (!/timeline-step|step-card/.test(cl)) {
+            // 큰 숫자 메트릭 카드(stat-card)는 값이 짧아 자연히 낮으므로 더 관대(0.40)
+            // 코덱스 권고 카드 목표 0.50~0.68 → 0.48 미만만 경고(0.51 등 경계 통과), stat 0.40
+            const floor = /stat-card/.test(cl) ? 0.40 : 0.48;
+            if (innerFill < floor) {
+              issues.push({slide: sn, kind: 'sparse_box', detail: `fill ${(innerFill*100).toFixed(0)}% (box ${Math.round(box.clientHeight)}px)`, sample: cl.split(' ')[0]});
+            }
           }
         }
       });

@@ -1383,7 +1383,7 @@ Notion DB 매핑은 §"Notion DB 라우팅" 표를 따른다. lab-reports 커밋
 3. **Density Grid 3×2** — 6개 동등 카드
 4. **Density Grid 2×2** — 4개 카드 (+ optional alert strip)
 5. **Comparison** — 네이비 좌측 / 스틸 우측 컬럼
-6. **Timeline** — 4단계 노드 + 화살표
+6. **Timeline** — 4단계 중앙 정렬 카드 + 얇은 선형 화살표 (번호=navy 원형, 연결자=steel 선+화살촉, 텍스트 `→` 금지. step-card 변형 5~6단계 동일 스타일)
 7. **Checklist** — 7가지 액션 (2열 grid)
 8. **Regimen Tile** — 약물 조합 표 (tile 안에 `tile__regimen` 리스트)
 

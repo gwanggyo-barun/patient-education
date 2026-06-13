@@ -176,7 +176,13 @@
 
 **적합한 콘텐츠**: 진단 경로, 치료 일정, 시간 흐름, 단계별 프로세스 (정확히 4단계).
 
-**핵심 클래스**: `pattern-timeline`(컨테이너, grid 4열) + `timeline-step` × 4 {`timeline-step__node`(번호 원형) `timeline-step__title` `timeline-step__body`}. 단계 사이 화살표(`→`)는 `.timeline-step:not(:last-child)::after`가 자동 렌더.
+**핵심 클래스**: `pattern-timeline`(컨테이너, grid 4열) + `timeline-step` × 4 {`timeline-step__node`(번호 원형) `timeline-step__title` `timeline-step__body`}.
+
+**시각 규칙(2026-06-13 표준화 — 중앙 정렬 카드형 타임라인):**
+- **카드 내부는 번호 원형·제목·본문 모두 중앙 정렬** (`align-items/justify-content/text-align: center`). 좌측 쏠림 금지.
+- **번호 = navy 원형 badge** (`--color-navy` 배경 + `--color-canvas` 글자, 수평·수직 중앙).
+- **연결자는 텍스트 화살표(`→`) 사용 금지.** `.timeline-step:not(:last-child)::after`가 카드 사이 gap 정중앙의 **얇은 Steel Blue 선**, `::before`가 **작은 CSS 화살촉**(border 삼각형)을 그린다. 큰 텍스트 화살표가 카드 사이에 떠 보이는 형태 금지.
+- **기존 `step-card` 변형도 같은 스타일 계열로 렌더된다** — shared CSS가 `pattern-timeline > .timeline-step`과 `pattern-timeline > .step-card`(및 `timeline-step__num`/`step-card__num`)를 동일하게 처리. step-card 변형은 5~6단계에 쓰일 수 있으니 **열 수는 각 덱에서 명시**하되 번호/정렬/화살표 스타일은 동일.
 
 ```html
 <div class="pattern-timeline">
@@ -190,10 +196,10 @@
 ```
 
 **가이드**:
-- 정확히 4단계 (3단계나 5단계는 패턴 변형 필요)
+- 기본 4단계 (grid 4열). **5단계 이상은 `step-card` 변형으로 열 수를 덱에서 명시**(deck-local grid-template-columns)하고 `_validate_layout`으로 넘침/언더필 확인.
 - 각 단계 제목은 짧게 (예: `치료 시작 · Day 1`)
 - body는 1-2문장
-- 노드 사이 화살표는 CSS가 자동으로 그림 (`::after`)
+- 연결자(선+화살촉)는 shared CSS가 자동으로 그림 — 텍스트 `→` 직접 넣지 말 것
 
 ## 7. Checklist
 

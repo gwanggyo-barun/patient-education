@@ -805,18 +805,25 @@ body {
    ------------------------------------------------------------------------ */
 
 .pattern-timeline {
+  --timeline-gap: var(--space-4);   /* 연결자(선+화살촉)가 이 값을 추적 — visual-focus에선 좁아짐 */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
+  gap: var(--timeline-gap);
   height: 100%;
   position: relative;
   z-index: 1;
   align-items: stretch;
 }
 
-.timeline-step {
+/* 타임라인 단계 카드 — timeline-step + step-card 변형 모두 같은 시각 언어:
+   카드 내부 콘텐츠(번호·제목·본문)를 가로/세로 중앙 정렬한다(좌측 쏠림 금지, [Gotcha 20] 정합). */
+.pattern-timeline > .timeline-step,
+.pattern-timeline > .step-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: var(--space-3);
   padding: var(--space-5);
   background: var(--color-canvas);
@@ -825,10 +832,14 @@ body {
   position: relative;
 }
 
-.timeline-step__node {
+/* 단계 번호 = navy 원형 badge. 구 변형 step-card__num 도 동일 계열로 통일. */
+.timeline-step__node,
+.timeline-step__num,
+.step-card__num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -837,32 +848,53 @@ body {
   font-size: var(--text-body);
   font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
-.timeline-step__title {
+.timeline-step__title,
+.step-card__title {
   font-size: var(--text-body-lg);
   font-weight: var(--weight-540);
   color: var(--color-navy);
   letter-spacing: var(--tracking-snug);
 }
 
-.timeline-step__body {
+.timeline-step__body,
+.step-card__body {
   font-size: var(--text-body);
   font-weight: var(--weight-450);
   color: var(--color-ink-soft);
   line-height: var(--lh-normal);
 }
 
-.timeline-step:not(:last-child)::after {
-  content: "→";
+/* 카드 사이 연결자 — 텍스트 화살표(→) 금지.
+   ::after = 카드 사이 gap 정중앙의 얇은 Steel Blue 선, ::before = 작은 CSS 화살촉. */
+.pattern-timeline > .timeline-step:not(:last-child)::after,
+.pattern-timeline > .step-card:not(:last-child)::after {
+  content: "";
   position: absolute;
-  right: -22px;
   top: 50%;
+  right: calc(-1 * var(--timeline-gap));
+  width: var(--timeline-gap);
+  height: 2px;
   transform: translateY(-50%);
-  font-size: 1.5rem;
-  color: var(--color-border-strong);
+  background: var(--color-steel);
   z-index: 2;
-  font-weight: var(--weight-light);
+}
+
+.pattern-timeline > .timeline-step:not(:last-child)::before,
+.pattern-timeline > .step-card:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(-1 * var(--timeline-gap) + 1px);
+  width: 0;
+  height: 0;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid var(--color-steel);
+  z-index: 3;
 }
 
 
