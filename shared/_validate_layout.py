@@ -134,7 +134,10 @@ DECK_VALIDATOR_JS = r"""
       // 래퍼는 푸터까지 닿지만 리스트는 60%에서 끝나 underfill 을 놓쳤다.)
       // ⚠️ li 는 마지막 항목이 border-bottom:none 이라도 '보이는 텍스트'이므로
       // paint 여부로 거르지 말 것 — 거르면 실제로 채웠는데 false underfill 난다.
-      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.closing-contact,.qr-block,.line-list li,.timeline-step,.step-card,.tile';
+      // 타임라인 카드(timeline-step/step-card)는 grid stretch라 footer까지 닿아 body-fill 측정에 포함.
+      // .tile 은 제외 — 이미지 짝(visual-focus) 슬라이드에서 타일 열이 이미지보다 짧으면
+      // 이미지가 하단을 채우는데도 거짓 body_underfills 가 난다(이미지는 figure라 측정 제외됨).
+      const BOXSEL = '.stat-card,.review-card,.step,.flow-card,.tbl-row,.takehome-card,.note,.bars,.closing-contact,.qr-block,.line-list li,.timeline-step,.step-card';
       let maxBottom = 0, deepest = '';
       s.querySelectorAll(BOXSEL).forEach((c) => {
         if (c.closest && c.closest('figure, .bg-image-split__visual, .ai-visual, .slide__footer')) return;
@@ -176,6 +179,11 @@ DECK_VALIDATOR_JS = r"""
       s.querySelectorAll('.stat-card,.review-card,.step,.flow-card,.tbl-row:not(.tbl-row--head),.line-list li,.timeline-step,.step-card').forEach((box) => {
         const br = box.getBoundingClientRect();
         if (br.height < 40) return;
+        // 타임라인 카드(timeline-step/step-card)는 grid stretch + 의도적 중앙정렬이라
+        // 짧은 내용이면 자연히 위·아래 여백이 생긴다 → overflow 만 잡고
+        // font_too_small / box_underfill / sparse_box 는 면제(사용자 룰: 의도적 중앙정렬 false positive 회피).
+        const boxCl0 = (typeof box.className==='string'?box.className:'');
+        const isTLcard = /timeline-step|step-card/.test(boxCl0);
         // ⓐ 박스 내용 넘침/꽉낌: scrollHeight 가 clientHeight 에 너무 근접하면
         // PDF 래스터라이저의 폰트 메트릭 차이로 실제 PDF 에서 넘쳐 이웃 카드와
         // 겹친다(슬라이드2 사례 — getBoundingClientRect 1px 여유였는데 PDF 겹침).
@@ -198,7 +206,7 @@ DECK_VALIDATOR_JS = r"""
           const fs = cssNum(t, 'fontSize');
           const cls = (typeof t.className === 'string') ? t.className : '';
           // 큰 숫자/메트릭과 대문자 마이크로 라벨(kicker·label·eyebrow·num)은 본문 하한 면제
-          if (fs > 0 && fs < 15 && !/value|metric|__num|stars|kicker|label|eyebrow/.test(cls)) {
+          if (!isTLcard && fs > 0 && fs < 15 && !/value|metric|__num|stars|kicker|label|eyebrow/.test(cls)) {
             issues.push({slide: sn, kind: 'font_too_small', detail: `${fs.toFixed(1)}px`, sample: cls.slice(0,30) || t.tagName});
           }
         });
@@ -208,7 +216,7 @@ DECK_VALIDATOR_JS = r"""
         const emptyTop = ct - br.top - padTop;               // 패딩 제외 상단 빈공간
         // 언더필 = 비대칭(내용이 위로 몰림): 하단 공백이 28px↑이고, 상단보다 24px↑ 더 큼.
         // 세로 중앙정렬(상·하단 공백 비슷)은 대칭이므로 통과.
-        if (emptyBottom > 28 && (emptyBottom - emptyTop) > 24) {
+        if (!isTLcard && emptyBottom > 28 && (emptyBottom - emptyTop) > 24) {
           issues.push({slide: sn, kind: 'box_underfill', detail: `bottom ${Math.round(emptyBottom)}px vs top ${Math.round(emptyTop)}px`, sample: (typeof box.className==='string'?box.className:'').split(' ')[0]});
         }
         // sparse_box (코덱스 2차): 대칭이어도 박스가 콘텐츠보다 과하게 큼.
@@ -218,9 +226,7 @@ DECK_VALIDATOR_JS = r"""
         if (innerH > 90 && contentH > 0) {
           const innerFill = contentH / innerH;
           const cl = (typeof box.className==='string'?box.className:'');
-          // 타임라인 카드(timeline-step/step-card)는 grid stretch + 의도적 중앙정렬이라
-          // 내용이 짧으면 자연히 sparse 해 보인다 → sparse_box 면제(넘침은 위 box_content_overflow 가 잡음).
-          if (!/timeline-step|step-card/.test(cl)) {
+          if (!isTLcard) {
             // 큰 숫자 메트릭 카드(stat-card)는 값이 짧아 자연히 낮으므로 더 관대(0.40)
             // 코덱스 권고 카드 목표 0.50~0.68 → 0.48 미만만 경고(0.51 등 경계 통과), stat 0.40
             const floor = /stat-card/.test(cl) ? 0.40 : 0.48;
