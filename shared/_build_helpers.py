@@ -70,6 +70,81 @@ def inject_qr(html: str, qr_svg: str, *, target_class: str = "qr-block__code") -
     return re.sub(pattern, rf'\1{qr_svg}</div>', html, count=1)
 
 
+# Matches the URL text line inside the footer mini-QR block (handouts).
+# Used to detect an existing line (idempotent re-build) and to validate
+# presence. Captures the inner text so we can compare against the live URL.
+_QR_MINI_URL_RE = re.compile(
+    r'<div\s+class="qr-mini__url"[^>]*>(.*?)</div>',
+    re.DOTALL,
+)
+
+
+def short_qr_url_text(url: str) -> str:
+    """Display form of a QR URL for the typeable text line under the mini-QR.
+
+    Strips the ``https://`` / ``http://`` scheme (browsers re-add it) so the
+    line stays short and unobtrusive, while still being something a patient who
+    cannot scan can type verbatim. Trailing slash is kept — it mirrors the QR
+    target exactly so both routes land on the same GitHub Pages directory.
+    """
+    return re.sub(r'^https?://', '', url.strip())
+
+
+def inject_qr_url_text(html: str, url: str) -> str:
+    """Inject (or refresh) the typeable short-URL line inside the footer.
+
+    For handouts only. Renders a small ``<div class="qr-mini__url">…</div>``
+    inside the ``.qr-mini`` block so a patient who can't scan the QR can read
+    and type the address. The accompanying CSS positions it unobtrusively at
+    the bottom of the footer, next to the QR, WITHOUT changing the footer's
+    flow height (it is absolutely positioned) — this keeps all existing dense
+    handouts from overflowing their single A4 page.
+
+    Idempotent: an existing ``qr-mini__url`` line is replaced with the current
+    URL (so URL drift across re-builds self-corrects). If the handout has no
+    ``.qr-mini`` block the HTML is returned unchanged.
+
+    The encoded text is the same URL the QR encodes (scheme stripped for the
+    visible line) — see ``short_qr_url_text``.
+    """
+    display = short_qr_url_text(url)
+    line = f'<div class="qr-mini__url">{display}</div>'
+
+    # Already has a url line → replace its contents in place (idempotent).
+    if _QR_MINI_URL_RE.search(html):
+        return _QR_MINI_URL_RE.sub(line, html, count=1)
+
+    # Preferred: insert right after the qr-mini__label line (preserve indent).
+    label_re = re.compile(
+        r'(^[ \t]*)(<div\s+class="qr-mini__label"[^>]*>.*?</div>)',
+        re.MULTILINE | re.DOTALL,
+    )
+    m = label_re.search(html)
+    if m:
+        indent = m.group(1)
+        return html[: m.end()] + f'\n{indent}{line}' + html[m.end():]
+
+    # No label but a qr-mini block exists (class may carry extra attrs like
+    # aria-label) → append just before the block's closing </div>. Find the
+    # opening tag, then the matching close before </footer>.
+    open_re = re.compile(r'<div\s+class="(?:[^"]*\s)?qr-mini(?:\s[^"]*)?"[^>]*>')
+    om = open_re.search(html)
+    if om:
+        close_re = re.compile(r'</div>\s*</footer>')
+        cm = close_re.search(html, om.end())
+        if cm:
+            return html[: cm.start()] + f'\n      {line}\n    ' + html[cm.start():]
+
+    # No mini-QR block at all (e.g. lab-report already stripped) → no-op.
+    return html
+
+
+def qr_mini_url_text(html: str) -> str | None:
+    """Return the text inside ``.qr-mini__url`` if present, else None."""
+    m = _QR_MINI_URL_RE.search(html)
+    return m.group(1).strip() if m else None
+
+
 # --------------------------------------------------------------------------- #
 # Playwright render
 # --------------------------------------------------------------------------- #

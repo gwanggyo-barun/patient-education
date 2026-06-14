@@ -224,6 +224,7 @@ body {
   gap: 8mm;
   padding-top: 4mm;
   border-top: 1px solid var(--color-border);
+  position: relative;   /* anchor for the typeable .qr-mini__url line */
 }
 
 .page__footer-info {
@@ -249,6 +250,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 1.5mm;
+  position: relative;   /* anchor for the typeable .qr-mini__url line */
 }
 
 .qr-mini__code {
@@ -274,6 +276,41 @@ body {
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
+  color: var(--color-slate);
+}
+
+/* Typeable short-URL line for the footer mini-QR — for patients who can't
+   scan. Injected at build time (build.py inject_qr_url_text); same URL the QR
+   encodes, scheme stripped. Kept deliberately small/unobtrusive — reuses the
+   existing slate meta color, no new tokens, no font/line-height/color changes
+   to any other element.
+
+   ⚠️ ABSOLUTELY POSITIONED, anchored to .qr-mini (always present), rendered as
+   a SINGLE LINE directly below the QR in the page's bottom margin, right-edge
+   aligned to the QR so it can never exceed the right page edge. This is on
+   purpose: many handouts pack their single A4 body right up to the footer, so
+   adding this line in normal flow would grow the footer and push body content
+   past the page (regression confirmed across 19/53 handouts). Anchoring it
+   absolutely contributes ZERO height to the layout flow; keeping it to one
+   line (~15px) lets it fit inside the bottom page margin on every handout
+   (validated across all 53 — no overflow, no off-page clipping). */
+.qr-mini__url {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.8mm;
+  white-space: nowrap;
+  font-size: 6pt;
+  font-weight: var(--weight-regular);
+  color: var(--color-slate);
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.qr-mini__url::before {
+  content: "QR 대신 입력 → ";
   color: var(--color-slate);
 }
 

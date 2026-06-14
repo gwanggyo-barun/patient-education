@@ -280,6 +280,118 @@ DECK_VALIDATOR_JS = r"""
 """
 
 
+# ---------------------------------------------------------------------------
+# WCAG CONTRAST ADVISORY (non-blocking, design-untouched)
+# ---------------------------------------------------------------------------
+# Walks every visible text node, reads its computed color + the effective
+# (first non-transparent ancestor) background, and computes the WCAG 2.x
+# contrast ratio. Returns ONLY violations for small text below 4.5:1.
+#
+# This is ADVISORY: build.py prints these as ⚠️ warnings and never fails the
+# build. No color is changed. Large text (≥24px, or ≥18.66px AND bold) only
+# needs 3:1 and is intentionally NOT collected here, so navy titles, big stat
+# numbers, and accent-colored headings stay exempt and unflagged.
+CONTRAST_ADVISORY_JS = r"""
+(() => {
+  const warnings = [];
+
+  const parseRGB = (s) => {
+    if (!s) return null;
+    const m = s.match(/rgba?\(([^)]+)\)/i);
+    if (!m) return null;
+    const parts = m[1].split(',').map(x => parseFloat(x.trim()));
+    const [r, g, b] = parts;
+    const a = parts.length > 3 ? parts[3] : 1;
+    return {r, g, b, a};
+  };
+
+  // Effective background = first ancestor with a non-transparent bg color,
+  // alpha-composited onto white (paper). Good enough for flat handout cards.
+  const effectiveBg = (el) => {
+    let node = el;
+    const stack = [];
+    while (node && node.nodeType === 1) {
+      const bg = parseRGB(getComputedStyle(node).backgroundColor);
+      if (bg && bg.a > 0) { stack.push(bg); if (bg.a >= 1) break; }
+      node = node.parentElement;
+    }
+    // Composite from bottom (white paper) up.
+    let base = {r: 255, g: 255, b: 255};
+    for (let i = stack.length - 1; i >= 0; i--) {
+      const c = stack[i], a = c.a;
+      base = {
+        r: c.r * a + base.r * (1 - a),
+        g: c.g * a + base.g * (1 - a),
+        b: c.b * a + base.b * (1 - a),
+      };
+    }
+    return base;
+  };
+
+  const lin = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const lum = (c) => 0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b);
+  const ratio = (a, b) => { const L1 = lum(a), L2 = lum(b); const hi = Math.max(L1, L2), lo = Math.min(L1, L2); return (hi + 0.05) / (lo + 0.05); };
+
+  const isVisible = (el) => {
+    const cs = getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) return false;
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0;
+  };
+
+  const seen = new Set();
+  // Walk text-bearing leaf-ish elements.
+  document.querySelectorAll('body *').forEach((el) => {
+    // Only elements that directly hold visible text (a direct text child).
+    let txt = '';
+    for (const n of el.childNodes) {
+      if (n.nodeType === 3 && n.textContent.trim()) txt += n.textContent;
+    }
+    txt = txt.trim();
+    if (!txt) return;
+    if (!isVisible(el)) return;
+
+    const cs = getComputedStyle(el);
+    const fg = parseRGB(cs.color);
+    if (!fg || fg.a === 0) return;
+    const bg = effectiveBg(el);
+    // Composite foreground over its background if the text color itself has alpha.
+    const fgComposited = fg.a < 1
+      ? {r: fg.r * fg.a + bg.r * (1 - fg.a), g: fg.g * fg.a + bg.g * (1 - fg.a), b: fg.b * fg.a + bg.b * (1 - fg.a)}
+      : fg;
+
+    const fontPx = parseFloat(cs.fontSize) || 16;
+    const weight = parseInt(cs.fontWeight, 10) || 400;
+    const isBold = weight >= 700;
+    // WCAG "large text": ≥24px, or ≥18.66px AND bold.
+    const isLarge = fontPx >= 24 || (fontPx >= 18.66 && isBold);
+    if (isLarge) return;   // large text exempt (only needs 3:1) — not collected
+
+    const cr = ratio(fgComposited, bg);
+    if (cr < 4.5) {
+      // Build a short, stable selector for the offending node.
+      let sel = el.tagName.toLowerCase();
+      if (el.id) sel += '#' + el.id;
+      else if (typeof el.className === 'string' && el.className.trim()) {
+        sel += '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.');
+      }
+      const snippet = txt.replace(/\s+/g, ' ').slice(0, 32);
+      const key = sel + '|' + cr.toFixed(2) + '|' + snippet;
+      if (seen.has(key)) return;
+      seen.add(key);
+      warnings.push({
+        selector: sel,
+        ratio: cr.toFixed(1),
+        font_px: Math.round(fontPx),
+        snippet: snippet,
+      });
+    }
+  });
+  return warnings;
+})()
+"""
+
+
 def validate_html_file(html_path: Path, kind: str = "auto") -> list[dict]:
     """Validate a single HTML file. kind: 'handout' | 'deck' | 'auto' (sniff)."""
     if kind == "auto":

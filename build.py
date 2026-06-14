@@ -16,6 +16,7 @@ Output goes to output/{type}/{slug}.{pdf,png}
 from datetime import date
 from pathlib import Path
 import os
+import re
 import sys
 
 # Windows consoles default to cp949/cp1252 and raise UnicodeEncodeError when
@@ -34,6 +35,9 @@ sys.path.insert(0, str(ROOT / "shared"))
 from _build_helpers import (  # noqa: E402
     make_qr_svg,
     inject_qr,
+    inject_qr_url_text,
+    qr_mini_url_text,
+    short_qr_url_text,
     inject_noindex_meta,
     render,
     check_og_meta,
@@ -42,7 +46,11 @@ from _build_helpers import (  # noqa: E402
     resolve_data_asset,
     collect_data_asset_keys,
 )
-from _validate_layout import HANDOUT_VALIDATOR_JS, DECK_VALIDATOR_JS  # noqa: E402
+from _validate_layout import (  # noqa: E402
+    HANDOUT_VALIDATOR_JS,
+    DECK_VALIDATOR_JS,
+    CONTRAST_ADVISORY_JS,
+)
 
 NOTION_ENABLED = bool(os.environ.get("NOTION_TOKEN"))
 if NOTION_ENABLED:
@@ -1319,6 +1327,112 @@ TARGETS = [
 ]
 
 
+def _check_qr_populated(
+    html: str,
+    *,
+    qr_class: str,
+    target_url: str,
+    want_url_text: bool,
+) -> list[str]:
+    """Assert the injected QR block is non-empty (and URL text present).
+
+    Guards against the historical empty-QR bug (SKILL.md Gotcha 3) where the
+    raw index.html shipped an empty ``<div class="qr-block__code"></div>`` to
+    the live site. Returns a list of error strings (empty = OK) so the caller
+    can fail the build loudly.
+
+    Checks:
+      1. The target QR div actually contains an ``<svg …>`` element.
+      2. (handout footers only) the typeable ``.qr-mini__url`` line exists and
+         its text matches the QR target (scheme stripped).
+    """
+    errs: list[str] = []
+
+    # 1. QR div non-empty: find <div class="...qr_class...">…</div> and require
+    #    an <svg inside. Use a non-greedy capture up to the matching depth-0
+    #    close is overkill here — the QR div has no nested divs, so stop at the
+    #    first </div>.
+    cls = re.escape(qr_class)
+    m = re.search(
+        rf'<div\s+class="(?:[^"]*\s)?{cls}(?:\s[^"]*)?"\s*>(.*?)</div>',
+        html,
+        re.DOTALL,
+    )
+    if not m:
+        errs.append(f"QR div .{qr_class} not found in HTML")
+    elif "<svg" not in m.group(1).lower():
+        errs.append(
+            f"empty QR — .{qr_class} has no <svg> (historical empty-QR bug, "
+            f"SKILL.md Gotcha 3)"
+        )
+
+    # 2. Handout footer typeable URL line.
+    if want_url_text:
+        url_text = qr_mini_url_text(html)
+        if not url_text:
+            errs.append("missing typeable URL line (.qr-mini__url) in footer")
+        else:
+            want = short_qr_url_text(target_url)
+            if url_text != want:
+                errs.append(
+                    f"URL text mismatch — footer shows '{url_text}' but QR "
+                    f"encodes '{want}'"
+                )
+
+    return errs
+
+
+def _decode_qr_matches(page, qr_class: str, target_url: str):
+    """Best-effort: decode the rendered footer QR and check it equals target_url.
+
+    Returns:
+      - True  → decoded successfully AND payload matches target_url
+      - str   → decoded successfully but payload MISMATCHES (build should fail)
+      - None  → decode unavailable/inconclusive (OpenCV missing, no QR element,
+                screenshot/raster failed, or detector found nothing) → skip
+
+    Uses OpenCV's built-in QRCodeDetector if importable. No new dependency is
+    added (cv2 is optional); if it is absent we simply return None.
+    """
+    try:
+        import cv2  # type: ignore
+        import numpy as np  # type: ignore
+    except Exception:
+        return None
+    try:
+        # Screenshot the inner <svg> (not the bordered/rounded .qr-mini__code
+        # box) so the detector sees a clean QR with quiet zone.
+        loc = page.locator(f".{qr_class} svg").first
+        if loc.count() == 0:
+            loc = page.locator(f".{qr_class}").first
+        if loc.count() == 0:
+            return None
+        png = loc.screenshot()
+        arr = np.frombuffer(png, dtype=np.uint8)
+        img = cv2.imdecode(arr, cv2.IMREAD_GRAYSCALE)
+        if img is None:
+            return None
+        # Upscale + add a white quiet-zone border to help the detector.
+        h, w = img.shape[:2]
+        if max(h, w) < 600:
+            scale = 600 / max(h, w)
+            img = cv2.resize(img, (int(w * scale), int(h * scale)),
+                             interpolation=cv2.INTER_NEAREST)
+        img = cv2.copyMakeBorder(img, 40, 40, 40, 40,
+                                 cv2.BORDER_CONSTANT, value=255)
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        detector = cv2.QRCodeDetector()
+        data, _pts, _ = detector.detectAndDecode(img)
+        if not data:
+            return None  # detector found nothing → inconclusive, skip
+        if data.strip() != target_url.strip():
+            return (f"QR decode MISMATCH — encodes '{data.strip()}' "
+                    f"but should be '{target_url}'")
+        return True
+    except Exception:
+        return None  # any failure here is non-fatal (advisory belt-and-suspenders)
+
+
 def _validate_css_paths() -> list[str]:
     """Verify each material's CSS path actually resolves to a real file.
 
@@ -1614,6 +1728,29 @@ def main() -> int:
                 qr_svg = make_qr_svg(target_url)
                 injected = inject_qr(html, qr_svg, target_class=qr_class)
 
+                # Handout footer mini-QR: also render the page's short URL as a
+                # small typeable text line next to the QR, so a patient who
+                # can't scan can still type the address. Same URL the QR encodes
+                # (scheme stripped for display). Idempotent across re-builds.
+                if qr_class == "qr-mini__code":
+                    injected = inject_qr_url_text(injected, target_url)
+
+                # ── Build-time QR/URL integrity check (fail loudly) ──────────
+                # There is a historical bug where the live mini-QR rendered
+                # empty (SKILL.md Gotcha 3: the raw index.html kept an empty
+                # <div class="qr-block__code"></div>). Assert the QR div is now
+                # actually populated AND, for handout footers, that the
+                # typeable URL line is present and matches the QR target.
+                qr_errs = _check_qr_populated(
+                    injected,
+                    qr_class=qr_class,
+                    target_url=target_url,
+                    want_url_text=(qr_class == "qr-mini__code"),
+                )
+                if qr_errs:
+                    failures.append(f"{kind}/{slug}: " + "; ".join(qr_errs))
+                    continue
+
             # Write back to raw index.html so the live GH Pages copy stays in
             # sync with what we render to PDF (QR for decks/handouts, no QR
             # for lab-reports).
@@ -1643,6 +1780,37 @@ def main() -> int:
                     failures.append(f"{kind}/{slug}: layout issues → {issues}")
                     ctx.close()
                     continue
+                # WCAG contrast ADVISORY (non-blocking, design-untouched).
+                # Flags only SMALL visible text below 4.5:1 — large/bold/accent
+                # text is exempt. Prints warnings to the build log; never fails
+                # the build, never changes any color.
+                try:
+                    low_contrast = page.evaluate(CONTRAST_ADVISORY_JS)
+                except Exception as exc:  # advisory must never break the build
+                    low_contrast = []
+                    print(f"  ⚠️  {kind}/{slug}: contrast advisory skipped ({exc})",
+                          file=sys.stderr)
+                for w in low_contrast:
+                    print(
+                        f"  ⚠️  low-contrast: '{w.get('snippet','')}' "
+                        f"{w.get('ratio','?')}:1 (<4.5) — {w.get('selector','')}",
+                        file=sys.stderr,
+                    )
+                # OPTIONAL QR decode (only if OpenCV is present — no new deps).
+                # Screenshots the rendered handout QR and decodes it; if decode
+                # succeeds and the payload doesn't match the URL we encoded, fail
+                # loudly (a real mis-injection). If decode fails (rasterisation /
+                # library quirk), just warn — we already asserted the <svg> is
+                # non-empty above, so this is belt-and-suspenders only.
+                if kind != "lab-reports" and qr_class == "qr-mini__code":
+                    dec_err = _decode_qr_matches(page, qr_class, target_url)
+                    if dec_err is True:
+                        pass  # decoded and matched
+                    elif isinstance(dec_err, str):
+                        failures.append(f"{kind}/{slug}: {dec_err}")
+                        ctx.close()
+                        continue
+                    # dec_err is None → decode unavailable/inconclusive → skip
                 render(
                     page,
                     f"file://{build_file}",
