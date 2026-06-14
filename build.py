@@ -140,6 +140,48 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "의료진", "disease": "응급처치 (CPR)",
     },
 
+    # === 2026-06-14 갭 덱 5종 (신규 — 검수용) ===
+    {
+        "kind": "decks", "slug": "copd",
+        "slug_path": "decks/pulmo/copd/",
+        "html_path": ROOT / "decks/pulmo/copd/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "만성폐쇄성폐질환 (COPD) 환자 교육",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "COPD (만성폐쇄성폐질환)",
+    },
+    {
+        "kind": "decks", "slug": "fatty-liver-masld",
+        "slug_path": "decks/gi/fatty-liver-masld/",
+        "html_path": ROOT / "decks/gi/fatty-liver-masld/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "지방간 (MASLD) 환자 교육",
+        "category": "🫁 위장관", "audience": "환자/보호자", "disease": "대사이상 지방간질환 (MASLD)",
+    },
+    {
+        "kind": "decks", "slug": "atrial-fibrillation",
+        "slug_path": "decks/cardio/atrial-fibrillation/",
+        "html_path": ROOT / "decks/cardio/atrial-fibrillation/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "심방세동 (AFib) 환자 교육",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "심방세동 (Atrial Fibrillation)",
+    },
+    {
+        "kind": "decks", "slug": "allergic-rhinitis",
+        "slug_path": "decks/allergy/allergic-rhinitis/",
+        "html_path": ROOT / "decks/allergy/allergic-rhinitis/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "알레르기 비염 환자 교육",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "알레르기 비염 (Allergic Rhinitis)",
+    },
+    {
+        "kind": "decks", "slug": "chronic-kidney-disease",
+        "slug_path": "decks/nephrology/chronic-kidney-disease/",
+        "html_path": ROOT / "decks/nephrology/chronic-kidney-disease/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "만성콩팥병 (CKD) 환자 교육",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "만성콩팥병 (CKD)",
+    },
+
 
     # === 2026-05-24 Top 5 논문 ===
     {
@@ -307,6 +349,72 @@ TARGETS = [
         "qr_class": "qr-mini__code", "fmt": "a4-portrait",
         "title": "응급카트 약품·장비 위치 맵",
         "category": "🩺 일반내과", "audience": "의료진", "disease": "응급처치",
+    },
+
+    # === 2026-06-14 갭 핸드아웃 8종 (신규 — 검수용) ===
+    {
+        "kind": "handouts", "slug": "acute-cystitis",
+        "slug_path": "handouts/urology/acute-cystitis/",
+        "html_path": ROOT / "handouts/urology/acute-cystitis/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "급성 방광염 (단순 요로감염)",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "급성 방광염 (UTI)",
+    },
+    {
+        "kind": "handouts", "slug": "urolithiasis",
+        "slug_path": "handouts/urology/urolithiasis/",
+        "html_path": ROOT / "handouts/urology/urolithiasis/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "요로결석 (신장·요관 결석)",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "요로결석 (Urinary Stone)",
+    },
+    {
+        "kind": "handouts", "slug": "insomnia-sleep-hygiene",
+        "slug_path": "handouts/sleep/insomnia-sleep-hygiene/",
+        "html_path": ROOT / "handouts/sleep/insomnia-sleep-hygiene/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "불면증 — 수면위생과 인지행동치료",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "불면증 (Insomnia)",
+    },
+    {
+        "kind": "handouts", "slug": "smoking-cessation",
+        "slug_path": "handouts/lifestyle/smoking-cessation/",
+        "html_path": ROOT / "handouts/lifestyle/smoking-cessation/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "금연 — 방법·약물·재발 대처",
+        "category": "🌿 생활습관·식이", "audience": "환자/보호자", "disease": "금연 (Smoking Cessation)",
+    },
+    {
+        "kind": "handouts", "slug": "vitamin-d-deficiency",
+        "slug_path": "handouts/endocrine/vitamin-d-deficiency/",
+        "html_path": ROOT / "handouts/endocrine/vitamin-d-deficiency/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "비타민 D 결핍 — 보충과 일상 관리",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "비타민 D 결핍 (Vitamin D Deficiency)",
+    },
+    {
+        "kind": "handouts", "slug": "bppv-epley-maneuver",
+        "slug_path": "handouts/neurology/bppv-epley-maneuver/",
+        "html_path": ROOT / "handouts/neurology/bppv-epley-maneuver/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "어지럼증(이석증) — 집에서 하는 이석정복술",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "양성 발작성 두위현훈 (BPPV)",
+    },
+    {
+        "kind": "handouts", "slug": "adult-immunization-schedule",
+        "slug_path": "handouts/vaccines/adult-immunization-schedule/",
+        "html_path": ROOT / "handouts/vaccines/adult-immunization-schedule/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "성인 예방접종 일정 한눈에",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "성인 예방접종 (Adult Immunization)",
+    },
+    {
+        "kind": "handouts", "slug": "hemorrhoids",
+        "slug_path": "handouts/gi/hemorrhoids/",
+        "html_path": ROOT / "handouts/gi/hemorrhoids/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "치핵(치질) — 생활관리와 보존치료",
+        "category": "🫁 위장관", "audience": "환자/보호자", "disease": "치핵 (Hemorrhoids)",
     },
 
     # === A4 portrait single-page lab reports ===
