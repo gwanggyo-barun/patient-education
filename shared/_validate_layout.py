@@ -11,7 +11,9 @@ Returns exit code 0 if clean, 1 if issues found (suitable for CI gate).
 """
 from __future__ import annotations
 
+import argparse
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -484,7 +486,51 @@ CONTRAST_ADVISORY_JS = r"""
 """
 
 
-def validate_html_file(html_path: Path, kind: str = "auto") -> list[dict]:
+def _artifact_stem(html_path: Path) -> str:
+    try:
+        rel = html_path.resolve().relative_to(ROOT)
+    except ValueError:
+        rel = Path(html_path.name)
+    raw = "__".join(rel.parts)
+    return "".join(ch if ch.isalnum() or ch in "._-" else "_" for ch in raw)
+
+
+def _is_lab_report(html_path: Path) -> bool:
+    return "lab-reports" in html_path.resolve().parts
+
+
+def _write_failure_artifacts(html_path: Path, kind: str, issues: list[dict], page, artifacts_dir: Path) -> None:
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    stem = _artifact_stem(html_path)
+    try:
+        rel = str(html_path.resolve().relative_to(ROOT))
+    except ValueError:
+        rel = str(html_path)
+    payload = {
+        "html_path": rel,
+        "kind": kind,
+        "issues": issues,
+        "screenshot": None,
+        "html_copy": None,
+        "redacted": False,
+    }
+    if _is_lab_report(html_path):
+        payload["redacted"] = True
+        payload["redaction_reason"] = "lab-report screenshots and HTML copies are skipped"
+    else:
+        screenshot_path = artifacts_dir / f"{stem}.png"
+        html_copy_path = artifacts_dir / f"{stem}.html"
+        try:
+            page.screenshot(path=str(screenshot_path), full_page=True)
+            payload["screenshot"] = screenshot_path.name
+        except Exception as exc:  # noqa: BLE001
+            payload["screenshot_error"] = type(exc).__name__
+        shutil.copyfile(html_path, html_copy_path)
+        payload["html_copy"] = html_copy_path.name
+    (artifacts_dir / f"{stem}.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def validate_html_file(html_path: Path, kind: str = "auto", artifacts_dir: Path | None = None) -> list[dict]:
     """Validate a single HTML file. kind: 'handout' | 'deck' | 'auto' (sniff)."""
     if kind == "auto":
         text = html_path.read_text(encoding="utf-8")
@@ -509,14 +555,21 @@ def validate_html_file(html_path: Path, kind: str = "auto") -> list[dict]:
             page.emulate_media(media="print")
             page.wait_for_timeout(300)
         issues = page.evaluate(js)
+        if issues and artifacts_dir:
+            _write_failure_artifacts(html_path, kind, issues, page, artifacts_dir)
         browser.close()
     return issues
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("html_paths", nargs="*")
+    parser.add_argument("--artifacts-dir", type=Path)
+    args = parser.parse_args()
+
     targets: list[Path] = []
-    if len(sys.argv) > 1:
-        targets = [Path(arg).resolve() for arg in sys.argv[1:]]
+    if args.html_paths:
+        targets = [Path(arg).resolve() for arg in args.html_paths]
     else:
         # Walk handouts/, lab-reports/, decks/ for index.html files
         for sub in ("handouts", "lab-reports", "decks"):
@@ -533,7 +586,7 @@ def main():
     for t in targets:
         rel = t.relative_to(ROOT) if t.is_relative_to(ROOT) else t
         rel_str = str(rel).replace("\\", "/")
-        issues = validate_html_file(t)
+        issues = validate_html_file(t, artifacts_dir=args.artifacts_dir)
         # large_internal_gap 래칫: 유예 등록된 기존 덱에서는 이 종류만 비차단
         # 경고로 강등(다른 종류는 그대로 차단). 새/수정 덱은 강등 없음 → 완전 차단.
         grandfathered = []
