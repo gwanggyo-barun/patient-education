@@ -171,6 +171,46 @@
     .qr-block__code { width: 86px; height: 86px; }
     .tile { word-break: keep-all; }
     .tile__body { word-break: keep-all; overflow-wrap: break-word; }
+
+    /* ── Pass-2 image slots — content-left / image-right (fatty-liver·COPD-proven) ── */
+    figure.ai-visual { position: relative; }
+    .slide__body--visual-focus { gap: 26px; }
+    /* 6-tile grid → read as 2×3 in the narrower content column */
+    .slide__body--visual-focus:has(> .pattern-grid--3) > .pattern-grid--3 {
+      grid-template-columns: 1fr 1fr;
+    }
+    .slide__body--visual-focus .pattern-grid { gap: 10px; }
+    .slide__body--visual-focus .tile { padding: 12px 14px; gap: 5px; }
+    .slide__body--visual-focus .tile__title { font-size: 1rem; line-height: 1.18; }
+    .slide__body--visual-focus .tile__body { font-size: 0.9rem; line-height: 1.26; }
+    .slide__body--visual-focus .tile__index { font-size: 0.74rem; }
+    /* keep corner badge clear of the index in the tighter tile */
+    .slide__body--visual-focus .tile .tile__index { padding-right: 38px; }
+    .slide__body--visual-focus .tile__icon { width: 30px; height: 30px; top: 12px; right: 12px; }
+    .slide__body--visual-focus .tile__icon img { width: 18px; height: 18px; }
+    /* timeline (S8) inside visual-focus left cell */
+    .slide__body--visual-focus .pattern-timeline { gap: 12px; }
+    .slide__body--visual-focus .timeline-step { padding: 13px 14px; gap: 7px; }
+    /* split (S3·S6) detail-column figure inside visual-focus left cell */
+    .def-stack { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+    .def-metric-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: auto; }
+    /* caption + pin overlays (HTML text, never baked into image) */
+    .ai-visual__caption {
+      position: absolute; left: 12px; right: 12px; bottom: 12px;
+      padding: 9px 12px; border-radius: 10px;
+      background: rgba(255,255,255,0.94); border: 1px solid var(--color-border);
+      font-size: 0.86rem; line-height: 1.26; color: var(--color-ink);
+      word-break: keep-all; overflow-wrap: break-word;
+    }
+    .ai-visual__pin {
+      position: absolute; z-index: 2;
+      padding: 4px 11px; border-radius: 999px;
+      background: rgba(0,51,102,0.86); color: #fff;
+      font-size: 0.86rem; font-weight: var(--weight-semibold);
+      letter-spacing: 0.01em; white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,51,102,0.28);
+    }
+    .ai-visual__pin--warn { background: rgba(194,65,12,0.90); box-shadow: 0 2px 8px rgba(194,65,12,0.30); }
   </style>
 </head>
 <body>
@@ -245,24 +285,19 @@
       <h2 class="slide__title">알레르기 비염이란 — 코 점막의 알레르기 염증</h2>
       <p class="slide__subtitle">알레르기 물질에 코 점막이 과민 반응하면서 생기는 염증입니다 — 감기 바이러스와는 원인이 다릅니다</p>
     </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="split__left">
-          <div class="split-statement-row">
-            <div class="icon-badge icon-badge--navy"><img data-asset="hi-filled-nose" src="../../../shared/assets/healthicons/filled/body/nose.svg" alt="코"></div>
-            <h3 class="split__heading">코 점막이 알레르기 물질을 ‘적’으로 인식할 때</h3>
-          </div>
-          <ul class="split__list">
-            <li><strong>과민 반응</strong> — 집먼지진드기·꽃가루 등에 코 점막 면역세포가 과도하게 반응</li>
-            <li><strong>염증·부종</strong> — 점막이 붓고 분비물이 늘어 코막힘·맑은 콧물 발생</li>
-            <li><strong>가려움·재채기</strong> — 신경이 자극되어 코·눈 가려움, 발작적 재채기</li>
-            <li><strong>가족력·아토피</strong> — 알레르기 체질이 유전되며 천식·결막염과 잘 동반</li>
-          </ul>
-          <div class="split__note">
-            ※ 감기와 달리 <strong>발열이 없고</strong> 가려움·재채기가 두드러지며 <strong>수 주 이상</strong> 지속됩니다.
-          </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="def-stack">
+        <div class="split-statement-row">
+          <div class="icon-badge icon-badge--navy"><img data-asset="hi-filled-nose" src="../../../shared/assets/healthicons/filled/body/nose.svg" alt="코"></div>
+          <h3 class="split__heading">코 점막이 알레르기 물질을 ‘적’으로 인식할 때</h3>
         </div>
-        <div class="split__right">
+        <ul class="split__list">
+          <li><strong>과민 반응</strong> — 집먼지진드기·꽃가루 등에 코 점막 면역세포가 과도하게 반응</li>
+          <li><strong>염증·부종</strong> — 점막이 붓고 분비물이 늘어 코막힘·맑은 콧물 발생</li>
+          <li><strong>가려움·재채기</strong> — 신경이 자극되어 코·눈 가려움, 발작적 재채기</li>
+          <li><strong>가족력·아토피</strong> — 알레르기 체질이 유전되며 천식·결막염과 잘 동반</li>
+        </ul>
+        <div class="def-metric-row">
           <div class="metric-card">
             <div class="metric-card__label">핵심 정의</div>
             <div class="metric-card__value">알레르기 염증</div>
@@ -275,6 +310,12 @@
           </div>
         </div>
       </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/allergic-rhinitis-nasal-mucosa-normal-vs-inflamed-20260614.png" alt="정상 비점막과 알레르기로 부어오른 비점막의 코 단면을 좌우로 비교한 의료 일러스트">
+        <span class="ai-visual__pin" style="left: 6%; top: 8%;">정상 비점막</span>
+        <span class="ai-visual__pin" style="right: 6%; top: 8%;">알레르기 염증</span>
+        <figcaption class="ai-visual__caption">왼쪽 정상 코 점막 vs 오른쪽 부어오른(염증) 코 점막 — 부종으로 콧길이 좁아집니다</figcaption>
+      </figure>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — ARIA 가이드라인 · 알레르기 비염 병태생리</span>
@@ -348,7 +389,7 @@
       <h2 class="slide__title">원인과 유발 인자 — 통년성 vs 계절성</h2>
       <p class="slide__subtitle">1년 내내 증상이면 통년성, 특정 계절에 심해지면 계절성을 의심합니다 — 내 유발 인자를 아는 것이 관리의 출발점</p>
     </div>
-    <div class="slide__body">
+    <div class="slide__body slide__body--visual-focus">
       <div class="pattern-grid pattern-grid--3">
         <div class="tile">
           <div class="tile__icon"><img data-asset="hi-filled-home" src="../../../shared/assets/healthicons/filled/places/home.svg" alt="집먼지진드기"></div>
@@ -387,6 +428,12 @@
           <p class="tile__body">알레르겐은 아니지만 점막을 자극해 증상을 악화시킵니다. 함께 피하면 좋습니다.</p>
         </div>
       </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/allergic-rhinitis-allergens-perennial-vs-seasonal-20260614.png" alt="통년성 알레르겐(집먼지진드기·반려동물·곰팡이)과 계절성 알레르겐(꽃가루)을 좌우로 비교한 의료 일러스트">
+        <span class="ai-visual__pin" style="left: 6%; top: 8%;">통년성</span>
+        <span class="ai-visual__pin" style="right: 6%; top: 8%;">계절성</span>
+        <figcaption class="ai-visual__caption">통년성(집먼지진드기·반려동물·곰팡이) vs 계절성(꽃가루) — 내 유발 인자를 아는 것이 출발점</figcaption>
+      </figure>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — ARIA 가이드라인 · 통년성/계절성 알레르겐 분류</span>
@@ -404,24 +451,19 @@
       <h2 class="slide__title">진단과 검사 — 병력 + 알레르기 검사</h2>
       <p class="slide__subtitle">증상 양상과 유발 상황을 듣고, 필요하면 어떤 물질에 반응하는지 검사로 확인합니다</p>
     </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="split__left">
-          <div class="split-statement-row">
-            <div class="icon-badge icon-badge--navy"><img data-asset="hi-filled-stethoscope" src="../../../shared/assets/healthicons/filled/devices/stethoscope.svg" alt="진찰"></div>
-            <h3 class="split__heading">병력 청취가 진단의 기본 — 검사로 원인을 확인</h3>
-          </div>
-          <ul class="split__list">
-            <li><strong>병력·증상 양상</strong> — 언제·어디서 심한지, 계절성/통년성, 가족력 확인</li>
-            <li><strong>피부단자검사</strong> — 팔에 알레르겐을 떨어뜨려 반응을 보는 빠른 검사</li>
-            <li><strong>혈청 특이 IgE</strong> — 채혈로 어떤 물질에 항체가 있는지 확인 (MAST 등)</li>
-            <li><strong>코 진찰</strong> — 점막 부종·창백, 콧물 양상 관찰. 필요 시 비내시경</li>
-          </ul>
-          <div class="split__note">
-            ※ 감기와 감별 — <strong>발열이 없고</strong> 가려움·재채기가 두드러지며 <strong>수 주 이상</strong> 지속되면 알레르기 비염에 가깝습니다.
-          </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="def-stack">
+        <div class="split-statement-row">
+          <div class="icon-badge icon-badge--navy"><img data-asset="hi-filled-stethoscope" src="../../../shared/assets/healthicons/filled/devices/stethoscope.svg" alt="진찰"></div>
+          <h3 class="split__heading">병력 청취가 진단의 기본 — 검사로 원인을 확인</h3>
         </div>
-        <div class="split__right">
+        <ul class="split__list">
+          <li><strong>병력·증상 양상</strong> — 언제·어디서 심한지, 계절성/통년성, 가족력 확인</li>
+          <li><strong>피부단자검사</strong> — 팔에 알레르겐을 떨어뜨려 반응을 보는 빠른 검사</li>
+          <li><strong>혈청 특이 IgE</strong> — 채혈로 어떤 물질에 항체가 있는지 확인 (MAST 등)</li>
+          <li><strong>코 진찰</strong> — 점막 부종·창백, 콧물 양상 관찰. 필요 시 비내시경</li>
+        </ul>
+        <div class="def-metric-row">
           <div class="metric-card">
             <div class="metric-card__label">대표 검사</div>
             <div class="metric-card__value">피부단자검사</div>
@@ -434,6 +476,10 @@
           </div>
         </div>
       </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Equipment">
+        <img src="../../../shared/assets/generated/allergic-rhinitis-skin-prick-test-20260614.png" alt="전완부 안쪽 피부에 여러 알레르겐을 점적하고 작은 팽진이 올라온 피부단자검사 장면을 보여주는 의료 일러스트">
+        <figcaption class="ai-visual__caption">피부단자검사 — 전완부에 알레르겐을 점적하고 작은 팽진(부풀어 오름) 반응을 봅니다</figcaption>
+      </figure>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — ARIA 가이드라인 · 피부단자검사 / 혈청 특이 IgE</span>
@@ -561,7 +607,7 @@
       <h2 class="slide__title">비강 스프레이 올바른 사용법 4단계</h2>
       <p class="slide__subtitle">방향과 호흡이 중요합니다 — 분무구는 눈 쪽이 아니라 ‘귀 쪽’을 향하게</p>
     </div>
-    <div class="slide__body">
+    <div class="slide__body slide__body--visual-focus">
       <div class="pattern-timeline">
         <div class="timeline-step">
           <div class="timeline-step__node"><img data-asset="hi-filled-nose" src="../../../shared/assets/healthicons/filled/body/nose.svg" alt="1단계"></div>
@@ -584,6 +630,12 @@
           <div class="timeline-step__body">정해진 시간에 꾸준히. 효과는 며칠~2주에 걸쳐 서서히 나타납니다.</div>
         </div>
       </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/allergic-rhinitis-nasal-spray-direction-correct-vs-wrong-20260614.png" alt="비강 스프레이 분무구를 콧속 바깥쪽(귀 쪽)으로 향한 올바른 자세와 안쪽(코중격·눈 쪽)으로 향한 잘못된 자세를 좌우로 비교한 의료 일러스트">
+        <span class="ai-visual__pin" style="left: 6%; top: 8%;">올바름 · 귀 쪽</span>
+        <span class="ai-visual__pin ai-visual__pin--warn" style="right: 6%; top: 8%;">잘못됨 · 코중격</span>
+        <figcaption class="ai-visual__caption">분무구는 콧속 <strong>바깥쪽(귀 쪽)</strong>으로 — 코중격·눈 쪽으로 향하면 자극·코피가 생깁니다</figcaption>
+      </figure>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — 비강 코르티코스테로이드 분무 사용 권장법 (ARIA 환자 교육)</span>
