@@ -184,6 +184,7 @@ def install_build_stubs() -> dict[str, types.ModuleType | None]:
     validator.HANDOUT_VALIDATOR_JS = ""
     validator.DECK_VALIDATOR_JS = ""
     validator.CONTRAST_ADVISORY_JS = ""
+    validator.GRANDFATHERED_INTERNAL_GAP = set()
     put("_validate_layout", validator)
     return previous
 
