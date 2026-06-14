@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>만성콩팥병(CKD) — Gwanggyo Barun Internal Medicine</title>
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/nephrology/chronic-kidney-disease/">
+  <meta property="og:title" content="만성콩팥병(CKD) — 광교바른내과">
+  <meta property="og:description" content="콩팥 기능 저하(eGFR <60) 또는 손상이 3개월 이상 지속되는 만성콩팥병. 혈압·혈당·SGLT2 억제제로 진행을 늦추고, 소염진통제 등 신독성을 피하는 환자 교육 자료">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/nephrology/chronic-kidney-disease/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <style>
+    .slide__bg-num { display: none !important; }
+
+    /* ── Healthicons badge (data-asset SVGs are black → white-on-steel) ──
+       Steel-blue rounded badge + white glyph keeps icons on-brand
+       regardless of the source SVG's native color. */
+    /* Absolute top-right badge → zero layout height (tiles already fit) */
+    .tile__icon {
+      position: absolute; top: 14px; right: 14px;
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: var(--color-steel);
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(91,155,213,0.30);
+    }
+    .tile__icon img { width: 21px; height: 21px; filter: brightness(0) invert(1); }
+    /* keep the index label clear of the corner badge */
+    .tile .tile__index { padding-right: 42px; }
+
+    /* Smaller variant for split-statement / metric heads */
+    .icon-badge {
+      width: 40px; height: 40px;
+      border-radius: 11px;
+      background: var(--color-steel);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex: 0 0 auto;
+      box-shadow: 0 2px 6px rgba(91,155,213,0.30);
+    }
+    .icon-badge img { width: 24px; height: 24px; filter: brightness(0) invert(1); }
+    .icon-badge--navy { background: var(--color-navy); box-shadow: 0 2px 6px rgba(0,51,102,0.25); }
+
+    /* alert tiles get a warm-tinted badge instead of steel */
+    .tile--alert .tile__icon { background: #C2410C; box-shadow: 0 2px 6px rgba(194,65,12,0.30); }
+
+    /* statement row with a leading badge */
+    .split-statement-row { display: flex; align-items: flex-start; gap: 14px; }
+    .split-statement-row .icon-badge { margin-top: 2px; }
+
+    /* hero numeric leading badge */
+    .hero-num-row { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+
+    /* ── stat trio (slide 2) ── */
+    .pattern-stats3 {
+      display: flex; flex-direction: column; gap: var(--space-6);
+      height: 100%; position: relative; z-index: 1;
+    }
+    .stats3-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8); align-items: center; justify-items: center;
+    }
+    .stats3-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+    .stats3-cell__circle {
+      width: 184px; height: 184px; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--color-canvas); text-align: center; letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 2.6rem; font-weight: var(--weight-black);
+      line-height: 1; letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg); font-weight: var(--weight-540);
+      color: var(--color-navy); letter-spacing: var(--tracking-snug);
+      text-align: center; max-width: 260px; line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg); font-weight: var(--weight-450);
+      color: var(--color-ink); line-height: var(--lh-relaxed);
+    }
+
+    /* ── staging table (slide 5) ── */
+    .pattern-stage-table {
+      display: flex; flex-direction: column; gap: var(--space-3);
+      height: 100%; position: relative; z-index: 1;
+    }
+    .stage-row {
+      display: grid; grid-template-columns: 1.1fr 1.3fr 2fr;
+      gap: var(--space-4); align-items: center;
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-canvas); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+    .stage-row--head {
+      background: var(--color-navy); color: var(--color-canvas);
+      border-color: var(--color-navy); font-weight: var(--weight-bold);
+      font-size: var(--text-body); letter-spacing: var(--tracking-snug);
+    }
+    .stage-row__cat {
+      font-weight: var(--weight-bold); color: var(--color-navy);
+      font-size: var(--text-body-lg); letter-spacing: var(--tracking-snug);
+    }
+    .stage-row--head .stage-row__cat { color: var(--color-canvas); }
+    .stage-row__val {
+      font-size: var(--text-body-lg); font-weight: var(--weight-black);
+      color: var(--color-steel); letter-spacing: var(--tracking-tight);
+    }
+    .stage-row--head .stage-row__val { color: var(--color-canvas); font-size: var(--text-body); font-weight: var(--weight-bold); }
+    .stage-row__note {
+      font-size: var(--text-body); font-weight: var(--weight-450);
+      color: var(--color-ink-soft); line-height: var(--lh-snug);
+    }
+    .stage-row--head .stage-row__note { color: var(--color-canvas); opacity: 0.92; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes (mirrored from htn deck) */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.7rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .alert-strip { padding: 16px 18px; }
+    .alert-strip__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 24px 24px; line-height: 1.5; font-size: 1.04rem; }
+    /* footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { word-break: keep-all; overflow-wrap: break-word; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: flex-start; gap: 14px; }
+    .split__left .split__note, .split__right .split__note { margin-top: auto; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; max-height: 110px; overflow: hidden; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .compare-col__header { padding: 16px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 18px 20px 20px; gap: 10px; justify-content: space-between; }
+    .compare-col__list li { font-size: 1rem; line-height: 1.34; padding-left: 22px; }
+    .metric-card { padding: 12px 16px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .metric-stack { justify-content: space-between; height: 100%; gap: 12px; }
+    /* legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .pattern-stage-table { justify-content: space-between; }
+    .stage-row { flex: 0 1 auto; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    /* closing */
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · NEPHROLOGY · CHRONIC KIDNEY DISEASE</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">만성콩팥병(CKD),<br><em>미리 알고 천천히 늦추기</em></h1>
+      <p class="slide__subtitle">콩팥 기능 저하(eGFR &lt;60) 또는 손상이 3개월 이상 지속되는 병 — 대개 증상 없이 진행하지만, 혈압·혈당·약물·식사로 진행을 충분히 늦출 수 있습니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">CKD · Chronic Kidney Disease · KDIGO 2024 진료지침 기준</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO STAT — prevalence
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">성인 7명 중 1명 — 생각보다 흔한 병</h2>
+      <p class="slide__subtitle">만성콩팥병은 드문 병이 아닙니다. 당뇨병·고혈압이 있으면 위험이 훨씬 높아집니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">약 7<span style="font-size:1.4rem;">명중1</span></div>
+            </div>
+            <div class="stats3-cell__label">성인 만성콩팥병<br>유병률(전 세계 약 14%)</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">3<span style="font-size:1.4rem;">개월+</span></div>
+            </div>
+            <div class="stats3-cell__label">기능 저하·손상이<br>지속돼야 '만성'</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">2<span style="font-size:1.4rem;">대원인</span></div>
+            </div>
+            <div class="stats3-cell__label">당뇨병 · 고혈압이<br>가장 흔한 원인</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          <strong>왜 중요할까요 — </strong>만성콩팥병은 대부분 <em>증상 없이 서서히</em> 진행해, 모르고 지내다 늦게 발견되는 경우가 많습니다. 게다가 콩팥이 나빠질수록 심근경색·뇌졸중 같은 심혈관질환 위험도 함께 올라갑니다. 그래서 당뇨병·고혈압이 있다면 정기적인 혈액(eGFR)·소변(단백/알부민) 검사로 일찍 찾아내는 것이 가장 중요합니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 CKD Guideline · 국제 유병률 추정(성인 약 14%)</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · DEFINITION — Asymmetric Split
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IT IS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">만성콩팥병이란 — 기능 저하 또는 손상</h2>
+      <p class="slide__subtitle">콩팥이 노폐물을 거르는 능력이 떨어지거나, 손상의 흔적(단백뇨 등)이 오래 지속되는 상태입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <div class="split-statement-row">
+            <div class="icon-badge"><img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" alt="콩팥"></div>
+            <p class="pattern-split__statement">콩팥 <em>기능 저하(eGFR &lt;60)</em> 또는 <em>콩팥 손상(단백뇨·알부민뇨 등)</em>이 <em>3개월 이상</em> 지속되면 만성콩팥병입니다.</p>
+          </div>
+          <p class="pattern-split__supporting">
+            콩팥은 노폐물·여분의 물·전해질을 걸러 소변으로 내보내고, 혈압·빈혈·뼈 건강에도 관여하는 장기입니다. 기능이 천천히 떨어져도 한동안은 증상이 거의 없어, 혈액검사(eGFR, 거르는 기능)와 소변검사(단백/알부민)로 확인합니다. 진행하면 <strong>부종·피로·야간뇨·가려움</strong> 같은 증상이 나타날 수 있습니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">기능 저하 기준</div>
+            <div class="pattern-split__metric-value">eGFR &lt;60</div>
+            <div class="pattern-split__metric-detail">콩팥이 혈액을 거르는 속도(mL/min/1.73m²) 기준입니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">손상 신호</div>
+            <div class="pattern-split__metric-value">단백뇨 · 알부민뇨</div>
+            <div class="pattern-split__metric-detail">소변으로 단백·알부민이 새어 나오면 콩팥 손상의 초기 신호입니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 CKD 정의 (eGFR &lt;60 또는 손상 마커 3개월 이상 지속)</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · CAUSES — Density Grid 3×2
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>CAUSES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">무엇이 콩팥을 망가뜨리나 — 원인 6가지</h2>
+      <p class="slide__subtitle">당뇨병과 고혈압이 가장 흔하며, 여러 원인이 겹치면 진행이 더 빨라집니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">CAUSE · 01</div>
+          <h3 class="tile__title">당뇨병</h3>
+          <p class="tile__body">가장 흔한 원인. 높은 혈당이 콩팥의 미세혈관(사구체)을 서서히 손상시킵니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 02</div>
+          <h3 class="tile__title">고혈압</h3>
+          <p class="tile__body">높은 혈압이 콩팥 혈관에 부담을 줍니다. 콩팥병은 다시 혈압을 올려 악순환을 만듭니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 03</div>
+          <h3 class="tile__title">사구체신염</h3>
+          <p class="tile__body">면역 이상 등으로 콩팥 거름막(사구체)에 염증이 생기는 질환입니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 04</div>
+          <h3 class="tile__title">유전·구조 이상</h3>
+          <p class="tile__body">다낭신(물혹 콩팥) 등 타고난 구조 이상. 가족력이 있으면 미리 확인합니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 05</div>
+          <h3 class="tile__title">약물·신독성</h3>
+          <p class="tile__body">소염진통제(NSAID) 남용, 일부 한약·고용량 건강식품, 조영제가 콩팥에 부담을 줍니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 06</div>
+          <h3 class="tile__title">요로폐색·반복 감염</h3>
+          <p class="tile__body">전립선비대·결석으로 소변이 막히거나, 콩팥 감염이 반복되면 기능이 떨어집니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 · 당뇨병·고혈압이 CKD의 2대 주원인</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · STAGING — eGFR + uACR table
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>DIAGNOSIS &amp; STAGING</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">진단과 병기 — eGFR과 uACR로 평가</h2>
+      <p class="slide__subtitle">혈액의 eGFR(거르는 기능)과 소변의 uACR(알부민/크레아티닌 비)을 함께 봐서 위험을 나눕니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stage-table">
+        <div class="stage-row stage-row--head">
+          <div class="stage-row__cat">평가 축</div>
+          <div class="stage-row__val">구간</div>
+          <div class="stage-row__note">의미</div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-row__cat">eGFR 단계</div>
+          <div class="stage-row__val">G1 · G2</div>
+          <div class="stage-row__note">eGFR ≥60. 손상 신호(단백뇨 등)가 있어야 CKD로 봅니다.</div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-row__cat">eGFR 단계</div>
+          <div class="stage-row__val">G3a · G3b</div>
+          <div class="stage-row__note">eGFR 30~59. 기능이 중등도로 떨어진 단계 — 추적·관리가 중요합니다.</div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-row__cat">eGFR 단계</div>
+          <div class="stage-row__val">G4 · G5</div>
+          <div class="stage-row__note">eGFR &lt;30. 진행된 단계. G5는 투석·이식을 미리 상의합니다.</div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-row__cat">알부민뇨 단계</div>
+          <div class="stage-row__val">A1 · A2 · A3</div>
+          <div class="stage-row__note">uACR 기준(A1 정상~경도, A3 고도). 높을수록 진행·심혈관 위험이 큽니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 위험 층화 (eGFR G단계 × 알부민뇨 A단계, uACR 기준)</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · WHY IT MATTERS — Asymmetric Split
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>WHY IT MATTERS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">왜 일찍 관리해야 하나 — 진행과 심장</h2>
+      <p class="slide__subtitle">콩팥병은 한 번 진행하면 되돌리기 어렵고, 심혈관질환 위험도 함께 끌어올립니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <div class="split-statement-row">
+            <div class="icon-badge icon-badge--navy"><img data-asset="hi-filled-heart-organ" src="../../../shared/assets/healthicons/filled/body/heart-organ.svg" alt="심장"></div>
+            <p class="pattern-split__statement">콩팥이 나빠질수록 <em>심근경색·뇌졸중</em> 위험이 함께 오릅니다 — 콩팥병은 곧 혈관병이기도 합니다.</p>
+          </div>
+          <p class="pattern-split__supporting">
+            많은 환자에서 콩팥은 한 번 진행하면 천천히, 그러나 꾸준히 나빠집니다. 그래서 목표는 <strong>진행 속도를 늦추는 것</strong>입니다. 동시에 알부민뇨가 많을수록 심혈관 사건 위험이 커지므로, 콩팥 보호 치료가 곧 심장 보호로도 이어집니다. 일찍 발견해 혈압·혈당·약물을 챙기면 투석까지 가는 시간을 크게 늦출 수 있습니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">핵심 목표</div>
+            <div class="pattern-split__metric-value">진행 늦추기</div>
+            <div class="pattern-split__metric-detail">완치보다 '천천히 나빠지게'가 현실적이고 중요한 목표입니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">함께 오르는 위험</div>
+            <div class="pattern-split__metric-value">심혈관질환</div>
+            <div class="pattern-split__metric-detail">알부민뇨가 많을수록 심근경색·뇌졸중 위험이 커집니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 · CKD–심혈관 위험 연관 (알부민뇨·eGFR 저하)</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · CORE MANAGEMENT — Density Grid 2×2
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>CORE MANAGEMENT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">관리의 핵심 4가지 — 혈압·혈당·SGLT2·단백뇨</h2>
+      <p class="slide__subtitle">콩팥을 지키는 치료는 한 가지가 아니라, 아래 네 축을 함께 조절하는 것입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-blood-pressure_monitor" src="../../../shared/assets/healthicons/filled/devices/blood-pressure_monitor.svg" alt="혈압계"></div>
+          <div class="tile__index">CORE · 01</div>
+          <h3 class="tile__title">혈압 조절</h3>
+          <p class="tile__body">혈압을 목표 범위로 낮춥니다. 단백뇨가 있으면 <strong>ACEi/ARB</strong>가 콩팥을 함께 보호합니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-diabetes-measure" src="../../../shared/assets/healthicons/filled/devices/diabetes-measure.svg" alt="혈당 측정"></div>
+          <div class="tile__index">CORE · 02</div>
+          <h3 class="tile__title">혈당 조절 + SGLT2 억제제</h3>
+          <p class="tile__body"><strong>SGLT2 억제제</strong>는 당뇨 유무와 무관하게 단백뇨성 CKD에서 콩팥·심장을 보호해 권고됩니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-urine-sample" src="../../../shared/assets/healthicons/filled/devices/urine-sample.svg" alt="단백뇨"></div>
+          <div class="tile__index">CORE · 03</div>
+          <h3 class="tile__title">단백뇨 줄이기</h3>
+          <p class="tile__body">소변으로 새는 단백(알부민)을 줄이면 진행이 느려집니다. uACR로 효과를 추적합니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-heart-cardiogram" src="../../../shared/assets/healthicons/filled/symbols/heart-cardiogram.svg" alt="심혈관 위험 관리"></div>
+          <div class="tile__index">CORE · 04</div>
+          <h3 class="tile__title">심혈관 위험 함께 관리</h3>
+          <p class="tile__body">콜레스테롤·금연·체중까지 챙겨 심근경색·뇌졸중을 함께 예방합니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 · SGLT2 억제제 단백뇨성 CKD 신·심 보호 권고</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DRUGS — Timeline (kidney-protective stepwise)
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>KIDNEY-PROTECTIVE DRUGS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">콩팥을 지키는 약 — 단계별로 더합니다</h2>
+      <p class="slide__subtitle">기본 약으로 시작해, 효과와 단백뇨에 따라 콩팥 보호 약을 단계적으로 추가합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">ACEi 또는 ARB</div>
+          <p class="timeline-step__body">단백뇨를 동반한 고혈압의 기본 약. 혈압을 낮추면서 콩팥을 함께 보호합니다.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">SGLT2 억제제 추가</div>
+          <p class="timeline-step__body">단백뇨성 CKD에 당뇨 유무와 무관하게 추가. 콩팥·심장 보호가 입증됐습니다.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">finerenone(해당 시)</div>
+          <p class="timeline-step__body">당뇨성 CKD에서 단백뇨가 남으면 추가를 고려합니다 — 칼륨 수치를 함께 봅니다.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">합병증·용량 조절</div>
+          <p class="timeline-step__body">빈혈·뼈·칼륨·산증을 관리하고, 모든 약 용량은 콩팥기능에 맞춰 조절합니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 · 단백뇨성 CKD 신장보호 약물 단계 (ACEi/ARB → SGLT2 → finerenone)</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · LIFESTYLE — Comparison (권장 vs 피하기)
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>LIFESTYLE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">생활습관 — 콩팥을 위한 식사와 습관</h2>
+      <p class="slide__subtitle">저염을 기본으로, 단백질은 적정량만. 칼륨·인 제한은 검사 수치에 따라 의사와 정합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            피하거나 줄이기
+          </div>
+          <ul class="compare-col__list">
+            <li>짠 음식 — 국·찌개 국물, 라면·즉석식, 젓갈·장아찌</li>
+            <li>단백질 과다 섭취 — 고기·보충제를 한꺼번에 많이</li>
+            <li>가공식품·탄산음료 — 숨은 인(P) 첨가물 주의</li>
+            <li>흡연 — 콩팥·혈관 손상을 빠르게 합니다</li>
+            <li>과음, 단 음료로 인한 체중 증가</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            권장하기
+          </div>
+          <ul class="compare-col__list">
+            <li>싱겁게 — 하루 소금 줄이기, 라벨의 나트륨 확인</li>
+            <li>단백질은 적정량 — 끼니마다 적당히 나눠서</li>
+            <li>채소·통곡물 위주의 균형 잡힌 식사</li>
+            <li>금연 시작, 음주는 최소화</li>
+            <li>체중·운동 관리(주 150분 걷기 등)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 · 저염·단백질 적정 섭취·금연 권고 (칼륨·인 제한은 개별화)</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · NEPHROTOXIN AVOIDANCE + RED FLAGS — Grid 2×2 + alert
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>AVOID HARM</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">신독성 회피 — 콩팥에 해로운 것 피하기</h2>
+      <p class="slide__subtitle">콩팥은 약·조영제에 민감합니다. 아래는 꼭 지키고, 응급 신호가 보이면 즉시 진료하세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2" style="grid-template-rows: 1fr 1fr auto;">
+        <div class="tile tile--alert">
+          <div class="tile__icon"><img data-asset="hi-filled-pills-2" src="../../../shared/assets/healthicons/filled/medications/pills-2.svg" alt="소염진통제 주의"></div>
+          <div class="tile__index">AVOID · 01</div>
+          <h3 class="tile__title">소염진통제(NSAID) 남용 금지</h3>
+          <p class="tile__body">자주·고용량 복용은 콩팥에 부담. 진통제가 필요하면 종류·용량을 의사와 정하세요.</p>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__icon"><img data-asset="hi-filled-test-tubes" src="../../../shared/assets/healthicons/filled/devices/test-tubes.svg" alt="조영제 주의"></div>
+          <div class="tile__index">AVOID · 02</div>
+          <h3 class="tile__title">조영제·한약·고용량 건강식품 주의</h3>
+          <p class="tile__body">CT 조영제, 일부 한약·고용량 보충제는 콩팥에 부담. 검사·복용 전 콩팥병을 알리세요.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-pill-1" src="../../../shared/assets/healthicons/filled/medications/pill-1.svg" alt="용량 조절"></div>
+          <div class="tile__index">AVOID · 03</div>
+          <h3 class="tile__title">모든 약은 콩팥기능에 맞춰</h3>
+          <p class="tile__body">감기약·영양제 포함 새 약을 시작할 땐 미리 알리세요. 용량 조절이 필요할 수 있습니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-blood-cells" src="../../../shared/assets/healthicons/filled/body/blood-cells.svg" alt="합병증 검사"></div>
+          <div class="tile__index">AVOID · 04</div>
+          <h3 class="tile__title">합병증은 정기 검사로</h3>
+          <p class="tile__body">빈혈·뼈(인·칼슘)·고칼륨·산증은 증상 전에 검사로 잡아 식이·약으로 관리합니다.</p>
+        </div>
+        <div class="alert-strip">
+          <span class="alert-strip__label">응급</span>
+          <span class="alert-strip__text">소변량 급감·전신 부종·호흡곤란, 가슴 두근거림·근력 저하(고칼륨), 의식 저하(요독)가 있으면 즉시 진료하세요.</span>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 · 신독성 회피·약물 용량 조절·합병증 모니터링</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · ACTION CHECKLIST — 7 items
+       ======================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>ACTION CHECKLIST</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘부터 실천 체크리스트 7가지</h2>
+      <p class="slide__subtitle">콩팥병 진단 직후부터 바로 시작할 수 있는 구체적 행동입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">혈압·혈당 목표 유지</h3>
+            <p class="check-item__body">집에서 혈압을 기록하고, 당뇨가 있으면 혈당도 함께 관리합니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">콩팥 보호 약 거르지 않기</h3>
+            <p class="check-item__body">ACEi/ARB·SGLT2 등 처방약을 매일 같은 시간에 꾸준히 복용합니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">싱겁게 먹기</h3>
+            <p class="check-item__body">국물·라면·젓갈을 줄이고 영양정보의 나트륨을 확인하는 습관.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">단백질은 적정량만</h3>
+            <p class="check-item__body">고기·보충제를 한꺼번에 많이 먹지 않기. 끼니마다 적당히 나눠서.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">진통제 함부로 안 먹기</h3>
+            <p class="check-item__body">소염진통제(NSAID)는 자가 복용 금지. 필요하면 의사와 상의합니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">새 약·검사 전 콩팥병 알리기</h3>
+            <p class="check-item__body">감기약·영양제·조영제 검사 전, 콩팥병이 있음을 꼭 말합니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">정기 eGFR·uACR 검사</h3>
+            <p class="check-item__body">혈액(eGFR)·소변(uACR)을 정기적으로 추적해 진행을 일찍 잡습니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KDIGO 2024 · 광교바른내과 환자 실천 표준</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">콩팥은 천천히 지키는 장기<br><em>오늘의 작은 습관이 투석을 늦춥니다</em></h2>
+      <p class="slide__subtitle">혈압·혈당·약물·식사를 함께 점검합니다 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30 · 토 08:30~13:30<br>일·공휴일 휴진</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM13,2H14V3H13zM14,2H15V3H14zM16,2H17V3H16zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM25,2H26V3H25zM27,2H28V3H27zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM16,3H17V4H16zM17,3H18V4H17zM20,3H21V4H20zM25,3H26V4H25zM26,3H27V4H26zM27,3H28V4H27zM30,3H31V4H30zM34,3H35V4H34zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM13,4H14V5H13zM15,4H16V5H15zM16,4H17V5H16zM19,4H20V5H19zM25,4H26V5H25zM26,4H27V5H26zM30,4H31V5H30zM32,4H33V5H32zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM15,5H16V6H15zM16,5H17V6H16zM18,5H19V6H18zM21,5H22V6H21zM23,5H24V6H23zM25,5H26V6H25zM26,5H27V6H26zM28,5H29V6H28zM31,5H32V6H31zM34,5H35V6H34zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM12,6H13V7H12zM13,6H14V7H13zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM24,6H25V7H24zM26,6H27V7H26zM28,6H29V7H28zM29,6H30V7H29zM31,6H32V7H31zM33,6H34V7H33zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM14,7H15V8H14zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM19,7H20V8H19zM20,7H21V8H20zM21,7H22V8H21zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM30,7H31V8H30zM31,7H32V8H31zM32,7H33V8H32zM33,7H34V8H33zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM10,9H11V10H10zM13,9H14V10H13zM14,9H15V10H14zM16,9H17V10H16zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM24,9H25V10H24zM30,9H31V10H30zM31,9H32V10H31zM32,9H33V10H32zM34,9H35V10H34zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM12,10H13V11H12zM18,10H19V11H18zM19,10H20V11H19zM20,10H21V11H20zM23,10H24V11H23zM28,10H29V11H28zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM36,10H37V11H36zM39,10H40V11H39zM41,10H42V11H41zM42,10H43V11H42zM2,11H3V12H2zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM7,11H8V12H7zM11,11H12V12H11zM13,11H14V12H13zM14,11H15V12H14zM16,11H17V12H16zM17,11H18V12H17zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM28,11H29V12H28zM30,11H31V12H30zM33,11H34V12H33zM34,11H35V12H34zM35,11H36V12H35zM36,11H37V12H36zM37,11H38V12H37zM38,11H39V12H38zM40,11H41V12H40zM42,11H43V12H42zM3,12H4V13H3zM5,12H6V13H5zM8,12H9V13H8zM10,12H11V13H10zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM14,12H15V13H14zM17,12H18V13H17zM20,12H21V13H20zM22,12H23V13H22zM25,12H26V13H25zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM40,12H41V13H40zM41,12H42V13H41zM4,13H5V14H4zM6,13H7V14H6zM7,13H8V14H7zM9,13H10V14H9zM10,13H11V14H10zM14,13H15V14H14zM15,13H16V14H15zM16,13H17V14H16zM18,13H19V14H18zM20,13H21V14H20zM22,13H23V14H22zM25,13H26V14H25zM27,13H28V14H27zM28,13H29V14H28zM29,13H30V14H29zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM37,13H38V14H37zM38,13H39V14H38zM41,13H42V14H41zM42,13H43V14H42zM2,14H3V15H2zM4,14H5V15H4zM5,14H6V15H5zM6,14H7V15H6zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM18,14H19V15H18zM19,14H20V15H19zM21,14H22V15H21zM22,14H23V15H22zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM33,14H34V15H33zM34,14H35V15H34zM39,14H40V15H39zM40,14H41V15H40zM2,15H3V16H2zM5,15H6V16H5zM7,15H8V16H7zM10,15H11V16H10zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM15,15H16V16H15zM18,15H19V16H18zM22,15H23V16H22zM23,15H24V16H23zM24,15H25V16H24zM25,15H26V16H25zM26,15H27V16H26zM27,15H28V16H27zM28,15H29V16H28zM33,15H34V16H33zM35,15H36V16H35zM36,15H37V16H36zM39,15H40V16H39zM40,15H41V16H40zM42,15H43V16H42zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM13,16H14V17H13zM14,16H15V17H14zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM21,16H22V17H21zM22,16H23V17H22zM23,16H24V17H23zM25,16H26V17H25zM28,16H29V17H28zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM36,16H37V17H36zM37,16H38V17H37zM41,16H42V17H41zM42,16H43V17H42zM4,17H5V18H4zM6,17H7V18H6zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM13,17H14V18H13zM14,17H15V18H14zM17,17H18V18H17zM23,17H24V18H23zM25,17H26V18H25zM28,17H29V18H28zM29,17H30V18H29zM36,17H37V18H36zM39,17H40V18H39zM42,17H43V18H42zM5,18H6V19H5zM8,18H9V19H8zM9,18H10V19H9zM11,18H12V19H11zM13,18H14V19H13zM16,18H17V19H16zM17,18H18V19H17zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM27,18H28V19H27zM30,18H31V19H30zM32,18H33V19H32zM38,18H39V19H38zM2,19H3V20H2zM3,19H4V20H3zM4,19H5V20H4zM6,19H7V20H6zM10,19H11V20H10zM13,19H14V20H13zM15,19H16V20H15zM18,19H19V20H18zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM34,19H35V20H34zM35,19H36V20H35zM37,19H38V20H37zM39,19H40V20H39zM40,19H41V20H40zM41,19H42V20H41zM2,20H3V21H2zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM15,20H16V21H15zM17,20H18V21H17zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM26,20H27V21H26zM29,20H30V21H29zM30,20H31V21H30zM36,20H37V21H36zM38,20H39V21H38zM39,20H40V21H39zM40,20H41V21H40zM2,21H3V22H2zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM9,21H10V22H9zM10,21H11V22H10zM13,21H14V22H13zM16,21H17V22H16zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM34,21H35V22H34zM35,21H36V22H35zM36,21H37V22H36zM37,21H38V22H37zM39,21H40V22H39zM40,21H41V22H40zM2,22H3V23H2zM5,22H6V23H5zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM14,22H15V23H14zM15,22H16V23H15zM18,22H19V23H18zM27,22H28V23H27zM31,22H32V23H31zM36,22H37V23H36zM38,22H39V23H38zM40,22H41V23H40zM4,23H5V24H4zM12,23H13V24H12zM15,23H16V24H15zM16,23H17V24H16zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM32,23H33V24H32zM33,23H34V24H33zM34,23H35V24H34zM35,23H36V24H35zM36,23H37V24H36zM37,23H38V24H37zM38,23H39V24H38zM40,23H41V24H40zM41,23H42V24H41zM42,23H43V24H42zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM15,24H16V25H15zM18,24H19V25H18zM19,24H20V25H19zM23,24H24V25H23zM25,24H26V25H25zM26,24H27V25H26zM28,24H29V25H28zM32,24H33V25H32zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM39,24H40V25H39zM40,24H41V25H40zM41,24H42V25H41zM2,25H3V26H2zM5,25H6V26H5zM6,25H7V26H6zM9,25H10V26H9zM10,25H11V26H10zM13,25H14V26H13zM18,25H19V26H18zM20,25H21V26H20zM22,25H23V26H22zM24,25H25V26H24zM26,25H27V26H26zM27,25H28V26H27zM28,25H29V26H28zM29,25H30V26H29zM32,25H33V26H32zM33,25H34V26H33zM35,25H36V26H35zM36,25H37V26H36zM37,25H38V26H37zM39,25H40V26H39zM41,25H42V26H41zM3,26H4V27H3zM5,26H6V27H5zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM14,26H15V27H14zM17,26H18V27H17zM19,26H20V27H19zM21,26H22V27H21zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM31,26H32V27H31zM40,26H41V27H40zM41,26H42V27H41zM42,26H43V27H42zM3,27H4V28H3zM4,27H5V28H4zM6,27H7V28H6zM7,27H8V28H7zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM19,27H20V28H19zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM24,27H25V28H24zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM33,27H34V28H33zM34,27H35V28H34zM35,27H36V28H35zM36,27H37V28H36zM39,27H40V28H39zM40,27H41V28H40zM42,27H43V28H42zM2,28H3V29H2zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM13,28H14V29H13zM16,28H17V29H16zM17,28H18V29H17zM20,28H21V29H20zM21,28H22V29H21zM26,28H27V29H26zM27,28H28V29H27zM28,28H29V29H28zM30,28H31V29H30zM33,28H34V29H33zM34,28H35V29H34zM36,28H37V29H36zM37,28H38V29H37zM38,28H39V29H38zM39,28H40V29H39zM41,28H42V29H41zM42,28H43V29H42zM2,29H3V30H2zM3,29H4V30H3zM10,29H11V30H10zM12,29H13V30H12zM13,29H14V30H13zM16,29H17V30H16zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM28,29H29V30H28zM30,29H31V30H30zM33,29H34V30H33zM34,29H35V30H34zM36,29H37V30H36zM37,29H38V30H37zM39,29H40V30H39zM41,29H42V30H41zM42,29H43V30H42zM2,30H3V31H2zM5,30H6V31H5zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM13,30H14V31H13zM17,30H18V31H17zM18,30H19V31H18zM20,30H21V31H20zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM29,30H30V31H29zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM37,30H38V31H37zM38,30H39V31H38zM39,30H40V31H39zM41,30H42V31H41zM42,30H43V31H42zM4,31H5V32H4zM5,31H6V32H5zM7,31H8V32H7zM10,31H11V32H10zM13,31H14V32H13zM15,31H16V32H15zM16,31H17V32H16zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM24,31H25V32H24zM27,31H28V32H27zM31,31H32V32H31zM34,31H35V32H34zM37,31H38V32H37zM39,31H40V32H39zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM14,32H15V33H14zM17,32H18V33H17zM18,32H19V33H18zM21,32H22V33H21zM23,32H24V33H23zM27,32H28V33H27zM34,32H35V33H34zM35,32H36V33H35zM36,32H37V33H36zM40,32H41V33H40zM4,33H5V34H4zM6,33H7V34H6zM9,33H10V34H9zM10,33H11V34H10zM11,33H12V34H11zM13,33H14V34H13zM14,33H15V34H14zM19,33H20V34H19zM21,33H22V34H21zM24,33H25V34H24zM25,33H26V34H25zM29,33H30V34H29zM30,33H31V34H30zM31,33H32V34H31zM36,33H37V34H36zM38,33H39V34H38zM40,33H41V34H40zM41,33H42V34H41zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM16,34H17V35H16zM18,34H19V35H18zM19,34H20V35H19zM20,34H21V35H20zM23,34H24V35H23zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM39,34H40V35H39zM40,34H41V35H40zM41,34H42V35H41zM42,34H43V35H42zM10,35H11V36H10zM11,35H12V36H11zM14,35H15V36H14zM16,35H17V36H16zM17,35H18V36H17zM19,35H20V36H19zM20,35H21V36H20zM21,35H22V36H21zM23,35H24V36H23zM25,35H26V36H25zM27,35H28V36H27zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM41,35H42V36H41zM42,35H43V36H42zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM12,36H13V37H12zM13,36H14V37H13zM14,36H15V37H14zM16,36H17V37H16zM17,36H18V37H17zM20,36H21V37H20zM25,36H26V37H25zM27,36H28V37H27zM30,36H31V37H30zM32,36H33V37H32zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM39,36H40V37H39zM41,36H42V37H41zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM11,37H12V38H11zM14,37H15V38H14zM15,37H16V38H15zM16,37H17V38H16zM18,37H19V38H18zM19,37H20V38H19zM29,37H30V38H29zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM39,37H40V38H39zM42,37H43V38H42zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM12,38H13V39H12zM14,38H15V39H14zM16,38H17V39H16zM23,38H24V39H23zM25,38H26V39H25zM28,38H29V39H28zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM40,38H41V39H40zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM11,39H12V40H11zM13,39H14V40H13zM15,39H16V40H15zM21,39H22V40H21zM24,39H25V40H24zM26,39H27V40H26zM27,39H28V40H27zM28,39H29V40H28zM29,39H30V40H29zM30,39H31V40H30zM31,39H32V40H31zM34,39H35V40H34zM38,39H39V40H38zM39,39H40V40H39zM41,39H42V40H41zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM10,40H11V41H10zM12,40H13V41H12zM13,40H14V41H13zM16,40H17V41H16zM17,40H18V41H17zM18,40H19V41H18zM21,40H22V41H21zM22,40H23V41H22zM28,40H29V41H28zM33,40H34V41H33zM37,40H38V41H37zM41,40H42V41H41zM42,40H43V41H42zM2,41H3V42H2zM8,41H9V42H8zM12,41H13V42H12zM15,41H16V42H15zM20,41H21V42H20zM23,41H24V42H23zM24,41H25V42H24zM28,41H29V42H28zM29,41H30V42H29zM30,41H31V42H30zM33,41H34V42H33zM34,41H35V42H34zM36,41H37V42H36zM38,41H39V42H38zM39,41H40V42H39zM41,41H42V42H41zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM13,42H14V43H13zM14,42H15V43H14zM15,42H16V43H15zM17,42H18V43H17zM18,42H19V43H18zM19,42H20V43H19zM21,42H22V43H21zM22,42H23V43H22zM23,42H24V43H23zM24,42H25V43H24zM25,42H26V43H25zM27,42H28V43H27zM28,42H29V43H28zM32,42H33V43H32zM33,42H34V43H33zM34,42H35V43H34zM35,42H36V43H35zM36,42H37V43H36zM41,42H42V43H41z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return;
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>지방간(MASLD) 바로 알기 — Gwanggyo Barun Internal Medicine</title>
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/fatty-liver-masld/">
+  <meta property="og:title" content="대사이상 지방간질환(MASLD) — 광교바른내과">
+  <meta property="og:description" content="간에 지방이 쌓이는 흔한 병, 핵심은 체중 7~10% 감량. 무증상이라 검진에서 발견 — 단순지방간에서 간경변까지 진행 스펙트럼과 관리법">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/fatty-liver-masld/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <style>
+    .slide__bg-num { display: none !important; }
+
+    /* ── Healthicons badge (data-asset SVGs are black → white-on-steel) ── */
+    /* Absolute top-right badge → zero layout height (tiles already fit) */
+    .tile__icon {
+      position: absolute; top: 14px; right: 14px;
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: var(--color-steel);
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(91,155,213,0.30);
+    }
+    .tile__icon img { width: 21px; height: 21px; filter: brightness(0) invert(1); }
+    /* keep the index label clear of the corner badge */
+    .tile .tile__index { padding-right: 42px; }
+
+    /* Smaller variant for split-statement / compare heads */
+    .icon-badge {
+      width: 40px; height: 40px;
+      border-radius: 11px;
+      background: var(--color-steel);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex: 0 0 auto;
+      box-shadow: 0 2px 6px rgba(91,155,213,0.30);
+    }
+    .icon-badge img { width: 24px; height: 24px; filter: brightness(0) invert(1); }
+    .icon-badge--navy { background: var(--color-navy); box-shadow: 0 2px 6px rgba(0,51,102,0.25); }
+
+    /* alert tiles get a warm-tinted badge instead of steel */
+    .tile--alert .tile__icon { background: #C2410C; box-shadow: 0 2px 6px rgba(194,65,12,0.30); }
+
+    /* statement row with a leading badge */
+    .split-statement-row { display: flex; align-items: flex-start; gap: 14px; }
+    .split-statement-row .icon-badge { margin-top: 2px; }
+
+    /* compare head with a leading badge */
+    .pattern-compare__head { display: flex; align-items: center; gap: 12px; }
+    .pattern-compare__head .icon-badge--white {
+      background: rgba(255,255,255,0.18); box-shadow: none;
+    }
+
+    /* hero-number numeric block with a leading badge */
+    .hero-num-row { display: flex; align-items: center; gap: 14px; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    /* fix: 한글 어절 중간 줄바꿈 방지 */
+    .pattern-split__primary, .pattern-split__detail { word-break: keep-all; overflow-wrap: break-word; }
+    .tile, .check-item, .compare-col__list li, .timeline-step { word-break: keep-all; overflow-wrap: break-word; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip { padding: 13px 16px; }
+    .alert-strip__text { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-checklist--7 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--7 .check-item { padding: var(--space-2) 0; }
+
+    /* ── Pass-2 generated-image slots ─────────────────────────────── */
+    /* Slide 3 definition: left text stack beside comparison image */
+    .def-stack { display: flex; flex-direction: column; gap: 18px; min-height: 0; justify-content: space-between; }
+    .def-metric-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .def-metric-row .pattern-split__metric { padding: 14px 16px; }
+    /* Slide 4 diagnosis: left text stack beside ultrasound image */
+    .dx-stack { display: flex; flex-direction: column; gap: 18px; min-height: 0; justify-content: space-between; }
+    .dx-metric-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .dx-metric-row .pattern-split__metric { padding: 14px 16px; }
+    /* Slide 6 spectrum: full-width stage illustration strip under timeline */
+    /* Slide 6 body: timeline on top, generated stage strip below */
+    .slide--spectrum .slide__body { display: flex; flex-direction: column; gap: 14px; }
+    .spectrum-strip {
+      width: 100%; flex: 0 0 auto; height: 188px;
+      border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+      overflow: hidden; background: var(--color-canvas); box-shadow: var(--shadow-card);
+    }
+    .spectrum-strip img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    /* timeline takes the remaining space; cards a bit shorter to free room for the strip */
+    .slide--spectrum .pattern-timeline { flex: 1 1 auto; align-items: stretch; }
+    .slide--spectrum .timeline-step { justify-content: flex-start; gap: 10px; }
+    /* Slide 7 treatment hero inside visual-focus left cell */
+    .tx-hero { gap: 22px; }
+    /* Slide 8 diet compare inside visual-focus left cell — keep two columns readable */
+    .diet-compare { gap: 18px; }
+    .diet-compare .compare-col__list li { font-size: 0.9rem; line-height: 1.24; padding-left: 20px; }
+    .diet-compare .compare-col__header { padding: 12px 14px; font-size: 1.05rem; }
+    /* generated-image label pin on focus figures */
+    .ai-visual__pin {
+      position: absolute; z-index: 2;
+      padding: 4px 11px; border-radius: 999px;
+      background: rgba(0,51,102,0.86); color: #fff;
+      font-size: 0.86rem; font-weight: var(--weight-semibold);
+      letter-spacing: 0.01em; white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,51,102,0.28);
+    }
+    .ai-visual { position: relative; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ====================================================================
+       SLIDE 01 · COVER
+       ==================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY · FATTY LIVER (MASLD)</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">지방간, 흔하지만 가볍지 않은 병<br><em>대사이상 지방간질환(MASLD) 바로 알기</em></h1>
+      <p class="slide__subtitle">간에 지방이 쌓이는 매우 흔한 병 — 대부분 증상이 없어 검진에서 우연히 발견됩니다. 핵심 치료는 체중 7~10% 감량입니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">MASLD · Metabolic Dysfunction-Associated Steatotic Liver Disease (구 NAFLD)</span>
+      <span class="slide__page">광교바른내과 소화기내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 02 · HERO NUMBER — 유병률
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>HOW COMMON</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">지방간은 얼마나 흔할까요</h2>
+      <p class="slide__subtitle">성인 3명 중 1명에서 발견되는, 우리나라에서 가장 흔한 만성 간질환입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="hero-num-row">
+            <div class="icon-badge"><img data-asset="hi-filled-liver" src="../../../shared/assets/healthicons/filled/body/liver.svg" alt="간"></div>
+            <div class="pattern-hero-number__value">약 <em>30</em>%</div>
+          </div>
+          <div class="pattern-hero-number__caption">전 세계·국내 성인의 지방간 유병률 추정치 — 비만·당뇨 인구가 늘면서 함께 증가하고 있습니다. 더 이상 술 때문만의 병이 아닙니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">왜 중요할까요</div>
+          <div class="pattern-hero-number__detail-text">
+            대부분은 간에 지방만 낀 <strong>단순지방간</strong>으로 큰 문제가 없습니다. 그러나 일부는 간에 염증이 생기고(지방간염), 오래 두면 <strong>섬유화·간경변·간암</strong>으로 진행할 수 있습니다. 또한 지방간은 심근경색·뇌졸중 같은 <strong>심혈관질환</strong>과도 깊이 연결돼 있어, 간만의 문제가 아닌 몸 전체의 신호로 봐야 합니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — AASLD MASLD 가이드라인 2023 · 대한간학회 NAFLD 진료 가이드라인</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — 정의 (대사 + 지방축적)
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>WHAT IT IS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">MASLD란 무엇인가요</h2>
+      <p class="slide__subtitle">간에 지방이 쌓이고(지방 축적), 대사 위험인자가 함께 있을 때 붙는 새 이름입니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="def-stack">
+        <div class="split-statement-row">
+          <div class="icon-badge"><img data-asset="hi-filled-liver" src="../../../shared/assets/healthicons/filled/body/liver.svg" alt="지방이 쌓인 간"></div>
+          <p class="pattern-split__statement">간세포에 <em>지방이 축적</em>되고, 과체중·당뇨 같은 <em>대사 위험인자</em>가 함께 있는 상태입니다.</p>
+        </div>
+        <p class="pattern-split__supporting">
+          과거에는 비알코올 지방간(NAFLD)이라 불렀지만, 술이 아니라 <strong>대사 문제가 원인</strong>이라는 점을 분명히 하려고 2023년부터 <strong>MASLD(대사이상 지방간질환)</strong>로 이름이 바뀌었습니다. 즉 "술을 안 마시는데 왜 지방간이냐"가 아니라, 복부비만·혈당·혈압·콜레스테롤 같은 대사 이상이 간에 드러난 결과로 이해하면 됩니다.
+        </p>
+        <div class="def-metric-row">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">진단의 두 축</div>
+            <div class="pattern-split__metric-value">지방 + 대사인자</div>
+            <div class="pattern-split__metric-detail">간 지방 축적에 더해 대사 위험인자가 최소 1개 있을 때 진단합니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">대사 위험인자</div>
+            <div class="pattern-split__metric-value">복부비만·당뇨</div>
+            <div class="pattern-split__metric-detail">이상지질혈증·고혈압도 포함 — 다음 슬라이드에서 자세히 봅니다.</div>
+          </div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/fatty-liver-masld-normal-vs-fatty-20260614.png" alt="정상 간과 지방이 축적된 간 단면을 나란히 비교한 일러스트">
+        <span class="ai-visual__pin" style="left: 6%; top: 8%;">정상 간</span>
+        <span class="ai-visual__pin" style="right: 6%; top: 8%;">지방간</span>
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Multi-society Delphi consensus on MASLD nomenclature (Hepatology 2023)</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 04 · ASYMMETRIC SPLIT — 발견·진단검사
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>HOW IT'S FOUND</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">대부분 증상이 없습니다 — 어떻게 발견될까요</h2>
+      <p class="slide__subtitle">건강검진의 간수치(ALT) 상승이나 복부초음파로 우연히 발견되는 경우가 가장 많습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="dx-stack">
+        <div class="split-statement-row">
+          <div class="icon-badge"><img data-asset="hi-filled-ultrasound-scanner" src="../../../shared/assets/healthicons/filled/devices/ultrasound-scanner.svg" alt="복부초음파"></div>
+          <p class="pattern-split__statement">증상이 없어 <em>검진에서 우연히</em> 발견되는 것이 가장 흔한 시작점입니다.</p>
+        </div>
+        <p class="pattern-split__supporting">
+          피로감이나 오른쪽 윗배의 묵직한 느낌이 있을 수 있지만, 대부분은 아무 증상이 없습니다. 그래서 <strong>간수치(ALT) 상승</strong>이나 <strong>복부초음파에서 지방간 소견</strong>으로 처음 알게 됩니다. 발견되면 음주력·B형/C형 간염 등 다른 간질환을 함께 감별하고, 섬유화(간이 굳는 정도) 위험이 얼마나 되는지를 평가하는 것이 핵심입니다.
+        </p>
+        <div class="dx-metric-row">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">섬유화 위험 선별</div>
+            <div class="pattern-split__metric-value">FIB-4 점수</div>
+            <div class="pattern-split__metric-detail">나이·간수치·혈소판으로 계산하는 간단한 1차 선별 지표입니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">정밀 평가</div>
+            <div class="pattern-split__metric-value">섬유화스캔</div>
+            <div class="pattern-split__metric-detail">FibroScan으로 간의 굳기를 비침습적으로 측정해 위험을 층화합니다.</div>
+          </div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Equipment">
+        <img src="../../../shared/assets/generated/fatty-liver-masld-ultrasound-exam-20260614.png" alt="복부초음파로 간을 검사하는 모습을 설명하는 모식도">
+        <span class="ai-visual__pin" style="left: 6%; bottom: 8%;">복부초음파</span>
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — AASLD 2023 · FIB-4 / Transient Elastography 기반 위험 층화</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 05 · DENSITY GRID 3×2 — 위험인자
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>RISK FACTORS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">지방간을 부르는 대사 위험인자 6가지</h2>
+      <p class="slide__subtitle">이 중 하나라도 해당된다면 지방간 가능성이 높아집니다 — 함께 모일수록 위험은 커집니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-overweight" src="../../../shared/assets/healthicons/filled/conditions/overweight.svg" alt="과체중·비만"></div>
+          <div class="tile__index">FACTOR · 01</div>
+          <h3 class="tile__title">과체중·복부비만</h3>
+          <p class="tile__body">특히 내장지방이 핵심. 정상 체중이라도 뱃살이 많으면 위험이 올라갑니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-people-diabetes" src="../../../shared/assets/healthicons/filled/people/diabetes.svg" alt="제2형 당뇨"></div>
+          <div class="tile__index">FACTOR · 02</div>
+          <h3 class="tile__title">제2형 당뇨병</h3>
+          <p class="tile__body">인슐린 저항성이 간 지방 축적을 촉진. 당뇨가 있으면 섬유화 위험도 함께 높습니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-heart-organ" src="../../../shared/assets/healthicons/filled/body/heart-organ.svg" alt="이상지질혈증"></div>
+          <div class="tile__index">FACTOR · 03</div>
+          <h3 class="tile__title">이상지질혈증</h3>
+          <p class="tile__body">중성지방이 높고 좋은 콜레스테롤(HDL)이 낮은 경우. 흔히 함께 나타납니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-blood-pressure_monitor" src="../../../shared/assets/healthicons/filled/devices/blood-pressure_monitor.svg" alt="고혈압"></div>
+          <div class="tile__index">FACTOR · 04</div>
+          <h3 class="tile__title">고혈압</h3>
+          <p class="tile__body">대사증후군의 한 축. 지방간과 함께 있을 때 심혈관 위험이 더 커집니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-sugar" src="../../../shared/assets/healthicons/filled/nutrition/sugar.svg" alt="과당·정제 탄수화물"></div>
+          <div class="tile__index">FACTOR · 05</div>
+          <h3 class="tile__title">과당·정제 탄수화물</h3>
+          <p class="tile__body">가당음료·과자·흰 탄수화물의 잦은 섭취가 간 지방 합성을 늘립니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-body-mass_index" src="../../../shared/assets/healthicons/filled/symbols/body-mass_index.svg" alt="대사증후군"></div>
+          <div class="tile__index">FACTOR · 06</div>
+          <h3 class="tile__title">대사증후군·가족력</h3>
+          <p class="tile__body">허리둘레·혈당·혈압·지질 이상이 겹치거나 가족력이 있으면 위험이 누적됩니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — MASLD 대사 위험인자 진단 기준 (AASLD 2023 · 대한간학회)</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 06 · TIMELINE — 진행 스펙트럼
+       ==================================================================== -->
+  <section class="slide slide--spectrum">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>DISEASE SPECTRUM</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">지방간은 어떻게 진행하나요 — 4단계 스펙트럼</h2>
+      <p class="slide__subtitle">대부분은 단순지방간에 머물지만, 일부는 다음 단계로 진행합니다 — 어느 단계든 관리로 되돌릴 여지가 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">단순지방간</div>
+          <p class="timeline-step__body">간에 지방만 낀 상태. 가장 흔하며 대부분 여기에 머뭅니다. 관리하면 잘 호전됩니다.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">지방간염 (MASH)</div>
+          <p class="timeline-step__body">지방에 더해 간에 염증과 손상이 생긴 단계. 진행 위험이 높아 적극 관리가 필요합니다.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">섬유화</div>
+          <p class="timeline-step__body">반복된 손상으로 간이 점차 굳어가는 단계. 예후를 가장 잘 좌우하는 핵심 지표입니다.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">간경변·간암</div>
+          <p class="timeline-step__body">간 기능이 떨어지고 합병증·간암 위험이 커지는 단계. 정기 추적이 중요합니다.</p>
+        </div>
+      </div>
+      <figure class="spectrum-strip" data-visual-intent="Process">
+        <img src="../../../shared/assets/generated/fatty-liver-masld-progression-strip-20260614.png" alt="단순지방간에서 지방간염, 섬유화, 간경변으로 이어지는 간 변화 4단계 가로 시퀀스">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — MASLD 자연경과 (단순지방간 → MASH → 섬유화 → 간경변/간암)</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 07 · HERO NUMBER — 핵심 치료 (체중감량)
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>CORE TREATMENT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">가장 강력한 치료는 체중 감량입니다</h2>
+      <p class="slide__subtitle">현재 체중의 7~10%를 줄이면 지방간염과 섬유화까지 좋아진다는 근거가 가장 확실합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-hero-number tx-hero">
+        <div class="pattern-hero-number__numeric">
+          <div class="hero-num-row">
+            <div class="icon-badge"><img data-asset="hi-filled-weight" src="../../../shared/assets/healthicons/filled/devices/weight.svg" alt="체중 감량"></div>
+            <div class="pattern-hero-number__value"><em>7~10</em>%</div>
+          </div>
+          <div class="pattern-hero-number__caption">목표 체중 감량 폭 — 예를 들어 80&nbsp;kg이라면 약 6~8&nbsp;kg. 천천히, 꾸준히 줄이는 것이 핵심이며 단기 폭식·폭감은 권하지 않습니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">감량 효과의 단계</div>
+          <div class="pattern-hero-number__detail-text">
+            <strong>3~5% 감량</strong>이면 간 지방이 줄고, <strong>7~10% 감량</strong>이면 간 염증(지방간염)과 섬유화까지 좋아질 수 있습니다. 약이 아니라 <strong>생활습관 교정이 1차 치료</strong>이며, 식사·운동·절주를 함께 꾸준히 이어가는 것이 가장 중요합니다. 동반된 당뇨·고지혈증·혈압 관리도 함께 가야 효과가 큽니다.
+          </div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
+        <img src="../../../shared/assets/generated/fatty-liver-masld-weight-loss-walking-20260614.png" alt="빠르게 걷기 운동과 체중 감량을 표현한 생활습관 일러스트">
+        <span class="ai-visual__pin" style="left: 6%; bottom: 8%;">걷기 · 체중 감량</span>
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 체중 감량과 조직학적 개선 (Vilar-Gomez, Gastroenterology 2015) · AASLD 2023</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 08 · COMPARISON — 식이·운동
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>DIET &amp; EXERCISE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">식사·운동 — 늘릴 것과 줄일 것</h2>
+      <p class="slide__subtitle">지중해식 식사와 규칙적 운동이 핵심. 가당음료와 술은 줄일수록 좋습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-compare diet-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <div class="icon-badge icon-badge--white"><img data-asset="hi-filled-unhealthy-food" src="../../../shared/assets/healthicons/filled/nutrition/unhealthy-food.svg" alt="줄일 음식"></div>
+            줄이기
+          </div>
+          <ul class="compare-col__list">
+            <li>가당음료·과일주스·탄산음료</li>
+            <li>과자·흰빵·흰쌀밥 등 정제 탄수화물</li>
+            <li>튀김·가공육 등 포화지방·트랜스지방</li>
+            <li>과당이 많은 시럽·디저트</li>
+            <li>술 — 절제 또는 금주가 원칙</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <div class="icon-badge icon-badge--white"><img data-asset="hi-filled-nutrition" src="../../../shared/assets/healthicons/filled/nutrition/nutrition.svg" alt="늘릴 음식"></div>
+            늘리기
+          </div>
+          <ul class="compare-col__list">
+            <li>채소·과일·통곡물 (지중해식)</li>
+            <li>생선·올리브유·견과류 등 좋은 지방</li>
+            <li>콩·두부 등 식물성 단백질</li>
+            <li>유산소 운동 주 150분 (빠르게 걷기)</li>
+            <li>근력 운동 주 2회 — 근육이 혈당을 돕습니다</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
+        <img src="../../../shared/assets/generated/fatty-liver-masld-mediterranean-foods-20260614.png" alt="채소, 생선, 올리브유, 통곡물, 견과류로 구성된 지중해식 식재료 플랫레이">
+        <span class="ai-visual__pin" style="left: 6%; top: 8%;">지중해식 식재료</span>
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 지중해식 식이·신체활동 권고 (EASL-EASD-EASO · AASLD 2023)</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 09 · DENSITY GRID 3×2 — 동반질환·약물
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>COMORBIDITY &amp; DRUGS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">동반질환 관리와 약물치료</h2>
+      <p class="slide__subtitle">지방간은 혼자 오지 않습니다 — 당뇨·콜레스테롤·혈압을 함께 관리하면 간과 심장 모두 좋아집니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-diabetes-measure" src="../../../shared/assets/healthicons/filled/devices/diabetes-measure.svg" alt="당뇨 관리"></div>
+          <div class="tile__index">MANAGE · 01</div>
+          <h3 class="tile__title">당뇨병 관리</h3>
+          <p class="tile__body">SGLT2 억제제·GLP-1 계열은 혈당을 낮추면서 체중·간에도 도움이 됩니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-pill-1" src="../../../shared/assets/healthicons/filled/medications/pill-1.svg" alt="스타틴"></div>
+          <div class="tile__index">MANAGE · 02</div>
+          <h3 class="tile__title">콜레스테롤 — 스타틴</h3>
+          <p class="tile__body">지방간이 있어도 스타틴은 안전합니다. 필요하면 적극 사용해 심혈관을 보호합니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-blood-pressure_monitor" src="../../../shared/assets/healthicons/filled/devices/blood-pressure_monitor.svg" alt="혈압 관리"></div>
+          <div class="tile__index">MANAGE · 03</div>
+          <h3 class="tile__title">혈압 관리</h3>
+          <p class="tile__body">목표 혈압을 함께 맞추면 대사 부담이 줄고 합병증 위험이 낮아집니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-weight" src="../../../shared/assets/healthicons/filled/devices/weight.svg" alt="비만 치료"></div>
+          <div class="tile__index">MANAGE · 04</div>
+          <h3 class="tile__title">비만 동반 시</h3>
+          <p class="tile__body">생활습관으로 부족하면 비만 치료 약물·시술을 의료진과 상의할 수 있습니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-liver" src="../../../shared/assets/healthicons/filled/body/liver.svg" alt="지방간염 신약"></div>
+          <div class="tile__index">MANAGE · 05</div>
+          <h3 class="tile__title">지방간염 신약</h3>
+          <p class="tile__body">섬유화를 동반한 지방간염(MASH)에는 레스메티롬 등 새 치료가 등장했습니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__icon"><img data-asset="hi-filled-stethoscope" src="../../../shared/assets/healthicons/filled/devices/stethoscope.svg" alt="개별 상담"></div>
+          <div class="tile__index">MANAGE · 06</div>
+          <h3 class="tile__title">약은 개별 상담</h3>
+          <p class="tile__body">모두에게 같은 약을 쓰지 않습니다. 단계·동반질환에 맞춰 의료진이 정합니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 스타틴 안전성 · SGLT2/GLP-1 · resmetirom (MASH 섬유화) — AASLD 2023</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 10 · DENSITY GRID 2×2 + ALERT — red flag·합병증
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>RED FLAGS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">주의해야 할 신호와 합병증</h2>
+      <p class="slide__subtitle">아래 신호가 있으면 진행 또는 합병증 가능성 — 자가 판단 말고 진료로 확인하세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2" style="grid-template-rows: 1fr 1fr auto;">
+        <div class="tile tile--alert">
+          <div class="tile__icon"><img data-asset="hi-filled-liver" src="../../../shared/assets/healthicons/filled/body/liver.svg" alt="간경변 진행"></div>
+          <div class="tile__index">RED FLAG · 01</div>
+          <h3 class="tile__title">간경변 진행 징후</h3>
+          <p class="tile__body">황달(눈·피부가 노래짐), 복부 팽만(복수), 다리 부종, 검은 변·토혈은 즉시 진료.</p>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__icon"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" alt="간수치 급상승"></div>
+          <div class="tile__index">RED FLAG · 02</div>
+          <h3 class="tile__title">간수치 급격한 상승</h3>
+          <p class="tile__body">갑자기 크게 오른 간수치는 다른 원인일 수 있어 반드시 추가 평가가 필요합니다.</p>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__icon"><img data-asset="hi-filled-alcohol" src="../../../shared/assets/healthicons/filled/nutrition/alcohol.svg" alt="과음 금지"></div>
+          <div class="tile__index">RED FLAG · 03</div>
+          <h3 class="tile__title">과음은 금물</h3>
+          <p class="tile__body">술은 간 손상을 가속합니다. 지방간이 있으면 절주, 진행 위험 시 금주가 원칙입니다.</p>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__icon"><img data-asset="hi-filled-heart-organ" src="../../../shared/assets/healthicons/filled/body/heart-organ.svg" alt="심혈관 위험"></div>
+          <div class="tile__index">RED FLAG · 04</div>
+          <h3 class="tile__title">심혈관 위험 동반</h3>
+          <p class="tile__body">지방간 환자의 가장 흔한 사망 원인은 심근경색·뇌졸중 — 심혈관 위험도 함께 챙깁니다.</p>
+        </div>
+        <div class="alert-strip">
+          <span class="alert-strip__label">중요</span>
+          <span class="alert-strip__text">증상이 없어도 정기 추적이 필요합니다. 섬유화 위험이 있으면 의료진이 정한 주기로 간 상태를 점검하세요.</span>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — MASLD 합병증·심혈관 위험 (AASLD 2023 · 대한간학회)</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 11 · CHECKLIST — 실천 체크리스트
+       ==================================================================== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION CHECKLIST</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘부터 실천 체크리스트 7가지</h2>
+      <p class="slide__subtitle">작은 습관이 모이면 간은 생각보다 빠르게 회복합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--7">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">체중·허리둘레 목표 정하기</h3>
+            <p class="check-item__body">현재 체중의 <strong>7~10% 감량</strong>을 목표로, 천천히 꾸준히 줄여갑니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">가당음료 끊기</h3>
+            <p class="check-item__body">탄산·과일주스·가당커피 대신 <strong>물·무가당 음료</strong>로 바꿉니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">지중해식으로 식사</h3>
+            <p class="check-item__body"><strong>채소·통곡물·생선·올리브유</strong> 중심, 정제 탄수화물·튀김은 줄입니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">주 150분 운동</h3>
+            <p class="check-item__body">빠르게 걷기 <strong>하루 30분 × 5일</strong>에 근력 운동 주 2회를 더합니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">절주·금주</h3>
+            <p class="check-item__body">술은 간 손상을 가속합니다. <strong>절주, 진행 위험 시 금주</strong>가 원칙입니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">동반질환 약 챙기기</h3>
+            <p class="check-item__body"><strong>당뇨·고지혈증·혈압</strong> 약을 거르지 말고 함께 관리합니다.</p>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__content">
+            <h3 class="check-item__title">정기 간검사 받기</h3>
+            <p class="check-item__body">간수치·초음파·<strong>섬유화 평가</strong>를 의료진이 정한 주기로 추적합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — AASLD 2023 · 대한간학회 · 광교바른내과 표준</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ====================================================================
+       SLIDE 12 · CLOSING
+       ==================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">지방간은 되돌릴 수 있습니다<br><em>오늘의 작은 변화가 간을 살립니다</em></h2>
+      <p class="slide__subtitle">체중·식사·운동·절주·동반질환을 함께 점검합니다 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30 · 토 08:30~13:30<br>일요일·공휴일 휴진</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM27,2H28V3H27zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM13,3H14V4H13zM14,3H15V4H14zM17,3H18V4H17zM19,3H20V4H19zM22,3H23V4H22zM25,3H26V4H25zM27,3H28V4H27zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM14,4H15V5H14zM16,4H17V5H16zM21,4H22V5H21zM22,4H23V5H22zM26,4H27V5H26zM27,4H28V5H27zM28,4H29V5H28zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM14,5H15V6H14zM18,5H19V6H18zM19,5H20V6H19zM21,5H22V6H21zM22,5H23V6H22zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM13,6H14V7H13zM14,6H15V7H14zM18,6H19V7H18zM19,6H20V7H19zM21,6H22V7H21zM23,6H24V7H23zM24,6H25V7H24zM26,6H27V7H26zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM12,7H13V8H12zM14,7H15V8H14zM15,7H16V8H15zM17,7H18V8H17zM18,7H19V8H18zM20,7H21V8H20zM21,7H22V8H21zM22,7H23V8H22zM24,7H25V8H24zM26,7H27V8H26zM27,7H28V8H27zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM12,9H13V10H12zM13,9H14V10H13zM18,9H19V10H18zM19,9H20V10H19zM21,9H22V10H21zM24,9H25V10H24zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM12,10H13V11H12zM19,10H20V11H19zM23,10H24V11H23zM29,10H30V11H29zM30,10H31V11H30zM32,10H33V11H32zM35,10H36V11H35zM37,10H38V11H37zM38,10H39V11H38zM2,11H3V12H2zM6,11H7V12H6zM7,11H8V12H7zM9,11H10V12H9zM11,11H12V12H11zM12,11H13V12H12zM15,11H16V12H15zM16,11H17V12H16zM17,11H18V12H17zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM5,12H6V13H5zM7,12H8V13H7zM8,12H9V13H8zM11,12H12V13H11zM13,12H14V13H13zM14,12H15V13H14zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM24,12H25V13H24zM25,12H26V13H25zM26,12H27V13H26zM30,12H31V13H30zM33,12H34V13H33zM35,12H36V13H35zM36,12H37V13H36zM2,13H3V14H2zM6,13H7V14H6zM10,13H11V14H10zM13,13H14V14H13zM14,13H15V14H14zM16,13H17V14H16zM18,13H19V14H18zM20,13H21V14H20zM24,13H25V14H24zM26,13H27V14H26zM27,13H28V14H27zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM32,13H33V14H32zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM15,14H16V15H15zM17,14H18V15H17zM19,14H20V15H19zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM30,14H31V15H30zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM3,15H4V16H3zM9,15H10V16H9zM11,15H12V16H11zM12,15H13V16H12zM14,15H15V16H14zM15,15H16V16H15zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM26,15H27V16H26zM27,15H28V16H27zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM32,15H33V16H32zM33,15H34V16H33zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM38,15H39V16H38zM3,16H4V17H3zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM11,16H12V17H11zM12,16H13V17H12zM13,16H14V17H13zM14,16H15V17H14zM19,16H20V17H19zM20,16H21V17H20zM21,16H22V17H21zM22,16H23V17H22zM23,16H24V17H23zM28,16H29V17H28zM31,16H32V17H31zM34,16H35V17H34zM36,16H37V17H36zM37,16H38V17H37zM2,17H3V18H2zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM13,17H14V18H13zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM25,17H26V18H25zM28,17H29V18H28zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM4,18H5V19H4zM6,18H7V19H6zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM12,18H13V19H12zM14,18H15V19H14zM15,18H16V19H15zM17,18H18V19H17zM19,18H20V19H19zM21,18H22V19H21zM23,18H24V19H23zM24,18H25V19H24zM27,18H28V19H27zM35,18H36V19H35zM36,18H37V19H36zM3,19H4V20H3zM5,19H6V20H5zM6,19H7V20H6zM7,19H8V20H7zM12,19H13V20H12zM15,19H16V20H15zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM27,19H28V20H27zM29,19H30V20H29zM30,19H31V20H30zM32,19H33V20H32zM33,19H34V20H33zM36,19H37V20H36zM37,19H38V20H37zM38,19H39V20H38zM4,20H5V21H4zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM14,20H15V21H14zM22,20H23V21H22zM23,20H24V21H23zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM5,21H6V22H5zM7,21H8V22H7zM9,21H10V22H9zM10,21H11V22H10zM11,21H12V22H11zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM22,21H23V22H22zM25,21H26V22H25zM28,21H29V22H28zM29,21H30V22H29zM32,21H33V22H32zM33,21H34V22H33zM35,21H36V22H35zM37,21H38V22H37zM2,22H3V23H2zM3,22H4V23H3zM5,22H6V23H5zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM13,22H14V23H13zM14,22H15V23H14zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM21,22H22V23H21zM23,22H24V23H23zM25,22H26V23H25zM28,22H29V23H28zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM34,22H35V23H34zM35,22H36V23H35zM38,22H39V23H38zM2,23H3V24H2zM5,23H6V24H5zM7,23H8V24H7zM9,23H10V24H9zM12,23H13V24H12zM13,23H14V24H13zM16,23H17V24H16zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM30,23H31V24H30zM35,23H36V24H35zM37,23H38V24H37zM2,24H3V25H2zM7,24H8V25H7zM8,24H9V25H8zM11,24H12V25H11zM12,24H13V25H12zM15,24H16V25H15zM20,24H21V25H20zM24,24H25V25H24zM25,24H26V25H25zM27,24H28V25H27zM30,24H31V25H30zM33,24H34V25H33zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM15,25H16V26H15zM19,25H20V26H19zM21,25H22V26H21zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM29,25H30V26H29zM31,25H32V26H31zM34,25H35V26H34zM35,25H36V26H35zM36,25H37V26H36zM2,26H3V27H2zM3,26H4V27H3zM5,26H6V27H5zM6,26H7V27H6zM8,26H9V27H8zM9,26H10V27H9zM17,26H18V27H17zM18,26H19V27H18zM21,26H22V27H21zM24,26H25V27H24zM25,26H26V27H25zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM5,27H6V28H5zM7,27H8V28H7zM10,27H11V28H10zM11,27H12V28H11zM15,27H16V28H15zM16,27H17V28H16zM21,27H22V28H21zM24,27H25V28H24zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM33,27H34V28H33zM34,27H35V28H34zM35,27H36V28H35zM37,27H38V28H37zM38,27H39V28H38zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM16,28H17V29H16zM21,28H22V29H21zM22,28H23V29H22zM27,28H28V29H27zM34,28H35V29H34zM36,28H37V29H36zM37,28H38V29H37zM2,29H3V30H2zM4,29H5V30H4zM10,29H11V30H10zM11,29H12V30H11zM13,29H14V30H13zM14,29H15V30H14zM15,29H16V30H15zM16,29H17V30H16zM17,29H18V30H17zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM11,30H12V31H11zM12,30H13V31H12zM13,30H14V31H13zM18,30H19V31H18zM20,30H21V31H20zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM27,30H28V31H27zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM14,31H15V32H14zM15,31H16V32H15zM17,31H18V32H17zM22,31H23V32H22zM24,31H25V32H24zM25,31H26V32H25zM26,31H27V32H26zM27,31H28V32H27zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM36,31H37V32H36zM38,31H39V32H38zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM16,32H17V33H16zM17,32H18V33H17zM20,32H21V33H20zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM15,33H16V34H15zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM20,33H21V34H20zM21,33H22V34H21zM25,33H26V34H25zM26,33H27V34H26zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM12,34H13V35H12zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM17,34H18V35H17zM18,34H19V35H18zM23,34H24V35H23zM24,34H25V35H24zM26,34H27V35H26zM28,34H29V35H28zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM37,34H38V35H37zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM14,35H15V36H14zM17,35H18V36H17zM18,35H19V36H18zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM25,35H26V36H25zM28,35H29V36H28zM29,35H30V36H29zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM36,35H37V36H36zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM13,36H14V37H13zM14,36H15V37H14zM17,36H18V37H17zM19,36H20V37H19zM20,36H21V37H20zM23,36H24V37H23zM25,36H26V37H25zM27,36H28V37H27zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM31,36H32V37H31zM32,36H33V37H32zM34,36H35V37H34zM35,36H36V37H35zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM13,37H14V38H13zM15,37H16V38H15zM17,37H18V38H17zM20,37H21V38H20zM21,37H22V38H21zM22,37H23V38H22zM24,37H25V38H24zM26,37H27V38H26zM27,37H28V38H27zM33,37H34V38H33zM34,37H35V38H34zM35,37H36V38H35zM36,37H37V38H36zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM13,38H14V39H13zM14,38H15V39H14zM16,38H17V39H16zM19,38H20V39H19zM21,38H22V39H21zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return;
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>
