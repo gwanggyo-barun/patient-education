@@ -499,6 +499,14 @@ def _is_lab_report(html_path: Path) -> bool:
     return "lab-reports" in html_path.resolve().parts
 
 
+def _only_grandfathered_issues(html_path: Path, issues: list[dict]) -> bool:
+    try:
+        rel = str(html_path.resolve().relative_to(ROOT)).replace("\\", "/")
+    except ValueError:
+        return False
+    return rel in GRANDFATHERED_INTERNAL_GAP and all(it.get("kind") == "large_internal_gap" for it in issues)
+
+
 def _write_failure_artifacts(html_path: Path, kind: str, issues: list[dict], page, artifacts_dir: Path) -> None:
     artifacts_dir.mkdir(parents=True, exist_ok=True)
     stem = _artifact_stem(html_path)
@@ -555,7 +563,7 @@ def validate_html_file(html_path: Path, kind: str = "auto", artifacts_dir: Path 
             page.emulate_media(media="print")
             page.wait_for_timeout(300)
         issues = page.evaluate(js)
-        if issues and artifacts_dir:
+        if issues and artifacts_dir and not _only_grandfathered_issues(html_path, issues):
             _write_failure_artifacts(html_path, kind, issues, page, artifacts_dir)
         browser.close()
     return issues
