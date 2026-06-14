@@ -84,7 +84,6 @@ clinic-content-system/
 ├── SKILL.md                          # 진입점 (트리거 + 워크플로우 + 절대 규칙)
 ├── AGENTS.md                         # SKILL.md 핵심 규칙 압축판
 ├── README.md                         # 이 파일
-├── HANDOFF.md                        # 세션 인계 문서 (legacy 컨텍스트)
 ├── build.py                          # 통합 빌드 스크립트 (Playwright + qrcode)
 ├── requirements.txt
 │

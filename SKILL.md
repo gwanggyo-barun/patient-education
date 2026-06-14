@@ -211,6 +211,8 @@ GH Pages 는 전체 공개 호스팅이라 lab-reports 의 환자명을 URL slug
 5. 커밋·푸시
 ```
 
+**커밋 메시지·파일명·PR 제목에도 PII 금지**: lab-reports 커밋 메시지·디렉토리명·PR 제목에 환자명·차트번호를 절대 넣지 않는다. hash slug 와 검사 주제만 사용 (예: `Add lab report a1b2c3d4e5 — 공단검진` O / `Add lab report 김영미 …` X). public repo history 는 force-push 없이 되돌릴 수 없으므로 커밋 전에 메시지를 점검한다.
+
 **남는 위험**: git history 에 옛 환자명 디렉토리 자취가 남는다 (public repo 인 경우 이슈). 완전 제거하려면 `git filter-repo` 또는 BFG 사용 + force-push 필요 — 별도 작업.
 
 ### 12. 이미지 슬롯 비율 mismatch — 일반 비율(4:3, 16:9, 1:1) 추천 금지, 슬롯 실측 strict ratio 사용
@@ -1709,6 +1711,12 @@ python3 tools/generate_image_asset.py \
 3. **텍스트 겹침은 절대 금지.** body 섹션이 footer 영역으로 침범하거나 카드끼리 겹치면 즉시 콘텐츠 조정.
 4. **1페이지가 정말 무리일 때만 2페이지로 확장.** 무조건 2페이지 만들지 않는다. 콘텐츠가 1페이지 안에 안전하게 들어가지 않을 때만 확장.
 5. **2페이지 확장 시에도 적절히 배치.** 1페이지에 핵심, 2페이지에 상세 — 각 페이지가 시각적으로 균형 있어야.
+6. **선작성 용량 예산 (검증기 돌리기 전에 미리 가늠).** A4 1페이지 body 는 다음 상한을 넘지 않게 작성한다. 넘으면 항목을 통합하거나 2페이지로 분할 — 폰트로 짜내지 않는다 (경험값, 12pt 기준):
+   - 섹션(`.section-heading` 블록) **4~5개** 이내
+   - `.card` 합계 **6개** 이내 (또는 `.body-2col` 항목 합계 12개 이내)
+   - `.lab-row` 합계 **14행** 이내 (이상이면 영역별로 묶어 분할)
+   - `.checklist` 항목 **7개** 이내
+   - 카드 본문이 길면(5줄 초과) 그만큼 카드 수를 줄인다.
 
 **의사결정 트리**:
 
@@ -1925,7 +1933,6 @@ Stage A · D 에 **checkup-extraction + checkup-completeness specialist 2명 추
 clinic-content-system/
 ├── SKILL.md                          # 이 파일
 ├── README.md
-├── HANDOFF.md
 ├── build.py                          # 통합 빌드 (3개 타입 모두)
 │
 ├── shared/                           # 모든 콘텐츠 공유
