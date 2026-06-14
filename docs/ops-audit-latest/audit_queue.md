@@ -1,7 +1,7 @@
 # Clinic Content Audit Queue
 
-- Generated: 2026-06-14T05:52:10.897188+00:00
-- Source ref: `origin/main`
+- Generated: 2026-06-14T07:12:17.402121+00:00
+- Source ref: `HEAD`
 - Targets: 150
 - Live checked: True
 - PDF pages checked: True
