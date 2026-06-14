@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>내시경이 정상인데 왜 계속 쓰릴까요? — Gwanggyo Barun Internal Medicine</title>
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/refractory-dyspepsia/">
+  <meta property="og:title" content="내시경이 정상인데 왜 계속 쓰릴까요? — 광교바른내과">
+  <meta property="og:description" content="기능성·과민성 소화불량의 이해와 관리. 뇌-장 상호작용 장애(DGBI) — 꾀병이 아니라 실재하는 생리적 과민성. 약물 최적화 → 신경조절제 + 생활·행동 교정의 단계적 접근.">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/refractory-dyspepsia/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <style>
+    .slide__bg-num { display: none !important; }
+
+    /* ── 어절 보호: 모든 본문 박스에서 한글 단어 중간 줄바꿈 금지 ── */
+    .slide__title, .slide__subtitle,
+    .tile, .tile__title, .tile__body,
+    .split__left, .split__right, .split__heading, .split__note,
+    .timeline-step, .timeline-step__title, .timeline-step__body,
+    .check-item__text, .alert-strip__text, .alert-row__text,
+    .stats3-cell__label, .stats3-note,
+    .dt-row, .dt-row__cat, .dt-row__detail,
+    .lsm-item, .lsm-item__title, .lsm-item__body {
+      word-break: keep-all; overflow-wrap: break-word;
+    }
+
+    /* ── stats3 (슬라이드 2 기전 3종) ── */
+    .pattern-stats3 {
+      display: flex; flex-direction: column; gap: var(--space-6);
+      height: 100%; position: relative; z-index: 1;
+      justify-content: space-between;
+    }
+    .stats3-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8); align-items: stretch; justify-items: center;
+    }
+    .stats3-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); justify-content: flex-start; }
+    .stats3-cell__circle {
+      width: 152px; height: 152px; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--color-canvas); text-align: center; letter-spacing: var(--tracking-tight); padding: 0 14px;
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__icon { font-size: 1.7rem; line-height: 1; font-weight: var(--weight-bold); }
+    .stats3-cell__cap { font-size: 0.92rem; line-height: 1.18; font-weight: var(--weight-540); margin-top: 6px; }
+    .stats3-cell__label {
+      font-size: 1rem; font-weight: var(--weight-540);
+      color: var(--color-navy); letter-spacing: var(--tracking-snug);
+      text-align: center; line-height: 1.3; max-width: 260px;
+    }
+    .stats3-cell__sub { font-size: 0.92rem; font-weight: var(--weight-450); color: var(--color-ink-soft); line-height: 1.3; text-align: center; }
+    .stats3-note {
+      padding: 16px 22px; margin-top: auto;
+      background: var(--color-canvas-warm); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: 1rem; font-weight: var(--weight-450);
+      color: var(--color-ink); line-height: 1.42;
+    }
+
+    /* ── 약제 주의점 표 (슬라이드 8, deck-local) ── */
+    .pattern-drug-table {
+      display: flex; flex-direction: column; gap: var(--space-3);
+      height: 100%; position: relative; z-index: 1; justify-content: space-between;
+    }
+    .dt-row {
+      display: grid; grid-template-columns: 1.05fr 2.6fr 1.55fr;
+      gap: var(--space-4); align-items: center;
+      padding: 10px 16px;
+      background: var(--color-canvas); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); flex: 0 1 auto;
+    }
+    .dt-row--head {
+      background: var(--color-navy); color: var(--color-canvas);
+      border-color: var(--color-navy); font-weight: var(--weight-bold);
+      font-size: 0.92rem; letter-spacing: var(--tracking-snug);
+    }
+    .dt-row__cat {
+      font-weight: var(--weight-bold); color: var(--color-navy);
+      font-size: 1rem; letter-spacing: var(--tracking-snug); line-height: 1.24;
+    }
+    .dt-row--head .dt-row__cat { color: var(--color-canvas); }
+    .dt-row__sub { display: block; font-size: 0.8rem; font-weight: var(--weight-450); color: var(--color-ink-soft); margin-top: 2px; }
+    .dt-row__detail {
+      font-size: 0.92rem; font-weight: var(--weight-450);
+      color: var(--color-ink); line-height: 1.32;
+    }
+    .dt-row--head .dt-row__detail { color: var(--color-canvas); opacity: 0.94; font-weight: var(--weight-bold); }
+    .dt-row__note {
+      font-size: 0.88rem; font-weight: var(--weight-540);
+      color: var(--color-steel); line-height: 1.3;
+    }
+    .dt-row--head .dt-row__note { color: var(--color-canvas); opacity: 0.94; }
+
+    /* ── LSM 우선순위 목록 (슬라이드 10) ── */
+    .pattern-lsm {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6px var(--space-7);
+      height: 100%; position: relative; z-index: 1; align-content: space-between;
+    }
+    .lsm-item {
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: 14px 0; border-bottom: 1px solid var(--color-border-soft);
+    }
+    .lsm-item__num {
+      min-width: 34px; font-size: 1.35rem; font-weight: var(--weight-540);
+      color: var(--color-steel); font-variant-numeric: tabular-nums; line-height: 1.1;
+    }
+    .lsm-item__text { display: flex; flex-direction: column; gap: 3px; }
+    .lsm-item__title { font-size: 1.02rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.24; }
+    .lsm-item__title .tag { font-size: 0.78rem; font-weight: var(--weight-540); color: var(--color-steel); }
+    .lsm-item__body { font-size: 0.92rem; font-weight: var(--weight-450); color: var(--color-ink); line-height: 1.32; }
+    .lsm-foot {
+      grid-column: 1 / -1; margin-top: 4px; padding: 11px 16px;
+      background: var(--color-canvas-warm); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.36;
+    }
+
+    /* ── 오해 정정 / 보조카드 grid 카드 ── */
+    .myth-tile .tile__index { color: var(--color-danger); }
+    .myth-tile .tile__truth { color: var(--color-steel); font-weight: var(--weight-bold); }
+
+    /* ── checklist 2열 (슬라이드 4 검사) ── */
+    .check-item__text strong { color: var(--color-navy); }
+
+    /* ===== layout-sweep: footer-safe compact frame (htn deck 검증된 블록) ===== */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 22px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+
+    .pattern-split { gap: 32px; min-height: 0; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: flex-start; gap: 12px; }
+    .split__left .split__note, .split__right .split__note { margin-top: auto; }
+    .split__heading { margin-bottom: 8px; }
+    .split__list li { padding: 7px 0; font-size: 0.98rem; line-height: 1.34; }
+    .split__note { font-size: 0.92rem; line-height: 1.36; padding: 12px 14px; max-height: 132px; overflow: hidden; }
+
+    /* 3-up / 2-up 카드가 한 줄일 때 본문 높이를 꽉 채우게 — single-row grid + stretch.
+       카드 안: 라벨(상단) / 제목+설명 묶음(가운데) 으로 분배해 박스를 채우되 묶음은 타이트하게.
+       (Gotcha 20: 박스는 채우고, 묶음은 가운데로 — 제목↔설명은 떼지 않음) */
+    .pattern-grid--3 { grid-template-rows: minmax(0, 1fr); }   /* 3개 = 한 줄, 세로 채움 */
+    .pattern-grid--2 { grid-template-rows: 1fr 1fr; }           /* 4개 = 두 줄 (슬라이드 9) */
+    .pattern-grid--3 .tile, .pattern-grid--2 .tile { min-height: 0; height: 100%; }
+    .tile { padding: 24px 22px 28px; gap: 9px; display: flex; flex-direction: column; justify-content: center; }
+    /* 한 줄 3-up 카드(키 큼): 라벨 위 / 제목+설명 묶음은 아래쪽에 정렬해 박스를 채움 */
+    .pattern-grid--3 .tile { padding: 24px 22px 28px; gap: 0; justify-content: flex-start; }
+    .pattern-grid--3 .tile__index { margin-bottom: 0; }
+    .tile__group { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+    .tile__body { margin-top: 0; }
+    .tile__title { font-size: 1.16rem; line-height: 1.28; }
+    .tile__body { font-size: 1.02rem; line-height: 1.5; color: var(--color-ink); }
+    .tile__truth { font-size: 1rem; line-height: 1.46; margin-top: 4px; }
+
+    .pattern-timeline { align-items: stretch; }
+    .timeline-step { justify-content: center; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.24; }
+    .timeline-step__body { font-size: 0.94rem; line-height: 1.34; }
+
+    .pattern-checklist { height: 100%; align-content: space-between; gap: 4px var(--space-8); }
+    .check-item { min-height: 0; padding: 14px 0; align-items: center; }
+    .check-item__text { font-size: 1.04rem; line-height: 1.42; padding-top: 0; }
+
+    .metric-card { padding: 14px 18px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.94rem; }
+
+    .alert-strip { min-height: 0; display: flex; align-items: center; padding: 14px 18px; }
+    .alert-strip__text { font-size: 1rem; line-height: 1.36; }
+
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.4rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: stretch; }
+    .closing-grid { min-height: 0; height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block, .closing-grid > .contact-card { height: 100%; box-sizing: border-box; }
+    .qr-block { padding: 12px 14px; gap: 8px; min-height: 0; }
+    .qr-block__code { width: 96px; height: 96px; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ===== 1 · COVER ===== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">내시경이 정상인데<br><em>왜 계속 쓰릴까요?</em></h1>
+      <p class="slide__subtitle">기능성·과민성 소화불량의 이해와 관리 — 약을 끊으면 재발하는 쓰림, 그 이유와 단계적 해법을 함께 봅니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">기능성 소화불량 · 역류 과민성 · 기능성 가슴쓰림 (DGBI)</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 2 · WHY (DGBI 기전) ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>WHY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">내시경이 깨끗한데 증상이 있는 이유</h2>
+      <p class="slide__subtitle">뇌–장 상호작용 장애(DGBI) — 눈에 보이는 상처가 아니라, 신경이 예민해진 상태입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__icon">신경 과민</div>
+              <div class="stats3-cell__cap">內臟過敏</div>
+            </div>
+            <div class="stats3-cell__label">내장 과민성</div>
+            <div class="stats3-cell__sub">정상이면 못 느낄 자극(산·팽창)을<br>식도·위 신경이 통증으로 느낍니다</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__icon">위 적응</div>
+              <div class="stats3-cell__cap">弛緩 장애</div>
+            </div>
+            <div class="stats3-cell__label">위 적응 장애</div>
+            <div class="stats3-cell__sub">음식이 들어와도 위가 잘 늘지 않아<br>조금만 먹어도 더부룩·금세 부릅니다</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__icon">미세 염증</div>
+              <div class="stats3-cell__cap">十二指腸</div>
+            </div>
+            <div class="stats3-cell__label">십이지장 미세 염증</div>
+            <div class="stats3-cell__sub">내시경에 안 보이는 미세한 염증·투과성<br>변화가 신경을 더 예민하게 만듭니다</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          <strong>핵심 — </strong>꾀병이나 “마음의 문제”가 아니라, 신경·운동·미세염증이 얽힌 <em>실재하는 생리적 이상</em>입니다. 상처(궤양·식도염)가 없어도 신경이 예민하면 똑같이 아프고 쓰릴 수 있습니다. 그래서 산약만으로는 잘 안 듣고, 끊으면 재발합니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Rome IV DGBI 분류 · 기능성 소화불량·역류 과민성 진료 권고</span>
+      <span class="slide__page">02 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 3 · 흔한 오해 3가지 ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>MYTHS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">흔한 오해 3가지 — 바로잡기</h2>
+      <p class="slide__subtitle">이 오해들 때문에 치료가 잘못된 방향으로 흐르기 쉽습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile myth-tile">
+          <div class="tile__index">오해 01</div>
+          <div class="tile__group">
+            <h3 class="tile__title">“위산만 줄이면 낫는다”</h3>
+            <p class="tile__body">산은 원인의 일부일 뿐입니다. 그래서 산약이 ‘조금’만 듣고, 끊으면 재발합니다.</p>
+            <p class="tile__truth">→ 산을 넘어 <strong>신경 과민</strong>을 함께 다스려야 합니다.</p>
+          </div>
+        </div>
+        <div class="tile myth-tile">
+          <div class="tile__index">오해 02</div>
+          <div class="tile__group">
+            <h3 class="tile__title">“자다 깨는 건 저혈당 때문”</h3>
+            <p class="tile__body">야간 저혈당 반동(소모기 현상) 같은 원인은 실제로는 드뭅니다.</p>
+            <p class="tile__truth">→ 야간 증상은 대개 <strong>역류·신경 과민</strong>이 원인입니다.</p>
+          </div>
+        </div>
+        <div class="tile myth-tile">
+          <div class="tile__index">오해 03</div>
+          <div class="tile__group">
+            <h3 class="tile__title">“신경성 = 꾀병”</h3>
+            <p class="tile__body">‘신경성’은 꾀병이 아니라, 장 신경이 실제로 예민해진 의학적 상태입니다.</p>
+            <p class="tile__truth">→ 의지 문제가 아니라 <strong>치료가 되는 병</strong>입니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 기능성 위장장애 환자 교육 권고 · DGBI 개념 정리</span>
+      <span class="slide__page">03 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 4 · 무엇을 확인하나 (검사) ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>WORK-UP</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">먼저 무엇을 확인하나 — 필요한 검사</h2>
+      <p class="slide__subtitle">‘다른 병이 숨어 있지 않은지’ 확인한 뒤, 안심하고 과민성 치료로 넘어갑니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <p class="check-item__text"><strong>식도 조직검사</strong> — 내시경이 정상으로 보여도 호산구식도염을 놓치지 않으려고 조직을 떼어 확인합니다.</p>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <p class="check-item__text"><strong>헬리코박터 검사·제균</strong> — 균이 있으면 없애는 것만으로 소화불량이 좋아지는 분이 있어 먼저 확인합니다.</p>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <p class="check-item__text"><strong>산도–임피던스 검사</strong> — 필요시. 실제 역류량과 증상이 산 때문인지, 예민함 때문인지 구분합니다.</p>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <p class="check-item__text"><strong>식도내압 검사</strong> — 필요시. 식도 운동·삼킴 장애 등 다른 원인을 함께 가려냅니다.</p>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <p class="check-item__text"><strong>위배출 검사</strong> — 식후 더부룩함·구토가 두드러질 때, 위가 비워지는 속도를 확인합니다.</p>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <p class="check-item__text"><strong>왜 하나요</strong> — 검사는 ‘병을 찾으려고’가 아니라, <strong>위험한 병을 배제하고 안심하기 위해서</strong>입니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 난치성 위·식도 증상 평가 권고 · 식도 조직검사 / pH-임피던스 / 위배출</span>
+      <span class="slide__page">04 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 5 · 세 가지 유형 ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>THREE TYPES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">세 가지 유형으로 나눠 봅니다</h2>
+      <p class="slide__subtitle">같은 ‘쓰림’이라도 유형에 따라 치료가 달라집니다 — 그래서 구분이 중요합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">TYPE · 01</div>
+          <div class="tile__group">
+            <h3 class="tile__title">진짜 산역류 (NERD)</h3>
+            <p class="tile__body">위산이 실제로 많이 올라옵니다. 내시경은 정상이지만 산 노출이 증가한 상태로, <strong>산약이 잘 듣는</strong> 유형입니다.</p>
+          </div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">TYPE · 02</div>
+          <div class="tile__group">
+            <h3 class="tile__title">역류 과민성</h3>
+            <p class="tile__body">산 노출은 정상인데, <strong>정상 범위의 역류에도 예민하게</strong> 반응해 쓰림을 느낍니다. 신경 조절이 핵심입니다.</p>
+          </div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">TYPE · 03</div>
+          <div class="tile__group">
+            <h3 class="tile__title">기능성 가슴쓰림</h3>
+            <p class="tile__body">증상이 <strong>산과 거의 무관</strong>합니다. 식도 신경의 과민이 주원인이라, 산약보다 신경·행동 치료가 중심입니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Rome IV 식도 질환 분류 · NERD / 역류 과민성 / 기능성 가슴쓰림</span>
+      <span class="slide__page">05 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 6 · 치료 큰 그림 ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>BIG PICTURE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">치료의 큰 그림 — 발상의 전환</h2>
+      <p class="slide__subtitle">안 들으면 ‘더 센 산약’이 아니라, ‘다른 종류의 치료’로 방향을 바꿉니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-split">
+        <div class="split__left">
+          <h3 class="split__heading">1단계 — 산약을 ‘제대로’</h3>
+          <ul class="split__list">
+            <li><strong>식전 30분 복용</strong> — 약효를 최대로 끌어올리는 복용 타이밍</li>
+            <li><strong>필요시 분복</strong> — 아침·저녁으로 나눠 야간 증상까지 덮기</li>
+            <li><strong>P-CAB 전환</strong> — 기존 PPI로 부족하면 더 빠르고 강한 산 억제제로</li>
+          </ul>
+          <div class="split__note">
+            ※ 여기까지 충분히 했는데도 증상이 남으면 — 그건 ‘산이 부족해서’가 아니라 <strong>신경이 예민해서</strong>일 가능성이 큽니다.
+          </div>
+        </div>
+        <div class="split__right">
+          <h3 class="split__heading">2단계 — 방향 전환</h3>
+          <ul class="split__list">
+            <li><strong>더 센 산약 ✕</strong> — 산을 더 줄여도 예민함은 그대로입니다</li>
+            <li><strong>신경 다스리는 약 ○</strong> — 예민해진 장 신경의 ‘볼륨’을 낮춥니다</li>
+            <li><strong>생활·행동 교정 ○</strong> — 호흡·수면·식사 패턴으로 신경을 안정시킵니다</li>
+          </ul>
+          <div class="split__note">
+            ※ 핵심 메시지: <strong>“약을 끊으면 재발” → “신경 과민을 다스리는 치료로 전환”</strong>이 회복의 갈림길입니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 난치성 GERD·기능성 소화불량 단계적 치료 권고 (PPI 최적화 → 신경조절)</span>
+      <span class="slide__page">06 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 7 · 신경조절제 ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>NEUROMODULATOR</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">신경을 다스리는 약(neuromodulator)</h2>
+      <p class="slide__subtitle">우울증약이 아니라, 과민해진 장 신경의 ‘볼륨’을 낮추는 약입니다 — 저용량으로 시작합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-split">
+        <div class="split__left">
+          <h3 class="split__heading">통증·작열형이면</h3>
+          <ul class="split__list">
+            <li><strong>저용량 삼환계 (amitriptyline)</strong> — 통증 신호 자체를 무디게 해 쓰림·작열감을 줄입니다</li>
+            <li>우울증 용량보다 <strong>훨씬 낮은 용량</strong>으로, 취침 전에 시작합니다</li>
+          </ul>
+          <div class="split__note">
+            ※ “신경을 끄는” 약이 아니라, <strong>과민하게 켜진 통증 신호의 볼륨을 낮추는</strong> 약입니다.
+          </div>
+        </div>
+        <div class="split__right">
+          <h3 class="split__heading">더부룩·조기만복·체중감소형이면</h3>
+          <ul class="split__list">
+            <li><strong>mirtazapine</strong> — 입맛·메스꺼움·조기 포만에 도움(체중 감소 동반 시 이점)</li>
+            <li><strong>buspirone</strong> — 위 적응(이완)을 도와 식후 팽만을 완화</li>
+            <li><strong>acotiamide</strong> — 위 운동을 도와 식후 불편을 줄임</li>
+          </ul>
+          <div class="split__note">
+            ※ 증상 ‘유형’에 맞춰 약을 고릅니다. 효과는 보통 <strong>2~4주에 걸쳐</strong> 서서히 나타납니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 위장관 신경조절제 권고 (Rome Foundation) · 증상아형별 약제 선택</span>
+      <span class="slide__page">07 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 8 · ⭐ 약제 주의점·부작용 (원장 참고) ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>DRUG CAUTIONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">약제 주의점·부작용 <span style="font-size:1.1rem;color:var(--color-steel);">(진료 참고용)</span></h2>
+      <p class="slide__subtitle">저용량 시작·점진 증량 원칙 — 환자 동반질환에 따라 개별화합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-drug-table">
+        <div class="dt-row dt-row--head">
+          <div class="dt-row__cat">약제</div>
+          <div class="dt-row__detail">주요 부작용·상호작용</div>
+          <div class="dt-row__note">실무 포인트</div>
+        </div>
+        <div class="dt-row">
+          <div class="dt-row__cat">amitriptyline<span class="dt-row__sub">삼환계(TCA)</span></div>
+          <div class="dt-row__detail">구갈·변비·졸음·체중↑·기립저혈압·요폐·녹내장 악화, 고용량 QT 연장. 노인·심질환에서 항콜린·낙상 위험.</div>
+          <div class="dt-row__note">저용량 취침 전 시작, 천천히 증량</div>
+        </div>
+        <div class="dt-row">
+          <div class="dt-row__cat">mirtazapine</div>
+          <div class="dt-row__detail">진정·졸음·식욕↑·체중↑(체중감소형엔 오히려 이점), 드물게 호중구감소.</div>
+          <div class="dt-row__note">취침 전 복용, 혈구 이상 시 점검</div>
+        </div>
+        <div class="dt-row">
+          <div class="dt-row__cat">buspirone</div>
+          <div class="dt-row__detail">어지럼·두통·오심. CYP3A4 상호작용(자몽·케토코나졸), MAOI 병용 금기, 세로토닌증후군 주의.</div>
+          <div class="dt-row__note">비교적 순함, 식전 위 이완 목적</div>
+        </div>
+        <div class="dt-row">
+          <div class="dt-row__cat">acotiamide</div>
+          <div class="dt-row__detail">내약성 양호. 경미한 설사·오심, 드물게 간효소 상승.</div>
+          <div class="dt-row__note">식전 복용, 간수치 필요시 확인</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 각 약제 허가사항·신경조절제 안전성 권고 · 진료 참고용</span>
+      <span class="slide__page">08 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 9 · 보조 카드 ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>ADD-ONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">함께 쓸 수 있는 보조 카드</h2>
+      <p class="slide__subtitle">증상과 상황에 맞춰 골라 더하는, 보조적인 선택지입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">ADD-ON · 01</div>
+          <h3 class="tile__title">위장운동 촉진제</h3>
+          <p class="tile__body">itopride · mosapride · acotiamide — 위가 잘 비워지게 도와 식후 더부룩함·조기 포만을 줄입니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__index">ADD-ON · 02</div>
+          <h3 class="tile__title">알기네이트 (가비스콘)</h3>
+          <p class="tile__body">식후 위 윗부분에 뜨는 산 주머니(acid pocket)를 막아, 식후 역류·쓰림을 빠르게 가라앉힙니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__index">ADD-ON · 03</div>
+          <h3 class="tile__title">baclofen</h3>
+          <p class="tile__body">잦은 트림·반추(되새김)가 동반될 때 더해 보는 약입니다. 하부식도 괄약근 이완을 줄입니다.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__index">ADD-ON · 04</div>
+          <h3 class="tile__title">헬리코박터 제균</h3>
+          <p class="tile__body">감염이 확인되면 제균. 일부 환자에서 제균만으로 소화불량 증상이 호전됩니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 보조 약제 권고 (촉진제 · 알기네이트 · baclofen) · H.pylori 제균</span>
+      <span class="slide__page">09 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 10 · ⭐ LSM (원장 참고 + 환자 설명) ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>LIFESTYLE (LSM)</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">생활습관 교정 — “끊을 음식이 없다 ≠ 할 게 없다”</h2>
+      <p class="slide__subtitle">금지 음식 목록보다, 신경을 안정시키는 ‘습관’이 더 중요합니다 — 우선순위 순서대로</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-lsm">
+        <div class="lsm-item">
+          <div class="lsm-item__num">01</div>
+          <div class="lsm-item__text">
+            <div class="lsm-item__title">횡격막(복식) 호흡 <span class="tag">— 식후 특히</span></div>
+            <div class="lsm-item__body">이 유형에서 유일하게 RCT 근거가 있는 방법. 식후 천천히 배로 숨쉬기.</div>
+          </div>
+        </div>
+        <div class="lsm-item">
+          <div class="lsm-item__num">02</div>
+          <div class="lsm-item__text">
+            <div class="lsm-item__title">충분한 수면</div>
+            <div class="lsm-item__body">잠이 부족하면 통증이 더 예민해집니다. 규칙적인 수면이 곧 치료입니다.</div>
+          </div>
+        </div>
+        <div class="lsm-item">
+          <div class="lsm-item__num">03</div>
+          <div class="lsm-item__text">
+            <div class="lsm-item__title">소량·천천히·저지방</div>
+            <div class="lsm-item__body">조금씩 천천히, 기름진 음식은 줄이고, 저녁은 잠들기 3시간 전까지.</div>
+          </div>
+        </div>
+        <div class="lsm-item">
+          <div class="lsm-item__num">04</div>
+          <div class="lsm-item__text">
+            <div class="lsm-item__title">2주 식품일기로 내 트리거 찾기</div>
+            <div class="lsm-item__body">남이 아닌 ‘내’ 유발 음식을 기록으로 찾기. 팽만 심하면 저FODMAP 4주 시도.</div>
+          </div>
+        </div>
+        <div class="lsm-item">
+          <div class="lsm-item__num">05</div>
+          <div class="lsm-item__text">
+            <div class="lsm-item__title">야간 증상이 있으면</div>
+            <div class="lsm-item__body">침대 머리를 10~15cm 올리고, 왼쪽으로 누워 자면 야간 역류가 줄어듭니다.</div>
+          </div>
+        </div>
+        <div class="lsm-foot">
+          ※ 정상 체중이면 체중 감량은 해당되지 않습니다. 또한 생활습관 교정의 근거는 전반적으로 약한 편이라, ‘완치 수단’보다는 약물 치료를 돕는 <strong>보조 축</strong>으로 함께 합니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 횡격막 호흡 RCT · 수면-통증 연관 · 식이 트리거/저FODMAP · 야간 역류 자세</span>
+      <span class="slide__page">10 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 11 · 행동·심리 ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>BEHAVIORAL</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">행동·심리 치료 — ‘신경 과민’을 직접 낮춥니다</h2>
+      <p class="slide__subtitle">약에 못지않게 효과가 오래갑니다 — 뇌–장 축을 직접 다스리는 방법</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">방법 · 01</div>
+          <div class="tile__group">
+            <h3 class="tile__title">횡격막 호흡 훈련</h3>
+            <p class="tile__body">배로 천천히 쉬는 훈련을 반복하면 자율신경이 안정되고, 식후 역류·트림이 줄어듭니다.</p>
+          </div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">방법 · 02</div>
+          <div class="tile__group">
+            <h3 class="tile__title">인지행동치료 · 장지향 최면</h3>
+            <p class="tile__body">과민한 뇌–장 회로를 다시 길들이는 치료. <strong>약물에 필적하고 효과가 오래 지속</strong>됩니다.</p>
+          </div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">방법 · 03</div>
+          <div class="tile__group">
+            <h3 class="tile__title">스트레스·자율신경 관리</h3>
+            <p class="tile__body">규칙적 생활·이완·가벼운 운동으로 스트레스를 낮추면, 장 신경의 예민함도 함께 가라앉습니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 뇌–장 행동치료(CBT·gut-directed hypnotherapy) 권고 · 호흡 훈련</span>
+      <span class="slide__page">11 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 12 · 단계별 관리 알고리즘 ===== -->
+  <section class="slide">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 11 · <strong>ALGORITHM</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">단계별 관리 — 한눈에 보기</h2>
+      <p class="slide__subtitle">조급해하지 않고, 한 단계씩 차근차근 함께 올라갑니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__num">1</div>
+          <div class="timeline-step__title">위험 신호 확인<br>+ 기질질환 배제</div>
+          <p class="timeline-step__body">알람 증상 점검, 식도 조직검사·헬리코박터로 숨은 병을 먼저 가려냅니다.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__num">2</div>
+          <div class="timeline-step__title">산약 최적화</div>
+          <p class="timeline-step__body">식전 30분·분복·P-CAB 전환까지 제대로. 그래도 남으면 다음 단계로.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__num">3</div>
+          <div class="timeline-step__title">유형 검사<br>+ 신경조절제</div>
+          <p class="timeline-step__body">유형을 확인하고, 증상아형에 맞는 신경조절제를 저용량으로 시작합니다.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__num">4</div>
+          <div class="timeline-step__title">행동·생활 교정<br>+ 난치 시 의뢰</div>
+          <p class="timeline-step__body">호흡·CBT·생활 교정을 병행. 그래도 어려우면 전문 진료로 연계합니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 난치성 기능성 소화불량·식도 과민성 단계적 진료 알고리즘</span>
+      <span class="slide__page">12 / 13</span>
+    </footer>
+  </section>
+
+
+  <!-- ===== 13 · CLOSING ===== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">실재하는 과민성을 다스리는 병<br><em>함께, 단계적으로</em></h2>
+      <p class="slide__subtitle">꾀병이 아닙니다. 한 번에 끝내는 약은 없지만, 단계적으로 분명히 좋아질 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="alert-strip" style="flex-direction:column; align-items:flex-start; gap:8px; background:var(--color-canvas-warm); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:16px 20px;">
+          <div style="font-weight:var(--weight-bold); color:var(--color-danger); font-size:1.05rem;">🚨 이런 신호는 바로 검사</div>
+          <div class="alert-strip__text" style="color:var(--color-ink);">
+            체중 감소 · 삼키기가 어려움 · 출혈(흑색변·토혈) · 빈혈 · 멎지 않는 구토 — 한 가지라도 있으면 ‘과민성’으로 넘기지 말고 즉시 검사합니다.
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM12,2H13V3H12zM15,2H16V3H15zM17,2H18V3H17zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM27,2H28V3H27zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM13,3H14V4H13zM15,3H16V4H15zM16,3H17V4H16zM18,3H19V4H18zM20,3H21V4H20zM22,3H23V4H22zM23,3H24V4H23zM26,3H27V4H26zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM14,4H15V5H14zM15,4H16V5H15zM17,4H18V5H17zM20,4H21V5H20zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM28,4H29V5H28zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM14,5H15V6H14zM15,5H16V6H15zM16,5H17V6H16zM17,5H18V6H17zM18,5H19V6H18zM19,5H20V6H19zM22,5H23V6H22zM24,5H25V6H24zM26,5H27V6H26zM27,5H28V6H27zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM17,6H18V7H17zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM24,6H25V7H24zM25,6H26V7H25zM27,6H28V7H27zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM13,7H14V8H13zM14,7H15V8H14zM15,7H16V8H15zM18,7H19V8H18zM20,7H21V8H20zM22,7H23V8H22zM24,7H25V8H24zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM14,9H15V10H14zM15,9H16V10H15zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM28,9H29V10H28zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM13,10H14V11H13zM17,10H18V11H17zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM27,10H28V11H27zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM10,11H11V12H10zM12,11H13V12H12zM13,11H14V12H13zM16,11H17V12H16zM17,11H18V12H17zM18,11H19V12H18zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM12,12H13V13H12zM13,12H14V13H13zM20,12H21V13H20zM23,12H24V13H23zM24,12H25V13H24zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM34,12H35V13H34zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM5,13H6V14H5zM6,13H7V14H6zM9,13H10V14H9zM13,13H14V14H13zM15,13H16V14H15zM16,13H17V14H16zM18,13H19V14H18zM23,13H24V14H23zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM11,14H12V15H11zM19,14H20V15H19zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM30,14H31V15H30zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM7,15H8V16H7zM9,15H10V16H9zM11,15H12V16H11zM12,15H13V16H12zM14,15H15V16H14zM15,15H16V16H15zM18,15H19V16H18zM21,15H22V16H21zM23,15H24V16H23zM25,15H26V16H25zM27,15H28V16H27zM30,15H31V16H30zM31,15H32V16H31zM33,15H34V16H33zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM14,16H15V17H14zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM26,16H27V17H26zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM4,17H5V18H4zM7,17H8V18H7zM9,17H10V18H9zM10,17H11V18H10zM13,17H14V18H13zM14,17H15V18H14zM17,17H18V18H17zM18,17H19V18H18zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM25,17H26V18H25zM28,17H29V18H28zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM2,18H3V19H2zM4,18H5V19H4zM5,18H6V19H5zM6,18H7V19H6zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM14,18H15V19H14zM16,18H17V19H16zM18,18H19V19H18zM19,18H20V19H19zM21,18H22V19H21zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM37,18H38V19H37zM38,18H39V19H38zM2,19H3V20H2zM3,19H4V20H3zM4,19H5V20H4zM5,19H6V20H5zM10,19H11V20H10zM15,19H16V20H15zM17,19H18V20H17zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM24,19H25V20H24zM25,19H26V20H25zM28,19H29V20H28zM35,19H36V20H35zM37,19H38V20H37zM2,20H3V21H2zM4,20H5V21H4zM5,20H6V21H5zM6,20H7V21H6zM8,20H9V21H8zM9,20H10V21H9zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM17,20H18V21H17zM18,20H19V21H18zM22,20H23V21H22zM23,20H24V21H23zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM3,21H4V22H3zM5,21H6V22H5zM10,21H11V22H10zM11,21H12V22H11zM13,21H14V22H13zM17,21H18V22H17zM20,21H21V22H20zM21,21H22V22H21zM23,21H24V22H23zM26,21H27V22H26zM31,21H32V22H31zM33,21H34V22H33zM34,21H35V22H34zM38,21H39V22H38zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM14,22H15V23H14zM17,22H18V23H17zM19,22H20V23H19zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM36,22H37V23H36zM6,23H7V24H6zM12,23H13V24H12zM13,23H14V24H13zM15,23H16V24H15zM16,23H17V24H16zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM30,23H31V24H30zM35,23H36V24H35zM37,23H38V24H37zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM8,24H9V25H8zM13,24H14V25H13zM17,24H18V25H17zM20,24H21V25H20zM22,24H23V25H22zM23,24H24V25H23zM26,24H27V25H26zM27,24H28V25H27zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM14,25H15V26H14zM17,25H18V26H17zM18,25H19V26H18zM23,25H24V26H23zM24,25H25V26H24zM25,25H26V26H25zM30,25H31V26H30zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM38,25H39V26H38zM2,26H3V27H2zM3,26H4V27H3zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM12,26H13V27H12zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM2,27H3V28H2zM3,27H4V28H3zM5,27H6V28H5zM11,27H12V28H11zM17,27H18V28H17zM18,27H19V28H18zM19,27H20V28H19zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM30,27H31V28H30zM33,27H34V28H33zM2,28H3V29H2zM5,28H6V29H5zM6,28H7V29H6zM8,28H9V29H8zM10,28H11V29H10zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM16,28H17V29H16zM20,28H21V29H20zM22,28H23V29H22zM23,28H24V29H23zM24,28H25V29H24zM26,28H27V29H26zM29,28H30V29H29zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM6,29H7V30H6zM11,29H12V30H11zM12,29H13V30H12zM14,29H15V30H14zM15,29H16V30H15zM16,29H17V30H16zM18,29H19V30H18zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM37,29H38V30H37zM38,29H39V30H38zM2,30H3V31H2zM5,30H6V31H5zM7,30H8V31H7zM8,30H9V31H8zM10,30H11V31H10zM14,30H15V31H14zM16,30H17V31H16zM18,30H19V31H18zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM15,31H16V32H15zM18,31H19V32H18zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM28,31H29V32H28zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM13,32H14V33H13zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM20,32H21V33H20zM23,32H24V33H23zM24,32H25V33H24zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM13,34H14V35H13zM14,34H15V35H14zM16,34H17V35H16zM19,34H20V35H19zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM24,34H25V35H24zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM13,35H14V36H13zM14,35H15V36H14zM15,35H16V36H15zM17,35H18V36H17zM20,35H21V36H20zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM25,35H26V36H25zM29,35H30V36H29zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM36,35H37V36H36zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM12,36H13V37H12zM13,36H14V37H13zM14,36H15V37H14zM17,36H18V37H17zM18,36H19V37H18zM26,36H27V37H26zM27,36H28V37H27zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM13,37H14V38H13zM15,37H16V38H15zM16,37H17V38H16zM18,37H19V38H18zM22,37H23V38H22zM23,37H24V38H23zM25,37H26V38H25zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM12,38H13V39H12zM19,38H20V39H19zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine · 평일 08:30~18:30 · 토 08:30~13:30 · 031-893-4560</span>
+      <span class="slide__page">13 / 13</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return;
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

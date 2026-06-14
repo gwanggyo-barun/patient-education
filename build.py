@@ -88,6 +88,15 @@ TARGETS = [
         "category": "🫁 위장관", "audience": "환자/보호자", "disease": "GERD (역류성 식도염)",
     },
     {
+        "kind": "decks", "slug": "refractory-dyspepsia",
+        "slug_path": "decks/gi/refractory-dyspepsia/",
+        "html_path": ROOT / "decks/gi/refractory-dyspepsia/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "내시경 정상인데 끊으면 재발하는 쓰림 — 기능성·과민성 소화불량의 이해와 관리",
+        "category": "🫁 위장관", "audience": "환자/보호자",
+        "disease": "기능성 소화불량 · 역류 과민성 · 기능성 가슴쓰림 (DGBI / 난치성)",
+    },
+    {
         "kind": "decks", "slug": "hpylori",
         "slug_path": "decks/gi/h-pylori/eradication/",
         "html_path": ROOT / "decks/gi/h-pylori/eradication/index.html",
