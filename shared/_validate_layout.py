@@ -33,6 +33,24 @@ A4_VIEWPORT = {"width": 794, "height": 1123}
 # 16:9 deck: 1280 × 720
 DECK_VIEWPORT = {"width": 1280, "height": 720}
 
+# ── large_internal_gap 래칫 (2026-06-14, 원장 검수) ──────────────────────────
+# 새 검사 large_internal_gap 은 BLOCKING 이다 (≥140px 빈 띠 = 추한 갭, 차단).
+# 전수검사 결과 같은 안티패턴을 가진 기존 덱 7종이 이미 존재한다(아래). 이들을
+# 지금 일괄 수정하면 무관한 덱을 건드리게 되므로(원장 지시: "don't auto-fix
+# unrelated decks"), 기존 부채로 '유예 등록(grandfather)'해 CI 를 막지 않게 한다.
+# ⚠️ 새 덱/수정 덱은 유예 대상이 아니다 — large_internal_gap 은 완전 차단된다.
+# 유예된 덱을 손볼 때 이 갭도 같이 고치고, 고친 항목은 이 목록에서 제거할 것.
+# (refractory-dyspepsia 는 이번에 고쳤으므로 목록에 없다 = 완전 게이트됨.)
+GRANDFATHERED_INTERNAL_GAP = {
+    "decks/cardio/htn-2025-aha-acc/index.html",
+    "decks/emergency/endoscopy/cpr-training/index.html",
+    "decks/endocrine/prediabetes-remission/index.html",
+    "decks/general/papers-20260525/vutrisiran-attr-cm-helios-b/index.html",
+    "decks/gi/bowel-prep-low-volume/index.html",
+    "decks/gi/h-pylori/eradication/index.html",
+    "decks/vaccines/pneumococcal-comparison/index.html",
+}
+
 # JS that walks the DOM and returns layout issues. Same shape for both kinds.
 HANDOUT_VALIDATOR_JS = r"""
 (() => {
@@ -148,16 +166,26 @@ DECK_VALIDATOR_JS = r"""
         if (r.height > 6 && r.bottom > maxBottom) { maxBottom = r.bottom; deepest = (typeof c.className==='string'?c.className:''); }
       });
       // 텍스트 leaf 폴백 (박스 없는 슬라이드)
+      // ⚠️ 2026-06-14: 폴백은 본문 콘텐츠의 '최상단(minTop)'도 함께 잰다.
+      // 새 표준(Gotcha 21)에서 짧은 카드/리스트는 박스 안에서 '세로 중앙정렬'
+      // 되므로 위·아래에 대칭 여백이 남는다 — 이건 의도된 중앙정렬이지 언더필이
+      // 아니다. 아래에서 (위 여백 ≈ 아래 여백)이면 body_underfills 를 면제한다.
+      let minTop = Infinity;
       if (maxBottom === 0) {
+        const bodyTop = body.getBoundingClientRect().top;
         body.querySelectorAll('*').forEach((c) => {
           if (c.children.length > 0 || !c.textContent.trim()) return;
           if (c.closest && c.closest('figure, .ai-visual, .slide__footer, .pattern-timeline')) return;
           const r = c.getBoundingClientRect();
-          if (r.height > 0 && r.bottom > maxBottom) { maxBottom = r.bottom; deepest = (c.parentElement&&typeof c.parentElement.className==='string')?c.parentElement.className:''; }
+          if (r.height <= 0) return;
+          if (r.bottom > maxBottom) { maxBottom = r.bottom; deepest = (c.parentElement&&typeof c.parentElement.className==='string')?c.parentElement.className:''; }
+          if (r.top < minTop) minTop = r.top;
         });
       }
       if (maxBottom > 0) {
         const gap = fr.top - maxBottom;            // 음수 = footer 침범, 0~3 = 닿음
+        // 본문 콘텐츠 위쪽 빈공간(body 상단 ~ 첫 콘텐츠). 폴백에서만 측정됨.
+        const topGap = (minTop !== Infinity) ? (minTop - body.getBoundingClientRect().top) : 0;
         // footer.top 은 푸터 '상단 경계선'이고 실제 텍스트는 그 아래 padding-top
         // (16px)+border 만큼 떨어져 있다. 따라서 박스 하단이 footer.top 에 닿는
         // (gap 0) 건 구조상 정상(텍스트와 17px 여유)이고, 박스가 그 경계선을
@@ -166,8 +194,22 @@ DECK_VALIDATOR_JS = r"""
         if (gap < -3) {
           issues.push({slide: sn, kind: 'body_overlaps_footer', detail: `gap ${Math.round(gap)}px (crosses footer line)`, sample: String(deepest).slice(0,40)});
         } else if (gap > 72) {
-          // 본문 최하단~푸터 여백이 72px 초과 = 언더필 (24~56 적정, <16 과밀)
-          issues.push({slide: sn, kind: 'body_underfills', detail: `${Math.round(gap)}px`, sample: String(deepest).slice(0,40)});
+          // 본문 최하단~푸터 여백이 72px 초과 = 언더필 (24~56 적정, <16 과밀).
+          // 단, 콘텐츠가 세로 중앙정렬되어 위쪽에도 비슷한 여백(top ≳ bottom*0.6)이
+          // 있으면 의도된 중앙정렬이므로 면제 (Gotcha 21 fix false-positive 회피).
+          const centered = topGap >= gap * 0.6;
+          // visual-focus 슬라이드: 옆 이미지가 푸터 근처까지 세로를 채우면(텍스트 열보다
+          // 길다) 텍스트 열이 중앙정렬로 짧아도 빈 슬라이드가 아니다 → 면제.
+          let imgFills = false;
+          if (body.classList.contains('slide__body--visual-focus')) {
+            const fig = s.querySelector('figure.ai-visual, .ai-visual, .paper-visual');
+            // 이미지가 텍스트 열만큼(또는 그 이상) 아래로 내려가 본문 세로를 채우면
+            // (figr.bottom ≥ 텍스트 maxBottom) 텍스트 열이 짧아도 빈 슬라이드가 아니다.
+            if (fig) { const figr = fig.getBoundingClientRect(); if (figr.bottom >= maxBottom - 4) imgFills = true; }
+          }
+          if (!centered && !imgFills) {
+            issues.push({slide: sn, kind: 'body_underfills', detail: `${Math.round(gap)}px`, sample: String(deepest).slice(0,40)});
+          }
         }
       }
 
@@ -237,6 +279,56 @@ DECK_VALIDATOR_JS = r"""
           }
         }
       });
+      // ④ large_internal_gap (2026-06-14, 원장 검수): 카드/타일/행/리스트-아이템
+      // 컨테이너 '안'에서, 늘어난 박스를 채우려고 콘텐츠를 양끝으로 밀어 생긴
+      // 큰 빈 세로 띠를 잡는다. margin-top:auto / justify-content·align-content:
+      // space-between/space-around 의 전형적 증상 — 연속한 보이는 자식 사이
+      // 또는 (단일 그룹일 때) 그룹 위/아래에 GAP_T 초과의 빈 공간이 생긴다.
+      // 박스 자체가 콘텐츠보다 큰 sparse_box 와 달리, 이건 '한 박스 내부에서
+      // 콘텐츠 덩어리들이 서로 멀리 떨어진' 경우를 직접 짚는다.
+      // 임계값 튜닝 (2026-06-14 전수검사): 라이브러리 표준 .tile 레이아웃은
+      // 88~117px 의 자연스러운 카드 여백을 정상적으로 만든다(전 자료 분포의 최빈값
+      // 89px). dyspepsia 의 추한 빈 띠는 162~302px 였다. 따라서 140px 를 컷오프로
+      // 두면 정상 카드 간격은 모두 통과하고, 추한 띠(≥145px)만 잡힌다.
+      const GAP_T = 140;  // px
+      const GAPSEL = '.tile,.card,.myth-tile,.lsm-item,.dt-row,.check-item,.stats3-cell,.split__left,.split__right,.flow-card,.step,.step-card,.review-card,.stat-card';
+      s.querySelectorAll(GAPSEL).forEach((box) => {
+        const cs = getComputedStyle(box);
+        if (cs.display === 'none') return;
+        const br = box.getBoundingClientRect();
+        if (br.height < 60) return;
+        // 타임라인 카드는 의도적 중앙정렬(위·아래 대칭 여백) → 면제.
+        const bcl = (typeof box.className==='string'?box.className:'');
+        if (/timeline-step|step-card/.test(bcl)) return;
+        // 박스 안 '보이는 콘텐츠'의 세로 구간들을 모아, 연속 구간 사이 빈 띠를 본다.
+        // (텍스트/이미지 leaf 의 top~bottom 구간을 1px 단위로 합집합)
+        const padTop2 = parseFloat(cs.paddingTop) || 0;
+        const padBot2 = parseFloat(cs.paddingBottom) || 0;
+        const innerTop = br.top + padTop2, innerBot = br.bottom - padBot2;
+        const spans = [];
+        box.querySelectorAll('*').forEach((t) => {
+          if (t.children.length > 0) return;          // leaf 만
+          if (!t.textContent.trim() && !/IMG|SVG|CANVAS|PICTURE/.test(t.tagName)) return;
+          const cs2 = getComputedStyle(t);
+          if (cs2.display === 'none' || cs2.visibility === 'hidden') return;
+          const r = t.getBoundingClientRect();
+          if (r.height <= 0 || r.width <= 0) return;
+          spans.push([Math.max(r.top, innerTop), Math.min(r.bottom, innerBot)]);
+        });
+        if (spans.length === 0) return;
+        spans.sort((a,b) => a[0]-b[0]);
+        // 연속 구간 사이 최대 빈 띠
+        let worst = 0, prevBot = spans[0][1];
+        for (let i = 1; i < spans.length; i++) {
+          const g = spans[i][0] - prevBot;
+          if (g > worst) worst = g;
+          if (spans[i][1] > prevBot) prevBot = spans[i][1];
+        }
+        if (worst > GAP_T) {
+          issues.push({slide: sn, kind: 'large_internal_gap', detail: `${Math.round(worst)}px between children`, sample: bcl.split(' ')[0]});
+        }
+      });
+
       // ③ content_image_gutter: visual-focus 2열에서 좌측 콘텐츠 우측 끝 ↔ 이미지 좌측
       const vf = s.querySelector('.slide__body--visual-focus');
       if (vf) {
@@ -437,9 +529,22 @@ def main():
         sys.exit(0)
 
     total_issues = 0
+    grandfathered_total = 0
     for t in targets:
         rel = t.relative_to(ROOT) if t.is_relative_to(ROOT) else t
+        rel_str = str(rel).replace("\\", "/")
         issues = validate_html_file(t)
+        # large_internal_gap 래칫: 유예 등록된 기존 덱에서는 이 종류만 비차단
+        # 경고로 강등(다른 종류는 그대로 차단). 새/수정 덱은 강등 없음 → 완전 차단.
+        grandfathered = []
+        if rel_str in GRANDFATHERED_INTERNAL_GAP:
+            kept = []
+            for it in issues:
+                if it.get("kind") == "large_internal_gap":
+                    grandfathered.append(it)
+                else:
+                    kept.append(it)
+            issues = kept
         if issues:
             total_issues += len(issues)
             print(f"\n❌ {rel}  ({len(issues)} issues)")
@@ -447,13 +552,20 @@ def main():
                 print(f"   · {json.dumps(it, ensure_ascii=False)}")
         else:
             print(f"✓ {rel}")
+        if grandfathered:
+            grandfathered_total += len(grandfathered)
+            print(f"   ⚠️  (grandfathered, non-blocking) {len(grandfathered)} large_internal_gap — pre-existing 부채, 추후 수정 대상:")
+            for it in grandfathered:
+                print(f"      · {json.dumps(it, ensure_ascii=False)}")
 
     print(f"\n{'-' * 60}")
+    if grandfathered_total:
+        print(f"NOTE: {grandfathered_total} grandfathered large_internal_gap warning(s) in pre-existing decks (non-blocking — see GRANDFATHERED_INTERNAL_GAP)")
     if total_issues:
         print(f"FAIL: {total_issues} layout issue(s) across {len(targets)} files")
         sys.exit(1)
     else:
-        print(f"OK: {len(targets)} files, no layout issues")
+        print(f"OK: {len(targets)} files, no blocking layout issues")
         sys.exit(0)
 
 

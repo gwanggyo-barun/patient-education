@@ -288,6 +288,23 @@ HTML will overlay Korean labels using Pretendard font separately.
 
 > ⛔ **v2 게이트화 (2026-06-12)**: 위 1·2·5 항은 handouts 에서 더 이상 주관 판단에 맡기지 않는다 — 슬롯마다 `ImageIntent`(설명할 본문 1개 + visual_type + must_show) 의무 + 생성 이미지의 **aboutness 교차검증**(VLM 0~100, T_about=70 미달 채택 금지)으로 강제하고, `shared/_image_gate.py` 가 기록 정합성을 차단 게이트한다. 상세 절차는 §3.5.a(ImageIntent)·§3.5.e(채택 게이트).
 
+### 21. 늘어난 박스를 '갭 분배'로 채우지 말 것 — 가운데 모으고 폰트를 키운다 (2026-06-14 원장 검수, refractory-dyspepsia)
+
+원장 지적: `refractory-dyspepsia` 덱 전반(s3 오해카드·s5 유형타일·s8 약제표·s4·s10 목록·s6·s7 split)에서 **박스/카드/표/목록이 부자연스럽게 위·아래로 벌어진 큰 빈 띠**를 보였다. 원인은 **늘어난(grid stretch·full-height) 컨테이너를 "박스 높이를 채우려고" 갭 분배 idiom 으로 펼친 것**:
+
+- ❌ `.tile__group { margin-top: auto }` (라벨은 위, 제목+설명 묶음은 바닥 → 가운데 거대한 빈 띠)
+- ❌ 늘어난 flex/grid 컨테이너에 `justify-content: space-between / space-around`, `align-content: space-between` (약제표 4행이 위아래로 벌어짐, 목록 1·3·5 / 2·4 가 멀어짐)
+- ❌ `.pattern-grid--3 .tile { justify-content: flex-start }` 로 내용을 위에 핀 → 아래 빈 밴드
+
+**규칙 (deck-local override 로 적용 — shared 기본값은 건드리지 말 것, [Gotcha 20] 의 회귀 경고와 동일):**
+1. **콘텐츠 덩어리를 박스 안 가운데로 모은다** — 컨테이너는 `justify-content: center` / `align-content: center`, 항목 사이는 **편안한 고정 gap(10~18px)** 하나로. 카드는 grid stretch 로 등높이를 유지해도 좋다(그건 OK) — 단 **그 안의 묶음은 펼치지 말고 가운데**.
+2. **표·행 목록(약제표 등)**: 행을 space-between 으로 펼치지 말고 자연 높이 + 일정한 고정 row-gap(12~16px). 표 블록 전체를 세로 중앙에 둔다.
+3. **늘어난 공간은 빈 띠가 아니라 더 큰 글자로 쓴다** — 원장 요구의 핵심. 가운데 정렬로 생긴 여유는 `tile__title`·`tile__body`·표 셀·목록 텍스트 **폰트를 키워**(프로젝터 가독성) 활용한다. 템플릿 스케일 안에서(만화처럼 키우지 말 것), `word-break: keep-all` 유지.
+4. **검증기가 차단한다 — `large_internal_gap`**: `shared/_validate_layout.py` 의 deck 검사가 **카드/타일/행/리스트-아이템 컨테이너 안에서 연속한 보이는 자식 사이 빈 세로 띠가 ≥140px** 이면 `large_internal_gap` 으로 **차단(blocking)** 한다. 임계값 140px 는 전 자료 전수검사로 튜닝됨(라이브러리 표준 `.tile` 여백 88~117px 는 통과, 추한 띠 145px↑만 차단). ⚠️ 동일 안티패턴을 가진 **기존 덱 7종**(htn-2025-aha-acc·cpr-training·prediabetes-remission·vutrisiran-attr-cm-helios-b·bowel-prep-low-volume·h-pylori/eradication·pneumococcal-comparison)은 `GRANDFATHERED_INTERNAL_GAP` 로 **유예(비차단 경고)** 되어 있다 — 그 덱을 손볼 때 이 갭도 같이 고치고 목록에서 제거할 것. 새/수정 덱은 유예 없음 = 완전 차단.
+5. **`body_underfills` 와의 관계**: 콘텐츠를 가운데로 모으면 박스 아래에 여백이 남는데, 검증기는 이제 **위·아래 여백이 대칭(중앙정렬)이거나 visual-focus 슬라이드에서 옆 이미지가 세로를 채우면** `body_underfills` 를 면제한다(2026-06-14 개선). 즉 [Gotcha 20]·19 의 "박스는 채우되 묶음은 가운데" 와 충돌하지 않는다 — 가운데로 모아도 underfill 로 잘못 잡지 않는다.
+
+참조 구현: `decks/gi/refractory-dyspepsia/index.html` 의 deck-local `<style>`(Gotcha 21 주석 블록 — stats3·drug-table·lsm·checklist·split·tile 전부 center + 고정 gap + 폰트 확대).
+
 ### 20. 박스 안 "핵심 문구 + 설명"은 한 묶음 — 떼어 놓지 말 것 (2026-06-13 진료설명 리뷰)
 
 카드/박스 안의 **제목(핵심 문구)과 바로 아래 작은 설명 글씨는 하나의 의미 단위**다. 이 둘을 `justify-content: space-between` 이나 `.tile__body { margin-top:auto }` 로 박스의 위·아래 끝까지 벌리면, 둘 사이에 큰 빈 여백이 생겨 "제목 따로, 설명 따로"로 읽힌다 (hpylori-overview slides 2·3·5·6·7 사용자 지적: "네모 박스 안의 중심 문구랑 아래 작은 글씨들 사이 여백이 너무 많다").
@@ -1407,6 +1424,7 @@ deck 은 위 overflow 검사 외에 황금비율·모듈러 스케일 룰([Gotch
 - **`box_underfill`** — 박스 하단 빈 공간이 상단보다 비대칭으로 큼(하단 >28px AND 상단보다 >24px). 위로 몰린 내용 → `justify-content:center` 또는 박스 높이를 내용에 맞춤.
 - **`box_content_overflow`** — 박스 내용이 `scrollHeight > clientHeight`로 실제 잘림. 긴 비교값은 폰트 축소가 아니라 라벨/값 분리로 해결.
 - **`sparse_box`** — 대칭이어도 박스가 콘텐츠보다 과하게 큼(`inner_fill` < 0.48, stat 카드는 < 0.40 — **경고**). 처리 우선순위 B(콘텐츠 확대)→C(박스 축소+중앙배치)→D(재설계). 임계 수치 전체는 SoT §4 표 참조.
+- **`large_internal_gap`** (2026-06-14, [Gotcha 21]) — **차단(blocking).** 카드/타일/행/리스트-아이템 컨테이너 안에서 연속한 보이는 자식 사이 빈 세로 띠가 **≥140px** 이면 갭 분배(`margin-top:auto`·`space-between`·`align-content:space-between`)로 박스를 억지로 채운 추한 빈 밴드로 보고 차단한다. 해법: 콘텐츠를 `justify-content/align-content:center` 로 모으고 고정 gap(10~18px) + 폰트 확대. 기존 부채 덱 7종은 `GRANDFATHERED_INTERNAL_GAP` 로 유예(비차단). 임계 140px = 전수검사 튜닝(표준 tile 88~117px 통과, 추한 145px↑만 차단).
 - **`content_image_gutter`** / **`sibling_box_overlap`** — 본문↔이미지 거터 24px 미만, 형제 카드 물리 겹침.
 
 > ⚠️ **검증기 통과 ≠ 시각 통과.** deck 은 Step 3.8 에서 `python3 tools/slide_screens.py <html>` 로 **모든 슬라이드 PNG 를 한 장씩 전수 육안검수**해야 끝난다(요약 몇 장만 보는 것 금지). bbox·픽셀 검증으로 못 잡는 박스 대칭·희소 박스·라벨 정렬을 사람이 확인한다.
@@ -1460,8 +1478,9 @@ python3 -m shared._tone_score handouts/{specialty}/{slug}/index.html
 | `element_below_page` | 특정 카드 padding/font 과다 | 그 카드 항목 수 줄이거나 폰트 행간 조정 |
 | `slide_overflow` (deck) | 12장 표준에 안 맞는 콘텐츠 | 슬라이드 분할 또는 카드 수 줄임 |
 | `font_too_small` (deck) | 본문 폰트 <15px 강제 축소 | 폰트 키우기 — 표셀 15~16px·본문 16~17px (콘텐츠 줄여 공간 확보, 폰트 축소 금지) |
-| `body_underfills` (deck) | 푸터 위 >72px 빈 여백 | `space-between`/패딩·행간으로 펴기, 콘텐츠 보강 (SoT §4) |
+| `body_underfills` (deck) | 푸터 위 >72px 빈 여백 (비대칭·이미지 미충족 시) | 패딩·행간·콘텐츠 보강으로 채움. **갭 분배(space-between)로 한 박스 안 묶음을 펴지 말 것** → [Gotcha 21]. 가운데정렬(대칭)·visual-focus 이미지 충족 시 자동 면제 |
 | `box_underfill` / `sparse_box` (deck) | 박스가 콘텐츠보다 과대 | 박스 높이를 내용에 맞춤 또는 `justify-content:center`, B→C→D 순서 |
+| `large_internal_gap` (deck) | 카드/행/리스트 안 ≥140px 빈 띠 (갭 분배 남용) | 콘텐츠 `center` 로 모으고 고정 gap(10~18px)+폰트 확대 → [Gotcha 21]. 기존 7덱 유예 |
 
 **원칙**: 글자 크기를 줄여 억지로 끼워넣지 않는다. 콘텐츠를 분리하거나 페이지를 추가한다.
 

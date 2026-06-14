@@ -50,6 +50,7 @@ from _validate_layout import (  # noqa: E402
     HANDOUT_VALIDATOR_JS,
     DECK_VALIDATOR_JS,
     CONTRAST_ADVISORY_JS,
+    GRANDFATHERED_INTERNAL_GAP,
 )
 
 NOTION_ENABLED = bool(os.environ.get("NOTION_TOKEN"))
@@ -1803,6 +1804,19 @@ def main() -> int:
                     page.wait_for_timeout(300)
                 validator_js = DECK_VALIDATOR_JS if fmt == "deck-16x9" else HANDOUT_VALIDATOR_JS
                 issues = page.evaluate(validator_js)
+                # large_internal_gap 래칫: 유예 등록된 기존 덱에서는 이 종류만
+                # 비차단 경고로 강등(나머지 종류는 그대로 차단). 새/수정 덱은
+                # 강등 없음 → 완전 차단. (정본 목록 = _validate_layout.GRANDFATHERED_INTERNAL_GAP)
+                try:
+                    src_rel = str(html_path.relative_to(ROOT)).replace("\\", "/")
+                except ValueError:
+                    src_rel = ""
+                if issues and src_rel in GRANDFATHERED_INTERNAL_GAP:
+                    gf = [it for it in issues if it.get("kind") == "large_internal_gap"]
+                    issues = [it for it in issues if it.get("kind") != "large_internal_gap"]
+                    if gf:
+                        print(f"  ⚠️  {kind}/{slug}: {len(gf)} grandfathered large_internal_gap "
+                              f"(non-blocking, pre-existing 부채): {gf}", file=sys.stderr)
                 if issues:
                     failures.append(f"{kind}/{slug}: layout issues → {issues}")
                     ctx.close()
