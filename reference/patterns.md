@@ -71,6 +71,32 @@
 - supporting은 3-4문장 이내
 - metric card는 정확히 2개 권장 (3개도 가능하지만 빡빡)
 
+### 2-b. Symmetric Split — 동등 위계 2단 (`pattern-split--even`)
+
+**적합한 콘텐츠**: 좌우가 **대등한 두 항목** — 1단계 vs 2단계, 증상 유형 A vs B, Before vs After, 옵션 X vs Y.
+
+**핵심**: 기본 `.pattern-split`은 **11fr:9fr 비대칭**(statement+supporting 전용)이라 좌우 대등 콘텐츠에 쓰면 **우측 단이 좁아 보인다**(특히 옆에 visual-focus 이미지가 붙으면 더 cramped). 동등 2단은 반드시 `pattern-split--even`(= 1fr 1fr)을 쓴다. 자식으로 `split__left`/`split__right`를 쓰면 `:has()` 규칙이 **자동으로 1fr 1fr 적용**(clinic-slides.css)되지만, **의도를 명시하려면 `--even`을 같이 붙인다.**
+
+```html
+<div class="pattern-split pattern-split--even">   <!-- ★ 대등 2단은 반드시 --even -->
+  <div class="split__left">
+    <h3 class="split__heading">1단계 — …</h3>
+    <ul class="split__list"><li>…</li></ul>
+    <div class="split__note">※ …</div>
+  </div>
+  <div class="split__right">
+    <h3 class="split__heading">2단계 — …</h3>
+    <ul class="split__list"><li>…</li></ul>
+    <div class="split__note">※ …</div>
+  </div>
+</div>
+```
+
+**가이드**:
+- 좌·우 콘텐츠 분량을 비슷하게(한쪽만 길면 대칭이어도 시각적 불균형). 한쪽이 statement·다른 쪽이 detail이면 그건 `--even`이 아니라 기본 비대칭 split.
+- visual-focus 이미지와 함께 쓰면 split은 좌측 그리드 컬럼(`minmax(0,1fr)`) 안에서 다시 2등분되므로, 이미지가 우측 단을 추가로 누르지 않도록 `--even` 필수.
+- ⚠️ Gotcha(2026-06-15 사용자 적발, refractory-dyspepsia s06/s07): 대등 2단을 기본 `.pattern-split`에 넣어 우측 단이 좁게 렌더 → `--even` + `:has()` 자동규칙으로 해결.
+
 ## 3. Density Grid 3×2
 
 **적합한 콘텐츠**: 6개 동등 위계 항목 — 증상, 위험 요인, 진단 방법, 적응증, 생활습관, Red Flags 등.

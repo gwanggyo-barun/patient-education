@@ -496,6 +496,20 @@ body {
   z-index: 1;
 }
 
+/* ------------------------------------------------------------------------
+   SYMMETRIC SPLIT — equal-weight peers (e.g. 1단계 vs 2단계, 증상유형 A vs B).
+   The default .pattern-split is 11fr 9fr (asymmetric statement+supporting).
+   When the two columns are PEERS of equal weight, that 55/45 makes the right
+   column look cramped — worse when a visual sits next to it (visual-focus).
+   Use .pattern-split--even, OR rely on the :has() auto-detect below: any
+   .pattern-split holding both .split__left and .split__right (the symmetric
+   convention) is treated as 50/50 automatically so this can't recur.
+   ------------------------------------------------------------------------ */
+.pattern-split--even,
+.pattern-split:has(> .split__left):has(> .split__right) {
+  grid-template-columns: 1fr 1fr;
+}
+
 .pattern-split__primary {
   display: flex;
   flex-direction: column;
