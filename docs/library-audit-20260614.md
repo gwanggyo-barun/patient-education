@@ -2,7 +2,7 @@
 
 > 광교바른내과 환자교육 콘텐츠(decks 72 · handouts 55 · lab-reports 33 = **160개**) 전수 점검.
 > 방법: ① 결정적 도구(레이아웃·연락처·표기) ② clinical-accuracy 전문가 **7개 진료과 그룹 병렬 감사**(독립 판단, 모델 inherit).
-> 작업 브랜치: `feat/library-audit-gapfill-20260614` (origin/main `46b2bfc` 기준). **수정 미적용 — 검수용.**
+> 작업 브랜치: `feat/library-audit-gapfill-20260614` (origin/main `46b2bfc` 기준). Fix branch `fix/library-audit-findings-20260614`에서 major 10건 + 저혈당 오타 수정 적용.
 
 ---
 
@@ -31,7 +31,7 @@
 | 1 | `handouts/screening/cvd-retinal-screening` | AI 망막검사 "정확도 90%+ · 경동맥/CT보다 우수" 과장 | 인용근거 Poplin 2018·Rim 2020은 **AUC ~0.70**. 같은 라이브러리 `eye-cardiovascular` 덱은 정직하게 C-stat 0.71(=CT CAC) | 수치를 "예측력 AUC 약 0.70, CT 칼슘스코어와 유사"로 정정, "경동맥보다 우수" 막대 삭제 | 0.82 |
 | 2 | `decks/endocrine/achieve3-oral-glp1` (S10) | "체중 데이터 빠짐/물음표"라고 안내 → **사실오류** | ACHIEVE-3(Lancet 2026-02-26)에 체중 공개: 오포글리프론 36mg **−9.2%** vs 경구세마 14mg −5.3% (웹검증) | 한계를 '단기·오픈라벨·후원'으로 교체, 체중은 "함께 더 감소" | 0.92 |
 | 3 | `decks/infectious/influenza-antivirals` | 발록사비르 "12세 미만 사용 제한" — **과거 정보** | FDA 2022-08부터 건강한 **5세 이상** 치료·예방 승인(miniSTONE-2) | "5세 미만 제한"으로 수정, 국내 허가연령 병기 | 0.82 |
-| 4 | `decks/vaccines/pneumococcal-comparison` (S5) | PCV21 혈청형 목록 **9N·15B 누락**(20종만, "20"→"20A") | Capvaxive(PCV21) FDA 2024 라벨 21종 | 9N·15B 추가, "20"→"20A", '신규 8종' 재검토 | 0.88 |
+| 4 | `decks/vaccines/pneumococcal-comparison` (S5) | PCV21 혈청형 목록 **9N·15B 누락**(20종만, "20"→"20A") | Capvaxive(PCV21) FDA 라벨의 IPD 적응증 혈청형 | 9N·15B 추가, "20"→"20A", '신규 8종' 재검토 | 0.88 |
 | 5 | `decks/gi/post-polypectomy` (S11) | 추적간격(정상 5년·선종 2~3년)이 인용한 가이드라인보다 짧음 | USMSTF 2020: 정상 10년·소형선종 7~10년. 슬라이드는 "클리닉 변형" 명시(완화) | 간격 갱신 **또는** 'USMSTF 2020' 인용 빼고 '클리닉 보수 기준' 명확화 | 0.78 |
 | 6 | `decks/gi/h-pylori/eradication` (S6) | 1차 치료에 **P-CAB(보노프라잔·테고프라잔) 요법 누락** | 2022 대한헬리코박터 지침·국내 실무(클래리 내성 ~23%). 같은 라이브러리 `refractory-dyspepsia`엔 P-CAB 등장(내부 비일관) | 1차 옵션에 P-CAB 기반 요법 추가 | 0.70 |
 | 7 | `decks/endocrine/prediabetes-remission` | 덱 전체가 **미검증 2026 논문**의 "공복 97 mg/dL·HR" 수치에 의존 | 해당 Lancet D&E 2026 논문·수치 교차확인 실패 [needs-verification] | 원논문 PMID/DOI 확인. 전까지 "약 50%↓(관찰연구)"로 완화 | 0.62 |
@@ -40,7 +40,23 @@
 | 10 | `decks/neurology/migraine/diagnosis` (S9) | 트립탄 권고에 **심혈관 금기 경고 없음** | 트립탄=혈관수축제, 관상동맥·뇌졸중력·조절안된 고혈압·반신마비형 금기 | "심장질환·뇌졸중력·고혈압 시 사용 전 상담" 한 줄 추가 | 0.72 |
 
 ### 즉시 가능한 무판단 수정
-- `handouts/lifestyle/diabetes-diet` — **"저혈암" → "저혈당"** 오타 (conf 0.97). 승인 시 즉시.
+- `handouts/lifestyle/diabetes-diet` — **"저혈암" → "저혈당"** 오타 (conf 0.97). Fix branch에서 처리 완료.
+
+### Fix status — 2026-06-14
+
+| # | 상태 | 처리 |
+|---|---|---|
+| 1 | closed | AI 망막검사 90%+·경동맥 우수 표현 제거, AUC 약 0.70 / CT CAC C-stat 약 0.71로 정정 |
+| 2 | closed | ACHIEVE-3 체중 데이터 누락 표현 삭제, 52주 체중 감소 수치 반영 |
+| 3 | closed | 발록사비르 12세 미만 제한 표현을 5세 미만 제한·임신 중 권고 안 함으로 수정 |
+| 4 | closed | PCV21 혈청형 9N·15B 추가, 20A 정정, "신규 8종" 표현 완화 |
+| 5 | closed | post-polypectomy 추적 간격은 유지하되 USMSTF/KSGE 변형 인용 제거, 본원 보수 기준으로 명시 |
+| 6 | closed | H. pylori 1차 치료에 P-CAB 기반 삼제요법 옵션 추가 |
+| 7 | closed | 전당뇨 97 mg/dL·HR 확정 표현 완화, 관찰연구/원문 재확인 필요 톤으로 조정 |
+| 8 | closed | GLP-1 OCULUS 정량 표현을 검증 가능한 25.0% vs 3.1%와 clear liquids 중심으로 정리 |
+| 9 | closed | GLP-1 검사 전 일정은 주 1회 제제 7일 schedule-first로 통일 |
+| 10 | closed | 편두통 트립탄 심혈관·뇌졸중·고혈압·반신마비형 편두통 상담 경고 추가 |
+| typo | closed | `저혈암` 오타를 `저혈당`으로 수정 |
 
 ## 4. 교차 테마 (여러 자료 공통)
 
@@ -56,7 +72,7 @@
 
 ## 5. 권고 처리 등급
 
-- **A. 즉시(무판단)**: 저혈암 오타.
+- **A. 즉시(무판단)**: 저혈암 오타 — 처리 완료.
 - **B. 사실 정정(원장 확인 후)**: 발록사비르 연령, PCV21 혈청형, ACHIEVE-3 체중, 트립탄 CV 경고, KSH 2023→2022, β차단제 1차 표지 충돌.
 - **C. 정책 결정(원장 판단)**: post-polypectomy 추적간격(클리닉 정책), GLP-1 검사 전 일정 통일(7일 룰), HbA1c·페리틴 목표 통일.
 - **D. 출처 검증 후**: prediabetes 2026 논문, OCULUS RCT, ACC/AHA 2026 지질.
