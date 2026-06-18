@@ -45,6 +45,7 @@ from _notion_sync import DBS, NOTION_VERSION  # noqa: E402
 REPORT_PATH = ROOT / "docs/link-audit-20260607.json"
 REQUEST_INTERVAL_SEC = 0.34
 TIMEOUT_SEC = 30
+REDACTED_LAB_REPORT_TITLE = "[lab-report redacted]"
 DATA_SOURCE_IDS = {
     "a84f23489df54e8fbe34b9818d6109e5": "afaccb35-948f-45b4-9e9d-ec64ccbfe345",
 }
@@ -296,10 +297,15 @@ def _apply_fixes(report: dict) -> None:
 def _record_for_report(record: LinkRecord, *, ok: bool) -> dict:
     data = asdict(record)
     data.pop("raw", None)
+    title_redacted = record.content_kind == "lab-reports"
+    page_title = REDACTED_LAB_REPORT_TITLE if title_redacted else record.page_title
+    if title_redacted:
+        data["page_title"] = page_title
     expected_status = check_url(record.expected_url) if record.expected_url and not ok else None
     return {
         "page_id": record.page_id,
-        "page_title": record.page_title,
+        "page_title": page_title,
+        "page_title_redacted": title_redacted,
         "content_kind": record.content_kind,
         "link_kind": record.kind,
         "location": record.location,
