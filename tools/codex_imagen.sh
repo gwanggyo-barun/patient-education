@@ -70,6 +70,13 @@ CODEX_PROMPT=$(cat <<EOF
 EOF
 )
 
+# 4.5) 재생성 전 기존 타깃 제거 (2026-06-19 원장 검수, ROMA 덱)
+#   버그: 타깃이 이미 있으면 codex가 새 렌더를 못 만든 경우에도 옛 파일을 재사용/유지해
+#   stale 이미지가 SUCCESS 로 통과했다(아래 6) 존재검증이 '파일 있음'만 봤기 때문).
+#   타깃을 먼저 비우면 codex 가 새로 못 만들 때 정직하게 exit 5 로 실패한다.
+rm -f "$TARGET_PATH"
+CALL_T0=$(date +%s)
+
 # 5) codex exec 호출 (이미지 생성은 수 분 걸릴 수 있음)
 LOG_FILE=$(mktemp -t codex-imagen-log.XXXXXX)
 echo "[codex_imagen] calling codex /imagen — target: $TARGET_PATH"
@@ -91,6 +98,15 @@ if [[ ! -f "$TARGET_PATH" ]]; then
   echo "ERROR: target file not created: $TARGET_PATH" >&2
   tail -30 "$LOG_FILE" >&2
   exit 5
+fi
+
+# 6.5) 새 렌더 검증 (2026-06-19): 호출 시작(CALL_T0) 이후 생성/수정된 파일이어야 한다.
+#   codex 가 옛 파일을 재사용했다면 mtime 이 호출 이전이므로 stale 로 판정해 실패시킨다.
+MTIME=$(stat -f %m "$TARGET_PATH" 2>/dev/null || stat -c %Y "$TARGET_PATH" 2>/dev/null || echo 0)
+if [[ "$MTIME" -lt "$CALL_T0" ]]; then
+  echo "ERROR: target not freshly generated (mtime $MTIME < call $CALL_T0) — likely stale reuse, not a new render." >&2
+  tail -30 "$LOG_FILE" >&2
+  exit 6
 fi
 
 SIZE=$(wc -c < "$TARGET_PATH" | tr -d ' ')
