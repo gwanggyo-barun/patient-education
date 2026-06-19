@@ -81,6 +81,14 @@ VALID_NOTION_STATUSES = {
 TARGETS = [
     # === 16:9 multi-slide decks ===
     {
+        "kind": "decks", "slug": "roma-ovarian-risk",
+        "slug_path": "decks/gyn/roma-ovarian-risk/",
+        "html_path": ROOT / "decks/gyn/roma-ovarian-risk/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "ROMA 난소암 위험도 평가 검사",
+        "category": "🌸 부인과", "audience": "환자/보호자", "disease": "난소암 위험도 평가 (ROMA)",
+    },
+    {
         "kind": "decks", "slug": "gerd",
         "slug_path": "decks/gi/gerd/lifestyle/",
         "html_path": ROOT / "decks/gi/gerd/lifestyle/index.html",
