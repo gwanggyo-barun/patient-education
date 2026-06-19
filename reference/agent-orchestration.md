@@ -41,9 +41,16 @@ command -v codex >/dev/null && codex login status >/dev/null 2>&1 && echo CODEX_
 2. HTML 슬롯 먼저 + `_validate_layout` 통과 + 슬롯 실측 (§3.5.b — strict ratio, 추정 금지)
 3. 이미지별 영문 프롬프트 작성 → `{대상 디렉토리}/{이름}.prompt.md` 로 저장
    (ABSOLUTELY NO TEXT 블록, full-bleed 문구, PII 금지 — 기존 룰 전부 포함해서)
-4. `bash tools/codex_imagen.sh <prompt.md> shared/assets/generated/{topic-slug}-{purpose}-YYYYMMDD.png`
-   - 이미지별 1회씩 별도 호출 (batch 금지 — §3.5.a.1.3)
-   - 여러 장이면 순차 호출하되 결과 보고는 묶어서
+4. 이미지 생성 (2026-06-20 개선):
+   - **1장**: `bash tools/codex_imagen.sh <prompt.md> shared/assets/generated/{slug}-{purpose}-YYYYMMDD.png`
+     (자동 재시도/백오프 + stale·최소크기·비율 검증 내장)
+   - **여러 장 = 병렬+격리**: `bash tools/codex_imagen_batch.sh <p1>'|'<t1> <p2>'|'<t2> ...`
+     (또는 `--list <file>`: 줄당 `prompt<TAB>target`). 작업별 임시 CODEX_HOME 격리로 동시 생성
+     (`~/.codex/generated_images` 충돌 없음) + sha 고유성 자동 검증. 더 이상 순차 강제 아님.
+   - **엔진/폴백**: `CODEX_IMAGEN_ENGINE=auto`(기본). codex 내장 image_gen 이 "이미지는 만들지만
+     파일경로 미노출"(degraded) 이면 자동으로 Gemini 폴백(`tools/gemini_imagen_fallback.py`).
+     ⚠️ Gemini 폴백은 **이미지 REST quota 있는 정식 GEMINI_API_KEY(AI Studio 발급)** 필요 —
+     OAuth 파생 키(AQ.…)는 quota 0(429). 둘 다 막히면 정직하게 exit 5(가짜 이미지 없음).
 5. 생성본 Read 로 육안 검수 (구도·여백·텍스트 혼입 여부) → 슬롯 비율 어긋나면 재생성
    (레이아웃을 이미지에 맞추지 않는다)
 6. HTML 삽입 → 재빌드·재검증 → push (기존 Step 4)
