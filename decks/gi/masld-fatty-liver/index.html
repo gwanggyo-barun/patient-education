@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>MASLD Fatty Liver — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/masld-fatty-liver/">
+  <meta property="og:title" content="지방간(MASLD) 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="MASLD(대사이상 지방간질환) — 단순히 살찐 간이 아니라 대사질환. 가장 위험한 건 심장, 예후를 정하는 건 흉터(섬유화) 단계. 그리고 되돌릴 수 있습니다.">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/masld-fatty-liver/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions (stats3 row + split + grid + compare + table + timeline + checklist + NO-CROP visual slots) -->
+  <style>
+    /* Hide decorative bg number so scrollHeight == clientHeight (validator-friendly) */
+    .slide__bg-num { display: none !important; }
+
+    /* ── footer-safe compact frame (deck-local) ───────────────────────── */
+    .slide { --slide-pad-y: 44px; }
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .slide__title-block { margin-bottom: 22px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+
+    /* ── Three-stat row (slide 3) ─────────────────────────────────────── */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: stretch;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--space-4);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 2.4rem;
+      font-weight: var(--weight-black);
+      line-height: 1.04;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__sub {
+      font-size: 1rem;
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 280px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: 18px 22px;
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: 1.02rem;
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: 1.5;
+    }
+
+    /* ── Split text-column shared (slides 2, used as text side of visual splits) ── */
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 1.7rem; line-height: 1.16; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 0.97rem; line-height: 1.46; }
+    .pattern-split__detail { justify-content: center; gap: 16px; min-height: 0; }
+    .pattern-split__metric { padding: 16px 20px; }
+    .pattern-split__metric-value { font-size: 1.55rem; line-height: 1.08; }
+
+    /* ── NO-CROP image+text SPLIT (slides 2, 4, 6) ─────────────────────────
+       Left = image column with a FIXED aspect-ratio (3:2) matching the
+       generated image EXACTLY → object-fit: contain shows the WHOLE image
+       with ZERO crop and ZERO letterbox (ratio match). Right = text.
+       This is the updated NO-CROP rule (SKILL.md §15, 2026-06-19). */
+    .split-visual {
+      display: grid;
+      grid-template-columns: 0.92fr 1fr;
+      gap: 34px;
+      height: 100%;
+      align-items: center;
+      min-height: 0;
+    }
+    .split-visual__fig {
+      margin: 0;
+      width: 100%;
+      aspect-ratio: 3 / 2;            /* EXACT match to 1536×1024 generated image */
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 2px 9px rgba(0,0,0,0.07);
+      display: block;
+    }
+    .split-visual__fig img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;            /* ratio matches → no crop, no bars */
+      display: block;
+    }
+    .split-visual__text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      min-height: 0;
+    }
+
+    /* ── FULL-WIDTH NO-CROP wide strip (slide 5 — fibrosis F0→F4) ──────────
+       Band aspect-ratio matches the generated wide image EXACTLY
+       (2280×420 ≈ 5.43:1) → object-fit: contain shows the entire F0→F4
+       progression with NO edge clipping of any stage. */
+    .slide__body--with-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: 0;
+      justify-content: center;
+    }
+    .strip-visual {
+      width: 100%;
+      aspect-ratio: 2280 / 420;       /* EXACT match to generated wide image */
+      margin: 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 2px 9px rgba(0,0,0,0.07);
+      display: block;
+    }
+    .strip-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;            /* ratio matches → whole strip, no crop */
+      display: block;
+    }
+    .strip-caption-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .strip-cap {
+      text-align: center;
+      padding: 10px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+    }
+    .strip-cap--danger { background: #FBEDED; border-color: #D9A6A6; }
+    .strip-cap__stage { font-size: 1.02rem; font-weight: var(--weight-black); color: var(--color-navy); line-height: 1.1; }
+    .strip-cap--danger .strip-cap__stage { color: #A62A2A; }
+    .strip-cap__desc { font-size: 0.84rem; font-weight: var(--weight-450); color: var(--color-ink-soft); margin-top: 4px; line-height: 1.28; }
+    .strip-note {
+      padding: 14px 20px;
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-left: 4px solid var(--color-steel);
+      border-radius: var(--radius-sm);
+      font-size: 0.98rem;
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: 1.46;
+    }
+
+    /* ── Grid / tiles (slides 7) ──────────────────────────────────────── */
+    .pattern-grid { align-content: center; }
+    .tile { padding: 16px 20px; gap: 8px; }
+    .tile__title { font-size: 1.12rem; line-height: 1.22; }
+    .tile__body { font-size: 0.98rem; line-height: 1.4; }
+    .tile__index { font-size: 0.78rem; }
+
+    /* ── Compare (slide 8 — MASLD vs MetALD) ──────────────────────────── */
+    .slide:nth-of-type(8) .pattern-compare { height: 100%; align-items: stretch; }
+    .pattern-compare__col, .compare-col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .compare-col__header { padding: 18px 20px; font-size: 1.18rem; }
+    /* 4 independent items distributed to fill the column (allowed per §18) */
+    .compare-col__list { padding: 22px 20px 24px; gap: 14px; flex: 1 1 auto; justify-content: space-between; }
+    .compare-col__list li { font-size: 1.04rem; line-height: 1.4; padding-left: 24px; }
+
+    /* ── Table (slide 9 — drugs) ──────────────────────────────────────── */
+    .slide:nth-of-type(9) .slide__body { display: flex; flex-direction: column; }
+    .pattern-table { display: flex; flex-direction: column; gap: 11px; flex: 1 1 auto; justify-content: center; min-height: 0; }
+    .tbl-row {
+      display: grid; grid-template-columns: 1.3fr 0.9fr 2fr;
+      gap: var(--space-5); align-items: center;
+      padding: 13px 18px;
+      background: var(--color-canvas); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+    .tbl-row--head {
+      background: var(--color-navy); color: var(--color-canvas);
+      border-color: var(--color-navy); font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-snug);
+    }
+    .tbl-row--accent { background: #EFF6FC; border-color: var(--color-steel); }
+    .tbl-row--note { display: block; background: var(--color-canvas-warm); border-color: var(--color-border); padding: 16px 20px; }
+    .tbl__note--full { font-size: 0.97rem; color: var(--color-ink); line-height: 1.46; }
+    .tbl__label { font-weight: var(--weight-bold); color: var(--color-navy); font-size: 1rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label { color: var(--color-canvas); font-size: 0.96rem; }
+    .tbl__num { font-size: 1rem; font-weight: var(--weight-black); color: var(--color-steel-deep); text-align: center; letter-spacing: var(--tracking-tight); line-height: 1.22; }
+    .tbl-row--head .tbl__num { color: var(--color-canvas); font-size: 0.96rem; font-weight: var(--weight-bold); }
+    .tbl__note { font-size: 0.97rem; color: var(--color-ink-soft); line-height: 1.34; }
+    .tbl-row--head .tbl__note { color: var(--color-canvas); opacity: 0.92; font-size: 0.96rem; }
+
+    /* ── Timeline (slide 10 — HCC screening) ──────────────────────────── */
+    .pattern-timeline { align-items: stretch; --timeline-gap: 14px; }
+    .timeline-step { justify-content: center; padding: 16px; gap: 9px; }
+    .timeline-step__title { font-size: 1.06rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.36; }
+
+    /* ── Checklist (slide 11) ─────────────────────────────────────────── */
+    .pattern-checklist { height: 100%; align-content: center; }
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-3) 0; }
+    .check-item { min-height: 0; }
+    .check-item__text { font-size: 1.04rem; line-height: 1.36; }
+
+    /* ── Closing (slide 12) ───────────────────────────────────────────── */
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; min-height: 0; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { padding: 14px 16px; gap: 8px; min-height: 0; }
+    .qr-block__code { width: 100px; height: 100px; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">지방간(MASLD),<br><em>단순히 "살찐 간"이 아니라 대사질환입니다</em></h1>
+      <p class="slide__subtitle">MASLD(대사이상 지방간질환) — 당뇨·고혈압·이상지질혈증과 한 묶음인 대사 문제입니다. 가장 위험한 건 간이 아니라 <strong>심장</strong>이고, 예후를 정하는 건 지방의 양이 아니라 <strong>흉터(섬유화) 단계</strong>입니다. 그리고 <strong>되돌릴 수 있습니다.</strong></p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">MASLD · 대사질환 · 심혈관 위험 · 섬유화 단계가 예후 · 생활습관이 1차 치료</span>
+      <span class="slide__page">광교바른내과 소화기내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · SPLIT + IMAGE ① — 지방간 = 대사질환 묶음
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IT IS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이름이 바뀐 이유 — NAFLD에서 MASLD로</h2>
+      <p class="slide__subtitle">지방간은 당뇨·고혈압·이상지질혈증과 한 묶음의 대사질환이라는 본질을 담아 이름이 바뀌었습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="split-visual">
+        <figure class="split-visual__fig">
+          <img src="../../../shared/assets/generated/masld-metabolic-cluster-20260619.png" alt="지방간을 가운데 두고 당뇨(혈당)·고혈압·이상지질혈증이 하나로 연결된 대사질환 묶음">
+        </figure>
+        <div class="split-visual__text">
+          <p class="pattern-split__statement">2023년 국제 합의로 <em>'비알코올성 지방간(NAFLD)'</em>이 <em>MASLD(대사이상 지방간질환)</em>로 바뀌었습니다.</p>
+          <p class="pattern-split__supporting">
+            바뀐 이유는 두 가지입니다. ① <strong>'알코올 아님'·'지방'이라는 낙인을 제거</strong>하고, ② 단순히 다른 원인을 배제해서 붙이는 진단이 아니라 <strong>'대사 문제가 본질'</strong>이라는 점을 이름에 담기 위해서입니다. 질환 자체는 거의 같아서 기존 환자 대부분이 그대로 해당됩니다.
+          </p>
+          <div class="pattern-split__detail">
+            <div class="pattern-split__metric">
+              <div class="pattern-split__metric-label">핵심 메시지</div>
+              <div class="pattern-split__metric-value">"살찐 간"이 아니라 대사질환</div>
+              <div class="pattern-split__metric-detail">당뇨·고혈압·이상지질혈증과 같은 뿌리에서 나오는 한 묶음의 문제입니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 2023년 NAFLD→MASLD 국제 명명 합의(대사이상 지방간질환)</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · THREE-STAT ROW — 얼마나 흔한가 / 어떻게 진단하나
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>HOW COMMON</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">얼마나 흔한가 · 어떻게 진단하나</h2>
+      <p class="slide__subtitle">간에 지방이 있고 대사위험인자 한 가지만 있어도 진단됩니다 — 그래서 문턱이 낮습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">3명 중<br>1명</div>
+            </div>
+            <div class="stats3-cell__label">한국 성인 유병률 약 31%<br>흔한 대사질환입니다</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">약 2/3</div>
+              <div class="stats3-cell__sub">당뇨 환자</div>
+            </div>
+            <div class="stats3-cell__label">당뇨가 있으면<br>동반 비율이 더 높습니다</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">1<span style="font-size:1.3rem;">개</span></div>
+              <div class="stats3-cell__sub">위험인자</div>
+            </div>
+            <div class="stats3-cell__label">간 지방 + 대사위험인자<br>단 1개만 있어도 진단</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          <strong>진단 기준(한국) — </strong>간에 지방이 있으면서 대사위험인자(CMRF) 중 하나라도 있으면 MASLD입니다. 위험인자에는 <strong>BMI ≥ 23</strong>, 허리둘레 <strong>남 ≥ 90cm·여 ≥ 85cm</strong>, 그리고 혈당·혈압·중성지방·HDL 이상이 포함됩니다. 기준이 낮아 많은 분이 해당됩니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 한국 MASLD 유병률 ~31% · 당뇨 환자 약 2/3 동반 · CMRF 1개 진단 기준</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · SPLIT + IMAGE ② — 가장 위험한 건 심장
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>THE REAL RISK</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">가장 위험한 건 간이 아니라 — 심장입니다</h2>
+      <p class="slide__subtitle">지방간 환자에서 사망 원인 1위는 심혈관질환입니다 — 지방간 진단은 곧 '심혈관 경고등'입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="split-visual">
+        <figure class="split-visual__fig">
+          <img src="../../../shared/assets/generated/masld-heart-risk-20260619.png" alt="지방간이 있는 간에서 화살표가 심장으로 이어져 심혈관 위험을 경고하는 그림">
+        </figure>
+        <div class="split-visual__text">
+          <p class="pattern-split__statement">일반적인 지방간 환자의 사망 원인은 <em>심혈관질환 &gt; 간외 암 &gt; 간 질환</em> 순서입니다.</p>
+          <p class="pattern-split__supporting">
+            즉 지방간을 진단받았다는 것은 <strong>심장·혈관에 빨간불이 켜졌다</strong>는 신호입니다. 그래서 가장 먼저 챙겨야 할 것은 간 자체보다 <strong>혈압·혈당·콜레스테롤·체중 관리</strong>입니다. 필요하면 스타틴 같은 약으로 콜레스테롤도 적극적으로 관리합니다.
+          </p>
+          <div class="pattern-split__detail">
+            <div class="pattern-split__metric">
+              <div class="pattern-split__metric-label">1순위로 관리할 것</div>
+              <div class="pattern-split__metric-value">혈압 · 혈당 · 콜레스테롤 · 체중</div>
+              <div class="pattern-split__metric-detail">심혈관 위험을 낮추는 것이 지방간 환자에서 가장 중요한 목표입니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — MASLD 사망원인 순위: 심혈관질환 &gt; 간외 암 &gt; 간 질환</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · FULL-WIDTH STRIP + IMAGE ③ — 섬유화 단계가 예후
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>PROGNOSIS = FIBROSIS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">예후를 정하는 건 — '흉터(섬유화)' 단계입니다</h2>
+      <p class="slide__subtitle">지방의 양이나 염증보다, 간이 얼마나 굳었는지(F0~F4)가 수명을 좌우합니다</p>
+    </div>
+    <div class="slide__body slide__body--with-strip">
+      <figure class="strip-visual">
+        <img src="../../../shared/assets/generated/masld-fibrosis-stages-20260619.png" alt="간 섬유화 진행 단계 F0(정상)에서 F1·F2·F3을 거쳐 F4(간경변)까지 흉터가 점점 늘어나는 그림">
+      </figure>
+      <div class="strip-caption-row">
+        <div class="strip-cap"><div class="strip-cap__stage">F0</div><div class="strip-cap__desc">흉터 없음<br>(정상)</div></div>
+        <div class="strip-cap"><div class="strip-cap__stage">F1</div><div class="strip-cap__desc">경미한<br>흉터</div></div>
+        <div class="strip-cap"><div class="strip-cap__stage">F2</div><div class="strip-cap__desc">중등도<br>흉터</div></div>
+        <div class="strip-cap strip-cap--danger"><div class="strip-cap__stage">F3</div><div class="strip-cap__desc">진행성<br>흉터 (위험↑)</div></div>
+        <div class="strip-cap strip-cap--danger"><div class="strip-cap__stage">F4</div><div class="strip-cap__desc">간경변<br>(위험 급등)</div></div>
+      </div>
+      <div class="strip-note">
+        <strong>핵심 — </strong>F4(간경변)는 F0에 비해 사망 위험이 <strong>6~10배 이상</strong> 높고, 간 합병증은 더 가파르게 늘어납니다. 특히 <strong>F3~F4 단계부터 위험이 급등</strong>합니다. 그래서 "지방이 얼마나 끼었나"보다 <strong>"흉터가 몇 단계인가"</strong>를 확인하는 것이 더 중요합니다.
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 섬유화 단계(F0~F4)가 예후 결정 · F4는 F0 대비 사망위험 6~10배↑ · F3~F4부터 급등</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · SPLIT + IMAGE ④ — 2단계 검사 (FIB-4 → SWE)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>2-STEP TESTING</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">검사는 간단한 2단계입니다</h2>
+      <p class="slide__subtitle">먼저 피검사(FIB-4)로 위험을 거르고, 필요하면 탄성 초음파(SWE)로 간의 굳기를 잽니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="split-visual">
+        <figure class="split-visual__fig">
+          <img src="../../../shared/assets/generated/masld-test-flow-20260619.png" alt="2단계 검사 흐름: 1단계 피검사 FIB-4 점수 계산 후 회색지대/높으면 2단계 탄성 초음파(SWE)로 간 굳기 측정">
+        </figure>
+        <div class="split-visual__text">
+          <p class="pattern-split__statement">흉터 위험은 <em>피검사 → 탄성 초음파</em> 순서의 2단계로 확인합니다.</p>
+          <div class="pattern-split__detail">
+            <div class="pattern-split__metric">
+              <div class="pattern-split__metric-label">1단계 — 피검사</div>
+              <div class="pattern-split__metric-value">FIB-4</div>
+              <div class="pattern-split__metric-detail">일반 혈액검사 수치로 계산하며 비용이 거의 없습니다. 낮으면 안심, 회색지대거나 높으면 2단계로 갑니다.</div>
+            </div>
+            <div class="pattern-split__metric">
+              <div class="pattern-split__metric-label">2단계 — 탄성 초음파</div>
+              <div class="pattern-split__metric-value">SWE / 파이브로스캔</div>
+              <div class="pattern-split__metric-detail">간의 굳기(흉터)를 측정합니다. 대략 <strong>9 kPa 미만</strong>이면 안심권, 그 이상이면 추가 평가·전문의 상담이 필요합니다.</div>
+            </div>
+          </div>
+          <p class="pattern-split__supporting">추적은 같은 기기로, 검사 전 4시간 공복으로 합니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 1단계 FIB-4(혈액 계산) → 2단계 SWE/FibroScan(간 굳기, ~9 kPa 기준) · 추적은 동일 기기 · 4시간 공복</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · GRID 2×2 — 되돌릴 수 있다 / 생활습관
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>REVERSIBLE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">되돌릴 수 있습니다 — 생활습관이 1차 치료</h2>
+      <p class="slide__subtitle">체중을 7~10% 빼고 식사·운동을 바꾸면 지방간염과 흉터가 호전될 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">핵심 · 01</div>
+          <div class="tile__title">체중 7~10% 감량</div>
+          <div class="tile__body">가장 핵심입니다. <strong>10% 이상</strong> 빼면 지방간염 해소 약 <strong>90%</strong>, 섬유화(흉터) 호전 약 <strong>45%</strong>까지 기대할 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">식사 · 02</div>
+          <div class="tile__title">지중해식 식사</div>
+          <div class="tile__body">올리브유·채소·생선·통곡물 위주로 드세요. 당·가당음료·초가공식품·과당은 차단합니다. <strong>가당음료를 주 4회 이상</strong> 마시면 위험이 약 45% 올라갑니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">운동 · 03</div>
+          <div class="tile__title">주 150분 운동 + 커피</div>
+          <div class="tile__body">중강도 유산소 <strong>주 150분</strong>(+근력)을 하면 체중이 안 빠져도 간 지방이 30%가량 줄 수 있습니다. 금기가 없다면 <strong>커피 하루 3잔 이상</strong>도 간경변·섬유화 위험↓와 연관됩니다.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">절주 · 04</div>
+          <div class="tile__title">절주 — 흉터 있으면 금주</div>
+          <div class="tile__body">술은 줄이는 것이 기본이며, <strong>섬유화가 진행했거나 간경변이면 완전 금주</strong>해야 합니다. 술은 흉터 진행을 빠르게 만듭니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 체중 ≥10% 감량 시 지방간염 해소 ~90%·섬유화 호전 ~45% · 운동 주150분 · 가당음료 주4회↑ 위험 +45%</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · COMPARE — 음주 분류 (MASLD vs MetALD)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>ALCOHOL</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">음주량에 따른 분류 — MASLD와 MetALD</h2>
+      <p class="slide__subtitle">술을 어느 정도 마시느냐에 따라 분류가 갈리므로, 정확한 음주 문진이 중요합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            MASLD (대사이상 지방간질환)
+          </div>
+          <ul class="compare-col__list">
+            <li>대사 문제가 주된 원인인 지방간입니다</li>
+            <li>음주가 적은(기준 이하) 범위에 해당합니다</li>
+            <li>치료의 중심은 <strong>체중감량·대사조절</strong>입니다</li>
+            <li>그래도 술은 줄일수록 간에 도움이 됩니다</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            MetALD (대사 + 알코올 영향 구간)
+          </div>
+          <ul class="compare-col__list">
+            <li>대사 문제에 <strong>알코올 영향</strong>이 함께 작용하는 구간</li>
+            <li>경계: <strong>남 하루 30g(소주 약 반병)·여 20g 초과</strong></li>
+            <li>이 구간부터는 알코올의 영향이 커집니다</li>
+            <li>정확한 음주량 문진이 분류와 치료에 중요합니다</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 음주 경계: 남 30g/일(소주 약 반병)·여 20g/일 초과 시 MetALD 구간</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · TABLE — 약은 있나?
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>MEDICATIONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">약은 있나요?</h2>
+      <p class="slide__subtitle">미국은 2종이 승인됐지만 국내는 아직 '지방간염 전용 약'이 미허가입니다 — 핵심은 여전히 체중·대사 관리</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-table">
+        <div class="tbl-row tbl-row--head">
+          <div class="tbl__label">구분</div>
+          <div class="tbl__num">대상</div>
+          <div class="tbl__note">설명</div>
+        </div>
+        <div class="tbl-row tbl-row--accent">
+          <div class="tbl__label">미국 승인 — 먹는약<br>(resmetirom)</div>
+          <div class="tbl__num">흉터 2~3단계<br>(비경변)</div>
+          <div class="tbl__note">지방간염에 쓰는 경구약으로 미국에서 승인됐습니다. 간경변에는 적응되지 않습니다.</div>
+        </div>
+        <div class="tbl-row tbl-row--accent">
+          <div class="tbl__label">미국 승인 — 주사약<br>(세마글루티드 2.4mg)</div>
+          <div class="tbl__num">흉터 2~3단계<br>(비경변)</div>
+          <div class="tbl__note">GLP-1 계열 주사약으로 미국에서 승인됐습니다. 역시 간경변에는 적응되지 않습니다.</div>
+        </div>
+        <div class="tbl-row">
+          <div class="tbl__label">국내 현황</div>
+          <div class="tbl__num">미허가</div>
+          <div class="tbl__note">아직 '지방간염 전용 약'은 미허가입니다. 비만·당뇨가 있으면 그 적응증으로 GLP-1 주사 등을 써서 살을 빼 간을 간접적으로 치료합니다.</div>
+        </div>
+        <div class="tbl-row tbl-row--note">
+          <div class="tbl__note tbl__note--full"><strong>정리 — </strong>두 약 모두 <strong>간경변(간경화)에는 적응되지 않습니다.</strong> 따라서 현재 치료의 핵심은 여전히 <strong>체중감량과 대사조절</strong>입니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 미국 승인 2종(resmetirom·세마글루티드 2.4mg, 흉터 2~3단계 비경변) · 국내 전용약 미허가</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · TIMELINE — 간암 검진은 '간경화'부터
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>CANCER SCREENING</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">간암 검진은 '간경화'부터 시작합니다</h2>
+      <p class="slide__subtitle">흉터 단계에 따라 검진 방법이 달라집니다 — 흉터가 가벼우면 피검사로 위험만 선별합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">흉터가 가벼우면</div>
+          <div class="timeline-step__body">보편적인 간암 검진은 필요하지 않습니다. 대신 <strong>피검사(FIB-4)</strong>로 위험을 선별합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">간경변(간경화)이면</div>
+          <div class="timeline-step__body"><strong>6개월마다</strong> 초음파 + 혈액검사(AFP) 정기검진을 받습니다. 국가암검진 무료 대상입니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">체격이 큰 경우</div>
+          <div class="timeline-step__body">초음파가 잘 보이지 않을 수 있어, 필요하면 <strong>CT나 MRI</strong>로 보완해서 검사합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 간경변부터 6개월마다 초음파+AFP(국가암검진 무료) · 경증은 FIB-4 선별 · 체격 크면 CT/MRI 보완</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — 오늘 꼭 기억할 핵심 8가지
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>KEY POINTS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">지방간(MASLD)을 바르게 이해하고 관리하기 위한 환자 핵심 정리</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">지방간은 "살찐 간"이 아니라 <strong>대사질환</strong>입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">가장 위험한 건 간이 아니라 <strong>심장(심혈관)</strong>입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">예후를 정하는 건 <strong>흉터(섬유화) 단계 F0~F4</strong>입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">검사는 <strong>피검사(FIB-4) → 탄성초음파(SWE)</strong> 2단계</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text"><strong>체중 7~10% 감량</strong>이 1차 치료의 핵심입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">지중해식·운동 주150분·커피·절주로 <strong>되돌릴 수 있습니다</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">국내 전용약은 <strong>미허가</strong> — 핵심은 체중·대사 관리</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">간암 검진은 <strong>간경변부터 6개월마다</strong> 받습니다</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Key takeaways — 대사질환 · 심장이 위험 · 흉터 단계가 예후 · 체중 7~10% 감량으로 되돌리기</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — clinic note + contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">지방간 = 심장 경고등,<br><em>흉터 단계가 중요하고 — 되돌릴 수 있습니다</em></h2>
+      <p class="slide__subtitle">"지방간은 단순히 살찐 간이 아니라 대사질환이에요. 체중을 7~10% 빼고 혈압·혈당·콜레스테롤을 함께 관리하면 흉터도 좋아질 수 있어요. 궁금한 점은 언제든 문의해 주세요."</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">본 자료는 환자 교육용 일반 정보이며 개별 진단·치료를 대신하지 않습니다 · 광교바른내과</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>
