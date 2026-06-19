@@ -116,6 +116,15 @@ TARGETS = [
         "note": "구분: 제균 치료 전용. 감염 의미·내시경 소견·진단 개요는 별도 '진료설명 — 헬리코박터 파일로리 개요·진단 안내' 사용.",
     },
     {
+        "kind": "decks", "slug": "masld-fatty-liver",
+        "slug_path": "decks/gi/masld-fatty-liver/",
+        "html_path": ROOT / "decks/gi/masld-fatty-liver/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "MASLD(대사이상 지방간) 환자 교육",
+        "category": "🫁 위장관", "audience": "환자/보호자",
+        "disease": "MASLD (대사이상 관련 지방간) · 대사·심장 위험 · 섬유화 단계 · FIB-4/간 탄성초음파",
+    },
+    {
         "kind": "decks", "slug": "morning-htn",
         "slug_path": "decks/cardio/htn/morning/",
         "html_path": ROOT / "decks/cardio/htn/morning/index.html",
