@@ -188,16 +188,24 @@
       display: block;
     }
     .strip-caption-row {
+      /* Each F0–F4 box is positioned at its liver's MEASURED center (livers in the
+         generated image sit at 11.7/32/51/70.3/89.4%, not an even 10/30/50/70/90),
+         so a uniform grid would leave the left livers ~2% off. Absolute placement at
+         the measured centers makes each box sit exactly under its liver. */
+      position: relative;
       width: 100%;
-      max-width: min(100%, 1000px);    /* SAME width as image → boxes align under livers */
+      max-width: min(100%, 1000px);    /* SAME width as image → % map 1:1 to livers */
+      height: 70px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
     }
     .strip-cap {
+      position: absolute;
+      top: 0;
+      width: 16.5%;
+      transform: translateX(-50%);     /* left:% = box CENTER at that % */
+      box-sizing: border-box;
       text-align: center;
-      padding: 10px 8px;
+      padding: 9px 6px;
       border-radius: var(--radius-sm);
       background: var(--color-canvas);
       border: 1px solid var(--color-border);
@@ -451,11 +459,11 @@
         <img src="../../../shared/assets/generated/masld-fibrosis-stages-20260619.png" alt="간 섬유화 진행 단계 F0(정상)에서 F1·F2·F3을 거쳐 F4(간경변)까지 흉터가 점점 늘어나는 그림">
       </figure>
       <div class="strip-caption-row">
-        <div class="strip-cap"><div class="strip-cap__stage">F0</div><div class="strip-cap__desc">흉터 없음<br>(정상)</div></div>
-        <div class="strip-cap"><div class="strip-cap__stage">F1</div><div class="strip-cap__desc">경미한<br>흉터</div></div>
-        <div class="strip-cap"><div class="strip-cap__stage">F2</div><div class="strip-cap__desc">중등도<br>흉터</div></div>
-        <div class="strip-cap strip-cap--danger"><div class="strip-cap__stage">F3</div><div class="strip-cap__desc">진행성<br>흉터 (위험↑)</div></div>
-        <div class="strip-cap strip-cap--danger"><div class="strip-cap__stage">F4</div><div class="strip-cap__desc">간경변<br>(위험 급등)</div></div>
+        <div class="strip-cap" style="left:9.6%"><div class="strip-cap__stage">F0</div><div class="strip-cap__desc">흉터 없음<br>(정상)</div></div>
+        <div class="strip-cap" style="left:30.9%"><div class="strip-cap__stage">F1</div><div class="strip-cap__desc">경미한<br>흉터</div></div>
+        <div class="strip-cap" style="left:50.1%"><div class="strip-cap__stage">F2</div><div class="strip-cap__desc">중등도<br>흉터</div></div>
+        <div class="strip-cap strip-cap--danger" style="left:69.4%"><div class="strip-cap__stage">F3</div><div class="strip-cap__desc">진행성<br>흉터 (위험↑)</div></div>
+        <div class="strip-cap strip-cap--danger" style="left:88.1%"><div class="strip-cap__stage">F4</div><div class="strip-cap__desc">간경변<br>(위험 급등)</div></div>
       </div>
       <div class="strip-note">
         <strong>핵심 — </strong>F4(간경변)는 F0에 비해 사망 위험이 <strong>6~10배 이상</strong> 높고, 간 합병증은 더 가파르게 늘어납니다. 특히 <strong>F3~F4 단계부터 위험이 급등</strong>합니다. 그래서 "지방이 얼마나 끼었나"보다 <strong>"흉터가 몇 단계인가"</strong>를 확인하는 것이 더 중요합니다.
