@@ -1819,6 +1819,11 @@ def main() -> int:
                     else {"width": 820, "height": 1160}
                 )
                 ctx = browser.new_context(viewport=viewport)
+                # Fail-fast: never hang forever. networkidle can stall indefinitely
+                # if a page keeps any network activity (kz-002: a deck hung the local
+                # build ~11min at 0% CPU). 45s cap → TimeoutError caught below, that
+                # deck is recorded as a failure and the build continues.
+                ctx.set_default_timeout(45000)
                 page = ctx.new_page()
                 page.goto(f"file://{build_file}")
                 page.wait_for_load_state("networkidle")
@@ -1891,6 +1896,17 @@ def main() -> int:
                     print(f"  ✓ {kind}/{slug}  →  no QR (privacy), noindex")
                 else:
                     print(f"  ✓ {kind}/{slug}  →  QR: {target_url}")
+            except Exception as e:
+                # Render error/timeout (incl. 45s networkidle stall): record which
+                # deck and keep going instead of hanging/crashing the whole build.
+                failures.append(
+                    f"{kind}/{slug}: render error/timeout → {type(e).__name__}: {str(e)[:120]}"
+                )
+                try:
+                    ctx.close()
+                except Exception:
+                    pass
+                continue
             finally:
                 pass  # raw index.html keeps QR svg — desired for live site
 
