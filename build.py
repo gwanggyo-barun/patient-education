@@ -344,6 +344,16 @@ TARGETS = [
         "exam_date": "2026-05-06", "doctor": "정지환",
         "note": "공단검진 — 당뇨 신규진단",
     },
+    {
+        # 16:9 설명 슬라이드를 환자 검사결과로 등록 (fmt=deck-16x9). 원장 확정 2026-06-20.
+        "kind": "lab-reports", "slug": "55572cefba",
+        "slug_path": "lab-reports/parkinson-meds/55572cefba/",
+        "html_path": ROOT / "lab-reports/parkinson-meds/55572cefba/index.html",
+        "qr_class": "qr-mini__code", "fmt": "deck-16x9",
+        "patient_name": "맹복순", "chart_no": "24446",
+        "exam_date": "2026-06-19", "doctor": "정지환",
+        "note": "어지럼·전신 부종 설명 — 약물 관련 가능성 + 기립성 저혈압 (검사상 심·신·간·갑상선 정상)",
+    },
 
     # === Migration: 29 new decks ===
 
