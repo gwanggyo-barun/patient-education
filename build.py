@@ -448,6 +448,14 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "이상지질혈증 (Dyslipidemia)",
     },
     {
+        "kind": "decks", "slug": "statin-side-effects",
+        "slug_path": "decks/endocrine/statin-side-effects/",
+        "html_path": ROOT / "decks/endocrine/statin-side-effects/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "진료설명 — 스타틴 부작용 바로 알기",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "스타틴 부작용·안전성 (Statin Safety)",
+    },
+    {
         "kind": "decks", "slug": "diabetes-mellitus-type2",
         "slug_path": "decks/endocrine/diabetes-mellitus-type2/",
         "html_path": ROOT / "decks/endocrine/diabetes-mellitus-type2/index.html",
