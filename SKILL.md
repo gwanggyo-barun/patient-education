@@ -347,6 +347,19 @@ deck-local override 예: `bepirovirsen-hbv-phase3/index.html` 의 `.slide:nth-of
 
 룰: 셀 내용이 숫자/짧은 값이 아니라 **목록·문장이면** deck/handout 로컬 CSS 로 스코프 오버라이드를 만들어 ① `text-align: left` ② 내용 길이에 맞는 열폭 재배분(라벨 좁게, 본문 넓게) ③ `line-height ≥1.4` 를 적용한다. 예: `handouts/lifestyle/ibs-fodmap-diet`의 `.ibs-food-table`.
 
+### 20. 해부 이미지 색 — 혈액·혈관은 파랑 금지 (cool-blue 팔레트보다 해부학적 사실 우선) (2026-06-21 사용자 지적)
+
+STYLE 표준의 cool-blue 팔레트는 **비-해부 스타일링**(배경·도식·화살표·구획)에만 적용한다. **혈액·혈관·장기 같은 살아있는 조직은 해부학적으로 자연스러운 색**을 쓴다.
+
+- ❌ **혈액·적혈구·혈관벽을 파랑/steel-blue로 칠하지 않는다.** 동맥혈·정맥혈·적혈구는 빨강 계열, 혈관벽은 자연 핑크/적색 조직톤.
+- ✅ **예외 — 동맥+정맥이 함께** 나올 때만 빨강 동맥 / 파랑 정맥 관용 표기 OK (간 모식도·신장·심장 단면). 이때 파랑은 정맥 식별용이라 자연스럽다.
+- ❌ **단독 혈관이 파랑**이면 정맥처럼 보여 어색하다.
+- 플라크·지방은 옐로, 배경은 흰색/화이트-라이트블루 그라데이션 유지.
+
+프롬프트 CRITICAL CONSTRAINTS 에 항상 포함: `blood and blood cells must be RED, vessel walls natural pink/red tissue tone, NEVER blue (blue only for a vein when an artery and vein are shown together); plaque/fat soft yellow.`
+
+발견: 2026-06-21 `decks/endocrine/statin-side-effects` 슬라이드 9 동맥 단독 비교 — cool-blue strict 로 적혈구·혈관이 파랗게 나와 정맥처럼 보임. 빨강 혈액으로 재생성 후 룰화.
+
 ---
 
 ## 🚀 배포 워크플로우 — 모든 머신 공통 (반드시 먼저 읽기)
