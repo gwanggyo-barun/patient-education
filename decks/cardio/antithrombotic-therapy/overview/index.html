@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>항혈전제 바로 알기 — Gwanggyo Barun Internal Medicine</title>
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/antithrombotic-therapy/overview/">
+  <meta property="og:title" content="항혈전제 바로 알기 — 광교바른내과">
+  <meta property="og:description" content="항혈소판제·항응고제 통합 안내. 피 묽게 하는 약의 종류, 심방세동·스텐트·시술 전후 관리, 출혈 경고신호까지 — 환자 설명용 슬라이드 (근거 포함)">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/antithrombotic-therapy/overview/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <link rel="stylesheet" href="../../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
+
+  <style>
+    /* ── deck-local: 본 덱 전용 보조 컴포넌트 (디자인 토큰만 사용) ── */
+    .slide__bg-num { display: none !important; }
+
+    /* 근거 배지 (하이브리드): trial명 + 근거등급. steel 외곽 + 작은 라벨 */
+    .ev-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .evchip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px; border-radius: 7px;
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-steel);
+      color: var(--color-steel);
+      font-size: var(--text-micro); font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wide); text-transform: uppercase;
+      font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    .evchip--grade { border-color: var(--color-border); color: var(--color-slate); background: var(--color-canvas); text-transform: none; }
+
+    /* 덱 전용 데이터 테이블 — 열 수는 인스턴스마다 --cols 로 지정 */
+    .dtable { display: flex; flex-direction: column; gap: 7px; height: 100%; position: relative; z-index: 1; justify-content: space-between; }
+    .dtable__row {
+      display: grid; grid-template-columns: var(--cols, 1fr 1fr 1fr);
+      gap: 16px; align-items: center; padding: 9px 16px;
+      background: var(--color-canvas); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+    .dtable__row--head { background: var(--color-navy); border-color: var(--color-navy); }
+    .dtable__row--head .dtable__cell,
+    .dtable__row--head .dtable__drug {
+      color: var(--color-canvas); font-weight: var(--weight-bold);
+      font-size: var(--text-sm); text-transform: uppercase; letter-spacing: var(--tracking-wide);
+    }
+    .dtable__drug { font-weight: var(--weight-bold); color: var(--color-navy); font-size: var(--text-body-lg); letter-spacing: var(--tracking-snug); }
+    .dtable__drug small { display: block; font-size: var(--text-micro); font-weight: var(--weight-450); color: var(--color-slate); letter-spacing: 0; text-transform: none; }
+    .dtable__cell { font-size: 0.95rem; color: var(--color-ink-soft); line-height: 1.3; }
+    .dtable__cell strong { color: var(--color-navy); font-weight: var(--weight-540); }
+    .dtable__cell em { color: var(--color-danger); font-style: normal; font-weight: var(--weight-540); }
+    .dtable__note {
+      margin-top: 2px; padding: 12px 16px;
+      background: var(--color-canvas-warm); border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-steel); border-radius: var(--radius-sm);
+      font-size: 0.95rem; line-height: 1.38; color: var(--color-ink);
+    }
+    .dtable__note strong { color: var(--color-navy); font-weight: var(--weight-bold); }
+
+    /* ── compact, footer-safe frame (htn-2025 layout-sweep 계열) ── */
+    .slide { --slide-pad-y: 46px; }
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .slide__title-block { margin-bottom: 22px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+
+    .pattern-grid { gap: 14px; }
+    .tile { padding: 15px 18px; gap: 7px; }
+    .tile__title { font-size: 1.05rem; line-height: 1.2; }
+    .tile__body { font-size: 0.95rem; line-height: 1.32; }
+
+    .pattern-split { gap: 36px; min-height: 0; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.14; }
+    .pattern-split__supporting { font-size: 0.98rem; line-height: 1.4; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 15px 18px; }
+    .pattern-split__metric-value { font-size: 1.55rem; line-height: 1.1; }
+    .pattern-split__metric-detail { font-size: 0.92rem; line-height: 1.32; }
+
+    .pattern-split--even .split__heading { font-size: 1.18rem; font-weight: var(--weight-bold); color: var(--color-navy); letter-spacing: var(--tracking-snug); margin-bottom: 10px; }
+    .pattern-split--even .split__left, .pattern-split--even .split__right {
+      padding: 18px 22px; background: var(--color-canvas); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); display: flex; flex-direction: column;
+      word-break: keep-all; overflow-wrap: break-word;
+    }
+    .pattern-split--even .split__right { background: var(--color-canvas-warm); border-color: var(--color-steel); }
+    .split__list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .split__list li { font-size: 0.98rem; line-height: 1.32; color: var(--color-ink); padding-left: 18px; position: relative; }
+    .split__list li::before { content: "·"; position: absolute; left: 4px; color: var(--color-steel); font-weight: var(--weight-bold); }
+    .split__note { margin-top: auto; padding-top: 12px; font-size: 0.9rem; color: var(--color-slate); line-height: 1.34; }
+
+    .pattern-compare { align-items: stretch; }
+    .compare-col__header { padding: 13px 18px; font-size: 1.12rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 10px; justify-content: space-between; }
+    .compare-col__list li { font-size: 0.97rem; line-height: 1.3; padding-left: 22px; }
+
+    .pattern-timeline { --timeline-gap: 12px; align-items: stretch; }
+    .timeline-step { padding: 14px 13px; gap: 9px; justify-content: flex-start; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.2; }
+    .timeline-step__body { font-size: 0.9rem; line-height: 1.3; }
+
+    .alert-strip { padding: 13px 18px; margin-top: 14px; }
+    .alert-strip__text { font-size: 0.96rem; line-height: 1.36; }
+
+    .pattern-hero-number { gap: 40px; align-items: center; }
+    .pattern-hero-number__value { font-size: 9rem; line-height: 0.9; }
+    .pattern-hero-number__caption { font-size: 1.12rem; line-height: 1.42; }
+    .pattern-hero-number__detail-text { font-size: 1.02rem; line-height: 1.46; }
+
+    .pattern-checklist { align-content: center; gap: 6px 56px; }
+    .check-item { padding: 10px 0; }
+    .check-item__text { font-size: 1.02rem; line-height: 1.32; }
+
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 30px; }
+    .slide__body--visual-focus .tile__title { font-size: 1.02rem; }
+    .slide__body--visual-focus .tile__body { font-size: 0.92rem; line-height: 1.3; }
+
+    /* 단일 행 3-up 개념 타일: 본문을 다 채우되 내부 콘텐츠는 세로 중앙 정렬 */
+    .grid-3up { flex: 1 1 auto; min-height: 0; align-content: stretch; }
+    .grid-3up .tile { justify-content: center; }
+    .grid-3up .tile__body { margin-top: 0; }
+    .grid-3up .ev-row { margin-top: 12px; }
+
+    /* 대등 2단: 리스트가 칼럼 높이를 채우도록 분산 */
+    .pattern-split--even .split__list { flex: 1; justify-content: space-between; }
+    .pattern-split--even .split__note { margin-top: 0; }
+
+    .slide--closing .slide__title { font-size: 2.5rem; margin-top: 0; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__body { min-height: 0; justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; min-height: 0; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { padding: 18px; gap: 10px; min-height: 0; }
+    .qr-block__code { width: 104px; height: 104px; }
+  </style>
+</head>
+<body>
+  <main class="deck">
+
+    <!-- ===== 01 · COVER ===== -->
+    <section class="slide slide--cover">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">ANTITHROMBOTIC THERAPY · <strong>2026.6</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">"피 묽게 하는 약",<br><em>제대로 알기</em></h2>
+        <p class="slide__subtitle">내가 먹는 '피 묽게 하는 약' — 항혈소판제·항응고제, 종류와 주의점을 한눈에</p>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+        <span class="slide__page">01 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 02 · 항혈전제 3종류 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 01 · <strong>BIG PICTURE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">같은 "피 약"이 <em>아닙니다</em></h2>
+        <p class="slide__subtitle">작용하는 위치에 따라 크게 세 가지로 나뉩니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid grid-3up" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; gap: 18px;">
+          <div class="tile">
+            <div class="tile__index">TYPE · 01</div>
+            <div class="tile__title">항혈소판제<br>Antiplatelet</div>
+            <div class="tile__body">혈소판 응집을 차단합니다. 빠르게 흐르는 <strong>동맥</strong>의 혈전(심근경색·뇌경색·말초동맥) 예방.<br>예: 아스피린, 클로피도그렐</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">TYPE · 02</div>
+            <div class="tile__title">항응고제<br>Anticoagulant</div>
+            <div class="tile__body">피가 굳는 단백질(피브린)을 차단합니다. 정체된 <strong>정맥·심장</strong>의 혈전(심방세동·정맥혈전) 예방.<br>예: 와파린, DOAC</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">TYPE · 03</div>
+            <div class="tile__title">혈전용해제<br>Thrombolytic</div>
+            <div class="tile__body">이미 생긴 혈전을 녹입니다. 급성 뇌경색·심근경색 등 <strong>응급 상황</strong>에만 사용.<br>예: tPA, 유로키나아제</div>
+          </div>
+        </div>
+        <div class="alert-strip">
+          <span class="alert-strip__label">핵심</span>
+          <span class="alert-strip__text">심방세동에 아스피린·클로피도그렐을 "혈액순환제"처럼 쓰는 것은 심장 혈전 예방에 <strong>불충분</strong>합니다 — 원칙적으로 항응고제 평가가 필요합니다.</span>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">작용 표적별 분류 · 동맥(백색혈전) vs 정맥·심장(적색혈전)</span>
+        <span class="slide__page">02 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 03 · 동맥 vs 정맥 혈전 (IMAGE #1) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 01 · <strong>BIG PICTURE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">동맥 혈전과 정맥 혈전은 <em>다릅니다</em></h2>
+        <p class="slide__subtitle">혈전의 '재료'가 다르기 때문에, 막는 약도 달라집니다</p>
+      </div>
+      <div class="slide__body slide__body--visual-focus">
+        <div class="pattern-grid" style="grid-template-columns: 1fr; grid-template-rows: 1fr 1fr;">
+          <div class="tile">
+            <div class="tile__index">동맥 · WHITE THROMBUS</div>
+            <div class="tile__title">백색 혈전 — 혈소판 우세</div>
+            <div class="tile__body">빠른 혈류 + 혈관벽 손상에서 혈소판이 뭉쳐 생깁니다. → <strong>항혈소판제</strong>로 예방 (심근경색·뇌경색).</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">정맥·심장 · RED THROMBUS</div>
+            <div class="tile__title">적색 혈전 — 피브린·적혈구 우세</div>
+            <div class="tile__body">느린 혈류·정체에서 피브린 그물에 적혈구가 갇혀 생깁니다. → <strong>항응고제</strong>로 예방 (심방세동·정맥혈전).</div>
+          </div>
+        </div>
+        <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+          <img src="../../../../shared/assets/generated/antithrombotic-white-vs-red-thrombus-20260621.png" alt="동맥의 백색 혈전과 정맥의 적색 혈전 비교 일러스트">
+        </figure>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">White vs red thrombus · Virchow 3요소(혈류·혈관벽·응고)</span>
+        <span class="slide__page">03 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 04 · 항혈소판제 한눈에 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 02 · <strong>DRUG CLASSES</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">항혈소판제 — 종류와 특징</h2>
+        <p class="slide__subtitle">작용점과 주의점이 약마다 다릅니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid pattern-grid--3">
+          <div class="tile">
+            <div class="tile__index">DRUG · 01</div>
+            <div class="tile__title">아스피린 (Aspirin)</div>
+            <div class="tile__body">COX-1 비가역 억제(TXA2↓). 효과는 혈소판 수명 7~10일 지속. 위궤양·출혈 → PPI 위장보호.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">DRUG · 02</div>
+            <div class="tile__title">클로피도그렐 (Plavix)</div>
+            <div class="tile__body">P2Y12 억제. 간에서 활성화(CYP2C19)되어야 작동 — 한국인은 저반응이 흔합니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">DRUG · 03</div>
+            <div class="tile__title">프라수그렐 · 티카그렐러</div>
+            <div class="tile__body">강력한 P2Y12 억제. <strong>프라수그렐은 뇌졸중 과거력에 금기</strong>. 티카그렐러는 1일 2회·호흡곤란.</div>
+          </div>
+          <div class="tile tile--alert">
+            <div class="tile__index">DRUG · 04</div>
+            <div class="tile__title">실로스타졸 (Pletal)</div>
+            <div class="tile__body">혈관확장 + 항혈소판. <strong>심부전에 절대금기</strong>. 두통·두근거림이 흔합니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">DRUG · 05</div>
+            <div class="tile__title">사르포그렐레이트 (Anplag)</div>
+            <div class="tile__body">5-HT2A 수용체 차단. 출혈이 아스피린보다 적은 편. 1일 3회 복용.</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">DRUG · 06</div>
+            <div class="tile__title">기타</div>
+            <div class="tile__body">Dipyridamole(아스피린 복합), Triflusal, Ticlopidine(호중구감소 → 거의 대체됨).</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">경구 항혈소판제 · 정맥주사 GP IIb/IIIa 억제제는 시술실 전용</span>
+        <span class="slide__page">04 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 05 · 와파린 vs DOAC ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 02 · <strong>DRUG CLASSES</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">경구 항응고제 — 와파린 vs <em>DOAC</em></h2>
+        <p class="slide__subtitle">비판막성 심방세동에서는 DOAC이 표준입니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-compare">
+          <div class="compare-col compare-col--avoid">
+            <div class="compare-col__header"><span class="compare-col__marker">W</span>와파린 (Warfarin)</div>
+            <ul class="compare-col__list">
+              <li>비타민 K 의존 응고인자 억제</li>
+              <li>음식·약물 상호작용이 많음</li>
+              <li>정기적 INR 채혈로 모니터링</li>
+              <li>효과 변동이 큼 (용량 조절 잦음)</li>
+              <li><strong>기계판막·류마티스 승모판협착엔 와파린만</strong></li>
+            </ul>
+          </div>
+          <div class="compare-col compare-col--prefer">
+            <div class="compare-col__header"><span class="compare-col__marker">D</span>DOAC (4종)</div>
+            <ul class="compare-col__list">
+              <li>다비가트란·리바록사반·아픽사반·에독사반</li>
+              <li>정기 모니터링 불필요</li>
+              <li>두개내출혈이 와파린보다 적음</li>
+              <li>음식 영향이 적고 복용 간편</li>
+              <li>비판막성 심방세동 1차 (단, 기계판막엔 금기)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">2023 ACC/AHA/ACCP/HRS · 2024 ESC · DOAC = Direct Oral AntiCoagulant</span>
+        <span class="slide__page">05 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 06 · DOAC 4종 + 신장배설 (table) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 02 · <strong>DRUG CLASSES</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">DOAC 4종, 무엇이 다른가</h2>
+        <p class="slide__subtitle">신장으로 빠지는 비율이 약 선택을 좌우합니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="dtable" style="--cols: 1.3fr 1.1fr 0.9fr 0.8fr 1.4fr;">
+          <div class="dtable__row dtable__row--head">
+            <div class="dtable__drug">약제</div>
+            <div class="dtable__cell">기전</div>
+            <div class="dtable__cell">신장 배설</div>
+            <div class="dtable__cell">반감기</div>
+            <div class="dtable__cell">특징</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Dabigatran<small>프라닥사</small></div>
+            <div class="dtable__cell">직접 트롬빈(IIa)</div>
+            <div class="dtable__cell"><em>~80%</em> (최고)</div>
+            <div class="dtable__cell">12~17h</div>
+            <div class="dtable__cell">소화불량, P-gp 약물 상호작용</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Rivaroxaban<small>자렐토</small></div>
+            <div class="dtable__cell">직접 Xa</div>
+            <div class="dtable__cell">~33%</div>
+            <div class="dtable__cell">5~13h</div>
+            <div class="dtable__cell">1일 1회, 식사와 함께</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Apixaban<small>엘리퀴스</small></div>
+            <div class="dtable__cell">직접 Xa</div>
+            <div class="dtable__cell"><strong>~27%</strong> (최저)</div>
+            <div class="dtable__cell">~12h</div>
+            <div class="dtable__cell"><strong>신기능 저하에 상대적 안전</strong>, 위장관 출혈 적음</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Edoxaban<small>릭시아나</small></div>
+            <div class="dtable__cell">직접 Xa</div>
+            <div class="dtable__cell">~50%</div>
+            <div class="dtable__cell">10~14h</div>
+            <div class="dtable__cell">1일 1회, <em>CrCl&gt;95 사용 금지</em></div>
+          </div>
+          <div class="dtable__note">신배설 비중 <strong>다비가트란 &gt; 에독사반 &gt; 리바록사반 &gt; 아픽사반</strong> 순 → 콩팥기능이 나쁠수록 아픽사반이 상대적으로 안전합니다.</div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">FDA 라벨 · 신기능은 Cockcroft-Gault CrCl 기준 판단</span>
+        <span class="slide__page">06 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 07 · 주사 항응고제 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 02 · <strong>DRUG CLASSES</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">주사 항응고제</h2>
+        <p class="slide__subtitle">입원·시술·임신 등 상황에서 사용합니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid pattern-grid--2">
+          <div class="tile">
+            <div class="tile__index">INJECTABLE · 01</div>
+            <div class="tile__title">미분획헤파린 (UFH)</div>
+            <div class="tile__body">항트롬빈 매개로 IIa·Xa 억제. aPTT로 모니터링. <strong>프로타민으로 완전 역전</strong>. 신기능 저하에도 안전.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">INJECTABLE · 02</div>
+            <div class="tile__title">저분자헤파린 (LMWH)</div>
+            <div class="tile__body">에녹사파린 등, 주로 Xa 억제. <strong>임신 중 표준</strong>(태반 비통과). CrCl&lt;30에서 축적 주의.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">INJECTABLE · 03</div>
+            <div class="tile__title">폰다파리눅스</div>
+            <div class="tile__body">합성 Xa 억제. HIT가 거의 없음. <strong>신부전 금기</strong>, 효과적인 역전제가 없음.</div>
+          </div>
+          <div class="tile tile--alert">
+            <div class="tile__index">CAUTION · 04</div>
+            <div class="tile__title">HIT · 골다공증</div>
+            <div class="tile__body">헤파린 유발 혈소판감소증(HIT), 장기 사용 시 골다공증에 주의합니다.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">AT = 항트롬빈 · HIT = heparin-induced thrombocytopenia</span>
+        <span class="slide__page">07 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 08 · 강력 P2Y12 비교 (evidence) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 03 · <strong>KEY EVIDENCE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">급성 관상동맥증후군엔 어떤 P2Y12?</h2>
+        <p class="slide__subtitle">효과가 클수록 출혈도 늘어납니다 — 균형이 핵심</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid grid-3up" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; gap: 18px;">
+          <div class="tile">
+            <div class="tile__index">TICAGRELOR</div>
+            <div class="tile__title">티카그렐러</div>
+            <div class="tile__body">심혈관사망/MI/뇌졸중을 줄이고(HR 0.84) 전체 사망도 감소. 호흡곤란·서맥, 1일 2회.</div>
+            <div class="ev-row"><span class="evchip">PLATO · NEJM 2009</span><span class="evchip evchip--grade">★★★★☆ RCT</span></div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">PRASUGREL</div>
+            <div class="tile__title">프라수그렐</div>
+            <div class="tile__body">허혈·스텐트혈전을 크게 줄이나 출혈↑. <strong>뇌졸중·TIA 과거력엔 금기</strong>.</div>
+            <div class="ev-row"><span class="evchip">TRITON-TIMI 38 · 2007</span><span class="evchip evchip--grade">★★★★☆ RCT</span></div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">HEAD-TO-HEAD</div>
+            <div class="tile__title">직접 비교</div>
+            <div class="tile__body">prasugrel 우위를 시사. 2023 ESC는 prasugrel 선호 / 2025 ACC·AHA는 두 약 동등(Class 1).</div>
+            <div class="ev-row"><span class="evchip">ISAR-REACT 5 · 2019</span></div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">PLATO 2009 · TRITON-TIMI 38 2007 · ISAR-REACT 5 2019 · 2025 ACC/AHA ACS</span>
+        <span class="slide__page">08 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 09 · 한국인 62% (hero) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 03 · <strong>KEY EVIDENCE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">한국인과 클로피도그렐</h2>
+        <p class="slide__subtitle">유전적으로 약효가 잘 나지 않는 사람이 많습니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-hero-number">
+          <div class="pattern-hero-number__numeric">
+            <div class="pattern-hero-number__value"><em>62</em>%</div>
+            <div class="pattern-hero-number__caption">한국인은 클로피도그렐 <strong>약효가 약하게 나타나는 분</strong>이 많습니다 — CYP2C19 기능소실 유전자 보유자(저대사자 PM 약 14% + 중간대사자 IM 약 48%)</div>
+          </div>
+          <div class="pattern-hero-number__detail">
+            <div class="pattern-hero-number__detail-label">EAST ASIAN PARADOX</div>
+            <div class="pattern-hero-number__detail-text">동아시아인은 허혈보다 <strong>출혈(두개내·위장관) 위험</strong>이 상대적으로 높습니다. 그래서 표준용량 티카그렐러·프라수그렐은 출혈만 늘리는 경향이 있어, <strong>강도 하향(de-escalation)·축약 DAPT</strong>가 서구보다 유리합니다.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">PTRG-DES, JACC Interv 2023 (n=8,163) · "한국인 30~50%가 poor metabolizer"는 부정확 — PM ≈14%, 보유자 합계 ≈62%</span>
+        <span class="slide__page">09 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 10 · clopidogrel vs aspirin 단독 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 03 · <strong>KEY EVIDENCE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">장기 단독요법, <em>클로피도그렐</em>이 앞섭니다</h2>
+        <p class="slide__subtitle">확립된 관상동맥질환 2차 예방에서</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-split">
+          <div class="pattern-split__primary">
+            <p class="pattern-split__statement">스텐트 후 유지요법으로 <em>클로피도그렐 단독</em>이 아스피린 단독보다 허혈·출혈 모두에서 유리했습니다.</p>
+            <p class="pattern-split__supporting">한국 HOST-EXAM 연구와 7개 RCT 개별환자 메타분석이 일관된 결과를 보였습니다. 다만 "모든 환자에서 아스피린 → 클로피도그렐 일괄 교체"로 단순화하지 않고, 출혈위험·불내성·비용을 고려해 개별화합니다.</p>
+            <div class="ev-row"><span class="evchip">HOST-EXAM · Lancet 2021</span><span class="evchip">IPD meta · Lancet 2025</span><span class="evchip evchip--grade">★★★★★</span></div>
+          </div>
+          <div class="pattern-split__detail">
+            <div class="pattern-split__metric">
+              <div class="pattern-split__metric-label">IPD 메타분석 · 28,982명</div>
+              <div class="pattern-split__metric-value">MACCE 14%↓</div>
+              <div class="pattern-split__metric-detail">HR 0.86 · 주요출혈·사망은 차이 없음</div>
+            </div>
+            <div class="pattern-split__metric">
+              <div class="pattern-split__metric-label">HOST-EXAM · 한국</div>
+              <div class="pattern-split__metric-value">허혈·출혈 모두 ↓</div>
+              <div class="pattern-split__metric-detail">10년 추적에서도 일관된 우월</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">HOST-EXAM Lancet 2021 · Valgimigli·Choi·Giacoppo IPD meta Lancet 2025</span>
+        <span class="slide__page">10 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 11 · DOAC vs 와파린 4대 RCT (table) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 03 · <strong>KEY EVIDENCE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">DOAC vs 와파린 — 4대 임상시험</h2>
+        <p class="slide__subtitle">비판막성 심방세동에서 DOAC이 표준이 된 이유</p>
+      </div>
+      <div class="slide__body">
+        <div class="dtable" style="--cols: 1.1fr 1.2fr 1.5fr 1.2fr;">
+          <div class="dtable__row dtable__row--head">
+            <div class="dtable__drug">시험</div>
+            <div class="dtable__cell">약제</div>
+            <div class="dtable__cell">뇌졸중·전신색전</div>
+            <div class="dtable__cell">출혈</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">RE-LY</div>
+            <div class="dtable__cell">다비가트란 150</div>
+            <div class="dtable__cell"><strong>우월</strong> — 1.11 vs 1.69%/년</div>
+            <div class="dtable__cell">두개내출혈 ↓</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">ROCKET-AF</div>
+            <div class="dtable__cell">리바록사반 20</div>
+            <div class="dtable__cell">와파린과 비열등</div>
+            <div class="dtable__cell">ICH·치명적 출혈 ↓</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">ARISTOTLE</div>
+            <div class="dtable__cell">아픽사반 5</div>
+            <div class="dtable__cell"><strong>우월</strong> — HR 0.79</div>
+            <div class="dtable__cell"><strong>주요출혈 ↓</strong> — HR 0.69</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">ENGAGE</div>
+            <div class="dtable__cell">에독사반 60</div>
+            <div class="dtable__cell">비열등</div>
+            <div class="dtable__cell">출혈 ↓</div>
+          </div>
+          <div class="dtable__note"><strong>Ruff 메타분석 (71,683명)</strong> — 뇌졸중·전신색전 19%↓ · 두개내출혈 약 52%↓ · 전체사망 ~10%↓. 단 <em>위장관 출혈은 25%↑</em>(특히 다비가트란150·리바록사반). 아픽사반·저용량 다비가트란은 위장관 출혈에 상대적으로 안전.</div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">RE-LY·ROCKET-AF·ARISTOTLE·ENGAGE AF-TIMI 48 · Ruff Lancet 2014 · ★★★★★</span>
+        <span class="slide__page">11 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 12 · COMPASS 24% (hero) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 03 · <strong>KEY EVIDENCE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">이중경로 차단 — 저용량 항응고 + 아스피린</h2>
+        <p class="slide__subtitle">안정형 관상동맥·말초동맥질환에서</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-hero-number">
+          <div class="pattern-hero-number__numeric">
+            <div class="pattern-hero-number__value"><em>24</em>%↓</div>
+            <div class="pattern-hero-number__caption">저용량 리바록사반 2.5mg 1일 2회 + 아스피린이 아스피린 단독 대비 <strong>심혈관사망·뇌졸중·심근경색</strong> 복합을 감소 (HR 0.76)</div>
+          </div>
+          <div class="pattern-hero-number__detail">
+            <div class="pattern-hero-number__detail-label">COMPASS · NEJM 2017</div>
+            <div class="pattern-hero-number__detail-text">전체 사망도 18% 감소. 주요출혈은 늘지만 <strong>치명적·두개내 출혈은 유의하게 늘지 않았습니다.</strong> 다혈관·콩팥병·심부전·당뇨 등 고위험군에서 순이득이 큽니다.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">COMPASS (27,395명) NEJM 2017 · 리바록사반 5mg 단독은 우월하지 않음 · ★★★★★</span>
+        <span class="slide__page">12 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 13 · 1차예방 vs 2차예방 아스피린 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>BY CONDITION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">아스피린, 이제 <em>누구나</em> 먹는 약이 아닙니다</h2>
+        <p class="slide__subtitle">1차 예방과 2차 예방은 권고가 다릅니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-compare">
+          <div class="compare-col compare-col--avoid">
+            <div class="compare-col__header"><span class="compare-col__marker">1</span>1차 예방 — 신중하게</div>
+            <ul class="compare-col__list">
+              <li>심혈관 병력이 없는 사람의 예방 목적</li>
+              <li><strong>60세 이상 신규 시작은 권고하지 않음</strong> (D등급)</li>
+              <li>40~59세는 10년 위험 ≥10% + 출혈위험 낮을 때만 개별 결정</li>
+              <li>기존 복용자도 약 75세경 중단을 고려</li>
+              <li>궤양·출혈 과거력엔 회피</li>
+            </ul>
+          </div>
+          <div class="compare-col compare-col--prefer">
+            <div class="compare-col__header"><span class="compare-col__marker">2</span>2차 예방 — 변함없이 권고</div>
+            <ul class="compare-col__list">
+              <li>심근경색·뇌경색·스텐트 등 <strong>병력이 있는</strong> 사람</li>
+              <li>항혈소판제 <strong>지속</strong>이 표준</li>
+              <li>임의 중단 금지 (혈전 사건 위험)</li>
+              <li>위장 출혈위험 평가 + 필요 시 PPI 병용</li>
+              <li>아스피린 불내성 시 클로피도그렐 고려</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">USPSTF 2022 (JAMA) · ASPREE/ARRIVE/ASCEND 2018 · ★★★★★</span>
+        <span class="slide__page">13 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 14 · 스텐트 후 DAPT (IMAGE #2) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>BY CONDITION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">스텐트 후 약, <em>임의로 끊으면</em> 안 됩니다</h2>
+        <p class="slide__subtitle">스텐트 안에서 피가 굳으면 심근경색·돌연사로 이어집니다</p>
+      </div>
+      <div class="slide__body slide__body--visual-focus">
+        <div class="pattern-grid" style="grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr);">
+          <div class="tile">
+            <div class="tile__index">DAPT란</div>
+            <div class="tile__title">이중 항혈소판요법</div>
+            <div class="tile__body">아스피린 + P2Y12 억제제 병용. ACS에선 티카그렐러·프라수그렐 우선.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">기간</div>
+            <div class="tile__title">대개 6~12개월</div>
+            <div class="tile__body">안정형 PCI 최소 6개월, ACS 기본 12개월. 출혈위험 높으면 1개월 후 P2Y12 단독 전환.</div>
+          </div>
+          <div class="tile tile--alert">
+            <div class="tile__index">절대 규칙</div>
+            <div class="tile__title">임의 중단 금지</div>
+            <div class="tile__body">특히 시술 후 초기 수개월·ACS 1년 이내·좌주간부/다발 스텐트는 하루도 임의 중단 금지.</div>
+          </div>
+        </div>
+        <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+          <img src="../../../../shared/assets/generated/antithrombotic-stent-thrombosis-20260621.png" alt="관상동맥 스텐트 안에 혈전이 생기는 스텐트 혈전증 일러스트">
+        </figure>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">2025 ACC/AHA ACS · 2023 ACC/AHA CCD · DAPT = 이중 항혈소판요법</span>
+        <span class="slide__page">14 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 15 · 심방세동 (IMAGE #3) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>BY CONDITION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">심방세동엔 아스피린이 아니라 <em>항응고제</em></h2>
+        <p class="slide__subtitle">심장 안에 생긴 혈전이 뇌로 가 뇌졸중을 일으킵니다</p>
+      </div>
+      <div class="slide__body slide__body--visual-focus">
+        <div class="pattern-grid" style="grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr);">
+          <div class="tile">
+            <div class="tile__index">위험도 평가</div>
+            <div class="tile__title">뇌졸중 위험 점수</div>
+            <div class="tile__body">CHA₂DS₂-VASc로 평가 — 남 ≥2 / 여 ≥3이면 항응고. 2024 ESC는 성별 제외한 CHA₂DS₂-VA(≥2).</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">약 선택</div>
+            <div class="tile__title">비판막성은 DOAC 우선</div>
+            <div class="tile__body">위장관 출혈위험↑ → 아픽사반, 1일 1회 선호 → 리바록사반·에독사반.</div>
+          </div>
+          <div class="tile tile--alert">
+            <div class="tile__index">주의</div>
+            <div class="tile__title">임의 감량 금지</div>
+            <div class="tile__body">기준 없는 저용량 DOAC은 오히려 뇌졸중 위험을 높입니다.</div>
+          </div>
+        </div>
+        <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+          <img src="../../../../shared/assets/generated/antithrombotic-af-cardioembolism-20260621.png" alt="심방세동에서 좌심방이 혈전이 떨어져 뇌로 가는 색전 일러스트">
+        </figure>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">2024 ESC AF · 2023 ACC/AHA/ACCP/HRS · 국내 급여는 CHA₂DS₂-VASc ≥2 (2015.7~)</span>
+        <span class="slide__page">15 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 16 · AF + PCI 병합 (timeline) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>BY CONDITION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">심방세동 + 스텐트, 출혈을 줄이는 순서</h2>
+        <p class="slide__subtitle">항응고제 + 항혈소판제 병용은 출혈을 크게 늘립니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-timeline">
+          <div class="timeline-step">
+            <div class="timeline-step__node">1</div>
+            <div class="timeline-step__title">시술 직후</div>
+            <div class="timeline-step__body">삼제요법(항응고 + 아스피린 + P2Y12)을 1~4주로 <strong>최소화</strong>.</div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-step__node">2</div>
+            <div class="timeline-step__title">~6–12개월</div>
+            <div class="timeline-step__body">항응고제 + P2Y12(주로 클로피도그렐). <strong>아스피린 조기 제거</strong>.</div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-step__node">3</div>
+            <div class="timeline-step__title">1년 이후</div>
+            <div class="timeline-step__body">항응고제 <strong>단독</strong>으로 유지.</div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-step__node">4</div>
+            <div class="timeline-step__title">약 선택</div>
+            <div class="timeline-step__body">아픽사반이 출혈을 줄임(AUGUSTUS). 아스피린 조기 제거가 핵심.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">AUGUSTUS NEJM 2019 (apixaban 출혈 HR 0.69 · aspirin 추가 시 출혈 1.89배↑) · WOEST·PIONEER·RE-DUAL·ENTRUST</span>
+        <span class="slide__page">16 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 17 · 뇌졸중/TIA 2차예방 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>BY CONDITION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">뇌졸중 · TIA 2차 예방</h2>
+        <p class="slide__subtitle">원인이 '혈관'인지 '심장'인지에 따라 다릅니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-split pattern-split--even">
+          <div class="split__left">
+            <h3 class="split__heading">비심인성 (동맥)</h3>
+            <ul class="split__list">
+              <li>항혈소판제 단독 (아스피린 또는 클로피도그렐)</li>
+              <li>경증 뇌졸중·고위험 TIA 직후 21~90일 단기 DAPT 후 단독 전환</li>
+              <li>동아시아 환자에서 실로스타졸은 출혈이 적은 대안 (CSPS 2)</li>
+              <li>고혈압·당뇨·이상지질혈증 등 위험인자 관리를 함께</li>
+            </ul>
+            <div class="split__note">※ 장기 아스피린+클로피도그렐 병용은 일반적으로 피합니다.</div>
+          </div>
+          <div class="split__right">
+            <h3 class="split__heading">심인성 (심장 · AF)</h3>
+            <ul class="split__list">
+              <li>항응고제 (비판막성 → DOAC)</li>
+              <li>심방세동 등 색전원이 있으면 항응고가 표준</li>
+              <li>과거 뇌졸중 + ACS/PCI는 <strong>프라수그렐 회피</strong></li>
+              <li>기계판막·중등도 이상 승모판협착은 와파린</li>
+            </ul>
+            <div class="split__note">※ 심방세동에 뇌졸중 예방 목적의 항혈소판제 추가는 권고하지 않습니다(2024 ESC).</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">대한뇌졸중학회 · CSPS 2 / CSPS.com (cilostazol, 동아시아 RCT)</span>
+        <span class="slide__page">17 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 18 · PAD / 간헐적 파행 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>BY CONDITION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">말초동맥질환과 다리 저림·파행</h2>
+        <p class="slide__subtitle">'사건 예방'과 '증상 개선'을 구분합니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-split pattern-split--even">
+          <div class="split__left">
+            <h3 class="split__heading">사건 예방 (심혈관 사건↓)</h3>
+            <ul class="split__list">
+              <li>아스피린 또는 클로피도그렐</li>
+              <li>고위험은 리바록사반 2.5 + 아스피린 (이중경로)</li>
+              <li>생존·예후는 statin·금연·혈압·혈당 조절이 핵심</li>
+              <li>단일 항혈소판제(SAPT)가 기본 — 무분별 병용 회피</li>
+            </ul>
+          </div>
+          <div class="split__right">
+            <h3 class="split__heading">증상 개선 (간헐적 파행)</h3>
+            <ul class="split__list">
+              <li>실로스타졸이 보행거리 개선 (FDA·EMA 적응증)</li>
+              <li>출혈 고위험·경증엔 사르포그렐레이트</li>
+              <li><strong>실로스타졸은 모든 중증도 심부전에 절대금기</strong></li>
+              <li>처음 며칠 두통·두근거림은 적응 과정일 수 있음</li>
+            </ul>
+            <div class="split__note">※ 처방 전 심기능 확인 필수.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">CSPS 2 · 심평원 — 단순 노인성 저림에 무분별 병용은 삭감 주의</span>
+        <span class="slide__page">18 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 19 · DVT / PE ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>BY CONDITION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">정맥혈전색전증 (DVT · 폐색전증)</h2>
+        <p class="slide__subtitle">항혈소판제가 아니라 항응고제로 치료합니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid pattern-grid--2">
+          <div class="tile">
+            <div class="tile__index">TREATMENT · 01</div>
+            <div class="tile__title">1차 — DOAC</div>
+            <div class="tile__body">아픽사반·리바록사반은 초기 부하 후 단독; 다비가트란·에독사반은 LMWH 5~10일 후 전환.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">TREATMENT · 02</div>
+            <div class="tile__title">와파린</div>
+            <div class="tile__body">DOAC을 쓸 수 없는 경우 (중증 신부전, 항인지질증후군 등).</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">PRIMARY CARE · 03</div>
+            <div class="tile__title">의심 시 평가</div>
+            <div class="tile__body">DVT 의심 → Wells 점수 + 초음파. PE 의심(흉통·호흡곤란·저산소·빈맥) → 응급 평가.</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">REFERRAL · 04</div>
+            <div class="tile__title">협진</div>
+            <div class="tile__body">암 관련 VTE·임신·중증 콩팥병·재발 VTE는 전문 협진.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">항응고제 질환 — aspirin·clopidogrel·cilostazol로 치료하지 않음</span>
+        <span class="slide__page">19 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 20 · 특수 환자군 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 05 · <strong>SPECIAL &amp; SAFETY</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">특수 환자군에서 주의할 점</h2>
+        <p class="slide__subtitle">같은 약도 환자에 따라 선택이 달라집니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid pattern-grid--3">
+          <div class="tile">
+            <div class="tile__index">GROUP · 01</div>
+            <div class="tile__title">고령</div>
+            <div class="tile__body">출혈위험↑이나 항응고 보류 사유는 아님. 프라수그렐 ≥75세·&lt;60kg 회피/감량. 낙상만으로 금기 아님.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">GROUP · 02</div>
+            <div class="tile__title">콩팥병 (CKD)</div>
+            <div class="tile__body">신배설이 낮은 <strong>아픽사반</strong>이 상대적으로 안전. 약제별 감량기준을 엄수.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">GROUP · 03</div>
+            <div class="tile__title">간질환</div>
+            <div class="tile__body">DOAC은 Child-Pugh C 회피. <strong>리바록사반은 응고병증 동반 간질환에 금기</strong>.</div>
+          </div>
+          <div class="tile tile--alert">
+            <div class="tile__index">GROUP · 04</div>
+            <div class="tile__title">심부전</div>
+            <div class="tile__body"><strong>실로스타졸 절대금기.</strong> 심방세동 동반 시 DOAC으로 항응고.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">GROUP · 05</div>
+            <div class="tile__title">위장관 출혈 고위험</div>
+            <div class="tile__body">PPI 병용. 아픽사반·저용량 다비가트란이 위장관 출혈이 적음.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">GROUP · 06</div>
+            <div class="tile__title">임신 · 수유</div>
+            <div class="tile__body"><strong>와파린 기형유발(금기)</strong>, DOAC 권고 안 됨. <strong>LMWH가 표준</strong>. 저용량 아스피린은 산과 적응증 가능.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">FRAIL-AF · 각 약제 라벨 · 임신 중 LMWH 표준 (태반 비통과)</span>
+        <span class="slide__page">20 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 21 · CKD DOAC 용량 (table) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 05 · <strong>SPECIAL &amp; SAFETY</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">콩팥기능과 DOAC 용량</h2>
+        <p class="slide__subtitle">비판막성 심방세동 기준 (FDA 라벨)</p>
+      </div>
+      <div class="slide__body">
+        <div class="dtable" style="--cols: 1fr 1.2fr 1.6fr 1.5fr;">
+          <div class="dtable__row dtable__row--head">
+            <div class="dtable__drug">약제</div>
+            <div class="dtable__cell">표준</div>
+            <div class="dtable__cell">감량</div>
+            <div class="dtable__cell">회피·금기</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Dabigatran</div>
+            <div class="dtable__cell">150 BID (CrCl&gt;30)</div>
+            <div class="dtable__cell">CrCl 15~30 → 75 BID</div>
+            <div class="dtable__cell"><em>CrCl&lt;15·투석 권고 불가</em></div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Rivaroxaban</div>
+            <div class="dtable__cell">20 QD (식사와)</div>
+            <div class="dtable__cell">CrCl 15~50 → 15 QD</div>
+            <div class="dtable__cell">CrCl&lt;15 회피</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Apixaban</div>
+            <div class="dtable__cell">5 BID</div>
+            <div class="dtable__cell">80세↑·60kg↓·SCr 1.5↑ 중 <strong>2개↑ → 2.5 BID</strong></div>
+            <div class="dtable__cell">신기능 저하에 상대적 안전</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Edoxaban</div>
+            <div class="dtable__cell">60 QD</div>
+            <div class="dtable__cell">CrCl 15~50 → 30 QD</div>
+            <div class="dtable__cell"><em>CrCl&gt;95 사용 금지</em> (boxed warning)</div>
+          </div>
+          <div class="dtable__note">용량은 eGFR이 아니라 대개 Cockcroft-Gault <strong>CrCl</strong> 기준으로 판단. 클로피도그렐은 간 대사라 신용량 조절 불필요, UFH는 중증 CKD에도 안전합니다.</div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">FDA 라벨 · 투석환자 아픽사반은 라벨상 허용이나 RCT 근거는 제한적</span>
+        <span class="slide__page">21 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 22 · 위장관 출혈 고위험 (GI) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 05 · <strong>SPECIAL &amp; SAFETY</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">위장관 출혈 위험 줄이기</h2>
+        <p class="slide__subtitle">소화기내과에서 특히 중요한 관리 포인트</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid pattern-grid--2">
+          <div class="tile">
+            <div class="tile__index">GI · 01</div>
+            <div class="tile__title">위장 보호</div>
+            <div class="tile__body">PPI 병용으로 위장보호. DOAC 중 <strong>아픽사반·저용량 다비가트란</strong>이 위장관 출혈이 적음.</div>
+          </div>
+          <div class="tile tile--alert">
+            <div class="tile__index">GI · 02</div>
+            <div class="tile__title">클로피도그렐 + PPI</div>
+            <div class="tile__body"><strong>오메프라졸·에스오메프라졸 회피</strong>(CYP2C19 억제) → <strong>판토프라졸 선호</strong>.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">GI · 03</div>
+            <div class="tile__title">과거 궤양 출혈</div>
+            <div class="tile__body">PPI + H. pylori 검사·제균. NSAID·스테로이드·SSRI 병용 시 출혈위험 설명.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">GI · 04</div>
+            <div class="tile__title">경고 신호</div>
+            <div class="tile__body">빈혈·흑색변은 CBC·내시경 평가. 와파린+아스피린 병용은 단독 대비 출혈 ~1.5~2배.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">소화기내과 핵심 · 클로피도그렐 복용자엔 판토프라졸 선호</span>
+        <span class="slide__page">22 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 23 · 시술·내시경 전후 (table) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 06 · <strong>PROCEDURES &amp; ACTION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">내시경·시술 전, 약은 어떻게 하나</h2>
+        <p class="slide__subtitle">"그냥 다 끊고 오세요"는 위험합니다 — 약마다 다릅니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="dtable" style="--cols: 1.2fr 1.3fr 1.6fr;">
+          <div class="dtable__row dtable__row--head">
+            <div class="dtable__drug">약제</div>
+            <div class="dtable__cell">저위험 내시경</div>
+            <div class="dtable__cell">고위험 시술 (용종절제·EMR(점막절제) 등)</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Aspirin</div>
+            <div class="dtable__cell">지속</div>
+            <div class="dtable__cell">대개 지속 (특히 2차 예방)</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Clopidogrel</div>
+            <div class="dtable__cell">대개 지속</div>
+            <div class="dtable__cell">보통 5~7일 전 중단 (<strong>최근 스텐트면 중단 금지</strong>)</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Ticagrelor / Prasugrel</div>
+            <div class="dtable__cell">전문의 확인</div>
+            <div class="dtable__cell">ticagrelor 3~5일 / prasugrel 7일 전 중단</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">Warfarin</div>
+            <div class="dtable__cell">INR 확인 후 대개 지속</div>
+            <div class="dtable__cell">5일 전 중단·INR 정상화 (고혈전위험만 bridging)</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">DOAC</div>
+            <div class="dtable__cell">1~2일 중단 또는 지속</div>
+            <div class="dtable__cell">CrCl 따라 1~4일 전 중단 (<strong>bridging 불필요</strong>)</div>
+          </div>
+          <div class="dtable__note">혈전 고위험(최근 스텐트·ACS·뇌졸중·기계판막 등)은 <strong>1차의원·검진센터 단독 중단 결정 금지</strong> → 처방의와 상의. 지혈 확인 후 가능한 빨리 재개.</div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">ACG-CAG 2022 · ASGE · 한국 IDEN consensus 2024 · PAUSE (DOAC bridging 불필요)</span>
+        <span class="slide__page">23 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 24 · 출혈 응급 신호 + 역전제 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 06 · <strong>PROCEDURES &amp; ACTION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">이런 출혈 신호는 <em>즉시 응급실</em></h2>
+        <p class="slide__subtitle">출혈이 의심되면 빨리 병원으로 — 역전제가 있습니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid pattern-grid--2">
+          <div class="tile tile--alert">
+            <div class="tile__index">RED FLAG · 01</div>
+            <div class="tile__title">위장관 출혈</div>
+            <div class="tile__body">짜장처럼 검고 끈적한 흑색변, 토혈, 갑작스러운 빈혈·어지럼.</div>
+          </div>
+          <div class="tile tile--alert">
+            <div class="tile__index">RED FLAG · 02</div>
+            <div class="tile__title">뇌출혈 의심</div>
+            <div class="tile__body">갑작스러운 심한 두통, 한쪽 마비, 말 어눌, 의식 변화.</div>
+          </div>
+          <div class="tile tile--alert">
+            <div class="tile__index">RED FLAG · 03</div>
+            <div class="tile__title">호흡 · 순환</div>
+            <div class="tile__body">멈추지 않는 출혈, 흉통·호흡곤란.</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">ANTIDOTE · 04</div>
+            <div class="tile__title">역전·해독 치료가 있습니다</div>
+            <div class="tile__body">출혈을 되돌리는 역전제가 병원에 준비돼 있습니다. 응급실에서 <strong>복용 중인 약 이름과 마지막 복용 시각</strong>을 꼭 알려 주세요.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">역전제 — 다비가트란: idarucizumab 5g · Xa억제제: andexanet 미국 철수(2025.12)→4인자 PCC · 와파린: 비타민K+4인자 PCC</span>
+        <span class="slide__page">24 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 25 · 환자 실천 체크리스트 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 06 · <strong>PROCEDURES &amp; ACTION</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">환자가 꼭 기억할 것</h2>
+        <p class="slide__subtitle">안전하게 약을 복용하는 7가지</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-checklist">
+          <div class="check-item">
+            <div class="check-item__num">01</div>
+            <div class="check-item__text">"피 묽게 하는 약"은 <strong>종류가 다릅니다</strong> — 내 약이 무엇인지 알기</div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">02</div>
+            <div class="check-item__text">스텐트 후 약은 <strong>하루도 임의 중단 금지</strong></div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">03</div>
+            <div class="check-item__text">심방세동은 아스피린이 아니라 <strong>항응고제</strong></div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">04</div>
+            <div class="check-item__text">60세 이상 예방 목적 아스피린은 <strong>새로 시작하지 않는 쪽</strong></div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">05</div>
+            <div class="check-item__text">흑색변·토혈·심한 두통·한쪽 마비·호흡곤란 → <strong>즉시 응급실</strong></div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">06</div>
+            <div class="check-item__text">발치·내시경(용종절제)·수술 전 <strong>복용 약 알리기</strong></div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">07</div>
+            <div class="check-item__text">진통소염제(NSAID)·한약·건강기능식품도 <strong>출혈위험↑</strong> — 함께 알리기</div>
+          </div>
+          <div class="check-item" style="border-bottom: none;">
+            <div class="check-item__num" style="color: var(--color-navy);">→</div>
+            <div class="check-item__text" style="color: var(--color-slate);">스스로 끊거나 줄이지 말고 처방의와 상의하세요</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">환자 설명용 핵심 메시지 · 광교바른내과</span>
+        <span class="slide__page">25 / 26</span>
+      </footer>
+    </section>
+
+    <!-- ===== 26 · CLOSING ===== -->
+    <section class="slide slide--closing">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">약은 스스로 끊지 말고<br><em>주치의와 상의하세요</em></h2>
+        <p class="slide__subtitle">궁금한 점은 진료 때 언제든 문의해 주세요</p>
+      </div>
+      <div class="slide__body">
+        <div class="closing-grid">
+          <div class="contact-card">
+            <div class="contact-card__item">
+              <div class="contact-card__label">Phone</div>
+              <div class="contact-card__value">031-893-4560</div>
+            </div>
+            <div class="contact-card__item">
+              <div class="contact-card__label">Hours</div>
+              <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+            </div>
+            <div class="contact-card__item">
+              <div class="contact-card__label">Address</div>
+              <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+            </div>
+          </div>
+          <div class="qr-block">
+            <div class="qr-block__code"></div>
+            <div class="qr-block__text">
+              <div class="qr-block__label">SCAN TO REVISIT</div>
+              <div class="qr-block__heading">집에서 다시 보기</div>
+              <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+        <span class="slide__page">26 / 26</span>
+      </footer>
+    </section>
+
+  </main>
+</body>
+</html>

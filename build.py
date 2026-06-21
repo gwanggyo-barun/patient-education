@@ -81,6 +81,14 @@ VALID_NOTION_STATUSES = {
 TARGETS = [
     # === 16:9 multi-slide decks ===
     {
+        "kind": "decks", "slug": "antithrombotic-therapy",
+        "slug_path": "decks/cardio/antithrombotic-therapy/overview/",
+        "html_path": ROOT / "decks/cardio/antithrombotic-therapy/overview/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "항혈전제 바로 알기 — 피 묽게 하는 약 통합 안내",
+        "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "항혈전제 (항혈소판제·항응고제)",
+    },
+    {
         "kind": "decks", "slug": "roma-ovarian-risk",
         "slug_path": "decks/gyn/roma-ovarian-risk/",
         "html_path": ROOT / "decks/gyn/roma-ovarian-risk/index.html",
