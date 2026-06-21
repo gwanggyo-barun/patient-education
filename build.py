@@ -414,6 +414,14 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "흉통 (Chest Pain)",
     },
     {
+        "kind": "decks", "slug": "blood-circulation-agents",
+        "slug_path": "decks/cardio/blood-circulation-agents/",
+        "html_path": ROOT / "decks/cardio/blood-circulation-agents/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "혈액순환제 바로 알기",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "혈액순환제 (정맥순환제·말초동맥질환약·은행엽) · 근거 기반 정리",
+    },
+    {
         "kind": "decks", "slug": "abyss-betablocker-mi",
         "slug_path": "decks/cardio/abyss-betablocker-mi/",
         "html_path": ROOT / "decks/cardio/abyss-betablocker-mi/index.html",
