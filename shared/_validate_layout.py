@@ -489,7 +489,20 @@ def validate_html_file(html_path: Path, kind: str = "auto") -> list[dict]:
     if kind == "auto":
         text = html_path.read_text(encoding="utf-8")
         path_parts = set(html_path.resolve().parts)
-        if "clinic-handout-a4.css" in text or "lab-reports" in path_parts or "handouts" in path_parts:
+        # Deck-structured content is classified as a deck regardless of its
+        # directory. A 16:9 patient-education deck can be deliberately filed under
+        # lab-reports/ for privacy routing (noindex + hash slug) while still using
+        # the .deck/.slide layout + clinic-slides.css; build.py registers such a
+        # target with fmt="deck-16x9" and validates it with DECK_VALIDATOR_JS
+        # (e.g. lab-reports/parkinson-meds/55572cefba, 원장 확정 2026-06-20). This
+        # standalone validator has no TARGETS/fmt context, so it must sniff the
+        # layout from the file itself. The deck stylesheet is the discriminator:
+        # A4 handouts/lab-reports load clinic-handout-a4.css and never
+        # clinic-slides.css. Match it FIRST so a deck under lab-reports/ isn't
+        # misread as a handout (which would false-positive no_page_div).
+        if "clinic-slides.css" in text:
+            kind = "deck"
+        elif "clinic-handout-a4.css" in text or "lab-reports" in path_parts or "handouts" in path_parts:
             kind = "handout"
         else:
             kind = "deck"
