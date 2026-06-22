@@ -89,6 +89,15 @@ TARGETS = [
         "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "항혈전제 (항혈소판제·항응고제)",
     },
     {
+        "kind": "decks", "slug": "chronic-hepatitis-b",
+        "slug_path": "decks/gi/chronic-hepatitis-b/overview/",
+        "html_path": ROOT / "decks/gi/chronic-hepatitis-b/overview/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "만성 B형간염, 이렇게 관리합니다 — 2026 새 진료 기준",
+        "category": "🫁 위장관", "audience": "환자/보호자",
+        "disease": "만성 B형간염 (Chronic Hepatitis B) · 대한간학회 2026 가이드라인",
+    },
+    {
         "kind": "decks", "slug": "roma-ovarian-risk",
         "slug_path": "decks/gyn/roma-ovarian-risk/",
         "html_path": ROOT / "decks/gyn/roma-ovarian-risk/index.html",

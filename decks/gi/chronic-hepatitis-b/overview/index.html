@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>만성 B형간염, 이렇게 관리합니다 — Gwanggyo Barun Internal Medicine</title>
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/chronic-hepatitis-b/overview/">
+  <meta property="og:title" content="만성 B형간염, 이렇게 관리합니다 — 광교바른내과">
+  <meta property="og:description" content="2026 새 진료 기준. 간수치(ALT)가 아니라 '혈중 바이러스 양'으로 보고, 더 일찍 치료합니다 — 자연경과·치료 대상·먹는 항바이러스제·정기검사까지 환자 설명용 슬라이드 (대한간학회 2026 가이드라인 기반)">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/chronic-hepatitis-b/overview/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <link rel="stylesheet" href="../../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
+
+  <style>
+    /* ── deck-local: 본 덱 전용 보조 컴포넌트 (디자인 토큰만 사용) ── */
+    .slide__bg-num { display: none !important; }
+
+    /* compact, footer-safe frame (htn-2025 / antithrombotic 계열) */
+    .slide { --slide-pad-y: 46px; }
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .slide__title-block { margin-bottom: 22px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+
+    /* 근거 배지 */
+    .ev-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .evchip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px; border-radius: 7px;
+      background: var(--color-canvas-warm); border: 1px solid var(--color-steel);
+      color: var(--color-steel); font-size: var(--text-micro); font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wide); text-transform: uppercase;
+      font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    .evchip--grade { border-color: var(--color-border); color: var(--color-slate); background: var(--color-canvas); text-transform: none; }
+
+    /* 덱 전용 데이터 테이블 (치료 대상 표 · 약제 표) */
+    .dtable { display: flex; flex-direction: column; gap: 7px; }
+    .dtable__row {
+      display: grid; grid-template-columns: var(--cols, 1fr 1fr 1fr);
+      gap: 16px; align-items: center; padding: 10px 18px;
+      background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    }
+    .dtable__row--head { background: var(--color-navy); border-color: var(--color-navy); }
+    .dtable__row--head .dtable__cell, .dtable__row--head .dtable__drug {
+      color: var(--color-canvas); font-weight: var(--weight-bold);
+      font-size: var(--text-sm); text-transform: uppercase; letter-spacing: var(--tracking-wide);
+    }
+    .dtable__row--treat { border-color: var(--color-steel); background: var(--color-canvas-warm); }
+    .dtable__drug { font-weight: var(--weight-bold); color: var(--color-navy); font-size: var(--text-body-lg); letter-spacing: var(--tracking-snug); }
+    .dtable__drug small { display: block; font-size: var(--text-micro); font-weight: var(--weight-450); color: var(--color-slate); letter-spacing: 0; text-transform: none; }
+    .dtable__cell { font-size: 0.95rem; color: var(--color-ink-soft); line-height: 1.3; }
+    .dtable__cell strong { color: var(--color-navy); font-weight: var(--weight-540); }
+    .dtable__cell em { color: var(--color-danger); font-style: normal; font-weight: var(--weight-540); }
+    .dtable__tag { display: inline-block; padding: 3px 11px; border-radius: 999px; font-size: 0.86rem; font-weight: var(--weight-bold); white-space: nowrap; }
+    .dtable__tag--go { background: var(--color-navy); color: #fff; }
+    .dtable__tag--watch { background: var(--color-canvas); color: var(--color-steel); border: 1px solid var(--color-steel); }
+    .dtable__note {
+      margin-top: 11px; padding: 11px 16px; flex-shrink: 0;
+      background: var(--color-canvas-warm); border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-steel); border-radius: var(--radius-sm);
+      font-size: 0.97rem; line-height: 1.4; color: var(--color-ink);
+    }
+    .dtable__note strong { color: var(--color-navy); font-weight: var(--weight-bold); }
+    .dtable__note--caution { margin-top: 9px; border-left-color: var(--color-danger); }
+    .dtable__note--caution strong { color: var(--color-danger); }
+
+    /* grid / tiles */
+    .pattern-grid { gap: 14px; }
+    .tile { padding: 15px 18px; gap: 7px; }
+    .tile__title { font-size: 1.05rem; line-height: 1.2; }
+    .tile__body { font-size: 0.95rem; line-height: 1.34; }
+    .grid-3up { flex: 1 1 auto; min-height: 0; align-content: stretch; }
+    .grid-3up .tile { justify-content: center; }
+    /* 4-tile 세로 스택(진행 단계) — 패딩만 줄여 footer 침범 방지, 폰트는 유지 */
+    .grid-4tile { gap: 8px !important; }
+    .grid-4tile .tile { padding: 10px 16px; gap: 4px; justify-content: center; }
+
+    /* split */
+    .pattern-split { gap: 36px; min-height: 0; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.14; }
+    .pattern-split__supporting { font-size: 0.98rem; line-height: 1.4; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 15px 18px; }
+    .pattern-split__metric-value { font-size: 1.5rem; line-height: 1.1; }
+    .pattern-split__metric-detail { font-size: 0.92rem; line-height: 1.32; }
+    .pattern-split--even .split__heading { font-size: 1.18rem; font-weight: var(--weight-bold); color: var(--color-navy); letter-spacing: var(--tracking-snug); margin-bottom: 10px; }
+    .pattern-split--even .split__left, .pattern-split--even .split__right {
+      padding: 18px 22px; background: var(--color-canvas); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); display: flex; flex-direction: column;
+      word-break: keep-all; overflow-wrap: break-word;
+    }
+    .pattern-split--even .split__right { background: var(--color-canvas-warm); border-color: var(--color-steel); }
+    .split__list { list-style: none; display: flex; flex-direction: column; gap: 9px; flex: 1; justify-content: space-between; }
+    .split__list li { font-size: 0.98rem; line-height: 1.34; color: var(--color-ink); padding-left: 18px; position: relative; }
+    .split__list li::before { content: "·"; position: absolute; left: 4px; color: var(--color-steel); font-weight: var(--weight-bold); }
+    .split__note { padding-top: 12px; font-size: 0.9rem; color: var(--color-slate); line-height: 1.34; }
+
+    /* compare */
+    .pattern-compare { align-items: stretch; }
+    .compare-col__header { padding: 13px 18px; font-size: 1.12rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 11px; justify-content: space-between; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.32; padding-left: 22px; }
+
+    /* timeline */
+    .pattern-timeline { --timeline-gap: 12px; align-items: stretch; }
+    .timeline-step { padding: 14px 14px; gap: 9px; justify-content: flex-start; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.2; }
+    .timeline-step__body { font-size: 0.91rem; line-height: 1.32; }
+
+    /* alert */
+    .alert-strip { padding: 13px 18px; margin-top: 14px; }
+    .alert-strip__text { font-size: 0.96rem; line-height: 1.36; }
+
+    /* hero number */
+    .pattern-hero-number { gap: 40px; align-items: center; }
+    .pattern-hero-number__value { font-size: 8.5rem; line-height: 0.9; }
+    .pattern-hero-number__caption { font-size: 1.12rem; line-height: 1.42; }
+    .pattern-hero-number__detail-text { font-size: 1.0rem; line-height: 1.46; }
+
+    /* checklist */
+    .pattern-checklist { align-content: center; gap: 6px 56px; }
+    .check-item { padding: 9px 0; }
+    .check-item__text { font-size: 1.0rem; line-height: 1.32; }
+
+    /* visual-focus (이미지 슬라이드) */
+    .slide__body--visual-focus { gap: 30px; }
+    .slide__body--visual-focus .tile__title { font-size: 1.02rem; }
+    .slide__body--visual-focus .tile__body { font-size: 0.93rem; line-height: 1.32; }
+
+    /* closing */
+    .slide--closing .slide__title { font-size: 2.5rem; margin-top: 0; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__body { min-height: 0; justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; min-height: 0; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { padding: 18px; gap: 10px; min-height: 0; }
+    .qr-block__code { width: 104px; height: 104px; }
+
+    /* ── sparse 슬라이드 가독성 보강 (원장 검수 2026-06-22): 폰트 키우고 여백 축소 ── */
+    /* slide 6 — 핵심 변화 (비교) */
+    .slide:nth-of-type(6) .compare-col__header { font-size: 1.24rem; padding: 16px 20px; }
+    .slide:nth-of-type(6) .compare-col__list { padding: 20px 22px 22px; gap: 18px; }
+    .slide:nth-of-type(6) .compare-col__list li { font-size: 1.12rem; line-height: 1.46; padding-left: 24px; }
+    .slide:nth-of-type(6) .alert-strip { padding: 16px 20px; }
+    .slide:nth-of-type(6) .alert-strip__text { font-size: 1.08rem; line-height: 1.48; }
+    /* slide 9 — 치료 기간·목표 (split) */
+    .slide:nth-of-type(9) .split__heading { font-size: 1.28rem; margin-bottom: 14px; }
+    .slide:nth-of-type(9) .pattern-split--even .split__left,
+    .slide:nth-of-type(9) .pattern-split--even .split__right { padding: 22px 26px; }
+    .slide:nth-of-type(9) .split__list li { font-size: 1.08rem; line-height: 1.5; }
+    .slide:nth-of-type(9) .split__note { font-size: 1.0rem; line-height: 1.42; }
+    /* slide 11 — 임신·특수상황 (2x2 grid) */
+    .slide:nth-of-type(11) .tile { padding: 20px 24px; gap: 9px; }
+    .slide:nth-of-type(11) .tile__title { font-size: 1.2rem; line-height: 1.26; }
+    .slide:nth-of-type(11) .tile__body { font-size: 1.07rem; line-height: 1.46; }
+    /* slide 12 — 실천 체크리스트 */
+    .slide:nth-of-type(12) .pattern-checklist { align-content: space-evenly; gap: 12px 56px; }
+    .slide:nth-of-type(12) .check-item { padding: 13px 0; }
+    .slide:nth-of-type(12) .check-item__text { font-size: 1.14rem; line-height: 1.42; }
+  </style>
+</head>
+<body>
+  <main class="deck">
+
+    <!-- ===== 01 · COVER ===== -->
+    <section class="slide slide--cover">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHRONIC HEPATITIS B · <strong>2026</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">만성 B형간염,<br><em>이렇게 관리합니다</em></h2>
+        <p class="slide__subtitle">2026 새 진료 기준 — 간수치가 아니라 '혈중 바이러스 양'으로 보고, 더 일찍 치료합니다</p>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+        <span class="slide__page">01 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 02 · 국내 현황 (HERO) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 01 · <strong>WHY IT MATTERS</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">우리나라 간암의 <em>가장 큰 원인</em></h2>
+        <p class="slide__subtitle">B형간염은 간경변·간암으로 이어지는 핵심 위험 요인입니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-hero-number">
+          <div class="pattern-hero-number__figure">
+            <div class="pattern-hero-number__value">120<span style="font-size:3rem;">만</span></div>
+            <div class="pattern-hero-number__caption">국내 B형간염 감염자 (추정)</div>
+          </div>
+          <div class="pattern-hero-number__detail">
+            <p class="pattern-hero-number__detail-text">
+              전체 유병률은 3% 미만으로 줄었지만, <strong>40~60대는 여전히 3~4%</strong>로 높습니다.
+              B형간염에 의한 간질환 사망은 인구 10만 명당 <strong>18.9명</strong> —
+              세계보건기구(WHO) 목표(4명 이하)를 크게 웃돕니다.
+            </p>
+            <div class="ev-row">
+              <span class="evchip">치료율 22.2%</span>
+              <span class="evchip">간암 1위 원인</span>
+              <span class="evchip evchip--grade">대한간학회 2026</span>
+            </div>
+          </div>
+        </div>
+        <div class="alert-strip">
+          <span class="alert-strip__label">핵심</span>
+          <span class="alert-strip__text">효과적이고 안전한 먹는 약이 있는데도 <strong>전체 환자 중 치료받는 분은 5명 중 1명</strong>뿐입니다. 치료가 필요한 분을 놓치지 않는 적극적 관리가 간암과 사망을 줄입니다.</span>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">국내 역학 · 대한간학회 2026 만성 B형간염 가이드라인</span>
+        <span class="slide__page">02 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 03 · B형간염이란 (IMAGE #1: 간 해부) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IT IS</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">간에 <em>오래 머무는</em> 바이러스</h2>
+        <p class="slide__subtitle">대부분 어릴 때 감염되어, 증상 없이 수십 년 함께 지냅니다</p>
+      </div>
+      <div class="slide__body slide__body--visual-focus">
+        <div class="pattern-grid" style="grid-template-columns: 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 12px;">
+          <div class="tile">
+            <div class="tile__index">감염 경로</div>
+            <div class="tile__title">대부분 '엄마 → 아기' 수직감염</div>
+            <div class="tile__body">우리나라 환자는 대부분 출생 전후에 감염되며, 거의 모두 <strong>유전자형 C형</strong>입니다. 감염 기간이 길어 간경변·간암 위험이 외국보다 높습니다.</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">증상</div>
+            <div class="tile__title">대부분 '증상이 없습니다'</div>
+            <div class="tile__body">간은 '침묵의 장기' — 피곤함 외에는 신호가 거의 없습니다. <strong>혈액검사로만</strong> 감염과 진행 정도를 확인합니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">확인 방법</div>
+            <div class="tile__title">간단한 피검사로 확인</div>
+            <div class="tile__body">HBsAg(표면항원)으로 감염 여부, <strong>HBV DNA</strong>(혈중 바이러스 양)·간수치·초음파로 진행 정도와 치료 필요성을 판단합니다.</div>
+          </div>
+        </div>
+        <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
+          <img src="../../../../shared/assets/generated/hbv-liver-anatomy-virus-20260622.png" alt="간의 위치와 B형간염 바이러스가 간세포에 감염된 모습 일러스트">
+        </figure>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">B형간염 바이러스(HBV) · 유전자형 C형 우세</span>
+        <span class="slide__page">03 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 04 · 자연경과 (IMAGE #2: 진행 단계) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 02 · <strong>NATURAL COURSE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">증상 없이 <em>조용히 진행</em>합니다</h2>
+        <p class="slide__subtitle">치료하지 않으면 간이 서서히 굳고, 일부는 간암으로 진행합니다</p>
+      </div>
+      <div class="slide__body slide__body--visual-focus">
+        <div class="pattern-grid grid-4tile" style="grid-template-columns: 1fr; grid-template-rows: repeat(4, 1fr);">
+          <div class="tile">
+            <div class="tile__index">STEP 01</div>
+            <div class="tile__title">만성 염증</div>
+            <div class="tile__body">바이러스가 간세포에 지속 감염되어 염증이 반복됩니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">STEP 02</div>
+            <div class="tile__title">간섬유화</div>
+            <div class="tile__body">염증이 쌓이며 간이 점점 딱딱해집니다(흉터).</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">STEP 03</div>
+            <div class="tile__title">간경변</div>
+            <div class="tile__body">간이 크게 굳어 기능이 떨어지고 합병증이 생깁니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">STEP 04</div>
+            <div class="tile__title">간암</div>
+            <div class="tile__body">간경변이 없어도 발생할 수 있어 정기 감시가 필수입니다.</div>
+          </div>
+        </div>
+        <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+          <img src="../../../../shared/assets/generated/hbv-progression-stages-20260622.png" alt="정상 간에서 염증·섬유화·간경변·간암으로 진행하는 4단계 비교 일러스트">
+        </figure>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">만성 B형간염 자연경과 · 대한간학회 2026</span>
+        <span class="slide__page">04 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 05 · 새 분류: 바이러스 양 (IMAGE #3) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 02 · <strong>NEW VIEW</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">이제 <em>'바이러스 양'</em>으로 봅니다</h2>
+        <p class="slide__subtitle">2026년부터 분류 기준이 바뀌었습니다 — 간수치(ALT) 중심에서 혈중 바이러스 양(HBV DNA) 중심으로</p>
+      </div>
+      <div class="slide__body slide__body--visual-focus">
+        <div class="pattern-grid" style="grid-template-columns: 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 12px;">
+          <div class="tile">
+            <div class="tile__index">많음 · HIGH</div>
+            <div class="tile__title">바이러스 양 많음</div>
+            <div class="tile__body">혈중 바이러스 양(HBV DNA)이 매우 높은 단계(&gt;1억 IU/mL).</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">중간 · MODERATE</div>
+            <div class="tile__title">중간 — 간암 위험 가장 높음</div>
+            <div class="tile__body">2천~1억 IU/mL 구간. 최근 연구에서 <strong>간암 위험이 가장 높은</strong> 것으로 확인됐습니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">적음 · LOW</div>
+            <div class="tile__title">바이러스 양 적음</div>
+            <div class="tile__body">&lt;2천 IU/mL. 간경변이 없으면 대체로 경과가 양호합니다.</div>
+          </div>
+        </div>
+        <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+          <img src="../../../../shared/assets/generated/hbv-viral-load-bands-20260622.png" alt="혈중 바이러스 양을 적음·중간·많음 세 구간으로 나누고 중간 구간의 위험이 가장 높음을 나타내는 개념 일러스트">
+        </figure>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">바이러스 역가 기반 자연경과 분류 · 대한간학회 2026</span>
+        <span class="slide__page">05 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 06 · 가장 큰 변화 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 03 · <strong>KEY CHANGE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">간수치가 정상이어도 <em>치료할 수 있습니다</em></h2>
+        <p class="slide__subtitle">예전엔 "간수치가 올라야" 치료했지만, 이제는 다릅니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-compare">
+          <div class="compare-col">
+            <div class="compare-col__header">예전 기준 (~2022)</div>
+            <ul class="compare-col__list">
+              <li>간수치(ALT)가 정상 상한의 2배 이상 올라야 치료</li>
+              <li>바이러스가 많아도 간수치 정상이면 '경과관찰'</li>
+              <li>중간 바이러스 양 구간이 치료의 사각지대였음</li>
+            </ul>
+          </div>
+          <div class="compare-col compare-col--accent">
+            <div class="compare-col__header">새 기준 (2026)</div>
+            <ul class="compare-col__list">
+              <li><strong>바이러스 양</strong>을 기준으로 치료 여부 결정</li>
+              <li>간수치가 정상이어도 위험 구간이면 <strong>치료 시작</strong></li>
+              <li>치료 대상이 넓어지고, 판단이 단순해짐</li>
+            </ul>
+          </div>
+        </div>
+        <div class="alert-strip">
+          <span class="alert-strip__label">왜 바뀌었나</span>
+          <span class="alert-strip__text">간수치가 정상이어도 바이러스에 의한 <strong>발암 과정은 진행</strong>될 수 있습니다. 그래서 간수치만으로는 간암을 충분히 막기 어렵습니다.</span>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">치료 대상 확대 · 대한간학회 2026</span>
+        <span class="slide__page">06 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 07 · 누가 치료를 시작하나 (TABLE) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 03 · <strong>WHO TO TREAT</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">누가 <em>치료를 시작</em>하나요?</h2>
+        <p class="slide__subtitle">혈중 바이러스 양과 간 상태로 판단합니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="dtable" style="--cols: 1.1fr 1.7fr 0.9fr;">
+          <div class="dtable__row dtable__row--head">
+            <div class="dtable__cell">바이러스 양</div>
+            <div class="dtable__cell">어떻게 하나</div>
+            <div class="dtable__cell" style="text-align:center;">치료</div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">중간<small>2천~1억 IU/mL</small></div>
+            <div class="dtable__cell">간암 위험이 가장 높은 구간 — <strong>간수치와 관계없이</strong> 치료 시작</div>
+            <div class="dtable__cell" style="text-align:center;"><span class="dtable__tag dtable__tag--go">시작</span></div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">많음<small>&gt;1억 IU/mL</small></div>
+            <div class="dtable__cell"><strong>30세 초과</strong>·간수치 상승·간섬유화 중 하나면 치료, 없으면 경과관찰</div>
+            <div class="dtable__cell" style="text-align:center;"><span class="dtable__tag dtable__tag--go">조건부</span></div>
+          </div>
+          <div class="dtable__row">
+            <div class="dtable__drug">적음<small>&lt;2천 IU/mL</small></div>
+            <div class="dtable__cell">간경변이 없으면 경과관찰 — 간수치 오르면 다른 원인도 확인</div>
+            <div class="dtable__cell" style="text-align:center;"><span class="dtable__tag dtable__tag--watch">관찰</span></div>
+          </div>
+          <div class="dtable__row dtable__row--treat">
+            <div class="dtable__drug">간경변</div>
+            <div class="dtable__cell">바이러스가 <strong>검출되기만 하면</strong> 양과 관계없이 치료 시작</div>
+            <div class="dtable__cell" style="text-align:center;"><span class="dtable__tag dtable__tag--go">시작</span></div>
+          </div>
+        </div>
+        <div class="dtable__note">치료를 시작하지 않더라도 <strong>그냥 두는 것이 아닙니다</strong> — 3~6개월마다 검사하며 치료 시점을 놓치지 않도록 추적합니다.</div>
+        <div class="dtable__note dtable__note--caution">⚠️ <strong>건강보험 급여 안내</strong> — 위는 학회 권고 기준입니다. 현재 급여는 기존 기준(간수치 상승 등)을 적용해, <strong>간수치가 정상이고 간경변이 없으면 중등도라도 아직 급여가 안 될 수 있습니다.</strong> 치료 시작은 진료 상담으로 결정합니다.</div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">치료 대상 및 전략 · 대한간학회 2026 (실제 치료는 진료의가 종합 판단)</span>
+        <span class="slide__page">07 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 08 · 치료 약 (IMAGE #4: 약 작용) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>TREATMENT</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">하루 <em>한 알</em>로 바이러스를 누릅니다</h2>
+        <p class="slide__subtitle">효과 좋고 안전하며 내성이 거의 없는 먹는 항바이러스제</p>
+      </div>
+      <div class="slide__body slide__body--visual-focus">
+        <div class="pattern-grid" style="grid-template-columns: 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 12px;">
+          <div class="tile">
+            <div class="tile__index">1차 치료제</div>
+            <div class="tile__title">테노포비어 · 엔테카비어 · 베시포비어</div>
+            <div class="tile__body">하루 한 알. 바이러스 증식을 강력히 억제하고 <strong>내성 발생이 매우 드뭅니다</strong>.</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">효과</div>
+            <div class="tile__title">간암·사망 위험을 낮춤</div>
+            <div class="tile__body">장기 복용 시 간경변 진행을 막고 <strong>간암 발생과 사망을 줄이는</strong> 효과가 입증됐습니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">맞춤 선택</div>
+            <div class="tile__title">상태에 맞춰 약을 고릅니다</div>
+            <div class="tile__body">콩팥·뼈가 약하면 그에 맞는 약으로, <strong>임신 중에는 테노포비어</strong>로 선택합니다.</div>
+          </div>
+        </div>
+        <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+          <img src="../../../../shared/assets/generated/hbv-antiviral-blocks-replication-20260622.png" alt="먹는 항바이러스제가 간세포 안에서 B형간염 바이러스의 복제를 차단하는 작용 일러스트">
+        </figure>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">고유전자장벽 항바이러스제 · 대한간학회 2026</span>
+        <span class="slide__page">08 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 09 · 얼마나·목표 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 04 · <strong>HOW LONG</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">오래 먹지만, <em>스스로 끊으면 위험</em>합니다</h2>
+        <p class="slide__subtitle">목표는 바이러스를 눌러 간암을 예방하고, 더 나아가 '기능적 완치'에 이르는 것</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-split pattern-split--even" style="grid-template-columns: 1fr 1fr;">
+          <div class="split__left">
+            <div class="split__heading">치료 기간 — 장기 복용</div>
+            <ul class="split__list">
+              <li>대부분 <strong>오랜 기간 꾸준히</strong> 복용합니다.</li>
+              <li><strong>임의 중단은 금지</strong> — 간염이 갑자기 악화되거나 간기능이 나빠질 수 있습니다.</li>
+              <li>특히 우리나라에 많은 <strong>유전자형 C형</strong>은 중단 후 재발·악화 위험이 큽니다.</li>
+              <li>중단 여부는 반드시 <strong>진료의와 상의</strong>해 결정합니다.</li>
+            </ul>
+          </div>
+          <div class="split__right">
+            <div class="split__heading">치료 목표</div>
+            <ul class="split__list">
+              <li><strong>단기</strong> — 혈중 바이러스(HBV DNA)를 검출되지 않게 억제</li>
+              <li><strong>장기</strong> — 표면항원(HBsAg)까지 사라지는 <strong>기능적 완치</strong></li>
+              <li>궁극적으로 <strong>간경변·간암 예방</strong>과 생존율 향상</li>
+            </ul>
+            <div class="split__note">기능적 완치에 이르면 치료 종료를 고려할 수 있습니다.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">치료 목표·치료 종료 · 대한간학회 2026</span>
+        <span class="slide__page">09 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 10 · 정기검사 (IMAGE #5: 모니터링) ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 05 · <strong>MONITORING</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">치료 여부와 관계없이 <em>정기검사</em></h2>
+        <p class="slide__subtitle">간암은 일찍 발견할수록 잘 치료됩니다 — 6개월마다 챙기세요</p>
+      </div>
+      <div class="slide__body slide__body--visual-focus">
+        <div class="pattern-grid" style="grid-template-columns: 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 12px;">
+          <div class="tile tile--accent">
+            <div class="tile__index">6개월마다</div>
+            <div class="tile__title">간암 감시검사</div>
+            <div class="tile__body"><strong>40세 이상</strong>이거나 간경변이 있으면, 6개월마다 <strong>복부 초음파 + 혈액검사(AFP)</strong>를 받습니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">정기적으로</div>
+            <div class="tile__title">혈액검사로 추적</div>
+            <div class="tile__body">간수치·바이러스 양을 정기적으로 확인하고, 치료 중에는 콩팥 기능도 함께 살핍니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">관찰 대상도</div>
+            <div class="tile__title">'지금 치료 안 함' = 추적 필요</div>
+            <div class="tile__body">치료를 시작하지 않은 분도 <strong>3~6개월마다</strong> 검사해 치료 시점을 놓치지 않습니다.</div>
+          </div>
+        </div>
+        <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Process">
+          <img src="../../../../shared/assets/generated/hbv-surveillance-ultrasound-20260622.png" alt="복부 초음파와 혈액검사로 6개월마다 간을 정기 감시하는 모습 일러스트">
+        </figure>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">간암 감시·치료 중 모니터링 · 대한간학회 2026</span>
+        <span class="slide__page">10 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 11 · 임신·특수상황 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 05 · <strong>SPECIAL CARE</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">임신·다른 치료 때 <em>꼭 챙길 것</em></h2>
+        <p class="slide__subtitle">상황에 따라 미리 준비하면 위험을 크게 줄일 수 있습니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px;">
+          <div class="tile">
+            <div class="tile__index">임신 · 01</div>
+            <div class="tile__title">수직감염 예방</div>
+            <div class="tile__body">바이러스가 많으면(HBV DNA ≥20만 IU/mL) 임신 중 <strong>항바이러스제로 아기 감염을 예방</strong>합니다(테노포비어).</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">임신 · 02</div>
+            <div class="tile__title">출산·수유</div>
+            <div class="tile__body">아기는 출생 직후 <strong>백신 + 면역글로불린</strong>으로 보호합니다. 치료 중이 아니면 <strong>모유수유 가능</strong>합니다.</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">항암·면역억제 · 03</div>
+            <div class="tile__title">치료 전 반드시 확인</div>
+            <div class="tile__body">항암치료·면역억제제·스테로이드 전에는 <strong>B형간염 검사</strong>가 필수 — 바이러스 재활성화(악화)를 막습니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">가족 · 04</div>
+            <div class="tile__title">가족도 검사·예방접종</div>
+            <div class="tile__body">함께 사는 가족은 검사를 받고, 항체가 없으면 <strong>예방접종</strong>으로 미리 보호합니다.</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">특정 상황에서의 치료 · 대한간학회 2026</span>
+        <span class="slide__page">11 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 12 · 실천 체크리스트 ===== -->
+    <section class="slide">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">CHAPTER 06 · <strong>YOUR CHECKLIST</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">오늘부터 <em>실천하기</em></h2>
+        <p class="slide__subtitle">꾸준함이 간을 지킵니다</p>
+      </div>
+      <div class="slide__body">
+        <div class="pattern-checklist">
+          <div class="check-item">
+            <div class="check-item__num">01</div>
+            <div class="check-item__text">처방받은 약은 <strong>매일 같은 시간</strong>에 거르지 않고 복용</div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">02</div>
+            <div class="check-item__text">약을 <strong>스스로 끊거나 거르지 않기</strong> — 중단은 진료의와 상의</div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">03</div>
+            <div class="check-item__text"><strong>6개월마다</strong> 간암 감시검사(초음파+혈액)와 정기 진료</div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">04</div>
+            <div class="check-item__text"><strong>금주</strong> — 술은 간 손상과 간암 위험을 높입니다</div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">05</div>
+            <div class="check-item__text">항체가 없으면 <strong>A형간염 예방접종</strong> 받기</div>
+          </div>
+          <div class="check-item">
+            <div class="check-item__num">06</div>
+            <div class="check-item__text"><strong>가족 검사·예방접종</strong> 챙기기</div>
+          </div>
+          <div class="check-item" style="border-bottom: none;">
+            <div class="check-item__num">07</div>
+            <div class="check-item__text">다른 약·한약·<strong>건강기능식품</strong> 복용 시 미리 상담</div>
+          </div>
+          <div class="check-item" style="border-bottom: none;">
+            <div class="check-item__num" style="color: var(--color-navy);">→</div>
+            <div class="check-item__text" style="color: var(--color-slate);">궁금한 점은 진료 때 언제든 물어보세요</div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">환자 실천 핵심 · 광교바른내과</span>
+        <span class="slide__page">12 / 13</span>
+      </footer>
+    </section>
+
+    <!-- ===== 13 · CLOSING ===== -->
+    <section class="slide slide--closing">
+      <header class="slide__header">
+        <img class="slide__logo" src="../../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+        <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+      </header>
+      <div class="slide__title-block">
+        <h2 class="slide__title">꾸준한 관리로<br><em>간암을 예방합니다</em></h2>
+        <p class="slide__subtitle">궁금한 점은 진료 때 언제든 문의해 주세요</p>
+      </div>
+      <div class="slide__body">
+        <div class="closing-grid">
+          <div class="contact-card">
+            <div class="contact-card__item">
+              <div class="contact-card__label">Phone</div>
+              <div class="contact-card__value">031-893-4560</div>
+            </div>
+            <div class="contact-card__item">
+              <div class="contact-card__label">Hours</div>
+              <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+            </div>
+            <div class="contact-card__item">
+              <div class="contact-card__label">Address</div>
+              <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+            </div>
+          </div>
+          <div class="qr-block">
+            <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM12,2H13V3H12zM17,2H18V3H17zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM22,2H23V3H22zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM31,2H32V3H31zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM12,3H13V4H12zM13,3H14V4H13zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM19,3H20V4H19zM21,3H22V4H21zM30,3H31V4H30zM31,3H32V4H31zM33,3H34V4H33zM34,3H35V4H34zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM12,4H13V5H12zM15,4H16V5H15zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM23,4H24V5H23zM25,4H26V5H25zM27,4H28V5H27zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM14,5H15V6H14zM19,5H20V6H19zM20,5H21V6H20zM23,5H24V6H23zM24,5H25V6H24zM25,5H26V6H25zM28,5H29V6H28zM29,5H30V6H29zM30,5H31V6H30zM31,5H32V6H31zM33,5H34V6H33zM34,5H35V6H34zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM14,6H15V7H14zM16,6H17V7H16zM20,6H21V7H20zM22,6H23V7H22zM24,6H25V7H24zM25,6H26V7H25zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM32,6H33V7H32zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM19,7H20V8H19zM21,7H22V8H21zM22,7H23V8H22zM31,7H32V8H31zM33,7H34V8H33zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM10,9H11V10H10zM12,9H13V10H12zM13,9H14V10H13zM14,9H15V10H14zM15,9H16V10H15zM16,9H17V10H16zM17,9H18V10H17zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM28,9H29V10H28zM29,9H30V10H29zM31,9H32V10H31zM32,9H33V10H32zM2,10H3V11H2zM6,10H7V11H6zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM15,10H16V11H15zM19,10H20V11H19zM22,10H23V11H22zM23,10H24V11H23zM24,10H25V11H24zM26,10H27V11H26zM31,10H32V11H31zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM37,10H38V11H37zM38,10H39V11H38zM39,10H40V11H39zM42,10H43V11H42zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM13,11H14V12H13zM15,11H16V12H15zM16,11H17V12H16zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM24,11H25V12H24zM25,11H26V12H25zM29,11H30V12H29zM30,11H31V12H30zM36,11H37V12H36zM37,11H38V12H37zM38,11H39V12H38zM39,11H40V12H39zM41,11H42V12H41zM42,11H43V12H42zM3,12H4V13H3zM4,12H5V13H4zM5,12H6V13H5zM7,12H8V13H7zM8,12H9V13H8zM16,12H17V13H16zM20,12H21V13H20zM23,12H24V13H23zM24,12H25V13H24zM25,12H26V13H25zM28,12H29V13H28zM29,12H30V13H29zM31,12H32V13H31zM32,12H33V13H32zM34,12H35V13H34zM36,12H37V13H36zM38,12H39V13H38zM42,12H43V13H42zM5,13H6V14H5zM9,13H10V14H9zM10,13H11V14H10zM11,13H12V14H11zM16,13H17V14H16zM18,13H19V14H18zM19,13H20V14H19zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM28,13H29V14H28zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM39,13H40V14H39zM3,14H4V15H3zM4,14H5V15H4zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM12,14H13V15H12zM15,14H16V15H15zM16,14H17V15H16zM17,14H18V15H17zM18,14H19V15H18zM19,14H20V15H19zM23,14H24V15H23zM24,14H25V15H24zM26,14H27V15H26zM30,14H31V15H30zM31,14H32V15H31zM34,14H35V15H34zM35,14H36V15H35zM41,14H42V15H41zM42,14H43V15H42zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM11,15H12V16H11zM12,15H13V16H12zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM24,15H25V16H24zM28,15H29V16H28zM32,15H33V16H32zM34,15H35V16H34zM36,15H37V16H36zM37,15H38V16H37zM38,15H39V16H38zM40,15H41V16H40zM42,15H43V16H42zM3,16H4V17H3zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM14,16H15V17H14zM15,16H16V17H15zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM28,16H29V17H28zM29,16H30V17H29zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM39,16H40V17H39zM42,16H43V17H42zM2,17H3V18H2zM4,17H5V18H4zM6,17H7V18H6zM10,17H11V18H10zM11,17H12V18H11zM14,17H15V18H14zM16,17H17V18H16zM17,17H18V18H17zM19,17H20V18H19zM20,17H21V18H20zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM28,17H29V18H28zM29,17H30V18H29zM30,17H31V18H30zM31,17H32V18H31zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM39,17H40V18H39zM2,18H3V19H2zM3,18H4V19H3zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM13,18H14V19H13zM16,18H17V19H16zM17,18H18V19H17zM18,18H19V19H18zM19,18H20V19H19zM21,18H22V19H21zM23,18H24V19H23zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM31,18H32V19H31zM33,18H34V19H33zM34,18H35V19H34zM37,18H38V19H37zM39,18H40V19H39zM9,19H10V20H9zM12,19H13V20H12zM13,19H14V20H13zM16,19H17V20H16zM18,19H19V20H18zM20,19H21V20H20zM23,19H24V20H23zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM29,19H30V20H29zM30,19H31V20H30zM31,19H32V20H31zM32,19H33V20H32zM35,19H36V20H35zM36,19H37V20H36zM37,19H38V20H37zM38,19H39V20H38zM39,19H40V20H39zM41,19H42V20H41zM42,19H43V20H42zM5,20H6V21H5zM8,20H9V21H8zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM17,20H18V21H17zM18,20H19V21H18zM19,20H20V21H19zM22,20H23V21H22zM25,20H26V21H25zM29,20H30V21H29zM32,20H33V21H32zM34,20H35V21H34zM37,20H38V21H37zM39,20H40V21H39zM40,20H41V21H40zM42,20H43V21H42zM2,21H3V22H2zM4,21H5V22H4zM5,21H6V22H5zM7,21H8V22H7zM11,21H12V22H11zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM24,21H25V22H24zM25,21H26V22H25zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM33,21H34V22H33zM37,21H38V22H37zM39,21H40V22H39zM41,21H42V22H41zM42,21H43V22H42zM4,22H5V23H4zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM17,22H18V23H17zM20,22H21V23H20zM22,22H23V23H22zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM33,22H34V23H33zM34,22H35V23H34zM37,22H38V23H37zM42,22H43V23H42zM2,23H3V24H2zM3,23H4V24H3zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM16,23H17V24H16zM17,23H18V24H17zM19,23H20V24H19zM25,23H26V24H25zM29,23H30V24H29zM30,23H31V24H30zM32,23H33V24H32zM36,23H37V24H36zM37,23H38V24H37zM38,23H39V24H38zM40,23H41V24H40zM42,23H43V24H42zM3,24H4V25H3zM8,24H9V25H8zM10,24H11V25H10zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM17,24H18V25H17zM19,24H20V25H19zM22,24H23V25H22zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM40,24H41V25H40zM42,24H43V25H42zM2,25H3V26H2zM7,25H8V26H7zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM15,25H16V26H15zM17,25H18V26H17zM18,25H19V26H18zM19,25H20V26H19zM20,25H21V26H20zM21,25H22V26H21zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM25,25H26V26H25zM26,25H27V26H26zM28,25H29V26H28zM31,25H32V26H31zM32,25H33V26H32zM36,25H37V26H36zM37,25H38V26H37zM39,25H40V26H39zM42,25H43V26H42zM2,26H3V27H2zM5,26H6V27H5zM6,26H7V27H6zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM15,26H16V27H15zM16,26H17V27H16zM18,26H19V27H18zM19,26H20V27H19zM22,26H23V27H22zM23,26H24V27H23zM24,26H25V27H24zM26,26H27V27H26zM29,26H30V27H29zM31,26H32V27H31zM33,26H34V27H33zM34,26H35V27H34zM39,26H40V27H39zM42,26H43V27H42zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM5,27H6V28H5zM6,27H7V28H6zM7,27H8V28H7zM9,27H10V28H9zM11,27H12V28H11zM12,27H13V28H12zM18,27H19V28H18zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM34,27H35V28H34zM36,27H37V28H36zM37,27H38V28H37zM38,27H39V28H38zM40,27H41V28H40zM42,27H43V28H42zM2,28H3V29H2zM3,28H4V29H3zM5,28H6V29H5zM7,28H8V29H7zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM15,28H16V29H15zM16,28H17V29H16zM17,28H18V29H17zM19,28H20V29H19zM20,28H21V29H20zM23,28H24V29H23zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM29,28H30V29H29zM30,28H31V29H30zM31,28H32V29H31zM34,28H35V29H34zM35,28H36V29H35zM38,28H39V29H38zM42,28H43V29H42zM2,29H3V30H2zM4,29H5V30H4zM7,29H8V30H7zM10,29H11V30H10zM16,29H17V30H16zM18,29H19V30H18zM19,29H20V30H19zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM36,29H37V30H36zM38,29H39V30H38zM39,29H40V30H39zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM7,30H8V31H7zM8,30H9V31H8zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM19,30H20V31H19zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM29,30H30V31H29zM31,30H32V31H31zM35,30H36V31H35zM41,30H42V31H41zM42,30H43V31H42zM2,31H3V32H2zM5,31H6V32H5zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM14,31H15V32H14zM17,31H18V32H17zM20,31H21V32H20zM21,31H22V32H21zM23,31H24V32H23zM26,31H27V32H26zM28,31H29V32H28zM30,31H31V32H30zM31,31H32V32H31zM32,31H33V32H32zM36,31H37V32H36zM37,31H38V32H37zM38,31H39V32H38zM39,31H40V32H39zM40,31H41V32H40zM42,31H43V32H42zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM13,32H14V33H13zM14,32H15V33H14zM15,32H16V33H15zM17,32H18V33H17zM21,32H22V33H21zM23,32H24V33H23zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM35,32H36V33H35zM37,32H38V33H37zM38,32H39V33H38zM40,32H41V33H40zM42,32H43V33H42zM5,33H6V34H5zM6,33H7V34H6zM7,33H8V34H7zM9,33H10V34H9zM12,33H13V34H12zM13,33H14V34H13zM15,33H16V34H15zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM25,33H26V34H25zM31,33H32V34H31zM32,33H33V34H32zM34,33H35V34H34zM35,33H36V34H35zM38,33H39V34H38zM42,33H43V34H42zM2,34H3V35H2zM3,34H4V35H3zM8,34H9V35H8zM11,34H12V35H11zM12,34H13V35H12zM13,34H14V35H13zM14,34H15V35H14zM16,34H17V35H16zM18,34H19V35H18zM19,34H20V35H19zM20,34H21V35H20zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM29,34H30V35H29zM31,34H32V35H31zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM39,34H40V35H39zM41,34H42V35H41zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM19,35H20V36H19zM20,35H21V36H20zM24,35H25V36H24zM25,35H26V36H25zM28,35H29V36H28zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM33,35H34V36H33zM34,35H35V36H34zM38,35H39V36H38zM39,35H40V36H39zM40,35H41V36H40zM42,35H43V36H42zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM10,36H11V37H10zM14,36H15V37H14zM16,36H17V37H16zM17,36H18V37H17zM20,36H21V37H20zM23,36H24V37H23zM24,36H25V37H24zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM31,36H32V37H31zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM39,36H40V37H39zM40,36H41V37H40zM42,36H43V37H42zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM14,37H15V38H14zM17,37H18V38H17zM18,37H19V38H18zM22,37H23V38H22zM23,37H24V38H23zM25,37H26V38H25zM26,37H27V38H26zM27,37H28V38H27zM31,37H32V38H31zM32,37H33V38H32zM33,37H34V38H33zM34,37H35V38H34zM38,37H39V38H38zM41,37H42V38H41zM42,37H43V38H42zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM14,38H15V39H14zM15,38H16V39H15zM16,38H17V39H16zM17,38H18V39H17zM21,38H22V39H21zM22,38H23V39H22zM27,38H28V39H27zM29,38H30V39H29zM32,38H33V39H32zM33,38H34V39H33zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM39,38H40V39H39zM41,38H42V39H41zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM12,39H13V40H12zM14,39H15V40H14zM19,39H20V40H19zM20,39H21V40H20zM24,39H25V40H24zM25,39H26V40H25zM28,39H29V40H28zM29,39H30V40H29zM30,39H31V40H30zM37,39H38V40H37zM40,39H41V40H40zM41,39H42V40H41zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM11,40H12V41H11zM15,40H16V41H15zM16,40H17V41H16zM18,40H19V41H18zM20,40H21V41H20zM22,40H23V41H22zM23,40H24V41H23zM25,40H26V41H25zM27,40H28V41H27zM28,40H29V41H28zM29,40H30V41H29zM31,40H32V41H31zM33,40H34V41H33zM34,40H35V41H34zM35,40H36V41H35zM39,40H40V41H39zM42,40H43V41H42zM2,41H3V42H2zM8,41H9V42H8zM12,41H13V42H12zM13,41H14V42H13zM14,41H15V42H14zM18,41H19V42H18zM19,41H20V42H19zM20,41H21V42H20zM23,41H24V42H23zM25,41H26V42H25zM26,41H27V42H26zM28,41H29V42H28zM29,41H30V42H29zM31,41H32V42H31zM32,41H33V42H32zM33,41H34V42H33zM34,41H35V42H34zM37,41H38V42H37zM39,41H40V42H39zM41,41H42V42H41zM42,41H43V42H42zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM11,42H12V43H11zM15,42H16V43H15zM16,42H17V43H16zM17,42H18V43H17zM20,42H21V43H20zM22,42H23V43H22zM23,42H24V43H23zM24,42H25V43H24zM26,42H27V43H26zM28,42H29V43H28zM31,42H32V43H31zM34,42H35V43H34zM35,42H36V43H35zM36,42H37V43H36zM37,42H38V43H37zM38,42H39V43H38zM41,42H42V43H41z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
+            <div class="qr-block__text">
+              <div class="qr-block__label">SCAN TO REVISIT</div>
+              <div class="qr-block__heading">집에서 다시 보기</div>
+              <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="slide__footer">
+        <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+        <span class="slide__page">13 / 13</span>
+      </footer>
+    </section>
+
+  </main>
+</body>
+</html>
