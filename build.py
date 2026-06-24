@@ -97,6 +97,14 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "Lp(a) (리포단백a) · 심혈관 위험 · VESALIUS-CV (Circulation 2026)",
     },
     {
+        "kind": "decks", "slug": "hiit-hepatitis-b-steatosis",
+        "slug_path": "decks/gi/hiit-hepatitis-b-steatosis/",
+        "html_path": ROOT / "decks/gi/hiit-hepatitis-b-steatosis/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "운동과 만성 B형간염·지방간 — 12주 HIIT 연구 이야기",
+        "category": "🫁 위장관", "audience": "환자/보호자", "disease": "만성 B형간염 + 지방간 · 운동(HIIT) · PLoS One 2026 (1차결과 음성·탐색적)",
+    },
+    {
         "kind": "decks", "slug": "chronic-hepatitis-b",
         "slug_path": "decks/gi/chronic-hepatitis-b/overview/",
         "html_path": ROOT / "decks/gi/chronic-hepatitis-b/overview/index.html",

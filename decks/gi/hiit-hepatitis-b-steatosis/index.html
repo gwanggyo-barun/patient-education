@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Exercise, Chronic Hepatitis B & Fatty Liver — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/hiit-hepatitis-b-steatosis/">
+  <meta property="og:title" content="운동, 만성 B형간염, 그리고 지방간 — 광교바른내과">
+  <meta property="og:description" content="만성 B형간염에 지방간이 겹친 분들에게 12주 고강도 인터벌 운동(HIIT)이 무엇을 바꾸고, 무엇은 아직 확실하지 않은지 정리한 안내">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/gi/hiit-hepatitis-b-steatosis/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+  <style>
+    /* ====================================================================
+       HIIT · 만성B형간염+지방간 deck — deck-local layout overrides only.
+       Follows §19 (type scale + golden proportion) and §20/§21:
+       박스 안 "제목+설명"은 하나의 묶음 → 가운데로 모으고, 늘어난
+       공간은 빈 띠가 아니라 폰트로 채운다. shared 기본값은 건드리지 않음.
+       (deck #1 lp-a-cv-risk 와 동일한 오버라이드 세트 — 스타일 락인)
+       ==================================================================== */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+
+    /* hero number (s4) — 값+캡션 한 묶음 가운데, 숫자 키워 여백 흡수 */
+    .pattern-hero-number { align-items: stretch; gap: 30px; }
+    .pattern-hero-number__numeric { justify-content: center; gap: 22px; }
+    .pattern-hero-number__value { font-size: 9rem; line-height: 1.0; }
+    .pattern-hero-number__caption { max-width: 100%; font-size: 1.24rem; line-height: 1.48; }
+    .pattern-hero-number__detail { justify-content: center; gap: 14px; }
+    .pattern-hero-number__detail-text { font-size: 1.08rem; line-height: 1.56; }
+
+    /* split metrics (s2 안내 카드) — 두 박스 등높이로 컬럼 채움, 안은 가운데 */
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 1.78rem; line-height: 1.16; }
+    .pattern-split__supporting { font-size: 1.0rem; line-height: 1.5; }
+    .pattern-split__detail { justify-content: stretch; gap: 18px; min-height: 0; }
+    .pattern-split__metric { flex: 1 1 0; justify-content: center; padding: 20px 22px; }
+    .pattern-split__metric-value { font-size: 1.7rem; line-height: 1.08; }
+    .pattern-split__metric-detail { font-size: 0.97rem; line-height: 1.4; }
+
+    /* tiles (s3 위험 3카드) — 제목+본문 가운데 묶음, 제목 확대 */
+    .tile { padding: 16px 18px; gap: 10px; justify-content: center; }
+    .tile__body { margin-top: 0; }
+    .pattern-grid--3 .tile__title { font-size: 1.12rem; line-height: 1.24; }
+    .pattern-grid--3 .tile__body { font-size: 0.97rem; line-height: 1.42; }
+    .pattern-grid--2 .tile__title { font-size: 1.18rem; line-height: 1.24; }
+    .pattern-grid--2 .tile__body { font-size: 1.0rem; line-height: 1.46; }
+
+    /* visual-focus gutter (s2 · s3 · s5) */
+    .slide__body--visual-focus { gap: 32px; }
+
+    /* alert strip (s6 한계 경고) */
+    .alert-strip { padding: 16px 20px; min-height: 0; display: flex; align-items: center; }
+    .alert-strip__text { font-size: 1.02rem; line-height: 1.42; }
+
+    /* checklist (s7) — 항목 폰트 키워 채움 */
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .check-item__text { font-size: 1.08rem; line-height: 1.4; }
+
+    /* footer-safe compact frame */
+    .slide { --slide-pad-y: 46px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+
+    /* closing — body present (avoid dead band under title, per §7.2) */
+    .slide--closing { grid-template-rows: auto auto 1fr auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { padding: 12px 14px; gap: 8px; }
+    .qr-block__code { width: 96px; height: 96px; }
+
+    /* image figure surface — §0/§2 of proportions: transparent media surface,
+       radius+shadow on <img>, contain for diagrams (no-crop, §15) */
+    .ai-visual { background: transparent; border: none; box-shadow: none; }
+    .ai-visual img { border-radius: 12px; box-shadow: 0 3px 9px rgba(0,0,0,0.08); }
+    .ai-visual--diagram img { object-fit: contain; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY / HEPATOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">간 건강을 위해<br><em>운동, 정말 도움이 될까요?</em></h1>
+      <p class="slide__subtitle">만성 B형간염에 지방간이 겹친 분들에게 12주 고강도 인터벌 운동(HIIT)을 시험해 본 연구 이야기</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">HIIT · Chronic Hepatitis B · Hepatic Steatosis · 무작위 대조 연구(PLoS One 2026)</span>
+      <span class="slide__page">광교바른내과 소화기·일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · WHY IT MATTERS — split + image (Process: 정상간→지방간→염증/섬유화)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>WHY IT MATTERS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">왜 중요한 이야기일까요</h2>
+      <p class="slide__subtitle">만성 B형간염에 지방간이 겹치면, 간이 굳고 간암으로 가는 위험이 더 커집니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">만성 B형간염을 앓는 간에 <em>지방까지 끼면</em>, 간세포가 더 쉽게 손상되고 염증·섬유화(굳음)가 빨라질 수 있습니다.</p>
+          <p class="pattern-split__supporting">
+            B형간염 바이러스는 오랜 세월에 걸쳐 간에 염증을 일으키고, 여기에 <strong>지방간</strong>이 더해지면 간경변·간암으로 이어질 위험이 한층 높아집니다.
+            바이러스는 항바이러스제로 억제할 수 있지만, <strong>지방간 자체를 줄이는 안전하고 확실한 약은 아직 부족</strong>합니다.
+            그래서 식사·운동 같은 <strong>생활습관 치료</strong>가 더욱 주목받고 있고, "운동이 정말 간 지방을 줄여줄까?"가 이 연구의 질문이었습니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">두 가지가 겹칠 때</div>
+            <div class="pattern-split__metric-value">위험 가중</div>
+            <div class="pattern-split__metric-detail">바이러스 염증 + 지방간 → 섬유화·간암 위험이 더 커집니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">지방간 전용 약은</div>
+            <div class="pattern-split__metric-value">아직 부족</div>
+            <div class="pattern-split__metric-detail">그래서 운동·식사 같은 생활습관 치료가 중요해집니다.</div>
+          </div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 02 · Process (normal liver → fatty liver → inflammation/fibrosis) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: A 3-stage PROCESS illustration of how a chronic-hepatitis-B liver worsens when fat
+            is added. STAGE 1 = a healthy liver cross-section (smooth, evenly textured tissue, clear
+            small blood vessels). STAGE 2 = the SAME liver with fatty change — many round fat
+            droplets accumulating inside the liver cells (hepatic steatosis), tissue looking pale and
+            swollen. STAGE 3 = inflammation + early fibrosis — the fatty, virus-affected liver now
+            with inflamed patches and pale fibrous strands/scar bands beginning to stiffen the tissue.
+            Include clear directional arrows showing the worsening progression between the three
+            stages. (Optional small navy/steel virus particles dotted in the tissue to signal the
+            chronic-B-virus context — NOT red.)
+          visual_type: Process / mechanism medical illustration, clean educational cross-section style.
+          palette: §20 ANATOMICAL COLOR RULE — liver TISSUE and BLOOD/vessels are rendered in
+            realistic warm red / red-brown (this is organ tissue, blood is red). The accumulating FAT
+            droplets are a pale warm yellow/cream. Brand Navy #003366 + Steel Blue #5B9BD5 are
+            reserved for the soft #f8fbff background, outlines, directional arrows, and any
+            virus-particle accents only. Do NOT tint the liver tissue navy/steel.
+          composition: 3 stages, evenly distributed, all roughly equal size, centered, filling the
+            canvas. Arrow tips and all three liver panels MUST NOT be clipped at the edges
+            (diagram = object-fit:contain, §15). If a portrait slot reads better, stack the 3 stages
+            top-to-bottom with downward arrows — still zero edge clipping.
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left text column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
+          constraints: ABSOLUTELY NO TEXT — no letters, numbers, words, labels, or captions in any
+            language anywhere on the canvas. Korean stage labels ("정상 간", "지방간", "염증·섬유화")
+            are overlaid via HTML Pretendard separately (§14). No empty side panels — illustration
+            spans the entire canvas evenly.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Process">
+        <img src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s02-process-liver-progression-20260624.png" alt="정상 간에서 지방이 끼고, 다시 염증·섬유화로 진행하는 3단계 과정">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">배경 — 만성 B형간염 + 지방간 동반 시 섬유화·간암 위험 증가 · 지방간 전용 약물 한계</span>
+      <span class="slide__page">02 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · METHOD — split + image (Process: 무작위 배정 + 조기종료)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>HOW IT WAS STUDIED</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">어떻게 알아봤나요</h2>
+      <p class="slide__subtitle">참가자를 운동군과 비운동군으로 무작위 배정해 12주간 비교했습니다 — 단, 아주 작은 연구였습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">만성 B형간염 + 지방간 환자를 <em>운동군과 대조군으로 무작위 배정</em>해, 12주간 고강도 인터벌 운동(HIIT)을 했습니다.</p>
+          <p class="pattern-split__supporting">
+            1차로 보려던 것은 <strong>MRI로 측정한 간 지방의 변화</strong>였습니다.
+            그런데 참가자 모집이 예상보다 너무 더뎌 <strong>연구가 계획보다 일찍 종료</strong>되었습니다.
+            그 결과 최종적으로 <strong>14명(군당 약 7명)만 끝까지</strong> 마쳤습니다.
+            사람 수가 이렇게 적으면 "효과가 있어도 통계로 잡아내기 어렵다(검정력 부족)"는 점을 먼저 알아두는 것이 중요합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">설계</div>
+            <div class="pattern-split__metric-value">12주 비교</div>
+            <div class="pattern-split__metric-detail">운동군(HIIT) vs 비운동군 무작위 배정, MRI 간 지방 측정.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">규모 · 조기종료</div>
+            <div class="pattern-split__metric-value">14명 완료</div>
+            <div class="pattern-split__metric-detail">모집 지연으로 조기 종료 — 군당 약 7명, 초소규모 탐색 연구.</div>
+          </div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 03 · Process (randomized allocation → 2 arms → early termination) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: A clean PROCESS / flow illustration of a small randomized trial that ended early.
+            TOP = one small group of patient figures (a handful of simple human silhouettes) being
+            split by a randomization step into TWO arms. LEFT ARM = an EXERCISE group (figures shown
+            actively moving / exercising, e.g. on a stationary-cycle or running motion). RIGHT ARM =
+            a CONTROL group (figures at rest / standing, no exercise). At the BOTTOM, a clear visual
+            signal of EARLY TERMINATION / small numbers: the recruitment funnel is visibly cut short
+            (e.g. a funnel or pipeline that stops early / a small dwindling number of figures), and
+            only a few figures reach the end on each side. The whole feel = "randomized but very few
+            people, stopped early."
+          visual_type: Process / flow medical-research diagram, clean educational infographic style
+            using simple human silhouettes, arrows, and a split/funnel.
+          palette: brand Navy #003366 + Steel Blue #5B9BD5 for figures, arrows, split node, and the
+            funnel; soft #f8fbff neutral background. (§20: NO red anywhere — this is a study-flow
+            diagram with no blood/bleeding; red is reserved strictly for blood.)
+          composition: balanced top-to-bottom flow that fills the canvas evenly; the randomization
+            split, both arms, and the early-stop / small-final-number cue must all be fully visible
+            and NOT clipped at the edges (diagram = object-fit:contain, §15).
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left text column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
+          constraints: ABSOLUTELY NO TEXT — no letters, numbers, words, labels, or captions in any
+            language anywhere on the canvas. Korean labels ("무작위 배정", "운동군", "비운동군",
+            "조기 종료 · 소수만 완료") are overlaid via HTML Pretendard separately (§14). No empty side
+            panels — illustration spans the entire canvas evenly.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Process">
+        <img src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s03-process-randomized-early-stop-20260624.png" alt="참가자를 운동군과 비운동군으로 무작위 배정하고, 모집 지연으로 소수만 완료한 채 조기 종료된 연구 흐름">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">설계 — 무작위 대조 연구(1:1) · 12주 HIIT vs 무중재 · 1차 결과 = MRI 간 지방분율 · 모집 지연으로 조기 종료(14명 완료)</span>
+      <span class="slide__page">03 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · RESULT ① 간 지방 — hero number (p=0.22, 비유의)
+       NOTE: primary outcome was NEGATIVE / non-significant. Do NOT imply 운동이 간 지방을 줄인다.
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>RESULT ① · LIVER FAT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">결과 ① — 간 지방은 어땠나요</h2>
+      <p class="slide__subtitle">가장 알고 싶었던 1차 결과(간 지방)에서는 운동군과 대조군의 차이가 분명하지 않았습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="pattern-hero-number__value"><em>p</em>=0.22</div>
+          <div class="pattern-hero-number__caption">두 그룹의 간 지방 변화 차이는 <strong>통계적으로 유의하지 않았습니다</strong> — 즉 운동이 간 지방을 줄였다고 말할 수 없습니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">What it means</div>
+          <div class="pattern-hero-number__detail-text">
+            운동군의 간 지방이 대조군보다 약 <strong>2.03%p</strong> 더 낮은 쪽으로 보였지만,
+            오차범위가 <strong>−5.5%p ~ +1.4%p</strong>로 넓어 0(차이 없음)을 포함했습니다 (p=0.22).
+            다만 사람 수가 워낙 적어, 이 결과는 "운동이 효과가 <em>없다</em>"는 증명이 아니라 "이 작은 연구로는 <strong>아직 확인하지 못했다</strong>"로 읽는 것이 정확합니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">1차 결과 — MRI 간 지방분율: 군간차 약 −2.03%p (95% CI −5.5 ~ +1.4; p=0.22, 비유의) · 검정력 부족</span>
+      <span class="slide__page">04 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · RESULT ② 체력·기분 — 2-card grid + image (Comparison)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>RESULT ② · FITNESS & MOOD</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">결과 ② — 체력과 기분은 좋아졌습니다</h2>
+      <p class="slide__subtitle">간 지방은 미확정이었지만, 심폐 체력과 정서적 안녕감은 운동군에서 분명히 개선됐습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile tile--accent">
+          <div class="tile__index">심폐 체력 (VO₂max)</div>
+          <div class="tile__title">최대 산소섭취량 향상</div>
+          <div class="tile__body">운동군에서 심폐 체력(VO₂max)이 <strong>약 +5.6 mL/kg/min</strong> 좋아졌습니다. 이는 통계적으로 의미 있는 개선으로, 일상 활동이 덜 숨차고 편해질 수 있습니다. <strong>(p&lt;0.05)</strong></div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">정서적 안녕감</div>
+          <div class="tile__title">기분·삶의 질 점수 상승</div>
+          <div class="tile__body">정서적 안녕감 점수가 <strong>약 +18점</strong> 올랐습니다. 운동이 기분과 삶의 질에 도움이 됐다는 뜻으로, 역시 의미 있는 변화였습니다. <strong>(p&lt;0.05)</strong></div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 05 · Comparison (significant fitness/mood vs non-significant liver fat) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: A simple comparison bar chart contrasting THREE outcomes by how clear the effect
+            was. BAR 1 = cardiorespiratory FITNESS (improved): a tall, solid, confident bar reaching
+            high. BAR 2 = emotional WELL-BEING / MOOD (improved): another tall, solid, confident bar
+            reaching high. BAR 3 = LIVER FAT (uncertain / non-significant): a short, faint/hollow or
+            dashed-outline bar that is clearly weak/inconclusive (e.g. translucent fill with a small
+            uncertainty whisker), visually reading as "not established." The contrast is the message:
+            two strong solid bars vs one weak/uncertain bar. Do NOT make the liver-fat bar a
+            confident downward result — it must read as inconclusive, not as a clear benefit.
+          visual_type: Comparison / clean infographic bar chart, flat educational style.
+          palette: brand Navy #003366 and Steel Blue #5B9BD5 for the two strong (fitness, mood) solid
+            bars; the uncertain liver-fat bar is a faint/translucent steel outline (low opacity) so it
+            reads as weak/undetermined. Soft #f8fbff background; faint steel reference frames. (§20:
+            NO red — this is an outcome chart with no blood; red is reserved strictly for blood.)
+          composition: three bars (two tall + one short/faint), centered, evenly filling the canvas;
+            bar tops and any whisker NOT clipped (diagram = object-fit:contain, §15).
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left 2-card column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
+          constraints: ABSOLUTELY NO TEXT, NUMBERS, AXIS LABELS, OR PERCENT/UNIT SIGNS anywhere on
+            the canvas — no characters in any language. The labels ("체력 ↑", "기분 ↑", "간 지방 ?")
+            and values are overlaid via HTML Pretendard separately (§14). Bars span the canvas evenly
+            — no empty side panels.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s05-comparison-fitness-mood-vs-liverfat-20260624.png" alt="체력과 기분은 뚜렷이 개선(높은 막대 두 개), 간 지방은 불확실(낮고 흐린 막대)임을 나타낸 비교 막대">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">2차 결과 — VO₂max 약 +5.6 mL/kg/min (p&lt;0.05) · 정서적 안녕감 약 +18점 (p&lt;0.05) · 체지방·당대사·지질·혈압은 차이 없음</span>
+      <span class="slide__page">05 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · INTERPRETATION — split + caution (간 지방 미확정 / 운동 이점은 분명)
+       NOTE: do NOT overclaim. negative primary outcome + tiny terminated study.
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>INTERPRETATION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">그래서 어떻게 받아들이면 될까요</h2>
+      <p class="slide__subtitle">"운동이 간 지방을 줄인다"고는 아직 말할 수 없지만, 운동을 해야 할 이유는 충분합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">간 지방에 대한 효과는 <em>아직 미확정</em>입니다. 하지만 <em>체력과 기분이 좋아진다는 이점은 분명</em>했습니다.</p>
+          <p class="pattern-split__supporting">
+            이 연구는 <strong>14명만 끝까지 마친 초소규모 + 조기 종료</strong> 연구라, 저자들도 결과를 "탐색적"이라고 밝혔습니다.
+            그래서 간 지방의 음성 결과를 "운동은 소용없다"로 단정해서는 <strong>안 됩니다</strong> — 단지 이 작은 연구로는 확인하지 못했을 뿐입니다.
+            반대로 심폐 체력·정서 안녕감 개선은 분명했고, 이는 만성 B형간염 환자에게도 <strong>운동을 권할 충분한 이유</strong>가 됩니다.
+            더 큰 연구로 간 지방 효과는 추가로 확인이 필요합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">간 지방 효과</div>
+            <div class="pattern-split__metric-value">미확정</div>
+            <div class="pattern-split__metric-detail">소규모·조기종료 → 검정력 부족. "효과 없음"이 아니라 "미확인".</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">체력·기분 이점</div>
+            <div class="pattern-split__metric-value">분명함</div>
+            <div class="pattern-split__metric-detail">VO₂max·정서 안녕감 모두 의미 있게 개선 — 운동을 권할 이유.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">한계 — 초소규모(14명 완료) + 조기 종료 = 검정력 부족, 저자 "탐색적" · 음성 1차 결과를 "효과 없음"으로 단정 금지</span>
+      <span class="slide__page">06 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · KEY TAKEAWAYS — checklist
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>KEY TAKEAWAYS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 점</h2>
+      <p class="slide__subtitle">간 지방 효과는 아직 미확정 — 그래도 운동은 충분히 권할 만합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">만성 B형간염에 <strong>지방간이 겹치면</strong> 간이 굳고 간암으로 갈 위험이 더 커집니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">12주 운동(HIIT)의 <strong>간 지방 감소 효과는 통계적으로 확인되지 않았습니다</strong> (p=0.22)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">단, 14명만 완료한 <strong>초소규모·조기종료 연구</strong> — "효과 없음"이 아니라 "아직 미확인"입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">반면 <strong>심폐 체력(VO₂max)과 기분·삶의 질은 분명히 좋아졌습니다</strong> (모두 의미 있는 개선)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">즉 <strong>운동의 체력·기분 이점은 분명, 간 지방 효과는 미확정</strong> — 더 큰 연구가 필요합니다</div>
+        </div>
+        <div class="check-item" style="border-bottom: none;">
+          <div class="check-item__num" style="color: var(--color-navy);">→</div>
+          <div class="check-item__text" style="color: var(--color-slate);">운동은 권장하되, <strong>처방받은 항바이러스제·정기 간 검사</strong>를 함께 꾸준히 이어가세요</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">운동의 체력·기분 이점은 분명 · 간 지방 효과는 미확정 · 항바이러스제와 정기 추적이 우선</span>
+      <span class="slide__page">07 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · CLOSING — contact card + QR (live render from og:url)
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">간 건강을 지키는<br><em>한 걸음 더</em></h2>
+      <p class="slide__subtitle">운동·식사 같은 생활습관과 B형간염 관리에 대해 궁금한 점이 있으시면 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Specialty</div>
+            <div class="contact-card__value">소화기내과 · 일반내과<br>5대암 검진</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><!-- QR injected by build.py (raw SVG) or rendered live from og:url by the closing-slide script below --></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">08 / 08</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>
