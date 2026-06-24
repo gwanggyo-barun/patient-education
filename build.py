@@ -89,6 +89,14 @@ TARGETS = [
         "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "항혈전제 (항혈소판제·항응고제)",
     },
     {
+        "kind": "decks", "slug": "lp-a-cv-risk",
+        "slug_path": "decks/cardio/lp-a-cv-risk/",
+        "html_path": ROOT / "decks/cardio/lp-a-cv-risk/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "Lp(a)와 심혈관 위험 — 콜레스테롤 정상인데 위험한 이유",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "Lp(a) (리포단백a) · 심혈관 위험 · VESALIUS-CV (Circulation 2026)",
+    },
+    {
         "kind": "decks", "slug": "chronic-hepatitis-b",
         "slug_path": "decks/gi/chronic-hepatitis-b/overview/",
         "html_path": ROOT / "decks/gi/chronic-hepatitis-b/overview/index.html",

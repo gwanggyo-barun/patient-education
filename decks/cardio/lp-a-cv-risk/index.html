@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Lp(a) and Cardiovascular Risk — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/lp-a-cv-risk/">
+  <meta property="og:title" content="Lp(a)와 심혈관 위험 — 광교바른내과">
+  <meta property="og:description" content="새로운 심장병 위험인자 지질단백질(a) — 무엇이고, 왜 위험하며, 최근 연구는 무엇을 보여주는지 정리한 안내">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/lp-a-cv-risk/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+  <style>
+    /* ====================================================================
+       Lp(a) deck — deck-local layout overrides only.
+       Follows §19 (type scale + golden proportion) and §20/§21:
+       박스 안 "제목+설명"은 하나의 묶음 → 가운데로 모으고, 늘어난
+       공간은 빈 띠가 아니라 폰트로 채운다. shared 기본값은 건드리지 않음.
+       ==================================================================== */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+
+    /* hero number (s4) — 값+캡션 한 묶음 가운데, 숫자 키워 여백 흡수 */
+    .pattern-hero-number { align-items: stretch; gap: 30px; }
+    .pattern-hero-number__numeric { justify-content: center; gap: 22px; }
+    .pattern-hero-number__value { font-size: 9rem; line-height: 1.0; }
+    .pattern-hero-number__caption { max-width: 100%; font-size: 1.24rem; line-height: 1.48; }
+    .pattern-hero-number__detail { justify-content: center; gap: 14px; }
+    .pattern-hero-number__detail-text { font-size: 1.08rem; line-height: 1.56; }
+
+    /* split metrics (s2 안내 카드) — 두 박스 등높이로 컬럼 채움, 안은 가운데 */
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 1.78rem; line-height: 1.16; }
+    .pattern-split__supporting { font-size: 1.0rem; line-height: 1.5; }
+    .pattern-split__detail { justify-content: stretch; gap: 18px; min-height: 0; }
+    .pattern-split__metric { flex: 1 1 0; justify-content: center; padding: 20px 22px; }
+    .pattern-split__metric-value { font-size: 1.7rem; line-height: 1.08; }
+    .pattern-split__metric-detail { font-size: 0.97rem; line-height: 1.4; }
+
+    /* tiles (s3 위험 3카드) — 제목+본문 가운데 묶음, 제목 확대 */
+    .tile { padding: 16px 18px; gap: 10px; justify-content: center; }
+    .tile__body { margin-top: 0; }
+    .pattern-grid--3 .tile__title { font-size: 1.12rem; line-height: 1.24; }
+    .pattern-grid--3 .tile__body { font-size: 0.97rem; line-height: 1.42; }
+    .pattern-grid--2 .tile__title { font-size: 1.18rem; line-height: 1.24; }
+    .pattern-grid--2 .tile__body { font-size: 1.0rem; line-height: 1.46; }
+
+    /* visual-focus gutter (s2 · s3 · s5) */
+    .slide__body--visual-focus { gap: 32px; }
+
+    /* alert strip (s6 한계 경고) */
+    .alert-strip { padding: 16px 20px; min-height: 0; display: flex; align-items: center; }
+    .alert-strip__text { font-size: 1.02rem; line-height: 1.42; }
+
+    /* checklist (s7) — 항목 폰트 키워 채움 */
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .check-item__text { font-size: 1.08rem; line-height: 1.4; }
+
+    /* footer-safe compact frame */
+    .slide { --slide-pad-y: 46px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+
+    /* closing — body present (avoid dead band under title, per §7.2) */
+    .slide--closing { grid-template-rows: auto auto 1fr auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { padding: 12px 14px; gap: 8px; }
+    .qr-block__code { width: 96px; height: 96px; }
+
+    /* image figure surface — §0/§2 of proportions: transparent media surface,
+       radius+shadow on <img>, contain for diagrams (no-crop, §15) */
+    .ai-visual { background: transparent; border: none; box-shadow: none; }
+    .ai-visual img { border-radius: 12px; box-shadow: 0 3px 9px rgba(0,0,0,0.08); }
+    .ai-visual--diagram img { object-fit: contain; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · CARDIOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">콜레스테롤이 정상인데<br><em>왜 심장이 위험할까요?</em></h1>
+      <p class="slide__subtitle">잘 알려지지 않은 심혈관 위험인자 — 지질단백질(a), 즉 Lp(a) 이야기</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Lipoprotein(a) · Cardiovascular Risk · VESALIUS-CV (Circulation 2026)</span>
+      <span class="slide__page">광교바른내과 순환기·일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · WHAT IS Lp(a) — asymmetric split + image (Anatomy)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IS Lp(a)</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">Lp(a)가 무엇인가요</h2>
+      <p class="slide__subtitle">나쁜 콜레스테롤(LDL)에 끈끈한 단백질이 한 겹 더 붙은, 특별한 형태의 지질입니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">Lp(a)는 LDL 입자에 <em>아포(a)라는 끈끈한 단백질</em>이 추가로 붙어 있는 형태로, 혈관에 더 잘 들러붙고 혈전과도 관련됩니다.</p>
+          <p class="pattern-split__supporting">
+            보통의 콜레스테롤 검사(LDL·HDL·중성지방)에는 나오지 않아 따로 측정해야 알 수 있습니다.
+            농도는 주로 <strong>타고난 유전</strong>으로 정해져 평생 비교적 일정하며, 식사·운동으로는 크게 바뀌지 않습니다.
+            그래서 "콜레스테롤은 정상인데 심장병이 일찍 온" 경우의 숨은 원인이 되기도 합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">유전으로 결정</div>
+            <div class="pattern-split__metric-value">평생 일정</div>
+            <div class="pattern-split__metric-detail">농도의 약 70~90%가 유전 — 식이·운동으로는 거의 바뀌지 않습니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">일반 검사엔 없음</div>
+            <div class="pattern-split__metric-value">따로 측정</div>
+            <div class="pattern-split__metric-detail">혈액검사로 Lp(a) 항목을 추가해야 확인할 수 있습니다.</div>
+          </div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 02 · Anatomy (LDL vs Lp(a) structure comparison) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: Side-by-side cross-section comparison of two lipoprotein particles. LEFT = an
+            ordinary LDL particle (a spherical fatty core wrapped by a single ring of one looping
+            protein, apoB-100). RIGHT = an Lp(a) particle = the SAME LDL sphere with ONE EXTRA long,
+            ribbon-like sticky protein (apolipoprotein(a)) coiled and clasped around the outside,
+            making it visibly "stickier" / spikier than the plain LDL.
+          visual_type: Anatomy / medical structural illustration, clean educational diagram style.
+          palette: brand Navy #003366 + Steel Blue #5B9BD5 for the particles and proteins; soft
+            #f8fbff neutral background; the extra apo(a) ribbon tinted a slightly warmer steel so it
+            reads as the distinguishing feature. (§20: NO red here — there is no blood/bleeding in
+            this structural figure; red is reserved strictly for blood.)
+          composition: two particles equal size, centered, evenly filling the canvas; clear visual
+            difference is the extra outer protein on the right particle.
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left text column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
+          constraints: ABSOLUTELY NO TEXT — no letters, numbers, words, labels, or captions in any
+            language anywhere on the canvas. Korean labels ("LDL", "Lp(a)", "추가된 단백질 apo(a)")
+            are overlaid via HTML Pretendard separately (§14). No empty side panels — illustration
+            spans the entire canvas evenly.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Anatomy">
+        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s02-anatomy-ldl-vs-lpa-20260624.png" alt="LDL 입자와, 거기에 끈끈한 단백질 apo(a)가 한 겹 더 붙은 Lp(a) 입자의 구조 비교">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Lipoprotein(a) = LDL + apolipoprotein(a) · 농도 약 70~90% 유전 결정 — AHA 과학성명(ATVB 2022) · EAS Lp(a) consensus(Eur Heart J 2022)</span>
+      <span class="slide__page">02 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · WHY DANGEROUS — 3-card grid + image (Process)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>WHY IT MATTERS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">왜 위험할까요</h2>
+      <p class="slide__subtitle">VESALIUS-CV 연구에서 Lp(a)가 높을수록 심장 혈관 사건이 늘었습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile tile--accent">
+          <div class="tile__index">관상동맥 사건</div>
+          <div class="tile__title">위험 약 15% 증가</div>
+          <div class="tile__body">Lp(a)가 100nmol/L 높아질 때마다 주요 관상동맥 사건(심장사·심근경색·응급 시술)이 약 15% 늘었습니다. <strong>(위험비 1.15)</strong></div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">심근경색 (MI)</div>
+          <div class="tile__title">위험 약 23% 증가</div>
+          <div class="tile__body">심근경색만 떼어 보면 100nmol/L 증가당 위험이 약 23% 더 높았습니다. <strong>(위험비 1.23)</strong> 심장 혈관에 특히 영향이 컸습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">허혈성 뇌졸중</div>
+          <div class="tile__title">뚜렷한 관련 없음</div>
+          <div class="tile__body">반면 뇌졸중과는 의미 있는 연관이 보이지 않았습니다. <strong>(위험비 1.00)</strong> Lp(a)는 주로 <em>심장 혈관</em> 위험과 연결됩니다.</div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 03 · Process (artery wall deposit → plaque → heart attack) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: A 3-stage left-to-right PROCESS illustration of how an Lp(a)-rich particle damages
+            a coronary artery. STAGE 1 = sticky Lp(a) particles depositing into the inner wall of an
+            open, healthy artery cross-section. STAGE 2 = a built-up atherosclerotic plaque
+            narrowing the artery channel. STAGE 3 = the plaque rupturing with a clot (thrombus)
+            blocking blood flow → a heart-muscle (myocardial infarction) territory downstream.
+            Show clear directional arrows between the three stages.
+          visual_type: Process / mechanism medical illustration, clean educational cross-section style.
+          palette: brand Navy #003366 + Steel Blue #5B9BD5 for the artery wall, particles, and plaque.
+            §20 BLOOD = RED: the flowing blood inside the lumen and the clot/thrombus are rendered in
+            medical red (#B91C1C family); arteries themselves stay navy/steel. Soft #f8fbff
+            background.
+          composition: 3 equal stages evenly distributed across canvas width; arrow tips and the final
+            heart-territory MUST NOT be clipped at the edges (diagram = object-fit:contain, §15).
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left 3-card column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio so contain has zero crop. (If stacking the 3 stages vertically reads better for a
+            portrait slot, keep them top-to-bottom with downward arrows — still no edge clipping.)
+          constraints: ABSOLUTELY NO TEXT — no letters/numbers/words/labels/captions in any language.
+            Korean stage labels are overlaid via HTML Pretendard separately (§14). Illustration spans
+            the whole canvas evenly — no empty side panels.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Process">
+        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s03-process-lpa-artery-mi-20260624.png" alt="Lp(a)가 혈관벽에 침착되어 경화반을 키우고, 파열·혈전으로 심근경색에 이르는 3단계 과정">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — VESALIUS-CV 사전계획 분석 · Circulation 2026;153(25):1960-68 · Lp(a) 100nmol/L 증가당 위험비</span>
+      <span class="slide__page">03 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · WHO WAS STUDIED — hero number (7,557명 / 4.6년 / 1차예방)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>THE STUDY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">누구를, 얼마나 오래 관찰했나요</h2>
+      <p class="slide__subtitle">아직 심근경색·뇌졸중을 겪지 않은 고위험군에서 Lp(a)를 측정해 추적했습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="pattern-hero-number__value"><em>7,557</em>명</div>
+          <div class="pattern-hero-number__caption">VESALIUS-CV 연구에서 기저 Lp(a)를 측정한 참가자 수 — 중앙 추적 기간은 <strong>4.6년</strong>입니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">Who & how long</div>
+          <div class="pattern-hero-number__detail-text">
+            대상은 심근경색·뇌졸중 <strong>기왕력이 없는</strong> 고위험자, 즉 <strong>1차 예방</strong> 대상입니다.
+            중앙 연령은 66세, 여성이 42.8%였고, 혈중 Lp(a) 중앙값은 28nmol/L였습니다.
+            이 연구는 평소 잘 다루지 않던 Lp(a)가 실제 심장 사건과 어떻게 연결되는지를 본 것입니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — VESALIUS-CV (NCT03872401) · TIMI Study Group · 1차 예방 대상 · 중앙 추적 4.6년</span>
+      <span class="slide__page">04 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DRUG EFFECT — 2-card grid + image (Comparison bars 41% vs 35%)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>TREATMENT EFFECT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">콜레스테롤 강하 치료의 효과</h2>
+      <p class="slide__subtitle">강력한 LDL 강하 주사제(에볼로쿠맙)는 두 그룹 모두에서 심장 사건을 줄였습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile tile--accent">
+          <div class="tile__index">Lp(a)가 높은 그룹</div>
+          <div class="tile__title">관상동맥 사건 약 41% 감소</div>
+          <div class="tile__body">기저 Lp(a)가 높았던(105nmol/L 초과) 참가자에서 치료군의 주요 관상동맥 사건이 약 41% 줄었습니다. <strong>(위험비 0.59)</strong></div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">Lp(a)가 낮은 그룹</div>
+          <div class="tile__title">관상동맥 사건 약 35% 감소</div>
+          <div class="tile__body">Lp(a)가 낮았던(105nmol/L 이하) 참가자에서도 사건이 약 35% 줄었습니다. <strong>(위험비 0.65)</strong> 양쪽 모두 분명한 이득이 있었습니다.</div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 05 · Comparison (relative risk reduction bar chart: 41% vs 35%) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: A simple two-bar comparison column chart showing the RELATIVE REDUCTION in major
+            coronary events with treatment, in two groups. BAR 1 (taller) = high-Lp(a) group, filled
+            to ~41% of a 100% reference frame. BAR 2 (slightly shorter) = low-Lp(a) group, filled to
+            ~35%. Both bars clearly downward-reduction themed (e.g. a faint full-height reference
+            outline behind each bar so the "reduction" reads visually). Keep the two bars only
+            modestly different in height (41 vs 35) so the chart does NOT exaggerate the gap.
+          visual_type: Comparison / clean infographic bar chart, flat educational style.
+          palette: brand Navy #003366 for one bar and Steel Blue #5B9BD5 for the other; soft #f8fbff
+            background; faint steel reference frames. (§20: NO red — this is an outcome chart with no
+            blood; red is reserved strictly for blood/bleeding imagery.)
+          composition: two equal-width bars, centered, evenly filling the canvas; bar tops not clipped.
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left 2-card column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio exactly → contain with zero crop (§15).
+          constraints: ABSOLUTELY NO TEXT, NUMBERS, AXES LABELS, OR PERCENT SIGNS anywhere on the
+            canvas — no characters in any language. The values "약 41% 감소" / "약 35% 감소" and the
+            group labels are overlaid via HTML Pretendard separately (§14). Bars span the canvas
+            evenly — no empty side panels.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s05-comparison-rrr-bars-20260624.png" alt="Lp(a) 높은 그룹 약 41% 감소 vs 낮은 그룹 약 35% 감소를 나타낸 두 개의 막대">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — VESALIUS-CV 사전계획 분석 · 에볼로쿠맙 vs 위약 · 48주 LDL-C 약 −61~67mg/dL 강하</span>
+      <span class="slide__page">05 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DOES HIGH-Lp(a) BENEFIT MORE? — split + caution (NNT 28 vs 40)
+       NOTE: interaction p=0.45 / p=0.09 → NOT significant. Do NOT overclaim.
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>INTERPRETATION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">"Lp(a)가 높으면 약 효과가 더 좋다"고 말할 수 있을까요</h2>
+      <p class="slide__subtitle">숫자만 보면 그래 보이지만, 통계적으로는 아직 단정할 수 없습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">한 명의 사건을 막기 위해 치료가 필요한 인원(NNT)은 Lp(a) 높은 그룹 <em>약 28명</em>, 낮은 그룹 약 40명으로 차이가 있어 보였습니다.</p>
+          <p class="pattern-split__supporting">
+            하지만 두 그룹의 효과 차이가 <strong>우연이 아니라고 보기엔 통계가 충분하지 않았습니다</strong>
+            (상호작용 p=0.45, 절대감소 차이 p=0.09 — 모두 유의 기준 미달).
+            게다가 이 분석은 미리 정해 둔 <strong>하위그룹 가설탐색</strong>이며, Lp(a)를 직접 낮춰 사건이 줄었는지를 본 연구도 아닙니다.
+            그래서 "Lp(a) 높은 사람만 약효가 좋다"고 단정하지 않습니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">NNT · Lp(a) 높음</div>
+            <div class="pattern-split__metric-value">약 28명</div>
+            <div class="pattern-split__metric-detail">한 사건을 막는 데 필요한 치료 인원 (절대감소 3.7%).</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">NNT · Lp(a) 낮음</div>
+            <div class="pattern-split__metric-value">약 40명</div>
+            <div class="pattern-split__metric-detail">차이는 통계적으로 유의하지 않음 (p=0.09).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">한계 — 사전계획 하위분석(가설탐색) · 상호작용 p=0.45 · 절대감소 차이 p=0.09 (모두 비유의)</span>
+      <span class="slide__page">06 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · KEY TAKEAWAYS — checklist
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>KEY TAKEAWAYS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 점</h2>
+      <p class="slide__subtitle">Lp(a)는 한 번 알아두면 평생 도움이 되는 위험 정보입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">Lp(a)는 일반 콜레스테롤 검사에 안 나오는 <strong>숨은 심혈관 위험인자</strong>입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">농도는 대부분 <strong>유전으로 결정</strong>되어 평생 일정 — 보통 <strong>한 번만 검사</strong>하면 됩니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">Lp(a)가 높을수록 <strong>심근경색 등 관상동맥 사건</strong> 위험이 올라갑니다 (뇌졸중과는 무관)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">강력한 LDL 강하 치료는 <strong>Lp(a)가 높든 낮든 모두</strong> 심장 사건을 줄였습니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">"Lp(a) 높은 사람만 약효가 더 좋다"는 <strong>아직 단정할 수 없습니다</strong> (연구로 미확정)</div>
+        </div>
+        <div class="check-item" style="border-bottom: none;">
+          <div class="check-item__num" style="color: var(--color-navy);">→</div>
+          <div class="check-item__text" style="color: var(--color-slate);">Lp(a)가 높다면 혈압·LDL·흡연·당뇨 등 <strong>고칠 수 있는 위험인자를 더 철저히 관리</strong>하세요</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Lp(a) 검사 1회 · 관상동맥 위험 인지 · 조절 가능한 위험인자 관리가 핵심</span>
+      <span class="slide__page">07 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · CLOSING — contact card + QR (live render from og:url)
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">심장을 지키는<br><em>한 걸음 더</em></h2>
+      <p class="slide__subtitle">Lp(a) 검사·심혈관 위험 관리에 대해 궁금한 점이 있으시면 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Specialty</div>
+            <div class="contact-card__value">순환기내과 · 일반내과<br>5대암 검진</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><!-- QR injected by build.py (raw SVG) or rendered live from og:url by the closing-slide script below --></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">08 / 08</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>
