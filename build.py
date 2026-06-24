@@ -97,6 +97,15 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "Lp(a) (리포단백a) · 심혈관 위험 · VESALIUS-CV (Circulation 2026)",
     },
     {
+        "kind": "decks", "slug": "pcsk9-oral-inhibitor",
+        "slug_path": "decks/cardio/pcsk9-oral-inhibitor/",
+        "html_path": ROOT / "decks/cardio/pcsk9-oral-inhibitor/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "먹는 콜레스테롤 약, 정말 나올까요? — 경구 PCSK9 억제제 이야기",
+        "category": "🩺 일반내과", "audience": "환자/보호자",
+        "disease": "경구 PCSK9 억제제 (AZD0780·Laroprovstat) · Phase 1 · Circulation 2026 — 미승인 연구단계",
+    },
+    {
         "kind": "decks", "slug": "hiit-hepatitis-b-steatosis",
         "slug_path": "decks/gi/hiit-hepatitis-b-steatosis/",
         "html_path": ROOT / "decks/gi/hiit-hepatitis-b-steatosis/index.html",
