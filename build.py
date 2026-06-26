@@ -726,8 +726,8 @@ TARGETS = [
         "slug_path": "decks/vaccines/pneumococcal-comparison/",
         "html_path": ROOT / "decks/vaccines/pneumococcal-comparison/index.html",
         "qr_class": "qr-block__code", "fmt": "deck-16x9",
-        "title": "폐렴구균백신 캡박시브 비교",
-        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "폐렴구균백신 캡박시브 비교",
+        "title": "성인 폐렴구균 백신 PCV20 vs PCV21",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "성인 폐렴구균 백신 PCV20 vs PCV21",
     },
     {
         "kind": "decks", "slug": "chronic-urticaria",

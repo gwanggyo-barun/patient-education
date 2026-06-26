@@ -3,927 +3,735 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Pneumococcal Vaccine Comparison — Gwanggyo Barun Internal Medicine</title>
+  <title>PCV20 vs PCV21 Pneumococcal Vaccine — Gwanggyo Barun Internal Medicine</title>
 
-  <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/vaccines/pneumococcal-comparison/">
-  <meta property="og:title" content="폐렴구균 백신 비교 (PCV15 · PCV20 · PCV21) — 광교바른내과">
-  <meta property="og:description" content="PCV15 (Vaxneuvance) vs PCV20 (Prevnar 20) vs PCV21 (Capvaxive) — 혈청형 커버리지·면역원성·접종 횟수·NIP·비용 한눈에 비교">
+  <meta property="og:title" content="프리베나20 vs 캡박시브 — 성인 폐렴구균 백신 비교 | 광교바른내과">
+  <meta property="og:description" content="PCV20과 PCV21의 혈청형, 임상 근거, 한국 권고, 비용, 접종 후 주의사항을 환자 상담용으로 정리합니다">
   <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/vaccines/pneumococcal-comparison/preview.png">
   <meta property="og:site_name" content="광교바른내과">
   <meta name="theme-color" content="#003366">
 
-  <!-- Pretendard Variable (the only font allowed) -->
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-
-  <!-- QR code library (loaded only on closing slide) -->
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
-  <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
 
-  <!-- Local extensions for this deck -->
   <style>
-    /* Hide decorative bg number so scrollHeight == clientHeight (validator-friendly) */
     .slide__bg-num { display: none !important; }
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 22px; }
+    .slide__body { min-height: 0; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .tile { padding: 15px 17px; gap: 7px; justify-content: center; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.95rem; line-height: 1.32; word-break: keep-all; }
+    .tile__index { white-space: nowrap; }
+    .pattern-grid { gap: 16px; }
+    .pattern-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pattern-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pattern-hero-number { gap: 30px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: center; gap: 18px; }
+    .pattern-hero-number__value { font-size: 7.8rem; line-height: 0.92; }
+    .pattern-hero-number__caption { font-size: 1.12rem; line-height: 1.42; max-width: 100%; }
+    .pattern-hero-number__detail { justify-content: center; gap: 14px; }
+    .pattern-hero-number__detail-text { font-size: 1.05rem; line-height: 1.5; }
+    .pattern-split { gap: 30px; min-height: 0; }
+    .pattern-split__statement { font-size: 1.78rem; line-height: 1.14; }
+    .pattern-split__supporting { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.72rem; line-height: 1.06; }
+    .pattern-split__metric-detail { font-size: 0.94rem; line-height: 1.32; }
+    .pattern-compare { gap: 18px; align-items: stretch; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 15px 20px 17px; gap: 8px; justify-content: space-between; }
+    .compare-col__list li { font-size: 0.96rem; line-height: 1.3; padding-left: 22px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: center; padding: 15px; gap: 9px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.93rem; line-height: 1.32; }
+    .pattern-checklist { height: 100%; align-content: space-between; grid-template-columns: repeat(2, 1fr); }
+    .check-item { min-height: 0; padding: 7px 0; }
+    .check-item__text { font-size: 1rem; line-height: 1.32; }
 
-    /* Three-column compare for PCV15/20/21 (slide 4) */
-    .pattern-tri-compare {
+    .visual-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 520px;
+      gap: 30px;
+      align-items: stretch;
+      height: 100%;
+      min-height: 0;
+    }
+    .visual-split--wide { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
+    .visual-column {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+    }
+    .ai-visual {
+      margin: 0;
+      min-height: 0;
+      height: 100%;
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--color-canvas);
+      box-shadow: var(--shadow-card);
+    }
+    .ai-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ai-visual--contain img { object-fit: contain; }
+    .visual-labels {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-5);
-      height: 100%;
-      position: relative;
-      z-index: 1;
+      gap: 8px;
+      margin: 0;
     }
-    .tri-col {
+    .visual-labels span {
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 7px 9px;
+      color: var(--color-navy);
+      background: rgba(255,255,255,0.92);
+      font-size: 0.84rem;
+      font-weight: var(--weight-bold);
+      line-height: 1.18;
+      text-align: center;
+    }
+    .visual-labels--2 { grid-template-columns: repeat(2, 1fr); }
+
+    .fact-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      height: 100%;
+      align-items: stretch;
+    }
+    .fact-cell {
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      background: var(--color-canvas);
+      padding: 17px 18px;
       display: flex;
       flex-direction: column;
-      gap: var(--space-3);
-      padding: var(--space-5) var(--space-5);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      background: var(--color-canvas);
+      justify-content: center;
+      gap: 8px;
       min-width: 0;
-      overflow: hidden;
     }
-    .tri-col--accent {
-      background: var(--color-canvas-warm);
-      border-color: var(--color-steel);
-    }
-    .tri-col__eyebrow {
-      font-size: var(--text-eyebrow);
+    .fact-cell__label {
+      color: var(--color-steel-deep);
+      font-size: 0.76rem;
       font-weight: var(--weight-bold);
-      color: var(--color-steel);
-      letter-spacing: var(--tracking-mega);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
-    .tri-col__title {
-      font-size: var(--text-h3);
+    .fact-cell__value {
+      color: var(--color-navy);
+      font-size: 1.38rem;
       font-weight: var(--weight-bold);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-tight);
+      line-height: 1.1;
+      word-break: keep-all;
     }
-    .tri-col__brand {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink-2);
-      line-height: var(--lh-snug);
-    }
-    .tri-col__num {
-      font-size: 2.5rem;
-      font-weight: var(--weight-black);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-mega);
-      line-height: 1;
-    }
-    .tri-col__num-label {
-      font-size: var(--text-body);
-      font-weight: var(--weight-540);
-      color: var(--color-ink-2);
-      margin-top: var(--space-1);
-    }
-    .tri-col__divider {
-      height: 1px;
-      background: var(--color-border);
-      margin: var(--space-2) 0;
-    }
-    .tri-col__list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-    }
-    .tri-col__list li {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-      padding-left: var(--space-4);
-      position: relative;
-    }
-    .tri-col__list li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.55em;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--color-steel);
+    .fact-cell__body {
+      color: var(--color-ink-soft);
+      font-size: 0.94rem;
+      line-height: 1.34;
+      word-break: keep-all;
     }
 
-    /* Comparison matrix table (slide 8) — 4-column layout */
-    .pattern-matrix {
+    .serotype-map {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
       height: 100%;
-      position: relative;
-      z-index: 1;
+      align-items: stretch;
+    }
+    .serotype-card {
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      background: var(--color-canvas);
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 0;
     }
-    .matrix-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-    .matrix-table thead th {
-      background: var(--color-navy);
-      color: var(--color-canvas);
-      font-size: var(--text-body);
+    .serotype-card--shared { background: var(--color-canvas-warm); border-color: var(--color-steel); }
+    .serotype-card__kicker {
+      color: var(--color-steel-deep);
+      font-size: 0.78rem;
       font-weight: var(--weight-bold);
-      padding: var(--space-3) var(--space-4);
-      text-align: left;
-      letter-spacing: var(--tracking-snug);
-      border: 1px solid var(--color-navy);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
-    .matrix-table thead th:first-child {
-      width: 22%;
-      background: var(--color-steel);
-      border-color: var(--color-steel);
+    .serotype-card__title {
+      color: var(--color-navy);
+      font-size: 1.22rem;
+      font-weight: var(--weight-bold);
+      line-height: 1.18;
     }
-    .matrix-table tbody td {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      padding: var(--space-3) var(--space-4);
+    .serotype-card__list {
+      color: var(--color-ink-soft);
+      font-size: 0.94rem;
+      line-height: 1.34;
+      word-break: keep-all;
+    }
+    .serotype-card__note {
+      border-top: 1px solid var(--color-border);
+      padding-top: 10px;
+      color: var(--color-slate);
+      font-size: 0.86rem;
+      line-height: 1.28;
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 16px;
+      height: 100%;
+    }
+    .evidence-card {
       border: 1px solid var(--color-border);
-      line-height: var(--lh-snug);
-      vertical-align: middle;
+      border-radius: 16px;
+      background: var(--color-canvas);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 9px;
     }
-    .matrix-table tbody td:first-child {
-      background: var(--color-canvas-warm);
-      color: var(--color-navy);
+    .evidence-card--alert { background: var(--color-warning-bg); border-color: rgba(194,65,12,0.28); }
+    .evidence-card__label {
+      color: var(--color-steel-deep);
+      font-size: 0.78rem;
       font-weight: var(--weight-bold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
-    .matrix-table tbody tr:nth-child(even) td:not(:first-child) {
-      background: var(--color-canvas-warm);
-    }
-    .matrix-table strong {
+    .evidence-card__title {
       color: var(--color-navy);
+      font-size: 1.18rem;
       font-weight: var(--weight-bold);
+      line-height: 1.2;
+    }
+    .evidence-card__body { color: var(--color-ink-soft); font-size: 0.96rem; line-height: 1.34; }
+
+    .decision-card {
+      height: 100%;
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      background: var(--color-canvas);
+      padding: 24px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+      box-shadow: var(--shadow-card);
+    }
+    .decision-quote {
+      color: var(--color-ink);
+      font-size: 1.24rem;
+      line-height: 1.52;
+      font-weight: var(--weight-450);
+      word-break: keep-all;
+    }
+    .decision-quote strong { color: var(--color-navy); font-weight: var(--weight-bold); }
+    .decision-tags { display: flex; flex-wrap: wrap; gap: 9px; }
+    .decision-tags span {
+      border-radius: 999px;
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      color: var(--color-navy);
+      font-size: 0.9rem;
+      font-weight: var(--weight-bold);
+      padding: 7px 11px;
     }
 
-    /* Checklist 8 items — 2-col layout */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* Single-row 3-col grid for slides 05a/05b (3 tiles each) */
-    .pattern-grid--3.pattern-grid--single-row { grid-template-rows: 1fr; }
-
-    /* Allow long serotype lists to wrap on middle dot separators */
-    .tile__body--break { word-break: break-word; overflow-wrap: anywhere; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
     .closing-grid { height: 100%; align-items: stretch; }
     .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(4) .tri-col { padding: 12px 14px; gap: 6px; }
-    .slide:nth-of-type(4) .tri-col__brand,
-    .slide:nth-of-type(4) .tri-col__num-label,
-    .slide:nth-of-type(4) .tri-col__list li { font-size: 0.82rem; line-height: 1.16; }
-    .slide:nth-of-type(4) .tri-col__num { font-size: 2.15rem; line-height: 1; }
-    .slide:nth-of-type(4) .tri-col__list { gap: 4px; }
+    .qr-block { padding: 18px; gap: 10px; min-height: 0; }
+    .qr-block__code { width: 104px; height: 104px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
   </style>
 </head>
 <body>
 
 <div class="deck">
 
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
   <section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · VACCINATION</div>
     </header>
     <div class="slide__title-block">
-      <h1 class="slide__title">폐렴구균 백신 비교,<br><em>나에게 맞는 백신은?</em></h1>
-      <p class="slide__subtitle">PCV15 (Vaxneuvance) vs PCV20 (Prevnar 20) vs PCV21/Capvaxive (캡박시브) — 세 가지 결합백신 한눈에 비교</p>
+      <h1 class="slide__title">프리베나20 vs 캡박시브,<br><em>어떤 차이가 있을까요?</em></h1>
+      <p class="slide__subtitle">성인 폐렴구균 백신 상담용 — PCV20과 PCV21의 혈청형, 근거, 한국 권고, 비용을 한눈에 정리합니다</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">PCV15 · PCV20 · PCV21 · Head-to-head Comparison</span>
+      <span class="slide__source">정보 기준 — 2026-06-26 · PCV20(Prevenar 20) · PCV21/Capvaxive(V116)</span>
       <span class="slide__page">광교바른내과 일반내과</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — 84% IPD coverage of PCV21 in adults
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">02</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHY COMPARE</strong></div>
+      <div class="slide__chapter">CHAPTER 01 · <strong>ONE-LINE VERDICT</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">왜 백신을 비교해야 할까요?</h2>
-      <p class="slide__subtitle">2024-2026년 사이 새 결합백신이 잇따라 도입되며 선택지가 늘었습니다</p>
+      <h2 class="slide__title">결론 — “무조건 더 좋은 백신”은 아직 없습니다</h2>
+      <p class="slide__subtitle">두 백신 모두 성인에서 1회 접종으로 완료되는 최신 단백접합 백신입니다</p>
     </div>
     <div class="slide__body">
       <div class="pattern-hero-number">
         <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>84</em>%</div>
-          <div class="pattern-hero-number__caption">PCV21 (Capvaxive) 의 성인 침습성 폐렴구균 감염 (IPD) 커버리지 — 성인에서 흔한 8가지 신규 혈청형이 추가되어 PCV20 (약 52~54%) 보다 폭넓게 예방합니다.</div>
+          <div class="pattern-hero-number__value"><em>1</em>회</div>
+          <div class="pattern-hero-number__caption">PCV20과 PCV21 모두 성인에서는 보통 0.5 mL 근육주사 1회로 접종을 완료합니다.</div>
         </div>
         <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why this comparison matters</div>
+          <div class="pattern-hero-number__detail-label">Shared decision point</div>
           <div class="pattern-hero-number__detail-text">
-            세 백신은 모두 1회 접종으로 끝나지만 혈청형 구성·면역원성·부작용·국내 도입 시기·비용이 다릅니다. 환자의 나이·기저질환·이미 맞은 백신 이력에 따라 가장 적합한 선택지가 달라지므로, 의료진과 함께 비교 후 결정하는 것이 좋습니다.
+            핵심 차이는 “몇 가냐”보다 어떤 혈청형을 겨냥했는지입니다.
+            PCV20은 더 넓은 연령 적응증과 기존 사용 경험이 강점이고,
+            PCV21은 성인 잔여 침습성 폐렴구균 질환(IPD) 혈청형에 더 공격적으로 맞춘 설계가 강점입니다.
           </div>
         </div>
       </div>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — Merck V116 Phase 3 trials · ACIP 2024 update</span>
-      <span class="slide__page">02 / 13</span>
+      <span class="slide__source">근거 — FDA/label · CDC adult pneumococcal recommendations · KSID 2026 adult immunization guideline</span>
+      <span class="slide__page">02 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — Conjugate vaccine basics
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">03</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>BASICS</strong></div>
+      <div class="slide__chapter">CHAPTER 01 · <strong>WHY IT MATTERS</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">폐렴구균 결합백신 (PCV) 이란</h2>
-      <p class="slide__subtitle">단백질과 결합한 다당체 백신으로 모든 연령에서 강한 면역 반응을 유도합니다</p>
+      <h2 class="slide__title">폐렴구균은 어른에게 더 위험해지는 균입니다</h2>
+      <p class="slide__subtitle">소아 백신 도입 후 균의 얼굴이 바뀌었고, 성인에게 남는 혈청형을 어떻게 막을지가 중요해졌습니다</p>
     </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">PCV (Pneumococcal Conjugate Vaccine) 는 폐렴구균 다당체 항원을 단백질에 결합시켜 만든 백신으로, <em>면역 기억을 형성</em>하고 점막 면역까지 유도합니다.</p>
-          <p class="pattern-split__supporting">
-            현재 한국·미국에서 성인용으로 사용 가능한 결합백신은 PCV15 (Vaxneuvance) · PCV20 (Prevnar 20) · PCV21 (Capvaxive) 세 가지입니다. 숫자가 클수록 예방하는 폐렴구균 혈청형 수가 많지만, "더 많은 혈청형 = 더 좋은 백신"은 아닙니다 — 어떤 혈청형을 어떻게 조합했는지가 중요합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Adult PCV options</div>
-            <div class="pattern-split__metric-value">3종</div>
-            <div class="pattern-split__metric-detail">PCV15 · PCV20 · PCV21 — 모두 1회 접종으로 완료.</div>
+    <div class="slide__body visual-split visual-split--wide">
+      <div class="visual-column">
+        <div class="pattern-grid pattern-grid--2">
+          <div class="tile">
+            <div class="tile__index">DISEASE · 01</div>
+            <div class="tile__title">폐렴 · 균혈증 · 수막염</div>
+            <div class="tile__body">폐렴구균은 단순 감기균이 아니라 폐렴, 패혈증, 수막염 같은 중증 감염을 일으킬 수 있습니다.</div>
           </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Common ground</div>
-            <div class="pattern-split__metric-value">단회 접종</div>
-            <div class="pattern-split__metric-detail">세 백신 모두 단독 1회로 PPSV23 추가 접종 불필요.</div>
+          <div class="tile">
+            <div class="tile__index">RISK · 02</div>
+            <div class="tile__title">65세 이상과 만성질환</div>
+            <div class="tile__body">고령, 당뇨, 만성 심폐질환, 간·신장질환, 면역저하에서는 입원과 사망 위험이 높아집니다.</div>
+          </div>
+          <div class="tile">
+            <div class="tile__index">SHIFT · 03</div>
+            <div class="tile__title">혈청형 교체</div>
+            <div class="tile__body">소아 백신으로 줄어든 혈청형의 빈자리를 다른 성인형 혈청형이 채우는 변화가 관찰됩니다.</div>
+          </div>
+          <div class="tile tile--accent">
+            <div class="tile__index">GOAL · 04</div>
+            <div class="tile__title">나에게 남는 위험을 줄이기</div>
+            <div class="tile__body">그래서 접종 상담은 나이, 기존 접종력, 질환, 비용을 함께 보며 결정합니다.</div>
           </div>
         </div>
       </div>
+      <figure class="ai-visual" data-visual-intent="Mechanism">
+        <img src="../../../shared/assets/generated/adult-pneumococcal-pcv20-pcv21-s03-serotype-shift-20260626.png" alt="소아 집단면역 이후 성인에게 남는 폐렴구균 혈청형 변화를 설명하는 그림">
+      </figure>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — KDCA 2024 · CDC ACIP Pneumococcal Vaccination 2024</span>
-      <span class="slide__page">03 / 13</span>
+      <span class="slide__source">근거 — CDC ABCs surveillance · KSID/Infect Chemother adult IPD serotype data · 첨부 검증본(2026-06-26)</span>
+      <span class="slide__page">03 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 04 · TRI-COMPARE — Three-column head-to-head card
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">04</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>SIDE-BY-SIDE</strong></div>
+      <div class="slide__chapter">CHAPTER 02 · <strong>DESIGN DIFFERENCE</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">세 백신 한눈에 — 혈청형과 커버리지</h2>
-      <p class="slide__subtitle">PCV15 · PCV20 · PCV21 의 핵심 스펙을 카드로 비교합니다</p>
+      <h2 class="slide__title">두 백신은 “목표 혈청형” 설계가 다릅니다</h2>
+      <p class="slide__subtitle">프리베나20은 범용형 확장, 캡박시브는 성인 잔여 IPD 혈청형 중심 설계입니다</p>
     </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-tri-compare">
-        <div class="tri-col">
-          <div class="tri-col__eyebrow">OPTION · 01</div>
-          <div class="tri-col__title">PCV15 (Vaxneuvance)</div>
-          <div class="tri-col__brand">머크(MSD) · 박스누반스 · 한국 2022 승인</div>
-          <div class="tri-col__divider"></div>
-          <div class="tri-col__num">15<span style="font-size:1.4rem">종</span></div>
-          <div class="tri-col__num-label">예방 혈청형 수</div>
-          <ul class="tri-col__list">
-            <li>PCV13에 22F·33F 추가</li>
-            <li>혈청형 4 포함 (지역별 강점)</li>
-            <li>PPSV23 순차 접종 옵션 가능</li>
-            <li>성인 접종은 비급여 · 소아 NIP와 구분</li>
+    <div class="slide__body visual-split">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">20</span>
+            프리베나20 · PCV20
+          </div>
+          <ul class="compare-col__list">
+            <li>PCV13을 확장한 20가 단백접합 백신입니다.</li>
+            <li>소아부터 성인까지 넓은 적응증을 가집니다.</li>
+            <li>혈청형 4, 6B, 19F 등 PCV20 고유 혈청형이 포함됩니다.</li>
+            <li>한국 소아 NIP 편입으로 가족 단위 설명이 쉽습니다.</li>
+            <li>상대적으로 더 긴 시판 후 경험이 장점입니다.</li>
           </ul>
         </div>
-        <div class="tri-col">
-          <div class="tri-col__eyebrow">OPTION · 02</div>
-          <div class="tri-col__title">PCV20 (Prevnar 20)</div>
-          <div class="tri-col__brand">화이자(Pfizer) · 프리베나20 · 한국 2024.10 승인</div>
-          <div class="tri-col__divider"></div>
-          <div class="tri-col__num">20<span style="font-size:1.4rem">종</span></div>
-          <div class="tri-col__num-label">예방 혈청형 수 (성인 IPD 약 52~54%)</div>
-          <ul class="tri-col__list">
-            <li>PCV15에 5종 추가 (8·10A·11A·12F·15B)</li>
-            <li>혈청형 4 포함 · 표준 결합백신</li>
-            <li>1회로 완료 · PPSV23 불필요</li>
-            <li>한국 비급여 · 비용 약 12~15만원</li>
-          </ul>
-        </div>
-        <div class="tri-col tri-col--accent">
-          <div class="tri-col__eyebrow">OPTION · 03 · 신규</div>
-          <div class="tri-col__title">PCV21 (Capvaxive)</div>
-          <div class="tri-col__brand">머크(MSD) · 캡박시브 · 미국 2024.6 FDA 승인</div>
-          <div class="tri-col__divider"></div>
-          <div class="tri-col__num">21<span style="font-size:1.4rem">종</span></div>
-          <div class="tri-col__num-label">예방 혈청형 수 (성인 IPD 약 82~84%)</div>
-          <ul class="tri-col__list">
-            <li>성인 빈발 8개 신규 혈청형 추가</li>
-            <li>혈청형 4 미포함 (소아용 아님)</li>
-            <li>주사부위 통증 적음 (약 39%)</li>
-            <li>한국 2025.8 허가 · 2026.3 출시</li>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">21</span>
+            캡박시브 · PCV21
+          </div>
+          <ul class="compare-col__list">
+            <li>성인 잔여 IPD 혈청형에 맞춘 21가 백신입니다.</li>
+            <li>한국 허가는 현재 18세 이상 성인 전용입니다.</li>
+            <li>23A, 23B, 24F, 31, 35B 등 성인형 혈청형을 더 담았습니다.</li>
+            <li>미국 감시자료 기준 성인 혈청형 커버리지가 더 넓습니다.</li>
+            <li>단, 실제 폐렴 예방효과 우월이 직접 입증된 것은 아닙니다.</li>
           </ul>
         </div>
       </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/vaccines-pneumococcal-comparison-s04-comparison-infectious-dd6c4822-20260530-raster-20260531.jpg" alt="세 백신 한눈에 — 혈청형과 커버리지 설명 이미지">
-      </figure></div>
+      <figure class="ai-visual ai-visual--contain" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/adult-pneumococcal-pcv20-pcv21-s04-vaccine-design-20260626.png" alt="두 폐렴구균 단백접합 백신의 혈청형 설계 차이를 비교하는 그림">
+      </figure>
+    </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — KDCA 2024 · MFDS 허가 정보 · ACIP 2024 Pneumococcal Update</span>
-      <span class="slide__page">04 / 13</span>
+      <span class="slide__source">근거 — FDA/label · STRIDE-3 · 첨부 검증본(2026-06-26)</span>
+      <span class="slide__page">04 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 3×1 — Serotype coverage by vaccine
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">05</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>SEROTYPE COVERAGE</strong></div>
+      <div class="slide__chapter">CHAPTER 02 · <strong>PRODUCT FACTS</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">백신별 혈청형 구성</h2>
-      <p class="slide__subtitle">PCV15 · PCV20 · PCV21 각각이 어떤 혈청형을 커버하는지 살펴봅니다</p>
+      <h2 class="slide__title">제품 기본 정보 — 진료실에서 확인할 포인트</h2>
+      <p class="slide__subtitle">허가 연령, 한국 출시, 소아 적응증, 면역증강제 여부를 구분합니다</p>
     </div>
     <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3 pattern-grid--single-row">
-        <div class="tile">
-          <div class="tile__index">COVERAGE · 01</div>
-          <div class="tile__title">PCV15 공통 코어</div>
-          <div class="tile__body tile__body--break">PCV13 (1, 3, 4, 5, 6A, 6B, 7F, 9V, 14, 18C, 19A, 19F, 23F) 에 22F, 33F 두 종을 추가한 구성. 소아·성인 모두 사용 가능한 표준 결합백신입니다.</div>
+      <div class="fact-strip">
+        <div class="fact-cell">
+          <div class="fact-cell__label">Adult dose</div>
+          <div class="fact-cell__value">둘 다 0.5 mL 1회</div>
+          <div class="fact-cell__body">성인 접종은 근육주사 1회 완료가 기본입니다.</div>
         </div>
-        <div class="tile">
-          <div class="tile__index">COVERAGE · 02</div>
-          <div class="tile__title">PCV20 추가 5종</div>
-          <div class="tile__body tile__body--break">PCV15 + 8, 10A, 11A, 12F, 15B 추가. 성인 IPD 원인 혈청형의 약 52~54%를 커버하는 표준 결합백신입니다.</div>
+        <div class="fact-cell">
+          <div class="fact-cell__label">PCV20</div>
+          <div class="fact-cell__value">20가 · 소아/성인</div>
+          <div class="fact-cell__body">한국 MFDS 허가는 생후 6주부터 성인까지이며, 소아 NIP에 편입되었습니다.</div>
         </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">COVERAGE · 03</div>
-          <div class="tile__title">PCV21 신규 8종</div>
-          <div class="tile__body tile__body--break">3, 6A, 7F, 8, 10A, 11A, 12F, 15A, 15C, 16F, 17F, 19A, 20, 22F, 23A, 23B, 24F, 31, 33F, 35B — 성인에서 흔한 혈청형 중심으로 약 82~84% 커버.</div>
+        <div class="fact-cell">
+          <div class="fact-cell__label">PCV21</div>
+          <div class="fact-cell__value">21가 · 한국 성인용</div>
+          <div class="fact-cell__body">한국 허가는 18세 이상 성인 전용입니다. 미국은 2026년 2~17세 고위험군 보충 접종도 허가했습니다.</div>
+        </div>
+        <div class="fact-cell">
+          <div class="fact-cell__label">Composition</div>
+          <div class="fact-cell__value">CRM<sub>197</sub> 접합</div>
+          <div class="fact-cell__body">두 백신 모두 단백접합 백신입니다. PCV20은 인산알루미늄, PCV21은 면역증강제 무첨가입니다.</div>
         </div>
       </div>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — KCDC 2024 · MMWR ACIP 2024 Pneumococcal Recommendations</span>
-      <span class="slide__page">05 / 13</span>
+      <span class="slide__source">근거 — FDA/DailyMed label · MFDS 허가사항 · 첨부 검증본(2026-06-26)</span>
+      <span class="slide__page">05 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 3×1 — Key serotype differences
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">06</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>KEY DIFFERENCES</strong></div>
+      <div class="slide__chapter">CHAPTER 03 · <strong>SEROTYPES</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">혈청형 차이의 의미</h2>
-      <p class="slide__subtitle">"숫자가 크다 = 더 좋다"가 아닌 이유 — 어떤 혈청형이 들어 있는지가 핵심입니다</p>
+      <h2 class="slide__title">혈청형 구성 — 겹치는 부분과 다른 부분</h2>
+      <p class="slide__subtitle">어떤 혈청형이 들어 있는지가 백신 선택의 핵심입니다</p>
     </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3 pattern-grid--single-row">
-        <div class="tile">
-          <div class="tile__index">DIFFERENCE · 01</div>
-          <div class="tile__title">혈청형 4 — 포함 여부</div>
-          <div class="tile__body">PCV15·PCV20에는 들어있지만 PCV21에는 없습니다. 한국·미국 일부 지역 성인 IPD에서 혈청형 4 비중이 의미 있어 거주 지역 패턴을 고려할 수 있습니다.</div>
+    <div class="slide__body">
+      <div class="serotype-map">
+        <div class="serotype-card">
+          <div class="serotype-card__kicker">PCV20 only · 9</div>
+          <div class="serotype-card__title">프리베나20에만 있는 혈청형</div>
+          <div class="serotype-card__list">1 · 4 · 5 · 6B · 9V · 14 · 18C · 19F · 23F</div>
+          <div class="serotype-card__note">혈청형 4는 PCV21에 없지만, 한국에서는 일반적으로 기여율이 낮은 편입니다.</div>
         </div>
-        <div class="tile">
-          <div class="tile__index">DIFFERENCE · 02</div>
-          <div class="tile__title">소아용으로는 PCV21 부적합</div>
-          <div class="tile__body">PCV21은 성인 빈발 혈청형 중심으로 설계되어 소아 표준 PCV를 대체하지 않습니다. 소아에서는 KDCA NIP 기준 백신(PCV15/20 등)을 따릅니다.</div>
+        <div class="serotype-card serotype-card--shared">
+          <div class="serotype-card__kicker">Shared core · 10</div>
+          <div class="serotype-card__title">둘 다 포함하는 핵심 혈청형</div>
+          <div class="serotype-card__list">3 · 6A · 7F · 8 · 10A · 11A · 12F · 19A · 22F · 33F</div>
+          <div class="serotype-card__note">한국 성인 IPD에서 중요한 3과 19A는 양쪽 모두 포함됩니다.</div>
         </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">KEY POINT · 03</div>
-          <div class="tile__title">중요한 것은 "내 혈청형이 포함됐는지"</div>
-          <div class="tile__body">고령자·만성질환자에서 흔한 혈청형은 PCV21이 가장 폭넓게 커버하며, 어린이 접촉이 많은 환경이라면 PCV20도 좋은 선택입니다.</div>
+        <div class="serotype-card">
+          <div class="serotype-card__kicker">PCV21 only · 11</div>
+          <div class="serotype-card__title">캡박시브에만 있는 혈청형</div>
+          <div class="serotype-card__list">9N · 15A · 15C · 16F · 17F · 20A · 23A · 23B · 24F · 31 · 35B</div>
+          <div class="serotype-card__note">이 중 8개는 기존 폐렴구균 백신에 없던 신규 혈청형으로 설명됩니다.</div>
         </div>
       </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/vaccines-pneumococcal-comparison-s06-comparison-infectious-01e22d15-20260530-raster-20260531.jpg" alt="혈청형 차이의 의미 설명 이미지">
-      </figure></div>
+    </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — KCDC 2024 · MMWR ACIP 2024 Pneumococcal Recommendations</span>
-      <span class="slide__page">06 / 13</span>
+      <span class="slide__source">근거 — STRIDE-3 serotype framework · FDA/MFDS label · 첨부 검증본(2026-06-26)</span>
+      <span class="slide__page">06 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 07 · DENSITY GRID 2×2 — Immunogenicity & efficacy
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">07</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>IMMUNOGENICITY</strong></div>
+      <div class="slide__chapter">CHAPTER 04 · <strong>EVIDENCE</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">면역원성과 안전성 — 어떻게 다를까</h2>
-      <p class="slide__subtitle">세 백신 모두 비열등성 (non-inferiority) 입증 — 큰 효과 차이는 없으나 부작용 프로파일은 다릅니다</p>
+      <h2 class="slide__title">임상 근거 — 직접 비교는 “면역반응” 비교입니다</h2>
+      <p class="slide__subtitle">실제 폐렴·IPD 예방효과 우월을 head-to-head로 증명한 연구는 아직 없습니다</p>
     </div>
     <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">EFFICACY · 01</div>
-          <div class="tile__title">면역원성 — 비열등성 증명됨</div>
-          <div class="tile__body">PCV20·PCV21 임상 3상에서 PCV13/PCV15 대비 비열등성 입증. 공통 혈청형에 대한 항체 반응은 세 백신이 동등 수준이며, 추가 혈청형도 충분한 보호 항체를 유도합니다.</div>
+      <div class="evidence-grid">
+        <div class="evidence-card">
+          <div class="evidence-card__label">STRIDE-3</div>
+          <div class="evidence-card__title">PCV21 vs PCV20 직접 비교</div>
+          <div class="evidence-card__body">백신 미접종 성인 약 2,600명에서 OPA/IgG 기반 면역원성을 비교했습니다. 공통 10개 혈청형은 모두 비열등했습니다.</div>
         </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">SAFETY · 02</div>
-          <div class="tile__title">주사부위 통증 — PCV21 가장 적음</div>
-          <div class="tile__body">임상시험 보고 기준 주사부위 통증 발생률은 PCV21 약 39% · PCV20 약 52%. PCV21은 단백 운반체 양이 적어 국소 반응이 상대적으로 적은 것이 특징입니다.</div>
+        <div class="evidence-card">
+          <div class="evidence-card__label">Unique serotypes</div>
+          <div class="evidence-card__title">PCV21 고유 혈청형 10/11 우월</div>
+          <div class="evidence-card__body">PCV21 고유 11개 혈청형 중 10개에서 우월한 면역반응을 보였고, 15C는 비열등에 그쳤습니다.</div>
         </div>
-        <div class="tile">
-          <div class="tile__index">SAFETY · 03</div>
-          <div class="tile__title">전신 부작용 — 세 백신 비슷</div>
-          <div class="tile__body">발열·근육통·피로감 등 전신 부작용은 세 백신 모두 비슷한 빈도(약 20~30%)로 나타나며 대부분 1~2일 내에 호전됩니다.</div>
+        <div class="evidence-card">
+          <div class="evidence-card__label">PCV20 evidence</div>
+          <div class="evidence-card__title">PCV13 경험을 바탕으로 확장</div>
+          <div class="evidence-card__body">PCV20은 PCV13·PPSV23 대비 면역가교 자료와 기존 PCV 경험을 바탕으로 허가되었습니다.</div>
         </div>
-        <div class="tile">
-          <div class="tile__index">SAFETY · 04</div>
-          <div class="tile__title">PCV20 GBS 시그널 — 매우 드묾</div>
-          <div class="tile__body">FDA 시판 후 감시에서 PCV20 접종 후 길랑-바레 증후군 (GBS) 100만 접종당 약 0.5건의 약한 시그널이 보고되었지만 인과관계는 미확정이며 절대 위험은 매우 낮습니다.</div>
+        <div class="evidence-card evidence-card--alert">
+          <div class="evidence-card__label">Important limit</div>
+          <div class="evidence-card__title">“면역원성 우월” = “임상효과 우월”은 아닙니다</div>
+          <div class="evidence-card__body">두 백신 모두 성인 추가 혈청형의 실제 폐렴 예방 효과는 장기 실사용 자료와 시판 후 연구가 더 필요합니다.</div>
         </div>
       </div>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — V116-001/003 Phase 3 · Prevnar 20 Phase 3 · FDA Postmarketing</span>
-      <span class="slide__page">07 / 13</span>
+      <span class="slide__source">근거 — STRIDE-3, Lancet Infectious Diseases 2024 · FDA post-marketing requirements</span>
+      <span class="slide__page">07 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 08 · COMPARISON — Who benefits from which (Navy vs Steel)
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>KOREA GUIDANCE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">한국 권고 — 65세 이상과 고위험군이 중심입니다</h2>
+      <p class="slide__subtitle">미국은 50세 이상 routine 권고지만, 한국은 65세 이상과 19–64세 고위험군을 중심으로 설명합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile tile--accent">
+          <div class="tile__index">KSID 2026 · OPTION 01</div>
+          <div class="tile__title">PCV21 1회</div>
+          <div class="tile__body">대한감염학회 2026 개정에서 65세 이상 및 19–64세 고위험군의 동등한 선택지로 반영되었습니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">KSID 2026 · OPTION 02</div>
+          <div class="tile__title">PCV20 1회</div>
+          <div class="tile__body">같은 대상군에서 PCV21과 함께 동등한 우선 옵션으로 설명할 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">KSID 2026 · OPTION 03</div>
+          <div class="tile__title">PCV15 → PPSV23</div>
+          <div class="tile__body">순차접종도 선택지입니다. 면역저하 등 일부 상황에서는 간격 기준을 더 엄격히 확인합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">KOREA NIP</div>
+          <div class="tile__title">65세 이상 무료접종은 PPSV23</div>
+          <div class="tile__body">현재 성인 국가예방접종은 PPSV23 1회 무료가 중심이며, PCV20·PCV21은 대개 비급여입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">US ACIP</div>
+          <div class="tile__title">미국은 50세 이상 PCV 권고</div>
+          <div class="tile__body">CDC/ACIP은 50세 이상 PCV20 또는 PCV21 1회를 routine option으로 권고합니다.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">LOCAL PRACTICE</div>
+          <div class="tile__title">한국 상담은 국내 기준 우선</div>
+          <div class="tile__body">50세 건강 성인에게 미국 기준만으로 급하게 권하기보다는 국내 권고와 위험도를 함께 봅니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 대한감염학회 성인예방접종 권고안 2026 · CDC/ACIP adult recommendations 2025</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
       <div class="slide__chapter">CHAPTER 06 · <strong>WHO BENEFITS</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">어떤 분에게 어떤 백신이 좋을까</h2>
-      <p class="slide__subtitle">대상자의 연령·기저질환·접촉 환경에 따라 추천이 달라집니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            PCV20을 권할 만한 분
-          </div>
-          <ul class="compare-col__list">
-            <li>현재 한국에서 바로 접종 가능한 백신을 원하는 분</li>
-            <li>혈청형 4가 흔한 지역에 거주하시는 분</li>
-            <li>어린이·손주와 자주 접촉하는 조부모</li>
-            <li>이미 PCV13·PCV15를 접종한 적 있는 분</li>
-            <li>지금 바로 접종하고 싶은 분</li>
-            <li>표준 결합백신으로 충분히 보호받고 싶은 분</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">★</span>
-            PCV21을 권할 만한 분
-          </div>
-          <ul class="compare-col__list">
-            <li>성인 IPD 커버리지를 최대로 올리고 싶은 분</li>
-            <li>주사 부위 통증을 줄이고 싶은 분</li>
-            <li>성인 혈청형 커버리지를 더 넓히고 싶은 분</li>
-            <li>65세 이상 고령자·만성질환자·면역저하자</li>
-            <li>아직 폐렴구균 백신을 한 번도 안 맞은 분</li>
-            <li>최신 혈청형 구성을 선호하는 분</li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../shared/assets/generated/vaccines-pneumococcal-comparison-s08-action-infectious-231c22fa-20260530-raster-20260531.jpg" alt="어떤 분에게 어떤 백신이 좋을까 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACIP 2024 Adult Pneumococcal Recommendations · 대한감염학회 2024</span>
-      <span class="slide__page">08 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · MATRIX TABLE — Full comparison table
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>FULL MATRIX</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한눈에 보는 비교표</h2>
-      <p class="slide__subtitle">8개 핵심 항목으로 PCV15 · PCV20 · PCV21을 한 번에 비교합니다</p>
+      <h2 class="slide__title">어떤 경우에 어느 쪽을 더 고려할까요?</h2>
+      <p class="slide__subtitle">이는 우열 판정이 아니라 환자별 맞춤 선택을 위한 설명입니다</p>
     </div>
     <div class="slide__body">
-      <div class="pattern-matrix">
-        <table class="matrix-table">
-          <thead>
-            <tr>
-              <th>항목</th>
-              <th>PCV15 (Vaxneuvance)</th>
-              <th>PCV20 (Prevnar 20)</th>
-              <th>PCV21 (Capvaxive)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>제조사</td>
-              <td>머크(MSD)</td>
-              <td>화이자(Pfizer)</td>
-              <td>머크(MSD)</td>
-            </tr>
-            <tr>
-              <td>혈청형 수</td>
-              <td>15종</td>
-              <td><strong>20종</strong></td>
-              <td><strong>21종</strong> (성인 특화)</td>
-            </tr>
-            <tr>
-              <td>성인 IPD 커버리지</td>
-              <td>약 40~45%</td>
-              <td>약 52~54%</td>
-              <td><strong>약 82~84%</strong></td>
-            </tr>
-            <tr>
-              <td>접종 횟수</td>
-              <td>1회 (단독) · 또는 + PPSV23</td>
-              <td>1회</td>
-              <td>1회</td>
-            </tr>
-            <tr>
-              <td>주사부위 통증</td>
-              <td>약 50%</td>
-              <td>약 52%</td>
-              <td><strong>약 39%</strong></td>
-            </tr>
-            <tr>
-              <td>한국 도입 시점</td>
-              <td>2022년 승인 · 비급여</td>
-              <td><strong>2024.10 승인 · 접종 가능</strong></td>
-              <td>2025.8 허가 · 2026.3 출시</td>
-            </tr>
-            <tr>
-              <td>한국 NIP 여부</td>
-              <td>비대상</td>
-              <td>비대상</td>
-              <td>비대상 예상</td>
-            </tr>
-            <tr>
-              <td>본인 부담 비용 (참고)</td>
-              <td>약 10~13만원</td>
-              <td>약 12~15만원</td>
-              <td>출시 후 비급여 예상</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">20</span>
+            PCV20을 더 고려
+          </div>
+          <ul class="compare-col__list">
+            <li>소아·성인까지 이어지는 넓은 적응증과 사용 경험을 선호할 때</li>
+            <li>혈청형 4, 19F 등 PCV20 고유 혈청형 포함을 중요하게 볼 때</li>
+            <li>기존 PCV13 기반 자료와 긴 시판 경험을 더 중시할 때</li>
+            <li>가족 단위 접종 설명이나 소아 NIP와의 연결성이 필요할 때</li>
+            <li>가격·접근성이 더 유리한 병원 상황일 때</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">21</span>
+            PCV21을 더 고려
+          </div>
+          <ul class="compare-col__list">
+            <li>성인 잔여 IPD 혈청형 포괄을 가장 중시할 때</li>
+            <li>23A, 23B, 24F, 31, 35B 등 성인형 혈청형을 염두에 둘 때</li>
+            <li>만성질환·면역저하 등 고위험 성인에서 더 넓은 성인 커버리지를 설명할 때</li>
+            <li>미국 성인 감시자료 기반 커버리지 차이를 반영하고 싶을 때</li>
+            <li>단, 실제 임상효과 우월은 아직 단정하지 않습니다</li>
+          </ul>
+        </div>
       </div>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — KCDC 2024 · MFDS 허가 · ACIP 2024 · 비용은 의료기관별 상이</span>
-      <span class="slide__page">09 / 13</span>
+      <span class="slide__source">근거 — CDC ABCs serotype coverage analyses · KSID 2026 · 첨부 검증본(2026-06-26)</span>
+      <span class="slide__page">09 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 10 · DENSITY GRID 2×2 — Korea cost & access
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">10</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>KOREA · ACCESS</strong></div>
+      <div class="slide__chapter">CHAPTER 07 · <strong>DECISION FLOW</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">한국에서의 접종 가능성과 비용</h2>
-      <p class="slide__subtitle">PPSV23 무료 접종과의 관계 · 비급여 백신 본인 부담 안내</p>
+      <h2 class="slide__title">진료실에서는 이 순서로 결정합니다</h2>
+      <p class="slide__subtitle">접종 기록이 가장 중요합니다. 이미 PCV20 또는 PCV21을 맞았다면 보통 추가 접종은 권고되지 않습니다</p>
     </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--accent">
-          <div class="tile__index">NIP · 01</div>
-          <div class="tile__title">PPSV23 (Pneumovax 23) · 65세 이상 무료</div>
-          <div class="tile__body">현재 한국 NIP는 PPSV23만 65세 이상 무료. 결합백신 PCV15·PCV20·PCV21은 모두 비급여입니다. PPSV23만 맞은 분은 1년 뒤 결합백신 추가 접종을 고려할 수 있습니다.</div>
+    <div class="slide__body visual-split">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">기존 접종 확인</div>
+          <div class="timeline-step__body">PPSV23, PCV13, PCV20, PCV21 중 무엇을 언제 맞았는지 확인합니다.</div>
         </div>
-        <div class="tile">
-          <div class="tile__index">PCV20 · 02</div>
-          <div class="tile__title">PCV20 (Prevnar 20) · 현재 접종 가능</div>
-          <div class="tile__body">2024년 10월 한국 식약처 (MFDS) 승인 후 접종 가능. 의료기관별 약 12~15만원 비급여로, 결합백신 단회 접종을 원하는 분에게 현재 가장 폭넓게 권장됩니다.</div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">연령·위험도 확인</div>
+          <div class="timeline-step__body">65세 이상인지, 19–64세 고위험군인지, 면역저하가 있는지 봅니다.</div>
         </div>
-        <div class="tile">
-          <div class="tile__index">PCV21 · 03</div>
-          <div class="tile__title">PCV21 (Capvaxive) · 접종 가능</div>
-          <div class="tile__body">미국 FDA 2024년 6월 승인 · 한국 2025년 8월 허가, 2026년 3월 출시. 성인 전용 결합백신으로 비급여 접종 가능 여부와 가격은 의료기관별 확인이 필요합니다.</div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">비용 상담</div>
+          <div class="timeline-step__body">무료 PPSV23와 비급여 PCV20·PCV21의 차이를 설명합니다.</div>
         </div>
-        <div class="tile">
-          <div class="tile__index">PCV15 · 04</div>
-          <div class="tile__title">PCV15 (Vaxneuvance) · 순차 옵션용</div>
-          <div class="tile__body">단독 1회 접종도 가능하지만 한국 가이드는 PCV15 + PPSV23 순차 접종 옵션으로 주로 쓰입니다. 향후 PCV20·PCV21 보급에 따라 사용 빈도가 줄어드는 추세입니다.</div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">같이 선택</div>
+          <div class="timeline-step__body">혈청형 논리, 경험, 가격, 환자 선호를 함께 보고 결정합니다.</div>
         </div>
       </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../shared/assets/generated/vaccines-pneumococcal-comparison-s10-action-infectious-12190fc1-20260530-raster-20260531.jpg" alt="한국에서의 접종 가능성과 비용 설명 이미지">
-      </figure></div>
+      <figure class="ai-visual" data-visual-intent="Action">
+        <img src="../../../shared/assets/generated/adult-pneumococcal-pcv20-pcv21-s10-consultation-20260626.png" alt="의사와 환자가 접종 기록을 확인하며 폐렴구균 백신을 상담하는 그림">
+      </figure>
+    </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — KDCA NIP 2024 · 대한감염학회 2024 · MFDS 허가 정보</span>
-      <span class="slide__page">10 / 13</span>
+      <span class="slide__source">근거 — CDC job aid for pneumococcal vaccination · KSID 2026 sequential principles</span>
+      <span class="slide__page">10 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 11 · TIMELINE — Decision flow (4 steps)
-       ======================================================================== -->
   <section class="slide">
     <div class="slide__bg-num">11</div>
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>HOW TO CHOOSE</strong></div>
+      <div class="slide__chapter">CHAPTER 08 · <strong>SAFETY & AFTERCARE</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">백신 선택 4단계 — 진료실에서 결정하는 흐름</h2>
-      <p class="slide__subtitle">기존 접종 이력 → 연령·기저질환 → 시기 → 비용을 차례로 확인합니다</p>
+      <h2 class="slide__title">접종 후에는 대부분 1–3일 안에 좋아집니다</h2>
+      <p class="slide__subtitle">통증, 피로, 두통, 근육통은 흔하지만 오래가거나 심하면 확인이 필요합니다</p>
     </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">1단계 · 기존 접종 이력 확인</div>
-          <div class="timeline-step__body">PPSV23·PCV13·PCV15·PCV20을 맞은 적이 있는지 확인. 기존 접종 종류와 시기에 따라 추가 접종 권고가 달라집니다.</div>
+    <div class="slide__body visual-split">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">COMMON · 01</div>
+          <div class="tile__title">주사 부위 통증</div>
+          <div class="tile__body">가장 흔합니다. 냉찜질, 휴식, 필요 시 해열진통제로 조절합니다.</div>
         </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">2단계 · 연령·기저질환 평가</div>
-          <div class="timeline-step__body">65세 이상·만성질환·면역저하자는 PCV21 우선 고려. 어린이 접촉이 많은 분은 PCV20도 좋은 선택입니다.</div>
+        <div class="tile">
+          <div class="tile__index">COMMON · 02</div>
+          <div class="tile__title">피로 · 두통 · 근육통</div>
+          <div class="tile__body">대부분 가볍고 1–3일 내 호전됩니다. 무리한 운동은 하루 정도 피합니다.</div>
         </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">3단계 · 접종 시기 결정</div>
-          <div class="timeline-step__body">접근성·가격·접종 이력을 확인해 PCV20 또는 PCV21 중 하나를 선택합니다. 성인 IPD 커버리지를 중시하면 PCV21을 우선 고려할 수 있습니다.</div>
+        <div class="tile">
+          <div class="tile__index">CHECK · 03</div>
+          <div class="tile__title">이상반응 우열은 단정 금지</div>
+          <div class="tile__body">STRIDE-3에서 큰 안전성 문제는 없었지만, 희귀 이상반응을 비교할 표본은 충분하지 않습니다.</div>
         </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">4단계 · 비용·접근성 확인</div>
-          <div class="timeline-step__body">세 백신 모두 비급여. 의료기관별 가격 차이가 있어 사전 확인 후 진료 시 의사와 함께 최종 선택합니다.</div>
+        <div class="tile tile--alert">
+          <div class="tile__index">RED FLAG · 04</div>
+          <div class="tile__title">알레르기 반응은 즉시 진료</div>
+          <div class="tile__body">호흡곤란, 전신 두드러기, 얼굴·목 부종, 심한 어지럼은 바로 의료기관에 연락합니다.</div>
         </div>
       </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">기억</span>
-        <span class="alert-strip__text">어떤 결합백신이든 접종하지 않는 것보다 훨씬 낫습니다. "최고의 백신"을 기다리느라 접종을 미루는 것이 가장 위험합니다.</span>
-      </div>
+      <figure class="ai-visual" data-visual-intent="Action">
+        <img src="../../../shared/assets/generated/adult-pneumococcal-pcv20-pcv21-s11-aftercare-20260626.png" alt="성인 백신 접종 후 주의사항과 휴식을 설명하는 그림">
+      </figure>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — Shared Decision Making · ACIP 2024 · 대한감염학회 2024</span>
-      <span class="slide__page">11 / 13</span>
+      <span class="slide__source">근거 — FDA labels · STRIDE-3 safety data · CDC vaccine safety guidance</span>
+      <span class="slide__page">11 / 12</span>
     </footer>
   </section>
 
-
-  <!-- ========================================================================
-       SLIDE 12 · CHECKLIST — 8 essentials
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">12</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>KEY TAKEAWAYS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">PCV15 · PCV20 · PCV21 비교에서 진료실로 가져갈 메시지</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">세 백신 모두 <strong>1회 접종으로 완료</strong> · PPSV23 추가 불필요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">PCV21은 성인 IPD <strong>약 82~84%</strong> 커버 — 가장 폭넓은 선택지</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">PCV20은 한국 <strong>현재 접종 가능</strong> · 표준 결합백신</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">PCV21은 <strong>혈청형 4 미포함</strong> · 소아용으로는 부적합</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">주사 통증은 <strong>PCV21이 가장 적음</strong> (약 39%)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">세 백신 <strong>면역원성은 비열등 동등</strong> 수준</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">한국 <strong>NIP는 PPSV23 (65세 이상)</strong> 만 무료 · 나머지 비급여</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">기다리지 말고 <strong>지금 의료진과 상의</strong>해서 결정하세요</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — comparison summary for shared decision making</span>
-      <span class="slide__page">12 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 13 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
   <section class="slide slide--closing">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+      <div class="slide__chapter">END OF DECK · <strong>TAKE HOME</strong></div>
     </header>
     <div class="slide__title-block">
-      <h2 class="slide__title">현명한 비교가<br><em>현명한 선택을 만듭니다</em></h2>
-      <p class="slide__subtitle">PCV15 · PCV20 · PCV21 — 어떤 백신이 나에게 맞을지 함께 결정하겠습니다</p>
+      <h2 class="slide__title">접종 기록을 가져오시면<br><em>가장 맞는 선택을 함께 정합니다</em></h2>
+      <p class="slide__subtitle">PCV20과 PCV21은 둘 다 좋은 선택지입니다. 이전 접종력, 질환, 비용, 선호를 함께 보고 결정하겠습니다</p>
     </div>
     <div class="slide__body">
       <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
+        <div class="decision-card">
+          <div class="decision-quote">
+            “폐렴구균 백신은 <strong>지금까지 무엇을 맞았는지</strong>가 먼저입니다.
+            접종 기록을 가져오시면, 무료 접종과 비급여 PCV 선택지를 함께 비교해 드리겠습니다.”
           </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          <div class="decision-tags">
+            <span>접종 기록</span>
+            <span>나이·위험도</span>
+            <span>비용 상담</span>
+            <span>공동 의사결정</span>
           </div>
         </div>
         <div class="qr-block">
-          <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM14,2H15V3H14zM16,2H17V3H16zM17,2H18V3H17zM19,2H20V3H19zM20,2H21V3H20zM24,2H25V3H24zM27,2H28V3H27zM28,2H29V3H28zM32,2H33V3H32zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM12,3H13V4H12zM13,3H14V4H13zM15,3H16V4H15zM16,3H17V4H16zM18,3H19V4H18zM20,3H21V4H20zM21,3H22V4H21zM23,3H24V4H23zM24,3H25V4H24zM27,3H28V4H27zM28,3H29V4H28zM31,3H32V4H31zM33,3H34V4H33zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM13,4H14V5H13zM16,4H17V5H16zM21,4H22V5H21zM24,4H25V5H24zM25,4H26V5H25zM27,4H28V5H27zM28,4H29V5H28zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM33,4H34V5H33zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM15,5H16V6H15zM16,5H17V6H16zM17,5H18V6H17zM20,5H21V6H20zM22,5H23V6H22zM25,5H26V6H25zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM33,5H34V6H33zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM17,6H18V7H17zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM31,6H32V7H31zM32,6H33V7H32zM33,6H34V7H33zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM12,7H13V8H12zM13,7H14V8H13zM17,7H18V8H17zM18,7H19V8H18zM24,7H25V8H24zM25,7H26V8H25zM27,7H28V8H27zM28,7H29V8H28zM30,7H31V8H30zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM15,9H16V10H15zM18,9H19V10H18zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM27,9H28V10H27zM30,9H31V10H30zM33,9H34V10H33zM34,9H35V10H34zM2,10H3V11H2zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM14,10H15V11H14zM17,10H18V11H17zM18,10H19V11H18zM19,10H20V11H19zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM33,10H34V11H33zM35,10H36V11H35zM38,10H39V11H38zM40,10H41V11H40zM41,10H42V11H41zM42,10H43V11H42zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM13,11H14V12H13zM14,11H15V12H14zM16,11H17V12H16zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM25,11H26V12H25zM27,11H28V12H27zM29,11H30V12H29zM33,11H34V12H33zM37,11H38V12H37zM38,11H39V12H38zM2,12H3V13H2zM3,12H4V13H3zM5,12H6V13H5zM6,12H7V13H6zM8,12H9V13H8zM12,12H13V13H12zM13,12H14V13H13zM14,12H15V13H14zM17,12H18V13H17zM18,12H19V13H18zM22,12H23V13H22zM23,12H24V13H23zM25,12H26V13H25zM26,12H27V13H26zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM35,12H36V13H35zM37,12H38V13H37zM40,12H41V13H40zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM10,13H11V14H10zM14,13H15V14H14zM16,13H17V14H16zM18,13H19V14H18zM19,13H20V14H19zM21,13H22V14H21zM22,13H23V14H22zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM39,13H40V14H39zM41,13H42V14H41zM3,14H4V15H3zM4,14H5V15H4zM5,14H6V15H5zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM11,14H12V15H11zM13,14H14V15H13zM15,14H16V15H15zM16,14H17V15H16zM18,14H19V15H18zM22,14H23V15H22zM25,14H26V15H25zM29,14H30V15H29zM30,14H31V15H30zM34,14H35V15H34zM36,14H37V15H36zM37,14H38V15H37zM2,15H3V16H2zM5,15H6V16H5zM9,15H10V16H9zM10,15H11V16H10zM11,15H12V16H11zM12,15H13V16H12zM15,15H16V16H15zM17,15H18V16H17zM19,15H20V16H19zM20,15H21V16H20zM21,15H22V16H21zM24,15H25V16H24zM26,15H27V16H26zM28,15H29V16H28zM30,15H31V16H30zM31,15H32V16H31zM32,15H33V16H32zM36,15H37V16H36zM37,15H38V16H37zM38,15H39V16H38zM40,15H41V16H40zM42,15H43V16H42zM2,16H3V17H2zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM12,16H13V17H12zM14,16H15V17H14zM16,16H17V17H16zM17,16H18V17H17zM24,16H25V17H24zM28,16H29V17H28zM30,16H31V17H30zM31,16H32V17H31zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM37,16H38V17H37zM38,16H39V17H38zM42,16H43V17H42zM2,17H3V18H2zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM14,17H15V18H14zM16,17H17V18H16zM17,17H18V18H17zM20,17H21V18H20zM21,17H22V18H21zM26,17H27V18H26zM28,17H29V18H28zM29,17H30V18H29zM32,17H33V18H32zM33,17H34V18H33zM35,17H36V18H35zM39,17H40V18H39zM40,17H41V18H40zM41,17H42V18H41zM3,18H4V19H3zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM12,18H13V19H12zM13,18H14V19H13zM14,18H15V19H14zM20,18H21V19H20zM21,18H22V19H21zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM30,18H31V19H30zM33,18H34V19H33zM34,18H35V19H34zM35,18H36V19H35zM41,18H42V19H41zM5,19H6V20H5zM6,19H7V20H6zM9,19H10V20H9zM12,19H13V20H12zM14,19H15V20H14zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM24,19H25V20H24zM27,19H28V20H27zM29,19H30V20H29zM32,19H33V20H32zM33,19H34V20H33zM34,19H35V20H34zM35,19H36V20H35zM38,19H39V20H38zM40,19H41V20H40zM41,19H42V20H41zM2,20H3V21H2zM3,20H4V21H3zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM18,20H19V21H18zM21,20H22V21H21zM23,20H24V21H23zM24,20H25V21H24zM25,20H26V21H25zM29,20H30V21H29zM33,20H34V21H33zM37,20H38V21H37zM38,20H39V21H38zM42,20H43V21H42zM3,21H4V22H3zM5,21H6V22H5zM6,21H7V22H6zM10,21H11V22H10zM13,21H14V22H13zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM22,21H23V22H22zM24,21H25V22H24zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM34,21H35V22H34zM35,21H36V22H35zM36,21H37V22H36zM38,21H39V22H38zM40,21H41V22H40zM4,22H5V23H4zM5,22H6V23H5zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM13,22H14V23H13zM15,22H16V23H15zM17,22H18V23H17zM18,22H19V23H18zM21,22H22V23H21zM23,22H24V23H23zM24,22H25V23H24zM25,22H26V23H25zM26,22H27V23H26zM27,22H28V23H27zM28,22H29V23H28zM32,22H33V23H32zM33,22H34V23H33zM35,22H36V23H35zM36,22H37V23H36zM37,22H38V23H37zM40,22H41V23H40zM41,22H42V23H41zM4,23H5V24H4zM5,23H6V24H5zM10,23H11V24H10zM12,23H13V24H12zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM29,23H30V24H29zM32,23H33V24H32zM33,23H34V24H33zM37,23H38V24H37zM38,23H39V24H38zM39,23H40V24H39zM2,24H3V25H2zM4,24H5V25H4zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM12,24H13V25H12zM13,24H14V25H13zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM20,24H21V25H20zM25,24H26V25H25zM28,24H29V25H28zM29,24H30V25H29zM34,24H35V25H34zM35,24H36V25H35zM38,24H39V25H38zM39,24H40V25H39zM40,24H41V25H40zM2,25H3V26H2zM3,25H4V26H3zM4,25H5V26H4zM6,25H7V26H6zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM14,25H15V26H14zM16,25H17V26H16zM18,25H19V26H18zM19,25H20V26H19zM21,25H22V26H21zM22,25H23V26H22zM24,25H25V26H24zM25,25H26V26H25zM28,25H29V26H28zM29,25H30V26H29zM31,25H32V26H31zM35,25H36V26H35zM36,25H37V26H36zM37,25H38V26H37zM38,25H39V26H38zM39,25H40V26H39zM3,26H4V27H3zM4,26H5V27H4zM7,26H8V27H7zM8,26H9V27H8zM13,26H14V27H13zM14,26H15V27H14zM17,26H18V27H17zM18,26H19V27H18zM22,26H23V27H22zM25,26H26V27H25zM26,26H27V27H26zM30,26H31V27H30zM33,26H34V27H33zM34,26H35V27H34zM36,26H37V27H36zM41,26H42V27H41zM2,27H3V28H2zM7,27H8V28H7zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM14,27H15V28H14zM16,27H17V28H16zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM34,27H35V28H34zM36,27H37V28H36zM37,27H38V28H37zM38,27H39V28H38zM40,27H41V28H40zM42,27H43V28H42zM4,28H5V29H4zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM11,28H12V29H11zM14,28H15V29H14zM16,28H17V29H16zM17,28H18V29H17zM21,28H22V29H21zM23,28H24V29H23zM27,28H28V29H27zM28,28H29V29H28zM29,28H30V29H29zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM39,28H40V29H39zM42,28H43V29H42zM4,29H5V30H4zM7,29H8V30H7zM9,29H10V30H9zM10,29H11V30H10zM11,29H12V30H11zM14,29H15V30H14zM17,29H18V30H17zM20,29H21V30H20zM21,29H22V30H21zM24,29H25V30H24zM29,29H30V30H29zM33,29H34V30H33zM35,29H36V30H35zM36,29H37V30H36zM37,29H38V30H37zM39,29H40V30H39zM40,29H41V30H40zM41,29H42V30H41zM3,30H4V31H3zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM11,30H12V31H11zM14,30H15V31H14zM17,30H18V31H17zM21,30H22V31H21zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM30,30H31V31H30zM33,30H34V31H33zM34,30H35V31H34zM37,30H38V31H37zM39,30H40V31H39zM41,30H42V31H41zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM9,31H10V32H9zM10,31H11V32H10zM11,31H12V32H11zM14,31H15V32H14zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM20,31H21V32H20zM23,31H24V32H23zM24,31H25V32H24zM25,31H26V32H25zM30,31H31V32H30zM31,31H32V32H31zM32,31H33V32H32zM33,31H34V32H33zM34,31H35V32H34zM35,31H36V32H35zM38,31H39V32H38zM2,32H3V33H2zM3,32H4V33H3zM5,32H6V33H5zM8,32H9V33H8zM9,32H10V33H9zM11,32H12V33H11zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM18,32H19V33H18zM19,32H20V33H19zM21,32H22V33H21zM26,32H27V33H26zM27,32H28V33H27zM29,32H30V33H29zM31,32H32V33H31zM33,32H34V33H33zM35,32H36V33H35zM37,32H38V33H37zM39,32H40V33H39zM42,32H43V33H42zM2,33H3V34H2zM3,33H4V34H3zM4,33H5V34H4zM6,33H7V34H6zM7,33H8V34H7zM10,33H11V34H10zM12,33H13V34H12zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM21,33H22V34H21zM22,33H23V34H22zM24,33H25V34H24zM25,33H26V34H25zM27,33H28V34H27zM34,33H35V34H34zM36,33H37V34H36zM37,33H38V34H37zM39,33H40V34H39zM40,33H41V34H40zM41,33H42V34H41zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM11,34H12V35H11zM12,34H13V35H12zM13,34H14V35H13zM15,34H16V35H15zM17,34H18V35H17zM19,34H20V35H19zM21,34H22V35H21zM25,34H26V35H25zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM39,34H40V35H39zM40,34H41V35H40zM42,34H43V35H42zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM14,35H15V36H14zM15,35H16V36H15zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM20,35H21V36H20zM21,35H22V36H21zM23,35H24V36H23zM24,35H25V36H24zM25,35H26V36H25zM29,35H30V36H29zM30,35H31V36H30zM31,35H32V36H31zM34,35H35V36H34zM38,35H39V36H38zM40,35H41V36H40zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM10,36H11V37H10zM12,36H13V37H12zM15,36H16V37H15zM16,36H17V37H16zM17,36H18V37H17zM18,36H19V37H18zM19,36H20V37H19zM20,36H21V37H20zM24,36H25V37H24zM25,36H26V37H25zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM39,36H40V37H39zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM13,37H14V38H13zM14,37H15V38H14zM15,37H16V38H15zM18,37H19V38H18zM19,37H20V38H19zM21,37H22V38H21zM23,37H24V38H23zM24,37H25V38H24zM25,37H26V38H25zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM33,37H34V38H33zM34,37H35V38H34zM38,37H39V38H38zM42,37H43V38H42zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM14,38H15V39H14zM15,38H16V39H15zM16,38H17V39H16zM17,38H18V39H17zM18,38H19V39H18zM19,38H20V39H19zM20,38H21V39H20zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM25,38H26V39H25zM27,38H28V39H27zM28,38H29V39H28zM29,38H30V39H29zM30,38H31V39H30zM31,38H32V39H31zM33,38H34V39H33zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM39,38H40V39H39zM42,38H43V39H42zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM11,39H12V40H11zM14,39H15V40H14zM16,39H17V40H16zM25,39H26V40H25zM29,39H30V40H29zM30,39H31V40H30zM32,39H33V40H32zM37,39H38V40H37zM39,39H40V40H39zM40,39H41V40H40zM41,39H42V40H41zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM13,40H14V41H13zM14,40H15V41H14zM16,40H17V41H16zM18,40H19V41H18zM19,40H20V41H19zM20,40H21V41H20zM21,40H22V41H21zM22,40H23V41H22zM23,40H24V41H23zM26,40H27V41H26zM28,40H29V41H28zM29,40H30V41H29zM32,40H33V41H32zM33,40H34V41H33zM35,40H36V41H35zM37,40H38V41H37zM38,40H39V41H38zM39,40H40V41H39zM42,40H43V41H42zM2,41H3V42H2zM8,41H9V42H8zM15,41H16V42H15zM16,41H17V42H16zM17,41H18V42H17zM18,41H19V42H18zM22,41H23V42H22zM33,41H34V42H33zM35,41H36V42H35zM38,41H39V42H38zM39,41H40V42H39zM40,41H41V42H40zM42,41H43V42H42zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM11,42H12V43H11zM13,42H14V43H13zM14,42H15V43H14zM16,42H17V43H16zM18,42H19V43H18zM21,42H22V43H21zM22,42H23V43H22zM24,42H25V43H24zM25,42H26V43H25zM26,42H27V43H26zM27,42H28V43H27zM28,42H29V43H28zM29,42H30V43H29zM33,42H34V43H33zM34,42H35V43H34zM36,42H37V43H36zM38,42H39V43H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__code"></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
             <div class="qr-block__heading">집에서 다시 보기</div>
@@ -933,34 +741,31 @@
       </div>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">13 / 13</span>
+      <span class="slide__source">광교바른내과 · 일반내과 · 예방접종 상담</span>
+      <span class="slide__page">12 / 12</span>
     </footer>
   </section>
 
 </div>
 
-
-<!-- Presenting mode toggle -->
 <div class="deck-nav">
   <button id="presentBtn" type="button">Present</button>
 </div>
 
 <script>
   (function() {
-    const slides = document.querySelectorAll('.slide');
+    const slides = Array.from(document.querySelectorAll('.slide'));
     const btn = document.getElementById('presentBtn');
     let currentIndex = 0;
 
     function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      slides.forEach((slide, i) => slide.classList.toggle('is-active', i === idx));
       currentIndex = idx;
     }
 
     function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
+      const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty('--present-scale', scale.toString());
     }
 
     function enterPresent() {
@@ -976,7 +781,7 @@
 
     function exitPresent() {
       document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
+      slides.forEach(slide => slide.classList.remove('is-active'));
       window.removeEventListener('resize', fitScale);
       if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
@@ -988,15 +793,15 @@
       document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
     });
 
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', (event) => {
       if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
+      if (event.key === 'ArrowRight' || event.key === ' ' || event.key === 'PageDown') {
+        event.preventDefault();
         if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
+      } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+        event.preventDefault();
         if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
+      } else if (event.key === 'Escape') {
         exitPresent();
       }
     });
@@ -1004,16 +809,16 @@
 </script>
 
 <script>
-  // Render QR code on closing slide using og:url as source of truth
   (function() {
     const qrEl = document.querySelector('.qr-block__code');
     if (!qrEl) return;
     const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
     if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
+    if (qrEl.children.length > 0) return;
     new QRCode(qrEl, {
       text: ogUrl,
-      width: 96, height: 96,
+      width: 104,
+      height: 104,
       colorDark: '#003366',
       colorLight: '#FFFFFF',
       correctLevel: QRCode.CorrectLevel.M,
