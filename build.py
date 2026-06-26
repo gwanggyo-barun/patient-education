@@ -235,6 +235,15 @@ TARGETS = [
         "status": ARCHIVED_STATUS,
     },
     {
+        "kind": "decks", "slug": "pm-fitline-ebm",
+        "slug_path": "decks/general/pm-fitline-ebm/",
+        "html_path": ROOT / "decks/general/pm-fitline-ebm/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "PM 주스(FitLine) 상담 — 도움 되는 경우·주의·부작용·검사 필요 신호",
+        "category": "🩺 일반내과", "audience": "환자/보호자",
+        "disease": "PM 주스/FitLine · 혈당·위장 부작용 · 카페인/나이아신 · 검사 필요 신호",
+    },
+    {
         "kind": "decks", "slug": "soy-legumes-htn",
         "slug_path": "decks/general/papers-20260524/soy-legumes-htn/",
         "html_path": ROOT / "decks/general/papers-20260524/soy-legumes-htn/index.html",
