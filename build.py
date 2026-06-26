@@ -1397,6 +1397,16 @@ TARGETS = [
         "exam_date": "2026-05-14", "doctor": "정지환",
         "note": "DEMO 가공 환자 — 8 모듈 모두 활성, 2페이지 (혈액·소변·내시경·초음파·심전도·골밀도 통합) · H. pylori 제균 + LDL/HbA1c 경계 + 결절·골 follow-up",
     },
+    {
+        "kind": "lab-reports", "slug": "83d83543a3",
+        "slug_path": "lab-reports/health-checkup/83d83543a3/",
+        "html_path": ROOT / "lab-reports/health-checkup/83d83543a3/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "category": "🔬 건강검진·암검진", "audience": "환자/보호자", "disease": "종합 건강검진",
+        "patient_name": "김청자", "chart_no": "17401",
+        "exam_date": "2026-06-25", "doctor": "정지환",
+        "note": "종합 혈액검사 — 뼈 대사 표지자 강조 (P1NP 66.5·CTx 0.429·비타민D 41.8 모두 정상범위, 골밀도 DXA 평가 권고) · Lp(a) 108.9↑ 심혈관 위험인자 · 페리틴/총단백 경미 변화",
+    },
 
     # === Neurology — Migraine (2026-05-20) ===
     {
