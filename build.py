@@ -747,6 +747,14 @@ TARGETS = [
         "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "만성두드러기 교육자료",
     },
     {
+        "kind": "decks", "slug": "young-male-hyperhidrosis",
+        "slug_path": "decks/derm/young-male-hyperhidrosis/",
+        "html_path": ROOT / "decks/derm/young-male-hyperhidrosis/index.html",
+        "qr_class": "qr-block__code", "fmt": "deck-16x9",
+        "title": "20대 남성 다한증 진단·치료",
+        "category": "🩺 일반내과", "audience": "환자/보호자", "disease": "다한증 (Hyperhidrosis)",
+    },
+    {
         "kind": "decks", "slug": "acute-gastroenteritis-diet",
         "slug_path": "decks/gi/acute-gastroenteritis-diet/",
         "html_path": ROOT / "decks/gi/acute-gastroenteritis-diet/index.html",
