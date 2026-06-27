@@ -623,6 +623,13 @@ handouts / lab-reports 푸터 (줄바꿈형)도 허용:
 
 5. **풀 quality HTML 작성**: 700+줄 목표, 12장 표준 + 슬라이드별 **다른 layout** (pattern-stats3 / pattern-table / pattern-split / pattern-grid / pattern-timeline / pattern-checklist / mech-flow / takehome-grid 등). 같은 layout은 deck당 **2회 이하**.
 
+6. **Humanize 윤문 패스 (환자자료 토글, 2026-06-27 원장 명시)** — 본문 한글 카피를 다 작성한 뒤, **환자 대면 콘텐츠**는 `/humanize-korean`(im-not-ai 스킬)으로 'AI 티'(번역투·관료체 종결 "~사료됩니다/권장됩니다"·접속사 남발 "따라서/또한"·명사화 "~의 필요성에 대해서는")를 한 번 다듬어 자연스러운 진료실 말투로 만든다.
+   - **불변 보장(스킬 4대 철칙)**: 의학용어·수치·의미·인용은 한 글자도 안 바뀜. 산문/안내 문장만 손봄 — 표·lab-row 수치·라벨·QR·법적고지·연락처·진단명은 건드리지 않는다.
+   - **토글 기본값**: `handouts` · `lab-reports`(검사결과 안내문) · 환자교육 `decks` 본문 = **ON, 강도 '중'**(존댓말 격식 유지, 과윤문 금지). 전문가/공식 문서(진단서·동료의사용·학술) = **OFF**.
+   - **per-build 오버라이드**: 사용자가 "휴머나이즈 끄고/켜고/강하게(중상)/약하게"라고 하면 그 지시가 기본값보다 우선.
+   - **순서**: quality pipeline(§3)으로 의학내용 확정 → HTML 작성(§5) → humanize는 '문구 다듬기'로 본문 텍스트에만 적용 → 빌드 → **원장 최종검수 1회(필수)**: 과윤문·뉘앙스·전문성 점검(원장이 신뢰 깎인다 판단하면 해당 문장 롤백).
+   - **미설치 머신**: 스킬 없으면 스킵 + 1줄 보고. 설치 = `git clone https://github.com/epoko77-ai/im-not-ai && cd im-not-ai && ./install.sh` (Claude `/humanize-korean` + Codex `$humanize-korean`, 멀티머신 동일).
+
 ### 재작업 유발 금지 사항 (과거 실제 사례)
 
 - ❌ Generator script로 모든 slide 동일 layout 자동 생성 (2026-05-24 v1 작업 — 사용자 컴플레인)
