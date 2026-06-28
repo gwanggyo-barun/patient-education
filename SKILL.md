@@ -534,6 +534,8 @@ Notion에서 행을 직접 휴지통으로 보내면 다음 `build.py` sync 때 
 
 > 🎨 **색 토큰 강제 (2026-06-28)**: 모든 색은 `var(--color-*)`(design-tokens.css)로만. 하드코딩 hex·존재하지 않는 `var(--c-*)` 금지. 새/수정 자료(검사결과 설명 슬라이드 포함)는 `python3 -m shared._check_tokens <경로>` 통과 필수(CI validate-layout 잡에서 자동 실행). 의미색이 더 필요하면 hex 박지 말고 design-tokens.css에 토큰부터 추가(brand-design-system.md §2.1).
 
+> ✂️ **한글 줄바꿈 (2026-06-28)**: `body`에 `word-break: keep-all` + `overflow-wrap: break-word` 전역 적용(어절=의미 단위 줄바꿈, 음절 중간 안 끊김). ⚠️ `overflow-wrap: anywhere`·`text-wrap: balance/pretty`는 빽빽한 슬라이드 footer 넘침 유발 → 쓰지 말 것. keep-all로 한 줄 늘 수 있으니 빽빽한 자료는 `_validate_layout` 통과 확인. 상세 brand-design-system.md §3 줄바꿈.
+
 요약:
 - 색상: Navy (#003366) 베이스 + Steel Blue (#5B9BD5) 단일 액센트
 - 폰트: Pretendard Variable, weight 450/540 활용

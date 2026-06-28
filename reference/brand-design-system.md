@@ -141,6 +141,15 @@ fallback: -apple-system, BlinkMacSystemFont, system-ui, sans-serif
 - **본문**: line-height `1.50`, letter-spacing `0` (여유로운 reading)
 - **Eyebrow / 라벨**: letter-spacing `0.12em`, uppercase
 
+### 줄바꿈 (한국어) — 2026-06-28
+
+한글은 기본값(`word-break: normal`)이면 음절 단위로 아무 데서나 줄이 바뀐다(기계적·의미 단절). 그래서 `body`에 전역 적용한다:
+
+- `word-break: keep-all;` — **어절(띄어쓰기=의미 단위) 경계에서만 줄바꿈**. 단어 중간에서 안 끊김 → 가독성·이해도↑.
+- `overflow-wrap: break-word;` — 안전판. 한 어절이 박스보다 길면 그때만 끊어 넘침 방지. (⚠️ `overflow-wrap: anywhere`는 intrinsic 크기를 바꿔 flex/grid 높이를 키워 footer 넘침을 유발 → 쓰지 말 것.)
+- `text-wrap: balance/pretty`는 **쓰지 않는다** — 제목/노트 줄 수를 늘려 빽빽한 슬라이드에서 footer 넘침 유발(2026-06-28 실측). keep-all만으로 충분.
+- 빽빽한 슬라이드는 keep-all로 한 줄 늘면 넘칠 수 있으니, 새/수정 자료는 `_validate_layout` 통과 확인. (정의=`clinic-slides.css`·`clinic-handout-a4.css` body)
+
 ## 4. 로고
 
 **파일**: `clinic_logo.png` (가로:세로 = 3.33:1, 1531×460)
