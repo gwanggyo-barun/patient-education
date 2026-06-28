@@ -4,6 +4,7 @@ All gate the build using the TARGETS manifest; imported back into build.py's mai
 Excluded from the published site via the deploy workflow's --exclude='*.py'.
 """
 import re  # noqa: F401  (re.escape/finditer/search used below)
+import sys  # used by _sync_asset_manifest / validators for status output
 from targets import TARGETS, ACTIVE_STATUS, ARCHIVED_STATUS, ROOT
 from _build_helpers import load_asset_manifest, collect_data_asset_keys
 
