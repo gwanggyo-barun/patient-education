@@ -75,6 +75,15 @@
 
 > ⚠️ **녹색·파스텔·여러 액센트 색 사용 금지**. 의미적 의도 없이 색상 추가하지 않는다.
 
+### 2.1 색은 토큰으로만 — 자동 검사(린터)
+
+모든 색은 위 토큰을 `var(--color-*)`로 참조한다. **하드코딩 hex(`#C44` 등)·존재하지 않는 `var(--c-*)` 사용 금지.**
+
+- `var(--c-navy)` 같은 이름은 **존재하지 않는다**(실제 토큰은 `--color-navy`). 잘못 쓰면 fallback hex로 조용히 렌더되어 design-tokens.css(SoT)와 끊긴다 → 브랜드 색을 바꿔도 반영 안 됨.
+- 검사: `python3 -m shared._check_tokens [경로]` — `var(--c-*)`(E-CVAR)와 비브랜드 raw hex(E-HEX)를 잡는다. 허용 hex는 design-tokens.css에서 live 파싱(+ 흰/검정, QR `<svg>`, `<meta theme-color>`는 예외).
+- CI(`test-content.yml` validate-layout 잡)에서 자동 실행된다. (레거시 정리 중에는 report-only, 정리 완료 후 hard gate로 전환.)
+- **검사결과 설명 슬라이드 등 새 콘텐츠도 이 검사를 통과해야 한다.** 정상/경고/위험 같은 의미색이 더 필요하면 임의 hex를 넣지 말고 design-tokens.css에 토큰을 먼저 추가(§9 변경 절차)한다.
+
 ## 3. 타이포그래피
 
 ### 폰트 우선순위 (반드시 이 순서)
@@ -196,7 +205,7 @@ fallback: -apple-system, BlinkMacSystemFont, system-ui, sans-serif
 
 새 콘텐츠 만들기 전 또는 기존 콘텐츠 갱신 시 확인:
 
-- [ ] 색상은 정의된 토큰 7~8개 안에서만 사용했는가
+- [ ] 색상은 정의된 토큰 안에서만 사용했는가 (`python3 -m shared._check_tokens <경로>` 통과 — 하드코딩 hex·`var(--c-*)` 0건)
 - [ ] 폰트는 Pretendard Variable (또는 Noto Sans KR fallback)인가
 - [ ] 표지 외 슬라이드에 그라데이션 배경을 추가하지 않았는가
 - [ ] 모든 슬라이드의 로고/타이틀/푸터 위치가 동일한가

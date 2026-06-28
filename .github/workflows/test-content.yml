@@ -149,12 +149,27 @@ jobs:
             exit "$rc"
           fi
 
-      - name: Upload layout log
+      - name: Brand color-token compliance (shared/_check_tokens.py)
+        # Flags var(--c-*) regressions + off-brand raw hex (design-system §2/§8),
+        # so every current AND future material (incl. lab-result slides) stays on
+        # the brand palette / design-tokens SoT.
+        # REPORT-ONLY for now: ~51 legacy files still carry off-brand colors and
+        # are being remediated in batches. Once that backlog is clear, drop the
+        # `|| true` below to turn this into a hard gate.
+        run: |
+          python3 -m shared._check_tokens | tee token-compliance.log || true
+          if grep -q '^FAIL' token-compliance.log; then
+            echo "::warning title=Color tokens::off-brand colors present (report-only — remediation in progress)"
+          fi
+
+      - name: Upload validator logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: layout-validation
-          path: layout-validation.log
+          name: validation-logs
+          path: |
+            layout-validation.log
+            token-compliance.log
           retention-days: 14
 
   # ------------------------------------------------------------------------ #
