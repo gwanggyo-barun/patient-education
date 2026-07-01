@@ -89,16 +89,28 @@ RETRIES="${CODEX_IMAGEN_RETRIES:-3}"
 BACKOFF="${CODEX_IMAGEN_BACKOFF:-20}"
 MIN_BYTES="${CODEX_IMAGEN_MIN_BYTES:-50000}"   # <50KB면 코드-fallback(단색도형) 의심 → 실패 취급
 
-# 기대 비율 파싱(검증용, 경고 only): "aspect ratio strictly 1536 x 1024" 우선, 없으면 "strictly 3:2"
+# 기대 비율 파싱(검증용, 경고 only): "strictly 1536 x 1024" 우선 → "(1320 x 984 pixels)" → "strictly 3:2".
+# ⚠️ grep no-match 는 정상(경고 기능일 뿐)이므로 반드시 `|| true` 로 감싸 set -e 조기종료를 막는다
+# (미포함 시 프롬프트가 "1.34:1 (…)" 처럼 첫 패턴과 안 맞으면 스크립트 전체가 죽었음 — 2026-07-01 수정).
 EXP_WH=$(grep -ioE 'aspect ratio strictly[^0-9]*[0-9]+[[:space:]]*[x:×][[:space:]]*[0-9]+' "$PROMPT_FILE" 2>/dev/null \
-         | grep -oiE '[0-9]+[[:space:]]*[x:×][[:space:]]*[0-9]+' | head -1 | tr 'X×' 'x:' | tr -d ' ')
+         | grep -oiE '[0-9]+[[:space:]]*[x:×][[:space:]]*[0-9]+' | head -1 | tr 'X×' 'x:' | tr -d ' ' || true)
+[[ -z "${EXP_WH:-}" ]] && EXP_WH=$(grep -ioE '[0-9]+[[:space:]]*[x×][[:space:]]*[0-9]+[[:space:]]*(px|pixels)' "$PROMPT_FILE" 2>/dev/null \
+         | grep -oiE '[0-9]+[[:space:]]*[x×][[:space:]]*[0-9]+' | head -1 | tr 'X×' 'xx' | tr -d ' ' || true)
 [[ -z "${EXP_WH:-}" ]] && EXP_WH=$(grep -ioE 'aspect ratio[^0-9]*[0-9]+[[:space:]]*:[[:space:]]*[0-9]+' "$PROMPT_FILE" 2>/dev/null \
-         | grep -oiE '[0-9]+[[:space:]]*:[[:space:]]*[0-9]+' | head -1 | tr -d ' ')
+         | grep -oiE '[0-9]+[[:space:]]*:[[:space:]]*[0-9]+' | head -1 | tr -d ' ' || true)
 
 # 생성 결과 검증(존재+mtime+크기) → 0 통과 / 1 실패. $1=호출시작시각
 validate_target(){
   [[ -f "$TARGET_PATH" ]] || { echo "[codex_imagen] target not created" >&2; return 1; }
-  local mt; mt=$(stat -f %m "$TARGET_PATH" 2>/dev/null || stat -c %Y "$TARGET_PATH" 2>/dev/null || echo 0)
+  # mtime(epoch): GNU stat(-c %Y) 우선 → macOS BSD stat(-f %m) → 0. 각 결과가 순수 정수일 때만 채택.
+  # ⚠️ 옛 코드는 `stat -f %m || stat -c %Y` 순서였는데, Git Bash/Linux GNU stat 에서 `-f %m` 은
+  # 파일시스템 상태 모드로 해석돼 유효 경로 블록("  File: …")을 stdout 에 흘리고 exit 1 → 뒤의
+  # `stat -c %Y` epoch 가 이어붙어 mt 가 문자열이 되고, `[[ mt -ge $1 ]]` 산술평가가 "File" 을
+  # 미정의 변수로 보고 set -u 로 `File: unbound variable` 크래시. GNU 우선 + 정수검증으로 해결(2026-07-01).
+  local mt=""
+  mt=$(stat -c %Y "$TARGET_PATH" 2>/dev/null || true)
+  [[ "$mt" =~ ^[0-9]+$ ]] || mt=$(stat -f %m "$TARGET_PATH" 2>/dev/null || true)
+  [[ "$mt" =~ ^[0-9]+$ ]] || mt=0
   [[ "$mt" -ge "$1" ]] || { echo "[codex_imagen] stale (mtime $mt < call $1) — 옛 파일 재사용" >&2; return 1; }
   local sz; sz=$(wc -c < "$TARGET_PATH" | tr -d ' ')
   [[ "$sz" -ge "$MIN_BYTES" ]] || { echo "[codex_imagen] too small (${sz}B < ${MIN_BYTES}) — 코드-fallback 의심" >&2; return 1; }
