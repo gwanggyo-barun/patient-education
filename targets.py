@@ -757,6 +757,14 @@ TARGETS = [
         "category": "💊 투약·생활습관", "audience": "환자/보호자", "disease": "철결핍성 빈혈 (Iron Deficiency Anemia) — 식이요법",
     },
     {
+        "kind": "handouts", "slug": "magnesium-rich-foods",
+        "slug_path": "handouts/lifestyle/magnesium-rich-foods/",
+        "html_path": ROOT / "handouts/lifestyle/magnesium-rich-foods/index.html",
+        "qr_class": "qr-mini__code", "fmt": "a4-portrait",
+        "title": "마그네슘이 풍부한 식품",
+        "category": "🌿 생활습관·식이", "audience": "환자/보호자", "disease": "마그네슘 (Magnesium) — 다량 함유 식품 안내",
+    },
+    {
         "kind": "handouts", "slug": "diabetes-diet",
         "slug_path": "handouts/lifestyle/diabetes-diet/",
         "html_path": ROOT / "handouts/lifestyle/diabetes-diet/index.html",
