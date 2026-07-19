@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Lp(a) and Cardiovascular Risk — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/lp-a-cv-risk/">
+  <meta property="og:title" content="Lp(a)와 심혈관 위험 — 광교바른내과">
+  <meta property="og:description" content="새로운 심장병 위험인자 지질단백질(a) — 무엇이고, 왜 위험하며, 최근 연구는 무엇을 보여주는지 정리한 안내">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/lp-a-cv-risk/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+  <style>
+    /* ====================================================================
+       Lp(a) deck — deck-local layout overrides only.
+       Follows §19 (type scale + golden proportion) and §20/§21:
+       박스 안 "제목+설명"은 하나의 묶음 → 가운데로 모으고, 늘어난
+       공간은 빈 띠가 아니라 폰트로 채운다. shared 기본값은 건드리지 않음.
+       ==================================================================== */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+
+    /* hero number (s4) — 값+캡션 한 묶음 가운데, 숫자 키워 여백 흡수 */
+    .pattern-hero-number { align-items: stretch; gap: 30px; }
+    .pattern-hero-number__numeric { justify-content: center; gap: 22px; }
+    .pattern-hero-number__value { font-size: 9rem; line-height: 1.0; }
+    .pattern-hero-number__caption { max-width: 100%; font-size: 1.24rem; line-height: 1.48; }
+    .pattern-hero-number__detail { justify-content: center; gap: 14px; }
+    .pattern-hero-number__detail-text { font-size: 1.08rem; line-height: 1.56; }
+
+    /* split metrics (s2 안내 카드) — 두 박스 등높이로 컬럼 채움, 안은 가운데 */
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 1.78rem; line-height: 1.16; }
+    .pattern-split__supporting { font-size: 1.0rem; line-height: 1.5; }
+    .pattern-split__detail { justify-content: stretch; gap: 18px; min-height: 0; }
+    .pattern-split__metric { flex: 1 1 0; justify-content: center; padding: 20px 22px; }
+    .pattern-split__metric-value { font-size: 1.7rem; line-height: 1.08; }
+    .pattern-split__metric-detail { font-size: 0.97rem; line-height: 1.4; }
+
+    /* tiles (s3 위험 3카드) — 제목+본문 가운데 묶음, 제목 확대 */
+    .tile { padding: 16px 18px; gap: 10px; justify-content: center; }
+    .tile__body { margin-top: 0; }
+    .pattern-grid--3 .tile__title { font-size: 1.12rem; line-height: 1.24; }
+    .pattern-grid--3 .tile__body { font-size: 0.97rem; line-height: 1.42; }
+    .pattern-grid--2 .tile__title { font-size: 1.18rem; line-height: 1.24; }
+    .pattern-grid--2 .tile__body { font-size: 1.0rem; line-height: 1.46; }
+
+    /* visual-focus gutter (s2 · s3 · s5) */
+    .slide__body--visual-focus { gap: 32px; }
+
+    /* alert strip (s6 한계 경고) */
+    .alert-strip { padding: 16px 20px; min-height: 0; display: flex; align-items: center; }
+    .alert-strip__text { font-size: 1.02rem; line-height: 1.42; }
+
+    /* checklist (s7) — 항목 폰트 키워 채움 */
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .check-item__text { font-size: 1.08rem; line-height: 1.4; }
+
+    /* footer-safe compact frame */
+    .slide { --slide-pad-y: 46px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+
+    /* closing — body present (avoid dead band under title, per §7.2) */
+    .slide--closing { grid-template-rows: auto auto 1fr auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { padding: 12px 14px; gap: 8px; }
+    .qr-block__code { width: 96px; height: 96px; }
+
+    /* image figure surface — §0/§2 of proportions: transparent media surface,
+       radius+shadow on <img>, contain for diagrams (no-crop, §15) */
+    .ai-visual { background: transparent; border: none; box-shadow: none; }
+    .ai-visual img { border-radius: 12px; box-shadow: 0 3px 9px rgba(0,0,0,0.08); }
+    .ai-visual--diagram img { object-fit: contain; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · CARDIOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">콜레스테롤이 정상인데<br><em>왜 심장이 위험할까요?</em></h1>
+      <p class="slide__subtitle">잘 알려지지 않은 심혈관 위험인자 — 지질단백질(a), 즉 Lp(a) 이야기</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Lipoprotein(a) · Cardiovascular Risk · VESALIUS-CV (Circulation 2026)</span>
+      <span class="slide__page">광교바른내과 순환기·일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · WHAT IS Lp(a) — asymmetric split + image (Anatomy)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IS Lp(a)</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">Lp(a)가 무엇인가요</h2>
+      <p class="slide__subtitle">나쁜 콜레스테롤(LDL)에 끈끈한 단백질이 한 겹 더 붙은, 특별한 형태의 지질입니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">Lp(a)는 LDL 입자에 <em>아포(a)라는 끈끈한 단백질</em>이 추가로 붙어 있는 형태로, 혈관에 더 잘 들러붙고 혈전과도 관련됩니다.</p>
+          <p class="pattern-split__supporting">
+            보통의 콜레스테롤 검사(LDL·HDL·중성지방)에는 나오지 않아 따로 측정해야 알 수 있습니다.
+            농도는 주로 <strong>타고난 유전</strong>으로 정해져 평생 비교적 일정하며, 식사·운동으로는 크게 바뀌지 않습니다.
+            그래서 "콜레스테롤은 정상인데 심장병이 일찍 온" 경우의 숨은 원인이 되기도 합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">유전으로 결정</div>
+            <div class="pattern-split__metric-value">평생 일정</div>
+            <div class="pattern-split__metric-detail">농도의 약 70~90%가 유전 — 식이·운동으로는 거의 바뀌지 않습니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">일반 검사엔 없음</div>
+            <div class="pattern-split__metric-value">따로 측정</div>
+            <div class="pattern-split__metric-detail">혈액검사로 Lp(a) 항목을 추가해야 확인할 수 있습니다.</div>
+          </div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 02 · Anatomy (LDL vs Lp(a) structure comparison) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: Side-by-side cross-section comparison of two lipoprotein particles. LEFT = an
+            ordinary LDL particle (a spherical fatty core wrapped by a single ring of one looping
+            protein, apoB-100). RIGHT = an Lp(a) particle = the SAME LDL sphere with ONE EXTRA long,
+            ribbon-like sticky protein (apolipoprotein(a)) coiled and clasped around the outside,
+            making it visibly "stickier" / spikier than the plain LDL.
+          visual_type: Anatomy / medical structural illustration, clean educational diagram style.
+          palette: brand Navy #003366 + Steel Blue #5B9BD5 for the particles and proteins; soft
+            var(--color-canvas-warm) neutral background; the extra apo(a) ribbon tinted a slightly warmer steel so it
+            reads as the distinguishing feature. (§20: NO red here — there is no blood/bleeding in
+            this structural figure; red is reserved strictly for blood.)
+          composition: two particles equal size, centered, evenly filling the canvas; clear visual
+            difference is the extra outer protein on the right particle.
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left text column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
+          constraints: ABSOLUTELY NO TEXT — no letters, numbers, words, labels, or captions in any
+            language anywhere on the canvas. Korean labels ("LDL", "Lp(a)", "추가된 단백질 apo(a)")
+            are overlaid via HTML Pretendard separately (§14). No empty side panels — illustration
+            spans the entire canvas evenly.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Anatomy">
+        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s02-anatomy-ldl-vs-lpa-20260624.png" alt="LDL 입자와, 거기에 끈끈한 단백질 apo(a)가 한 겹 더 붙은 Lp(a) 입자의 구조 비교">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Lipoprotein(a) = LDL + apolipoprotein(a) · 농도 약 70~90% 유전 결정 — AHA 과학성명(ATVB 2022) · EAS Lp(a) consensus(Eur Heart J 2022)</span>
+      <span class="slide__page">02 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · WHY DANGEROUS — 3-card grid + image (Process)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>WHY IT MATTERS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">왜 위험할까요</h2>
+      <p class="slide__subtitle">VESALIUS-CV 연구에서 Lp(a)가 높을수록 심장 혈관 사건이 늘었습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile tile--accent">
+          <div class="tile__index">관상동맥 사건</div>
+          <div class="tile__title">위험 약 15% 증가</div>
+          <div class="tile__body">Lp(a)가 100nmol/L 높아질 때마다 주요 관상동맥 사건(심장사·심근경색·응급 시술)이 약 15% 늘었습니다. <strong>(위험비 1.15)</strong></div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">심근경색 (MI)</div>
+          <div class="tile__title">위험 약 23% 증가</div>
+          <div class="tile__body">심근경색만 떼어 보면 100nmol/L 증가당 위험이 약 23% 더 높았습니다. <strong>(위험비 1.23)</strong> 심장 혈관에 특히 영향이 컸습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">허혈성 뇌졸중</div>
+          <div class="tile__title">뚜렷한 관련 없음</div>
+          <div class="tile__body">반면 뇌졸중과는 의미 있는 연관이 보이지 않았습니다. <strong>(위험비 1.00)</strong> Lp(a)는 주로 <em>심장 혈관</em> 위험과 연결됩니다.</div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 03 · Process (artery wall deposit → plaque → heart attack) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: A 3-stage left-to-right PROCESS illustration of how an Lp(a)-rich particle damages
+            a coronary artery. STAGE 1 = sticky Lp(a) particles depositing into the inner wall of an
+            open, healthy artery cross-section. STAGE 2 = a built-up atherosclerotic plaque
+            narrowing the artery channel. STAGE 3 = the plaque rupturing with a clot (thrombus)
+            blocking blood flow → a heart-muscle (myocardial infarction) territory downstream.
+            Show clear directional arrows between the three stages.
+          visual_type: Process / mechanism medical illustration, clean educational cross-section style.
+          palette: brand Navy #003366 + Steel Blue #5B9BD5 for the artery wall, particles, and plaque.
+            §20 BLOOD = RED: the flowing blood inside the lumen and the clot/thrombus are rendered in
+            medical red (#B91C1C family); arteries themselves stay navy/steel. Soft var(--color-canvas-warm)
+            background.
+          composition: 3 equal stages evenly distributed across canvas width; arrow tips and the final
+            heart-territory MUST NOT be clipped at the edges (diagram = object-fit:contain, §15).
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left 3-card column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio so contain has zero crop. (If stacking the 3 stages vertically reads better for a
+            portrait slot, keep them top-to-bottom with downward arrows — still no edge clipping.)
+          constraints: ABSOLUTELY NO TEXT — no letters/numbers/words/labels/captions in any language.
+            Korean stage labels are overlaid via HTML Pretendard separately (§14). Illustration spans
+            the whole canvas evenly — no empty side panels.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Process">
+        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s03-process-lpa-artery-mi-20260624.png" alt="Lp(a)가 혈관벽에 침착되어 경화반을 키우고, 파열·혈전으로 심근경색에 이르는 3단계 과정">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — VESALIUS-CV 사전계획 분석 · Circulation 2026;153(25):1960-68 · Lp(a) 100nmol/L 증가당 위험비</span>
+      <span class="slide__page">03 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · WHO WAS STUDIED — hero number (7,557명 / 4.6년 / 1차예방)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>THE STUDY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">누구를, 얼마나 오래 관찰했나요</h2>
+      <p class="slide__subtitle">아직 심근경색·뇌졸중을 겪지 않은 고위험군에서 Lp(a)를 측정해 추적했습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="pattern-hero-number__value"><em>7,557</em>명</div>
+          <div class="pattern-hero-number__caption">VESALIUS-CV 연구에서 기저 Lp(a)를 측정한 참가자 수 — 중앙 추적 기간은 <strong>4.6년</strong>입니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">Who & how long</div>
+          <div class="pattern-hero-number__detail-text">
+            대상은 심근경색·뇌졸중 <strong>기왕력이 없는</strong> 고위험자, 즉 <strong>1차 예방</strong> 대상입니다.
+            중앙 연령은 66세, 여성이 42.8%였고, 혈중 Lp(a) 중앙값은 28nmol/L였습니다.
+            이 연구는 평소 잘 다루지 않던 Lp(a)가 실제 심장 사건과 어떻게 연결되는지를 본 것입니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — VESALIUS-CV (NCT03872401) · TIMI Study Group · 1차 예방 대상 · 중앙 추적 4.6년</span>
+      <span class="slide__page">04 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DRUG EFFECT — 2-card grid + image (Comparison bars 41% vs 35%)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>TREATMENT EFFECT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">콜레스테롤 강하 치료의 효과</h2>
+      <p class="slide__subtitle">강력한 LDL 강하 주사제(에볼로쿠맙)는 두 그룹 모두에서 심장 사건을 줄였습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile tile--accent">
+          <div class="tile__index">Lp(a)가 높은 그룹</div>
+          <div class="tile__title">관상동맥 사건 약 41% 감소</div>
+          <div class="tile__body">기저 Lp(a)가 높았던(105nmol/L 초과) 참가자에서 치료군의 주요 관상동맥 사건이 약 41% 줄었습니다. <strong>(위험비 0.59)</strong></div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">Lp(a)가 낮은 그룹</div>
+          <div class="tile__title">관상동맥 사건 약 35% 감소</div>
+          <div class="tile__body">Lp(a)가 낮았던(105nmol/L 이하) 참가자에서도 사건이 약 35% 줄었습니다. <strong>(위험비 0.65)</strong> 양쪽 모두 분명한 이득이 있었습니다.</div>
+        </div>
+      </div>
+      <!-- IMAGE SLOT · SLIDE 05 · Comparison (relative risk reduction bar chart: 41% vs 35%) — DO NOT GENERATE YET
+        $imagegen spec:
+          subject: A simple two-bar comparison column chart showing the RELATIVE REDUCTION in major
+            coronary events with treatment, in two groups. BAR 1 (taller) = high-Lp(a) group, filled
+            to ~41% of a 100% reference frame. BAR 2 (slightly shorter) = low-Lp(a) group, filled to
+            ~35%. Both bars clearly downward-reduction themed (e.g. a faint full-height reference
+            outline behind each bar so the "reduction" reads visually). Keep the two bars only
+            modestly different in height (41 vs 35) so the chart does NOT exaggerate the gap.
+          visual_type: Comparison / clean infographic bar chart, flat educational style.
+          palette: brand Navy #003366 for one bar and Steel Blue #5B9BD5 for the other; soft var(--color-canvas-warm)
+            background; faint steel reference frames. (§20: NO red — this is an outcome chart with no
+            blood; red is reserved strictly for blood/bleeding imagery.)
+          composition: two equal-width bars, centered, evenly filling the canvas; bar tops not clipped.
+          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left 2-card column
+            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
+            ratio exactly → contain with zero crop (§15).
+          constraints: ABSOLUTELY NO TEXT, NUMBERS, AXES LABELS, OR PERCENT SIGNS anywhere on the
+            canvas — no characters in any language. The values "약 41% 감소" / "약 35% 감소" and the
+            group labels are overlaid via HTML Pretendard separately (§14). Bars span the canvas
+            evenly — no empty side panels.
+      -->
+      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s05-comparison-rrr-bars-20260624.png" alt="Lp(a) 높은 그룹 약 41% 감소 vs 낮은 그룹 약 35% 감소를 나타낸 두 개의 막대">
+      </figure>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — VESALIUS-CV 사전계획 분석 · 에볼로쿠맙 vs 위약 · 48주 LDL-C 약 −61~67mg/dL 강하</span>
+      <span class="slide__page">05 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DOES HIGH-Lp(a) BENEFIT MORE? — split + caution (NNT 28 vs 40)
+       NOTE: interaction p=0.45 / p=0.09 → NOT significant. Do NOT overclaim.
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>INTERPRETATION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">"Lp(a)가 높으면 약 효과가 더 좋다"고 말할 수 있을까요</h2>
+      <p class="slide__subtitle">숫자만 보면 그래 보이지만, 통계적으로는 아직 단정할 수 없습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">한 명의 사건을 막기 위해 치료가 필요한 인원(NNT)은 Lp(a) 높은 그룹 <em>약 28명</em>, 낮은 그룹 약 40명으로 차이가 있어 보였습니다.</p>
+          <p class="pattern-split__supporting">
+            하지만 두 그룹의 효과 차이가 <strong>우연이 아니라고 보기엔 통계가 충분하지 않았습니다</strong>
+            (상호작용 p=0.45, 절대감소 차이 p=0.09 — 모두 유의 기준 미달).
+            게다가 이 분석은 미리 정해 둔 <strong>하위그룹 가설탐색</strong>이며, Lp(a)를 직접 낮춰 사건이 줄었는지를 본 연구도 아닙니다.
+            그래서 "Lp(a) 높은 사람만 약효가 좋다"고 단정하지 않습니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">NNT · Lp(a) 높음</div>
+            <div class="pattern-split__metric-value">약 28명</div>
+            <div class="pattern-split__metric-detail">한 사건을 막는 데 필요한 치료 인원 (절대감소 3.7%).</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">NNT · Lp(a) 낮음</div>
+            <div class="pattern-split__metric-value">약 40명</div>
+            <div class="pattern-split__metric-detail">차이는 통계적으로 유의하지 않음 (p=0.09).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">한계 — 사전계획 하위분석(가설탐색) · 상호작용 p=0.45 · 절대감소 차이 p=0.09 (모두 비유의)</span>
+      <span class="slide__page">06 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · KEY TAKEAWAYS — checklist
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>KEY TAKEAWAYS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 점</h2>
+      <p class="slide__subtitle">Lp(a)는 한 번 알아두면 평생 도움이 되는 위험 정보입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">Lp(a)는 일반 콜레스테롤 검사에 안 나오는 <strong>숨은 심혈관 위험인자</strong>입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">농도는 대부분 <strong>유전으로 결정</strong>되어 평생 일정 — 보통 <strong>한 번만 검사</strong>하면 됩니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">Lp(a)가 높을수록 <strong>심근경색 등 관상동맥 사건</strong> 위험이 올라갑니다 (뇌졸중과는 무관)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">강력한 LDL 강하 치료는 <strong>Lp(a)가 높든 낮든 모두</strong> 심장 사건을 줄였습니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">"Lp(a) 높은 사람만 약효가 더 좋다"는 <strong>아직 단정할 수 없습니다</strong> (연구로 미확정)</div>
+        </div>
+        <div class="check-item" style="border-bottom: none;">
+          <div class="check-item__num" style="color: var(--color-navy);">→</div>
+          <div class="check-item__text" style="color: var(--color-slate);">Lp(a)가 높다면 혈압·LDL·흡연·당뇨 등 <strong>고칠 수 있는 위험인자를 더 철저히 관리</strong>하세요</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Lp(a) 검사 1회 · 관상동맥 위험 인지 · 조절 가능한 위험인자 관리가 핵심</span>
+      <span class="slide__page">07 / 08</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · CLOSING — contact card + QR (live render from og:url)
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">심장을 지키는<br><em>한 걸음 더</em></h2>
+      <p class="slide__subtitle">Lp(a) 검사·심혈관 위험 관리에 대해 궁금한 점이 있으시면 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Specialty</div>
+            <div class="contact-card__value">순환기내과 · 일반내과<br>5대암 검진</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM13,2H14V3H13zM16,2H17V3H16zM20,2H21V3H20zM21,2H22V3H21zM25,2H26V3H25zM27,2H28V3H27zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM13,3H14V4H13zM15,3H16V4H15zM17,3H18V4H17zM20,3H21V4H20zM22,3H23V4H22zM23,3H24V4H23zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM18,4H19V5H18zM20,4H21V5H20zM21,4H22V5H21zM23,4H24V5H23zM24,4H25V5H24zM28,4H29V5H28zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM14,5H15V6H14zM19,5H20V6H19zM21,5H22V6H21zM22,5H23V6H22zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM16,6H17V7H16zM17,6H18V7H17zM18,6H19V7H18zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM24,6H25V7H24zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM19,7H20V8H19zM22,7H23V8H22zM23,7H24V8H23zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM13,9H14V10H13zM14,9H15V10H14zM17,9H18V10H17zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM28,9H29V10H28zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM20,10H21V11H20zM21,10H22V11H21zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM3,11H4V12H3zM5,11H6V12H5zM6,11H7V12H6zM11,11H12V12H11zM17,11H18V12H17zM18,11H19V12H18zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM26,11H27V12H26zM27,11H28V12H27zM28,11H29V12H28zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM5,12H6V13H5zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM14,12H15V13H14zM15,12H16V13H15zM20,12H21V13H20zM22,12H23V13H22zM23,12H24V13H23zM24,12H25V13H24zM26,12H27V13H26zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM34,12H35V13H34zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM3,13H4V14H3zM4,13H5V14H4zM7,13H8V14H7zM9,13H10V14H9zM11,13H12V14H11zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM15,13H16V14H15zM16,13H17V14H16zM18,13H19V14H18zM21,13H22V14H21zM23,13H24V14H23zM26,13H27V14H26zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM4,14H5V15H4zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM14,14H15V15H14zM19,14H20V15H19zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM30,14H31V15H30zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM3,15H4V16H3zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM11,15H12V16H11zM14,15H15V16H14zM16,15H17V16H16zM18,15H19V16H18zM19,15H20V16H19zM21,15H22V16H21zM25,15H26V16H25zM30,15H31V16H30zM31,15H32V16H31zM33,15H34V16H33zM2,16H3V17H2zM3,16H4V17H3zM5,16H6V17H5zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM12,16H13V17H12zM14,16H15V17H14zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM26,16H27V17H26zM27,16H28V17H27zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM3,17H4V18H3zM4,17H5V18H4zM5,17H6V18H5zM10,17H11V18H10zM12,17H13V18H12zM14,17H15V18H14zM15,17H16V18H15zM17,17H18V18H17zM18,17H19V18H18zM19,17H20V18H19zM20,17H21V18H20zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM2,18H3V19H2zM3,18H4V19H3zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM11,18H12V19H11zM12,18H13V19H12zM18,18H19V19H18zM21,18H22V19H21zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM37,18H38V19H37zM38,18H39V19H38zM2,19H3V20H2zM3,19H4V20H3zM5,19H6V20H5zM7,19H8V20H7zM9,19H10V20H9zM12,19H13V20H12zM13,19H14V20H13zM15,19H16V20H15zM17,19H18V20H17zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM25,19H26V20H25zM35,19H36V20H35zM37,19H38V20H37zM3,20H4V21H3zM6,20H7V21H6zM8,20H9V21H8zM11,20H12V21H11zM12,20H13V21H12zM14,20H15V21H14zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM22,20H23V21H22zM23,20H24V21H23zM26,20H27V21H26zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM4,21H5V22H4zM7,21H8V22H7zM12,21H13V22H12zM13,21H14V22H13zM15,21H16V22H15zM16,21H17V22H16zM17,21H18V22H17zM20,21H21V22H20zM23,21H24V22H23zM31,21H32V22H31zM33,21H34V22H33zM34,21H35V22H34zM38,21H39V22H38zM2,22H3V23H2zM8,22H9V23H8zM9,22H10V23H9zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM17,22H18V23H17zM19,22H20V23H19zM21,22H22V23H21zM24,22H25V23H24zM25,22H26V23H25zM26,22H27V23H26zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM36,22H37V23H36zM2,23H3V24H2zM3,23H4V24H3zM4,23H5V24H4zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM11,23H12V24H11zM12,23H13V24H12zM13,23H14V24H13zM14,23H15V24H14zM15,23H16V24H15zM16,23H17V24H16zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM30,23H31V24H30zM35,23H36V24H35zM37,23H38V24H37zM2,24H3V25H2zM3,24H4V25H3zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM17,24H18V25H17zM20,24H21V25H20zM22,24H23V25H22zM26,24H27V25H26zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM7,25H8V26H7zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM13,25H14V26H13zM17,25H18V26H17zM18,25H19V26H18zM23,25H24V26H23zM24,25H25V26H24zM25,25H26V26H25zM30,25H31V26H30zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM38,25H39V26H38zM4,26H5V27H4zM6,26H7V27H6zM8,26H9V27H8zM11,26H12V27H11zM12,26H13V27H12zM14,26H15V27H14zM17,26H18V27H17zM20,26H21V27H20zM21,26H22V27H21zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM2,27H3V28H2zM5,27H6V28H5zM14,27H15V28H14zM16,27H17V28H16zM17,27H18V28H17zM18,27H19V28H18zM19,27H20V28H19zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM24,27H25V28H24zM25,27H26V28H25zM30,27H31V28H30zM33,27H34V28H33zM2,28H3V29H2zM4,28H5V29H4zM6,28H7V29H6zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM15,28H16V29H15zM20,28H21V29H20zM23,28H24V29H23zM24,28H25V29H24zM29,28H30V29H29zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM4,29H5V30H4zM6,29H7V30H6zM7,29H8V30H7zM11,29H12V30H11zM13,29H14V30H13zM16,29H17V30H16zM18,29H19V30H18zM21,29H22V30H21zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM37,29H38V30H37zM38,29H39V30H38zM2,30H3V31H2zM7,30H8V31H7zM8,30H9V31H8zM11,30H12V31H11zM13,30H14V31H13zM16,30H17V31H16zM18,30H19V31H18zM19,30H20V31H19zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM15,31H16V32H15zM16,31H17V32H16zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM28,31H29V32H28zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM12,32H13V33H12zM16,32H17V33H16zM17,32H18V33H17zM19,32H20V33H19zM24,32H25V33H24zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM12,33H13V34H12zM13,33H14V34H13zM16,33H17V34H16zM18,33H19V34H18zM19,33H20V34H19zM20,33H21V34H20zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM13,34H14V35H13zM15,34H16V35H15zM18,34H19V35H18zM21,34H22V35H21zM22,34H23V35H22zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM14,35H15V36H14zM16,35H17V36H16zM17,35H18V36H17zM20,35H21V36H20zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM25,35H26V36H25zM26,35H27V36H26zM29,35H30V36H29zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM36,35H37V36H36zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM12,36H13V37H12zM14,36H15V37H14zM15,36H16V37H15zM16,36H17V37H16zM17,36H18V37H17zM18,36H19V37H18zM22,36H23V37H22zM27,36H28V37H27zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM13,37H14V38H13zM15,37H16V38H15zM17,37H18V38H17zM22,37H23V38H22zM23,37H24V38H23zM25,37H26V38H25zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM17,38H18V39H17zM19,38H20V39H19zM21,38H22V39H21zM25,38H26V39H25zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">08 / 08</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

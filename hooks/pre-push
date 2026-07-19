@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# [kz-015] pre-push 정합 게이트 — 배포 remote 의 main push 시, 매니페스트 pdf_sha256/size 가
+# .site-output-sha 가 가리키는 orphan 커밋의 실제 PDF 와 일치하는지 push **전**에 검사(조기진단).
+# 2026-07-17: 손으로 매니페스트를 고치고 main 만 push 하면 site-output 과 조용히 어긋난 채
+# 배포될 수 있었고, push 후 CI 에서야 잡혔다. 이 훅이 그 창을 닫는다.
+#   - fail-closed: 불일치·오프라인·pin 도달불가 모두 push 차단.
+#   - 배포 remote(gwanggyo-barun/patient-education)의 refs/heads/main push 에만 적용.
+#   - 의도적 우회 = git push --no-verify. 최종 권위는 배포 CI(deploy-committed.yml).
+# 설치: bash hooks/install.sh  (core.hooksPath 는 clone 에 전파 안 됨 → clone 마다 1회)
+set -euo pipefail
+
+remote_name="${1:-}"
+remote_url="${2:-}"
+
+# 배포 remote 만 검사(fork·비배포 remote push 는 통과).
+# GitHub org/repo 는 대소문자 무관 → 소문자로 정규화 후 매칭(GwangGyo-Barun 등 스킵 방지).
+url_lc="$(printf '%s' "$remote_url" | tr 'A-Z' 'a-z')"
+case "$url_lc" in
+  *gwanggyo-barun/patient-education*) : ;;
+  *) exit 0 ;;
+esac
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+zero="0000000000000000000000000000000000000000"
+status=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ "$remote_ref" = "refs/heads/main" ] || continue
+  [ "$local_sha" = "$zero" ] && continue    # 브랜치 삭제 push 는 대상 아님
+  echo "[kz-015] verify-site-output: ${remote_ref} @ ${local_sha:0:12}"
+  # < /dev/null: 자식(git fetch credential helper 등)이 훅 stdin(ref 목록)을 삼켜 뒷줄 ref 검사가
+  # 조용히 스킵되는 것 차단.
+  if ! python3 -m shared._publish_gates verify-site-output "$local_sha" "$remote_name" < /dev/null; then
+    {
+      echo ""
+      echo "🔴 [kz-015] 매니페스트 ↔ site-output PDF 불일치 — main push 차단."
+      echo "   손으로 매니페스트를 고쳤거나 발행이 반쪽입니다."
+      echo "   → ./publish.sh 로 정합 발행하세요(빌드+게이트+orphan+매니페스트 원자적)."
+      echo "   (의도적 우회: git push --no-verify — 단, 배포 CI 가 다시 검사합니다.)"
+    } >&2
+    status=1
+  fi
+done
+
+exit "$status"

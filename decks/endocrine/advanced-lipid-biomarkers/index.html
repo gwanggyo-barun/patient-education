@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Advanced Lipid Biomarkers — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/advanced-lipid-biomarkers/">
+  <meta property="og:title" content="고급 지질 바이오마커 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="LDL-C만으로 부족한 심혈관 위험 평가 — ApoB, Lp(a), Homocysteine을 알면 진짜 위험이 보입니다">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/advanced-lipid-biomarkers/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (Lp(a) risk classification table + biomarker comparison) -->
+  <style>
+    /* Lp(a) risk classification table for slide 7 */
+    .pattern-risk-table {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .risk-row {
+      display: grid;
+      grid-template-columns: 92px 90px 76px minmax(0, 1fr);
+      gap: var(--space-2);
+      align-items: center;
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+    .risk-row--head {
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      border-color: var(--color-navy);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-body);
+      letter-spacing: var(--tracking-snug);
+    }
+    .risk-row--alert {
+      background: var(--color-danger-bg);
+      border-color: var(--color-danger);
+    }
+    .risk-row__class {
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      font-size: var(--text-body);
+      letter-spacing: var(--tracking-snug);
+      white-space: nowrap;
+    }
+    .risk-row--head .risk-row__class { color: var(--color-canvas); }
+    .risk-row--alert .risk-row__class { color: var(--color-danger); }
+    .risk-row__nmol, .risk-row__mg {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-black);
+      color: var(--color-navy);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+      white-space: nowrap;
+    }
+    .risk-row--head .risk-row__nmol,
+    .risk-row--head .risk-row__mg {
+      color: var(--color-canvas);
+      font-size: var(--text-body);
+    }
+    .risk-row--alert .risk-row__nmol,
+    .risk-row--alert .risk-row__mg {
+      color: var(--color-danger);
+    }
+    .risk-row__meaning {
+      font-size: 0.95rem;
+      font-weight: var(--weight-450);
+      color: var(--color-ink-soft);
+      line-height: 1.32;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    .risk-row--head .risk-row__meaning { color: var(--color-canvas); opacity: 0.92; }
+    .risk-row--alert .risk-row__meaning { color: var(--color-ink); }
+    .slide__body--risk-tiers {
+      grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+      gap: var(--space-5);
+      align-items: stretch;
+    }
+    .slide__body--risk-tiers .pattern-risk-table {
+      height: 100%;
+    }
+    .slide__body--risk-tiers .risk-row { flex: 1 1 0; min-height: 0; }
+    .slide__body--risk-tiers .risk-row--head { flex: 0 0 auto; }
+    .slide__body--risk-tiers > .ai-visual--focus {
+      align-self: center;
+      height: auto;
+      aspect-ratio: 16 / 9;
+    }
+
+    /* 3-stat row for slide 2 — single row of 3 large circular stats + supporting card */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 3rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.2rem; line-height: 1.25; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 1rem; line-height: 1.46; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 18px 24px 14px; gap: 8px; }
+    .tile__body { font-size: 1.02rem; line-height: 1.5; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+    /* readability fixes 2026-06: no mid-word breaks in Korean text (eojeol wrapping) */
+    .slide__title, .slide__subtitle, .tile__title { word-break: keep-all; }
+    .slide__body { word-break: keep-all; overflow-wrap: break-word; }
+    /* closing slide: spread contact items horizontally to fill the card */
+    .closing-grid > .contact-card { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: var(--space-6); }
+    /* slide 2: caption sits directly under the hero number; note card anchors the bottom */
+    .hero-lead { display: flex; flex-direction: column; gap: var(--space-4); }
+    .pattern-hero-number__value { font-size: 7rem; }
+    .hero-note {
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-steel);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+    /* slide 3: center the split primary column instead of leaving a bottom void */
+    .pattern-split__primary { display: flex; flex-direction: column; justify-content: center; gap: var(--space-5); }
+    /* slide 3: metric cards share the column height instead of floating apart */
+    .pattern-split__detail { justify-content: stretch; gap: var(--space-5); }
+    .pattern-split__metric { flex: 1 1 0; display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); }
+    .pattern-split__metric-value { font-size: 2.2rem; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">고급 지질 바이오마커,<br><em>LDL 너머의 심혈관 위험</em></h1>
+      <p class="slide__subtitle">ApoB · Lp(a) · Homocysteine — 기존 콜레스테롤 검사가 놓치는 진짜 위험을 알아봅니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Advanced Lipid Panel · Beyond LDL-C · ApoB · Lp(a) · hsCRP</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO NUMBER — 8-23% LDL-C/ApoB discordance
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">LDL-C가 정상이어도 위험할 수 있습니다</h2>
+      <p class="slide__subtitle">전체 인구의 8~23%에서 LDL-C(콜레스테롤 양)와 ApoB(입자 수)가 일치하지 않습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="hero-lead">
+            <div class="pattern-hero-number__value"><em>8&ndash;23</em>%</div>
+            <div class="pattern-hero-number__caption">LDL-C와 ApoB의 불일치(discordance) 발생 비율 — 같은 LDL-C 수치라도 입자 수(ApoB)가 다르면 심혈관 위험은 크게 달라집니다.</div>
+          </div>
+          <div class="hero-note">특히 <strong>당뇨·대사증후군·비만·고중성지방</strong> 환자에서 불일치가 흔합니다 — LDL-C가 정상이어도 ApoB 추가 확인이 권고되는 이유입니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">Why beyond LDL-C matters</div>
+          <div class="pattern-hero-number__detail-text">
+            UK Biobank 29만 명 연구에서 ASCVD(죽상경화성 심혈관질환) 위험은 LDL-C가 아닌 <em>ApoB(입자 수)</em>를 따랐습니다. 당뇨·비만·고중성지방 환자는 LDL-C가 낮아도 ApoB가 높을 수 있어, 추가 바이오마커 검사가 위험을 정확히 가늠하는 열쇠가 됩니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — UK Biobank (n=290,000) · 2026 ACC/AHA Lipid Guideline</span>
+      <span class="slide__page">02 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — Why traditional LDL alone misses CV risk
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>WHY ADVANCED PANEL</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">기존 LDL-C 검사의 한계</h2>
+      <p class="slide__subtitle">택배 비유로 이해하는 콜레스테롤 양(LDL-C) vs 입자 수(ApoB)</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">LDL-C는 <em>택배 상자 안 내용물의 무게</em>를 잰 값이고, ApoB는 <em>혈관에 들어가는 택배 상자의 개수</em>를 직접 센 값입니다.</p>
+          <p class="pattern-split__supporting">
+            상자가 많으면 그만큼 혈관벽에 부딪혀 침투할 확률이 높아져 동맥경화로 이어집니다. 특히 <strong>small dense LDL(작고 많은 입자)</strong>은 같은 LDL-C 수치에서도 위험을 크게 높입니다. 당뇨·대사증후군·비만 환자에서 자주 관찰되며, 전통적 LDL-C 검사로는 찾아낼 수 없습니다. hsCRP(혈관 염증 지표)와 CIMT(경동맥 내중막 두께)도 함께 보면 위험 평가가 더 정확해집니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Discordance prevalence</div>
+            <div class="pattern-split__metric-value">8 &ndash; 23%</div>
+            <div class="pattern-split__metric-detail">LDL-C와 ApoB가 일치하지 않는 비율 — 위험 평가를 놓칠 수 있는 구간.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">UK Biobank cohort</div>
+            <div class="pattern-split__metric-value">29만명</div>
+            <div class="pattern-split__metric-detail">ASCVD 위험은 LDL-C가 아닌 ApoB를 따랐습니다 — 입자 수가 진짜 지표.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — UK Biobank Lancet 2021 · 2026 ACC/AHA Beyond LDL-C</span>
+      <span class="slide__page">03 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 3×2 — ApoB (Apolipoprotein B) explained
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>APO B</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">ApoB (Apolipoprotein B) — 나쁜 콜레스테롤 입자 수</h2>
+      <p class="slide__subtitle">모든 죽상경화 유발 지단백 1개당 ApoB 1개가 결합 — 가장 정확한 입자 수 지표</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">CONCEPT · 01</div>
+          <div class="tile__title">입자 수의 직접 측정</div>
+          <div class="tile__body">LDL·VLDL·IDL·Lp(a) — 모든 죽상경화 유발 지단백마다 ApoB 1분자가 표면에 박혀 있습니다. 따라서 ApoB 수치가 곧 위험 입자의 총 개수입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CONCEPT · 02</div>
+          <div class="tile__title">small dense LDL을 잡아냅니다</div>
+          <div class="tile__body">크기가 작고 수가 많은 LDL은 LDL-C 검사에서는 정상으로 보일 수 있으나, 혈관벽 침투율이 높아 가장 위험합니다. ApoB는 이를 직접 반영합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CONCEPT · 03</div>
+          <div class="tile__title">공복 불필요·검사 편의</div>
+          <div class="tile__body">ApoB는 식사 영향을 거의 받지 않아 공복 채혈 없이 측정 가능합니다. LDL-C가 정확하지 않은 고중성지방 환자에서 더 신뢰할 수 있는 지표입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">WHO NEEDS · 04</div>
+          <div class="tile__title">당뇨병·대사증후군 환자</div>
+          <div class="tile__body">인슐린 저항성으로 small dense LDL이 흔히 동반되어 LDL-C로는 위험이 과소평가될 수 있습니다. ApoB 추가 검사가 강력히 권고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">WHO NEEDS · 05</div>
+          <div class="tile__title">고중성지방·비만 환자</div>
+          <div class="tile__body">중성지방이 높을 때 LDL-C 계산이 부정확하고, VLDL 입자가 함께 늘어나 ApoB가 더 정확한 위험 평가 도구입니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">WHO NEEDS · 06</div>
+          <div class="tile__title">가족성 고콜레스테롤혈증(FH)</div>
+          <div class="tile__body">유전적으로 ApoB 입자가 매우 많아 조기 ASCVD 위험이 큽니다. ApoB는 가족 검사·치료 효과 평가의 핵심 지표로 활용됩니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s04-risk-lipid-969f1aca-20260530-raster-20260531.jpg" alt="ApoB (Apolipoprotein B) — 나쁜 콜레스테롤 입자 수 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 2026 ACC/AHA Lipid Guideline · ESC/EAS 2024 ApoB Position</span>
+      <span class="slide__page">04 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DENSITY GRID 3×2 — ApoB targets by risk + drug effects
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>APO B TARGETS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">위험도별 ApoB 목표와 약물 효과</h2>
+      <p class="slide__subtitle">위험이 높을수록 더 낮은 목표 — 약물 조합으로 단계적으로 도달합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">RISK · 01 · 초고위험</div>
+          <div class="tile__title">ApoB &lt; 55~65 mg/dL</div>
+          <div class="tile__body">관상동맥질환·뇌졸중·말초동맥질환 병력. 이미 심혈관 사건을 겪은 분으로, 가장 적극적인 ApoB 감소가 필요합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 02 · 고위험</div>
+          <div class="tile__title">ApoB &lt; 70~80 mg/dL</div>
+          <div class="tile__body">당뇨병 또는 주요 위험인자(고혈압·흡연·가족력) 다수 동반. 이차 예방에 가까운 강도의 치료가 권고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 03 · 중위험</div>
+          <div class="tile__title">ApoB &lt; 90~100 mg/dL</div>
+          <div class="tile__body">위험인자 2개 이상이 있는 분. 생활습관 교정과 함께 약물 치료 시작 여부를 의사와 상의합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 04</div>
+          <div class="tile__title">고강도 스타틴</div>
+          <div class="tile__body">ApoB를 약 <strong>50%</strong> 감소시킵니다. 1차 치료로 권고되며, 대부분의 중·고위험 환자에서 첫 선택입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 05</div>
+          <div class="tile__title">+ 에제티미브 (Ezetimibe)</div>
+          <div class="tile__body">스타틴에 추가 시 ApoB가 약 <strong>65%</strong> 감소. 스타틴 단독으로 목표 미달인 환자에게 안전한 추가 옵션입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 06</div>
+          <div class="tile__title">+ PCSK9 억제제</div>
+          <div class="tile__body">ApoB가 약 <strong>85%</strong>까지 감소. 초고위험·가족성 고콜레스테롤혈증 또는 스타틴 불내성 환자에게 강력한 무기입니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 2026 ACC/AHA Cholesterol Guideline · KSLA 2022</span>
+      <span class="slide__page">05 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — Lp(a) characteristics & mechanisms
+       1 alert tile for high-risk Lp(a) ≥50 mg/dL highlight
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>LIPOPROTEIN(a)</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">지질단백질(a) (Lp(a)) — 유전적 심혈관 위험인자</h2>
+      <p class="slide__subtitle">90% 이상이 유전으로 결정 — 식이·운동으로 변하지 않으며 평생 1회 검사로 충분합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">MECHANISM · 01</div>
+          <div class="tile__title">죽상경화 촉진</div>
+          <div class="tile__body">동맥 내벽에 침투해 oxidized phospholipid(산화 인지질)를 운반 → 혈관벽 손상을 가속합니다. LDL보다 입자당 약 6배 강력한 죽상경화 유발능을 보입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MECHANISM · 02</div>
+          <div class="tile__title">혈전 형성 촉진</div>
+          <div class="tile__body">plasminogen(혈전 분해 단백)과 구조가 비슷해 혈전 분해를 방해합니다 → 심근경색·뇌졸중에서 혈전 위험이 추가로 증가합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">MECHANISM · 03</div>
+          <div class="tile__title">대동맥판막 석회화</div>
+          <div class="tile__body">혈관·판막 세포의 염증·석회화 유전자를 활성화 → 대동맥판막 협착의 가장 강력한 유전적 위험인자로 보고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACT · 04</div>
+          <div class="tile__title">90% 유전 결정 · 평생 안정</div>
+          <div class="tile__body">약 5세에 이미 성인 수준에 도달하고 평생 거의 변하지 않습니다. 따라서 <strong>전 성인 1회 검사</strong>로 충분합니다(2026 ACC/AHA Class I 권고).</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACT · 05 · 한국인</div>
+          <div class="tile__title">한국인 12.8% 고위험</div>
+          <div class="tile__body">강북삼성 27만명 코호트에서 중앙값 18.5 mg/dL, 약 12.8%가 ≥50 mg/dL로 고위험에 해당. 가족 cascade 검사가 권고됩니다.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">ALERT · 06 · HIGH RISK</div>
+          <div class="tile__title">Lp(a) &gt; 50 mg/dL</div>
+          <div class="tile__body">심혈관 사망 HR <strong>1.83배</strong>, ≥100 mg/dL이면 <strong>2.45배</strong>. 다른 위험인자(LDL-C·혈압·혈당·금연)를 더 적극적으로 관리해야 합니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s06-risk-lipid-2ca74aa8-20260530-raster-20260531.jpg" alt="지질단백질(a) (Lp(a)) — 유전적 심혈관 위험인자 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 2026 ACC/AHA Lp(a) Class I · 강북삼성 코호트(n=270,000)</span>
+      <span class="slide__page">06 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · RISK TABLE — Lp(a) risk classification (4 tiers)
+       1 alert row for high-risk Lp(a) ≥50 mg/dL category
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>LP(A) RISK TIERS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">Lp(a) 수치별 위험 분류</h2>
+      <p class="slide__subtitle">≥50 mg/dL부터 고위험, ≥100 mg/dL은 ASCVD 위험이 2배 이상으로 급증합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus slide__body--risk-tiers">
+      <div class="pattern-risk-table">
+        <div class="risk-row risk-row--head">
+          <div class="risk-row__class">위험 분류</div>
+          <div class="risk-row__nmol">nmol/L</div>
+          <div class="risk-row__mg">mg/dL</div>
+          <div class="risk-row__meaning">임상적 의미와 권고</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-row__class">저위험</div>
+          <div class="risk-row__nmol">&lt; 75</div>
+          <div class="risk-row__mg">&lt; 30</div>
+          <div class="risk-row__meaning">추가 조치 불필요. 일반 LDL-C 관리만으로 충분합니다.</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-row__class">회색지대</div>
+          <div class="risk-row__nmol">75~125</div>
+          <div class="risk-row__mg">30~50</div>
+          <div class="risk-row__meaning">다른 위험인자(LDL-C, 혈압, 혈당, 가족력)를 함께 고려해 치료 강도 결정.</div>
+        </div>
+        <div class="risk-row risk-row--alert">
+          <div class="risk-row__class">고위험</div>
+          <div class="risk-row__nmol">&ge; 125</div>
+          <div class="risk-row__mg">&ge; 50</div>
+          <div class="risk-row__meaning">ASCVD 위험 약 1.4배. LDL-C 목표를 더 엄격히 적용하고 가족 cascade 검사 권고.</div>
+        </div>
+        <div class="risk-row risk-row--alert">
+          <div class="risk-row__class">초고위험</div>
+          <div class="risk-row__nmol">&ge; 250</div>
+          <div class="risk-row__mg">&ge; 100</div>
+          <div class="risk-row__meaning">ASCVD 위험 2배 이상. 심혈관 사망 HR 2.45 — 신약 임상시험 대상으로 고려됩니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s07-risk-lipid-9177cd64-20260530-raster-20260531.jpg" alt="Lp(a) 수치별 위험 분류 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 2026 ACC/AHA Lp(a) Class I · ESC/EAS 2022 Risk Tiers</span>
+      <span class="slide__page">07 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DENSITY GRID 3×2 — Homocysteine & MTHFR (Korean context)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>HOMOCYSTEINE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">호모시스테인 (Homocysteine) — 한국인의 뇌졸중 연관 인자</h2>
+      <p class="slide__subtitle">심근경색 예방 효과는 미입증, 뇌졸중에서만 의미 있는 감소 효과가 확인되었습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">FACT · 01</div>
+          <div class="tile__title">5 µmol/L 상승당 뇌졸중 60% ↑</div>
+          <div class="tile__body">관상동맥질환은 20~30% 증가하고, 뇌졸중은 60% 증가하는 강한 역학적 연관이 있습니다. 내피세포 손상·혈전 촉진이 가설입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACT · 02</div>
+          <div class="tile__title">RCT 결과 — 뇌졸중에만 효과</div>
+          <div class="tile__body">대규모 RCT에서 심근경색·전체 사망에는 효과 없으나, 뇌졸중은 10~25% 감소했습니다(HOPE-2, CSPPT, Cochrane 71,422명).</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACT · 03</div>
+          <div class="tile__title">CSPPT (n=20,702) — 양성</div>
+          <div class="tile__body">중국 고혈압 환자에서 엽산 보충이 <strong>뇌졸중 21%&nbsp;↓</strong>. 곡물 엽산 강화 미시행 인구에서 효과가 확인되었습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">KOREA · 04</div>
+          <div class="tile__title">한국인 MTHFR TT 14~18%</div>
+          <div class="tile__body">엽산 대사 효소 변이(MTHFR C677T TT 유전형)가 한국인의 14~18%에서 발견되어, 호모시스테인 상승에 더 취약합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">KOREA · 05</div>
+          <div class="tile__title">곡물 엽산 강화 미시행</div>
+          <div class="tile__body">미국·캐나다는 1998년부터 의무 강화로 baseline 엽산이 충분하나, 한국은 미시행 + 평균 섭취량 318 µgDFE로 권장량 미달 상태입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">KOREA · 06</div>
+          <div class="tile__title">엽산 보충 — 누구에게?</div>
+          <div class="tile__body">고혈압 + 호모시스테인 상승 + 엽산 섭취 부족 환자에서 뇌졸중 예방 목적으로 고려할 수 있습니다. 일상적 단독 보충은 비권고.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — HOPE-2 · CSPPT · Cochrane Review (n=71,422)</span>
+      <span class="slide__page">08 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · COMPARISON — ApoB vs Lp(a) clinical positioning
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>HOW TO USE EACH</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">ApoB vs Lp(a) — 임상적 위치 비교</h2>
+      <p class="slide__subtitle">두 바이오마커는 역할이 다릅니다 — 함께 활용하면 위험 평가가 더 정확합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            ApoB &mdash; "더 나은 LDL-C"
+          </div>
+          <ul class="compare-col__list">
+            <li>LDL-C보다 정확한 위험 예측 지표</li>
+            <li>당뇨·대사증후군·고중성지방에서 특히 유용</li>
+            <li>스타틴·에제티미브·PCSK9i로 효과적 감소</li>
+            <li>비용 저렴, 공복 채혈 불필요</li>
+            <li>치료 시작/변경 후 8~12주에 재검 추적</li>
+            <li>이차 치료 목표(secondary target)로 권고</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">!</span>
+            Lp(a) &mdash; "유전적 위험인자"
+          </div>
+          <ul class="compare-col__list">
+            <li>90% 이상 유전적으로 결정, 평생 일정</li>
+            <li>전 성인 1회 검사가 Class I 권고 (2026)</li>
+            <li>현재 Lp(a) 특이 승인 치료제 없음</li>
+            <li>혁신 신약 4종 Phase 3 진행 중 (2026~2028 결과)</li>
+            <li>가족 cascade 검사 권고 (1차 친족)</li>
+            <li>≥50 mg/dL → 다른 위험인자 적극 관리</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 2026 ACC/AHA Lipid Guideline · ESC/EAS 2022</span>
+      <span class="slide__page">09 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · CHECKLIST — Today's 8 essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">진료 시 주치의와 상의해 추가 검사·치료 강도를 함께 결정하세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">LDL-C와 ApoB는 다릅니다 — <strong>입자 수(ApoB)</strong>가 진짜 위험을 보여줍니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">당뇨·비만·고중성지방이 있다면 <strong>ApoB 추가 검사</strong>를 고려하세요</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">Lp(a) 검사는 <strong>평생 1회</strong> — 아직 안 받았다면 주치의와 상의</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">Lp(a) ≥ 50 mg/dL → LDL-C·혈압·혈당 <strong>더 엄격히</strong> 관리</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">Lp(a) 높으면 부모·형제·자녀 <strong>가족 cascade 검사</strong> 권유</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">호모시스테인 단독 보충 ≠ 심장 예방 — <strong>뇌졸중에만</strong> 의미</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">엽산 풍부한 음식 (시금치·깻잎·브로콜리·콩류) <strong>식이로 보강</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">ApoB 목표 도달 여부 — 치료 후 <strong>8~12주에 재검</strong>으로 확인</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — beyond LDL-C, sharper risk assessment</span>
+      <span class="slide__page">10 / 11</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">고급 지질 바이오마커로<br><em>나의 심혈관 위험을 더 정확하게</em></h2>
+      <p class="slide__subtitle">ApoB · Lp(a) · Homocysteine — 궁금한 점은 진료 시 편하게 말씀해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM12,2H13V3H12zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM17,2H18V3H17zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM25,2H26V3H25zM27,2H28V3H27zM30,2H31V3H30zM31,2H32V3H31zM33,2H34V3H33zM34,2H35V3H34zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM13,3H14V4H13zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM20,3H21V4H20zM22,3H23V4H22zM25,3H26V4H25zM27,3H28V4H27zM30,3H31V4H30zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM13,4H14V5H13zM16,4H17V5H16zM17,4H18V5H17zM19,4H20V5H19zM21,4H22V5H21zM22,4H23V5H22zM25,4H26V5H25zM26,4H27V5H26zM29,4H30V5H29zM32,4H33V5H32zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM13,5H14V6H13zM15,5H16V6H15zM17,5H18V6H17zM18,5H19V6H18zM21,5H22V6H21zM23,5H24V6H23zM25,5H26V6H25zM26,5H27V6H26zM28,5H29V6H28zM31,5H32V6H31zM34,5H35V6H34zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM13,6H14V7H13zM16,6H17V7H16zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM24,6H25V7H24zM26,6H27V7H26zM28,6H29V7H28zM29,6H30V7H29zM31,6H32V7H31zM33,6H34V7H33zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM14,7H15V8H14zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM19,7H20V8H19zM20,7H21V8H20zM21,7H22V8H21zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM30,7H31V8H30zM31,7H32V8H31zM32,7H33V8H32zM33,7H34V8H33zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM10,9H11V10H10zM13,9H14V10H13zM14,9H15V10H14zM15,9H16V10H15zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM24,9H25V10H24zM30,9H31V10H30zM31,9H32V10H31zM32,9H33V10H32zM34,9H35V10H34zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM12,10H13V11H12zM16,10H17V11H16zM18,10H19V11H18zM19,10H20V11H19zM20,10H21V11H20zM23,10H24V11H23zM28,10H29V11H28zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM36,10H37V11H36zM39,10H40V11H39zM41,10H42V11H41zM42,10H43V11H42zM4,11H5V12H4zM7,11H8V12H7zM9,11H10V12H9zM11,11H12V12H11zM12,11H13V12H12zM14,11H15V12H14zM16,11H17V12H16zM17,11H18V12H17zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM28,11H29V12H28zM30,11H31V12H30zM33,11H34V12H33zM34,11H35V12H34zM35,11H36V12H35zM36,11H37V12H36zM37,11H38V12H37zM38,11H39V12H38zM40,11H41V12H40zM41,11H42V12H41zM42,11H43V12H42zM2,12H3V13H2zM4,12H5V13H4zM5,12H6V13H5zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM11,12H12V13H11zM12,12H13V13H12zM17,12H18V13H17zM18,12H19V13H18zM20,12H21V13H20zM22,12H23V13H22zM25,12H26V13H25zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM35,12H36V13H35zM36,12H37V13H36zM40,12H41V13H40zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM9,13H10V14H9zM14,13H15V14H14zM15,13H16V14H15zM16,13H17V14H16zM20,13H21V14H20zM22,13H23V14H22zM25,13H26V14H25zM27,13H28V14H27zM28,13H29V14H28zM29,13H30V14H29zM34,13H35V14H34zM35,13H36V14H35zM37,13H38V14H37zM42,13H43V14H42zM2,14H3V15H2zM5,14H6V15H5zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM19,14H20V15H19zM21,14H22V15H21zM22,14H23V15H22zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM33,14H34V15H33zM39,14H40V15H39zM40,14H41V15H40zM2,15H3V16H2zM5,15H6V16H5zM10,15H11V16H10zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM15,15H16V16H15zM18,15H19V16H18zM22,15H23V16H22zM24,15H25V16H24zM25,15H26V16H25zM26,15H27V16H26zM28,15H29V16H28zM31,15H32V16H31zM33,15H34V16H33zM36,15H37V16H36zM39,15H40V16H39zM40,15H41V16H40zM42,15H43V16H42zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM12,16H13V17H12zM13,16H14V17H13zM15,16H16V17H15zM18,16H19V17H18zM21,16H22V17H21zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM25,16H26V17H25zM27,16H28V17H27zM31,16H32V17H31zM33,16H34V17H33zM36,16H37V17H36zM37,16H38V17H37zM41,16H42V17H41zM42,16H43V17H42zM4,17H5V18H4zM6,17H7V18H6zM7,17H8V18H7zM10,17H11V18H10zM15,17H16V18H15zM16,17H17V18H16zM18,17H19V18H18zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM28,17H29V18H28zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM36,17H37V18H36zM39,17H40V18H39zM42,17H43V18H42zM2,18H3V19H2zM6,18H7V19H6zM8,18H9V19H8zM9,18H10V19H9zM15,18H16V19H15zM16,18H17V19H16zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM27,18H28V19H27zM29,18H30V19H29zM32,18H33V19H32zM34,18H35V19H34zM38,18H39V19H38zM2,19H3V20H2zM6,19H7V20H6zM7,19H8V20H7zM9,19H10V20H9zM12,19H13V20H12zM14,19H15V20H14zM17,19H18V20H17zM20,19H21V20H20zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM30,19H31V20H30zM34,19H35V20H34zM35,19H36V20H35zM37,19H38V20H37zM39,19H40V20H39zM40,19H41V20H40zM41,19H42V20H41zM2,20H3V21H2zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM14,20H15V21H14zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM29,20H30V21H29zM30,20H31V21H30zM34,20H35V21H34zM36,20H37V21H36zM38,20H39V21H38zM39,20H40V21H39zM40,20H41V21H40zM2,21H3V22H2zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM9,21H10V22H9zM13,21H14V22H13zM15,21H16V22H15zM17,21H18V22H17zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM25,21H26V22H25zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM35,21H36V22H35zM36,21H37V22H36zM37,21H38V22H37zM39,21H40V22H39zM40,21H41V22H40zM2,22H3V23H2zM4,22H5V23H4zM5,22H6V23H5zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM12,22H13V23H12zM13,22H14V23H13zM14,22H15V23H14zM17,22H18V23H17zM18,22H19V23H18zM27,22H28V23H27zM31,22H32V23H31zM32,22H33V23H32zM36,22H37V23H36zM38,22H39V23H38zM40,22H41V23H40zM4,23H5V24H4zM5,23H6V24H5zM6,23H7V24H6zM9,23H10V24H9zM11,23H12V24H11zM12,23H13V24H12zM16,23H17V24H16zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM33,23H34V24H33zM34,23H35V24H34zM35,23H36V24H35zM36,23H37V24H36zM37,23H38V24H37zM38,23H39V24H38zM39,23H40V24H39zM40,23H41V24H40zM41,23H42V24H41zM42,23H43V24H42zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM18,24H19V25H18zM19,24H20V25H19zM23,24H24V25H23zM25,24H26V25H25zM26,24H27V25H26zM28,24H29V25H28zM32,24H33V25H32zM34,24H35V25H34zM35,24H36V25H35zM36,24H37V25H36zM39,24H40V25H39zM40,24H41V25H40zM41,24H42V25H41zM6,25H7V26H6zM7,25H8V26H7zM10,25H11V26H10zM11,25H12V26H11zM13,25H14V26H13zM18,25H19V26H18zM20,25H21V26H20zM22,25H23V26H22zM24,25H25V26H24zM26,25H27V26H26zM27,25H28V26H27zM28,25H29V26H28zM29,25H30V26H29zM32,25H33V26H32zM33,25H34V26H33zM38,25H39V26H38zM41,25H42V26H41zM42,25H43V26H42zM2,26H3V27H2zM3,26H4V27H3zM4,26H5V27H4zM6,26H7V27H6zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM12,26H13V27H12zM14,26H15V27H14zM15,26H16V27H15zM17,26H18V27H17zM19,26H20V27H19zM21,26H22V27H21zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM31,26H32V27H31zM40,26H41V27H40zM42,26H43V27H42zM3,27H4V28H3zM4,27H5V28H4zM6,27H7V28H6zM11,27H12V28H11zM12,27H13V28H12zM15,27H16V28H15zM17,27H18V28H17zM19,27H20V28H19zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM24,27H25V28H24zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM33,27H34V28H33zM34,27H35V28H34zM36,27H37V28H36zM39,27H40V28H39zM40,27H41V28H40zM42,27H43V28H42zM3,28H4V29H3zM4,28H5V29H4zM7,28H8V29H7zM8,28H9V29H8zM14,28H15V29H14zM16,28H17V29H16zM20,28H21V29H20zM21,28H22V29H21zM26,28H27V29H26zM27,28H28V29H27zM28,28H29V29H28zM30,28H31V29H30zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM39,28H40V29H39zM41,28H42V29H41zM42,28H43V29H42zM2,29H3V30H2zM4,29H5V30H4zM5,29H6V30H5zM9,29H10V30H9zM10,29H11V30H10zM12,29H13V30H12zM13,29H14V30H13zM14,29H15V30H14zM16,29H17V30H16zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM28,29H29V30H28zM30,29H31V30H30zM33,29H34V30H33zM34,29H35V30H34zM37,29H38V30H37zM39,29H40V30H39zM2,30H3V31H2zM3,30H4V31H3zM4,30H5V31H4zM5,30H6V31H5zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM13,30H14V31H13zM14,30H15V31H14zM18,30H19V31H18zM20,30H21V31H20zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM29,30H30V31H29zM32,30H33V31H32zM33,30H34V31H33zM35,30H36V31H35zM37,30H38V31H37zM38,30H39V31H38zM39,30H40V31H39zM42,30H43V31H42zM3,31H4V32H3zM4,31H5V32H4zM5,31H6V32H5zM7,31H8V32H7zM10,31H11V32H10zM15,31H16V32H15zM16,31H17V32H16zM21,31H22V32H21zM22,31H23V32H22zM24,31H25V32H24zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM31,31H32V32H31zM34,31H35V32H34zM37,31H38V32H37zM39,31H40V32H39zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM21,32H22V33H21zM23,32H24V33H23zM24,32H25V33H24zM28,32H29V33H28zM29,32H30V33H29zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM35,32H36V33H35zM36,32H37V33H36zM40,32H41V33H40zM4,33H5V34H4zM7,33H8V34H7zM9,33H10V34H9zM10,33H11V34H10zM11,33H12V34H11zM13,33H14V34H13zM15,33H16V34H15zM16,33H17V34H16zM18,33H19V34H18zM19,33H20V34H19zM21,33H22V34H21zM24,33H25V34H24zM25,33H26V34H25zM28,33H29V34H28zM29,33H30V34H29zM31,33H32V34H31zM32,33H33V34H32zM34,33H35V34H34zM36,33H37V34H36zM38,33H39V34H38zM40,33H41V34H40zM41,33H42V34H41zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM7,34H8V35H7zM8,34H9V35H8zM11,34H12V35H11zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM18,34H19V35H18zM19,34H20V35H19zM20,34H21V35H20zM23,34H24V35H23zM28,34H29V35H28zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM39,34H40V35H39zM40,34H41V35H40zM41,34H42V35H41zM42,34H43V35H42zM10,35H11V36H10zM15,35H16V36H15zM17,35H18V36H17zM19,35H20V36H19zM20,35H21V36H20zM21,35H22V36H21zM23,35H24V36H23zM25,35H26V36H25zM27,35H28V36H27zM28,35H29V36H28zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM41,35H42V36H41zM42,35H43V36H42zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM13,36H14V37H13zM15,36H16V37H15zM16,36H17V37H16zM17,36H18V37H17zM20,36H21V37H20zM22,36H23V37H22zM25,36H26V37H25zM27,36H28V37H27zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM39,36H40V37H39zM41,36H42V37H41zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM11,37H12V38H11zM19,37H20V38H19zM21,37H22V38H21zM22,37H23V38H22zM25,37H26V38H25zM26,37H27V38H26zM29,37H30V38H29zM34,37H35V38H34zM38,37H39V38H38zM39,37H40V38H39zM42,37H43V38H42zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM11,38H12V39H11zM14,38H15V39H14zM16,38H17V39H16zM17,38H18V39H17zM23,38H24V39H23zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM40,38H41V39H40zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM11,39H12V40H11zM13,39H14V40H13zM15,39H16V40H15zM19,39H20V40H19zM21,39H22V40H21zM24,39H25V40H24zM26,39H27V40H26zM27,39H28V40H27zM28,39H29V40H28zM29,39H30V40H29zM30,39H31V40H30zM31,39H32V40H31zM32,39H33V40H32zM34,39H35V40H34zM38,39H39V40H38zM40,39H41V40H40zM41,39H42V40H41zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM10,40H11V41H10zM11,40H12V41H11zM13,40H14V41H13zM16,40H17V41H16zM17,40H18V41H17zM18,40H19V41H18zM21,40H22V41H21zM22,40H23V41H22zM28,40H29V41H28zM37,40H38V41H37zM39,40H40V41H39zM40,40H41V41H40zM41,40H42V41H41zM42,40H43V41H42zM2,41H3V42H2zM8,41H9V42H8zM11,41H12V42H11zM12,41H13V42H12zM15,41H16V42H15zM16,41H17V42H16zM23,41H24V42H23zM24,41H25V42H24zM28,41H29V42H28zM29,41H30V42H29zM30,41H31V42H30zM33,41H34V42H33zM34,41H35V42H34zM36,41H37V42H36zM38,41H39V42H38zM39,41H40V42H39zM41,41H42V42H41zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM11,42H12V43H11zM13,42H14V43H13zM14,42H15V43H14zM17,42H18V43H17zM21,42H22V43H21zM22,42H23V43H22zM23,42H24V43H23zM24,42H25V43H24zM25,42H26V43H25zM27,42H28V43H27zM28,42H29V43H28zM32,42H33V43H32zM33,42H34V43H33zM34,42H35V43H34zM35,42H36V43H35zM36,42H37V43H36zM41,42H42V43H41z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">11 / 11</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

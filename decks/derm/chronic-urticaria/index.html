@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Chronic Urticaria — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/derm/chronic-urticaria/">
+  <meta property="og:title" content="만성두드러기 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="만성두드러기 (Chronic Urticaria) 의 정의·UAS7 평가·항히스타민제 4배 증량·오말리주맙·생활관리 한눈에">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/derm/chronic-urticaria/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (UAS7 score table + 8-item checklist) -->
+  <style>
+    /* UAS7 score table — used in slide 06 (Symptoms / UAS7) */
+    .pattern-uas7 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .uas7-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      font-size: var(--text-body);
+    }
+    .uas7-table thead th {
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      font-weight: var(--weight-540);
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      letter-spacing: var(--tracking-snug);
+      font-size: var(--text-body);
+    }
+    .uas7-table tbody td {
+      padding: var(--space-3) var(--space-4);
+      border-top: 1px solid var(--color-border);
+      color: var(--color-ink);
+    }
+    .uas7-table tbody tr:nth-child(even) td { background: var(--color-canvas-warm); }
+    .uas7-table .uas7-score {
+      font-weight: var(--weight-bold);
+      color: var(--color-steel);
+    }
+    .uas7-table .uas7-range {
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+    }
+    .uas7-note {
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* Vertical alert stack — single column, alert rows (anaphylaxis red flags) */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+    .slide:nth-of-type(6) .pattern-uas7 { height: calc(100% - 60px); justify-content: space-between; gap: 8px; padding: 0; font-size: 0.82rem; line-height: 1.08; }
+    .slide:nth-of-type(6) .uas7-table { font-size: 0.82rem; }
+    .slide:nth-of-type(6) .uas7-table thead th,
+    .slide:nth-of-type(6) .uas7-table tbody td { padding: 5px 8px; }
+    .slide:nth-of-type(6) .uas7-note { padding: 8px 10px; font-size: 0.84rem; line-height: 1.16; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · DERMATOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">만성두드러기,<br><em>꾸준히 관리하면 나아집니다</em></h1>
+      <p class="slide__subtitle">만성두드러기 (Chronic Urticaria, CU) 의 원인·진단·단계별 치료를 환자 눈높이로 안내합니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Chronic Urticaria · CSU vs CIndU · UAS7 · Stepwise Treatment</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · ASYMMETRIC SPLIT — Definition & 6-week threshold
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">만성두드러기 (Chronic Urticaria, CU) 란</h2>
+      <p class="slide__subtitle">팽진 (wheal) 과 혈관부종 (angioedema) 이 6주 이상 거의 매일 반복되는 상태</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">갑자기 부풀어 오르는 <em>팽진과 가려움</em>이 6주 넘게 거의 매일 또는 자주 반복된다면 단순 두드러기가 아닌 <em>만성두드러기</em>입니다.</p>
+          <p class="pattern-split__supporting">
+            급성 두드러기는 6주 이내에 자연 소실되지만, 만성으로 진행하면 수년간 지속될 수 있습니다. 다만 면역 알레르기 질환이지 전염병이 아니며, 올바른 단계별 치료로 대부분 관해에 도달할 수 있습니다. 첫 단추는 "왜 생기는지"보다 "얼마나 활동적인지"를 객관적으로 평가하는 것입니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Prevalence</div>
+            <div class="pattern-split__metric-value">1 – 2%</div>
+            <div class="pattern-split__metric-detail">전 세계 인구의 평생 유병률 — 결코 드물지 않은 흔한 질환입니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Female : Male</div>
+            <div class="pattern-split__metric-value">2 : 1</div>
+            <div class="pattern-split__metric-detail">여성에서 약 2배 호발 · 20–50대에서 가장 흔합니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — EAACI/GA²LEN/EuroGuiDerm/APAAACI 2022 Urticaria Guideline</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · COMPARISON — CSU vs CIndU subtypes
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>SUBTYPES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">두 가지 큰 분류 — CSU vs CIndU</h2>
+      <p class="slide__subtitle">자발적으로 생기는 형태와 특정 자극에 의해 유발되는 형태로 나뉩니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">A</span>
+            만성자발성두드러기 (CSU)
+          </div>
+          <ul class="compare-col__list">
+            <li>특별한 외부 자극 없이 자발적으로 발생</li>
+            <li>전체 만성두드러기의 약 60–80% 차지</li>
+            <li>자가면역 기전이 주된 원인</li>
+            <li>Type I — IgE 자가항체 (TPO·IL-24 등)</li>
+            <li>Type IIb — IgG 자가항체 (항-FcεRI)</li>
+            <li>오말리주맙 (Omalizumab) 에 좋은 반응</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">B</span>
+            만성유발성두드러기 (CIndU)
+          </div>
+          <ul class="compare-col__list">
+            <li>특정 물리적·환경적 자극에 의해 유발</li>
+            <li>한랭 두드러기 — 찬 공기·찬물 노출 시</li>
+            <li>피부묘기증 — 피부를 긁거나 압박 시</li>
+            <li>콜린성 두드러기 — 운동·체온 상승 시</li>
+            <li>지연성 압박·일광·진동 두드러기 등</li>
+            <li>유발 검사 (FricTest·ice cube 등) 로 진단</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Urticaria 2022 International Guideline · Subtype Classification</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · ASYMMETRIC SPLIT — Pathophysiology (mast cell · histamine)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>PATHOPHYSIOLOGY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">왜 가렵고 부풀어 오르나요</h2>
+      <p class="slide__subtitle">피부 비만세포 (mast cell) 의 탈과립 → 히스타민 방출 → 혈관 확장·투과성 증가</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">유발인자 → <em>비만세포 활성화</em> → 히스타민·류코트리엔 등 매개체 분비 → 혈관 확장·부종 → <em>팽진·가려움</em>의 4단계 연쇄반응입니다.</p>
+          <p class="pattern-split__supporting">
+            CSU 에서는 IgE 자가항체 (Type I) 또는 IgG 자가항체 (Type IIb) 가 비만세포 표면의 FcεRI 수용체를 자극해 자발적 탈과립을 일으킵니다. 따라서 항히스타민제로 히스타민 작용을 차단하거나, 오말리주맙으로 IgE 자체를 중화하는 전략이 효과적입니다. 약을 끊어도 비만세포 안정화에 시간이 걸리므로 <em>꾸준한 복용</em>이 핵심입니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Type I autoimmunity</div>
+            <div class="pattern-split__metric-value">IgE</div>
+            <div class="pattern-split__metric-detail">자가항원 (TPO·IL-24) 에 대한 IgE — 오말리주맙 반응 양호.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Type IIb autoimmunity</div>
+            <div class="pattern-split__metric-value">IgG</div>
+            <div class="pattern-split__metric-detail">항-IgE / 항-FcεRI IgG · 보체 활성화 · 항히스타민 반응 약함.</div>
+          </div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+        <img src="../../../shared/assets/generated/derm-chronic-urticaria-s04-mechanism-derm-297389fd-20260530-raster-20260531.jpg" alt="왜 가렵고 부풀어 오르나요 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Kaplan AP. Allergy 2017 · Type I/IIb Autoimmune CSU</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DENSITY GRID 2×2 — Comorbidities
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>COMORBIDITIES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">함께 올 수 있는 동반 질환</h2>
+      <p class="slide__subtitle">자가면역 갑상선·알레르기·정신건강 영역 — 선별 검사가 권장됩니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">COMORBIDITY · 01 · 10–30%</div>
+          <div class="tile__title">갑상선 질환 (Thyroid)</div>
+          <div class="tile__body">하시모토 갑상선염·그레이브스병 등 자가면역 갑상선 질환과의 연관이 강합니다. 항-TPO 항체 양성률이 일반 인구보다 높아, 초기 진단 시 TSH·fT4 검사가 권고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">COMORBIDITY · 02 · 20–50%</div>
+          <div class="tile__title">알레르기 질환 (Atopy)</div>
+          <div class="tile__body">알레르기 비염·기관지 천식·아토피 피부염 등 아토피 체질과 흔히 동반됩니다. 다만 만성두드러기 자체는 음식·꽃가루 알레르기와 직접적 연관성은 약합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">COMORBIDITY · 03 · 30–70%</div>
+          <div class="tile__title">정신건강 (Mental health)</div>
+          <div class="tile__body">불안·우울·수면장애가 매우 흔하며, 삶의 질 저하와 직접 연결됩니다. 가려움으로 인한 수면 방해 → 피로 → 스트레스 → 증상 악화의 악순환이 형성될 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">COMORBIDITY · 04 · 5–10%</div>
+          <div class="tile__title">기타 자가면역 (Autoinflammatory)</div>
+          <div class="tile__body">루푸스 (SLE)·류마티스 관절염·셀리악병 등 다른 자가면역 질환과의 연관이 보고됩니다. 발열·관절통·체중감소 동반 시 추가 자가면역 검사를 고려합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — CSU Comorbidity Review · Allergy 2021</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · UAS7 SCORE TABLE — Symptoms & activity score
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>UAS7 SCORE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">증상 평가 · UAS7 (Urticaria Activity Score)</h2>
+      <p class="slide__subtitle">7일간 매일 팽진 수와 가려움 정도를 0–3점으로 기록 → 합산 점수로 활동도 판정</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-uas7">
+        <table class="uas7-table">
+          <thead>
+            <tr>
+              <th style="width: 12%;">점수</th>
+              <th style="width: 28%;">팽진 수 (Wheals)</th>
+              <th style="width: 22%;">가려움 정도 (Pruritus)</th>
+              <th style="width: 18%;">UAS7 합산</th>
+              <th>활동도 판정</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="uas7-score">0</td>
+              <td>없음</td>
+              <td>없음</td>
+              <td class="uas7-range">0 – 6</td>
+              <td>잘 조절됨 (Well controlled)</td>
+            </tr>
+            <tr>
+              <td class="uas7-score">1</td>
+              <td>20개 미만 / 24h</td>
+              <td>경도 (Mild)</td>
+              <td class="uas7-range">7 – 15</td>
+              <td>경증 (Mild)</td>
+            </tr>
+            <tr>
+              <td class="uas7-score">2</td>
+              <td>20 – 50개 / 24h</td>
+              <td>중등도 (Moderate)</td>
+              <td class="uas7-range">16 – 27</td>
+              <td>중등증 (Moderate)</td>
+            </tr>
+            <tr>
+              <td class="uas7-score">3</td>
+              <td>50개 초과 / 24h</td>
+              <td>심함 (Severe)</td>
+              <td class="uas7-range">28 – 42</td>
+              <td>중증 (Severe)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="uas7-note">
+          팽진 (wheal) 은 24시간 이내에 사라지는 것이 특징입니다. 혈관부종 (angioedema) 은 깊은 조직 부종으로 눈꺼풀·입술·혀에 호발하며 약 40% 환자에서 동반되고, 소실까지 최대 72시간이 걸립니다. UAS7 점수가 높을수록 적극적인 단계 상승 치료가 필요합니다.
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Measurement">
+        <img src="../../../shared/assets/generated/derm-chronic-urticaria-s06-measurement-derm-a06ca67a-20260530-raster-20260531.jpg" alt="증상 평가 · UAS7 (Urticaria Activity Score) 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Mlynek A et al. Allergy 2008 · UAS7 Validation</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · DENSITY GRID 2×2 — Diagnostic workup
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>DIAGNOSTIC WORKUP</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">어떤 검사를 받게 되나요</h2>
+      <p class="slide__subtitle">기본 4종 + 필요 시 자가면역·유발성 검사 — 광범위 알레르기 검사는 권고되지 않습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">BASIC · 01</div>
+          <div class="tile__title">기본 혈액 검사</div>
+          <div class="tile__body">CBC (호산구 증가·감염 감별), ESR / CRP (염증 수치), 총 IgE (오말리주맙 반응 예측에도 활용) — 처음 진단 시 필수로 시행되는 4종입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">BASIC · 02</div>
+          <div class="tile__title">갑상선 기능 검사</div>
+          <div class="tile__body">TSH·fT4 + 항-TPO 항체. 자가면역 갑상선염은 CSU 의 가장 흔한 동반 질환이므로 모든 신환에서 권장됩니다. 이상 시 내분비내과 협진을 고려합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">EXTENDED · 03</div>
+          <div class="tile__title">자가면역 확장 검사</div>
+          <div class="tile__body">자가혈청 피부시험 (ASST), 호염기구 활성화 검사 (BAT), 보체 (C3·C4), ANA, D-dimer (혈관부종 감별), 트립타제 (비만세포 질환 감별) — 난치성 환자에서 선택적으로 시행합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CIndU · 04</div>
+          <div class="tile__title">유발성 두드러기 검사</div>
+          <div class="tile__body">한랭 자극 (ice cube test), 피부묘기증 (FricTest), 운동·온열·압박·일광 유발 검사 — CIndU 가 의심되면 각 유형에 맞는 특이적 자극 검사를 시행합니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Measurement">
+        <img src="../../../shared/assets/generated/derm-chronic-urticaria-s07-measurement-derm-2d410412-20260530-raster-20260531.jpg" alt="어떤 검사를 받게 되나요 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Urticaria 2022 Guideline · Diagnostic Recommendations</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · TIMELINE — 4-step stepwise treatment ladder
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>STEPWISE TREATMENT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">단계별 치료 — 4단계 사다리</h2>
+      <p class="slide__subtitle">국제 가이드라인 표준 — 반응 부족 시 2–4주 간격으로 다음 단계로 상승합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">2세대 항히스타민제 표준 용량</div>
+          <div class="timeline-step__body">세티리진·레보세티리진·펙소페나딘·로라타딘·빌라스틴·데슬로라타딘 등. 1일 1회 표준 용량으로 시작합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">같은 약제 최대 4배 증량</div>
+          <div class="timeline-step__body">2–4주 후 반응 부족 시 동일 약제를 표준의 2–4배까지 증량 — 1세대로 바꾸지 않고 같은 2세대를 늘립니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">오말리주맙 (Omalizumab) 추가</div>
+          <div class="timeline-step__body">항-IgE 단클론항체 · 4주마다 150–300 mg 피하주사. 높은 효과와 안전성 — 4단계로 가기 전 우선 권고됩니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">사이클로스포린 (Cyclosporine)</div>
+          <div class="timeline-step__body">면역억제제 — 단기간 사용 권장. 신기능·혈압 모니터링 필수. 오말리주맙 부적합·실패 시의 마지막 선택지입니다.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">주의</span>
+        <span class="alert-strip__text">1세대 항히스타민제 (졸음 강함) 와 전신 스테로이드 (10일 초과 사용) 는 권고되지 않습니다 — 급성 악화 시 단기 (3–7일) 외에는 피합니다.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — EAACI/GA²LEN/EuroGuiDerm/APAAACI 2022 · Step-up Algorithm</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · ASYMMETRIC SPLIT — Latest treatment: Remibrutinib (BTKi)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>NEW · ORAL BTK INHIBITOR</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">최신 치료 · 레미브루티닙 (Remibrutinib)</h2>
+      <p class="slide__subtitle">경구 BTK 억제제 — 항히스타민 불응 CSU 환자의 첫 경구 표적 치료 (FDA 2025.9 승인)</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">25 mg <em>1일 2회 경구 복용</em> · 주사 불필요 · 정기 혈액검사 불필요. REMIX-1·2 임상에서 12주 시점 UAS7 유의미한 감소 (p&lt;0.001) 가 확인되었습니다.</p>
+          <p class="pattern-split__supporting">
+            BTK (Bruton Tyrosine Kinase) 를 차단해 비만세포의 히스타민 방출을 원천 억제하는 기전적 치료입니다. 약 50% 환자에서 UAS7 ≤ 6 (질병 조절) 에 도달하고, 약 1/3 에서 완전 관해 (UAS7 = 0) 가 보고되었습니다. 2주째부터 빠른 효과가 나타나고 52주까지 효능이 유지되며, 주요 이상반응은 비인두염·두통 정도로 대부분 경미합니다. 오말리주맙 외 첫 경구 대안으로 자리매김했습니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Disease control rate</div>
+            <div class="pattern-split__metric-value">~ 50%</div>
+            <div class="pattern-split__metric-detail">12주 시점 UAS7 ≤ 6 도달 환자 비율 (REMIX-1 / 2).</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Complete response</div>
+            <div class="pattern-split__metric-value">~ 1/3</div>
+            <div class="pattern-split__metric-detail">UAS7 = 0 (완전 관해) 도달 — 52주까지 효능 유지.</div>
+          </div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Measurement">
+        <img src="../../../shared/assets/generated/derm-chronic-urticaria-s09-measurement-derm-25f2e6c1-20260530-raster-20260531.jpg" alt="최신 치료 · 레미브루티닙 (Remibrutinib) 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Metz M et al. NEJM 2025;392(10):984-994 · Novartis FDA Approval Sep 2025</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · COMPARISON — DO vs DON'T self-care
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>DO &amp; DON'T</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">집에서의 자가 관리법</h2>
+      <p class="slide__subtitle">피해야 할 NSAIDs·알코올·뜨거운 자극을 알면 악화를 막을 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            이렇게 하세요 (DO)
+          </div>
+          <ul class="compare-col__list">
+            <li>매일 7–8시간 규칙적 수면 유지</li>
+            <li>스트레스 관리 — 명상·심호흡·가벼운 산책</li>
+            <li>매일 무향 보습제로 피부 건조 방지</li>
+            <li>두드러기 일지 작성 — 악화 요인 파악</li>
+            <li>해열·진통은 타이레놀 (아세트아미노펜)</li>
+            <li>처방약은 임의 중단 없이 꾸준히 복용</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            이것은 피하세요 (DON'T)
+          </div>
+          <ul class="compare-col__list">
+            <li>NSAIDs · 아스피린 · 이부프로펜 복용</li>
+            <li>알코올 (과음은 두드러기를 악화시킴)</li>
+            <li>뜨거운 목욕 · 사우나 (체온 상승 자극)</li>
+            <li>꽉 끼는 옷 · 압박 자극 (CIndU 유발)</li>
+            <li>증상 호전됐다고 약 임의 중단</li>
+            <li>광범위 식이 제한 (효과 근거 부족)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Patient Self-management · Urticaria 2022 Guideline</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · ALERT STACK — Anaphylaxis red flags (call 119)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>CALL 119 NOW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">두드러기와 다른 신호 — 즉시 119</h2>
+      <p class="slide__subtitle">아래는 단순 두드러기가 아닌 아나필락시스 (Anaphylaxis) 의 적신호입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-alert-stack">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">입술·혀·목 안쪽이 갑자기 부어오름</div>
+            <div class="alert-row__text">기도 부종으로 진행할 수 있습니다 — 침을 삼키기 어려운 느낌이 새로 생기면 즉시 응급실로.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">숨이 차고 쌕쌕 소리 · 목이 잠긴 듯한 느낌</div>
+            <div class="alert-row__text">기관지 수축 또는 후두 부종의 신호 — 가만히 있어도 호흡이 힘들면 즉시 119.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">어지럼증 · 식은땀 · 의식 흐림 (혈압 저하)</div>
+            <div class="alert-row__text">전신 알레르기 반응으로 혈압이 떨어지는 신호 — 누운 채 다리를 올리고 즉시 응급 처치가 필요합니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — WAO Anaphylaxis Guidance 2020 · KSEM Emergency Triage</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">꾸준한 관리로<br><em>두드러기에서 벗어날 수 있습니다</em></h2>
+      <p class="slide__subtitle">평균 2–5년 내 자연 관해되는 분이 많습니다 — 단계별 치료를 함께 결정하겠습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM13,2H14V3H13zM16,2H17V3H16zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM27,2H28V3H27zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM12,3H13V4H12zM14,3H15V4H14zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM20,3H21V4H20zM22,3H23V4H22zM23,3H24V4H23zM26,3H27V4H26zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM13,4H14V5H13zM15,4H16V5H15zM17,4H18V5H17zM18,4H19V5H18zM20,4H21V5H20zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM28,4H29V5H28zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM14,5H15V6H14zM16,5H17V6H16zM17,5H18V6H17zM18,5H19V6H18zM19,5H20V6H19zM22,5H23V6H22zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM16,6H17V7H16zM17,6H18V7H17zM18,6H19V7H18zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM24,6H25V7H24zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM13,7H14V8H13zM15,7H16V8H15zM19,7H20V8H19zM20,7H21V8H20zM22,7H23V8H22zM23,7H24V8H23zM28,7H29V8H28zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM11,9H12V10H11zM14,9H15V10H14zM16,9H17V10H16zM17,9H18V10H17zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM28,9H29V10H28zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM15,10H16V11H15zM18,10H19V11H18zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM15,11H16V12H15zM17,11H18V12H17zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM27,11H28V12H27zM28,11H29V12H28zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM5,12H6V13H5zM6,12H7V13H6zM8,12H9V13H8zM11,12H12V13H11zM14,12H15V13H14zM17,12H18V13H17zM18,12H19V13H18zM20,12H21V13H20zM22,12H23V13H22zM23,12H24V13H23zM24,12H25V13H24zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM34,12H35V13H34zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM4,13H5V14H4zM5,13H6V14H5zM10,13H11V14H10zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM15,13H16V14H15zM17,13H18V14H17zM21,13H22V14H21zM23,13H24V14H23zM25,13H26V14H25zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM3,14H4V15H3zM4,14H5V15H4zM8,14H9V15H8zM10,14H11V15H10zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM16,14H17V15H16zM17,14H18V15H17zM19,14H20V15H19zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM30,14H31V15H30zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM4,15H5V16H4zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM10,15H11V16H10zM12,15H13V16H12zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM18,15H19V16H18zM19,15H20V16H19zM21,15H22V16H21zM23,15H24V16H23zM25,15H26V16H25zM30,15H31V16H30zM31,15H32V16H31zM33,15H34V16H33zM2,16H3V17H2zM6,16H7V17H6zM8,16H9V17H8zM12,16H13V17H12zM14,16H15V17H14zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM26,16H27V17H26zM27,16H28V17H27zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM4,17H5V18H4zM5,17H6V18H5zM7,17H8V18H7zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM14,17H15V18H14zM17,17H18V18H17zM18,17H19V18H18zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM2,18H3V19H2zM3,18H4V19H3zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM13,18H14V19H13zM14,18H15V19H14zM19,18H20V19H19zM21,18H22V19H21zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM37,18H38V19H37zM38,18H39V19H38zM2,19H3V20H2zM3,19H4V20H3zM5,19H6V20H5zM6,19H7V20H6zM11,19H12V20H11zM12,19H13V20H12zM13,19H14V20H13zM14,19H15V20H14zM16,19H17V20H16zM17,19H18V20H17zM18,19H19V20H18zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM25,19H26V20H25zM35,19H36V20H35zM37,19H38V20H37zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM22,20H23V21H22zM23,20H24V21H23zM26,20H27V21H26zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM4,21H5V22H4zM5,21H6V22H5zM11,21H12V22H11zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM16,21H17V22H16zM18,21H19V22H18zM20,21H21V22H20zM23,21H24V22H23zM25,21H26V22H25zM26,21H27V22H26zM31,21H32V22H31zM33,21H34V22H33zM34,21H35V22H34zM38,21H39V22H38zM4,22H5V23H4zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM15,22H16V23H15zM16,22H17V23H16zM19,22H20V23H19zM21,22H22V23H21zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM36,22H37V23H36zM3,23H4V24H3zM4,23H5V24H4zM5,23H6V24H5zM7,23H8V24H7zM14,23H15V24H14zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM27,23H28V24H27zM30,23H31V24H30zM35,23H36V24H35zM37,23H38V24H37zM3,24H4V25H3zM4,24H5V25H4zM5,24H6V25H5zM8,24H9V25H8zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM15,24H16V25H15zM17,24H18V25H17zM20,24H21V25H20zM22,24H23V25H22zM23,24H24V25H23zM24,24H25V25H24zM26,24H27V25H26zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM2,25H3V26H2zM5,25H6V26H5zM6,25H7V26H6zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM15,25H16V26H15zM17,25H18V26H17zM18,25H19V26H18zM23,25H24V26H23zM24,25H25V26H24zM25,25H26V26H25zM28,25H29V26H28zM30,25H31V26H30zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM38,25H39V26H38zM2,26H3V27H2zM3,26H4V27H3zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM11,26H12V27H11zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM16,26H17V27H16zM17,26H18V27H17zM18,26H19V27H18zM19,26H20V27H19zM20,26H21V27H20zM21,26H22V27H21zM24,26H25V27H24zM25,26H26V27H25zM27,26H28V27H27zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM2,27H3V28H2zM4,27H5V28H4zM9,27H10V28H9zM10,27H11V28H10zM13,27H14V28H13zM14,27H15V28H14zM17,27H18V28H17zM19,27H20V28H19zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM24,27H25V28H24zM25,27H26V28H25zM30,27H31V28H30zM33,27H34V28H33zM2,28H3V29H2zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM17,28H18V29H17zM18,28H19V29H18zM20,28H21V29H20zM23,28H24V29H23zM24,28H25V29H24zM26,28H27V29H26zM29,28H30V29H29zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM4,29H5V30H4zM6,29H7V30H6zM7,29H8V30H7zM10,29H11V30H10zM11,29H12V30H11zM13,29H14V30H13zM14,29H15V30H14zM15,29H16V30H15zM16,29H17V30H16zM17,29H18V30H17zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM6,30H7V31H6zM8,30H9V31H8zM9,30H10V31H9zM11,30H12V31H11zM12,30H13V31H12zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM17,30H18V31H17zM18,30H19V31H18zM19,30H20V31H19zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM12,31H13V32H12zM13,31H14V32H13zM15,31H16V32H15zM16,31H17V32H16zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM28,31H29V32H28zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM14,32H15V33H14zM15,32H16V33H15zM17,32H18V33H17zM19,32H20V33H19zM23,32H24V33H23zM24,32H25V33H24zM27,32H28V33H27zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM12,33H13V34H12zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM14,34H15V35H14zM16,34H17V35H16zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM24,34H25V35H24zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM15,35H16V36H15zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM20,35H21V36H20zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM24,35H25V36H24zM25,35H26V36H25zM29,35H30V36H29zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM36,35H37V36H36zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM12,36H13V37H12zM13,36H14V37H13zM27,36H28V37H27zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM13,37H14V38H13zM14,37H15V38H14zM18,37H19V38H18zM21,37H22V38H21zM23,37H24V38H23zM25,37H26V38H25zM26,37H27V38H26zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM14,38H15V39H14zM15,38H16V39H15zM19,38H20V39H19zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

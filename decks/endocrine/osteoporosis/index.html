@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Osteoporosis — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/osteoporosis/">
+  <meta property="og:title" content="골다공증 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="골다공증 진단(DXA·T-score)·약물 치료·영양·운동·낙상 예방까지 한눈에 보는 환자 교육 자료">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/osteoporosis/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (3-stat row + alert-stack) -->
+  <style>
+    /* Three-stat row — single row of 3 large circular stats + supporting card */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 2.5rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Vertical alert stack — single column, alert rows */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Checklist with 8 items */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">골다공증,<br><em>뼈 건강 평생 관리하기</em></h1>
+      <p class="slide__subtitle">DXA T-score, FRAX, 약물 순차치료, 칼슘·비타민 D, 운동·낙상 예방까지 한눈에 정리합니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Osteoporosis · DXA · Sequential Therapy · Fall Prevention</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · STATS3 — Korean osteoporosis prevalence numbers
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">골다공증 (Osteoporosis) — 한국의 현실</h2>
+      <p class="slide__subtitle">뼈가 약해져 작은 충격에도 골절이 생기는 흔하지만 치료 가능한 질환입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">37.3<span style="font-size:1.4rem">%</span></div>
+              <div class="stats3-cell__unit">50세↑ 여성</div>
+            </div>
+            <div class="stats3-cell__label">폐경 후 여성 유병률<br>70세 이상은 68.5%</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">86<span style="font-size:1.4rem">%</span></div>
+              <div class="stats3-cell__unit">후속 골절 위험</div>
+            </div>
+            <div class="stats3-cell__label">한 번 골절 후 다음 골절 위험 (Imminent risk)</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">17<span style="font-size:1.4rem">%</span></div>
+              <div class="stats3-cell__unit">고관절 1년 사망률</div>
+            </div>
+            <div class="stats3-cell__label">고관절 골절 후 1년 내 사망 (수술 미시행 시 70%)</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          폐경 후 에스트로겐 감소로 파골세포(뼈를 녹이는 세포)가 10배 활성화되고 조골세포(뼈를 만드는 세포)는 위축됩니다. 즉 뼈가 만들어지는 속도보다 녹는 속도가 빨라지는 것이 골다공증의 본질입니다. 2025년부터 국가검진에서 여성은 54·60·66세 생애 3회 무료 DXA 검사가 제공됩니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSBMR 2024 · 국민건강영양조사 · HIRA 2024</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — DXA T-score classification
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>DIAGNOSIS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">DXA 골밀도 검사와 T-score</h2>
+      <p class="slide__subtitle">뼈의 '밀도 성적표' — 가장 낮은 부위의 T-score로 진단합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">요추 (L1–L4) 와 대퇴경부·전체 대퇴부 중 <em>가장 낮은 T-score</em>로 진단합니다. 동일 기기에서 1~2년마다 추적해 변화를 추적합니다.</p>
+          <p class="pattern-split__supporting">
+            T-score는 같은 성별 젊은 성인 평균 골밀도와의 표준편차 차이를 의미합니다. -1.0 이상이면 정상, -1.0 ~ -2.5 사이는 골감소증 (Osteopenia), -2.5 이하면 골다공증 (Osteoporosis) 으로 진단합니다. 골절을 동반하면 중증 골다공증이며, FRAX 같은 위험도 도구로 10년 내 골절 확률을 함께 평가합니다. 치료 목표는 T-score &gt; -2.5, 고위험군은 ≥ -2.0 입니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">정상 (Normal)</div>
+            <div class="pattern-split__metric-value">T ≥ -1.0</div>
+            <div class="pattern-split__metric-detail">생활습관 관리 — 칼슘·비타민 D, 체중부하 운동.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">골감소증 (Osteopenia)</div>
+            <div class="pattern-split__metric-value">-2.5 &lt; T ≤ -1.0</div>
+            <div class="pattern-split__metric-detail">FRAX 평가 후 위험도 따라 약물치료 검토.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">골다공증 (Osteoporosis)</div>
+            <div class="pattern-split__metric-value">T ≤ -2.5</div>
+            <div class="pattern-split__metric-detail">적극적 약물치료 적응 — 급여 인정 기준.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ISCD 2023 · KSBMR 2024 · HIRA 2024.05</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 3×2 — Risk stratification & high-risk groups
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>RISK STRATIFICATION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">골절 위험도 분류와 초고위험군</h2>
+      <p class="slide__subtitle">위험도가 높을수록 빠르고 강하게 — 초고위험군은 골형성촉진제 우선 고려</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">LOW · 01</div>
+          <div class="tile__title">저위험군 (Low risk)</div>
+          <div class="tile__body">골감소증이지만 위험인자가 적은 경우. 칼슘·비타민 D 보충 + 체중부하 운동 + 1~2년 후 추적 DXA로 관리합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">HIGH · 02</div>
+          <div class="tile__title">고위험군 (High risk)</div>
+          <div class="tile__body">T-score ≤ -2.5 또는 골절 경험. 골흡수억제제 (비스포스포네이트·데노수맙) 중심의 약물치료를 시작합니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">VERY HIGH · 03</div>
+          <div class="tile__title">초고위험군 (Very high)</div>
+          <div class="tile__body">최근 1~2년 내 척추·고관절 골절, T &lt; -3.0, 다발성 척추골절, 또는 치료 중에도 새 골절이 생긴 경우 — 골형성촉진제 우선 고려.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FRAX · 04</div>
+          <div class="tile__title">FRAX 10년 골절 위험도</div>
+          <div class="tile__body">나이·성별·BMI·기존 골절·부모 고관절 골절·흡연·음주·스테로이드·류마티스 관절염 등을 입력해 10년 내 주요 골다공증성 골절 확률을 계산합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">GROUP · 05</div>
+          <div class="tile__title">남성 골다공증 (Male)</div>
+          <div class="tile__body">남성 50세 이상 7.5%가 골다공증. 70세 이상이거나 골절·스테로이드·저체중·테스토스테론 저하가 있으면 DXA 검사가 권장됩니다 (국가검진 미포함).</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SECONDARY · 06</div>
+          <div class="tile__title">이차성 원인 감별</div>
+          <div class="tile__body">갑상선·부갑상선 항진증, 쿠싱, 만성 신부전, 셀리악, 다발골수종, 조기 폐경 등을 혈액·소변 검사로 감별 — 원인 치료 없이는 약효 제한.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/endocrine-osteoporosis-s04-risk-bone-3d85237e-20260530-raster-20260531.jpg" alt="골절 위험도 분류와 초고위험군 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSBMR 2024 · AACE 2020 · WHO FRAX</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DENSITY GRID 2×2 — Antiresorptives (osteoclast-targeting)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>ANTIRESORPTIVES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">골흡수억제제 — 뼈가 녹는 것을 막는 약</h2>
+      <p class="slide__subtitle">비스포스포네이트와 데노수맙 — 1차 치료의 중심 약제</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2" style="gap:var(--space-3)">
+        <div class="tile" style="padding-top:var(--space-3);padding-bottom:var(--space-3)">
+          <div class="tile__index">DRUG · 01 · 경구</div>
+          <div class="tile__title">알렌드로네이트 (Alendronate)</div>
+          <div class="tile__body">주 1회 70mg 경구. 기상 직후 공복에 200mL 생수와 복용 후 30분 직립 유지 — 식도 자극·궤양 예방. 척추·고관절·비척추 골절 모두 감소시키며 뼈에 축적되어 휴약 후에도 효과가 지속됩니다.</div>
+        </div>
+        <div class="tile" style="padding-top:var(--space-3);padding-bottom:var(--space-3)">
+          <div class="tile__index">DRUG · 02 · 정맥주사</div>
+          <div class="tile__title">졸레드론산 IV (Zoledronate)</div>
+          <div class="tile__body">연 1회 5mg 정맥주사 — 경구 복용이 어려운 환자에 적합. 첫 투여 후 2~3일 독감 유사 증상이 30% 정도 발생 (아세트아미노펜으로 완화). eGFR &lt; 35 에서는 금기.</div>
+        </div>
+        <div class="tile" style="padding-top:var(--space-3);padding-bottom:var(--space-3)">
+          <div class="tile__index">DRUG · 03 · 경구</div>
+          <div class="tile__title">리세드로네이트 (Risedronate)</div>
+          <div class="tile__body">주 1회 35mg 또는 월 1회 150mg 경구. 알렌드로네이트와 같은 복용 규칙 (공복·생수·30분 직립). 위장관 부작용이 적어 위장이 약한 환자에게 사용합니다.</div>
+        </div>
+        <div class="tile" style="padding-top:var(--space-3);padding-bottom:var(--space-3)">
+          <div class="tile__index">DRUG · 04 · 피하주사</div>
+          <div class="tile__title">데노수맙 / 프롤리아 (Denosumab)</div>
+          <div class="tile__body">6개월마다 60mg 피하주사. RANKL 항체로 파골세포 생존을 차단하며 신부전 환자에도 사용 가능. 10년 데이터에서 요추 BMD 21.7%↑. 단, 중단 시 반동성 골절 위험 — 평생 관리하거나 비스포스포네이트로 전환 필수.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">주의</span>
+        <span class="alert-strip__text">5년 이상 비스포스포네이트 복용 시 비정형 대퇴골골절 (AFF) ·턱뼈 괴사 (MRONJ) 위험 — 허벅지 통증·치과 시술 전 반드시 보고. 데노수맙은 6개월 간격을 하루도 늦추지 마세요.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — FDA Label · KSBMR 2024 · MHRA · TGA Safety Alert</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 2×2 — Anabolic agents (bone formation)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>ANABOLIC AGENTS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">골형성촉진제 — 새 뼈를 만드는 약</h2>
+      <p class="slide__subtitle">초고위험군에서 뼈 미세구조를 빠르게 복원하는 1단계 치료</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">DRUG · 01 · 매일 자가주사</div>
+          <div class="tile__title">테리파라타이드 / 포스테오 (Teriparatide)</div>
+          <div class="tile__body">매일 1회 20μg 피하 자가주사. 부갑상선호르몬 유사체로 조골세포를 직접 활성화. 척추골절 65%↓, 비척추골절 53%↓. 일생 최대 24개월만 사용. VERO 연구에서 리세드로네이트 대비 우월성 입증.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 02 · 월 1회 병원 투여</div>
+          <div class="tile__title">로모소주맙 / 이베니티 (Romosozumab)</div>
+          <div class="tile__body">매월 1회 210mg 피하주사 (병원), 총 12회. 스클레로스틴 항체로 골 형성↑ + 흡수↓ 동시 작용. 요추 BMD 13.3%↑·척추골절 73%↓. 일생 1회만 인정.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">CAUTION · 03</div>
+          <div class="tile__title">로모소주맙 심혈관 금기</div>
+          <div class="tile__body">최근 1년 내 심근경색·뇌졸중 병력이 있으면 절대 투여 금기 (FDA Boxed Warning). 투여 전 저칼슘혈증을 반드시 교정하고, 심혈관 위험 인자를 종합 평가합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SEQUENCE · 04</div>
+          <div class="tile__title">투여 종료 후 반드시 전환</div>
+          <div class="tile__body">테리파라타이드·로모소주맙 종료 후 골흡수억제제 (알렌드로네이트·졸레드론산·데노수맙) 로 전환하지 않으면 어렵게 올린 골밀도가 빠르게 소실됩니다 — 순차치료가 국제 표준.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/endocrine-osteoporosis-s06-risk-bone-3dd8026c-20260530-raster-20260531.jpg" alt="골형성촉진제 — 새 뼈를 만드는 약 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — VERO Study · ARCH Trial · FRAME Study · KSBMR 2024</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · TIMELINE — Sequential therapy 4 steps
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>SEQUENTIAL THERAPY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">순차치료 (Sequential Therapy) 전략</h2>
+      <p class="slide__subtitle">초고위험군은 '먼저 채우고, 그다음 잠그는' 단계별 치료가 표준입니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">기반 재건 · 12~24개월</div>
+          <div class="timeline-step__body">로모소주맙 12개월 또는 테리파라타이드 최대 24개월. 무너진 뼈 미세구조를 빠르게 복원해 골밀도를 단기간에 끌어올립니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">유지 · 데노수맙 6개월 간격</div>
+          <div class="timeline-step__body">생성된 뼈가 다시 녹지 않도록 6개월마다 피하주사로 잠금. 10년 이상 안전성 데이터가 확인되어 있습니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">전환 · 비스포스포네이트 1년+</div>
+          <div class="timeline-step__body">데노수맙을 끊어야 할 때는 반드시 알렌드로네이트나 졸레드론산으로 전환 — 반동성 골절을 막는 핵심 단계.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">추적 · DXA 1~2년, P1NP·CTX 3개월</div>
+          <div class="timeline-step__body">DXA 1~2년마다, 골표지자 P1NP·CTX는 치료 시작·변경 후 3~6개월에 측정. 약효를 빠르게 확인해 자의 중단을 막습니다.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">주의</span>
+        <span class="alert-strip__text">데노수맙 중단 시 3개월 만에 CTX 70%↑ 오버슈트 — 척추뼈가 도미노처럼 무너지는 다발성 척추 골절 위험 (영국 MHRA·호주 TGA 경고). 절대 혼자 판단해 중단하지 마세요.</span>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/endocrine-osteoporosis-s07-risk-bone-13fba1fb-20260530-raster-20260531.jpg" alt="순차치료 (Sequential Therapy) 전략 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ARCH · FRAME · MAXCARE · KSBMR Sequential Therapy 2024</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · COMPARISON — Bisphosphonate DO vs DON'T
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>SAFE USE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">경구 비스포스포네이트 복용법</h2>
+      <p class="slide__subtitle">복용 규칙을 정확히 지켜야 약효가 제대로 나오고 식도 손상을 막을 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            이렇게 하세요 (DO)
+          </div>
+          <ul class="compare-col__list">
+            <li>기상 직후 아침 공복에 복용</li>
+            <li>200mL 이상 생수와 함께 삼키기</li>
+            <li>복용 후 30분~1시간 직립 자세 유지</li>
+            <li>치과 치료 전 담당의에게 약 복용 사실 알리기</li>
+            <li>5년 이상 사용 시 약물 휴약기 (Drug Holiday) 논의</li>
+            <li>허벅지 통증·시력 저하 즉시 보고</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            이것은 피하세요 (DON'T)
+          </div>
+          <ul class="compare-col__list">
+            <li>커피·주스·우유와 함께 복용 (흡수↓↓)</li>
+            <li>복용 후 바로 눕기 (식도 궤양 위험)</li>
+            <li>칼슘제와 동시 복용 (흡수 방해 — 2시간 간격)</li>
+            <li>임의 중단 — 특히 골절 고위험군</li>
+            <li>eGFR &lt; 35 환자에 투여 (금기)</li>
+            <li>허벅지 통증 무시 (비정형 대퇴골 골절 의심)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — FDA Label · KSBMR 2024 · ASBMR Safety Position Paper</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · DENSITY GRID 2×2 — Calcium & Vitamin D nutrition
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>NUTRITION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">칼슘과 비타민 D — 약효의 토대</h2>
+      <p class="slide__subtitle">칼슘은 시멘트, 비타민 D는 시멘트를 현장에 배달하는 트럭입니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">CALCIUM · 01</div>
+          <div class="tile__title">칼슘 (Calcium) 권장량</div>
+          <div class="tile__body">50세 이하 1,000mg/일, 51세 이상 폐경 여성·71세 이상 남성 1,200mg/일. 한국인 평균 섭취는 약 500~600mg으로 권장량의 절반입니다. 식사+보충제로 800~1,200mg 목표.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CALCIUM · 02</div>
+          <div class="tile__title">탄산칼슘 vs 구연산칼슘</div>
+          <div class="tile__body">탄산칼슘 (CaCO₃) 은 위산이 필요해 식사 중·직후 복용. PPI (위산억제제) 복용자나 무산증 고령자는 위산 무관하게 흡수되는 구연산칼슘으로 교체합니다. 1회 흡수 한도 약 500mg — 분할 복용.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">VIT D · 03</div>
+          <div class="tile__title">비타민 D (Vitamin D) 800–1,000 IU</div>
+          <div class="tile__body">50세 이상 800~1,000 IU/일. 골다공증 치료 중에는 25(OH)D ≥ 30 ng/mL 유지를 위해 2,000 IU까지 증량 가능 (안전 상한 4,000 IU). 한국 여성 93.3%가 부족 상태입니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">MYTH · 04</div>
+          <div class="tile__title">사골국·짠 음식 오해</div>
+          <div class="tile__body">사골·곰국은 인 (P) 이 많아 오히려 칼슘 배출을 늘립니다 (뼈를 우린 국물 ≠ 뼈 건강). 짠 음식은 Na 2,300mg당 칼슘 40mg 손실, 카페인 3잔 초과·과음도 골 손실 가속.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/endocrine-osteoporosis-s09-comparison-bone-ff56c269-20260530-raster-20260531.jpg" alt="칼슘과 비타민 D — 약효의 토대 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — IOM DRI · KSBMR 2024 · 한국영양학회 KDRI</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · DENSITY GRID 3×2 — Strong / Steady / Straight exercise
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>EXERCISE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">운동 처방 — Strong, Steady, Straight</h2>
+      <p class="slide__subtitle">영국왕립골다공증학회 (ROS) 합의 권고안 기반 — 강하게, 안정적으로, 곧은 자세로</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">STRONG · 01</div>
+          <div class="tile__title">체중부하 충격 운동</div>
+          <div class="tile__body">빠르게 걷기, 계단 오르기, 스텝 운동. 골절력 없는 분은 가벼운 조깅·점프 포함. 하루 50회 중간 강도 충격이 이상적. 볼프의 법칙으로 조골세포가 자극됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STRONG · 02</div>
+          <div class="tile__title">점진적 근력 저항 훈련</div>
+          <div class="tile__body">주 2~3회, 8~12회 간신히 들 수 있는 무게로 스쿼트·런지·레그프레스. LIFTMOR 연구에서 고강도 저항운동 후 요추 BMD 약 4% 개선 — 전문가 지도 필수.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEADY · 03</div>
+          <div class="tile__title">균형·민첩성 훈련</div>
+          <div class="tile__body">한 발 서기, 일직선 (텐덤) 걷기, 태극권, 부드러운 요가. 주 2회 50분 이상. 태극권 메타분석에서 낙상 위험 24%↓, 오타고 프로그램은 80세 이상에서 낙상 35~40%↓.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STRAIGHT · 04</div>
+          <div class="tile__title">등근육 강화 (Extension)</div>
+          <div class="tile__body">월프레스, 백 익스텐션, 매일 척추 신전근 운동. Sinaki 연구에서 신전 운동군 골절률 16% vs 굴곡 운동군 89% — 척추를 곧게 펴는 자세가 핵심입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STRAIGHT · 05</div>
+          <div class="tile__title">힙 힌지 자세 (Hip Hinge)</div>
+          <div class="tile__body">물건을 줍거나 들 때 무릎과 고관절을 굽히고 척추는 곧게 유지합니다. 허리를 앞으로 굽히지 않고 엉덩이를 뒤로 빼는 자세 — 척추 압축력 분산.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">AVOID · 06</div>
+          <div class="tile__title">금기 동작 (Forbidden)</div>
+          <div class="tile__body">윗몸 일으키기·서서 발끝 만지기·골프·볼링·줄넘기 착지·요가의 깊은 비틀기·쟁기자세. 허리를 앞으로 구부리거나 비트는 동작은 척추 압박골절의 직접적 원인입니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ROS Consensus 2018 · LIFTMOR Trial · Sinaki MJ Mayo Clin 1984</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST 8 — Today's essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">골다공증은 꾸준한 관리로 골절을 막을 수 있는 치료 가능한 질환입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">DXA <strong>T-score ≤ -2.5</strong> 또는 골절 경험 시 약물치료 시작</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">최근 골절·T &lt; -3.0 등 <strong>초고위험군</strong>은 골형성촉진제 우선</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">비스포스포네이트는 <strong>공복·생수·30분 직립</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">데노수맙 <strong>6개월 간격</strong> 절대 놓치지 않기</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">칼슘 <strong>800~1,200mg</strong> + 비타민 D <strong>800~1,000 IU</strong>/일</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">PPI 복용자는 <strong>구연산칼슘</strong>으로 교체</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">주 2~3회 근력+매일 균형운동, <strong>허리 굽힘·비틀기 금지</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">조명·미끄럼 매트·손잡이로 <strong>가정 낙상 위험</strong> 점검</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — DXA, drug adherence, nutrition, exercise, fall prevention</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">뼈 건강, 함께 관리하면<br><em>지킬 수 있습니다</em></h2>
+      <p class="slide__subtitle">조기 발견·꾸준한 약물·영양·운동 관리로 골절 위험을 극적으로 줄일 수 있습니다 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM18,2H19V3H18zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM27,2H28V3H27zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM12,3H13V4H12zM14,3H15V4H14zM19,3H20V4H19zM25,3H26V4H25zM26,3H27V4H26zM27,3H28V4H27zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM17,4H18V5H17zM22,4H23V5H22zM25,4H26V5H25zM26,4H27V5H26zM27,4H28V5H27zM28,4H29V5H28zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM16,5H17V6H16zM18,5H19V6H18zM19,5H20V6H19zM21,5H22V6H21zM22,5H23V6H22zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM13,6H14V7H13zM14,6H15V7H14zM18,6H19V7H18zM19,6H20V7H19zM21,6H22V7H21zM23,6H24V7H23zM24,6H25V7H24zM26,6H27V7H26zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM13,7H14V8H13zM14,7H15V8H14zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM19,7H20V8H19zM21,7H22V8H21zM22,7H23V8H22zM23,7H24V8H23zM26,7H27V8H26zM28,7H29V8H28zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM11,9H12V10H11zM12,9H13V10H12zM13,9H14V10H13zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM24,9H25V10H24zM26,9H27V10H26zM28,9H29V10H28zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM13,10H14V11H13zM17,10H18V11H17zM19,10H20V11H19zM20,10H21V11H20zM23,10H24V11H23zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM32,10H33V11H32zM35,10H36V11H35zM37,10H38V11H37zM38,10H39V11H38zM3,11H4V12H3zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM15,11H16V12H15zM17,11H18V12H17zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM26,11H27V12H26zM27,11H28V12H27zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM4,12H5V13H4zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM10,12H11V13H10zM14,12H15V13H14zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM22,12H23V13H22zM24,12H25V13H24zM25,12H26V13H25zM26,12H27V13H26zM30,12H31V13H30zM33,12H34V13H33zM35,12H36V13H35zM36,12H37V13H36zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM10,13H11V14H10zM11,13H12V14H11zM18,13H19V14H18zM20,13H21V14H20zM24,13H25V14H24zM26,13H27V14H26zM27,13H28V14H27zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM32,13H33V14H32zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM3,14H4V15H3zM4,14H5V15H4zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM12,14H13V15H12zM14,14H15V15H14zM16,14H17V15H16zM17,14H18V15H17zM19,14H20V15H19zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM30,14H31V15H30zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM6,15H7V16H6zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM26,15H27V16H26zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM32,15H33V16H32zM33,15H34V16H33zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM38,15H39V16H38zM3,16H4V17H3zM5,16H6V17H5zM8,16H9V17H8zM9,16H10V17H9zM15,16H16V17H15zM21,16H22V17H21zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM27,16H28V17H27zM28,16H29V17H28zM31,16H32V17H31zM34,16H35V17H34zM36,16H37V17H36zM37,16H38V17H37zM2,17H3V18H2zM4,17H5V18H4zM5,17H6V18H5zM7,17H8V18H7zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM14,17H15V18H14zM15,17H16V18H15zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM2,18H3V19H2zM4,18H5V19H4zM6,18H7V19H6zM8,18H9V19H8zM9,18H10V19H9zM14,18H15V19H14zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM20,18H21V19H20zM21,18H22V19H21zM23,18H24V19H23zM24,18H25V19H24zM27,18H28V19H27zM35,18H36V19H35zM36,18H37V19H36zM4,19H5V20H4zM7,19H8V20H7zM12,19H13V20H12zM13,19H14V20H13zM15,19H16V20H15zM16,19H17V20H16zM20,19H21V20H20zM22,19H23V20H22zM23,19H24V20H23zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM30,19H31V20H30zM32,19H33V20H32zM33,19H34V20H33zM36,19H37V20H36zM37,19H38V20H37zM38,19H39V20H38zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM14,20H15V21H14zM15,20H16V21H15zM22,20H23V21H22zM23,20H24V21H23zM26,20H27V21H26zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM4,21H5V22H4zM5,21H6V22H5zM7,21H8V22H7zM10,21H11V22H10zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM21,21H22V22H21zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM32,21H33V22H32zM33,21H34V22H33zM35,21H36V22H35zM37,21H38V22H37zM2,22H3V23H2zM3,22H4V23H3zM5,22H6V23H5zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM14,22H15V23H14zM16,22H17V23H16zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM23,22H24V23H23zM25,22H26V23H25zM28,22H29V23H28zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM34,22H35V23H34zM35,22H36V23H35zM38,22H39V23H38zM2,23H3V24H2zM3,23H4V24H3zM4,23H5V24H4zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM14,23H15V24H14zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM27,23H28V24H27zM30,23H31V24H30zM35,23H36V24H35zM37,23H38V24H37zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM11,24H12V25H11zM15,24H16V25H15zM24,24H25V25H24zM25,24H26V25H25zM27,24H28V25H27zM30,24H31V25H30zM33,24H34V25H33zM6,25H7V26H6zM7,25H8V26H7zM10,25H11V26H10zM14,25H15V26H14zM16,25H17V26H16zM20,25H21V26H20zM21,25H22V26H21zM24,25H25V26H24zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM28,25H29V26H28zM29,25H30V26H29zM31,25H32V26H31zM34,25H35V26H34zM35,25H36V26H35zM36,25H37V26H36zM3,26H4V27H3zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM13,26H14V27H13zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM18,26H19V27H18zM19,26H20V27H19zM20,26H21V27H20zM21,26H22V27H21zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM4,27H5V28H4zM7,27H8V28H7zM9,27H10V28H9zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM21,27H22V28H21zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM33,27H34V28H33zM34,27H35V28H34zM35,27H36V28H35zM37,27H38V28H37zM38,27H39V28H38zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM8,28H9V29H8zM9,28H10V29H9zM12,28H13V29H12zM15,28H16V29H15zM21,28H22V29H21zM26,28H27V29H26zM27,28H28V29H27zM34,28H35V29H34zM36,28H37V29H36zM37,28H38V29H37zM2,29H3V30H2zM4,29H5V30H4zM5,29H6V30H5zM6,29H7V30H6zM7,29H8V30H7zM9,29H10V30H9zM10,29H11V30H10zM11,29H12V30H11zM14,29H15V30H14zM15,29H16V30H15zM16,29H17V30H16zM17,29H18V30H17zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM38,29H39V30H38zM5,30H6V31H5zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM10,30H11V31H10zM12,30H13V31H12zM15,30H16V31H15zM16,30H17V31H16zM18,30H19V31H18zM20,30H21V31H20zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM27,30H28V31H27zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM13,31H14V32H13zM14,31H15V32H14zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM19,31H20V32H19zM22,31H23V32H22zM24,31H25V32H24zM25,31H26V32H25zM26,31H27V32H26zM27,31H28V32H27zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM36,31H37V32H36zM38,31H39V32H38zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM12,32H13V33H12zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM19,32H20V33H19zM23,32H24V33H23zM24,32H25V33H24zM27,32H28V33H27zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM13,33H14V34H13zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM20,33H21V34H20zM21,33H22V34H21zM24,33H25V34H24zM25,33H26V34H25zM26,33H27V34H26zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM11,34H12V35H11zM12,34H13V35H12zM14,34H15V35H14zM15,34H16V35H15zM17,34H18V35H17zM18,34H19V35H18zM22,34H23V35H22zM23,34H24V35H23zM28,34H29V35H28zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM37,34H38V35H37zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM15,35H16V36H15zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM20,35H21V36H20zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM25,35H26V36H25zM28,35H29V36H28zM29,35H30V36H29zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM36,35H37V36H36zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM12,36H13V37H12zM16,36H17V37H16zM17,36H18V37H17zM19,36H20V37H19zM20,36H21V37H20zM23,36H24V37H23zM25,36H26V37H25zM27,36H28V37H27zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM31,36H32V37H31zM32,36H33V37H32zM34,36H35V37H34zM35,36H36V37H35zM2,37H3V38H2zM8,37H9V38H8zM12,37H13V38H12zM13,37H14V38H13zM14,37H15V38H14zM15,37H16V38H15zM17,37H18V38H17zM20,37H21V38H20zM22,37H23V38H22zM24,37H25V38H24zM25,37H26V38H25zM27,37H28V38H27zM33,37H34V38H33zM34,37H35V38H34zM35,37H36V38H35zM36,37H37V38H36zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM13,38H14V39H13zM14,38H15V39H14zM15,38H16V39H15zM19,38H20V39H19zM21,38H22V39H21zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

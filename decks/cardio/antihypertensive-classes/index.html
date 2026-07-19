@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Antihypertensive Drug Classes — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/antihypertensive-classes/">
+  <meta property="og:title" content="항고혈압제 클래스별 비교 — 광교바른내과">
+  <meta property="og:description" content="ACEi · ARB · CCB · 이뇨제 · 베타차단제 — 효력·적응증·금기·부작용 비교">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/cardio/antihypertensive-classes/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (alert-stack reused from chest-pain) -->
+  <style>
+    /* Vertical alert stack — single column, alert rows (used only on emergency slide) */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Checklist with 8 items — 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>CLINICAL REFERENCE</strong> · CARDIOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">항고혈압제,<br><em>클래스별 비교 정리</em></h1>
+      <p class="slide__subtitle">ACEi · ARB · CCB · 이뇨제(Diuretics) · 베타차단제 — 효력·적응증·금기·부작용 한눈에</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Antihypertensive Classes · Comparative Overview · KSH 2022 · ESC/ESH 2023</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO NUMBER — 5 major classes
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">5대 1차 항고혈압제 클래스</h2>
+      <p class="slide__subtitle">현행 가이드라인이 1차 약제로 권고하는 다섯 가지 약물군과 그 비중</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="pattern-hero-number__value"><em>5</em>대</div>
+          <div class="pattern-hero-number__caption">ACEi · ARB · CCB · Thiazide계 이뇨제 · β-blocker — KSH 2022/ESC 2023가 본태성 고혈압 1차 치료로 권고하는 약물군입니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">Why class selection matters</div>
+          <div class="pattern-hero-number__detail-text">
+            평균 BP 감소폭(8~15 mmHg)은 클래스 간 비슷하지만, 동반질환·금기·부작용 프로필이 크게 다릅니다. 환자별 맞춤 선택과 2제 병용이 단일제 최대용량보다 효과적이며 내약성도 우수합니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH 2022 · ESC/ESH 2023 · ACC/AHA 2017</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — Core principle
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>CORE PRINCIPLE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">단일제 최대용량 &lt; 2제 병용 반량</h2>
+      <p class="slide__subtitle">모든 클래스에서 용량-반응 곡선이 평탄 — 병용이 효력·내약성 모두 우월</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">표준용량의 <em>2배 증량</em>은 추가 BP 감소가 ~20%에 그치지만, <em>2제 병용</em>은 ~5배의 추가 효과를 냅니다.</p>
+          <p class="pattern-split__supporting">
+            동일 클래스 안에서 약제 선택을 최적화하는 것(예: HCTZ → Chlorthalidone, Losartan → Azilsartan)도 SBP 4~5 mmHg 추가 감소로 이어집니다. 일반적으로 RAAS 차단제(ACEi/ARB) + CCB 또는 + Thiazide 조합이 표준이며, β-blocker는 동반질환이 있을 때만 병용합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Average BP reduction</div>
+            <div class="pattern-split__metric-value">8 – 15 mmHg</div>
+            <div class="pattern-split__metric-detail">표준용량 단일제 SBP 감소 — 클래스 간 큰 차이 없음.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Combination synergy</div>
+            <div class="pattern-split__metric-value">≈ 5×</div>
+            <div class="pattern-split__metric-detail">2제 병용이 단일제 증량 대비 추가 효과는 약 5배.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Wald 2009 (BMJ) Meta-analysis · KSH 2022 §6.2</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 3×2 — 6 classes overview (mechanism)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>MECHANISM</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">6개 약물군의 작용 기전</h2>
+      <p class="slide__subtitle">RAAS 차단(ACEi/ARB), Ca 채널 차단(CCB-DHP/Non-DHP), Na 배설(Thiazide/Spironolactone), 교감 차단(β-blocker)</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">CLASS · 01 · ACEi</div>
+          <div class="tile__title">Angiotensin Converting Enzyme inhibitor</div>
+          <div class="tile__body">Angiotensin II 생성 차단 + bradykinin 축적. 대표: enalapril, ramipril, perindopril. 신장보호·심부전에서 강력한 outcome 근거.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CLASS · 02 · ARB</div>
+          <div class="tile__title">Angiotensin Receptor Blocker</div>
+          <div class="tile__body">AT1 수용체 직접 차단 — bradykinin 축적 없음. 대표: candesartan, telmisartan, azilsartan, fimasartan. ACEi와 효력 동등, 마른기침 거의 없음.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CLASS · 03 · CCB-DHP</div>
+          <div class="tile__title">Dihydropyridine CCB</div>
+          <div class="tile__body">혈관 평활근 L-type Ca 채널 차단 — 강력한 동맥 확장. 대표: amlodipine, lercanidipine, cilnidipine. 노인·고립성 수축기 고혈압에 유리.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CLASS · 04 · CCB-Non-DHP</div>
+          <div class="tile__title">Non-Dihydropyridine CCB</div>
+          <div class="tile__body">심근 + 혈관 Ca 채널 차단 — 심박수 감소·전도 억제. 대표: diltiazem, verapamil. 빈맥 동반 고혈압·심방세동에 유리.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CLASS · 05 · DIURETIC</div>
+          <div class="tile__title">Thiazide / Thiazide-like</div>
+          <div class="tile__body">원위세뇨관 Na-Cl 공동수송체 억제 — 체액량 감소 + 혈관확장. 대표: HCTZ, chlorthalidone, indapamide. CV outcome 근거 풍부.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CLASS · 06 · β-BLOCKER</div>
+          <div class="tile__title">β-blocker</div>
+          <div class="tile__body">심박수·심박출량·renin 분비 억제. 대표: bisoprolol, carvedilol, nebivolol. 단독 1차 약제 비권장 — 관상동맥질환·심부전·빈맥 동반 시 적응.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+        <img src="../../../shared/assets/generated/cardio-antihypertensive-classes-s04-mechanism-cardio-65ac47ba-20260530-raster-20260531.jpg" alt="6개 약물군의 작용 기전 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH 2022 §3 · ESC/ESH 2023 Drug Mechanisms</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DENSITY GRID 3×2 — Potency rankings (BP reduction mmHg)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>POTENCY RANKING</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">클래스별 SBP 감소폭 (위약 보정, 표준용량)</h2>
+      <p class="slide__subtitle">평균 효력은 비슷하나 클래스 내 약제 선택이 4~5 mmHg 추가 감소를 만듭니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">ARB · 12 – 15 mmHg</div>
+          <div class="tile__title">ARB 효력 순위</div>
+          <div class="tile__body">최상: <strong>Azilsartan 80mg</strong> (14.3) ≈ Candesartan 32mg (15) ≈ Telmisartan 80mg (14.5). 하: Losartan 100mg (9.5). White 2011: azilsartan vs olmesartan SBP −2.6 mmHg 추가.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">ACEi · 10 – 14 mmHg</div>
+          <div class="tile__title">ACEi 효력 순위</div>
+          <div class="tile__body">상: Ramipril 10mg, Perindopril 8mg, Lisinopril 40mg (~13~14). 중: Enalapril 20mg (~10~12). ARB와 SBP 감소폭은 동등하지만 마른기침 빈도 ~10%로 높음.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CCB-DHP · 12 – 15 mmHg</div>
+          <div class="tile__title">CCB-DHP 효력 순위</div>
+          <div class="tile__body">기준: Amlodipine 5mg (12~15/7~8). 등가: Nifedipine GITS 30mg ≈ Felodipine 5mg ≈ Lercanidipine 10mg. 등가용량에서 최대 효력은 동등.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CCB-Non-DHP · 6 – 12 mmHg</div>
+          <div class="tile__title">CCB-Non-DHP 효력 순위</div>
+          <div class="tile__body">DHP 대비 혈관확장 효력 30~40% 낮음. Diltiazem SR 240mg, Verapamil SR 240mg 표준. 심박수 감소 + 심방세동 rate control 부가효과.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DIURETIC · 8 – 18 mmHg</div>
+          <div class="tile__title">이뇨제 효력 순위</div>
+          <div class="tile__body">최상: <strong>Chlorthalidone 25mg</strong> (18) ≈ Indapamide 2.5mg (16). 하: HCTZ 25mg (9.5). Spironolactone(MRA) 25mg: 저항성 고혈압에서 추가 −8.7 mmHg.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">β-BLOCKER · 8 – 15 mmHg</div>
+          <div class="tile__title">β-blocker 효력 순위</div>
+          <div class="tile__body">혈관확장성 우위: Labetalol (15~20), Carvedilol (10~15), Nebivolol. 비혈관확장성: Atenolol, Bisoprolol, Metoprolol. 중심동맥압은 혈관확장성에서 추가 감소.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Cochrane systematic reviews · White 2011 · CAFE Study (ASCOT 하위)</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · COMPARISON — ACEi vs ARB
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>RAAS BLOCKERS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">ACEi vs ARB — 어떻게 다른가</h2>
+      <p class="slide__subtitle">효력은 동등 — 부작용 프로필과 특수 적응증에서 차이</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">A</span>
+            ACEi (Angiotensin Converting Enzyme inhibitor)
+          </div>
+          <ul class="compare-col__list">
+            <li>대표: ramipril, perindopril, enalapril, lisinopril</li>
+            <li>적응: 심부전·심근경색 후 강력한 mortality 근거</li>
+            <li>당뇨병성 신증·단백뇨에서 1차 선택 (역사적 근거)</li>
+            <li>마른기침: ~10% (bradykinin 축적, 한국인 더 흔함)</li>
+            <li>혈관부종(angioedema): 0.1~0.7% (드물지만 응급)</li>
+            <li>저렴 — 국내 보험 1차 처방 옵션</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">R</span>
+            ARB (Angiotensin Receptor Blocker)
+          </div>
+          <ul class="compare-col__list">
+            <li>대표: candesartan, telmisartan, azilsartan, fimasartan</li>
+            <li>적응: ACEi 동등 효과 + 마른기침 거의 없음</li>
+            <li>당뇨병성 신증·심부전 모두 충분한 근거 축적</li>
+            <li>ACEi 불내성(기침·혈관부종) 환자에서 표준 대체</li>
+            <li>고효력 ARB(azilsartan, candesartan) 우선 고려</li>
+            <li>ARB + ACEi 병용 금지 (양쪽 부작용 가산)</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/cardio-antihypertensive-classes-s06-risk-cardio-a8c117ec-20260530-raster-20260531.jpg" alt="ACEi vs ARB — 어떻게 다른가 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ONTARGET 2008 · KSH 2022 §4.1 · ESC 2023</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · COMPARISON — CCB-DHP vs CCB-Non-DHP
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>CALCIUM CHANNEL BLOCKERS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">CCB-DHP vs CCB-Non-DHP</h2>
+      <p class="slide__subtitle">동일 클래스로 묶이지만 작용 부위·심박수 효과·금기가 완전히 다릅니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">D</span>
+            DHP (Dihydropyridine)
+          </div>
+          <ul class="compare-col__list">
+            <li>대표: amlodipine, lercanidipine, cilnidipine, felodipine</li>
+            <li>주작용: 강력한 동맥 확장, SBP 12~15 mmHg 감소</li>
+            <li>심박수: 반사성 빈맥(amlodipine +2~4 bpm)</li>
+            <li>적응: 노인·고립성 수축기 고혈압·관상동맥질환</li>
+            <li>부작용: 발목 부종(amlodipine 19%, lercanidipine 9%)</li>
+            <li>근거: ALLHAT, ASCOT, VALUE — 풍부한 outcome 데이터</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">N</span>
+            Non-DHP
+          </div>
+          <ul class="compare-col__list">
+            <li>대표: diltiazem, verapamil</li>
+            <li>주작용: 동맥확장 + 심박수·전도 감소</li>
+            <li>심박수: 5~15 bpm 감소 (rate control 효과)</li>
+            <li>적응: 빈맥 동반 고혈압·심방세동 rate control</li>
+            <li>부작용: 변비(verapamil), 서맥, AV block</li>
+            <li>금기: HFrEF, 고도 AV block, β-blocker 병용 시 주의</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/cardio-antihypertensive-classes-s07-comparison-cardio-fc4ad9b3-20260530-raster-20260531.jpg" alt="CCB-DHP vs CCB-Non-DHP 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ALLHAT · ASCOT · NORDIL · INVEST · KSH 2022 §4.3</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DENSITY GRID 2×2 — Diuretics: Thiazide / Thiazide-like / MRA
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>DIURETICS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이뇨제 4종 비교 — Thiazide-like ≥ Thiazide</h2>
+      <p class="slide__subtitle">Chlorthalidone · Indapamide >> HCTZ — Spironolactone(MRA)은 저항성 고혈압의 4차 약제</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile tile--accent">
+          <div class="tile__index">DIURETIC · 01 · PREFERRED</div>
+          <div class="tile__title">Chlorthalidone (Thiazide-like)</div>
+          <div class="tile__body">표준 12.5~25mg/일, 반감기 40~60시간 — 24시간 안정적 BP 조절. SBP 18 mmHg 감소(25mg). 근거: ALLHAT, SHEP. HCTZ보다 SBP −4~5 mmHg 추가 감소.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">DIURETIC · 02 · PREFERRED</div>
+          <div class="tile__title">Indapamide (Thiazide-like)</div>
+          <div class="tile__body">표준 1.5mg SR / 2.5mg, 반감기 14~18h(SR 24h+). SBP 16 mmHg 감소. 근거: HYVET(80세+), PROGRESS. 대사 영향이 HCTZ·chlorthalidone보다 적음.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DIURETIC · 03</div>
+          <div class="tile__title">HCTZ (Hydrochlorothiazide)</div>
+          <div class="tile__body">표준 25mg, 반감기 6~12h — 야간 BP 조절 불충분. SBP 9.5 mmHg(25mg). 단독 outcome 근거 없음. ARB·ACEi 복합제로만 사용 권장.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DIURETIC · 04</div>
+          <div class="tile__title">Spironolactone (MRA, 저항성 고혈압)</div>
+          <div class="tile__body">25~50mg/일, 4차 약제. PATHWAY-2: 위약 대비 SBP −8.7 mmHg, BP 조절률 60%. 부작용: 여성형 유방·고K혈증. 대안: eplerenone(여성형 유방 ↓).</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ALLHAT · SHEP · HYVET · PATHWAY-2 (Lancet 2015)</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · DENSITY GRID 3×2 — Side effects by class
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>SIDE EFFECTS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">클래스별 대표 부작용 프로필</h2>
+      <p class="slide__subtitle">처방 전·복용 중 환자에게 안내해야 할 핵심 부작용</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">ACEi · 01</div>
+          <div class="tile__title">ACEi 부작용</div>
+          <div class="tile__body">마른기침 ~10% (한국인 더 흔함), 혈관부종(angioedema) 0.1~0.7%, 고K혈증, 신기능 저하 가능. 임신 시 절대 금기 (태아 신독성).</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">ARB · 02</div>
+          <div class="tile__title">ARB 부작용</div>
+          <div class="tile__body">ACEi 대비 마른기침 거의 없음, 혈관부종 빈도 ~1/10. 고K혈증, 신기능 저하 가능. 임신 절대 금기. 양측 신동맥 협착 금기.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CCB-DHP · 03</div>
+          <div class="tile__title">CCB-DHP 부작용</div>
+          <div class="tile__body">발목 부종(amlodipine 19%, lercanidipine 9%), 안면홍조, 두통, 잇몸 비후. 반사성 빈맥(+2~4 bpm). 부종 심하면 lercanidipine·lacidipine 전환.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CCB-Non-DHP · 04</div>
+          <div class="tile__title">CCB-Non-DHP 부작용</div>
+          <div class="tile__body">서맥, 1도/2도 AV block, 변비(verapamil 25%). HFrEF에서 심부전 악화 위험. β-blocker 병용 시 서맥·전도장애 가산.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DIURETIC · 05</div>
+          <div class="tile__title">이뇨제 부작용</div>
+          <div class="tile__body">저K·저Na·저Mg혈증, 고요산혈증·통풍 악화, 인슐린 저항성 ↑, 광과민성. Spironolactone: 고K혈증·여성형 유방 5~10%·성기능 저하.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">β-BLOCKER · 06</div>
+          <div class="tile__title">β-blocker 부작용</div>
+          <div class="tile__body">서맥, 피로, 운동능력 저하, 발기부전, 사지냉감. 비혈관확장성에서 인슐린 저항성·중성지방 ↑. 갑작스런 중단 금지(rebound 빈맥·협심증).</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/cardio-antihypertensive-classes-s09-risk-cardio-b71b17fc-20260530-raster-20260531.jpg" alt="클래스별 대표 부작용 프로필 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH 2022 §5 · ESC/ESH 2023 Adverse Effects</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · ALERT STACK — Contraindicated combinations & emergencies (2 alerts only)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>ABSOLUTE CONTRAINDICATIONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">절대 금기 조합 / 응급 상황</h2>
+      <p class="slide__subtitle">처방 전 반드시 확인해야 할 두 가지 적색 신호 — 위반 시 사망·중증 합병증 위험</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-alert-stack" style="grid-auto-rows: auto; gap: var(--space-4);">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">RAAS 이중 차단 절대 금기 — ACEi + ARB</div>
+            <div class="alert-row__text">ACEi와 ARB의 동시 투여는 ONTARGET·ALTITUDE 연구에서 신부전·고K혈증·실신 발생률을 유의하게 증가시켜 모든 가이드라인이 금지합니다. 임신 중 RAAS 차단제(ACEi/ARB/Aliskiren)는 태아 신독성으로 절대 금기 — 임신 계획·확인 즉시 중단합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">CCB-Non-DHP + β-blocker — 서맥·심정지 위험</div>
+            <div class="alert-row__text">Verapamil/Diltiazem과 β-blocker 병용은 음성 변시·변력 효과가 가산되어 고도 AV block, 중증 서맥, 심정지를 유발할 수 있습니다. 고도 AV block 환자(심박조율기 미장착) 및 HFrEF에서 단독으로도 금기 — 동반질환 확인 후 처방하고, β-blocker는 서서히 감량 후 중단합니다(갑작스런 중단 시 rebound 빈맥·협심증).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ONTARGET 2008 · ALTITUDE 2012 · FDA Black Box · ESC 2023</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — 8 essentials for class selection
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>PRESCRIBING CHECKLIST</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">실전 처방 체크리스트 8가지</h2>
+      <p class="slide__subtitle">클래스 선택과 병용을 결정할 때 임상에서 반드시 확인할 핵심 항목</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">단일제 최대용량보다 <strong>2제 병용 반량</strong>이 효과·내약성 모두 우월</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">표준 1차 조합: <strong>RAAS 차단제 + CCB</strong> 또는 <strong>RAAS 차단제 + Thiazide</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">ARB는 <strong>azilsartan · candesartan · telmisartan</strong> 우선 (losartan 대비 SBP −4~6 mmHg)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">이뇨제는 <strong>chlorthalidone · indapamide</strong> 우선 (HCTZ 대비 SBP −4~5 mmHg)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">CCB-DHP 부종 시 <strong>lercanidipine · lacidipine</strong> 전환 (부종 9% vs 19%)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">β-blocker 단독 1차 비권장 — <strong>관상동맥질환·심부전·빈맥</strong> 동반 시만 적응</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text"><strong>ACEi + ARB 금지</strong>, <strong>Non-DHP CCB + β-blocker</strong> 신중 (서맥·AV block)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">저항성 고혈압 4차 약제는 <strong>spironolactone 25~50mg</strong> (PATHWAY-2)</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KSH 2022 · ESC/ESH 2023 · PATHWAY-2 Lancet 2015</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">같은 클래스 안에서도<br><em>약제 선택이 차이를 만듭니다</em></h2>
+      <p class="slide__subtitle">동반질환·내약성·약물 상호작용을 종합적으로 고려한 맞춤 처방을 권장합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM15,2H16V3H15zM20,2H21V3H20zM23,2H24V3H23zM28,2H29V3H28zM32,2H33V3H32zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM12,3H13V4H12zM13,3H14V4H13zM14,3H15V4H14zM16,3H17V4H16zM17,3H18V4H17zM19,3H20V4H19zM22,3H23V4H22zM27,3H28V4H27zM28,3H29V4H28zM31,3H32V4H31zM34,3H35V4H34zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM13,4H14V5H13zM16,4H17V5H16zM18,4H19V5H18zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM23,4H24V5H23zM24,4H25V5H24zM27,4H28V5H27zM29,4H30V5H29zM30,4H31V5H30zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM22,5H23V6H22zM24,5H25V6H24zM26,5H27V6H26zM30,5H31V6H30zM32,5H33V6H32zM33,5H34V6H33zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM12,6H13V7H12zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM17,6H18V7H17zM20,6H21V7H20zM21,6H22V7H21zM23,6H24V7H23zM24,6H25V7H24zM25,6H26V7H25zM32,6H33V7H32zM33,6H34V7H33zM34,6H35V7H34zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM12,7H13V8H12zM17,7H18V8H17zM19,7H20V8H19zM27,7H28V8H27zM28,7H29V8H28zM31,7H32V8H31zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM10,9H11V10H10zM11,9H12V10H11zM15,9H16V10H15zM16,9H17V10H16zM18,9H19V10H18zM21,9H22V10H21zM22,9H23V10H22zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM28,9H29V10H28zM30,9H31V10H30zM2,10H3V11H2zM8,10H9V11H8zM10,10H11V11H10zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM31,10H32V11H31zM35,10H36V11H35zM36,10H37V11H36zM39,10H40V11H39zM40,10H41V11H40zM41,10H42V11H41zM2,11H3V12H2zM4,11H5V12H4zM5,11H6V12H5zM9,11H10V12H9zM10,11H11V12H10zM12,11H13V12H12zM13,11H14V12H13zM16,11H17V12H16zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM25,11H26V12H25zM27,11H28V12H27zM29,11H30V12H29zM33,11H34V12H33zM37,11H38V12H37zM38,11H39V12H38zM2,12H3V13H2zM5,12H6V13H5zM8,12H9V13H8zM10,12H11V13H10zM12,12H13V13H12zM13,12H14V13H13zM14,12H15V13H14zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM23,12H24V13H23zM26,12H27V13H26zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM34,12H35V13H34zM35,12H36V13H35zM37,12H38V13H37zM3,13H4V14H3zM6,13H7V14H6zM7,13H8V14H7zM9,13H10V14H9zM10,13H11V14H10zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM16,13H17V14H16zM17,13H18V14H17zM21,13H22V14H21zM22,13H23V14H22zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM30,13H31V14H30zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM38,13H39V14H38zM39,13H40V14H39zM41,13H42V14H41zM3,14H4V15H3zM5,14H6V15H5zM6,14H7V15H6zM8,14H9V15H8zM11,14H12V15H11zM13,14H14V15H13zM14,14H15V15H14zM15,14H16V15H15zM16,14H17V15H16zM18,14H19V15H18zM25,14H26V15H25zM26,14H27V15H26zM29,14H30V15H29zM34,14H35V15H34zM36,14H37V15H36zM37,14H38V15H37zM3,15H4V16H3zM4,15H5V16H4zM5,15H6V16H5zM6,15H7V16H6zM11,15H12V16H11zM12,15H13V16H12zM14,15H15V16H14zM16,15H17V16H16zM19,15H20V16H19zM20,15H21V16H20zM24,15H25V16H24zM27,15H28V16H27zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM35,15H36V16H35zM36,15H37V16H36zM37,15H38V16H37zM38,15H39V16H38zM39,15H40V16H39zM42,15H43V16H42zM2,16H3V17H2zM3,16H4V17H3zM5,16H6V17H5zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM13,16H14V17H13zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM25,16H26V17H25zM26,16H27V17H26zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM39,16H40V17H39zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM12,17H13V18H12zM17,17H18V18H17zM22,17H23V18H22zM24,17H25V18H24zM25,17H26V18H25zM30,17H31V18H30zM33,17H34V18H33zM34,17H35V18H34zM35,17H36V18H35zM39,17H40V18H39zM40,17H41V18H40zM41,17H42V18H41zM2,18H3V19H2zM4,18H5V19H4zM5,18H6V19H5zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM13,18H14V19H13zM16,18H17V19H16zM18,18H19V19H18zM19,18H20V19H19zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM32,18H33V19H32zM35,18H36V19H35zM37,18H38V19H37zM40,18H41V19H40zM41,18H42V19H41zM3,19H4V20H3zM4,19H5V20H4zM10,19H11V20H10zM11,19H12V20H11zM13,19H14V20H13zM18,19H19V20H18zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM29,19H30V20H29zM30,19H31V20H30zM31,19H32V20H31zM32,19H33V20H32zM33,19H34V20H33zM34,19H35V20H34zM35,19H36V20H35zM36,19H37V20H36zM37,19H38V20H37zM38,19H39V20H38zM40,19H41V20H40zM41,19H42V20H41zM42,19H43V20H42zM2,20H3V21H2zM3,20H4V21H3zM4,20H5V21H4zM5,20H6V21H5zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM13,20H14V21H13zM14,20H15V21H14zM18,20H19V21H18zM19,20H20V21H19zM20,20H21V21H20zM21,20H22V21H21zM22,20H23V21H22zM25,20H26V21H25zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM33,20H34V21H33zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM42,20H43V21H42zM4,21H5V22H4zM6,21H7V22H6zM11,21H12V22H11zM12,21H13V22H12zM14,21H15V22H14zM17,21H18V22H17zM21,21H22V22H21zM22,21H23V22H22zM23,21H24V22H23zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM34,21H35V22H34zM35,21H36V22H35zM36,21H37V22H36zM38,21H39V22H38zM39,21H40V22H39zM3,22H4V23H3zM8,22H9V23H8zM10,22H11V23H10zM11,22H12V23H11zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM20,22H21V23H20zM21,22H22V23H21zM23,22H24V23H23zM24,22H25V23H24zM26,22H27V23H26zM30,22H31V23H30zM35,22H36V23H35zM37,22H38V23H37zM39,22H40V23H39zM40,22H41V23H40zM41,22H42V23H41zM42,22H43V23H42zM6,23H7V24H6zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM15,23H16V24H15zM17,23H18V24H17zM18,23H19V24H18zM19,23H20V24H19zM21,23H22V24H21zM24,23H25V24H24zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM32,23H33V24H32zM33,23H34V24H33zM37,23H38V24H37zM38,23H39V24H38zM40,23H41V24H40zM2,24H3V25H2zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM17,24H18V25H17zM18,24H19V25H18zM20,24H21V25H20zM22,24H23V25H22zM29,24H30V25H29zM31,24H32V25H31zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM39,24H40V25H39zM40,24H41V25H40zM2,25H3V26H2zM3,25H4V26H3zM5,25H6V26H5zM9,25H10V26H9zM10,25H11V26H10zM12,25H13V26H12zM13,25H14V26H13zM14,25H15V26H14zM15,25H16V26H15zM21,25H22V26H21zM22,25H23V26H22zM28,25H29V26H28zM29,25H30V26H29zM30,25H31V26H30zM35,25H36V26H35zM38,25H39V26H38zM39,25H40V26H39zM41,25H42V26H41zM2,26H3V27H2zM4,26H5V27H4zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM13,26H14V27H13zM15,26H16V27H15zM16,26H17V27H16zM17,26H18V27H17zM22,26H23V27H22zM25,26H26V27H25zM26,26H27V27H26zM30,26H31V27H30zM33,26H34V27H33zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM39,26H40V27H39zM41,26H42V27H41zM3,27H4V28H3zM5,27H6V28H5zM6,27H7V28H6zM7,27H8V28H7zM11,27H12V28H11zM12,27H13V28H12zM15,27H16V28H15zM16,27H17V28H16zM18,27H19V28H18zM21,27H22V28H21zM24,27H25V28H24zM25,27H26V28H25zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM33,27H34V28H33zM35,27H36V28H35zM36,27H37V28H36zM37,27H38V28H37zM38,27H39V28H38zM39,27H40V28H39zM42,27H43V28H42zM4,28H5V29H4zM5,28H6V29H5zM8,28H9V29H8zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM15,28H16V29H15zM16,28H17V29H16zM17,28H18V29H17zM18,28H19V29H18zM23,28H24V29H23zM24,28H25V29H24zM28,28H29V29H28zM29,28H30V29H29zM32,28H33V29H32zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM41,28H42V29H41zM2,29H3V30H2zM5,29H6V30H5zM6,29H7V30H6zM10,29H11V30H10zM11,29H12V30H11zM13,29H14V30H13zM14,29H15V30H14zM17,29H18V30H17zM18,29H19V30H18zM20,29H21V30H20zM21,29H22V30H21zM24,29H25V30H24zM29,29H30V30H29zM33,29H34V30H33zM35,29H36V30H35zM37,29H38V30H37zM39,29H40V30H39zM40,29H41V30H40zM41,29H42V30H41zM42,29H43V30H42zM2,30H3V31H2zM4,30H5V31H4zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM10,30H11V31H10zM11,30H12V31H11zM13,30H14V31H13zM14,30H15V31H14zM16,30H17V31H16zM17,30H18V31H17zM18,30H19V31H18zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM25,30H26V31H25zM27,30H28V31H27zM28,30H29V31H28zM31,30H32V31H31zM33,30H34V31H33zM34,30H35V31H34zM39,30H40V31H39zM40,30H41V31H40zM2,31H3V32H2zM3,31H4V32H3zM4,31H5V32H4zM5,31H6V32H5zM7,31H8V32H7zM9,31H10V32H9zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM15,31H16V32H15zM16,31H17V32H16zM18,31H19V32H18zM20,31H21V32H20zM22,31H23V32H22zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM31,31H32V32H31zM32,31H33V32H32zM33,31H34V32H33zM34,31H35V32H34zM36,31H37V32H36zM37,31H38V32H37zM38,31H39V32H38zM42,31H43V32H42zM2,32H3V33H2zM3,32H4V33H3zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM9,32H10V33H9zM11,32H12V33H11zM22,32H23V33H22zM23,32H24V33H23zM25,32H26V33H25zM27,32H28V33H27zM28,32H29V33H28zM30,32H31V33H30zM33,32H34V33H33zM35,32H36V33H35zM37,32H38V33H37zM39,32H40V33H39zM42,32H43V33H42zM2,33H3V34H2zM9,33H10V34H9zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM18,33H19V34H18zM20,33H21V34H20zM21,33H22V34H21zM22,33H23V34H22zM26,33H27V34H26zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM36,33H37V34H36zM37,33H38V34H37zM41,33H42V34H41zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM8,34H9V35H8zM9,34H10V35H9zM10,34H11V35H10zM16,34H17V35H16zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM21,34H22V35H21zM24,34H25V35H24zM27,34H28V35H27zM28,34H29V35H28zM31,34H32V35H31zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM40,34H41V35H40zM10,35H11V36H10zM16,35H17V36H16zM19,35H20V36H19zM20,35H21V36H20zM21,35H22V36H21zM24,35H25V36H24zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM40,35H41V36H40zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM12,36H13V37H12zM17,36H18V37H17zM19,36H20V37H19zM22,36H23V37H22zM23,36H24V37H23zM27,36H28V37H27zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM32,36H33V37H32zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM39,36H40V37H39zM40,36H41V37H40zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM13,37H14V38H13zM14,37H15V38H14zM15,37H16V38H15zM17,37H18V38H17zM18,37H19V38H18zM19,37H20V38H19zM20,37H21V38H20zM22,37H23V38H22zM24,37H25V38H24zM26,37H27V38H26zM27,37H28V38H27zM33,37H34V38H33zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM12,38H13V39H12zM14,38H15V39H14zM18,38H19V39H18zM19,38H20V39H19zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM24,38H25V39H24zM27,38H28V39H27zM29,38H30V39H29zM30,38H31V39H30zM31,38H32V39H31zM32,38H33V39H32zM33,38H34V39H33zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM39,38H40V39H39zM42,38H43V39H42zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM12,39H13V40H12zM14,39H15V40H14zM15,39H16V40H15zM19,39H20V40H19zM20,39H21V40H20zM21,39H22V40H21zM22,39H23V40H22zM24,39H25V40H24zM25,39H26V40H25zM27,39H28V40H27zM29,39H30V40H29zM30,39H31V40H30zM34,39H35V40H34zM37,39H38V40H37zM39,39H40V40H39zM40,39H41V40H40zM41,39H42V40H41zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM11,40H12V41H11zM12,40H13V41H12zM13,40H14V41H13zM14,40H15V41H14zM15,40H16V41H15zM16,40H17V41H16zM19,40H20V41H19zM22,40H23V41H22zM23,40H24V41H23zM24,40H25V41H24zM26,40H27V41H26zM27,40H28V41H27zM28,40H29V41H28zM29,40H30V41H29zM30,40H31V41H30zM32,40H33V41H32zM35,40H36V41H35zM36,40H37V41H36zM37,40H38V41H37zM38,40H39V41H38zM2,41H3V42H2zM8,41H9V42H8zM11,41H12V42H11zM12,41H13V42H12zM16,41H17V42H16zM17,41H18V42H17zM18,41H19V42H18zM22,41H23V42H22zM33,41H34V42H33zM35,41H36V42H35zM38,41H39V42H38zM39,41H40V42H39zM40,41H41V42H40zM42,41H43V42H42zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM20,42H21V43H20zM21,42H22V43H21zM24,42H25V43H24zM26,42H27V43H26zM27,42H28V43H27zM29,42H30V43H29zM31,42H32V43H31zM33,42H34V43H33zM36,42H37V43H36zM37,42H38V43H37zM38,42H39V43H38zM40,42H41V43H40z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">진료실에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

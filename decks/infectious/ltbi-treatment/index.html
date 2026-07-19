@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>LTBI Treatment — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/infectious/ltbi-treatment/">
+  <meta property="og:title" content="잠복결핵감염(LTBI) 치료 — 광교바른내과">
+  <meta property="og:description" content="3HP·4R·9H 치료 요법 비교, 간독성 모니터링, 리팜핀 약물상호작용, 임신 시 고려사항까지 — 잠복결핵감염 치료 환자 가이드">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/infectious/ltbi-treatment/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (regimen comparison table + alert stack + monitoring schedule) -->
+  <style>
+    /* Three-stat row — used on slide 2 (hero stats) */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 3rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Regimen comparison table — 4 cols × N rows for 3HP/4R/9H */
+    .regimen-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: var(--text-body);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+    .regimen-table thead th {
+      background: var(--color-navy);
+      color: var(--color-canvas);
+      font-weight: var(--weight-bold);
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      letter-spacing: var(--tracking-snug);
+      font-size: var(--text-body);
+      line-height: var(--lh-snug);
+    }
+    .regimen-table thead th .regimen-table__sub {
+      display: block;
+      font-size: var(--text-sm);
+      font-weight: var(--weight-450);
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+    .regimen-table thead th:first-child { background: var(--color-steel); }
+    .regimen-table tbody td {
+      padding: var(--space-3) var(--space-4);
+      border-top: 1px solid var(--color-border-soft);
+      vertical-align: top;
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+    .regimen-table tbody tr td:first-child {
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      width: 22%;
+      letter-spacing: var(--tracking-snug);
+    }
+    .regimen-table__primary {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--color-steel);
+      color: var(--color-canvas);
+      font-size: var(--text-micro);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .regimen-table__alt {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      color: var(--color-slate);
+      font-size: var(--text-micro);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      border: 1px solid var(--color-border);
+    }
+
+    /* Vertical alert stack — single column emergency rows (slide 7 hepatotoxicity) */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+    .slide--alert-stack .slide__title-block {
+      max-width: 1120px;
+      margin-bottom: var(--space-5);
+    }
+    .slide--alert-stack .slide__body--visual-focus {
+      grid-template-columns: minmax(0, 1.08fr) minmax(460px, 0.72fr);
+    }
+    .slide--alert-stack .pattern-alert-stack { gap: var(--space-2); }
+
+    .slide--readable-visual .slide__body--visual-focus {
+      grid-template-columns: minmax(0, 1fr) minmax(380px, 0.56fr);
+      gap: var(--space-4);
+    }
+    .slide--readable-visual .slide__body--visual-focus .pattern-grid { gap: var(--space-3); }
+    .slide--readable-visual .slide__body--visual-focus .tile {
+      padding: var(--space-4);
+      gap: var(--space-2);
+    }
+    .slide--readable-visual .slide__body--visual-focus .tile__title { font-size: var(--text-body-lg); }
+    .slide--readable-visual .slide__body--visual-focus .tile__body {
+      margin-top: var(--space-1);
+      font-size: var(--text-body);
+      line-height: 1.28;
+      color: var(--color-ink);
+    }
+    .slide--readable-visual .slide__body--visual-focus .tile__regimen {
+      margin-top: auto;
+      gap: var(--space-1);
+      padding-top: var(--space-2);
+    }
+    .slide--readable-visual .slide__body--visual-focus .tile__regimen li {
+      grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr);
+      gap: var(--space-2);
+      font-size: var(--text-body);
+      line-height: var(--lh-snug);
+    }
+    .slide--readable-visual .slide__body--visual-focus .tile__regimen-dose {
+      white-space: normal;
+    }
+
+    .slide--risk-profile .slide__body--visual-focus {
+      display: flex;
+      flex-direction: column;
+    }
+    .slide--risk-profile .slide__title-block {
+      margin-bottom: var(--space-5);
+    }
+    .slide--risk-profile .slide__body--visual-focus > .ai-visual--focus {
+      display: none;
+    }
+    .slide--risk-profile .slide__body--visual-focus .pattern-grid--risk-readable {
+      width: 100%;
+      height: 100%;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+    .slide--risk-profile .slide__body--visual-focus .tile {
+      padding: var(--space-5);
+    }
+    .slide--risk-profile .slide__body--visual-focus .tile__body {
+      line-height: 1.23;
+    }
+
+    /* Monitoring schedule — horizontal timeline of LFT checks */
+    .monitor-schedule {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-3);
+      align-items: stretch;
+    }
+    .monitor-step {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      position: relative;
+    }
+    .monitor-step__week {
+      font-size: var(--text-micro);
+      font-weight: var(--weight-bold);
+      color: var(--color-steel);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .monitor-step__label {
+      font-size: var(--text-body);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-snug);
+    }
+    .monitor-step__body {
+      font-size: var(--text-sm);
+      color: var(--color-ink-soft);
+      line-height: var(--lh-snug);
+    }
+    .monitor-step--baseline { background: var(--color-canvas-warm); border-color: var(--color-steel); }
+
+    .slide--monitoring .slide__body { gap: var(--space-4); }
+    .slide--monitoring .monitor-schedule { gap: var(--space-4); }
+    .slide--monitoring .monitor-step {
+      gap: var(--space-3);
+      padding: var(--space-5);
+    }
+    .slide--monitoring .monitor-step__label {
+      font-size: var(--text-body-lg);
+    }
+    .slide--monitoring .monitor-step__body {
+      font-size: var(--text-body);
+      line-height: 1.28;
+      color: var(--color-ink);
+    }
+    .slide--monitoring .alert-strip {
+      margin-top: 0;
+      padding: var(--space-5) var(--space-6);
+      font-size: var(--text-body-lg);
+    }
+
+    .slide--interactions .slide__title-block {
+      max-width: 1080px;
+      margin-bottom: var(--space-5);
+    }
+    .slide--interactions .slide__subtitle { max-width: 1020px; }
+    .slide--interactions .pattern-grid {
+      gap: var(--space-3);
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+    }
+    .slide--interactions .tile {
+      padding: var(--space-4) var(--space-5);
+      gap: var(--space-2);
+    }
+    .slide--interactions .tile__body {
+      margin-top: 0;
+      line-height: 1.3;
+    }
+
+    .slide--pregnancy .slide__title-block { margin-bottom: var(--space-6); }
+    .slide--pregnancy .slide__body--visual-focus {
+      grid-template-columns: minmax(0, 1fr) minmax(450px, 0.66fr);
+    }
+    .slide--pregnancy .pattern-compare { gap: var(--space-4); }
+    .slide--pregnancy .compare-col__header {
+      padding: var(--space-4) var(--space-5);
+      font-size: var(--text-h3);
+      line-height: 1.18;
+    }
+    .slide--pregnancy .compare-col__list {
+      gap: var(--space-2);
+      padding: var(--space-4) var(--space-5) var(--space-5);
+    }
+    .slide--pregnancy .compare-col__list li {
+      padding-left: var(--space-5);
+      line-height: 1.2;
+    }
+
+    /* Checklist with 8 items */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+    .slide:nth-of-type(3) .pattern-split > div { display: flex; flex-direction: column; min-height: 100%; }
+    .slide:nth-of-type(3) .split__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .slide:nth-of-type(3) .split__note { margin-top: auto; }
+    .slide:nth-of-type(3) .regimen-table { height: 100%; }
+    .slide:nth-of-type(3) .regimen-table tbody tr { height: 54px; }
+    .slide:nth-of-type(5) .alert-strip { min-height: 270px; display: flex; align-items: center; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · INFECTIOUS DISEASE</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">잠복결핵감염 치료,<br><em>3~9개월의 정확한 복용</em></h1>
+      <p class="slide__subtitle">잠복결핵감염 (Latent Tuberculosis Infection, LTBI) 치료 요법·간독성·약물상호작용 가이드</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">3HP · 4R · 9H Regimens · Hepatotoxicity · Drug Interactions</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO STATS — 3 key numbers (efficacy / cost / regimens)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">짧은 치료로 평생 결핵을 예방합니다</h2>
+      <p class="slide__subtitle">잠복결핵감염 치료의 핵심 — 단기 복용으로 활동성 결핵 발병 위험을 크게 낮춥니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">60–90<span style="font-size:1.5rem">%</span></div>
+              <div class="stats3-cell__unit">예방 효과</div>
+            </div>
+            <div class="stats3-cell__label">치료 완주 시 결핵 발병 위험 감소</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">3</div>
+              <div class="stats3-cell__unit">권고 요법</div>
+            </div>
+            <div class="stats3-cell__label">3HP · 4R · 9H — 환자 상태에 맞춰 선택</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">0<span style="font-size:1.5rem">%</span></div>
+              <div class="stats3-cell__unit">본인부담</div>
+            </div>
+            <div class="stats3-cell__label">건강보험 산정특례 (V010) 적용</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          잠복결핵감염은 결핵균이 몸에 존재하지만 잠자는 상태로 — 증상도 전염력도 없습니다. 그러나 평생 5~10% 확률로 활동성 결핵 (Active TB) 으로 진행할 수 있어, 단기 약물 치료로 미리 균을 제거하는 것이 표준 진료입니다. 잠복결핵 자체에 대한 자세한 내용은 <em>LTBI 개요</em> 자료를 참고해 주세요.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 결핵 진료지침 5판 (2024) · WHO LTBI Guidelines 2020</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · COMPARISON TABLE — 3HP vs 4R vs 9H regimens
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>REGIMENS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">3가지 표준 치료 요법 한눈에 비교</h2>
+      <p class="slide__subtitle">3HP · 4R 은 1차 권고 / 9H 는 대안 — 간 기능, 동반 약물, 임신 여부에 따라 의료진이 결정</p>
+    </div>
+    <div class="slide__body">
+      <table class="regimen-table">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>3HP<span class="regimen-table__sub">이소니아지드 (Isoniazid, INH) + 리파펜틴 (Rifapentine), 주 1회</span></th>
+            <th>4R<span class="regimen-table__sub">리팜핀 (Rifampin), 1일 1회</span></th>
+            <th>9H<span class="regimen-table__sub">이소니아지드 (Isoniazid) 단독, 1일 1회</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>복용 기간</td>
+            <td>3개월 (12회 / 주 1회)</td>
+            <td>4개월 (120일 / 매일)</td>
+            <td>9개월 (270일 / 매일)</td>
+          </tr>
+          <tr>
+            <td>한국 권고</td>
+            <td><span class="regimen-table__primary">1차 권고</span></td>
+            <td><span class="regimen-table__primary">1차 권고</span></td>
+            <td><span class="regimen-table__alt">대안</span></td>
+          </tr>
+          <tr>
+            <td>치료 완료율</td>
+            <td>약 87% (가장 높음)</td>
+            <td>78.8%</td>
+            <td>63.2% (가장 낮음)</td>
+          </tr>
+          <tr>
+            <td>심한 간독성</td>
+            <td>약 0.4% (낮음)</td>
+            <td>0.3% (가장 낮음)</td>
+            <td>약 2.0% (가장 높음)</td>
+          </tr>
+          <tr>
+            <td>약물상호작용</td>
+            <td>리파펜틴 — CYP3A4 강력 유도</td>
+            <td>리팜핀 — CYP3A4 강력 유도</td>
+            <td>적은 편 (CYP 영향 적음)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Menzies D, NEJM 2018;379:440-453 · CDC LTBI Treatment 2020</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 3-up — Drug detail tiles (regimen tile pattern)
+       ======================================================================== -->
+  <section class="slide slide--drug-profile slide--readable-visual">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>DRUG PROFILE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">사용되는 핵심 약물 3가지</h2>
+      <p class="slide__subtitle">각 약물의 작용·복용법·대표 부작용을 미리 알아두면 안전한 치료에 큰 도움이 됩니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3 pattern-grid--drug-profile" style="grid-template-rows: 1fr;">
+        <div class="tile">
+          <div class="tile__index">DRUG · 01</div>
+          <div class="tile__title">이소니아지드 (Isoniazid, INH)</div>
+          <div class="tile__body">결핵균 세포벽 합성 차단. 1일 1회 공복 복용 (식전 1시간 또는 식후 2시간). 대표 부작용 — 간독성, 말초신경병증 (피리독신/B6 동시 복용으로 예방). 등푸른 생선·발효식품 섭취 후 홍조·두통이 생길 수 있습니다.</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">300 mg / 1일 1회</span></li>
+            <li><span class="tile__regimen-name">B6 (피리독신)</span><span class="tile__regimen-dose">25–50 mg 동시</span></li>
+          </ul>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 02</div>
+          <div class="tile__title">리팜핀 (Rifampin, RIF)</div>
+          <div class="tile__body">결핵균 RNA 중합효소 억제. 1일 1회 공복 복용. 체액(소변·눈물·땀·침)이 주황~붉은색으로 변하는 것은 정상 — 약을 끊으면 사라집니다. 콘택트렌즈는 영구 착색될 수 있으니 안경 또는 일회용 렌즈 권장.</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">600 mg / 1일 1회</span></li>
+            <li><span class="tile__regimen-name">제산제와 간격</span><span class="tile__regimen-dose">1시간 이상</span></li>
+          </ul>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 03</div>
+          <div class="tile__title">리파펜틴 (Rifapentine, RPT)</div>
+          <div class="tile__body">리팜핀 계열의 장시간 작용 약물 — 주 1회 복용이 가능한 이유입니다. 3HP 요법에서 이소니아지드와 함께 사용. 음식과 함께 복용 시 흡수 향상. 리팜핀과 동일하게 CYP3A4 강력 유도제로 약물상호작용 주의가 필요합니다.</div>
+          <ul class="tile__regimen">
+            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">900 mg / 주 1회</span></li>
+            <li><span class="tile__regimen-name">복용 시기</span><span class="tile__regimen-dose">식사와 함께</span></li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/infectious-ltbi-treatment-s04-risk-infectious-ed3b23b6-20260530-raster-v2-20260531.jpg" alt="사용되는 핵심 약물 3가지 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 결핵 진료지침 5판 (2024) · ATS/CDC/IDSA Drug Reference</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · TIMELINE — LFT monitoring schedule
+       ======================================================================== -->
+  <section class="slide slide--monitoring">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>LFT MONITORING</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">간 기능 검사 (LFT) 모니터링 일정</h2>
+      <p class="slide__subtitle">약 시작 전 기저 검사 후 정기 추적 — 무증상 간독성을 조기에 발견하기 위한 표준 일정</p>
+    </div>
+    <div class="slide__body">
+      <div class="monitor-schedule">
+        <div class="monitor-step monitor-step--baseline">
+          <div class="monitor-step__week">BASELINE</div>
+          <div class="monitor-step__label">치료 시작 전</div>
+          <div class="monitor-step__body">AST · ALT · 총빌리루빈 · CBC · 크레아티닌 · HBV/HCV 선별. 흉부 X선으로 활동성 결핵 배제.</div>
+        </div>
+        <div class="monitor-step">
+          <div class="monitor-step__week">WEEK 2–4</div>
+          <div class="monitor-step__label">초기 추적</div>
+          <div class="monitor-step__body">고위험군 (음주·간질환·고령·임신·HIV) 우선 재검. 증상 문진 + 부작용 점검.</div>
+        </div>
+        <div class="monitor-step">
+          <div class="monitor-step__week">MONTH 1–2</div>
+          <div class="monitor-step__label">월 1회 추적</div>
+          <div class="monitor-step__body">LFT 정상 + 무증상이면 일반 환자도 매월 1회 외래 진료로 부작용 점검.</div>
+        </div>
+        <div class="monitor-step">
+          <div class="monitor-step__week">MONTH 3+</div>
+          <div class="monitor-step__label">정기 추적</div>
+          <div class="monitor-step__body">간기능 안정 시 1~2개월 간격으로 LFT 재검. 증상 발생 시는 수시 검사.</div>
+        </div>
+        <div class="monitor-step">
+          <div class="monitor-step__week">END</div>
+          <div class="monitor-step__label">치료 종료 시</div>
+          <div class="monitor-step__body">최종 LFT 확인 후 산정특례 종료 처리. 완료 기록 발급 (사업장·학교 제출용).</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">중단 기준</span>
+        <span class="alert-strip__text">AST/ALT 가 정상 상한의 <strong>5배 이상 (무증상)</strong> 또는 <strong>3배 이상 (증상 동반)</strong>이면 약물 즉시 중단 — ATS 2006 기준.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · 결핵 진료지침 5판</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — High-risk groups for hepatotoxicity
+       ======================================================================== -->
+  <section class="slide slide--risk-profile slide--readable-visual">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>HEPATOTOXICITY RISK</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">간독성 (Hepatotoxicity) 위험이 높은 분들</h2>
+      <p class="slide__subtitle">아래 항목 중 하나 이상 해당되면 더 자주 검사·더 면밀한 관찰이 필요합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3 pattern-grid--risk-readable">
+        <div class="tile">
+          <div class="tile__index">RISK · 01</div>
+          <div class="tile__title">고령 (65세 이상)</div>
+          <div class="tile__body">약물 대사·해독 능력 감소. 9H (이소니아지드 9개월) 요법에서 간독성 발생률 증가 → 가능하면 짧은 3HP 또는 4R 요법이 권고됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 02</div>
+          <div class="tile__title">만성 간질환 · B/C형 간염</div>
+          <div class="tile__body">기저 간질환 시 간독성 위험 2~3배 증가. 치료 전 HBsAg / anti-HCV 선별 검사. 간경변·활동성 간염은 전문의 상의 후 결정합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 03</div>
+          <div class="tile__title">매일 음주 · 알코올 사용</div>
+          <div class="tile__body">매일 음주 시 간독성 위험 약 4배 (USPHS), 가끔 음주도 약 2배. 치료 중 금주 원칙. 어려우면 알려주세요 — 더 자주 LFT 검사로 관리 가능합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 04</div>
+          <div class="tile__title">간독성 약물 병용</div>
+          <div class="tile__body">아세트아미노펜 고용량, 메토트렉세이트, 일부 항생제·항진균제 동시 복용 시 위험 가중. 모든 복용 약·건강기능식품·한약을 진료 시 알려주세요.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 05</div>
+          <div class="tile__title">임신 · 산후 3개월 이내</div>
+          <div class="tile__body">산후 3개월 이내 이소니아지드 간독성 위험 ↑. 가능하면 출산 후로 치료 조정 — 단, 고위험군은 임신 중에도 치료가 권고될 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">RISK · 06</div>
+          <div class="tile__title">영양 불량 · 저체중</div>
+          <div class="tile__body">단백·비타민 결핍 시 약물 대사 저하, 간독성 발현이 빨라질 수 있음. 필요 시 영양 상담 병행. 이소니아지드 복용 시 비타민 B6 보충은 표준 권고사항입니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/infectious-ltbi-treatment-s06-risk-infectious-239dd485-20260530-raster-20260531.jpg" alt="간독성 (Hepatotoxicity) 위험이 높은 분들 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · USPHS Surveillance Study</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · ALERT STACK — STOP-AND-CALL hepatotoxicity warning signs
+       ======================================================================== -->
+  <section class="slide slide--alert-stack">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>STOP &amp; CALL</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이런 증상이 나타나면 약을 즉시 멈추세요</h2>
+      <p class="slide__subtitle">간독성 (Drug-Induced Liver Injury) 의 경고 신호 — 한 가지라도 해당되면 약 중단 후 같은 날 진료</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-alert-stack">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">황달 (Jaundice) · 진한 갈색 소변</div>
+            <div class="alert-row__text">피부·눈 흰자가 노랗게 변하거나 콜라색 소변이 나오면 즉시 약 중단. 리팜핀에 의한 정상적인 주황색 소변과 구별 — 갈색·콜라색은 간 손상 신호입니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">지속적 구역·구토 · 식욕 부진</div>
+            <div class="alert-row__text">하루 이상 음식이 안 받거나 구토가 반복되면 단순 위장 부작용이 아닌 간독성 가능성. 혈액검사로 간 효소 (AST/ALT) 확인이 필요합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">우상복부 통증 · 극심한 피로감</div>
+            <div class="alert-row__text">오른쪽 윗배 불편감이나 평소와 다른 무력감·쇠약. 회백색 대변이 동반되면 담즙 정체 (Cholestasis) 도 의심 — 즉시 진료가 필요합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">발진 · 발열 · 고열 동반 증상</div>
+            <div class="alert-row__text">전신 발진·고열·림프절 종대 등이 동반되면 약물 과민반응 (DRESS 등) 가능성. 즉시 약 중단하고 응급 진료 — 자가 복용 재개 절대 금지.</div>
+          </div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/infectious-ltbi-treatment-s07-risk-infectious-62c8ca5d-20260530-raster-20260531.jpg" alt="이런 증상이 나타나면 약을 즉시 멈추세요 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · CDC LTBI Adverse Events</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DENSITY GRID 3×2 — Rifampin/Rifapentine drug interactions (CYP3A4)
+       ======================================================================== -->
+  <section class="slide slide--interactions">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>DRUG INTERACTIONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">리팜핀·리파펜틴의 약물상호작용 6가지</h2>
+      <p class="slide__subtitle">두 약은 간 효소 (CYP3A4) 를 강력하게 유도해 다른 약의 효과를 떨어뜨립니다 — 모든 복용 약을 알려주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 01</div>
+          <div class="tile__title">경구 피임약 (Oral Contraceptives)</div>
+          <div class="tile__body">에스트로겐·프로게스틴 효과 64~66% ↓ → 단독 사용 금지. 콘돔, 구리 IUD, 데포프로베라 주사가 대안. 치료 종료 후 4주간도 동일.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 02</div>
+          <div class="tile__title">와파린 (Warfarin) · 항응고제</div>
+          <div class="tile__body">와파린 대사 가속 → INR 감소, 출혈 위험 변동. 1~2주 간격 INR 측정 후 용량 조정. DOAC도 농도 저하 보고가 있어 주의.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 03</div>
+          <div class="tile__title">고혈압약 · 칼슘차단제</div>
+          <div class="tile__body">암로디핀·딜티아젬·베라파밀 등 효과 감소 → 혈압 조절 약화. 필요 시 ACE-I·ARB·이뇨제로 변경하거나 용량 조정.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 04</div>
+          <div class="tile__title">고지혈증약 (Statin)</div>
+          <div class="tile__body">심바스타틴·아토르바스타틴 효과 80~87% ↓. LTBI 치료 기간 동안 statin 일시 중단 또는 영향 적은 rosuvastatin 등으로 변경 검토.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 05</div>
+          <div class="tile__title">당뇨약 · 설포닐유레아</div>
+          <div class="tile__body">글리메피리드·글리피지드 등 효과 감소 → 혈당 상승 가능. 자가 혈당 측정 강화, 필요 시 메트포르민·DPP-4 억제제 등 보완.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">INTERACTION · 06</div>
+          <div class="tile__title">면역억제제 · 항진균제 — 병용 금기</div>
+          <div class="tile__body">타크로리무스·사이클로스포린·보리코나졸·일부 PI 계열 항HIV제는 농도 급감 → 병용 금기 또는 상급병원 의뢰. 이식·면역억제 환자는 사전 협진 필수.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Rifampin Drug-Drug Interaction Database (Lexicomp 2024)</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · COMPARISON — Pregnancy & special populations
+       ======================================================================== -->
+  <section class="slide slide--pregnancy">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>PREGNANCY &amp; SPECIAL CASES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">임신 · 모유 수유 · 특수 상황</h2>
+      <p class="slide__subtitle">치료 시기 조정과 약물 선택 — 위험과 이익을 종합해 의료진과 함께 결정합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            출산 후로 연기 가능 (Defer)
+          </div>
+          <ul class="compare-col__list">
+            <li>임신 중 새로 진단된 LTBI · <strong>저위험군</strong></li>
+            <li>최근 활동성 결핵 환자 접촉 없음</li>
+            <li>면역 저하 (HIV·면역억제제 등) 없음</li>
+            <li>대부분 출산 후 2~3개월까지 연기 가능</li>
+            <li>임신 중에는 LFT만 추적 관찰</li>
+            <li>모유 수유 중 INH/RIF 사용 가능 (B6 보충 필수)</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">!</span>
+            임신 중 치료 권고 (Treat Now)
+          </div>
+          <ul class="compare-col__list">
+            <li>최근 결핵 환자와 <strong>밀접 접촉</strong>한 경우</li>
+            <li>HIV 감염 · 면역억제제 복용 중</li>
+            <li>2년 이내 IGRA 양전 (Recent Conversion)</li>
+            <li>9H 또는 4R 요법이 우선 — 3HP 는 임신 중 자료 제한</li>
+            <li>이소니아지드 사용 시 <strong>비타민 B6 보충 필수</strong></li>
+            <li>산후 3개월 이내 간독성 위험 ↑ — 더 자주 LFT</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/infectious-ltbi-treatment-s09-risk-infectious-5d0bb078-20260530-raster-20260531.jpg" alt="임신 · 모유 수유 · 특수 상황 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — CDC TB Pregnancy Recommendations · WHO LTBI 2020</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · DENSITY GRID 2×2 — When to refer (specialist / hospital)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>WHEN TO REFER</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">상급병원·전문의 의뢰가 필요한 경우</h2>
+      <p class="slide__subtitle">아래 4가지 상황은 일차의료기관 단독 치료가 어려워 전문의 협진이 권고됩니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">REFER · 01</div>
+          <div class="tile__title">간경변 · 활동성 간염 (HBV/HCV)</div>
+          <div class="tile__body">기저 간질환이 있는 경우 약물 선택과 모니터링 강화가 필요합니다. 간기능 검사 결과를 들고 소화기내과 또는 감염내과에 의뢰 — 4R (리팜핀 단독) 이 상대적으로 안전한 선택지일 수 있으나 개별 평가 필수.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">REFER · 02</div>
+          <div class="tile__title">HIV 감염 · 장기이식 후</div>
+          <div class="tile__body">항HIV제 (특히 PI·INSTI) 와 리팜핀의 상호작용이 복잡합니다. 장기이식 환자는 면역억제제 (타크로리무스 등) 와 병용 금기 영역. 모두 감염내과 협진 후 약물·일정 결정이 안전합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">REFER · 03</div>
+          <div class="tile__title">활동성 결핵 의심 소견</div>
+          <div class="tile__body">치료 중 새로운 기침·발열·체중감소·야간 발한이 발생하면 활동성 결핵 (Active TB) 재평가가 필요합니다. 흉부 X선 + 객담 검사. LTBI 약물만으로 활동성 결핵을 치료하면 다제내성 결핵 위험이 있어 즉시 의뢰.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">REFER · 04</div>
+          <div class="tile__title">치료 중단 · 약물 부작용 반복</div>
+          <div class="tile__body">간독성·발진 등으로 치료 중단했던 분, 2개월 이상 복용을 놓친 분, 다제내성 결핵 환자와의 접촉이 의심되는 경우는 결핵·감염내과 의뢰. 대안 요법 또는 추가 검사가 필요할 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — 결핵 진료지침 5판 · WHO LTBI Programmatic Management 2020</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST 8 — Today's essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">치료 성공의 핵심 — 끝까지 정확히 복용하면 평생의 건강을 지킬 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">치료는 <strong>3HP · 4R · 9H</strong> 중 의료진이 결정 — 끝까지 완주가 핵심</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">약은 <strong>1일 1회 공복</strong> 복용 (3HP는 주 1회, 식사와 함께)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text"><strong>황달·갈색 소변·극심한 피로</strong> 시 약 중단 후 같은 날 진료</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">치료 기간 동안 <strong>금주가 원칙</strong> — 매일 음주 시 간독성 4배</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">리팜핀은 <strong>피임약·혈압약·당뇨약·와파린</strong> 효과를 떨어뜨림</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">소변·눈물·땀이 <strong>주황색</strong>은 정상 (콘택트렌즈는 안경으로)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text"><strong>모든 복용 약·건강기능식품·한약</strong>은 진료 시 알려주세요</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">임신·간질환·HIV 등은 <strong>치료 전 반드시 상담</strong></div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — adherence · monitoring · interaction awareness</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">3~9개월의 정확한 복용이<br><em>평생의 건강을 지킵니다</em></h2>
+      <p class="slide__subtitle">잠복결핵감염 치료, 함께 끝까지 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM17,2H18V3H17zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM24,2H25V3H24zM26,2H27V3H26zM28,2H29V3H28zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM13,3H14V4H13zM14,3H15V4H14zM15,3H16V4H15zM17,3H18V4H17zM22,3H23V4H22zM26,3H27V4H26zM27,3H28V4H27zM28,3H29V4H28zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM15,4H16V5H15zM17,4H18V5H17zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM23,4H24V5H23zM26,4H27V5H26zM27,4H28V5H27zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM16,5H17V6H16zM19,5H20V6H19zM20,5H21V6H20zM22,5H23V6H22zM23,5H24V6H23zM24,5H25V6H24zM27,5H28V6H27zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM13,6H14V7H13zM15,6H16V7H15zM17,6H18V7H17zM19,6H20V7H19zM20,6H21V7H20zM28,6H29V7H28zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM13,7H14V8H13zM17,7H18V8H17zM22,7H23V8H22zM23,7H24V8H23zM24,7H25V8H24zM26,7H27V8H26zM27,7H28V8H27zM28,7H29V8H28zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM12,9H13V10H12zM13,9H14V10H13zM15,9H16V10H15zM16,9H17V10H16zM18,9H19V10H18zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM22,10H23V11H22zM25,10H26V11H25zM30,10H31V11H30zM33,10H34V11H33zM36,10H37V11H36zM38,10H39V11H38zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM12,11H13V12H12zM14,11H15V12H14zM16,11H17V12H16zM18,11H19V12H18zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM26,11H27V12H26zM27,11H28V12H27zM29,11H30V12H29zM30,11H31V12H30zM32,11H33V12H32zM33,11H34V12H33zM37,11H38V12H37zM38,11H39V12H38zM2,12H3V13H2zM4,12H5V13H4zM7,12H8V13H7zM8,12H9V13H8zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM21,12H22V13H21zM22,12H23V13H22zM23,12H24V13H23zM25,12H26V13H25zM27,12H28V13H27zM29,12H30V13H29zM32,12H33V13H32zM38,12H39V13H38zM2,13H3V14H2zM5,13H6V14H5zM7,13H8V14H7zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM15,13H16V14H15zM17,13H18V14H17zM18,13H19V14H18zM20,13H21V14H20zM21,13H22V14H21zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM2,14H3V15H2zM3,14H4V15H3zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM18,14H19V15H18zM21,14H22V15H21zM22,14H23V15H22zM25,14H26V15H25zM26,14H27V15H26zM32,14H33V15H32zM33,14H34V15H33zM35,14H36V15H35zM38,14H39V15H38zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM10,15H11V16H10zM13,15H14V16H13zM14,15H15V16H14zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM23,15H24V16H23zM25,15H26V16H25zM26,15H27V16H26zM29,15H30V16H29zM30,15H31V16H30zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM35,15H36V16H35zM38,15H39V16H38zM5,16H6V17H5zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM11,16H12V17H11zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM19,16H20V17H19zM21,16H22V17H21zM23,16H24V17H23zM25,16H26V17H25zM26,16H27V17H26zM29,16H30V17H29zM32,16H33V17H32zM35,16H36V17H35zM36,16H37V17H36zM38,16H39V17H38zM3,17H4V18H3zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM10,17H11V18H10zM13,17H14V18H13zM14,17H15V18H14zM15,17H16V18H15zM16,17H17V18H16zM18,17H19V18H18zM21,17H22V18H21zM22,17H23V18H22zM25,17H26V18H25zM26,17H27V18H26zM29,17H30V18H29zM30,17H31V18H30zM33,17H34V18H33zM34,17H35V18H34zM35,17H36V18H35zM37,17H38V18H37zM3,18H4V19H3zM4,18H5V19H4zM7,18H8V19H7zM8,18H9V19H8zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM13,18H14V19H13zM16,18H17V19H16zM18,18H19V19H18zM29,18H30V19H29zM30,18H31V19H30zM32,18H33V19H32zM33,18H34V19H33zM38,18H39V19H38zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM7,19H8V20H7zM9,19H10V20H9zM10,19H11V20H10zM11,19H12V20H11zM14,19H15V20H14zM15,19H16V20H15zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM26,19H27V20H26zM29,19H30V20H29zM32,19H33V20H32zM37,19H38V20H37zM38,19H39V20H38zM7,20H8V21H7zM8,20H9V21H8zM13,20H14V21H13zM17,20H18V21H17zM19,20H20V21H19zM21,20H22V21H21zM22,20H23V21H22zM23,20H24V21H23zM24,20H25V21H24zM25,20H26V21H25zM28,20H29V21H28zM29,20H30V21H29zM32,20H33V21H32zM33,20H34V21H33zM36,20H37V21H36zM38,20H39V21H38zM2,21H3V22H2zM4,21H5V22H4zM5,21H6V22H5zM7,21H8V22H7zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM16,21H17V22H16zM17,21H18V22H17zM18,21H19V22H18zM22,21H23V22H22zM25,21H26V22H25zM26,21H27V22H26zM29,21H30V22H29zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM34,21H35V22H34zM35,21H36V22H35zM2,22H3V23H2zM3,22H4V23H3zM4,22H5V23H4zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM13,22H14V23H13zM16,22H17V23H16zM18,22H19V23H18zM21,22H22V23H21zM22,22H23V23H22zM26,22H27V23H26zM29,22H30V23H29zM30,22H31V23H30zM32,22H33V23H32zM33,22H34V23H33zM37,22H38V23H37zM6,23H7V24H6zM7,23H8V24H7zM9,23H10V24H9zM11,23H12V24H11zM14,23H15V24H14zM17,23H18V24H17zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM24,23H25V24H24zM25,23H26V24H25zM29,23H30V24H29zM30,23H31V24H30zM32,23H33V24H32zM37,23H38V24H37zM38,23H39V24H38zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM11,24H12V25H11zM14,24H15V25H14zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM21,24H22V25H21zM23,24H24V25H23zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM29,24H30V25H29zM32,24H33V25H32zM35,24H36V25H35zM36,24H37V25H36zM38,24H39V25H38zM2,25H3V26H2zM3,25H4V26H3zM5,25H6V26H5zM6,25H7V26H6zM10,25H11V26H10zM12,25H13V26H12zM13,25H14V26H13zM18,25H19V26H18zM20,25H21V26H20zM25,25H26V26H25zM26,25H27V26H26zM28,25H29V26H28zM29,25H30V26H29zM30,25H31V26H30zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM35,25H36V26H35zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM12,26H13V27H12zM17,26H18V27H17zM18,26H19V27H18zM26,26H27V27H26zM29,26H30V27H29zM32,26H33V27H32zM33,26H34V27H33zM38,26H39V27H38zM3,27H4V28H3zM4,27H5V28H4zM5,27H6V28H5zM9,27H10V28H9zM11,27H12V28H11zM14,27H15V28H14zM15,27H16V28H15zM17,27H18V28H17zM19,27H20V28H19zM21,27H22V28H21zM22,27H23V28H22zM25,27H26V28H25zM26,27H27V28H26zM29,27H30V28H29zM30,27H31V28H30zM32,27H33V28H32zM33,27H34V28H33zM35,27H36V28H35zM38,27H39V28H38zM2,28H3V29H2zM3,28H4V29H3zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM11,28H12V29H11zM12,28H13V29H12zM15,28H16V29H15zM17,28H18V29H17zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM23,28H24V29H23zM25,28H26V29H25zM27,28H28V29H27zM28,28H29V29H28zM29,28H30V29H29zM31,28H32V29H31zM32,28H33V29H32zM35,28H36V29H35zM36,28H37V29H36zM38,28H39V29H38zM4,29H5V30H4zM5,29H6V30H5zM9,29H10V30H9zM10,29H11V30H10zM14,29H15V30H14zM16,29H17V30H16zM18,29H19V30H18zM20,29H21V30H20zM22,29H23V30H22zM24,29H25V30H24zM28,29H29V30H28zM29,29H30V30H29zM31,29H32V30H31zM33,29H34V30H33zM34,29H35V30H34zM35,29H36V30H35zM37,29H38V30H37zM38,29H39V30H38zM2,30H3V31H2zM3,30H4V31H3zM4,30H5V31H4zM5,30H6V31H5zM7,30H8V31H7zM8,30H9V31H8zM10,30H11V31H10zM12,30H13V31H12zM13,30H14V31H13zM16,30H17V31H16zM17,30H18V31H17zM22,30H23V31H22zM26,30H27V31H26zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM37,30H38V31H37zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM14,31H15V32H14zM17,31H18V32H17zM18,31H19V32H18zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM26,31H27V32H26zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM38,31H39V32H38zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM13,32H14V33H13zM14,32H15V33H14zM15,32H16V33H15zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM21,32H22V33H21zM22,32H23V33H22zM24,32H25V33H24zM25,32H26V33H25zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM18,33H19V34H18zM20,33H21V34H20zM21,33H22V34H21zM22,33H23V34H22zM26,33H27V34H26zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM37,33H38V34H37zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM12,34H13V35H12zM14,34H15V35H14zM16,34H17V35H16zM22,34H23V35H22zM25,34H26V35H25zM26,34H27V35H26zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM11,35H12V36H11zM15,35H16V36H15zM17,35H18V36H17zM18,35H19V36H18zM21,35H22V36H21zM25,35H26V36H25zM26,35H27V36H26zM28,35H29V36H28zM30,35H31V36H30zM31,35H32V36H31zM34,35H35V36H34zM36,35H37V36H36zM37,35H38V36H37zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM12,36H13V37H12zM13,36H14V37H13zM16,36H17V37H16zM17,36H18V37H17zM18,36H19V37H18zM19,36H20V37H19zM21,36H22V37H21zM24,36H25V37H24zM25,36H26V37H25zM26,36H27V37H26zM28,36H29V37H28zM31,36H32V37H31zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM15,37H16V38H15zM17,37H18V38H17zM18,37H19V38H18zM20,37H21V38H20zM26,37H27V38H26zM30,37H31V38H30zM34,37H35V38H34zM35,37H36V38H35zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM18,38H19V39H18zM22,38H23V39H22zM24,38H25V39H24zM25,38H26V39H25zM30,38H31V39H30zM33,38H34V39H33zM35,38H36V39H35zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

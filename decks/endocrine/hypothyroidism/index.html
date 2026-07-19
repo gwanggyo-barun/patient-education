@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Hypothyroidism — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/hypothyroidism/">
+  <meta property="og:title" content="갑상선기능저하증 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="갑상선기능저하증 (Hypothyroidism) — 정의·진단·레보티록신 복용·추적·임신·식이까지 한눈에">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/hypothyroidism/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (3-stat row) -->
+  <style>
+    /* Hide decorative bg number so scrollHeight == clientHeight (validator-friendly) */
+    .slide__bg-num { display: none !important; }
+
+    /* Three-stat row — single row of 3 large circular stats + supporting card */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 2.6rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 260px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">갑상선기능저하증,<br><em>올바른 치료와 관리로 건강한 삶을</em></h1>
+      <p class="slide__subtitle">갑상선기능저하증 (Hypothyroidism) — 호르몬 부족으로 대사가 느려지는 상태, 꾸준한 복약과 정기 추적이 핵심입니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Hypothyroidism · Levothyroxine · Long-term Follow-up</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · THREE-STAT ROW — Korean prevalence overview
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">갑상선기능저하증 (Hypothyroidism) 이란</h2>
+      <p class="slide__subtitle">갑상선 호르몬이 부족하여 몸의 대사가 느려지는 상태입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">0.73<span style="font-size:1.4rem;">%</span></div>
+            </div>
+            <div class="stats3-cell__label">현성 유병률<br>(한국 성인)</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">3.1<span style="font-size:1.4rem;">%</span></div>
+            </div>
+            <div class="stats3-cell__label">무증상 포함<br>유병률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">6<span style="font-size:1.4rem;">배</span></div>
+            </div>
+            <div class="stats3-cell__label">여성이 남성 대비<br>높은 발생률</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          <strong>현성 vs 무증상 — </strong>현성은 TSH 상승 + Free T4 감소로 가장 흔한 원인은 하시모토 갑상선염(자가면역). 무증상(SCH)은 TSH만 상승·Free T4 정상이며, 한국 기준 TSH 6.8~10 경도 / &gt;10 중등도. 한국은 높은 요오드 섭취 환경으로 TSH 정상 상한이 6.8 mIU/L (KTA 2023)로 서구(4.5)보다 높습니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KTA 2023 한국 갑상선학회 가이드라인 · 한국 성인 유병률</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · DENSITY GRID 3×2 — Symptoms (with myxedema coma alert below)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>SYMPTOMS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">주요 증상 (Symptoms)</h2>
+      <p class="slide__subtitle">갑상선 호르몬이 부족하면 몸 전체의 대사가 느려져 다양한 증상이 나타납니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 01</div>
+          <div class="tile__title">피로감 (Fatigue)</div>
+          <div class="tile__body">만성 피로, 무기력감 — 가장 흔한 초기 증상으로 휴식·수면을 늘려도 잘 회복되지 않는 것이 특징입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 02</div>
+          <div class="tile__title">체중 증가</div>
+          <div class="tile__body">평균 2~5kg 증가 — 대부분 수분·부종이며 TSH가 정상화되면 체중 관리 능력은 일반인과 같아집니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 03</div>
+          <div class="tile__title">추위 민감 · 서맥</div>
+          <div class="tile__body">추위를 잘 타고, 맥박이 느려지며(심박수 감소), 손발이 차가워지는 것이 흔히 나타납니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 04</div>
+          <div class="tile__title">인지기능 · 우울감</div>
+          <div class="tile__body">집중력·기억력 저하, 기분 저하·의욕 감소 — 노인에서는 치매로 오인되기도 합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 05</div>
+          <div class="tile__title">피부 · 모발 변화</div>
+          <div class="tile__body">피부 건조·부종(눈 주위·손), 탈모·머리카락 가늘어짐 — 진행성으로 천천히 나타납니다.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">EMERGENCY · 06</div>
+          <div class="tile__title">점액수종 혼수 (Myxedema Coma)</div>
+          <div class="tile__body">심한 의식 저하·저체온(35.5°C 미만), 현저한 서맥, 호흡곤란, 심한 전신 부종 — 사망률 매우 높은 내분비 응급, 즉시 응급실.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATA Hypothyroidism Guideline · KTA 2023</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · TIMELINE — Diagnostic workup (4 steps)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>DIAGNOSIS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">진단 과정 (Workup)</h2>
+      <p class="slide__subtitle">혈액검사를 통해 단계적으로 진단합니다 — 한국 정상범위는 서구와 다릅니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">TSH 검사 · 1차 선별</div>
+          <div class="timeline-step__body">한국 정상범위 0.62~6.68 mIU/L. 가장 민감한 선별 검사로 갑상선기능저하증의 첫 단서가 됩니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">Free T4 + Anti-TPO Ab</div>
+          <div class="timeline-step__body">TSH 상승 시 추가 검사. Free T4로 현성·무증상을 구별하고, Anti-TPO로 하시모토 자가면역을 확인합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">결과 해석 · 분류</div>
+          <div class="timeline-step__body">TSH↑+T4↓는 현성 → LT4 시작. TSH↑+T4 정상은 무증상 → 2~3개월 후 재검. TSH 정상/↓+T4↓는 중추성 의심.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">치료 결정</div>
+          <div class="timeline-step__body">연령·증상·TPOAb·동반질환을 종합 판단. 건강보험은 검사 3종까지 요양급여, 4종 이상은 본인부담 90%.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/endocrine-hypothyroidism-s04-comparison-thyroid-02dbb750-20260530-raster-20260531.jpg" alt="진단 과정 (Workup) 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KTA 2023 진단 알고리즘 · 한국 보험 기준</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · ASYMMETRIC SPLIT — Levothyroxine dosing
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>TREATMENT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">레보티록신 (Levothyroxine, LT4) 복용법</h2>
+      <p class="slide__subtitle">갑상선 호르몬을 보충하는 표준 치료 — 모든 주요 가이드라인(ATA·ETA·KTA·NICE)의 1차 치료입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">아침 공복에 <em>물과 함께</em> 복용하고, 식사는 <em>30~60분 후</em>에 시작하세요.</p>
+          <p class="pattern-split__supporting">
+            취침 시 (마지막 식사 후 3시간 경과)에 복용하는 방법도 흡수가 동등합니다. 효과 발현은 단계적으로 — 경미한 호전은 약 2주, 뚜렷한 개선은 6주, 완전 안정화는 12주가 걸립니다. 적절한 호르몬 보충 시 예후가 매우 양호하며 정상적인 일상생활이 가능합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Starting dose</div>
+            <div class="pattern-split__metric-value">1.6 mcg/kg/일</div>
+            <div class="pattern-split__metric-detail">건강한 성인(&lt;65세) 표준. 고령자(≥65세) 25~50 mcg/일, 심질환 동반 12.5~25 mcg/일로 저용량 시작.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">TSH target</div>
+            <div class="pattern-split__metric-value">0.4 – 4.5 mIU/L</div>
+            <div class="pattern-split__metric-detail">일반 성인 정상범위 내. 고령자 4~6 mIU/L 상한 허용, 갑상선암(저위험) 0.5~2.0 mIU/L.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATA · ETA · KTA · NICE Hypothyroidism Guidelines</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 2×2 — Drug & food interactions (with alert)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>INTERACTIONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">약물·식품 상호작용</h2>
+      <p class="slide__subtitle">레보티록신 흡수에 영향을 주는 약물·식품과의 간격을 지켜주세요</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 01 · 4시간</div>
+          <div class="tile__title">칼슘 · 철분 보충제</div>
+          <div class="tile__body">직접 결합으로 흡수가 20~25% 감소합니다. 최소 4시간 이상 간격을 두고 복용하세요. 산전 비타민도 4~5시간 간격이 필요합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 02 · 1시간</div>
+          <div class="tile__title">커피 (Coffee)</div>
+          <div class="tile__body">흡수 감소 — 최소 1시간 간격을 두세요. 아침 공복 복용 후 충분히 기다린 뒤 커피를 드시는 것이 원칙입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 03 · 분리 복용</div>
+          <div class="tile__title">PPI (위산억제제)</div>
+          <div class="tile__body">위산 저하로 정제 용해가 감소합니다. 시간 분리 복용, 시작·중단 시 6주 후 TSH 재검 필요. 제조사 변경 시에도 동일.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">INTERACTION · 04 · 4시간</div>
+          <div class="tile__title">제산제 · 콜레스티라민</div>
+          <div class="tile__body">장내 직접 결합 + pH 변화로 흡수 차단. 최소 4시간 이상 간격. 핵심 원칙은 아침 공복에 물과 함께 → 식사 30~60분 후입니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+        <img src="../../../shared/assets/generated/endocrine-hypothyroidism-s06-mechanism-thyroid-da416d43-20260530-raster-20260531.jpg" alt="약물·식품 상호작용 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATA · ETA Levothyroxine Absorption Recommendations</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · TIMELINE — Follow-up monitoring schedule
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>FOLLOW-UP</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">추적 관찰 (Follow-up)</h2>
+      <p class="slide__subtitle">정기적인 검사로 적절한 호르몬 수준을 유지합니다 — LT4 반감기 약 7일, 정상 도달 약 35일 (5 반감기)</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">6~8주 · 첫 TSH 재검</div>
+          <div class="timeline-step__body">시작·용량 변경 후 첫 TSH 재검. LT4가 안정 상태에 도달하는 5 반감기를 기다린 후 측정합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">3~6개월 · 안정화 확인</div>
+          <div class="timeline-step__body">용량 안정화 확인, 필요시 미세 조정. TSH 목표 범위를 유지하며 증상 호전 동반 여부를 확인합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">6~12개월 · 정기 추적</div>
+          <div class="timeline-step__body">안정화 후 정기 추적 간격. 매년 또는 6~12개월 간격으로 TSH를 확인하면 충분합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">수시 · 변화 시 재검</div>
+          <div class="timeline-step__body">체중이 크게 변했을 때, 새로운 질병이 생겼을 때, 다른 약물 추가/변경 시, 제조사가 바뀌었을 때 즉시 재검.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Process">
+        <img src="../../../shared/assets/generated/endocrine-hypothyroidism-s07-process-thyroid-20f075e9-20260530-raster-20260531.jpg" alt="추적 관찰 (Follow-up) 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATA Long-term Monitoring · LT4 Pharmacokinetics</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · ASYMMETRIC SPLIT — Subclinical hypothyroidism decision
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>SUBCLINICAL</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">무증상 갑상선기능저하증 (SCH) 치료 결정</h2>
+      <p class="slide__subtitle">나이와 TSH 수준에 따라 치료 여부를 결정합니다 (KTA 2023 기준)</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">70세 미만 + TSH &gt; 10이면 <em>LT4 치료 권고</em>, 70세 이상은 <em>개별화 판단</em>이 원칙입니다.</p>
+          <p class="pattern-split__supporting">
+            TSH 6.8~10 (한국 기준) 경도 무증상은 유증상·TPOAb 양성 시 6개월 시범 치료를 고려하고, 무증상이면 관찰합니다. 70세 이상은 KTA: 일반적 비권고 — 과잉 치료 시 심방세동·골다공증 위험이 있습니다. 자연 경과 참고: 65세 이상은 4년 내 46% 자연 회복, TPOAb 양성 시 연 4.3% / 음성 시 연 2.6% 현성 진행.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">TRUST Trial · NEJM 2017</div>
+            <div class="pattern-split__metric-value">유의 차 없음</div>
+            <div class="pattern-split__metric-detail">65세 이상 737명 대상 LT4 vs 위약 — 증상·삶의 질·인지기능 모든 평가변수에서 유의한 차이 없음.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">NICE 2019/2023 추적</div>
+            <div class="pattern-split__metric-value">연 1회 / 2~3년</div>
+            <div class="pattern-split__metric-detail">TPOAb 양성 또는 기저 갑상선 질환 → 연 1회 TSH. 음성·기저 질환 없으면 2~3년 간격.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KTA 2023 · TRUST Trial NEJM 2017 · NICE 2019/2023</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · DENSITY GRID 2×2 — Pregnancy management (with alert)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>PREGNANCY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">임신과 갑상선기능저하증</h2>
+      <p class="slide__subtitle">임신 전후 갑상선 관리는 태아 발달에 매우 중요합니다 — TSH 목표가 일반보다 낮습니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">PREGNANCY · 01 · TSH 목표</div>
+          <div class="tile__title">임신기별 TSH 상한</div>
+          <div class="tile__body">임신 1기 상한 4.0 mIU/L (ATA 2017 개정, 기존 2.5→4.0). 임신 계획 시 &lt;2.5 권장. 1기 &lt;2.5 / 2기 &lt;3.0 / 3기 &lt;3.5 mIU/L.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PREGNANCY · 02 · 용량</div>
+          <div class="tile__title">기존 환자 임신 시 LT4 증량</div>
+          <div class="tile__body">임신 확인 즉시 주 2회분 추가 복용 (약 30% 증량). 4주 간격 TSH 검사(임신 전반기), 산전 비타민과 4~5시간 간격.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PREGNANCY · 03 · 미치료 위험</div>
+          <div class="tile__title">미치료 시 산모·태아 위험</div>
+          <div class="tile__body">유산·조산·전자간증·태아 신경발달 장애 위험 증가. ATA 2017: 정상 갑상선기능 + TPOAb(+) 여성에게 예방적 LT4 근거 부족 (TABLET Trial).</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PREGNANCY · 04 · 분만 후</div>
+          <div class="tile__title">분만 후 관리</div>
+          <div class="tile__body">임신 전 용량으로 즉시 복귀, 산후 6주에 TSH 확인. 산후 갑상선염(출산 5~10%) 주의 — 일과성 항진→저하 패턴.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
+        <img src="../../../shared/assets/generated/endocrine-hypothyroidism-s09-action-thyroid-526ce11f-20260530-raster-20260531.jpg" alt="임신과 갑상선기능저하증 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATA 2017 Pregnancy Guideline · TABLET Trial</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · COMPARISON — Iodine / diet O / X guide
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>DIET</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">식이 관련 주의사항 — O / X 가이드</h2>
+      <p class="slide__subtitle">한국인의 요오드 섭취는 WHO 권장 대비 2~5배 — 일반인은 해조류 제한이 불필요합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            괜찮습니다 (O)
+          </div>
+          <ul class="compare-col__list">
+            <li>일반 해조류 섭취 — 김·미역·다시마 (제한 불필요)</li>
+            <li>산후 미역국 섭취 (전통대로 OK)</li>
+            <li>조리된 십자화과 채소 — 브로콜리·양배추</li>
+            <li>일상적 식사량의 채소·과일 (영향 없음)</li>
+            <li>균형 잡힌 단백질·지방·탄수화물</li>
+            <li>꾸준한 LT4 복용 + 정기 TSH 추적</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            주의하세요 (X)
+          </div>
+          <ul class="compare-col__list">
+            <li>다시마 농축액 과량 섭취 (특히 하시모토 환자)</li>
+            <li>요오드 보충제 (한국 식단에서 추가 불필요)</li>
+            <li>셀레늄 보충제 (ATA·ETA 공식 권고 없음)</li>
+            <li>"천연 갑상선 추출물" 자가 복용</li>
+            <li>의사 상의 없이 T3 단독·병용 추가</li>
+            <li>처방 없이 임의로 LT4 용량 조정</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KTA 2023 한국인 요오드 섭취 · 2024 RCT 메타분석</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — Today's 8 essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">갑상선기능저하증은 호르몬 보충으로 잘 관리되는 질환입니다 — 꾸준한 복약과 정기 추적이 핵심</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">레보티록신은 <strong>아침 공복</strong>에, 식사 30~60분 전 물과 함께 복용</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">칼슘·철분 보충제와는 반드시 <strong>4시간 간격</strong>을 지킬 것</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">커피는 <strong>1시간</strong> 간격, PPI는 <strong>분리 복용</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">용량 변경 후 <strong>6~8주에 TSH</strong>를 재검할 것 (LT4 5 반감기)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">안정화 후에는 <strong>6~12개월 간격</strong>으로 추적하면 충분</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">임신 계획·확인 시 반드시 의사와 <strong>TSH 최적화</strong> 상담</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">해조류는 일반적으로 <strong>제한 불필요</strong> (다시마 농축액만 주의)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">의식 저하·저체온·심한 서맥 시 <strong>즉시 응급실</strong> (Myxedema)</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — adherence · monitoring · red-flag awareness</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">올바른 치료와 관리로<br><em>건강한 일상을 유지하세요</em></h2>
+      <p class="slide__subtitle">꾸준한 복약 + 정기적인 TSH 추적 = 건강한 일상 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM16,2H17V3H16zM17,2H18V3H17zM18,2H19V3H18zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM27,2H28V3H27zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM13,3H14V4H13zM14,3H15V4H14zM17,3H18V4H17zM18,3H19V4H18zM20,3H21V4H20zM22,3H23V4H22zM23,3H24V4H23zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM20,4H21V5H20zM21,4H22V5H21zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM28,4H29V5H28zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM14,5H15V6H14zM15,5H16V6H15zM16,5H17V6H16zM19,5H20V6H19zM21,5H22V6H21zM22,5H23V6H22zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM17,6H18V7H17zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM24,6H25V7H24zM25,6H26V7H25zM27,6H28V7H27zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM13,7H14V8H13zM18,7H19V8H18zM20,7H21V8H20zM22,7H23V8H22zM23,7H24V8H23zM27,7H28V8H27zM28,7H29V8H28zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM11,9H12V10H11zM13,9H14V10H13zM14,9H15V10H14zM16,9H17V10H16zM18,9H19V10H18zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM25,9H26V10H25zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM12,10H13V11H12zM13,10H14V11H13zM15,10H16V11H15zM18,10H19V11H18zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM2,11H3V12H2zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM12,11H13V12H12zM14,11H15V12H14zM15,11H16V12H15zM16,11H17V12H16zM17,11H18V12H17zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM26,11H27V12H26zM27,11H28V12H27zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM5,12H6V13H5zM6,12H7V13H6zM8,12H9V13H8zM10,12H11V13H10zM12,12H13V13H12zM15,12H16V13H15zM17,12H18V13H17zM18,12H19V13H18zM20,12H21V13H20zM23,12H24V13H23zM24,12H25V13H24zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM34,12H35V13H34zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM5,13H6V14H5zM6,13H7V14H6zM7,13H8V14H7zM9,13H10V14H9zM14,13H15V14H14zM15,13H16V14H15zM16,13H17V14H16zM17,13H18V14H17zM21,13H22V14H21zM23,13H24V14H23zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM12,14H13V15H12zM13,14H14V15H13zM15,14H16V15H15zM17,14H18V15H17zM19,14H20V15H19zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM30,14H31V15H30zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM4,15H5V16H4zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM13,15H14V16H13zM18,15H19V16H18zM21,15H22V16H21zM25,15H26V16H25zM30,15H31V16H30zM31,15H32V16H31zM33,15H34V16H33zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM13,16H14V17H13zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM22,16H23V17H22zM23,16H24V17H23zM26,16H27V17H26zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM5,17H6V18H5zM10,17H11V18H10zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM20,17H21V18H20zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM3,18H4V19H3zM4,18H5V19H4zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM13,18H14V19H13zM19,18H20V19H19zM21,18H22V19H21zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM37,18H38V19H37zM38,18H39V19H38zM2,19H3V20H2zM3,19H4V20H3zM5,19H6V20H5zM7,19H8V20H7zM11,19H12V20H11zM16,19H17V20H16zM17,19H18V20H17zM18,19H19V20H18zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM24,19H25V20H24zM25,19H26V20H25zM35,19H36V20H35zM37,19H38V20H37zM2,20H3V21H2zM3,20H4V21H3zM4,20H5V21H4zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM16,20H17V21H16zM22,20H23V21H22zM23,20H24V21H23zM26,20H27V21H26zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM3,21H4V22H3zM7,21H8V22H7zM10,21H11V22H10zM11,21H12V22H11zM13,21H14V22H13zM14,21H15V22H14zM18,21H19V22H18zM20,21H21V22H20zM23,21H24V22H23zM25,21H26V22H25zM31,21H32V22H31zM33,21H34V22H33zM34,21H35V22H34zM38,21H39V22H38zM2,22H3V23H2zM4,22H5V23H4zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM14,22H15V23H14zM16,22H17V23H16zM19,22H20V23H19zM21,22H22V23H21zM24,22H25V23H24zM25,22H26V23H25zM26,22H27V23H26zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM36,22H37V23H36zM3,23H4V24H3zM4,23H5V24H4zM9,23H10V24H9zM12,23H13V24H12zM13,23H14V24H13zM14,23H15V24H14zM16,23H17V24H16zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM27,23H28V24H27zM30,23H31V24H30zM35,23H36V24H35zM37,23H38V24H37zM2,24H3V25H2zM5,24H6V25H5zM6,24H7V25H6zM8,24H9V25H8zM12,24H13V25H12zM13,24H14V25H13zM15,24H16V25H15zM17,24H18V25H17zM20,24H21V25H20zM22,24H23V25H22zM23,24H24V25H23zM26,24H27V25H26zM27,24H28V25H27zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM2,25H3V26H2zM5,25H6V26H5zM6,25H7V26H6zM7,25H8V26H7zM9,25H10V26H9zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM15,25H16V26H15zM17,25H18V26H17zM18,25H19V26H18zM23,25H24V26H23zM25,25H26V26H25zM28,25H29V26H28zM30,25H31V26H30zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM38,25H39V26H38zM3,26H4V27H3zM4,26H5V27H4zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM16,26H17V27H16zM17,26H18V27H17zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM2,27H3V28H2zM4,27H5V28H4zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM15,27H16V28H15zM17,27H18V28H17zM19,27H20V28H19zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM30,27H31V28H30zM33,27H34V28H33zM2,28H3V29H2zM4,28H5V29H4zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM12,28H13V29H12zM13,28H14V29H13zM17,28H18V29H17zM18,28H19V29H18zM20,28H21V29H20zM23,28H24V29H23zM24,28H25V29H24zM29,28H30V29H29zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM7,29H8V30H7zM11,29H12V30H11zM12,29H13V30H12zM13,29H14V30H13zM14,29H15V30H14zM16,29H17V30H16zM18,29H19V30H18zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM2,30H3V31H2zM7,30H8V31H7zM8,30H9V31H8zM10,30H11V31H10zM11,30H12V31H11zM12,30H13V31H12zM13,30H14V31H13zM16,30H17V31H16zM18,30H19V31H18zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM16,31H17V32H16zM18,31H19V32H18zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM28,31H29V32H28zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM12,32H13V33H12zM13,32H14V33H13zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM19,32H20V33H19zM20,32H21V33H20zM24,32H25V33H24zM27,32H28V33H27zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM12,33H13V34H12zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM15,34H16V35H15zM16,34H17V35H16zM19,34H20V35H19zM21,34H22V35H21zM24,34H25V35H24zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM14,35H15V36H14zM15,35H16V36H15zM20,35H21V36H20zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM24,35H25V36H24zM25,35H26V36H25zM28,35H29V36H28zM29,35H30V36H29zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM36,35H37V36H36zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM15,36H16V37H15zM17,36H18V37H17zM18,36H19V37H18zM26,36H27V37H26zM27,36H28V37H27zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM12,37H13V38H12zM13,37H14V38H13zM14,37H15V38H14zM16,37H17V38H16zM17,37H18V38H17zM18,37H19V38H18zM22,37H23V38H22zM23,37H24V38H23zM25,37H26V38H25zM26,37H27V38H26zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM12,38H13V39H12zM14,38H15V39H14zM16,38H17V39H16zM19,38H20V39H19zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

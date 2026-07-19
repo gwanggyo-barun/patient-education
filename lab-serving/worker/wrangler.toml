@@ -1,0 +1,34 @@
+# lab-gate — Cloudflare Worker that gates the private R2 bucket `clinic-lab`.
+#
+# Deploy from lab-serving/worker/ :
+#   npm i -g wrangler         # once, on the mac mini
+#   wrangler login            # browser OAuth (or CLOUDFLARE_API_TOKEN env)
+#   wrangler deploy           # publishes to https://lab-gate.<account>.workers.dev
+#
+# The R2 bucket must already exist (see ../README.md step 2) with public
+# access + the r2.dev subdomain BOTH turned OFF.
+
+name = "lab-gate"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+# Do NOT expose a *.workers.dev preview for staging that leaks tokens; the
+# production workers.dev URL is the QR target and is fine (token in path is the
+# capability). If you bind a custom domain later, add a [[routes]] block.
+workers_dev = true
+
+# Bind the private bucket. `binding = "LAB"` is what the Worker reads as env.LAB.
+[[r2_buckets]]
+binding = "LAB"
+bucket_name = "clinic-lab"
+
+# Optional: pin a preview bucket for `wrangler dev` local testing.
+# preview_bucket_name = "clinic-lab-preview"
+
+# Optional custom domain (only if you own one). Requires the zone on Cloudflare.
+# [[routes]]
+# pattern = "lab.gwanggyobarun.com"
+# custom_domain = true
+
+[observability]
+enabled = true

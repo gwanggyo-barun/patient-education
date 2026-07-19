@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Hyperthyroidism — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/hyperthyroidism/">
+  <meta property="og:title" content="갑상선기능항진증 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="갑상선기능항진증 (Hyperthyroidism) — Graves' disease·항갑상선제(ATD)·방사성요오드(RAI)·수술까지 한눈에">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/endocrine/hyperthyroidism/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions (3-stat row + diag-flow grid + alert-stack + checklist 8-up) -->
+  <style>
+    /* Hide decorative bg number so scrollHeight == clientHeight (validator-friendly) */
+    .slide__bg-num { display: none !important; }
+
+    /* Three-stat row (slide 2) */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 2.6rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 260px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Diagnostic-flow 5-step grid (3 + 2 layout) */
+    .pattern-grid--diag {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 1fr;
+    }
+    .pattern-grid--diag .tile:nth-child(4) { grid-column: 1 / 2; }
+    .pattern-grid--diag .tile:nth-child(5) { grid-column: 2 / 4; }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">갑상선기능항진증,<br><em>정확한 진단과 단계적 치료로 안전하게</em></h1>
+      <p class="slide__subtitle">갑상선기능항진증 (Hyperthyroidism) — 호르몬 과다로 대사가 빨라지는 상태, 항갑상선제(ATD)·방사성요오드(RAI)·수술까지 단계별 선택을 함께 결정합니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Hyperthyroidism · Graves' disease · ATD · RAI · Surgery</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · THREE-STAT ROW — Korean prevalence overview
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">갑상선기능항진증 (Hyperthyroidism) 이란</h2>
+      <p class="slide__subtitle">갑상선 호르몬이 과도하게 분비되어 몸의 대사가 빨라지는 상태입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-stats3">
+        <div class="stats3-row">
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">0.34<span style="font-size:1.4rem;">%</span></div>
+            </div>
+            <div class="stats3-cell__label">한국 성인<br>현성 유병률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--steel">
+              <div class="stats3-cell__num">2.5<span style="font-size:1.4rem;">×</span></div>
+            </div>
+            <div class="stats3-cell__label">여성이 남성<br>대비 발생률</div>
+          </div>
+          <div class="stats3-cell">
+            <div class="stats3-cell__circle stats3-cell__circle--navy">
+              <div class="stats3-cell__num">3.1<span style="font-size:1.4rem;">×</span></div>
+            </div>
+            <div class="stats3-cell__label">심방세동(AF)<br>발생 위험 증가</div>
+          </div>
+        </div>
+        <div class="stats3-note">
+          <strong>주요 원인 — </strong>전체의 약 70~80%는 자가면역질환인 <em>그레이브스병(Graves' disease)</em>이며, 그 외 독성 결절(Toxic Nodule), 갑상선염(Thyroiditis) 등이 있습니다. 치료하지 않으면 심방세동·심부전·골다공증·근육 위축 등 전신 합병증을 유발할 수 있어 정확한 감별 진단과 단계적 치료가 중요합니다.
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Park S et al., Endocrinol Metab 2023 · KTA 2023 한국 갑상선학회</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · DENSITY GRID 3×2 — Symptoms (6 cards)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>SYMPTOMS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">주요 증상 (Symptoms)</h2>
+      <p class="slide__subtitle">갑상선 호르몬이 과다하면 몸 전체의 대사가 빨라져 다양한 증상이 나타납니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 01</div>
+          <div class="tile__title">더위 못 견딤 · 다한 (Heat Intolerance)</div>
+          <div class="tile__body">평소보다 땀이 많고 더위를 더 못 견딥니다. 피부가 따뜻하고 습하며, 손발이 끈적거리는 느낌도 흔합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 02</div>
+          <div class="tile__title">두근거림 · 빈맥 (Palpitation)</div>
+          <div class="tile__body">안정 시에도 분당 100회 이상 심박수가 빠르고, 가슴 두근거림 · 부정맥 · 호흡곤란이 동반될 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 03</div>
+          <div class="tile__title">체중 감소 · 식욕 증가</div>
+          <div class="tile__body">식욕이 늘어 더 많이 먹는데도 체중이 빠집니다. 특히 단기간 5kg 이상 감소는 반드시 평가가 필요합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 04</div>
+          <div class="tile__title">손 떨림 · 불안 · 불면</div>
+          <div class="tile__body">미세한 손 떨림(Fine Tremor), 신경과민, 짜증, 집중력 저하, 잠들기 어려움 등 정신·신경 증상이 흔합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 05</div>
+          <div class="tile__title">눈 변화 (TED 동반)</div>
+          <div class="tile__body">그레이브스병에서는 안구 돌출, 눈물 증가, 시야 흐림, 복시(겹쳐 보임)가 동반될 수 있어 안과 협진이 필요합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SYMPTOM · 06</div>
+          <div class="tile__title">배변 잦음 · 근력 약화</div>
+          <div class="tile__body">설사 · 잦은 배변, 근육 위축 및 근력 약화(특히 허벅지 근육), 월경 불규칙 · 양 감소가 나타날 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATA 2016 / ETA 2018 Hyperthyroidism Guideline</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 3+2 (5-step diagnostic flow)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>DIAGNOSIS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">5단계 진단 흐름 (Diagnostic Flow)</h2>
+      <p class="slide__subtitle">TSH 억제 확인 → 호르몬 측정 → 항체 검사 → 영상 검사 순서로 원인을 가립니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--diag">
+        <div class="tile">
+          <div class="tile__index">STEP · 01 · 선별</div>
+          <div class="tile__title">TSH 측정</div>
+          <div class="tile__body">TSH 억제(&lt;0.1 mIU/L)가 일차 선별 지표. TSH 정상이면 갑상선기능항진증은 사실상 배제됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 02 · 확인</div>
+          <div class="tile__title">Free T4 / Free T3</div>
+          <div class="tile__body">상승 시 현성(Overt), 정상 시 무증상(Subclinical) 항진. T3만 상승이면 T3-toxicosis 의심.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 03 · 원인 감별</div>
+          <div class="tile__title">TRAb 검사</div>
+          <div class="tile__body">한국 가이드라인 권고: TRAb-first. 양성이면 그레이브스병 진단(특이도 94.2%) — 영상 검사 없이 ATD 시작 가능.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 04 · 영상</div>
+          <div class="tile__title">갑상선 초음파 + Doppler</div>
+          <div class="tile__body">결절 동반 또는 TRAb 음성 시. 미만성 비대 + 혈류 증가 = Graves, 결절성 = 독성 결절(TMNG/Toxic Nodule).</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 05 · 보조</div>
+          <div class="tile__title">RAI Uptake / Scan</div>
+          <div class="tile__body">감별 어려운 경우(전체 환자의 약 15.9% 사용). 섭취율 증가 = Graves / 결절 부위만 = TMNG / 낮음(Low uptake) = 갑상선염(Thyroiditis) — 중요 차이점입니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+        <img src="../../../shared/assets/generated/endocrine-hyperthyroidism-s04-mechanism-thyroid-8613e650-20260530-raster-20260531.jpg" alt="5단계 진단 흐름 (Diagnostic Flow) 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Villagelin et al., JCEM 2024 · KTA 2023 진단 알고리즘</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DENSITY GRID 3×2 — 3 main causes (Graves vs TMNG vs Thyroiditis)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>ETIOLOGY</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">원인 질환별 특징 비교</h2>
+      <p class="slide__subtitle">Graves' disease · Toxic Nodule (TMNG) · Thyroiditis — 치료 방향이 완전히 다릅니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">CAUSE · 01 · 약 70~80%</div>
+          <div class="tile__title">그레이브스병 (Graves' disease)</div>
+          <div class="tile__body">자가면역 항체(TRAb)가 TSH 수용체를 자극. 미만성 갑상선 비대, 안구 돌출(TED), 갑상선 잡음(Bruit) 동반. 치료는 ATD · RAI · 수술 모두 가능.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 02 · 약 10~15%</div>
+          <div class="tile__title">독성 결절 (Toxic Nodule / TMNG)</div>
+          <div class="tile__body">갑상선 결절이 자율적으로 호르몬을 과다 분비. 초음파에서 단일 또는 다발 결절 + Doppler 혈류 증가. ATD는 일시적 효과만 — 근본 치료는 RAI · 수술.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 03 · 약 5~10%</div>
+          <div class="tile__title">갑상선염 (Thyroiditis)</div>
+          <div class="tile__body">바이러스 · 자가면역으로 갑상선 세포가 일시적으로 파괴되어 저장 호르몬이 누출. RAI Uptake 매우 낮음. ATD는 효과 없음 — 베타차단제로 증상 조절만 시행.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CLUE · 04</div>
+          <div class="tile__title">초음파 (Doppler)</div>
+          <div class="tile__body">Graves : 미만성 비대 + 혈류 증가 / TMNG : 결절성 변화 / Thyroiditis : 정상 또는 미만성 · 혈류 감소.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CLUE · 05</div>
+          <div class="tile__title">RAI Scan</div>
+          <div class="tile__body">Graves : 전반적 · 미만성 섭취 증가 / TMNG : 결절 부위만 국소적(Focal) 섭취 증가 / Thyroiditis : 전반적 거의 없음(Low uptake).</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CLUE · 06</div>
+          <div class="tile__title">임상적 단서</div>
+          <div class="tile__body">Graves : 안병증(TED) · Bruit / TMNG : 결절 위주 촉진 · 비교적 고령 / Thyroiditis : 갑상선 통증 · 발열 · 바이러스 선행.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KTA 2023 진단 가이드라인 · ATA 2016</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · COMPARISON — MMI vs PTU (1st-line ATD)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>FIRST-LINE Tx</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">1차 치료 — 항갑상선제 (ATD)</h2>
+      <p class="slide__subtitle">Methimazole(MMI) vs Propylthiouracil(PTU) — 두 약제의 적응증·용량을 정확히 구분합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            Methimazole (MMI) · 1차 권장
+          </div>
+          <ul class="compare-col__list">
+            <li>비임신 성인 그레이브스병의 표준 1차약</li>
+            <li>1일 1회 복용, 환자 순응도 우수</li>
+            <li>경도 (FT4 1~1.5×ULN) : <strong>5~10 mg/day</strong></li>
+            <li>중등도 (1.5~2×ULN) : <strong>10~20 mg/day</strong></li>
+            <li>중증 (2~3×ULN) : <strong>30~40 mg/day</strong></li>
+            <li>FT4 정상화 도달 시 유지 용량으로 감량</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">!</span>
+            Propylthiouracil (PTU) · 예외적 1차
+          </div>
+          <ul class="compare-col__list">
+            <li>임신 1분기 (1st trimester) — 기형 위험 낮음</li>
+            <li>갑상선 폭풍 (Thyroid storm) — T4→T3 전환 차단</li>
+            <li>MMI 부작용으로 사용 불가한 경우</li>
+            <li>1일 2~3회 분복 필요 (반감기 짧음)</li>
+            <li>간독성 위험 더 높음 (드물지만 치명적)</li>
+            <li>2분기 이후 임신부는 MMI로 교체 고려</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/endocrine-hyperthyroidism-s06-comparison-thyroid-5a23a5df-20260530-raster-20260531.jpg" alt="1차 치료 — 항갑상선제 (ATD) 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATA 2016 · ETA 2018 · 시작 전 Baseline CBC + LFT 필수</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · DENSITY GRID 2×2 + alert-strip (ATD adverse effects)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>ADVERSE EFFECTS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">ATD 주요 부작용 · 즉시 대응법</h2>
+      <p class="slide__subtitle">생명을 위협할 수 있는 부작용을 알고 빠르게 약을 끊고 검사받는 것이 핵심</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">SE · 01 · 약 0.2~0.5%</div>
+          <div class="tile__title">무과립구증 (Agranulocytosis)</div>
+          <div class="tile__body">대부분(약 85%)이 약 시작 후 3개월 이내 발생. 급성 38℃ 이상의 고열 · 심한 인후통 · 구내염이 주요 신호 — 즉시 약 중단 후 CBC(백혈구 검사) 시행.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SE · 02 · 약 0.1~0.3%</div>
+          <div class="tile__title">간독성 (Hepatotoxicity)</div>
+          <div class="tile__body">피로감 · 피부 황달 · 짙은 소변 · 식욕 부진 · 우상복부 통증이 신호. Transaminase 정상 상한 3~5배 이상 시 약 중단 후 LFT 추적, 필요 시 약제 교체.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SE · 03 · 흔함</div>
+          <div class="tile__title">발진 · 가려움 · 관절통</div>
+          <div class="tile__body">경미한 피부 발진은 항히스타민제로 호전되나, 광범위 발진 · 점막 침범 시 즉시 약 중단. 관절통은 1~5%에서 발생, 약제 교체 또는 비스테로이드 진통제 병용.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SE · 04 · 주의</div>
+          <div class="tile__title">교차 반응 (Cross-reactivity)</div>
+          <div class="tile__body">MMI에서 무과립구증·간독성 발생 시 PTU 교체는 약 30%에서 재발하므로 권장하지 않음 — RAI·수술 등 근본 치료를 우선 고려.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">주의</span>
+        <span class="alert-strip__text">갑작스러운 38℃ 이상의 고열 · 심한 인후통 · 구내염 · 황달이 새로 생기면 <strong>즉시 ATD 복용을 중단하고 응급 CBC + LFT 검사</strong>를 받으세요. 자가 판단으로 약을 계속 복용하지 마세요.</span>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/endocrine-hyperthyroidism-s07-risk-thyroid-3f6e4f31-20260530-raster-20260531.jpg" alt="ATD 주요 부작용 · 즉시 대응법 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ATA 2016 · ETA 2018 · 발생 빈도는 한국·일본 코호트 기준</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · TIMELINE — ATD course (titration → maintenance → withdrawal)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>ATD COURSE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">ATD 치료 · 추적 · 중단 일정</h2>
+      <p class="slide__subtitle">12~18개월 표준 치료 후 재발 위험을 평가하여 단계적으로 약을 줄입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">시작 ~ 6주 · Titration</div>
+          <div class="timeline-step__body">Baseline CBC · LFT 확인 후 적정 용량으로 시작. 4~6주 간격으로 FT4/FT3 추적, 정상 도달 시 유지 용량(보통 5~10 mg)으로 감량.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">6주 ~ 12개월 · 유지</div>
+          <div class="timeline-step__body">2~3개월 간격 추적, FT4/FT3와 TSH 정상화 확인. TRAb 1~3개월마다 측정 — 음전화 추세는 관해 가능성을 시사합니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">12 ~ 18개월 · 중단 평가</div>
+          <div class="timeline-step__body">TRAb 음성 + 작은 갑상선 + 안병증 없음 = 중단 시도 가능. 양성 또는 큰 갑상선 = 장기 저용량 MMI 유지 또는 RAI/수술 전환 고려.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">중단 후 · 재발 추적</div>
+          <div class="timeline-step__body">중단 후 첫 1년이 가장 위험. 3·6·12개월에 TFT 재검. 약 50%에서 재발 — 재발 시 장기 저용량 MMI 또는 RAI/수술이 합리적 선택입니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Azizi et al. RCT (Thyroid 2019 / Endocrine 2024) · Struja et al. EJE 2017</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · COMPARISON — RAI vs Surgery (Definitive therapy)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>DEFINITIVE Tx</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">근본 치료 — RAI vs 수술 선택</h2>
+      <p class="slide__subtitle">ATD 실패 · 부작용 · 잦은 재발 시 환자와 함께 결정하는 두 가지 근본 치료법</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            방사성요오드 (RAI)
+          </div>
+          <ul class="compare-col__list">
+            <li>고정 용량 10~15 mCi 외래 투여 (KTA 2023)</li>
+            <li>RAI 3~7일 전 ATD 중단 (격리 권고)</li>
+            <li>약 1주 격리 (가족 접촉 최소화)</li>
+            <li>TED(안병증) 활성기 · 임신은 절대 금기</li>
+            <li>장점: 외래 처치, 입원 불필요, 비용 낮음</li>
+            <li>단점: 영구 갑상선저하증으로 진행(레보티록신 평생 복용)</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            갑상선 절제술 (Thyroidectomy)
+          </div>
+          <ul class="compare-col__list">
+            <li>큰 갑상선종 + 기도/식도 압박 증상</li>
+            <li>갑상선암 결절 동반 / 결절성 의심</li>
+            <li>중등도~중증 안병증(TED) 활성기 환자</li>
+            <li>임신 중인데 ATD 부작용으로 사용 불가</li>
+            <li>장점: 빠른 호르몬 정상화 · 즉각 효과</li>
+            <li>단점: 마취 위험 · 부갑상선 손상 · 성대 신경 손상 위험</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/endocrine-hyperthyroidism-s09-risk-thyroid-c916455a-20260530-raster-20260531.jpg" alt="근본 치료 — RAI vs 수술 선택 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KTA 2025 RAI 가이드라인 · Peng et al. NMA 2024-2025</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · DENSITY GRID 2×2 — Special situations (Pregnancy, TED, SCH, Storm)
+       Alert restricted to Thyroid Storm only (1 alert tile)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>SPECIAL SITUATIONS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">특수 상황별 치료 전략</h2>
+      <p class="slide__subtitle">임신 · 안병증 · 무증상 · 갑상선 폭풍 — 표준 치료를 그대로 적용할 수 없는 4가지 시나리오</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">SITUATION · 01 · 임신</div>
+          <div class="tile__title">임신 (Pregnancy)</div>
+          <div class="tile__body">1분기는 PTU 우선 (MMI 기형 위험 17.8/1,000 vs PTU 10.2/1,000). 2분기부터 MMI 교체 고려. RAI는 절대 금기. 임신 중 TFT 4~6주마다 추적 필수.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SITUATION · 02 · 안병증</div>
+          <div class="tile__title">갑상선 안병증 (TED)</div>
+          <div class="tile__body">활성기 + 중등도~중증 : RAI 금기 · 수술 또는 ATD 유지 + 스테로이드. 비활성기 + 경증 : RAI 가능 (스테로이드 예방 병용). 흡연자는 반드시 금연.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">SITUATION · 03 · 무증상</div>
+          <div class="tile__title">무증상 (Subclinical)</div>
+          <div class="tile__body">TSH 억제 + Free T4/T3 정상. 65세 이상, TSH &lt;0.1, 심혈관·골 위험 동반, 심방세동 시 적극 치료 권고. 그 외는 추적 검사로 충분.</div>
+        </div>
+        <div class="tile tile--alert">
+          <div class="tile__index">SITUATION · 04 · 응급</div>
+          <div class="tile__title">갑상선 폭풍 (Thyroid Storm)</div>
+          <div class="tile__body">고열(38℃+) · 빈맥 · 의식 변화 · 심부전 · 황달이 동반된 위급 상태. 사망률 10~30% — 즉시 응급실로 이송하여 PTU + 베타차단제 + 스테로이드 + 적극 치료 필요.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — RCOG 2025 임신 가이드라인 · ATA/ETA TED Consensus 2022</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — 8 patient-essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">정확한 진단과 단계적 치료 · 안전한 약물 복용을 위한 환자 실천 항목</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">원인 감별이 핵심 — <strong>Graves · Toxic Nodule · Thyroiditis</strong>는 치료가 다릅니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">38℃ 이상 고열·인후통·구내염은 <strong>무과립구증 신호</strong> — 즉시 약 중단·CBC</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">황달·짙은 소변·식욕 부진은 <strong>간독성 신호</strong> — 즉시 LFT 검사</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">약은 임의로 끊지 말고, 일시 잊어도 추가 복용 금지 — <strong>약 효과는 4~6주 후</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">약 부작용·잦은 재발 시 <strong>RAI 또는 수술 근본 치료</strong> 적극 검토</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">눈 변화(돌출·복시) <strong>금연 필수</strong> — RAI 전 안과 협진 권장</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">임신 계획 시 <strong>1분기 PTU</strong>로 사전 교체, 4~6주마다 TFT 추적</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">조류(김·미역)는 <strong>주 1~2회로 제한</strong> — 요오드 과다 섭취 주의</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — adherence, side-effect awareness, follow-up</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">정확한 진단과 꾸준한 치료로<br><em>안전하게 회복할 수 있습니다</em></h2>
+      <p class="slide__subtitle">치료 선택은 함께 고민하고 결정하겠습니다 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM13,2H14V3H13zM14,2H15V3H14zM17,2H18V3H17zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM24,2H25V3H24zM28,2H29V3H28zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM13,3H14V4H13zM14,3H15V4H14zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM20,3H21V4H20zM21,3H22V4H21zM22,3H23V4H22zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM14,4H15V5H14zM15,4H16V5H15zM16,4H17V5H16zM18,4H19V5H18zM20,4H21V5H20zM23,4H24V5H23zM25,4H26V5H25zM27,4H28V5H27zM28,4H29V5H28zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM14,5H15V6H14zM18,5H19V6H18zM19,5H20V6H19zM23,5H24V6H23zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM13,6H14V7H13zM17,6H18V7H17zM18,6H19V7H18zM20,6H21V7H20zM21,6H22V7H21zM24,6H25V7H24zM27,6H28V7H27zM28,6H29V7H28zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM12,7H13V8H12zM14,7H15V8H14zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM22,7H23V8H22zM24,7H25V8H24zM25,7H26V8H25zM27,7H28V8H27zM28,7H29V8H28zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM11,9H12V10H11zM13,9H14V10H13zM14,9H15V10H14zM18,9H19V10H18zM25,9H26V10H25zM27,9H28V10H27zM28,9H29V10H28zM2,10H3V11H2zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM19,10H20V11H19zM22,10H23V11H22zM26,10H27V11H26zM28,10H29V11H28zM30,10H31V11H30zM31,10H32V11H31zM34,10H35V11H34zM36,10H37V11H36zM37,10H38V11H37zM38,10H39V11H38zM2,11H3V12H2zM4,11H5V12H4zM5,11H6V12H5zM7,11H8V12H7zM9,11H10V12H9zM10,11H11V12H10zM13,11H14V12H13zM16,11H17V12H16zM20,11H21V12H20zM21,11H22V12H21zM25,11H26V12H25zM26,11H27V12H26zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM33,11H34V12H33zM34,11H35V12H34zM36,11H37V12H36zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM11,12H12V13H11zM15,12H16V13H15zM16,12H17V13H16zM19,12H20V13H19zM20,12H21V13H20zM23,12H24V13H23zM24,12H25V13H24zM25,12H26V13H25zM29,12H30V13H29zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM36,12H37V13H36zM38,12H39V13H38zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM11,13H12V14H11zM13,13H14V14H13zM14,13H15V14H14zM15,13H16V14H15zM17,13H18V14H17zM19,13H20V14H19zM24,13H25V14H24zM25,13H26V14H25zM28,13H29V14H28zM29,13H30V14H29zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM37,13H38V14H37zM38,13H39V14H38zM2,14H3V15H2zM3,14H4V15H3zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM14,14H15V15H14zM18,14H19V15H18zM22,14H23V15H22zM25,14H26V15H25zM26,14H27V15H26zM32,14H33V15H32zM33,14H34V15H33zM35,14H36V15H35zM38,14H39V15H38zM2,15H3V16H2zM3,15H4V16H3zM4,15H5V16H4zM5,15H6V16H5zM7,15H8V16H7zM9,15H10V16H9zM11,15H12V16H11zM13,15H14V16H13zM15,15H16V16H15zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM22,15H23V16H22zM23,15H24V16H23zM25,15H26V16H25zM27,15H28V16H27zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM31,15H32V16H31zM34,15H35V16H34zM35,15H36V16H35zM2,16H3V17H2zM4,16H5V17H4zM5,16H6V17H5zM8,16H9V17H8zM9,16H10V17H9zM13,16H14V17H13zM16,16H17V17H16zM17,16H18V17H17zM20,16H21V17H20zM21,16H22V17H21zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM26,16H27V17H26zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM32,16H33V17H32zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM37,16H38V17H37zM38,16H39V17H38zM3,17H4V18H3zM4,17H5V18H4zM5,17H6V18H5zM7,17H8V18H7zM13,17H14V18H13zM15,17H16V18H15zM16,17H17V18H16zM21,17H22V18H21zM25,17H26V18H25zM28,17H29V18H28zM29,17H30V18H29zM32,17H33V18H32zM33,17H34V18H33zM35,17H36V18H35zM36,17H37V18H36zM37,17H38V18H37zM38,17H39V18H38zM2,18H3V19H2zM4,18H5V19H4zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM13,18H14V19H13zM15,18H16V19H15zM21,18H22V19H21zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM32,18H33V19H32zM36,18H37V19H36zM38,18H39V19H38zM2,19H3V20H2zM10,19H11V20H10zM11,19H12V20H11zM13,19H14V20H13zM15,19H16V20H15zM18,19H19V20H18zM19,19H20V20H19zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM29,19H30V20H29zM30,19H31V20H30zM31,19H32V20H31zM36,19H37V20H36zM4,20H5V21H4zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM13,20H14V21H13zM14,20H15V21H14zM17,20H18V21H17zM19,20H20V21H19zM21,20H22V21H21zM22,20H23V21H22zM23,20H24V21H23zM24,20H25V21H24zM25,20H26V21H25zM26,20H27V21H26zM28,20H29V21H28zM29,20H30V21H29zM32,20H33V21H32zM33,20H34V21H33zM36,20H37V21H36zM38,20H39V21H38zM3,21H4V22H3zM7,21H8V22H7zM9,21H10V22H9zM10,21H11V22H10zM12,21H13V22H12zM14,21H15V22H14zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM20,21H21V22H20zM21,21H22V22H21zM22,21H23V22H22zM25,21H26V22H25zM27,21H28V22H27zM28,21H29V22H28zM29,21H30V22H29zM31,21H32V22H31zM35,21H36V22H35zM38,21H39V22H38zM2,22H3V23H2zM3,22H4V23H3zM4,22H5V23H4zM6,22H7V23H6zM8,22H9V23H8zM18,22H19V23H18zM19,22H20V23H19zM25,22H26V23H25zM26,22H27V23H26zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM34,22H35V23H34zM2,23H3V24H2zM4,23H5V24H4zM6,23H7V24H6zM7,23H8V24H7zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM12,23H13V24H12zM15,23H16V24H15zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM25,23H26V24H25zM26,23H27V24H26zM27,23H28V24H27zM28,23H29V24H28zM29,23H30V24H29zM34,23H35V24H34zM36,23H37V24H36zM37,23H38V24H37zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM8,24H9V25H8zM10,24H11V25H10zM14,24H15V25H14zM16,24H17V25H16zM17,24H18V25H17zM19,24H20V25H19zM23,24H24V25H23zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM35,24H36V25H35zM38,24H39V25H38zM2,25H3V26H2zM3,25H4V26H3zM5,25H6V26H5zM10,25H11V26H10zM12,25H13V26H12zM14,25H15V26H14zM15,25H16V26H15zM19,25H20V26H19zM20,25H21V26H20zM24,25H25V26H24zM28,25H29V26H28zM29,25H30V26H29zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM35,25H36V26H35zM36,25H37V26H36zM37,25H38V26H37zM38,25H39V26H38zM5,26H6V27H5zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM14,26H15V27H14zM15,26H16V27H15zM17,26H18V27H17zM18,26H19V27H18zM22,26H23V27H22zM26,26H27V27H26zM29,26H30V27H29zM32,26H33V27H32zM33,26H34V27H33zM38,26H39V27H38zM2,27H3V28H2zM4,27H5V28H4zM10,27H11V28H10zM11,27H12V28H11zM12,27H13V28H12zM16,27H17V28H16zM17,27H18V28H17zM19,27H20V28H19zM20,27H21V28H20zM25,27H26V28H25zM27,27H28V28H27zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM34,27H35V28H34zM35,27H36V28H35zM2,28H3V29H2zM3,28H4V29H3zM6,28H7V29H6zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM15,28H16V29H15zM16,28H17V29H16zM17,28H18V29H17zM20,28H21V29H20zM21,28H22V29H21zM23,28H24V29H23zM27,28H28V29H27zM29,28H30V29H29zM32,28H33V29H32zM34,28H35V29H34zM35,28H36V29H35zM36,28H37V29H36zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM4,29H5V30H4zM6,29H7V30H6zM12,29H13V30H12zM26,29H27V30H26zM29,29H30V30H29zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM35,29H36V30H35zM36,29H37V30H36zM37,29H38V30H37zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM15,30H16V31H15zM16,30H17V31H16zM18,30H19V31H18zM22,30H23V31H22zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM17,31H18V32H17zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM24,31H25V32H24zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM36,31H37V32H36zM37,31H38V32H37zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM13,32H14V33H13zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM20,32H21V33H20zM21,32H22V33H21zM22,32H23V33H22zM23,32H24V33H23zM25,32H26V33H25zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM12,33H13V34H12zM13,33H14V34H13zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM18,33H19V34H18zM24,33H25V34H24zM27,33H28V34H27zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM13,34H14V35H13zM15,34H16V35H15zM18,34H19V35H18zM19,34H20V35H19zM22,34H23V35H22zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM37,34H38V35H37zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM15,35H16V36H15zM16,35H17V36H16zM17,35H18V36H17zM21,35H22V36H21zM25,35H26V36H25zM31,35H32V36H31zM32,35H33V36H32zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM13,36H14V37H13zM15,36H16V37H15zM16,36H17V37H16zM17,36H18V37H17zM18,36H19V37H18zM19,36H20V37H19zM22,36H23V37H22zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM31,36H32V37H31zM34,36H35V37H34zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM13,37H14V38H13zM15,37H16V38H15zM17,37H18V38H17zM18,37H19V38H18zM19,37H20V38H19zM21,37H22V38H21zM24,37H25V38H24zM26,37H27V38H26zM31,37H32V38H31zM32,37H33V38H32zM34,37H35V38H34zM35,37H36V38H35zM36,37H37V38H36zM37,37H38V38H37zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM13,38H14V39H13zM17,38H18V39H17zM18,38H19V39H18zM21,38H22V39H21zM22,38H23V39H22zM24,38H25V39H24zM25,38H26V39H25zM30,38H31V39H30zM33,38H34V39H33zM35,38H36V39H35zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

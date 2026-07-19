@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Herpes Zoster — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/infectious/herpes-zoster/">
+  <meta property="og:title" content="대상포진 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="대상포진(Herpes Zoster) 원인부터 진단·치료·합병증·Shingrix 백신까지 환자가 알아야 할 모든 것">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/infectious/herpes-zoster/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (3-stat row + alert-stack + checklist 8) -->
+  <style>
+    /* Three-stat row — single row of 3 large circular stats + supporting card */
+    .pattern-stats3 {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .stats3-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      align-items: center;
+      justify-items: center;
+    }
+    .stats3-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .stats3-cell__circle {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-canvas);
+      text-align: center;
+      letter-spacing: var(--tracking-tight);
+    }
+    .stats3-cell__circle--navy { background: var(--color-navy); }
+    .stats3-cell__circle--steel { background: var(--color-steel); }
+    .stats3-cell__num {
+      font-size: 3rem;
+      font-weight: var(--weight-black);
+      line-height: 1;
+      letter-spacing: var(--tracking-mega);
+    }
+    .stats3-cell__unit {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      margin-top: var(--space-2);
+      opacity: 0.92;
+    }
+    .stats3-cell__label {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-540);
+      color: var(--color-navy);
+      letter-spacing: var(--tracking-snug);
+      text-align: center;
+      max-width: 240px;
+      line-height: var(--lh-snug);
+    }
+    .stats3-note {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-relaxed);
+    }
+
+    /* Vertical alert stack — single column, alert rows */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · INFECTIOUS DISEASE</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">대상포진 (Herpes Zoster),<br><em>원인부터 예방까지</em></h1>
+      <p class="slide__subtitle">수두 바이러스 재활성화로 생기는 피부절 통증과 수포 — 72시간 골든타임과 Shingrix 백신을 알아봅니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Herpes Zoster · Postherpetic Neuralgia · Shingrix Vaccine</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO NUMBER — 75만 명 / year, 50세 이후 급증
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">한국에서 매년 75만 명이 대상포진을 경험합니다</h2>
+      <p class="slide__subtitle">한국 발생률은 서구의 2배 이상 — 1,000명당 10.4명, 특히 50세 이후 급증합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="pattern-hero-number__value"><em>75</em>만</div>
+          <div class="pattern-hero-number__caption">한국 연간 대상포진 환자 수 — 1,000명당 10.4명 (서구 3~5명/1,000명의 2배 이상). 수두를 앓은 사람은 누구나 걸릴 수 있습니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">Why this matters</div>
+          <div class="pattern-hero-number__detail-text">
+            어린 시절 수두(chickenpox)를 일으킨 varicella-zoster virus (VZV)가 신경절(dorsal root ganglion)에 잠복해 있다가, 면역력이 떨어지면 다시 활성화됩니다. 50세 이후 면역력 저하와 함께 위험이 급격히 증가하므로, 조기 진단과 백신 예방이 모두 중요합니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Korean HZ Epidemiology · 대한감염학회 2023</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — Definition & Dermatome anatomy
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">대상포진 (Herpes Zoster) 이란</h2>
+      <p class="slide__subtitle">한쪽 피부절(dermatome)을 따라 띠처럼 나타나는 통증과 수포성 발진</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">VZV가 신경절에서 재활성화되어, 특정 신경이 지배하는 <em>피부절(dermatome)을 따라 한쪽으로만</em> 통증과 수포가 나타나는 질환입니다.</p>
+          <p class="pattern-split__supporting">
+            'Zoster'는 그리스어로 '허리띠'를 뜻합니다. 흉추(T3-L2)에서 가장 흔하며 (55%), 등에서 시작해 옆구리를 거쳐 가슴·배까지 띠처럼 감쌉니다. 등에 발진이 있는데 가슴이 아픈 것은 같은 신경이 연결된 정상 경과이며, 발진 1~5일 전 통증만 먼저 나타나 협심증·담석증·충수돌기염으로 오인되기도 합니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Most common site</div>
+            <div class="pattern-split__metric-value">흉추 55%</div>
+            <div class="pattern-split__metric-detail">T3–L2 피부절. 경추 20%, 삼차신경 V1 15%, 요천추 11% 순.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Onset age</div>
+            <div class="pattern-split__metric-value">50세 이후</div>
+            <div class="pattern-split__metric-detail">면역력 저하와 함께 발생 위험이 급격히 증가합니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Anatomy of Dermatomal Reactivation · Cohen 2013</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · TIMELINE — 4-phase clinical course
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>CLINICAL COURSE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">증상의 시간 경과 — 전구기에서 회복기까지</h2>
+      <p class="slide__subtitle">발진 출현 후 72시간 이내 항바이러스제 시작이 가장 중요합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">전구기 · 1~5일 전</div>
+          <div class="timeline-step__body">발진 전 해당 부위에 작열감·찌르는 통증, 전신 피로·근육통. 이 시기 통증만으로 다른 질환으로 오인되기 쉽습니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">급성 발진기 · ~15일</div>
+          <div class="timeline-step__body">홍반 위에 군집성 수포 발생, 3~5일간 새 수포 형성, 7~10일 후 가피(딱지) 형성. 항바이러스제 효과가 가장 큰 시기.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">치유기 · 2~4주</div>
+          <div class="timeline-step__body">가피 탈락과 피부 회복, 색소 침착 가능. 대부분 완전히 회복되지만 흉터·반흔이 남을 수 있습니다.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">PHN (발생 시) · 90일 이상</div>
+          <div class="timeline-step__body">발진 후 90일 이상 지속되는 작열통·이질통(allodynia). 삶의 질이 저하되며 고령자에서 호발합니다.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">72h 골든타임</span>
+        <span class="alert-strip__text">발진이 나타난 후 72시간 이내 항바이러스제(Valacyclovir/Famciclovir/Acyclovir) 시작 시 통증 기간 단축 효과가 가장 큽니다. 새 수포가 형성 중이거나 면역저하·고령·V1 침범이면 72시간 경과 후에도 투여합니다.</span>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
+        <img src="../../../shared/assets/generated/infectious-herpes-zoster-s04-anatomy-infectious-7c52b185-20260530-raster-20260531.jpg" alt="증상의 시간 경과 — 전구기에서 회복기까지 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Cochrane Review · IDSA Guidelines 2022</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DENSITY GRID 3×2 — Antiviral & pain medications
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>TREATMENT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">항바이러스제와 통증 조절 약물</h2>
+      <p class="slide__subtitle">72시간 이내 항바이러스제 + 단계적 통증 관리 — 빠른 시작이 핵심</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">ANTIVIRAL · 01 · 1차</div>
+          <div class="tile__title">Valacyclovir (발라시클로버)</div>
+          <div class="tile__body">1,000 mg을 하루 3회, 7일간 복용. 흡수율이 우수하고 복약이 편리합니다. RCT에서 통증 소실 중앙값을 51일에서 38일로 13일 단축시켰습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">ANTIVIRAL · 02</div>
+          <div class="tile__title">Famciclovir (팜시클로버)</div>
+          <div class="tile__body">500 mg을 하루 3회, 7일간 복용. 발라시클로버와 동등한 효능을 보입니다. 신기능에 따라 용량 조절이 필요한 대안 약물입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">ANTIVIRAL · 03</div>
+          <div class="tile__title">Acyclovir (아시클로버)</div>
+          <div class="tile__body">800 mg을 하루 5회, 7일간 복용. 흡수율이 낮고 복약 빈도가 높지만 가격이 저렴해 사용됩니다. 신부전 시 용량 조절 필수.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PAIN · 04 · 1단계</div>
+          <div class="tile__title">Acetaminophen / NSAIDs</div>
+          <div class="tile__body">경증 통증의 1차 약물. 아세트아미노펜 또는 비스테로이드성 소염제로 시작하며, 위장장애·신기능에 주의해 단기간 사용합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PAIN · 05 · 2단계</div>
+          <div class="tile__title">Gabapentin / Pregabalin</div>
+          <div class="tile__body">중등도 통증과 신경병증성 통증에 추가합니다. 가바펜틴 1,800~3,600 mg/일, 프레가발린 150~600 mg/일. 졸음·어지러움·부종이 흔합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">PAIN · 06 · 3단계</div>
+          <div class="tile__title">Tramadol / 단기 Opioids</div>
+          <div class="tile__body">심한 급성기 통증(NNT 4~5)에 한해 단기간만 사용. Lidocaine 5% 패치는 전신 부작용이 적어 노인·취약 환자에 유용합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Valacyclovir vs Acyclovir RCT (n=1,141) · IDSA 2022</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — PHN risk factors
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>PHN RISK FACTORS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">포진후신경통 (Postherpetic Neuralgia) 위험 인자</h2>
+      <p class="slide__subtitle">발진 후 90일 이상 지속되는 통증 — 80세 이상에서 32%, 50세 미만에서는 3%</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">FACTOR · 01 · 가장 강력</div>
+          <div class="tile__title">고령 (Age)</div>
+          <div class="tile__body">10세 증가당 PHN 위험이 1.2~3배 증가. 60~65세 20%, 80세 이상 32%. 가장 강력한 단일 위험 인자이며 백신 예방이 가장 중요합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 02</div>
+          <div class="tile__title">급성기 심한 통증</div>
+          <div class="tile__body">발진 시기에 통증 강도가 높을수록 PHN 위험이 약 2.2배 증가. 초기 통증을 적극적으로 조절하면 PHN 발생을 줄일 수 있습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 03</div>
+          <div class="tile__title">광범위 발진</div>
+          <div class="tile__body">한 피부절을 넘어 광범위하게 분포하는 발진은 위험을 약 2.6배 높입니다. 면역저하자에서 더 흔하므로 별도 평가가 필요합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 04</div>
+          <div class="tile__title">전구 통증 존재</div>
+          <div class="tile__body">발진 출현 1~5일 전 작열통·찌르는 통증이 선행한 경우 PHN 위험이 약 2.3배 증가. 전구기 호소가 있다면 적극 치료 시작 신호.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACTOR · 05</div>
+          <div class="tile__title">안신경 (V1) 침범</div>
+          <div class="tile__body">눈 주위 V1 피부절 침범은 PHN 위험을 약 2.5배 높이며 안구 합병증도 동반. 즉시 안과 협진과 항바이러스제 시작이 필요합니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">PROGNOSIS · 06</div>
+          <div class="tile__title">대부분 6개월 내 호전</div>
+          <div class="tile__body">PHN의 대부분은 3~6개월 내 자연 소실되지만, 약 2%는 5년 이상 통증이 지속됩니다. 조기 항바이러스제와 Shingrix가 가장 강력한 예방법입니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/infectious-herpes-zoster-s06-risk-infectious-159f61db-20260530-raster-20260531.jpg" alt="포진후신경통 (Postherpetic Neuralgia) 위험 인자 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — PHN Risk Stratification · Drolet 2010 · CDC 2024</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · COMPARISON — Zostavax vs Shingrix
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>VACCINE COMPARISON</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">백신 비교 — Zostavax vs Shingrix</h2>
+      <p class="slide__subtitle">Shingrix(재조합 백신)의 효능 97%는 Zostavax(생백신) 51%의 약 2배입니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            Zostavax (생백신, 단종)
+          </div>
+          <ul class="compare-col__list">
+            <li>피하 1회 접종</li>
+            <li>50~69세 효능 약 70%</li>
+            <li>70대 41%, 80대 18%로 급격히 감소</li>
+            <li>PHN 예방 효과 66.5%</li>
+            <li>10년 후 효능 15%까지 감소</li>
+            <li>면역저하자 사용 금기 — 한국 2024년 5월 공급 중단</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            Shingrix (재조합 백신, 권장)
+          </div>
+          <ul class="compare-col__list">
+            <li>근육 2회 접종 (0개월, 2~6개월)</li>
+            <li>50~69세 효능 97.2%</li>
+            <li>70세 이상에서도 91.3% 유지</li>
+            <li>PHN 예방 효과 89~91%</li>
+            <li>11년 후에도 약 80% 효능 유지</li>
+            <li>면역저하자도 사용 가능 — 대한감염학회 2023 권고</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
+        <img src="../../../shared/assets/generated/infectious-herpes-zoster-s07-comparison-infectious-4503e928-20260530-raster-20260531.jpg" alt="백신 비교 — Zostavax vs Shingrix 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ZOE-50/ZOE-70 RCT · 대한감염학회 2023 권고</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · DENSITY GRID 2×2 — Shingrix practical guide
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>SHINGRIX IN PRACTICE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">Shingrix 실전 가이드 — 부작용·비용·접종 시점</h2>
+      <p class="slide__subtitle">대상포진을 앓았더라도 접종이 권고됩니다 — 회복 후 재발률 10년 누적 10% 이상</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">FACT · 01 · 부작용</div>
+          <div class="tile__title">국소·전신 반응</div>
+          <div class="tile__body">주사부위 통증 78%, 근육통·피로 45%, 두통 38%, 오한 27%, 발열 21%. 대부분 2~3일 내 자연 소실되며, 심각한 이상반응은 위약과 동일(2.3% vs 2.2%)합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACT · 02 · 비용</div>
+          <div class="tile__title">한국 내 가격 (2026)</div>
+          <div class="tile__body">Shingrix(GSK) 약 25만원/회, 총 40~50만원(2회). SkyZoster(SK바이오) 약 14.6만원/1회 생백신. 모든 대상포진 백신은 건강보험 비급여(전액 자비) 입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACT · 03 · 보조 접종</div>
+          <div class="tile__title">지자체 무료·보조 사업</div>
+          <div class="tile__body">서울 강남구(70세↑ 생/재조합 모두), 도봉구, 김포시, 가평군 등 일부 지자체에서 65세 이상 무료 또는 보조 접종 시행. 거주지 보건소에 확인 필요.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FACT · 04 · 접종 시점</div>
+          <div class="tile__title">대상포진 회복 후 접종</div>
+          <div class="tile__body">CDC/ACIP는 급성 에피소드 해소 후 즉시 가능, 호주 ATAGI는 면역정상인 12개월·면역저하자 3개월 대기. 대한감염학회는 기왕력자에게도 Shingrix 접종을 권고합니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Shingrix Korea Pricing 2026 · CDC ACIP · ATAGI 2024</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · ALERT STACK — Emergency presentations (4 alerts; cap 2/slide -> exception: this is the dedicated emergency slide per SKILL.md)
+       NOTE: per SKILL.md "alert-stack pattern is for explicit emergency slides, 3-4 alerts max"
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>EMERGENCY SIGNS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">즉시 의료기관 방문이 필요한 경우</h2>
+      <p class="slide__subtitle">실명·청력손실·전신 감염을 막기 위해 지체 없이 응급 진료가 필요한 4가지 신호</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-alert-stack">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">눈 대상포진 (Herpes Zoster Ophthalmicus, HZO)</div>
+            <div class="alert-row__text">이마·코끝(Hutchinson's sign)·눈꺼풀에 수포가 생기면 V1 침범으로 안구 합병증 위험 6.5배 증가, 50~70%에서 각막염·포도막염·망막괴사·실명 위험. 시기 불문 즉시 안과 진료와 항바이러스제 시작 필수.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">람세이 헌트 증후군 (Ramsay Hunt Syndrome)</div>
+            <div class="alert-row__text">귀 주위 수포 + 같은 쪽 안면마비 + 청력 저하·어지럼증. 즉시 항바이러스제와 스테로이드 병용 치료, 이비인후과 협진이 필요합니다. 늦으면 영구적 안면마비·청력 손실 위험.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">면역저하자의 파종성 대상포진</div>
+            <div class="alert-row__text">항암치료·장기이식·HIV·고용량 스테로이드 환자에서 원래 부위 밖 20개 이상 병변, 다수 피부절 침범. 폐렴·뇌염·간염 등 장기 합병증과 사망 위험. 즉시 입원과 정맥 항바이러스제 필요.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">중추신경계 침범 의심</div>
+            <div class="alert-row__text">심한 두통, 목 뻣뻣함, 의식 변화, 경련 → 수막염·뇌염·VZV 혈관병증 가능성. 광범위 이차 세균 감염(고열·발적·농성 삼출물)도 즉시 의료기관 평가 대상입니다.</div>
+          </div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/infectious-herpes-zoster-s09-risk-infectious-99df208f-20260530-raster-20260531.jpg" alt="즉시 의료기관 방문이 필요한 경우 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — HZO Hutchinson's Sign · IDSA 2022 · CDC Disseminated Zoster</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · DENSITY GRID 2×2 — Daily life & contagion FAQ
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>DAILY LIFE FAQ</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">일상 생활과 자주 묻는 질문</h2>
+      <p class="slide__subtitle">전염성·재발·복귀·위생 — 환자분들이 가장 궁금해하는 4가지</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">FAQ · 01 · 전염</div>
+          <div class="tile__title">다른 사람에게 옮기나요?</div>
+          <div class="tile__body">대상포진 자체는 전염되지 않지만, 수포액 직접 접촉 시 수두 면역이 없는 사람은 수두에 걸릴 수 있습니다. 모든 수포가 가피화될 때까지 임산부·신생아·면역저하자와 접촉을 피하세요.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FAQ · 02 · 재발</div>
+          <div class="tile__title">또 걸릴 수 있나요?</div>
+          <div class="tile__body">네. 한국 연구에서 10년 누적 재발률 10% 이상, 평균 약 3년 후 재발. 50세 이상, 여성, 면역저하, 당뇨가 위험 인자이며 경험자도 반드시 Shingrix 백신 접종이 권장됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FAQ · 03 · 복귀</div>
+          <div class="tile__title">언제 직장에 복귀하나요?</div>
+          <div class="tile__body">모든 수포가 딱지로 변하고 통증이 관리 가능하면 복귀 가능합니다(보통 2~4주). 면역저하자나 임산부와 함께 일하는 경우 완전 가피화 확인 후 복귀하세요.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">FAQ · 04 · 위생</div>
+          <div class="tile__title">샤워와 상처 관리</div>
+          <div class="tile__body">미온수로 짧게 샤워 가능. 수포를 터뜨리지 말고 부드럽게 씻으며, 수건은 절대 공유하지 마세요. 깨끗이 유지하면 이차 세균 감염을 예방할 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — CDC Shingles FAQ · 대한감염학회 환자 안내</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — 8 essential takeaways
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">대상포진은 빨리 치료하고 미리 예방할수록 합병증을 줄일 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">편측 피부절 통증 + 군집성 수포 = 대상포진, <strong>추가 검사 없이 즉시 치료</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">발진 후 <strong>72시간 이내 항바이러스제(발라시클로버)</strong> 시작이 핵심</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">등에 발진, 가슴에 통증은 <strong>같은 신경이 연결된 정상 경과</strong>입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">50세 이상 모든 성인에게 <strong>Shingrix 2회 접종</strong> (97% 예방 효과)</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">대상포진 경험자도 회복 후 <strong>반드시 백신 접종</strong>이 필요합니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">눈 주위·코끝·이마 수포는 응급 — <strong>즉시 안과 진료</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">PHN(신경통)은 <strong>조기 치료 + 백신</strong>으로 예방 가능합니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">수포 가피화까지 <strong>임산부·신생아·면역저하자 접촉 금지</strong></div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — early antiviral, vaccinate, avoid contact</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">대상포진은 빨리 치료하고<br><em>미리 예방할 수 있습니다</em></h2>
+      <p class="slide__subtitle">72시간 골든타임을 지키고 Shingrix로 예방하세요 — 궁금한 점은 언제든 문의해 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM12,2H13V3H12zM14,2H15V3H14zM16,2H17V3H16zM18,2H19V3H18zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM26,2H27V3H26zM27,2H28V3H27zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM12,3H13V4H12zM13,3H14V4H13zM14,3H15V4H14zM16,3H17V4H16zM18,3H19V4H18zM19,3H20V4H19zM22,3H23V4H22zM25,3H26V4H25zM26,3H27V4H26zM27,3H28V4H27zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM14,4H15V5H14zM15,4H16V5H15zM16,4H17V5H16zM25,4H26V5H25zM27,4H28V5H27zM28,4H29V5H28zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM15,5H16V6H15zM16,5H17V6H16zM19,5H20V6H19zM21,5H22V6H21zM22,5H23V6H22zM24,5H25V6H24zM26,5H27V6H26zM27,5H28V6H27zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM12,6H13V7H12zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM21,6H22V7H21zM23,6H24V7H23zM24,6H25V7H24zM26,6H27V7H26zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM13,7H14V8H13zM14,7H15V8H14zM16,7H17V8H16zM17,7H18V8H17zM19,7H20V8H19zM20,7H21V8H20zM21,7H22V8H21zM22,7H23V8H22zM23,7H24V8H23zM26,7H27V8H26zM28,7H29V8H28zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM24,9H25V10H24zM26,9H27V10H26zM28,9H29V10H28zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM13,10H14V11H13zM14,10H15V11H14zM15,10H16V11H15zM17,10H18V11H17zM19,10H20V11H19zM20,10H21V11H20zM22,10H23V11H22zM23,10H24V11H23zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM32,10H33V11H32zM35,10H36V11H35zM37,10H38V11H37zM38,10H39V11H38zM2,11H3V12H2zM4,11H5V12H4zM6,11H7V12H6zM9,11H10V12H9zM10,11H11V12H10zM13,11H14V12H13zM14,11H15V12H14zM15,11H16V12H15zM16,11H17V12H16zM17,11H18V12H17zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM27,11H28V12H27zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM4,12H5V13H4zM5,12H6V13H5zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM15,12H16V13H15zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM24,12H25V13H24zM25,12H26V13H25zM26,12H27V13H26zM30,12H31V13H30zM33,12H34V13H33zM35,12H36V13H35zM36,12H37V13H36zM2,13H3V14H2zM3,13H4V14H3zM7,13H8V14H7zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM16,13H17V14H16zM18,13H19V14H18zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM24,13H25V14H24zM26,13H27V14H26zM27,13H28V14H27zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM32,13H33V14H32zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM12,14H13V15H12zM15,14H16V15H15zM17,14H18V15H17zM19,14H20V15H19zM21,14H22V15H21zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM30,14H31V15H30zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM9,15H10V16H9zM10,15H11V16H10zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM26,15H27V16H26zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM32,15H33V16H32zM33,15H34V16H33zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM38,15H39V16H38zM2,16H3V17H2zM3,16H4V17H3zM5,16H6V17H5zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM13,16H14V17H13zM14,16H15V17H14zM19,16H20V17H19zM21,16H22V17H21zM22,16H23V17H22zM24,16H25V17H24zM28,16H29V17H28zM31,16H32V17H31zM34,16H35V17H34zM36,16H37V17H36zM37,16H38V17H37zM3,17H4V18H3zM5,17H6V18H5zM10,17H11V18H10zM15,17H16V18H15zM17,17H18V18H17zM18,17H19V18H18zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM25,17H26V18H25zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM3,18H4V19H3zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM14,18H15V19H14zM15,18H16V19H15zM17,18H18V19H17zM20,18H21V19H20zM21,18H22V19H21zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM35,18H36V19H35zM36,18H37V19H36zM3,19H4V20H3zM4,19H5V20H4zM6,19H7V20H6zM7,19H8V20H7zM10,19H11V20H10zM12,19H13V20H12zM15,19H16V20H15zM16,19H17V20H16zM20,19H21V20H20zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM30,19H31V20H30zM32,19H33V20H32zM33,19H34V20H33zM36,19H37V20H36zM37,19H38V20H37zM38,19H39V20H38zM2,20H3V21H2zM3,20H4V21H3zM4,20H5V21H4zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM10,20H11V21H10zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM16,20H17V21H16zM22,20H23V21H22zM23,20H24V21H23zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM3,21H4V22H3zM10,21H11V22H10zM16,21H17V22H16zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM21,21H22V22H21zM22,21H23V22H22zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM32,21H33V22H32zM33,21H34V22H33zM35,21H36V22H35zM37,21H38V22H37zM3,22H4V23H3zM4,22H5V23H4zM5,22H6V23H5zM7,22H8V23H7zM8,22H9V23H8zM10,22H11V23H10zM12,22H13V23H12zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM21,22H22V23H21zM23,22H24V23H23zM25,22H26V23H25zM28,22H29V23H28zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM34,22H35V23H34zM35,22H36V23H35zM38,22H39V23H38zM2,23H3V24H2zM3,23H4V24H3zM4,23H5V24H4zM9,23H10V24H9zM12,23H13V24H12zM13,23H14V24H13zM14,23H15V24H14zM15,23H16V24H15zM16,23H17V24H16zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM30,23H31V24H30zM35,23H36V24H35zM37,23H38V24H37zM3,24H4V25H3zM4,24H5V25H4zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM11,24H12V25H11zM14,24H15V25H14zM16,24H17V25H16zM19,24H20V25H19zM20,24H21V25H20zM24,24H25V25H24zM25,24H26V25H25zM30,24H31V25H30zM33,24H34V25H33zM6,25H7V26H6zM7,25H8V26H7zM12,25H13V26H12zM13,25H14V26H13zM14,25H15V26H14zM21,25H22V26H21zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM28,25H29V26H28zM29,25H30V26H29zM31,25H32V26H31zM34,25H35V26H34zM35,25H36V26H35zM36,25H37V26H36zM2,26H3V27H2zM4,26H5V27H4zM6,26H7V27H6zM8,26H9V27H8zM14,26H15V27H14zM17,26H18V27H17zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM4,27H5V28H4zM5,27H6V28H5zM7,27H8V28H7zM9,27H10V28H9zM13,27H14V28H13zM15,27H16V28H15zM16,27H17V28H16zM21,27H22V28H21zM24,27H25V28H24zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM33,27H34V28H33zM34,27H35V28H34zM35,27H36V28H35zM37,27H38V28H37zM38,27H39V28H38zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM8,28H9V29H8zM11,28H12V29H11zM13,28H14V29H13zM15,28H16V29H15zM21,28H22V29H21zM22,28H23V29H22zM26,28H27V29H26zM27,28H28V29H27zM34,28H35V29H34zM36,28H37V29H36zM37,28H38V29H37zM2,29H3V30H2zM7,29H8V30H7zM10,29H11V30H10zM11,29H12V30H11zM12,29H13V30H12zM13,29H14V30H13zM16,29H17V30H16zM18,29H19V30H18zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM4,30H5V31H4zM5,30H6V31H5zM8,30H9V31H8zM12,30H13V31H12zM14,30H15V31H14zM17,30H18V31H17zM18,30H19V31H18zM20,30H21V31H20zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM27,30H28V31H27zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM12,31H13V32H12zM13,31H14V32H13zM14,31H15V32H14zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM22,31H23V32H22zM24,31H25V32H24zM25,31H26V32H25zM26,31H27V32H26zM27,31H28V32H27zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM36,31H37V32H36zM38,31H39V32H38zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM13,32H14V33H13zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM27,32H28V33H27zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM20,33H21V34H20zM21,33H22V34H21zM25,33H26V34H25zM26,33H27V34H26zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM12,34H13V35H12zM14,34H15V35H14zM15,34H16V35H15zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM20,34H21V35H20zM23,34H24V35H23zM28,34H29V35H28zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM37,34H38V35H37zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM15,35H16V36H15zM16,35H17V36H16zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM24,35H25V36H24zM25,35H26V36H25zM28,35H29V36H28zM29,35H30V36H29zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM36,35H37V36H36zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM13,36H14V37H13zM14,36H15V37H14zM15,36H16V37H15zM16,36H17V37H16zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM25,36H26V37H25zM27,36H28V37H27zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM31,36H32V37H31zM32,36H33V37H32zM34,36H35V37H34zM35,36H36V37H35zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM15,37H16V38H15zM16,37H17V38H16zM17,37H18V38H17zM18,37H19V38H18zM20,37H21V38H20zM21,37H22V38H21zM24,37H25V38H24zM26,37H27V38H26zM27,37H28V38H27zM33,37H34V38H33zM34,37H35V38H34zM35,37H36V38H35zM36,37H37V38H36zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM12,38H13V39H12zM14,38H15V39H14zM16,38H17V39H16zM17,38H18V39H17zM19,38H20V39H19zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>

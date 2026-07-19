@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>Post-infectious Cough — Gwanggyo Barun Internal Medicine</title>
+
+  <!-- Open Graph for KakaoTalk preview -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://gwanggyo-barun.github.io/patient-education/decks/pulmo/post-infectious-cough/">
+  <meta property="og:title" content="감염후기침 환자 교육 — 광교바른내과">
+  <meta property="og:description" content="감기 후 3~8주간 지속되는 기침, 왜 생기고 어떻게 관리할까요?">
+  <meta property="og:image" content="https://gwanggyo-barun.github.io/patient-education/decks/pulmo/post-infectious-cough/preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <!-- Pretendard Variable (the only font allowed) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <!-- QR code library (loaded only on closing slide) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+
+  <!-- Local extensions for this deck (alert-stack reused from chest-pain) -->
+  <style>
+    /* Vertical alert stack — single column, alert rows */
+    .pattern-alert-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--space-3);
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-lg);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .alert-row__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-canvas);
+      color: var(--color-danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-h3);
+      font-weight: var(--weight-bold);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .alert-row__title {
+      font-size: var(--text-body-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-danger);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--lh-tight);
+    }
+    .alert-row__text {
+      font-size: var(--text-body);
+      font-weight: var(--weight-450);
+      color: var(--color-ink);
+      line-height: var(--lh-snug);
+    }
+
+    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
+    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
+    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
+
+    /* layout-sweep 2026-06: deck-local spacing fixes only */
+    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide__body { min-height: 0; }
+    .pattern-hero-number { gap: 32px; align-items: stretch; }
+    .pattern-hero-number__numeric { justify-content: space-between; }
+    .pattern-hero-number__detail { justify-content: center; }
+    .pattern-split { gap: 32px; min-height: 0; }
+    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
+    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
+    .pattern-split__detail { justify-content: space-between; min-height: 0; }
+    .pattern-split__metric { padding: 18px 20px; }
+    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
+    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
+    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
+    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
+    .pattern-compare { align-items: stretch; }
+    .compare-col__list { justify-content: space-between; }
+    .pattern-checklist { height: 100%; align-content: space-between; }
+    .check-item { min-height: 0; }
+    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
+    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
+    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
+    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
+    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
+    .metric-stack { justify-content: space-between; height: 100%; }
+    .metric-card { padding: 16px 18px; }
+    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
+    .bg-image-split { gap: 32px; min-height: 0; }
+    .bg-image-split__visual { min-height: 0; }
+    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
+    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
+    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
+    .closing-grid { min-height: 0; }
+    .qr-block { padding: 18px; gap: 10px; }
+    .qr-block__code { width: 104px; height: 104px; }
+    /* layout-sweep 2026-06: compact overflow/underfill corrections */
+    .slide--closing .slide__body { justify-content: stretch; }
+    .closing-grid { height: 100%; align-items: stretch; }
+    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
+    .qr-block { min-height: 0; }
+    .tile { padding: 16px 18px; gap: 8px; }
+    .tile__title { font-size: 1.08rem; line-height: 1.22; }
+    .tile__body { font-size: 0.97rem; line-height: 1.34; }
+    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
+    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
+    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
+    .alert-strip, .alert-row { padding: 16px 18px; }
+    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
+    .pattern-stats3 { justify-content: space-between; }
+    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
+    .pattern-table { gap: 8px; }
+    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
+    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
+    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
+    .split__note { margin-top: 12px; }
+    .metric-card__value { font-size: 1.7rem; }
+    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
+    .tri-col__list { gap: 8px; }
+    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
+    .lesson-card { padding: 16px 18px; }
+    /* layout-sweep 2026-06: footer-safe compact frame */
+    .slide { --slide-pad-y: 44px; }
+    .slide__title-block { margin-bottom: 24px; }
+    .slide__footer { padding-top: 8px; font-size: 12px; }
+    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
+    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
+    .pattern-split__metric { padding: 14px 18px; }
+    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
+    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
+    .split, .split__left, .split__right { min-height: 0; }
+    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
+    .split__heading { margin-bottom: 12px; }
+    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
+    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
+    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
+    .tile { padding: 14px 16px; gap: 6px; }
+    .tile__body { font-size: 0.94rem; line-height: 1.28; }
+    .alert-strip, .alert-row { padding: 13px 16px; }
+    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
+    .pattern-bars, .bars { min-height: 0; }
+    .bar-row, .bars__row { min-height: 0; }
+    .tbl-row { padding: 6px 12px; }
+    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
+    .bg-image-split__visual { position: relative; }
+    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
+    .lesson-card { padding: 12px 16px; }
+    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
+    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .glp-card { padding-top: 28px; padding-bottom: 28px; }
+    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
+    /* layout-sweep 2026-06: legacy local pattern fill */
+    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .pattern-compare__head { padding: 14px 18px; }
+    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
+    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
+    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
+    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
+    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
+    .glp-title { font-size: 1.22rem; line-height: 1.22; }
+    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
+    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
+    .alert-row { align-items: center; }
+    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
+    .stats3-row { align-items: stretch; }
+    .stats3-cell { justify-content: space-between; }
+    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
+    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
+    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
+    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
+    /* layout-sweep 2026-06: final common component corrections */
+    .alert-strip { min-height: 0; display: flex; align-items: center; }
+    .qr-block { padding: 10px 12px; gap: 6px; }
+    .qr-block__code { width: 86px; height: 86px; }
+    .glp-card { justify-content: space-between; }
+    .glp-banner { justify-content: flex-end; }
+    .glp-list { justify-content: space-between; }
+    .pattern-table { height: 100%; justify-content: space-between; }
+    .tbl-row { flex: 0 1 auto; }
+    .split__note { max-height: 96px; overflow: hidden; }
+    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
+    .metric-stack { gap: 8px; }
+    .metric-card { padding: 12px 16px; }
+    .mech-card__note { max-height: 96px; overflow: hidden; }
+    .lesson-card { padding: 10px 14px; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ========================================================================
+       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
+       ======================================================================== -->
+  <section class="slide slide--cover">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · PULMONOLOGY</div>
+    </header>
+    <div class="slide__title-block">
+      <h1 class="slide__title">감염후기침,<br><em>시간이 약입니다</em></h1>
+      <p class="slide__subtitle">감기 후 3~8주간 지속되는 기침 — 왜 생기고 어떻게 관리하면 좋은지 알아봅니다</p>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Post-infectious Cough · Bronchial Hyperreactivity · Vicious Cycle</span>
+      <span class="slide__page">광교바른내과 일반내과</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 02 · HERO NUMBER — 50%+ self-resolves without medication
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">02</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">감기 후 기침, 약 없이도 절반 이상은 좋아집니다</h2>
+      <p class="slide__subtitle">감염후기침 (Post-infectious Cough)은 평균 3~8주 내 자연 소실됩니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-hero-number">
+        <div class="pattern-hero-number__numeric">
+          <div class="pattern-hero-number__value"><em>50</em>%+</div>
+          <div class="pattern-hero-number__caption">감염후기침 환자의 절반 이상은 약물 치료 없이도 시간이 지나면서 자연 호전됩니다 — 손상된 기도 점막과 신경이 회복되는 과정이 필요할 뿐입니다.</div>
+        </div>
+        <div class="pattern-hero-number__detail">
+          <div class="pattern-hero-number__detail-label">Why patience matters</div>
+          <div class="pattern-hero-number__detail-text">
+            그러나 감염후기침은 아급성 기침(3~8주)의 가장 흔한 원인이며, 8주를 초과해 만성화될 경우 다른 원인 평가가 필요합니다. 자연 경과를 이해하고 잘못된 헛기침 습관만 피해도 회복이 빨라집니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ACCP 2018 Cough Guideline · ERS 2020 Chronic Cough</span>
+      <span class="slide__page">02 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 03 · ASYMMETRIC SPLIT — Definition of post-infectious cough
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">03</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">감염후기침 (Post-infectious Cough) 이란</h2>
+      <p class="slide__subtitle">감기·독감·코로나19 후에도 기침만 3주 이상 지속되는 상태</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-split">
+        <div class="pattern-split__primary">
+          <p class="pattern-split__statement">급성 상기도 감염 후 콧물·발열 등은 사라졌지만 <em>기침만 3주 이상 지속</em>되는 상태로, 흉부 X-ray가 정상이고 다른 원인이 배제된 경우 진단합니다.</p>
+          <p class="pattern-split__supporting">
+            바이러스가 기도 점막을 손상시키고 신경 수용체(TRPV1, TRPA1)를 과민하게 만들면, 작은 자극에도 기침 반사가 쉽게 유발됩니다. 이를 기침 과민 증후군(Cough Hypersensitivity Syndrome, CHS)이라 부르며, 감염후기침은 그 대표 사례입니다.
+          </p>
+        </div>
+        <div class="pattern-split__detail">
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Duration</div>
+            <div class="pattern-split__metric-value">3 – 8주</div>
+            <div class="pattern-split__metric-detail">평균 지속 기간 — 아급성 기침의 가장 흔한 원인입니다.</div>
+          </div>
+          <div class="pattern-split__metric">
+            <div class="pattern-split__metric-label">Persistence after URI</div>
+            <div class="pattern-split__metric-value">약 25%</div>
+            <div class="pattern-split__metric-detail">감기 후 2주 이상 기침이 남아있는 환자 비율.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ACCP 2018 · Subacute Cough Definition</span>
+      <span class="slide__page">03 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 04 · DENSITY GRID 2×2 — 4 common causes of subacute cough
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">04</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 02 · <strong>COMMON CAUSES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">아급성 기침의 4가지 흔한 원인</h2>
+      <p class="slide__subtitle">감기 후 3주 이상 기침이 남는다면 — 대부분 이 네 가지에서 출발합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">CAUSE · 01</div>
+          <div class="tile__title">감염 후 기관지 과민성 (Post-viral BHR)</div>
+          <div class="tile__body">바이러스 감염으로 기도 점막이 손상되고 신경 수용체가 과민해진 상태. 찬 공기·먼지·웃음 등 작은 자극에도 기침이 유발됩니다. 보통 6~10주 내에 정상화됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 02</div>
+          <div class="tile__title">상기도 기침 증후군 (UACS)</div>
+          <div class="tile__body">코·부비동에서 분비물이 목 뒤로 흘러내리며 (후비루) 기침을 유발하는 가장 흔한 만성 기침 원인. 코막힘·재채기·"목에 뭔가 걸린 느낌"·잦은 헛기침이 함께 나타납니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 03</div>
+          <div class="tile__title">기침 변이형 천식 (Cough-Variant Asthma)</div>
+          <div class="tile__body">천명음·호흡곤란 없이 만성 기침만 나타나는 천식. 야간·새벽 기침, 운동·찬 공기 노출 후 악화가 특징. 폐기능 검사·기관지유발검사로 확인합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">CAUSE · 04</div>
+          <div class="tile__title">위식도역류병 (GERD)</div>
+          <div class="tile__body">위산이 식도·후두를 자극해 기침을 유발. 식후·눕고 난 뒤 악화, 속쓰림·신물·목 이물감 동반. 위산억제제(PPI) 시도로 진단·치료를 동시에 합니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
+        <img src="../../../shared/assets/generated/pulmo-post-infectious-cough-s04-mechanism-pulmonary-0decca94-20260530-raster-20260531.jpg" alt="아급성 기침의 4가지 흔한 원인 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ACCP 2018 Subacute Cough · KAAACI 2024</span>
+      <span class="slide__page">04 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 05 · DENSITY GRID 3×2 — Vicious cycle of cough
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">05</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 03 · <strong>VICIOUS CYCLE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">기침이 기침을 부른다 — Cough Begets Cough</h2>
+      <p class="slide__subtitle">조기에 기침을 억제하면 신경 감작의 악순환을 차단할 수 있습니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">STEP · 01</div>
+          <div class="tile__title">바이러스 감염</div>
+          <div class="tile__body">감기·독감·코로나 등 바이러스가 기도 상피세포에 침투해 점막을 손상시킵니다. 이때부터 기침 신경이 자극에 노출됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 02</div>
+          <div class="tile__title">기도 점막 손상 + 신경 감작</div>
+          <div class="tile__body">손상된 점막에서 염증 매개체가 분비되고, 기침 반사를 담당하는 미주신경 분지(TRPV1, TRPA1)가 과민화됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 03</div>
+          <div class="tile__title">기침 역치 감소</div>
+          <div class="tile__body">평소엔 무시될 작은 자극(찬 공기, 먼지, 향수, 웃음)에도 기침이 유발됩니다. 환자는 "사소한 것에도 기침이 나온다"고 느낍니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 04</div>
+          <div class="tile__title">반복적 기침 → 추가 점막 손상</div>
+          <div class="tile__body">고압의 기침이 반복되면 성대·기관 점막에 미세외상이 누적되며, 염증과 점액 분비가 다시 증가해 자극원이 됩니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">STEP · 05</div>
+          <div class="tile__title">기침 지속 · 만성화</div>
+          <div class="tile__body">자극→기침→손상→자극의 고리가 닫히면서 기침이 만성화됩니다. 8주를 넘기면 만성 기침으로 분류됩니다.</div>
+        </div>
+        <div class="tile tile--accent">
+          <div class="tile__index">KEY · 06</div>
+          <div class="tile__title">고리를 끊는 핵심 원리</div>
+          <div class="tile__body">의식적 기침 억제 (BCST), 충분한 수분 섭취, 자극원 회피로 신경 감작 단계에서 차단하면 만성화를 예방할 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Cough Hypersensitivity Syndrome · ERS Task Force 2014</span>
+      <span class="slide__page">05 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 06 · DENSITY GRID 3×2 — Behavioral cough suppression (BCST)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">06</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 04 · <strong>SUPPRESSION TECHNIQUES</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">기침 충동이 올 때 이렇게 해보세요</h2>
+      <p class="slide__subtitle">행동적 기침 억제 치료 (BCST) — 기침 빈도를 최대 65% 감소시킵니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--3">
+        <div class="tile">
+          <div class="tile__index">METHOD · 01</div>
+          <div class="tile__title">물 한 모금 천천히 삼키기</div>
+          <div class="tile__body">기침 충동이 오는 순간 물 한 모금을 천천히 삼킵니다. 가장 쉽고 효과적인 방법으로, 후두를 적시고 삼킴 반사가 기침 반사를 억제합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">METHOD · 02</div>
+          <div class="tile__title">무설탕 사탕 빨기</div>
+          <div class="tile__body">사탕을 입에 물고 있으면 침 분비가 늘어 목을 촉촉하게 유지합니다. 외출·회의 등 물을 마시기 어려운 상황에서 유용합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">METHOD · 03</div>
+          <div class="tile__title">코로 천천히 깊게 호흡</div>
+          <div class="tile__body">입을 다물고 코로 4초 들이쉬고 6초 내쉬기를 반복합니다. 입으로 차고 건조한 공기가 직접 들어오는 것을 막아 기도 자극을 줄입니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">METHOD · 04</div>
+          <div class="tile__title">입술 오므려 내쉬기 (Pursed-lip)</div>
+          <div class="tile__body">입술을 오므려 천천히 내쉽니다. 기도 압력을 일정하게 유지해 기관지 허탈을 막고, 기침 충동을 완화합니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">METHOD · 05</div>
+          <div class="tile__title">강한 삼키기 (Hard Swallow)</div>
+          <div class="tile__body">기침 충동이 올 때 의식적으로 힘을 주어 침을 삼킵니다. 삼킴 반사가 기침 반사를 직접 억제하는 효과가 임상 연구로 확인되었습니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">EVIDENCE · 06</div>
+          <div class="tile__title">근거 수준 — 환자 87% 호전</div>
+          <div class="tile__body">Vertigan 2006 RCT: 행동적 기침 억제 치료를 4회 시행 후 기침 빈도 최대 65% ↓, 환자의 87%가 호전을 보고했습니다.</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
+        <img src="../../../shared/assets/generated/pulmo-post-infectious-cough-s06-action-pulmonary-a89029d9-20260530-raster-20260531.jpg" alt="기침 충동이 올 때 이렇게 해보세요 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Vertigan AE et al. Thorax 2006 · BCST RCT</span>
+      <span class="slide__page">06 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 07 · COMPARISON — DO vs DON'T daily management
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">07</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 05 · <strong>DO &amp; DON'T</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">생활 속 기침 관리</h2>
+      <p class="slide__subtitle">헛기침은 모기 물린 곳을 긁는 것과 같습니다 — 일시적 시원함 대신 악순환을 부릅니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-compare">
+        <div class="compare-col compare-col--prefer">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">+</span>
+            이렇게 하세요 (DO)
+          </div>
+          <ul class="compare-col__list">
+            <li>충분한 수분 섭취 — 하루 1.5~2L</li>
+            <li>실내 습도 40~60% 유지 (가습기 활용)</li>
+            <li>기침 충동 시 물 삼키기·사탕 빨기</li>
+            <li>코로 천천히 깊게 호흡하기</li>
+            <li>헛기침 대신 부드럽게 침 삼키기</li>
+            <li>충분한 수면과 가벼운 규칙 운동</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--avoid">
+          <div class="compare-col__header">
+            <span class="compare-col__marker">−</span>
+            이건 피하세요 (DON'T)
+          </div>
+          <ul class="compare-col__list">
+            <li>습관적 헛기침 — "에헴!" 절대 금지</li>
+            <li>흡연·간접흡연·연기 노출</li>
+            <li>건조한 환경에 오래 머무르기</li>
+            <li>찬 공기에 갑자기 노출되기</li>
+            <li>큰 소리로 말하기·고함치기</li>
+            <li>카페인·알코올 과다 섭취</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
+        <img src="../../../shared/assets/generated/pulmo-post-infectious-cough-s07-action-pulmonary-fb5667fe-20260530-raster-20260531.jpg" alt="생활 속 기침 관리 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Lifestyle Modification for Subacute Cough · KAAACI</span>
+      <span class="slide__page">07 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 08 · TIMELINE — Natural recovery course (4 stages)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">08</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 06 · <strong>NATURAL COURSE</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">시간이 약입니다 — 회복 타임라인</h2>
+      <p class="slide__subtitle">감염후기침은 단계적으로 약해집니다 — 8주를 넘기면 추가 평가가 필요합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-timeline">
+        <div class="timeline-step">
+          <div class="timeline-step__node">1</div>
+          <div class="timeline-step__title">감염 후 1~2주 · 급성기 종료</div>
+          <div class="timeline-step__body">콧물·발열 등 급성 증상은 소실되고, 기침만 남기 시작합니다. 이 시점부터 BCST 시작 권장.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">2</div>
+          <div class="timeline-step__title">3~4주 · 절반은 자연 호전</div>
+          <div class="timeline-step__body">약물 없이도 50% 이상 환자에서 기침 강도가 약 30~40% 수준으로 감소합니다. 인내가 필요한 시기.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">3</div>
+          <div class="timeline-step__title">6~8주 · 대부분 자연 소실</div>
+          <div class="timeline-step__body">기관지 과민성(BHR)이 정상화되며 기침이 거의 사라집니다. 아토피 체질에서는 더 오래 지속될 수 있음.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step__node">4</div>
+          <div class="timeline-step__title">8주 초과 · 만성 기침 평가</div>
+          <div class="timeline-step__body">8주가 넘으면 만성 기침으로 분류됩니다. 폐기능 검사·흉부 CT·후두경 등 체계적 검사 알고리즘 적용.</div>
+        </div>
+      </div>
+      <div class="alert-strip">
+        <span class="alert-strip__label">참고</span>
+        <span class="alert-strip__text">코로나19 후 기침은 4~12주 시점 18~25%, 12주 이후 2.5~10%에서 지속되며, 약 43.7%에서 기도 과민성 양성이 확인됩니다.</span>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — Natural History of Post-viral Cough · COVID Cough Cohort Studies</span>
+      <span class="slide__page">08 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 09 · DENSITY GRID 2×2 — Treatment options (non-drug + drug)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">09</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 07 · <strong>TREATMENT</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">치료 옵션 — 비약물이 1차, 약물은 의사 처방</h2>
+      <p class="slide__subtitle">증상이 심하거나 4주 이상 지속될 때 단계적으로 약물을 추가합니다</p>
+    </div>
+    <div class="slide__body slide__body--visual-focus">
+      <div class="pattern-grid pattern-grid--2">
+        <div class="tile">
+          <div class="tile__index">NON-DRUG · 01</div>
+          <div class="tile__title">행동적 기침 억제 (BCST) + 꿀</div>
+          <div class="tile__body">물 삼키기·호흡법·사탕 빨기가 1차 권장 — 가장 효과적이며 부작용이 없습니다. 꿀(Honey)은 기침 빈도와 중증도를 개선합니다 — 단, 12개월 미만 영아 금기.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">NON-DRUG · 02</div>
+          <div class="tile__title">수분 섭취 + 자극물 회피</div>
+          <div class="tile__body">충분한 수분 섭취는 점액을 묽게 하고 점액섬모 청소를 촉진합니다. 연기·먼지·찬 공기 회피는 기도 자극을 줄여 기침 역치를 회복시킵니다.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 03</div>
+          <div class="tile__title">흡입 스테로이드 (ICS) ± 이프라트로피움</div>
+          <div class="tile__body">기도 염증·과민성이 의심되면 ICS를 2~4주 시도 (ERS/KAAACI 조건부 권고). 이프라트로피움은 기도 분비를 억제 — 치료 필요 수(NNT)=3.</div>
+        </div>
+        <div class="tile">
+          <div class="tile__index">DRUG · 04</div>
+          <div class="tile__title">진해제 + 신경조절제 (불응성)</div>
+          <div class="tile__body">레보드로프로피진은 비마약성 진해제로 CNS 억제가 없습니다. 8주 이상 지속되는 불응성 기침에는 가바펜틴 등 신경조절제를 고려 (RCT 확인).</div>
+        </div>
+      </div>
+      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
+        <img src="../../../shared/assets/generated/pulmo-post-infectious-cough-s09-risk-pulmonary-5cf7fd1c-20260530-raster-20260531.jpg" alt="치료 옵션 — 비약물이 1차, 약물은 의사 처방 설명 이미지">
+      </figure></div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — ERS 2020 Chronic Cough · KAAACI Cough Management 2024</span>
+      <span class="slide__page">09 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 10 · ALERT STACK — Red flag symptoms (4 alerts, compressed)
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">10</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 08 · <strong>RED FLAGS</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">이런 증상이 있으면 즉시 병원으로!</h2>
+      <p class="slide__subtitle">아래 위험 신호 중 하나라도 동반되면 추가 검사가 필요합니다 — 한국은 결핵 중등도 부담 국가입니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-alert-stack">
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">객혈 (Hemoptysis) — 피가 섞인 가래</div>
+            <div class="alert-row__text">폐암·결핵·기관지확장증의 위험 신호. 흉부 CT·기관지경 검사로 즉시 평가가 필요합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">설명되지 않는 체중 감소 + 야간 발한</div>
+            <div class="alert-row__text">악성종양·결핵·림프종의 전형적 동반 증상 — 흉부 CT, AFB 검사, 조직검사를 고려합니다.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">급성기 이후 지속되는 발열 또는 호흡곤란</div>
+            <div class="alert-row__text">폐렴·결핵·심부전·폐색전증 가능성. 안정 시 호흡곤란, 쉰 목소리 지속도 함께 평가 — 폐기능검사·D-dimer 등.</div>
+          </div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-row__icon">!</div>
+          <div class="alert-row__body">
+            <div class="alert-row__title">기침 8주 이상 지속 — 만성 기침 진입</div>
+            <div class="alert-row__text">천식·역류·결핵 등 체계적 검사 알고리즘 적용. 기침 2주 이상 지속 시에도 결핵 검사를 고려합니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">근거 — KCDC 결핵 진료 지침 · ACCP Red Flags for Cough</span>
+      <span class="slide__page">10 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 11 · CHECKLIST — Today's 8 essentials
+       ======================================================================== -->
+  <section class="slide">
+    <div class="slide__bg-num">11</div>
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">CHAPTER 09 · <strong>ACTION</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
+      <p class="slide__subtitle">감염후기침은 대부분 좋아지지만, 잘못된 습관이 회복을 방해합니다</p>
+    </div>
+    <div class="slide__body">
+      <div class="pattern-checklist pattern-checklist--8">
+        <div class="check-item">
+          <div class="check-item__num">01</div>
+          <div class="check-item__text">감염후기침은 <strong>3~8주 내</strong> 대부분 자연 소실됩니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">02</div>
+          <div class="check-item__text">약물 없이도 <strong>50% 이상</strong> 호전 — 시간이 약입니다</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">03</div>
+          <div class="check-item__text">기침이 기침을 부르는 <strong>악순환</strong>을 의식적으로 끊으세요</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">04</div>
+          <div class="check-item__text">헛기침 ("에헴!") — 모기 물린 곳 긁기, <strong>금지</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">05</div>
+          <div class="check-item__text">기침 충동 시: <strong>물 삼키기·코 호흡·사탕</strong></div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">06</div>
+          <div class="check-item__text">습도 40~60%·하루 1.5~2L 수분, <strong>흡연·찬 공기</strong> 회피</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">07</div>
+          <div class="check-item__text">증상 심하면 ICS·진해제 — <strong>의사 처방</strong>으로만</div>
+        </div>
+        <div class="check-item">
+          <div class="check-item__num">08</div>
+          <div class="check-item__text">객혈·체중감소·발열·8주 초과 → <strong>즉시 병원</strong></div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">Daily action plan — recover faster, recognise red flags</span>
+      <span class="slide__page">11 / 12</span>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================
+       SLIDE 12 · CLOSING — soft canvas, contact card + QR
+       ======================================================================== -->
+  <section class="slide slide--closing">
+    <header class="slide__header">
+      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
+    </header>
+    <div class="slide__title-block">
+      <h2 class="slide__title">감기 후 기침,<br><em>대부분 좋아집니다</em></h2>
+      <p class="slide__subtitle">기침 충동이 올 때 물 삼키기·코 호흡으로 악순환을 끊고 자연 회복을 기다려 주세요</p>
+    </div>
+    <div class="slide__body">
+      <div class="closing-grid">
+        <div class="contact-card">
+          <div class="contact-card__item">
+            <div class="contact-card__label">Phone</div>
+            <div class="contact-card__value">031-893-4560</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Address</div>
+            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
+          </div>
+          <div class="contact-card__item">
+            <div class="contact-card__label">Hours</div>
+            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
+          </div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM12,2H13V3H12zM13,2H14V3H13zM15,2H16V3H15zM19,2H20V3H19zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM25,2H26V3H25zM27,2H28V3H27zM32,2H33V3H32zM33,2H34V3H33zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM12,3H13V4H12zM13,3H14V4H13zM14,3H15V4H14zM18,3H19V4H18zM19,3H20V4H19zM22,3H23V4H22zM23,3H24V4H23zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM32,3H33V4H32zM34,3H35V4H34zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM16,4H17V5H16zM17,4H18V5H17zM19,4H20V5H19zM20,4H21V5H20zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM27,4H28V5H27zM29,4H30V5H29zM30,4H31V5H30zM33,4H34V5H33zM34,4H35V5H34zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM16,5H17V6H16zM18,5H19V6H18zM23,5H24V6H23zM26,5H27V6H26zM28,5H29V6H28zM29,5H30V6H29zM32,5H33V6H32zM33,5H34V6H33zM34,5H35V6H34zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM17,6H18V7H17zM20,6H21V7H20zM21,6H22V7H21zM23,6H24V7H23zM24,6H25V7H24zM25,6H26V7H25zM33,6H34V7H33zM34,6H35V7H34zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM15,7H16V8H15zM19,7H20V8H19zM23,7H24V8H23zM27,7H28V8H27zM28,7H29V8H28zM29,7H30V8H29zM31,7H32V8H31zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM10,9H11V10H10zM11,9H12V10H11zM12,9H13V10H12zM17,9H18V10H17zM18,9H19V10H18zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM28,9H29V10H28zM29,9H30V10H29zM30,9H31V10H30zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM31,10H32V11H31zM36,10H37V11H36zM37,10H38V11H37zM38,10H39V11H38zM39,10H40V11H39zM40,10H41V11H40zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM11,11H12V12H11zM12,11H13V12H12zM13,11H14V12H13zM14,11H15V12H14zM17,11H18V12H17zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM28,11H29V12H28zM30,11H31V12H30zM33,11H34V12H33zM34,11H35V12H34zM36,11H37V12H36zM37,11H38V12H37zM38,11H39V12H38zM40,11H41V12H40zM42,11H43V12H42zM2,12H3V13H2zM3,12H4V13H3zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM10,12H11V13H10zM12,12H13V13H12zM13,12H14V13H13zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM23,12H24V13H23zM26,12H27V13H26zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM34,12H35V13H34zM36,12H37V13H36zM38,12H39V13H38zM2,13H3V14H2zM3,13H4V14H3zM5,13H6V14H5zM6,13H7V14H6zM7,13H8V14H7zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM14,13H15V14H14zM16,13H17V14H16zM17,13H18V14H17zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM30,13H31V14H30zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM36,13H37V14H36zM38,13H39V14H38zM39,13H40V14H39zM42,13H43V14H42zM2,14H3V15H2zM3,14H4V15H3zM5,14H6V15H5zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM14,14H15V15H14zM17,14H18V15H17zM19,14H20V15H19zM21,14H22V15H21zM22,14H23V15H22zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM33,14H34V15H33zM35,14H36V15H35zM39,14H40V15H39zM40,14H41V15H40zM42,14H43V15H42zM3,15H4V16H3zM4,15H5V16H4zM6,15H7V16H6zM12,15H13V16H12zM13,15H14V16H13zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM23,15H24V16H23zM24,15H25V16H24zM27,15H28V16H27zM29,15H30V16H29zM31,15H32V16H31zM32,15H33V16H32zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM38,15H39V16H38zM39,15H40V16H39zM41,15H42V16H41zM42,15H43V16H42zM2,16H3V17H2zM3,16H4V17H3zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM12,16H13V17H12zM14,16H15V17H14zM15,16H16V17H15zM17,16H18V17H17zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM25,16H26V17H25zM26,16H27V17H26zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM33,16H34V17H33zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM39,16H40V17H39zM4,17H5V18H4zM7,17H8V18H7zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM15,17H16V18H15zM16,17H17V18H16zM17,17H18V18H17zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM28,17H29V18H28zM29,17H30V18H29zM33,17H34V18H33zM34,17H35V18H34zM36,17H37V18H36zM39,17H40V18H39zM42,17H43V18H42zM3,18H4V19H3zM4,18H5V19H4zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM13,18H14V19H13zM15,18H16V19H15zM18,18H19V19H18zM19,18H20V19H19zM20,18H21V19H20zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM33,18H34V19H33zM35,18H36V19H35zM37,18H38V19H37zM40,18H41V19H40zM41,18H42V19H41zM3,19H4V20H3zM5,19H6V20H5zM11,19H12V20H11zM13,19H14V20H13zM15,19H16V20H15zM16,19H17V20H16zM17,19H18V20H17zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM24,19H25V20H24zM25,19H26V20H25zM30,19H31V20H30zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM36,19H37V20H36zM37,19H38V20H37zM38,19H39V20H38zM40,19H41V20H40zM42,19H43V20H42zM2,20H3V21H2zM4,20H5V21H4zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM26,20H27V21H26zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM34,20H35V21H34zM36,20H37V21H36zM38,20H39V21H38zM39,20H40V21H39zM40,20H41V21H40zM4,21H5V22H4zM6,21H7V22H6zM11,21H12V22H11zM13,21H14V22H13zM14,21H15V22H14zM15,21H16V22H15zM16,21H17V22H16zM17,21H18V22H17zM21,21H22V22H21zM22,21H23V22H22zM25,21H26V22H25zM28,21H29V22H28zM31,21H32V22H31zM32,21H33V22H32zM34,21H35V22H34zM36,21H37V22H36zM38,21H39V22H38zM39,21H40V22H39zM41,21H42V22H41zM3,22H4V23H3zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM20,22H21V23H20zM21,22H22V23H21zM23,22H24V23H23zM24,22H25V23H24zM26,22H27V23H26zM29,22H30V23H29zM30,22H31V23H30zM33,22H34V23H33zM35,22H36V23H35zM39,22H40V23H39zM40,22H41V23H40zM41,22H42V23H41zM42,22H43V23H42zM2,23H3V24H2zM5,23H6V24H5zM6,23H7V24H6zM10,23H11V24H10zM15,23H16V24H15zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM32,23H33V24H32zM33,23H34V24H33zM34,23H35V24H34zM35,23H36V24H35zM36,23H37V24H36zM38,23H39V24H38zM39,23H40V24H39zM41,23H42V24H41zM42,23H43V24H42zM2,24H3V25H2zM3,24H4V25H3zM5,24H6V25H5zM8,24H9V25H8zM12,24H13V25H12zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM20,24H21V25H20zM22,24H23V25H22zM29,24H30V25H29zM31,24H32V25H31zM38,24H39V25H38zM39,24H40V25H39zM3,25H4V26H3zM6,25H7V26H6zM7,25H8V26H7zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM14,25H15V26H14zM16,25H17V26H16zM17,25H18V26H17zM21,25H22V26H21zM22,25H23V26H22zM23,25H24V26H23zM28,25H29V26H28zM30,25H31V26H30zM39,25H40V26H39zM3,26H4V27H3zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM15,26H16V27H15zM17,26H18V27H17zM19,26H20V27H19zM21,26H22V27H21zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM31,26H32V27H31zM37,26H38V27H37zM40,26H41V27H40zM3,27H4V28H3zM4,27H5V28H4zM7,27H8V28H7zM14,27H15V28H14zM15,27H16V28H15zM17,27H18V28H17zM18,27H19V28H18zM21,27H22V28H21zM23,27H24V28H23zM24,27H25V28H24zM25,27H26V28H25zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM33,27H34V28H33zM35,27H36V28H35zM36,27H37V28H36zM37,27H38V28H37zM38,27H39V28H38zM39,27H40V28H39zM41,27H42V28H41zM42,27H43V28H42zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM15,28H16V29H15zM16,28H17V29H16zM18,28H19V29H18zM23,28H24V29H23zM24,28H25V29H24zM28,28H29V29H28zM29,28H30V29H29zM32,28H33V29H32zM34,28H35V29H34zM36,28H37V29H36zM37,28H38V29H37zM2,29H3V30H2zM3,29H4V30H3zM6,29H7V30H6zM7,29H8V30H7zM9,29H10V30H9zM10,29H11V30H10zM12,29H13V30H12zM14,29H15V30H14zM16,29H17V30H16zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM28,29H29V30H28zM30,29H31V30H30zM33,29H34V30H33zM34,29H35V30H34zM35,29H36V30H35zM36,29H37V30H36zM37,29H38V30H37zM39,29H40V30H39zM42,29H43V30H42zM2,30H3V31H2zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM11,30H12V31H11zM16,30H17V31H16zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM25,30H26V31H25zM27,30H28V31H27zM28,30H29V31H28zM31,30H32V31H31zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM39,30H40V31H39zM40,30H41V31H40zM41,30H42V31H41zM2,31H3V32H2zM3,31H4V32H3zM4,31H5V32H4zM6,31H7V32H6zM9,31H10V32H9zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM14,31H15V32H14zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM19,31H20V32H19zM20,31H21V32H20zM22,31H23V32H22zM23,31H24V32H23zM26,31H27V32H26zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM32,31H33V32H32zM35,31H36V32H35zM37,31H38V32H37zM38,31H39V32H38zM41,31H42V32H41zM42,31H43V32H42zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM21,32H22V33H21zM23,32H24V33H23zM24,32H25V33H24zM32,32H33V33H32zM34,32H35V33H34zM35,32H36V33H35zM36,32H37V33H36zM40,32H41V33H40zM2,33H3V34H2zM5,33H6V34H5zM7,33H8V34H7zM9,33H10V34H9zM11,33H12V34H11zM13,33H14V34H13zM15,33H16V34H15zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM26,33H27V34H26zM28,33H29V34H28zM30,33H31V34H30zM32,33H33V34H32zM35,33H36V34H35zM36,33H37V34H36zM37,33H38V34H37zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM7,34H8V35H7zM8,34H9V35H8zM9,34H10V35H9zM10,34H11V35H10zM12,34H13V35H12zM13,34H14V35H13zM14,34H15V35H14zM19,34H20V35H19zM21,34H22V35H21zM24,34H25V35H24zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM30,34H31V35H30zM31,34H32V35H31zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM40,34H41V35H40zM10,35H11V36H10zM14,35H15V36H14zM16,35H17V36H16zM17,35H18V36H17zM19,35H20V36H19zM20,35H21V36H20zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM25,35H26V36H25zM27,35H28V36H27zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM41,35H42V36H41zM42,35H43V36H42zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM14,36H15V37H14zM18,36H19V37H18zM19,36H20V37H19zM22,36H23V37H22zM23,36H24V37H23zM26,36H27V37H26zM27,36H28V37H27zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM32,36H33V37H32zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM39,36H40V37H39zM40,36H41V37H40zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM11,37H12V38H11zM12,37H13V38H12zM16,37H17V38H16zM17,37H18V38H17zM18,37H19V38H18zM19,37H20V38H19zM20,37H21V38H20zM23,37H24V38H23zM24,37H25V38H24zM25,37H26V38H25zM27,37H28V38H27zM30,37H31V38H30zM33,37H34V38H33zM34,37H35V38H34zM38,37H39V38H38zM41,37H42V38H41zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM13,38H14V39H13zM14,38H15V39H14zM21,38H22V39H21zM23,38H24V39H23zM25,38H26V39H25zM28,38H29V39H28zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM40,38H41V39H40zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM12,39H13V40H12zM14,39H15V40H14zM15,39H16V40H15zM17,39H18V40H17zM19,39H20V40H19zM20,39H21V40H20zM21,39H22V40H21zM22,39H23V40H22zM23,39H24V40H23zM24,39H25V40H24zM25,39H26V40H25zM27,39H28V40H27zM30,39H31V40H30zM35,39H36V40H35zM37,39H38V40H37zM39,39H40V40H39zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM10,40H11V41H10zM11,40H12V41H11zM13,40H14V41H13zM14,40H15V41H14zM16,40H17V41H16zM22,40H23V41H22zM23,40H24V41H23zM24,40H25V41H24zM26,40H27V41H26zM27,40H28V41H27zM28,40H29V41H28zM29,40H30V41H29zM30,40H31V41H30zM32,40H33V41H32zM33,40H34V41H33zM34,40H35V41H34zM35,40H36V41H35zM36,40H37V41H36zM37,40H38V41H37zM38,40H39V41H38zM39,40H40V41H39zM40,40H41V41H40zM2,41H3V42H2zM8,41H9V42H8zM12,41H13V42H12zM19,41H20V42H19zM20,41H21V42H20zM23,41H24V42H23zM24,41H25V42H24zM28,41H29V42H28zM29,41H30V42H29zM30,41H31V42H30zM33,41H34V42H33zM34,41H35V42H34zM36,41H37V42H36zM38,41H39V42H38zM39,41H40V42H39zM41,41H42V42H41zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM11,42H12V43H11zM12,42H13V43H12zM16,42H17V43H16zM18,42H19V43H18zM19,42H20V43H19zM20,42H21V43H20zM21,42H22V43H21zM24,42H25V43H24zM26,42H27V43H26zM27,42H28V43H27zM29,42H30V43H29zM31,42H32V43H31zM33,42H34V43H33zM36,42H37V43H36zM37,42H38V43H37zM38,42H39V43H38zM40,42H41V43H40z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none"/></svg></div>
+          <div class="qr-block__text">
+            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__heading">집에서 다시 보기</div>
+            <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer">
+      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
+      <span class="slide__page">12 / 12</span>
+    </footer>
+  </section>
+
+</div>
+
+
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
+<script>
+  // Render QR code on closing slide using og:url as source of truth
+  (function() {
+    const qrEl = document.querySelector('.qr-block__code');
+    if (!qrEl) return;
+    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
+    if (!ogUrl || typeof QRCode === 'undefined') return;
+    if (qrEl.children.length > 0) return; // already injected by build
+    new QRCode(qrEl, {
+      text: ogUrl,
+      width: 96, height: 96,
+      colorDark: '#003366',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  })();
+</script>
+
+</body>
+</html>
