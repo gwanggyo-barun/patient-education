@@ -654,46 +654,219 @@ body {
 .trend-legend__swatch--line    { background: var(--color-navy); height: 1mm; }
 
 
-/* Mobile fit-to-width is handled via <meta name="viewport" content="width=794">
-   in each HTML head. Mobile browsers auto-zoom out, pinch-zoom remains active.
-   No CSS zoom hack — kept simple and standards-compliant. */
+/* Mobile: 각 HTML <head> 의 <meta name="viewport" content="width=794"> 가 폰의
+   레이아웃 뷰포트를 794px 로 고정하고, 브라우저가 화면 폭에 맞춰 통째로 축소한다.
+   → 아래 화면 셸의 배율이 그만큼 상쇄되므로 **폰에서는 17px 하한이 보장되지 않는다**.
+   HTML 72개는 이번 라운드 불가침이고 지원 프로파일에도 폰이 없어 그대로 둔다
+   (고치려면 meta 를 width=device-width 로 바꿔야 한다 — 별건).
+   데스크톱 브라우저는 meta viewport 를 무시하므로 진료실 화면에는 영향이 없다. */
 
 /* --------------------------------------------------------------------------
-   DESKTOP SCREEN FIT — one A4 page fits one screen
+   SCREEN SHELL — 진료실 모니터에서 환자와 같이 보는 렌더 (인쇄와 분리)
    --------------------------------------------------------------------------
-   The page is a fixed A4 box (210×297mm ≈ 794×1123px). On desktop we scale it
-   to use the window well — but the scale MUST be bounded by BOTH axes.
+   [2026-08-08] 주 용도가 인쇄 → **화면**으로 바뀌었다(사용자 결정 2026-08-07).
 
-   [2026-07-17] 이전 규칙은 **너비만** 보고 zoom 1.3~2.05 을 걸었다. A4 는 세로가
-   긴데(1123px) 높이를 안 봐서 실측상 **모든 데스크톱 크기에서 아래가 잘렸다**:
-       1440×900  zoom1.5 → 1191×1684  (창 높이 900 → 784px 잘림)
-       1680×1050 zoom1.75→ 1389×1964
-       2560×1440 zoom2.05→ 1627×2301
-   주석은 "no overflow" 라고 주장했으나 그건 **가로** 오버플로우만 본 것이었다.
-   CI 레이아웃 검증기는 794px 폭으로만 렌더 → 1120px 브레이크포인트에 **영원히
-   도달하지 않아** 이 버그를 구조적으로 못 잡는 사각지대였다.
+   종전(2026-07-17~) 규칙은 A4 한 장을 한 화면에 우겨넣으려고 .page 를 zoom
+   0.65~0.9 로 **축소**했다. 그 결과 1366×768 에서 본문이 실효 7.8px — 환자와
+   같이 볼 수가 없었다. 이제 화면에서는 A4 상자를 버리고 **반응형 흐름 문서**로
+   렌더한다:
+     · 폭 = 뷰포트에 맞추고 A4 폭(210mm)에서 멈춘다  → 가로 스크롤 없음
+     · 높이 = 내용만큼 자란다                        → 세로 스크롤 허용(사용자 결정)
+     · 좁아지면 카드·그리드가 한 칼럼으로 접힌다
+   내용은 한 글자도 줄이지 않는다 — 화면과 인쇄가 같은 문장을 보여준다.
 
-   이제 zoom 티어를 **높이 조건과 함께** 건다 → A4 한 장이 항상 한 화면에 들어온다.
+   ⚠️ 왜 font-size 재선언이 아니라 zoom 인가 (이 선택을 되돌리기 전에 읽어라)
+   핸드아웃 72개는 각자 <style> 블록에서 **자기만의 클래스**로 크기를 정한다
+   (.eff-sub 6.3pt · .br-name span 6.2pt · .matrix-cell-tag 5.8pt · .tl__when 7.6pt …).
+   그 블록은 이 파일보다 뒤에 실리고 선택자도 더 강하다. HTML 72개는 불가침이므로
+   이 파일에서 클래스명을 짚어 clamp() 로 갈아끼우는 방식은 **그 규칙들에 닿지
+   못한다**. zoom 은 선택자를 몰라도 하위 전체의 실효 크기를 곱으로 올리고,
+   실효크기 측정기(_validate_layout.SCREEN_FONT_JS)가 재는 값이 정확히 그 곱이다
+   → 어떤 핸드아웃에서도 하한 17px 을 보장할 수 있는 유일한 지렛대다.
+   transform:scale 과 달리 zoom 은 레이아웃 폭도 함께 줄이므로 가로 넘침을 안 만든다.
+   (실측 2026-08-08 Chromium 133: zoom 은 calc()·var() 는 받지만 **vw 단위는 무시**
+   한다 → clamp(…, 100vw/794, …) 불가. 그래서 뷰포트 반응은 아래 티어로 구현한다.)
 
-   SAFE BY CONSTRUCTION:
-   • @media screen only — print/PDF stays exact A4 (210×297mm), untouched.
-   • **모든 티어에 min-width:1120px 가드** — 검증기(794px)는 어떤 티어에도 매칭되지
-     않아 zoom:1(기본)로 남는다 → CI 레이아웃 게이트 무영향(실측 확인).
-   • `zoom` 은 레거시 속성이라 min()/calc() 를 받지 못한다(실측: 무시됨). 그래서
-     이산 티어로 구현한다.
-   • Mobile 은 viewport width=794 라 1120px 에 도달하지 않아 무영향(축소 fit 유지). */
-/* 짧은 창(노트북) — A4 세로가 안 들어가므로 축소해서 맞춘다.
-   [2026-07-25] 축소 티어의 너비 게이트를 1120px → 768px 로 낮췄다. 1120 은 확대 티어를
-   지키려고 넣은 값인데 축소에까지 걸려 있어서, **너비 1120px 미만 화면에서는 아무 티어도
-   안 걸려 세로로 넘쳤다**(실측: 아이패드 가로 1024×768·세로 834×1112 에서 페이지 794×1123).
-   축소는 넘침을 막는 방향이라 너비 조건을 낮춰도 부작용이 없다. 폰(<768px)은 viewport
-   meta width=794 로 브라우저가 이미 축소하므로 그대로 둔다(이중 축소 방지). */
-@media screen and (min-width: 768px) and (max-height: 1149px) { .page { zoom: 0.9;  } }  /* → 1010px 높이 */
-@media screen and (min-width: 768px) and (max-height: 1035px) { .page { zoom: 0.8;  } }  /* → 898px  */
-@media screen and (min-width: 768px) and (max-height: 925px)  { .page { zoom: 0.72; } }  /* → 808px  (맥북 13-14") */
-@media screen and (min-width: 768px) and (max-height: 835px)  { .page { zoom: 0.65; } }  /* → 730px  */
-/* 충분히 큰 화면 — 확대하되 세로가 들어갈 때만 */
-@media screen and (min-width: 1120px) and (min-height: 1150px) { .page { zoom: 1;    } }  /* → 1123px */
-@media screen and (min-width: 1320px) and (min-height: 1690px) { .page { zoom: 1.5;  } }  /* → 1684px */
-@media screen and (min-width: 1560px) and (min-height: 1970px) { .page { zoom: 1.75; } }  /* → 1964px */
-@media screen and (min-width: 1840px) and (min-height: 2310px) { .page { zoom: 2.05; } }  /* → 2301px */
+   일부 HTML의 뒤쪽 <style>에 .page { zoom:.65/.72/.8 }가 남아 있다.
+   같은 특이도에서 문서 뒤쪽 선언이 이기는 것을 막기 위해 화면 셸 zoom만
+   !important 로 고정한다. 다른 속성이나 인쇄 규칙에는 !important를 확장하지 않는다.
+
+   PRINT 무영향: 이 절 전체가 @media screen 안에 있다. @page A4 210×297mm · 9pt
+   밀도 · 좌표계 전부 그대로다(핸드아웃 72개 인쇄 렌더 기하 스냅샷 before/after
+   동일 확인 — 요소 9,746개 기하·타이포 무변화).
+   -------------------------------------------------------------------------- */
+
+@media screen {
+  /* ── 지원 프로파일 상수 ── 실측이 오면 **여기만** 고치면 된다 ────────────────
+       (계획서 P0-a 실측 전 가정값 · 사용자 답 2026-08-07)
+         clinic-primary     2560×1440   4K 32" 듀얼 @150% 가정
+         clinic-direct-min  1366×768    노트북·서브 모니터
+         clinic-notion-min   900×700    노션 임베드 본문 폭 가정
+
+       --screen-zoom 하한의 근거: 전 72개 중 이 파일이 이름을 짚을 수 없는(핸드아웃
+       고유 클래스) 최소 선언값이 5.8pt = 7.73px 다. 7.73 × 2.4 = 18.6px ≥ 17px.
+       파일럿 6건 실측 최악값은 19.2px(여유 2.2px).
+
+       ⚠️ 지원 프로파일이 실측되면 여기의 토큰만 수정한다. --screen-fold-max 1920px 는
+          A4 논리 폭 794 × 2.4 ≈ 1906px 에 여유를 둔 값이다. */
+  @property --ccs-wide-k {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: 0px;
+  }
+  @property --ccs-fold-k {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: 0px;
+  }
+  :root {
+    --screen-min-text: 17px;     /* 게이트 하한(문서용) — gate/verify_screen_shell.py */
+    --screen-zoom: 2.4;          /* 기본 배율 = 읽기 하한을 보장하는 값 */
+    --screen-measure: 210mm;     /* 한 칼럼 최대 폭 — A4 폭에서 멈춘다 */
+    --screen-tier-wide: 2200px;  /* 이 위 = 큰 진료실 모니터 → 더 키운다 */
+    --screen-fold-max: 1920px;   /* 이 아래 = 그리드를 한 칼럼으로 접는다 */
+    --ccs-wide-k: clamp(
+      0px,
+      (100vw - var(--screen-tier-wide)) * 9999,
+      1px
+    );
+    --ccs-fold-k: clamp(
+      0px,
+      (var(--screen-fold-max) - 100vw) * 9999,
+      1px
+    );
+  }
+
+  body { display: block; min-height: 0; }
+
+  /* A4 상자 해제 — 고정 폭·고정 높이·overflow:hidden 은 종이에서만 의미가 있다 */
+  .page {
+    zoom: var(--screen-zoom) !important;
+    display: block;              /* grid-template-rows(A4 좌표계) 해제 */
+    width: auto;
+    max-width: var(--screen-measure);
+    margin: 0 auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;           /* 넘치면 잘라내지 말고 흐르게 */
+    padding: 6mm 5mm 7mm;
+  }
+  .page.sheet {
+    width: auto;
+    max-width: var(--screen-measure);
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+  }
+  .page:has(.page__body--visual-strip) { padding: 6mm 5mm 7mm; }
+  .page > * + * { margin-top: 5mm; }
+
+  /* 본문도 정적 흐름으로 — 남는 세로를 나눠 갖던 flex 분배는 고정 높이 전제였다 */
+  .page__body { display: block; }
+  .page__body > section + section { margin-top: 5mm; }
+
+  /* 그리드/플렉스 자식이 min-content 아래로 못 줄어들어 생기는 가로 넘침 차단 */
+  .page :where(*) { min-width: 0; }
+
+  /* 종이 폭(A4 182mm 본문)을 전제로 짜인 공용 그리드를 화면 폭에 맞춘다 */
+  .body-2col       { grid-template-columns: 1fr; }
+  .stats-row       { grid-template-columns: repeat(auto-fit, minmax(min(100%, 34mm), 1fr)); }
+  .lab-row         { grid-template-columns: minmax(0, 1.4fr) minmax(0, .7fr) minmax(0, 1fr) auto; }
+  .checklist__item { grid-template-columns: 6mm minmax(0, 1fr); }
+
+  /* A4 아래 여백에 한 줄로 숨겨두던 QR 대체 URL — 화면에선 흐름으로 되돌린다.
+     종이에선 footer 높이를 안 늘리려고 absolute 였다(19/53 넘침 회귀). 화면은
+     세로가 무제한이라 그 제약이 없다. */
+  .qr-mini__url {
+    position: static;
+    white-space: normal;
+    text-align: left;
+    margin-top: 1.2mm;
+  }
+
+  /* 개별 핸드아웃이 A4 한 장에 밀어넣으려고 줄여둔 **공용** 미세활자를 화면에서는
+     원래 크기로 되돌린다(3-클래스 특정도라 페이지 <style> 보다 강하다). 지면 절약
+     목적의 축소였으므로 스크롤되는 화면에서는 근거가 없다. */
+  .page .disclaimer               { font-size: 7pt; }
+  .page .qr-mini                  { font-size: 7pt; }
+  .page .qr-mini .qr-mini__url    { font-size: 6pt; }
+  .page .qr-mini .qr-mini__label  { font-size: 7pt; }
+
+  /* 임상 핵심은 본문보다 크게 — 화면에서 먼저 눈에 들어와야 한다.
+     .card--warning 이 전 72개에서 '즉시 119 · 바로 알려주세요 · 즉시 연락 사유'
+     카드다(52곳). li 까지 짚는 건 개별 핸드아웃이 .card-list li 로 덮어쓰기
+     때문(특정도 0,0,3,1 > 0,0,2,1). 나머지 위계는 zoom 이 배율로 그대로 보존한다. */
+  .page .card--warning .card-list,
+  .page .card--warning .card-list li,
+  .page .card--warning .checklist__text { font-size: 10.5pt; }
+
+  .page .egd-fasting-row .checklist__text,
+  .page .body-2col .card--accent .card-list,
+  .page .body-2col .card--accent .card-list li,
+  .page .card--navy .card-list,
+  .page .card--navy .card-list li,
+  .page .takeaway,
+  .page .takeaway *,
+  .page .follow-grid,
+  .page .follow-grid * {
+    font-size: 11pt !important;
+  }
+
+  .page .page__footer {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+  }
+
+  /* 부모 min-height 는 border-box 값인데 이미지가 그대로 물려받으면 콘텐츠 박스보다
+     테두리 두께(2px)만큼 커져 '잘린 텍스트'로 잡힌다 → 콘텐츠 박스 기준으로 */
+  .ai-visual__image { min-height: 100%; }
+
+/* 좁은 화면 — 논리 폭(뷰포트÷zoom)이 A4 794px 의 3/4 아래로 내려간다. 핸드아웃마다
+   제각각인 고유 그리드(예: h-pylori 의 .wstat{18mm 1fr}, .ss-key, .mg-rank 처럼 이
+   파일이 이름을 모르는 것들)까지 한 칼럼으로 접어 가로 스크롤을 원천 차단한다.
+   1920px 근거: A4 논리 폭 794 × 2.4 ≈ 1906 이므로 1920 이하에서 접는다.
+   --screen-fold-max 와 함께 고칠 것. */
+@container style(--ccs-fold-k: 1px) {
+  .page > .hero {
+    flex-direction: column !important;
+  }
+
+  .page__body :where(div, section, ul, ol, dl, figure) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .page__body :where(.checklist__item) {
+    grid-template-columns: 6mm minmax(0, 1fr) !important;
+  }
+
+  .page .hero-row,
+  .page .blind-row,
+  .page .mg-hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .page .hero-chart,
+  .page .blind-illust,
+  .page .mg-hero__figure {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .page .ai-visual {
+    max-width: 100% !important;
+  }
+
+  .page .mg-rank__mg {
+    white-space: normal !important;
+  }
+}
+
+@container style(--ccs-wide-k: 1px) {
+  .page {
+    zoom: calc(var(--screen-zoom) + 0.4) !important;
+  }
+}
+}
