@@ -1224,6 +1224,244 @@ body.presenting .slide.is-active {
 
 
 /* ==========================================================================
+   MOTION — sequential entrance for PRESENTING MODE only
+   (2026-08-09, job 20260808-clinic-deck-motion)
+
+   Design contract — read before editing:
+
+   1. EVERYTHING lives inside `@media screen and (prefers-reduced-motion:
+      no-preference)`. Print/PDF is therefore animation-free BY CONSTRUCTION,
+      not by an override that a future rule could outrank. `@media print` does
+      not match `screen`, and neither does Playwright's
+      `page.emulate_media(media="print")` — which is exactly how
+      shared/_validate_layout.py renders decks. Layout validation sees the
+      static, settled layout.
+
+   2. Motion only fires under `body.presenting .slide.is-active`. Plain
+      scroll-through browsing of the deck page stays 100% static, so
+      tools/slide_screens.py (per-slide screenshots, screen media, no
+      presenting class), preview.png and _visual_diff are untouched. No
+      existing deck needs an HTML or JS change — the effect is pure CSS and
+      applies to every deck that already ships the shared stylesheet.
+
+   3. THE GATE IS WRAPPED IN `:where()`, WHICH CONTRIBUTES ZERO SPECIFICITY.
+      That is deliberate. The gate is five class-level selectors long; if it
+      counted, every rule below would sit at (0,7,1) and the later, more
+      specific-looking overrides (`.compare-col--avoid` and friends) would
+      silently LOSE to the generic rule they are written to override. With
+      `:where()` the specificity of each rule is decided by its target alone,
+      so "later and equally specific wins" holds and the overrides work.
+      Do not un-`:where()` the gate.
+
+   4. An element must never animate inside an animating ancestor: the two
+      transforms compound and the two opacities multiply, which reads as a
+      double-fade wobble. Two shapes cause it and both are handled below —
+      a wrapper `<div>` between the body and a pattern container (see the
+      nested-container reset), and a chrome element nested in another
+      (the cover slide does not separately animate `.slide__chapter`,
+      because `.slide__header` already carries it in).
+
+   5. The settled state must equal the static state EXACTLY. Two rules follow
+      from that. First, fill-mode is `backwards`, not `both`: `backwards` holds
+      the `from` state through the delay (so nothing flashes in early) and then
+      lets the element fall back to its own resting style when the animation
+      ends — `both` would pin it at the `to` state forever, leaving every
+      animated element with an identity `transform` matrix that keeps
+      establishing a containing block long after the motion is over. Second,
+      never animate opacity to 1 on an element whose resting opacity is not 1:
+      `.slide__bg-num` sits at 0.05 by design and is deliberately not animated.
+      tests/test_deck_motion_contract.py pins both.
+
+   6. Never animate `.slide` itself with `transform`: presenting mode already
+      owns that channel (`transform: scale(var(--present-scale))`). Only
+      descendants get transforms.
+
+   7. No web fonts, no network assets — CSS keyframes only. The local font
+      embedding contract is unchanged.
+
+   Kill switches: `body.motion-off` (runtime), or `data-motion="off"` on a
+   single `.slide` (authoring).
+   ========================================================================== */
+
+@media screen and (prefers-reduced-motion: no-preference) {
+
+  :root {
+    --motion-step: 80ms;                              /* stagger between items */
+    --motion-dur: 460ms;                              /* content unit */
+    --motion-dur-chrome: 380ms;                       /* header/title/footer */
+    --motion-dur-hero: 620ms;                         /* cover slide */
+    --motion-ease: cubic-bezier(0.22, 0.61, 0.36, 1); /* ease-out, no overshoot */
+    --motion-shift: 16px;
+    --motion-lead: calc(var(--motion-step) * 3);      /* body waits for the title */
+  }
+
+  @keyframes ccs-rise {
+    from { opacity: 0; transform: translate3d(0, var(--motion-shift), 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes ccs-drop {
+    from { opacity: 0; transform: translate3d(0, calc(-1 * var(--motion-shift)), 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes ccs-in-left {
+    from { opacity: 0; transform: translate3d(calc(-1.5 * var(--motion-shift)), 0, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes ccs-in-right {
+    from { opacity: 0; transform: translate3d(calc(1.5 * var(--motion-shift)), 0, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes ccs-pop {
+    from { opacity: 0; transform: scale(0.965); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes ccs-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ---- Tier A: slide chrome --------------------------------------------
+     `.slide__bg-num` is deliberately absent — its resting opacity is 0.05,
+     and every keyframe here ends at opacity 1.                             */
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .slide__header {
+    animation: ccs-drop var(--motion-dur-chrome) var(--motion-ease) backwards;
+  }
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .slide__title {
+    animation: ccs-rise var(--motion-dur-chrome) var(--motion-ease) backwards;
+    animation-delay: var(--motion-step);
+  }
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .slide__subtitle {
+    animation: ccs-rise var(--motion-dur-chrome) var(--motion-ease) backwards;
+    animation-delay: calc(var(--motion-step) * 2);
+  }
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .slide__footer {
+    animation: ccs-fade var(--motion-dur) var(--motion-ease) backwards;
+    animation-delay: calc(var(--motion-step) * 4);
+  }
+
+  /* ---- Tier B: content units, staggered ---------------------------------
+     Direct children of the body or of a pattern container animate. A pattern
+     container itself is excluded so a grid and its tiles never both animate.
+     Specificity: (0,2,0) — every override below matches it and wins on order. */
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"]))
+  :is(.slide__body, .pattern-grid, .pattern-checklist, .pattern-timeline,
+      .pattern-compare, .pattern-split, .pattern-hero-number, .closing-grid)
+  > *:not(:is(.pattern-grid, .pattern-checklist, .pattern-timeline,
+              .pattern-compare, .pattern-split, .pattern-hero-number,
+              .closing-grid)) {
+    animation: ccs-rise var(--motion-dur) var(--motion-ease) backwards;
+    animation-delay: calc(var(--motion-lead) + var(--m-i, 0) * var(--motion-step));
+  }
+
+  /* Stagger index. Every descendant of the body gets its own --m-i from its
+     own position, so the inherited value from a parent is always overridden. */
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(1)  { --m-i: 0; }
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(2)  { --m-i: 1; }
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(3)  { --m-i: 2; }
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(4)  { --m-i: 3; }
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(5)  { --m-i: 4; }
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(6)  { --m-i: 5; }
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(7)  { --m-i: 6; }
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(8)  { --m-i: 7; }
+  /* 9th item onward shares one delay — a 10-tile slide must not take 1.4s. */
+  :where(body.presenting .slide.is-active) .slide__body :nth-child(n+9) { --m-i: 8; }
+
+  /* ---- Directional accents ---------------------------------------------
+     Compare/split slides carry a left-vs-right meaning; the entrance should
+     say the same thing the layout says. Each selector below is (0,2,0), the
+     same as the Tier B rule, and comes later — that is the whole reason the
+     gate is `:where()`-wrapped. Keep the parent in the selector; dropping it
+     to a bare `.compare-col--avoid` drops to (0,1,0) and stops working.      */
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .pattern-compare > .compare-col--avoid {
+    animation-name: ccs-in-left;
+  }
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .pattern-compare > .compare-col--prefer {
+    animation-name: ccs-in-right;
+  }
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .pattern-split > .pattern-split__primary,
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .pattern-split > .split__left {
+    animation-name: ccs-in-left;
+  }
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .pattern-split > .pattern-split__detail,
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .pattern-split > .pattern-split__supporting,
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .pattern-split > .split__right {
+    animation-name: ccs-in-right;
+  }
+
+  /* The one number the slide exists for, and the red-flag strip, land with a
+     scale-in instead of a slide so they read as arriving, not sliding past. */
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .pattern-hero-number > .pattern-hero-number__numeric,
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .slide__body > .alert-strip,
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"])) .slide__body > .ai-visual {
+    animation-name: ccs-pop;
+  }
+
+  /* ---- Nested-container reset -------------------------------------------
+     Some decks wrap a pattern container in a layout div
+     (`.slide__body > .visual-column > .pattern-grid > .tile`). Tier B would
+     animate the wrapper AND the tiles inside it — compounded transforms.
+     The wrapper stands down and lets its tiles carry the motion. Declared
+     last so it wins the (0,2,0) tie against every rule above.               */
+
+  :where(body.presenting:not(.motion-off))
+  :where(.slide.is-active:not([data-motion="off"]))
+  :is(.slide__body, .pattern-grid, .pattern-checklist, .pattern-timeline,
+      .pattern-compare, .pattern-split, .pattern-hero-number, .closing-grid)
+  > *:has(:is(.pattern-grid, .pattern-checklist, .pattern-timeline,
+              .pattern-compare, .pattern-split, .pattern-hero-number,
+              .closing-grid)) {
+    animation: none;
+  }
+
+  /* ---- Cover slide ------------------------------------------------------
+     No body content on the cover; give the title block room to breathe.
+     `.slide__chapter` is NOT animated separately — it lives inside
+     `.slide__header`, which already carries it in.                          */
+
+  :where(body.presenting:not(.motion-off))
+  .slide--cover:where(.is-active:not([data-motion="off"])) .slide__title {
+    animation: ccs-rise var(--motion-dur-hero) var(--motion-ease) backwards;
+    animation-delay: calc(var(--motion-step) * 2);
+  }
+
+  :where(body.presenting:not(.motion-off))
+  .slide--cover:where(.is-active:not([data-motion="off"])) .slide__subtitle {
+    animation: ccs-rise var(--motion-dur-hero) var(--motion-ease) backwards;
+    animation-delay: calc(var(--motion-step) * 4);
+  }
+}
+
+
+/* ==========================================================================
    PRINT (PDF) — patient-share format
    Each slide renders as one A4-landscape page at native 16:9.
    ========================================================================== */
@@ -1255,6 +1493,14 @@ body.presenting .slide.is-active {
   .slide:last-child { page-break-after: auto; }
 
   .deck-nav { display: none !important; }
+
+  /* Belt and braces. The MOTION section above can never reach print (it is
+     gated on `screen`), but a deck-local <style> or a future rule might —
+     and an element frozen at its keyframe `from` state prints blank. */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 
