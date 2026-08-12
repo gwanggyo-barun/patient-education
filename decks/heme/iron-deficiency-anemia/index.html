@@ -673,5 +673,67 @@
 
 </div>
 
+<!-- Presenting mode toggle -->
+<div class="deck-nav">
+  <button id="presentBtn" type="button">Present</button>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const btn = document.getElementById('presentBtn');
+    let currentIndex = 0;
+
+    function showSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      currentIndex = idx;
+    }
+
+    function fitScale() {
+      const sw = window.innerWidth, sh = window.innerHeight;
+      const scale = Math.min(sw / 1280, sh / 720);
+      document.documentElement.style.setProperty('--present-scale', scale);
+    }
+
+    function enterPresent() {
+      document.body.classList.add('presenting');
+      fitScale();
+      window.addEventListener('resize', fitScale);
+      showSlide(0);
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Exit';
+    }
+
+    function exitPresent() {
+      document.body.classList.remove('presenting');
+      slides.forEach(s => s.classList.remove('is-active'));
+      window.removeEventListener('resize', fitScale);
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      btn.textContent = 'Present';
+    }
+
+    btn.addEventListener('click', () => {
+      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('presenting')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (currentIndex > 0) showSlide(currentIndex - 1);
+      } else if (e.key === 'Escape') {
+        exitPresent();
+      }
+    });
+  })();
+</script>
+
 </body>
 </html>

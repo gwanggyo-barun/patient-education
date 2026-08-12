@@ -1,0 +1,277 @@
+/* ==========================================================================
+   DECK LOOK v2 — 카드·아이콘 룩 (brand-profiles/gwanggyo-bareun-deck-v2.yaml)
+
+   왜 별도 파일인가
+   ---------------
+   기존 97개 덱은 shared/clinic-slides.css 만 링크한다. 이 파일은 **추가로 링크한
+   덱에서만** 효력이 있다 — 즉 기존 덱은 이 파일이 존재하는 것만으로는 1픽셀도
+   바뀌지 않는다. 롤백은 링크 한 줄 삭제다.
+
+   출처(추측 없음)
+   --------------
+   사용자가 지목한 dyslipidemia_early_intensive_treatment_2026.pptx(Genspark, 24장)의
+   슬라이드 XML 에서 도형 좌표와 채우기색을 기계로 추출해 옮겼다. 원본이 우리와 같은
+   1280×720 격자라 환산 손실이 없다. 로고만 사용자 결정으로 위치를 바꿨다(원본은
+   우측 끝에 붙어 잘려 보였다 → 우측 여백 64px + 액센트 바 아래 20px).
+
+   인쇄 규약
+   --------
+   화면 전용 장식(액센트 바·칩 배경·그림자)은 @media print 에서 잉크를 아끼도록
+   눌러 준다. 레이아웃 좌표는 건드리지 않는다 — _validate_layout.py 는 print 미디어로
+   렌더하므로 좌표를 바꾸면 그 게이트가 흔들린다.
+   ========================================================================== */
+
+:root {
+  --v2-navy: #003366;
+  --v2-accent: #5B9BD5;
+  --v2-ink: #334155;
+  --v2-body: #475569;
+  --v2-muted: #64748B;
+  --v2-faint: #94A3B8;
+  --v2-line: #E2E8F0;
+  --v2-surface: #F8FAFC;
+  --v2-chip-navy: #F0F4F8;
+  --v2-chip-accent: #EEF6FC;
+  --v2-alert: #EF4444;
+  --v2-margin: 64px;
+}
+
+.slide--v2 {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  background: #FFF;
+  overflow: hidden;
+}
+
+/* 이 룩의 좌표는 전부 **테두리 기준**이다(원본 PPT 도형이 그렇다). border-box 를
+   명시하지 않으면 padding 24px 이 폭에 더해져 패널이 오른쪽 여백을 먹는다 —
+   첫 이식에서 실제로 702px 패널이 750px 로 렌더돼 화면 밖으로 밀렸다. */
+.slide--v2 *,
+.slide--v2 *::before,
+.slide--v2 *::after { box-sizing: border-box; }
+
+/* ── 상단 액센트 바 + 헤더 ─────────────────────────────────────────────── */
+.v2-accent {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 12px;
+  background: linear-gradient(90deg, var(--v2-navy) 0%, var(--v2-navy) 62%, var(--v2-accent) 100%);
+}
+
+/* 로고 — 우측 여백을 본문과 같은 64px 로 맞춘다. 폭은 자동(비율 보존). */
+.v2-logo {
+  position: absolute;
+  right: var(--v2-margin);
+  top: 32px;
+  height: 46px;
+  width: auto;
+  object-fit: contain;
+}
+
+.v2-chapter {
+  position: absolute;
+  left: var(--v2-margin);
+  top: 44px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--v2-faint);
+  letter-spacing: 1.4px;
+}
+
+.v2-mark {
+  position: absolute;
+  left: var(--v2-margin);
+  top: 104px;
+  width: 8px;
+  height: 52px;
+  background: var(--v2-accent);
+  border-radius: 2px;
+}
+
+.v2-title {
+  position: absolute;
+  left: 88px;
+  top: 98px;
+  width: 1128px;
+  font-size: 33px;
+  font-weight: 700;
+  color: var(--v2-navy);
+  letter-spacing: -.4px;
+  line-height: 40px;
+  word-break: keep-all;
+}
+
+.v2-sub {
+  position: absolute;
+  left: 88px;
+  top: 144px;
+  width: 1128px;
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--v2-muted);
+  line-height: 28px;
+  word-break: keep-all;
+}
+
+/* ── 카드/패널 ─────────────────────────────────────────────────────────── */
+.v2-panel {
+  position: absolute;
+  background: #FFF;
+  border: 1px solid var(--v2-line);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+  --rule: var(--v2-navy);
+  --chip: var(--v2-chip-navy);
+}
+
+.v2-panel--accent {
+  --rule: var(--v2-accent);
+  --chip: var(--v2-chip-accent);
+}
+
+.v2-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  background: var(--rule);
+}
+
+/* 블록은 위에서부터 쌓는다 — 좌표를 고정하면 내용 길이에 따라 빈 구멍이 생긴다
+   (1·2차 샘플에서 실제로 그랬다). */
+.v2-block + .v2-block {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--v2-line);
+}
+
+.v2-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.v2-head b {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--v2-navy);
+  word-break: keep-all;
+}
+
+.v2-chip {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--chip);
+  color: var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.v2-chip svg { width: 24px; height: 24px; }
+/* 아이콘 SVG 의 presentation 속성(fill=…)을 CSS 로 덮어 브랜드색을 입힌다. */
+.v2-chip svg * { fill: currentColor; }
+
+.v2-body {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--v2-body);
+  word-break: keep-all;
+}
+
+.v2-body b { color: var(--v2-navy); font-weight: 700; }
+
+/* ── 수치 강조 · 단계 리스트 ───────────────────────────────────────────── */
+.v2-stat { text-align: center; padding: 14px 0 18px; }
+
+.v2-stat__num {
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--v2-navy);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.v2-stat__num span { font-size: 28px; font-weight: 700; color: var(--v2-accent); }
+
+.v2-stat__cap {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--v2-muted);
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+.v2-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 0;
+  font-size: 15px;
+  color: var(--v2-ink);
+  border-bottom: 1px dashed var(--v2-line);
+  word-break: keep-all;
+}
+
+.v2-step:last-child { border-bottom: 0; }
+
+.v2-step i {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 6px;
+  background: var(--v2-chip-accent);
+  color: var(--v2-navy);
+  font-size: 11px;
+  font-weight: 800;
+  font-style: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Tip 띠 · 푸터 ─────────────────────────────────────────────────────── */
+.v2-tip {
+  position: absolute;
+  left: var(--v2-margin);
+  top: 626px;
+  width: 1152px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: var(--v2-chip-accent);
+  border-left: 4px solid var(--v2-accent);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--v2-body);
+  word-break: keep-all;
+}
+
+.v2-tip b { color: var(--v2-navy); }
+
+.v2-foot {
+  position: absolute;
+  top: 684px;
+  font-size: 12px;
+  color: var(--v2-faint);
+  letter-spacing: .4px;
+}
+
+.v2-foot--l { left: var(--v2-margin); }
+.v2-foot--r { right: var(--v2-margin); }
+
+/* ── 인쇄 ──────────────────────────────────────────────────────────────── */
+@media print {
+  .v2-accent { background: var(--v2-navy); }
+  .v2-panel { box-shadow: none; }
+  .v2-chip { background: transparent; }
+  .v2-tip { background: transparent; border-left-color: var(--v2-navy); }
+}
