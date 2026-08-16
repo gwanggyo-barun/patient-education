@@ -823,6 +823,23 @@ body {
 .pattern-timeline {
   --timeline-gap: var(--space-4);   /* 연결자(선+화살촉)가 이 값을 추적 — visual-focus에선 좁아짐 */
   display: grid;
+  /* 열 수는 카드 수를 따라간다 — 고정 template 금지.
+     종전 `repeat(4, 1fr)` 은 카드가 3장인 슬라이드에서 4번째 트랙(273.5px)과 gap(14px)을
+     빈 채로 예약해, 타임라인이 본문 폭의 72%만 채우고 왼쪽으로 쏠렸다(2026-08-16 실측:
+     MRONJ 협진 슬라이드에서 오른쪽 287.5px 공백 + 카드가 369.3px 대신 273.5px = 1:1.54
+     세로 직사각형). 오버플로가 아니라 미충전이라 레이아웃 게이트의 bbox 검사에도 안 잡혔다.
+     자식은 전부 step 카드다(비-step 직계자식 레포 전수 0건) — auto-flow 로 두면 3·4·6장
+     어느 쪽이든 폭을 꽉 채운다. 명시 오버라이드가 있는 덱은 그쪽이 그대로 우선한다. */
+  /* ⚠️ 2026-08-16 3차 교정 — 앞의 두 시도가 모두 **다른 덱을 망가뜨렸다.**
+     1차 `grid-auto-flow:column`: 3장은 고쳤지만 줄바꿈을 없애 5·6장 덱이
+       2행→1행으로 붕괴(275x212 → 179x418, 원래 결함보다 나쁜 비율).
+     2차 `auto-fit minmax(240px,1fr)`: 이 격자는 **컨테이너 폭이 두 종류**다 —
+       본문 전폭(1136)과 visual-focus 의 좁은 열(~600). 240px 하한이 좁은 열에서
+       4장을 2행으로 쪼개 19개 덱이 회귀했다.
+     결론: 기본값 repeat(4,1fr) 은 **건드리지 않는다.** 실제 결함은 '카드가 4장보다
+     적을 때 빈 트랙이 예약되는 것' 하나뿐이므로, 그 경우에만 열 수를 카드 수에
+     맞춘다. `:last-child:nth-child(N)` 은 자식이 정확히 N개일 때만 맞는다.
+     → 4장 이상은 한 픽셀도 안 바뀐다(줄바꿈 포함). 3장 이하만 꽉 찬다. */
   grid-template-columns: repeat(4, 1fr);
   gap: var(--timeline-gap);
   height: 100%;
@@ -830,6 +847,12 @@ body {
   z-index: 1;
   align-items: stretch;
 }
+
+/* 카드가 4장 미만일 때만 열 수를 카드 수에 맞춘다(빈 트랙 예약 방지).
+   직계 자식은 전부 step 카드다(레포 전수 확인: 비-step 직계자식 0건). */
+.pattern-timeline:has(> :last-child:nth-child(3)) { grid-template-columns: repeat(3, 1fr); }
+.pattern-timeline:has(> :last-child:nth-child(2)) { grid-template-columns: repeat(2, 1fr); }
+.pattern-timeline:has(> :last-child:nth-child(1)) { grid-template-columns: 1fr; }
 
 /* 타임라인 단계 카드 — timeline-step + step-card 변형 모두 같은 시각 언어:
    카드 내부 콘텐츠(번호·제목·본문)를 가로/세로 중앙 정렬한다(좌측 쏠림 금지, [Gotcha 20] 정합). */
