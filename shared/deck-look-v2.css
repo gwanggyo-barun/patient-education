@@ -284,99 +284,36 @@
 .v2-foot--l { left: var(--v2-margin); }
 .v2-foot--r { right: var(--v2-margin); }
 
-/* ── 표지 (2026-08-23 추가) ────────────────────────────────────────────────
+/* ── 표지 = v1 표지 그대로 (2026-08-23 원장님 지시 — 두 번째 정정) ───────────
 
-   왜 고쳤나
-   ---------
-   v2 에는 **표지 전용 규칙이 아예 없었다.** 표지 슬라이드가 본문 슬라이드와
-   똑같은 흰 바탕·33px 제목으로 렌더돼, 화면의 80%가 빈 흰색이었다
-   (원장님 2026-08-23: "표지 디자인 너무 이상해, v1 이랑 비슷하게 바꿔").
+   이 룩의 표지는 **v1 표지(.slide--cover, shared/clinic-slides.css:196~)를 그대로
+   쓴다.** 마크업도 v1 표지 마크업(`section.slide.slide--cover` + slide__header /
+   slide__title-block / slide__footer)이다 — 첫 장만 v1, 나머지는 `.slide--v2`.
 
-   그래서 v1 표지(.slide--cover, shared/clinic-slides.css:196~)의 성질을 옮긴다:
-   네이비 그라디언트 전면 + 흰 로고 좌상단 + 챕터 라벨 우상단 + **아래에 붙은**
-   대형 제목 + 얇은 규칙선 위 푸터.
+   왜 이렇게 됐나
+   -------------
+   8/23 오전에 v2 어휘(.v2-title 등)로 v1 표지를 **모사**한 `.slide--v2.slide--cover`
+   규칙을 여기 두었다. 그런데 모사본은 v1 과 같지 않았다 — 실측(1280×720 렌더):
+     · 제목 60px/700 흰색, 바닥에 붙음(y=491) ↔ v1 은 72px/540 하늘색, 중하단(y=288)
+     · 부제 20px 1줄 ↔ v1 은 26px 최대 3줄·굵은 강조
+     · 여백 64px ↔ v1 72px, 푸터 규칙선 y=666 ↔ v1 649
+   원장님: "표지는 v1 이랑 **똑같은 그 형식**" — 비슷한 게 아니라 같은 것. 그래서
+   모사본을 지우고 v1 규칙을 **재사용**한다. 여기에는 v1 표지가 v2 덱 안에
+   앉을 때 필요한 자리 규칙만 남긴다(v1 템플릿 fulldeck-12 의 덱로컬 값과 같다).
 
-   ⚠️ 좌표를 절대값으로 박지 않고 **flex 로 아래 정렬**한다. 제목 줄 수가 덱마다
-   다른데(1~3줄) 절대 top 으로 박으면 긴 제목이 부제를 덮는다 — v1 이 flex 를 쓴
-   이유가 그거다. 로고·챕터·푸터는 모서리 고정이라 absolute 그대로 둔다.
+   ⛔ `.slide--v2.slide--cover` 를 다시 만들지 마라. 집 스타일 게이트
+      (shared/_house_style_gate.py `deck_cover_not_v1`)가 그 조합을 차단하고,
+      tools/deck_template.py 의 freeze/render 도 거부한다.
    ========================================================================== */
-.slide--v2.slide--cover {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 0 var(--v2-margin) 104px;
-  background:
-    radial-gradient(ellipse at top right, rgba(91, 155, 213, 0.25) 0%, transparent 50%),
-    linear-gradient(135deg, #002347 0%, var(--v2-navy) 55%, #14477A 100%);
-}
-
-/* 상단 액센트 바와 좌측 마커는 본문 슬라이드의 어휘다 — 표지에는 v1 처럼 없다. */
-.slide--v2.slide--cover .v2-accent,
-.slide--v2.slide--cover .v2-mark { display: none; }
-
-/* 로고 = 좌상단·흰색. (본문은 우상단 네이비 로고 그대로 둔다.) */
-.slide--v2.slide--cover .v2-logo {
-  left: var(--v2-margin);
-  right: auto;
-  top: 44px;
-  height: 36px;
-  filter: brightness(0) invert(1);
-}
-
-.slide--v2.slide--cover .v2-chapter {
-  left: auto;
-  right: var(--v2-margin);
-  top: 54px;
-  text-align: right;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* 제목·부제는 흐름에 태운다(position:static) — 그래야 아래 정렬이 먹는다. */
-.slide--v2.slide--cover .v2-title {
-  position: static;
-  width: auto;
-  margin: 0 0 22px;
-  font-size: 60px;
-  line-height: 1.18;
-  letter-spacing: -1.5px;
-  color: #FFF;
-}
-
-/* v1 표지처럼 <em> 은 하늘색 강조. */
-.slide--v2.slide--cover .v2-title em {
-  font-style: normal;
-  color: var(--v2-accent);
-}
-
-.slide--v2.slide--cover .v2-sub {
-  position: static;
-  width: auto;
-  margin: 0;
-  font-size: 20px;
-  line-height: 32px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.slide--v2.slide--cover .v2-sub b,
-.slide--v2.slide--cover .v2-sub strong { color: #FFF; }
-
-/* 푸터 위 얇은 규칙선 — v1 표지의 .slide__footer border-top 과 같은 자리. */
-.slide--v2.slide--cover::after {
-  content: "";
-  position: absolute;
-  left: var(--v2-margin);
-  right: var(--v2-margin);
-  bottom: 52px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.slide--v2.slide--cover .v2-foot { color: rgba(255, 255, 255, 0.6); }
+/* v2 본문 슬라이드와 같은 간격으로 쌓인다(v2 덱에는 .deck 래퍼가 없다). */
+section.slide--cover { margin: 0 auto 28px; }
+/* v1 템플릿(fulldeck-12-split-stat-v1) 덱로컬 규격 — 표지에만 국한해 옮겼다. */
+.slide--cover { --slide-pad-y: 44px; }
+.slide--cover .slide__footer { padding-top: 8px; font-size: 12px; }
 
 /* ── 인쇄 ──────────────────────────────────────────────────────────────── */
 @media print {
   .v2-accent { background: var(--v2-navy); }
-  .slide--v2.slide--cover { background: var(--v2-navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .v2-panel { box-shadow: none; }
   .v2-chip { background: transparent; }
   .v2-tip { background: transparent; border-left-color: var(--v2-navy); }
