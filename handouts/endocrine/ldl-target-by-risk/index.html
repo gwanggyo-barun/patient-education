@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=794">
+  <title>내 LDL 목표는 왜 남과 다를까요 — Gwanggyo Barun Internal Medicine</title>
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://edu.gwanggyobarun.com/handouts/endocrine/ldl-target-by-risk/">
+  <meta property="og:title" content="내 LDL 목표는 왜 남과 다를까요 — 광교바른내과">
+  <meta property="og:description" content="검진에서 '정상'과 내 치료 목표는 다릅니다. 위험도별 LDL 목표(160·130·100·70·55), 간에서 만드는 체질, 일찍·꾸준히(누적 노출), 약을 끊으면 다시 올라가는 이유, 커피·저탄고지를 A4 1장에 정리.">
+  <meta property="og:image" content="https://edu.gwanggyobarun.com/output/handouts/ldl-target-by-risk-preview.png">
+  <meta property="og:site_name" content="광교바른내과">
+  <meta name="theme-color" content="#003366">
+
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+  <link rel="stylesheet" href="../../../shared/design-tokens.css">
+  <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+
+  <style>
+    .page {
+      gap: 5.5mm;
+    }
+    .ldl-body {
+      gap: 2.6mm;
+      justify-content: start;
+    }
+    .ldl-body > section {
+      flex: 0 0 auto;
+      gap: 1.6mm;
+    }
+    .ldl-body .section-heading {
+      margin-bottom: 0;
+    }
+
+    /* 표 공통 */
+    .ldl-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.8pt;
+      line-height: 1.35;
+    }
+    .ldl-table th {
+      background: var(--color-navy);
+      color: var(--color-white-95);
+      font-weight: var(--weight-semibold);
+      font-size: 8pt;
+      text-align: left;
+      padding: 1.3mm 2.4mm;
+    }
+    .ldl-table td {
+      border-bottom: 1px solid var(--color-border);
+      padding: 0.8mm 2.4mm;
+      vertical-align: middle;
+      color: var(--color-ink);
+    }
+    .ldl-table tr:nth-child(even) td { background: var(--color-canvas-warm); }
+    .ldl-table td strong { color: var(--color-navy); }
+
+    /* ① 목표표 + 내 목표 카드 */
+    .target-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 4mm;
+      align-items: start;
+    }
+    .target-table td { padding-top: 0.4mm; padding-bottom: 0.4mm; line-height: 1.3; }
+    .target-table td.target-val {
+      text-align: right;
+      white-space: nowrap;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      font-size: 10pt;
+    }
+    .target-table td.target-val small {
+      font-size: 7.4pt;
+      font-weight: var(--weight-regular);
+      color: var(--color-slate);
+    }
+    .target-table tr.is-high td.target-val { color: var(--color-danger); }
+    .risk-bar {
+      display: inline-block;
+      width: 2.2mm;
+      height: 2.2mm;
+      border-radius: 50%;
+      margin-right: 1.6mm;
+      vertical-align: 0.1mm;
+      background: var(--color-steel);
+    }
+    .risk-bar--2 { background: var(--color-steel-deep); }
+    .risk-bar--3 { background: var(--color-navy); }
+    .risk-bar--4 { background: var(--color-warning); }
+    .risk-bar--5 { background: var(--color-danger); }
+
+    .mytarget {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2.6mm 4mm;
+    }
+    .mytarget .card-label { margin-bottom: 1mm; }
+    .mytarget__lead {
+      font-size: 8.6pt;
+      line-height: 1.42;
+    }
+    .mytarget__lead strong { color: #fff; }
+    .mytarget__blanks {
+      margin-top: 1.2mm;
+      display: flex;
+      flex-direction: column;
+      gap: 1mm;
+      font-size: 9pt;
+    }
+    .mytarget__blank {
+      display: flex;
+      align-items: baseline;
+      gap: 2mm;
+    }
+    .mytarget__blank span:first-child { white-space: nowrap; }
+    .mytarget__blank .line {
+      flex: 1;
+      border-bottom: 1px solid rgba(255,255,255,0.7);
+      min-height: 4.2mm;
+    }
+
+    /* ② LDL vs 중성지방 */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 4mm;
+      align-items: stretch;
+    }
+    .compare-table th:first-child { width: 22%; }
+    .compare-note {
+      font-size: 8.6pt;
+      line-height: 1.45;
+      padding: 2.4mm 3.4mm;
+    }
+    .compare-note strong { color: var(--color-navy); }
+
+    /* ③ 일찍·꾸준히 */
+    .early-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+      align-items: stretch;
+    }
+    .early-card { padding: 2.4mm 3.4mm; }
+    .early-list {
+      font-size: 8.8pt;
+      line-height: 1.5;
+    }
+    .early-list li + li { margin-top: 0.8mm; }
+    .glasses {
+      padding: 2.4mm 3.4mm;
+      font-size: 8.8pt;
+      line-height: 1.5;
+    }
+    .glasses__quote {
+      font-size: 10.4pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      line-height: 1.35;
+      margin-bottom: 0.8mm;
+    }
+
+    /* ④ 커피·식단 */
+    .alert-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3mm;
+    }
+    .alert-tile {
+      padding: 2mm 3mm;
+      border: 1px solid var(--color-border);
+      border-top: 3px solid var(--color-steel);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+    }
+    .alert-tile--danger {
+      border-top-color: var(--color-danger);
+      background: var(--color-danger-bg);
+    }
+    .alert-tile__kicker {
+      font-size: 7pt;
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wide);
+      color: var(--color-slate);
+      text-transform: uppercase;
+      margin-bottom: 0.8mm;
+    }
+    .alert-tile__title {
+      font-size: 10.4pt;
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      line-height: 1.2;
+      margin-bottom: 0.8mm;
+    }
+    .alert-tile__text {
+      font-size: 8.2pt;
+      line-height: 1.42;
+      color: var(--color-ink-soft);
+    }
+
+    /* ⑤ 오해 vs 사실 */
+    .myth-table th:first-child { width: 46%; }
+    .myth-table td:first-child { color: var(--color-ink-soft); font-weight: var(--weight-semibold); }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="page__header">
+    <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
+    <div class="page__eyebrow">PATIENT HANDOUT · <strong>ENDOCRINE · LDL CHOLESTEROL</strong></div>
+  </header>
+
+  <!-- TITLE BLOCK -->
+  <section class="page__title-block">
+    <h1 class="page__title">내 LDL 목표는 왜 남과 다를까요</h1>
+    <p class="page__subtitle"><strong>"검진에서 정상"</strong>과 <strong>"내 치료 목표"</strong>는 다릅니다. LDL 목표는 내 혈관의 위험도에 따라 정해지고, <strong>일찍 시작해 꾸준히</strong> 낮출수록 혈관에 쌓이는 부담이 줄어듭니다.</p>
+  </section>
+
+  <!-- BODY -->
+  <main class="page__body ldl-body">
+
+    <!-- ① 위험도별 목표 -->
+    <section>
+      <h2 class="section-heading">목표는 위험도에 따라 다릅니다 (My LDL Target)</h2>
+      <div class="target-grid">
+        <table class="ldl-table target-table">
+          <tr><th>나의 상황</th><th style="text-align:right">LDL 목표</th></tr>
+          <tr><td><span class="risk-bar"></span>저위험 (위험인자 0~1개)</td><td class="target-val">160 <small>mg/dL 미만</small></td></tr>
+          <tr><td><span class="risk-bar risk-bar--2"></span>위험인자 2개 이상</td><td class="target-val">130 <small>mg/dL 미만</small></td></tr>
+          <tr><td><span class="risk-bar risk-bar--3"></span>당뇨 (10년 미만·위험인자 없음)</td><td class="target-val">100 <small>mg/dL 미만</small></td></tr>
+          <tr class="is-high"><td><span class="risk-bar risk-bar--4"></span>당뇨 (10년 이상·위험인자·합병증)</td><td class="target-val">70 <small>mg/dL 미만</small></td></tr>
+          <tr class="is-high"><td><span class="risk-bar risk-bar--4"></span>경동맥 플라크</td><td class="target-val">70 <small>mg/dL 미만</small></td></tr>
+          <tr class="is-high"><td><span class="risk-bar risk-bar--5"></span>스텐트 · 심근경색</td><td class="target-val">55 <small>mg/dL 미만</small></td></tr>
+        </table>
+        <div class="card card--navy mytarget">
+          <div>
+            <div class="card-label">나의 목표 · MY TARGET</div>
+            <div class="mytarget__lead">검진표의 <strong>'정상'</strong>으로 보이는 수치도 <strong>내 치료 목표보다는 높을 수 있습니다.</strong> 위험이 높을수록 목표를 더 낮게&nbsp;잡습니다.</div>
+          </div>
+          <div class="mytarget__blanks">
+            <div class="mytarget__blank"><span>나의 위험도</span><span class="line"></span></div>
+            <div class="mytarget__blank"><span>나의 목표</span><span class="line"></span><span>mg/dL 미만</span></div>
+            <div class="mytarget__blank"><span>지금 LDL</span><span class="line"></span><span>mg/dL</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ② 간에서 만드는 체질 -->
+    <section>
+      <h2 class="section-heading">LDL은 '간에서 만드는 체질'이 큽니다 (Why Diet Alone Isn't Enough)</h2>
+      <div class="compare-grid">
+        <table class="ldl-table compare-table">
+          <tr><th></th><th>LDL (나쁜 콜레스테롤)</th><th>중성지방</th></tr>
+          <tr><td><strong>주로 정하는 것</strong></td><td>음식보다 <strong>간에서 만드는 체질</strong></td><td>식사 · 술 · 체중</td></tr>
+          <tr><td><strong>운동·식사만으로</strong></td><td>잘 안 떨어집니다</td><td>생활습관에 잘 반응합니다</td></tr>
+        </table>
+        <div class="card card--accent compare-note">
+          식사를 잘 지켜도 목표에 못 미치면 <strong>약이 필요합니다</strong> — 노력 부족이 아니라 체질입니다. 포화지방 줄이기는 <strong>약과 함께</strong> 계속합니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ 일찍, 꾸준히 -->
+    <section>
+      <h2 class="section-heading">일찍, 꾸준히 — 위험은 '누적 노출'이 정합니다 (Earlier is Better)</h2>
+      <div class="early-grid">
+        <div class="card early-card">
+          <ul class="card-list early-list">
+            <li><strong>2026 ACC/AHA 가이드라인</strong>의 메시지 — <strong>"Earlier is better"</strong></li>
+            <li>위험은 <strong>LDL 곡선 아래 면적(누적 노출)</strong>이 정합니다. 얼마나 높았는지 × 얼마나 오래였는지입니다.</li>
+            <li><strong>일찍 시작할수록</strong> 그 이득이 오래 이어질&nbsp;수&nbsp;있습니다(레거시&nbsp;효과).</li>
+          </ul>
+        </div>
+        <div class="card card--accent glasses">
+          <div class="card-label card-label--navy" style="margin-bottom:1mm">약을 끊으면? · STOPPING</div>
+          <div class="glasses__quote">"나빠지는" 게 아니라 다시 올라갈 뿐입니다.<br>안경을 벗으면 다시 흐려지는 것과 같습니다.</div>
+          좋아진 수치는 약이 일하는 중이라는 뜻입니다. 끊으면 올라간 기간만큼 <strong>누적 노출이 다시 쌓입니다.</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ 커피·식단 -->
+    <section>
+      <h2 class="section-heading">커피와 식단도 LDL을 움직입니다 (Coffee &amp; Diet)</h2>
+      <div class="alert-strip">
+        <div class="alert-tile alert-tile--danger">
+          <div class="alert-tile__kicker">ESPRESSO</div>
+          <div class="alert-tile__title">아메리카노 · 라떼</div>
+          <div class="alert-tile__text">에스프레소 커피는 <strong>크레마가 LDL을 올립니다.</strong></div>
+        </div>
+        <div class="alert-tile">
+          <div class="alert-tile__kicker">INSTANT · PAPER FILTER</div>
+          <div class="alert-tile__title">믹스커피 · 종이필터 드립</div>
+          <div class="alert-tile__text">LDL 면에서는 <strong>괜찮습니다.</strong></div>
+        </div>
+        <div class="alert-tile alert-tile--danger">
+          <div class="alert-tile__kicker">LOW-CARB HIGH-FAT</div>
+          <div class="alert-tile__title">저탄고지</div>
+          <div class="alert-tile__text">LDL에는 <strong>가장 나쁜 식단</strong>입니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑤ 흔한 오해 -->
+    <section>
+      <h2 class="section-heading">흔한 오해 vs 사실 (Common Myths)</h2>
+      <table class="ldl-table myth-table">
+        <tr><th>자주 듣는 오해 · MYTH</th><th>바로잡기 · FACT</th></tr>
+        <tr><td>"콜레스테롤은 몸에 꼭 필요하니 너무 낮추면 안 된다"</td><td>몸에 필요한 콜레스테롤은 <strong>세포가 스스로 만듭니다.</strong></td></tr>
+        <tr><td>"수치가 좋아지면 끊어도 된다"</td><td>좋아진 건 <strong>약 덕분</strong>입니다. 끊으면 다시 올라갑니다.</td></tr>
+        <tr><td>"러닝하면 고기 먹어도 된다"</td><td>운동으로 LDL은 크게 안 내려갑니다. <strong>포화지방은 여전히 LDL을 올립니다.</strong></td></tr>
+        <tr><td>"오메가3로 LDL을 잡는다"</td><td>오메가3는 주로 중성지방용입니다. <strong>LDL 약을 대신하지 못합니다.</strong></td></tr>
+      </table>
+    </section>
+
+  </main>
+
+  <!-- FOOTER (mini QR + clinic info) -->
+  <footer class="page__footer">
+    <div class="page__footer-info">
+      <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
+      <div class="clinic-meta">근거 — 한국지질·동맥경화학회 이상지질혈증 진료지침 제5판(2022) · 2026 ACC/AHA/Multisociety Dyslipidemia Guideline · EAS Consensus (Eur Heart J 2017) · LDL 누적 노출 (JACC 2020 · Nat Rev Cardiol 2024) · 커피 디테르펜 (Nutr J 2011) · 저탄고지 (Nutrients 2021)</div>
+      <div class="disclaimer">본 자료는 일반 안내입니다. 개인별 LDL 목표와 약 조정은 위험도와 검사 결과를 보고 진료실에서 정하며, 약은 임의로 끊지 마시고 상의해 주세요.</div>
+    </div>
+    <div class="qr-mini">
+      <div class="qr-mini__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM12,2H13V3H12zM15,2H16V3H15zM17,2H18V3H17zM18,2H19V3H18zM25,2H26V3H25zM26,2H27V3H26zM27,2H28V3H27zM28,2H29V3H28zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM13,3H14V4H13zM14,3H15V4H14zM16,3H17V4H16zM18,3H19V4H18zM22,3H23V4H22zM24,3H25V4H24zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM13,4H14V5H13zM14,4H15V5H14zM16,4H17V5H16zM18,4H19V5H18zM20,4H21V5H20zM23,4H24V5H23zM25,4H26V5H25zM26,4H27V5H26zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM13,5H14V6H13zM14,5H15V6H14zM15,5H16V6H15zM17,5H18V6H17zM19,5H20V6H19zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM13,6H14V7H13zM14,6H15V7H14zM16,6H17V7H16zM18,6H19V7H18zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM13,7H14V8H13zM15,7H16V8H15zM19,7H20V8H19zM24,7H25V8H24zM28,7H29V8H28zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM17,9H18V10H17zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM21,10H22V11H21zM23,10H24V11H23zM26,10H27V11H26zM27,10H28V11H27zM29,10H30V11H29zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM4,11H5V12H4zM5,11H6V12H5zM7,11H8V12H7zM16,11H17V12H16zM17,11H18V12H17zM19,11H20V12H19zM20,11H21V12H20zM22,11H23V12H22zM25,11H26V12H25zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM5,12H6V13H5zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM10,12H11V13H10zM12,12H13V13H12zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM21,12H22V13H21zM24,12H25V13H24zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM35,12H36V13H35zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM7,13H8V14H7zM9,13H10V14H9zM10,13H11V14H10zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM16,13H17V14H16zM17,13H18V14H17zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM38,13H39V14H38zM3,14H4V15H3zM4,14H5V15H4zM8,14H9V15H8zM10,14H11V15H10zM12,14H13V15H12zM14,14H15V15H14zM17,14H18V15H17zM19,14H20V15H19zM21,14H22V15H21zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM3,15H4V16H3zM10,15H11V16H10zM13,15H14V16H13zM15,15H16V16H15zM16,15H17V16H16zM18,15H19V16H18zM21,15H22V16H21zM22,15H23V16H22zM25,15H26V16H25zM27,15H28V16H27zM30,15H31V16H30zM33,15H34V16H33zM37,15H38V16H37zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM11,16H12V17H11zM13,16H14V17H13zM17,16H18V17H17zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM26,16H27V17H26zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM4,17H5V18H4zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM10,17H11V18H10zM15,17H16V18H15zM18,17H19V18H18zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM3,18H4V19H3zM4,18H5V19H4zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM10,18H11V19H10zM15,18H16V19H15zM16,18H17V19H16zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM38,18H39V19H38zM2,19H3V20H2zM3,19H4V20H3zM4,19H5V20H4zM6,19H7V20H6zM9,19H10V20H9zM11,19H12V20H11zM12,19H13V20H12zM14,19H15V20H14zM15,19H16V20H15zM16,19H17V20H16zM17,19H18V20H17zM18,19H19V20H18zM23,19H24V20H23zM25,19H26V20H25zM30,19H31V20H30zM33,19H34V20H33zM35,19H36V20H35zM36,19H37V20H36zM37,19H38V20H37zM3,20H4V21H3zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM15,20H16V21H15zM16,20H17V21H16zM22,20H23V21H22zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM31,20H32V21H31zM32,20H33V21H32zM37,20H38V21H37zM38,20H39V21H38zM4,21H5V22H4zM5,21H6V22H5zM9,21H10V22H9zM10,21H11V22H10zM13,21H14V22H13zM18,21H19V22H18zM23,21H24V22H23zM24,21H25V22H24zM26,21H27V22H26zM28,21H29V22H28zM32,21H33V22H32zM33,21H34V22H33zM34,21H35V22H34zM38,21H39V22H38zM4,22H5V23H4zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM14,22H15V23H14zM16,22H17V23H16zM19,22H20V23H19zM24,22H25V23H24zM25,22H26V23H25zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM35,22H36V23H35zM36,22H37V23H36zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM10,23H11V24H10zM11,23H12V24H11zM12,23H13V24H12zM18,23H19V24H18zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM2,24H3V25H2zM4,24H5V25H4zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM11,24H12V25H11zM12,24H13V25H12zM14,24H15V25H14zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM23,24H24V25H23zM27,24H28V25H27zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM3,25H4V26H3zM6,25H7V26H6zM10,25H11V26H10zM13,25H14V26H13zM14,25H15V26H14zM16,25H17V26H16zM17,25H18V26H17zM18,25H19V26H18zM19,25H20V26H19zM20,25H21V26H20zM23,25H24V26H23zM24,25H25V26H24zM26,25H27V26H26zM30,25H31V26H30zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM37,25H38V26H37zM3,26H4V27H3zM4,26H5V27H4zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM17,26H18V27H17zM18,26H19V27H18zM21,26H22V27H21zM23,26H24V27H23zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM5,27H6V28H5zM9,27H10V28H9zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM15,27H16V28H15zM17,27H18V28H17zM20,27H21V28H20zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM28,27H29V28H28zM30,27H31V28H30zM31,27H32V28H31zM33,27H34V28H33zM36,27H37V28H36zM2,28H3V29H2zM4,28H5V29H4zM6,28H7V29H6zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM17,28H18V29H17zM18,28H19V29H18zM21,28H22V29H21zM24,28H25V29H24zM26,28H27V29H26zM29,28H30V29H29zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM36,28H37V29H36zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM5,29H6V30H5zM11,29H12V30H11zM17,29H18V30H17zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM28,29H29V30H28zM29,29H30V30H29zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM38,29H39V30H38zM2,30H3V31H2zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM10,30H11V31H10zM14,30H15V31H14zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM38,30H39V31H38zM10,31H11V32H10zM13,31H14V32H13zM14,31H15V32H14zM18,31H19V32H18zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM12,32H13V33H12zM13,32H14V33H13zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM24,32H25V33H24zM26,32H27V33H26zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM25,33H26V34H25zM26,33H27V34H26zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM15,34H16V35H15zM16,34H17V35H16zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM27,34H28V35H27zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM13,35H14V36H13zM17,35H18V36H17zM18,35H19V36H18zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM13,36H14V37H13zM14,36H15V37H14zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM16,37H17V38H16zM18,37H19V38H18zM23,37H24V38H23zM24,37H25V38H24zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM31,37H32V38H31zM32,37H33V38H32zM34,37H35V38H34zM35,37H36V38H35zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM15,38H16V39H15zM16,38H17V39H16zM19,38H20V39H19zM20,38H21V39H20zM25,38H26V39H25zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
+      <div class="qr-mini__label">집에서 다시 보기</div>
+      <div class="qr-mini__url">edu.gwanggyobarun.com/handouts/endocrine/ldl-target-by-risk/</div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
