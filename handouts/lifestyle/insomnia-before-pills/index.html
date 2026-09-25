@@ -19,46 +19,178 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    /* handout-local: 6개 섹션(4카드+2col+navy+3myth+warning)이 기본 gap(5mm/2.5mm)로는
-       한 장에 안 들어가 압축 — line_probe 실측 후 반영 */
-    .page__body { gap: 3.4mm; }
-    .page__body > section { gap: 1.6mm; }
-    .card-list { line-height: 1.38; gap: 1.4mm; }
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page__body {
+      gap: 3.2mm;
+    }
+    .page__body > section {
+      gap: 1.4mm;
+    }
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -0.9mm;
+      margin-right: 1.2mm;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8mm;
+    }
 
-    /* 오해 3항목을 body-2col 대신 좌우 비대칭(설명 더 긴 카드) 그리드로 배치 */
-    .myth-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 3mm;
-    }
-    .myth-card {
-      background: var(--color-canvas-warm);
+    /* 표 공통 스타일 */
+    .insomnia-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.4pt;
+      line-height: 1.42;
+      color: var(--color-ink-soft);
       border: 1px solid var(--color-border);
-      border-left: 3px solid var(--color-steel);
       border-radius: var(--radius-sm);
-      padding: 3mm 3.5mm;
+      overflow: hidden;
+      background: var(--color-canvas);
     }
-    .myth-card__tag {
-      font-size: 7pt;
+    .insomnia-table th,
+    .insomnia-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.6mm 2.4mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .insomnia-table thead th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.6pt;
+    }
+    .insomnia-table td strong {
+      color: var(--color-navy);
+    }
+
+    /* §2 그림 + 대처 그리드 */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 64mm 1fr;
+      gap: 3.2mm;
+      align-items: stretch;
+    }
+    .night-routine-figure {
+      margin: 0;
+      width: 64mm;
+      height: 48mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .night-routine-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .table-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2mm;
+      font-size: 8.3pt;
+      line-height: 1.38;
+    }
+    .table-list li {
+      position: relative;
+      padding-left: 2.8mm;
+    }
+    .table-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-steel);
+      font-weight: bold;
+    }
+
+    /* 흔한 오해 표 */
+    .myth-table thead th:first-child {
+      background: var(--color-navy-mid);
+    }
+    .myth-table tbody th {
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      font-weight: var(--weight-semibold);
+      font-size: 8.4pt;
+      vertical-align: middle;
+    }
+
+    /* 수면제 카드 리스트 */
+    .pill-table th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+    }
+    .pill-card {
+      padding: 2.6mm 3.4mm;
+      background: var(--color-navy);
+      color: #FFFFFF;
+      border-radius: var(--radius-sm);
+    }
+    .pill-card .card-label {
+      color: var(--color-sky);
+      font-size: 8.2pt;
       font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
-      color: var(--color-slate);
-      margin-bottom: 1mm;
+      margin-bottom: 1.2mm;
     }
-    .myth-card__title {
-      font-size: 9pt;
+    .pill-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2mm 6mm;
+      font-size: 8.4pt;
+      line-height: 1.4;
+      color: var(--color-white-95);
+    }
+    .pill-list li {
+      position: relative;
+      padding-left: 2.8mm;
+    }
+    .pill-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-sky);
+      font-weight: bold;
+    }
+
+    /* 경고 박스 */
+    .warning-box {
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
+      border-radius: var(--radius-sm);
+      padding: 2.4mm 3.4mm;
+    }
+    .warning-title {
+      font-size: 8.6pt;
       font-weight: var(--weight-bold);
       color: var(--color-navy);
-      line-height: 1.3;
-      margin-bottom: 1.5mm;
+      margin-bottom: 1mm;
+      display: flex;
+      align-items: center;
     }
-    .myth-card__body {
-      font-size: 8.3pt;
+    .warning-text {
+      font-size: 8.4pt;
       line-height: 1.45;
-      color: var(--color-ink-soft);
+      color: var(--color-ink);
     }
-    .myth-card__body strong { color: var(--color-navy); font-weight: var(--weight-semibold); }
+    .warning-text strong {
+      color: var(--color-danger);
+    }
   </style>
 </head>
 <body>
@@ -82,7 +214,7 @@
 
     <!-- §1 낮 동안 만드는 밤의 잠 -->
     <section>
-      <h2 class="section-heading">낮 동안 만드는 밤의 잠 — 이 네 가지부터</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-walking" src="../../../shared/assets/healthicons/filled/exercise/walking.svg" class="icon-sm" alt="낮 활동">낮 동안 만드는 밤의 잠 — 이 네 가지부터</h2>
       <div class="stats-row">
         <div class="stat-cell">
           <div class="stat-cell__label">잠드는 시간보다</div>
@@ -107,37 +239,51 @@
       </div>
     </section>
 
-    <!-- §2 그래도 잠이 안 올 때 (15분 규칙 + 멜라토닌) -->
+    <!-- §2 그래도 잠이 안 올 때 (그림 + 15분 규칙 & 멜라토닌 표) -->
     <section>
-      <h2 class="section-heading">그래도 잠이 안 온다면</h2>
-      <div class="body-2col">
-        <div class="card">
-          <div class="card-label card-label--steel">누워도 잠이 안 올 때 · 15분 규칙</div>
-          <ul class="card-list">
-            <li><strong>15분</strong> 넘게 잠이 오지 않으면 침대에서 나오세요</li>
-            <li><strong>노란 불</strong> 아래서 <strong>재미없는 책</strong>을 보며 시간을 보내세요</li>
-            <li>졸릴 때 다시 침대로 돌아가세요 — 침대는 잠자는 용도로만</li>
-            <li>시계는 자꾸 보지 마세요. 계속 확인하면 오히려 더 깨게 됩니다</li>
-          </ul>
-        </div>
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">멜라토닌 · MELATONIN</div>
-          <ul class="card-list">
-            <li>잠들기 <strong>1~2시간 전</strong>에 복용합니다</li>
-            <li>수면제보다 <strong>중독과 내성 위험이 적습니다</strong></li>
-            <li>복용 시점·용량은 처방받은 제품 설명을 따르세요</li>
-            <li>모든 불면증에 같은 효과를 내지는 않습니다</li>
-          </ul>
-        </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-sleepy" src="../../../shared/assets/healthicons/filled/emotions/sleepy.svg" class="icon-sm" alt="수면">그래도 잠이 안 온다면</h2>
+      <div class="action-grid">
+        <figure class="night-routine-figure" id="night-routine-figure">
+          <img src="../../../shared/assets/generated/insomnia-before-pills-night-routine-20260925.jpg"
+               alt="잠이 안 와 침대에서 나와 은은한 조명 아래서 조용히 책을 읽는 모습">
+        </figure>
+        <table class="insomnia-table">
+          <thead>
+            <tr>
+              <th style="width: 52%;"><img data-asset="hi-filled-book" src="../../../shared/assets/healthicons/filled/objects/book.svg" class="icon-sm" alt="행동 요령">누워도 잠이 안 올 때 · 15분 규칙</th>
+              <th style="width: 48%;"><img data-asset="hi-filled-blister-pills_round_x1" src="../../../shared/assets/healthicons/filled/medications/blister-pills_round_x1.svg" class="icon-sm" alt="멜라토닌">멜라토닌 · MELATONIN</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <ul class="table-list">
+                  <li><strong>15분</strong> 넘게 잠이 오지 않으면 침대에서 나오세요</li>
+                  <li><strong>노란 불</strong> 아래서 <strong>재미없는 책</strong>을 보며 시간을&nbsp;보내세요</li>
+                  <li>졸릴 때 다시 침대로 돌아가세요 — 침대는 잠자는 용도로만</li>
+                  <li>시계는 자꾸 보지 마세요. 계속 확인하면 오히려 더 깨게 됩니다</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="table-list">
+                  <li>잠들기 <strong>1~2시간 전</strong>에 복용합니다</li>
+                  <li>수면제보다 <strong>중독과 내성 위험이 적습니다</strong></li>
+                  <li>복용 시점·용량은 처방받은 제품 설명을 따르세요</li>
+                  <li>모든 불면증에 같은 효과를 내지는&nbsp;않습니다</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
     <!-- §3 수면제 원칙 -->
     <section>
-      <h2 class="section-heading">수면제(졸피뎀 등)는 이렇게</h2>
-      <div class="card card--navy">
+      <h2 class="section-heading"><img data-asset="hi-filled-medical-advice" src="../../../shared/assets/healthicons/filled/symbols/medical-advice.svg" class="icon-sm" alt="의료 상담">수면제(졸피뎀 등)는 이렇게</h2>
+      <div class="pill-card">
         <div class="card-label">향정신성의약품 · 원칙 세 가지</div>
-        <ul class="card-list" style="columns:2; column-gap:8mm;">
+        <ul class="pill-list">
           <li><strong style="color:var(--color-sky);">가끔, 짧게</strong> — 필요한 기간만, 처방받은 용법 그대로 복용합니다</li>
           <li><strong style="color:var(--color-sky);">깊은 잠을 보장하지는 않습니다</strong> — 약마다 효과와 부작용이 달라 처방받은 대로만 드세요</li>
           <li><strong style="color:var(--color-sky);">가족의 처방약도 나눠 먹지 마세요</strong> — 법으로 금지돼 있고, 반응은 사람마다 다릅니다</li>
@@ -146,33 +292,38 @@
       </div>
     </section>
 
-    <!-- §4 흔한 오해 -->
+    <!-- §4 흔한 오해 바로잡기 (비교표) -->
     <section>
-      <h2 class="section-heading">흔한 오해 바로잡기</h2>
-      <div class="myth-grid">
-        <div class="myth-card">
-          <div class="myth-card__tag">MYTH · 01</div>
-          <div class="myth-card__title">"누워 있으면 언젠가 잠든다"</div>
-          <div class="myth-card__body">깨어서 오래 누워 있으면 침대가 <strong>뒤척이며 애쓰는 공간</strong>이 됩니다. 졸릴 때 눕는 것이 원칙입니다.</div>
-        </div>
-        <div class="myth-card">
-          <div class="myth-card__tag">MYTH · 02</div>
-          <div class="myth-card__title">"가족 수면제를 잘라 먹어도 된다"</div>
-          <div class="myth-card__body">향정신성의약품이라 <strong>타인에게 건네는 것 자체가 불법</strong>이고, 부작용도 사람마다 다릅니다.</div>
-        </div>
-        <div class="myth-card">
-          <div class="myth-card__tag">MYTH · 03</div>
-          <div class="myth-card__title">"술 한잔 하면 잘 잔다"</div>
-          <div class="myth-card__body">잠드는 느낌은 들어도 <strong>밤 후반에 자주 깹니다</strong>. 수면제와 함께 마시는 것은 특히 위험합니다.</div>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-question-circle" src="../../../shared/assets/healthicons/filled/symbols/question-circle.svg" class="icon-sm" alt="흔한 오해">흔한 오해 바로잡기</h2>
+      <table class="insomnia-table myth-table">
+        <thead>
+          <tr>
+            <th style="width: 32%;">흔한 오해</th>
+            <th style="width: 68%;">의학적 사실 (바로 알기)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>"누워 있으면 언젠가 잠든다"</th>
+            <td>깨어서 오래 누워 있으면 침대가 <strong>뒤척이며 애쓰는 공간</strong>이 됩니다. 졸릴 때 눕는 것이 원칙입니다.</td>
+          </tr>
+          <tr>
+            <th>"가족 수면제를 잘라 먹어도 된다"</th>
+            <td>향정신성의약품이라 <strong>타인에게 건네는 것 자체가 불법</strong>이고, 부작용도 사람마다 다릅니다.</td>
+          </tr>
+          <tr>
+            <th>"술 한잔 하면 잘 잔다"</th>
+            <td>잠드는 느낌은 들어도 <strong>밤 후반에 자주 깹니다</strong>. 수면제와 함께 마시는 것은 특히 위험합니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <!-- §5 위험 신호 -->
     <section>
-      <div class="card card--warning">
-        <div class="card-label card-label--warning">이럴 땐 바로 진료를 · WARNING</div>
-        <div style="font-size:9.5pt; line-height:1.55;">
+      <div class="warning-box">
+        <div class="warning-title"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="주의">이럴 땐 바로 진료를 · WARNING</div>
+        <div class="warning-text">
           수면제 복용 뒤 <strong>기억나지 않는 행동</strong>(몽유·야간 식사·운전)이 있었다면 약을 더 드시지 말고 즉시 진료받으세요. <strong>심하게 휘청이거나 넘어졌다면</strong> 다음 복용 여부를 스스로 정하지 말고 의료진에게 바로 연락해 지시를 받으세요(오래 드신 약은 갑자기 끊는 것도 위험합니다). <strong>심한 코골이·목격된 무호흡·낮졸림</strong>이 있으면 단순 불면이 아닐 수 있습니다. 잠이 거의 없는데 <strong>기분이 들뜨거나 충동적</strong>으로 변했거나 <strong>자해·자살 생각</strong>이 든다면 즉시 의료진에게 알려 주세요. 실행할 생각이나 충동이 있거나 스스로 안전을 지키기 어렵다면 혼자 있지 말고 119에 연락하거나 응급실로 가세요.
         </div>
       </div>

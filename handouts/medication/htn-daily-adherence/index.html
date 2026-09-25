@@ -17,6 +17,192 @@
 
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+  <style>
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page {
+      gap: 3.8mm;
+      padding: 11.5mm 14mm 9mm;
+    }
+    .page__header {
+      padding-bottom: 2.6mm;
+    }
+    .page__title-block {
+      gap: 1.5mm;
+    }
+    .page__title {
+      font-size: 21pt;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .page__subtitle {
+      font-size: 8.9pt;
+      line-height: 1.48;
+      color: var(--color-ink-soft);
+    }
+    .page__body {
+      gap: 3.8mm;
+      justify-content: start;
+    }
+    .page__body > section {
+      flex: 0 0 auto;
+      gap: 1.5mm;
+    }
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -1mm;
+      margin-right: 1.4mm;
+    }
+    .section-heading {
+      font-size: 10.6pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.2mm;
+    }
+
+    /* 통계 카드 */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.8mm;
+    }
+    .stat-cell {
+      background: var(--color-canvas-warm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 2.6mm 2.8mm;
+      text-align: center;
+    }
+    .stat-cell__label {
+      font-size: 8.2pt;
+      color: var(--color-ink-soft);
+      margin-bottom: 1mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1mm;
+    }
+    .stat-cell__label .icon-sm {
+      width: 3.8mm;
+      height: 3.8mm;
+      margin-right: 0;
+      vertical-align: middle;
+    }
+    .stat-cell__value {
+      font-size: 15.5pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      line-height: 1.15;
+    }
+    .stat-cell__unit {
+      font-size: 7.8pt;
+      color: var(--color-ink-soft);
+      margin-top: 0.8mm;
+    }
+
+    /* 공통 표 스타일 */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink-soft);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 2.1mm 2.6mm;
+      vertical-align: middle;
+      text-align: left;
+    }
+    .ge-table th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.5pt;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table .row-label {
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-weight: var(--weight-bold);
+      text-align: center;
+      vertical-align: middle;
+      font-size: 8.4pt;
+    }
+
+    /* 섹션 3 그리드: 약통/혈압계 사진 + 규칙 복용 표 */
+    .adherence-grid {
+      display: grid;
+      grid-template-columns: 72mm 1fr;
+      gap: 4mm;
+      align-items: stretch;
+    }
+    .daily-dose-figure {
+      margin: 0;
+      width: 72mm;
+      height: 54mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
+    }
+    .daily-dose-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .adherence-table {
+      height: 54mm;
+    }
+    .adherence-table th.th-header {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 8.5pt;
+      padding: 1.5mm 2.2mm;
+    }
+    .adherence-table td {
+      padding: 2.0mm 2.4mm;
+      font-size: 8.4pt;
+      line-height: 1.42;
+    }
+
+    /* 오해 vs 진실 표 */
+    .myths-table th.th-warning {
+      background: var(--color-danger);
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 8.5pt;
+    }
+    .myths-table th.th-steel {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 8.5pt;
+    }
+    .myths-table td.td-myth {
+      background: var(--color-canvas-warm);
+      color: var(--color-ink);
+    }
+    .myths-table td.td-myth strong {
+      color: var(--color-danger);
+    }
+    .myths-table td.td-fact {
+      color: var(--color-ink-soft);
+    }
+    .myths-table td.td-fact strong {
+      color: var(--color-navy);
+    }
+  </style>
 </head>
 <body>
 
@@ -39,7 +225,7 @@
 
     <!-- 핵심 수치 -->
     <section>
-      <h2 class="section-heading">먼저, 이 세 가지를 기억하세요 (Key Numbers)</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-blood-pressure_monitor" src="../../../shared/assets/healthicons/filled/devices/blood-pressure_monitor.svg" class="icon-sm" alt="혈압계">먼저, 이 세 가지를 기억하세요 (Key Numbers)</h2>
       <div class="stats-row">
         <div class="stat-cell">
           <div class="stat-cell__label">1차 목표 · 가정혈압</div>
@@ -47,12 +233,12 @@
           <div class="stat-cell__unit">mmHg 아래 (개인별 목표는 진료에서 결정)</div>
         </div>
         <div class="stat-cell stat-cell--ok">
-          <div class="stat-cell__label">체중 1kg 감량 시</div>
+          <div class="stat-cell__label"><img data-asset="hi-filled-weight" src="../../../shared/assets/healthicons/filled/devices/weight.svg" class="icon-sm" alt="체중계">체중 1kg 감량 시</div>
           <div class="stat-cell__value">약 1</div>
           <div class="stat-cell__unit">mmHg 안팎 하강 (수축기, 평균)</div>
         </div>
         <div class="stat-cell stat-cell--ok">
-          <div class="stat-cell__label">약 조절 판단 기준</div>
+          <div class="stat-cell__label"><img data-asset="hi-filled-calendar" src="../../../shared/assets/healthicons/filled/objects/calendar.svg" class="icon-sm" alt="달력">약 조절 판단 기준</div>
           <div class="stat-cell__value">여러 날</div>
           <div class="stat-cell__unit">평균 — 하루 수치 하나가 아님</div>
         </div>
@@ -61,67 +247,94 @@
 
     <!-- 두 가지 목표 -->
     <section>
-      <h2 class="section-heading">두 가지 목표 — 수치, 그리고 변동 (Two Goals)</h2>
-      <div class="body-2col">
-
-        <div class="card">
-          <div class="card-label card-label--steel">1차 목표 · 수치</div>
-          <ul class="card-list">
-            <li>가정혈압 <strong>135/85mmHg 아래</strong>를 기준으로 봅니다.</li>
-            <li>동반 질환에 따라 <strong>개인별 목표는 진료에서</strong> 따로 정합니다.</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <div class="card-label card-label--steel">2차 목표 · 변동을 줄이는 것</div>
-          <ul class="card-list">
-            <li>약을 <strong>먹었다 말았다</strong> 하면 혈압의 오르내림이 커집니다.</li>
-            <li>진료 때마다 혈압이 크게 흔들리는 사람일수록 <strong>뇌졸중·심장병 위험이 높다</strong>는 연구들이 있습니다.</li>
-          </ul>
-        </div>
-
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-heart-organ" src="../../../shared/assets/healthicons/filled/body/heart-organ.svg" class="icon-sm" alt="심장">두 가지 목표 — 수치, 그리고 변동 (Two Goals)</h2>
+      <table class="ge-table goals-table">
+        <thead>
+          <tr>
+            <th style="width: 44mm;">구분</th>
+            <th style="width: 62mm;">핵심 기준</th>
+            <th>설명 및 중요 이유</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="row-label">1차 목표 · 수치</th>
+            <td>가정혈압 <strong>135/85mmHg 아래</strong>를 기준으로&nbsp;봅니다.</td>
+            <td>동반 질환에 따라 <strong>개인별 목표는 진료에서</strong> 따로 정합니다.</td>
+          </tr>
+          <tr>
+            <th class="row-label">2차 목표 · 변동을 줄이는 것</th>
+            <td>약을 <strong>먹었다 말았다</strong> 하면 혈압의 오르내림이&nbsp;커집니다.</td>
+            <td>진료 때마다 혈압이 크게 흔들리는 사람일수록 <strong>뇌졸중·심장병 위험이 높다</strong>는 연구들이 있습니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <!-- 며칠 괜찮았다고 판단하지 마세요 -->
     <section>
-      <h2 class="section-heading">며칠 괜찮았다고 판단하지 마세요</h2>
-      <div class="card card--accent">
-        <div class="card-label card-label--navy">규칙적으로 먹어야 하는 이유 · WHY DAILY</div>
-        <ul class="card-list">
-          <li><strong>1. 하루 안 먹었는데 괜찮았다는 건 근거가 안 됩니다</strong> — 약효가 자리 잡고 빠지는 데는 며칠에서 몇 주가 걸립니다.</li>
-          <li><strong>2. 약을 먹어서 정상인 건 약이 잘 맞는다는 뜻</strong> — 도수 맞는 안경처럼, 잘 보인다고 벗지 않듯 계속 유지합니다.</li>
-          <li><strong>3. 체중이 빠지면 혈압도 내려갑니다</strong>(1kg에 약 1mmHg 안팎). 여름엔 낮고 겨울엔 오르는 경향도 있지만, 계절이나 체중만으로 스스로 약을 조절하지는 않습니다.</li>
-        </ul>
+      <h2 class="section-heading"><img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" class="icon-sm" alt="약">며칠 괜찮았다고 판단하지 마세요</h2>
+      <div class="adherence-grid">
+        <figure class="daily-dose-figure">
+          <img src="../../../shared/assets/generated/htn-daily-adherence-daily-dose-20260925.jpg" alt="정해진 시간에 복용하기 위한 약통과 가정용 혈압계">
+        </figure>
+        <table class="ge-table adherence-table">
+          <colgroup>
+            <col style="width: 22mm;">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th colspan="2" class="th-header">규칙적으로 먹어야 하는 이유 · WHY DAILY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th class="row-label">약효 주기</th>
+              <td><strong>1. 하루 안 먹었는데 괜찮았다는 건 근거가 안 됩니다</strong> — 약효가 자리 잡고 빠지는 데는 며칠에서 몇 주가 걸립니다.</td>
+            </tr>
+            <tr>
+              <th class="row-label">안경 비유</th>
+              <td><strong>2. 약을 먹어서 정상인 건 약이 잘 맞는다는 뜻</strong> — 도수 맞는 안경처럼, 잘 보인다고 벗지 않듯 계속 유지합니다.</td>
+            </tr>
+            <tr>
+              <th class="row-label">체중·계절</th>
+              <td><strong>3. 체중이 빠지면 혈압도 내려갑니다</strong>(1kg에 약 1mmHg 안팎). 여름엔 낮고 겨울엔 오르는 경향도 있지만, 계절이나 체중만으로 스스로 약을 조절하지는 않습니다.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
     <!-- 흔한 오해 vs 올바른 접근 -->
     <section>
-      <h2 class="section-heading">흔한 오해 vs 올바른 접근 (Common Myths)</h2>
-      <div class="body-2col">
-
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">자주 듣는 오해 · MYTH</div>
-          <ul class="card-list">
-            <li><strong>1. "아침 혈압이 좋으면 그날은 안 먹어도 된다"</strong></li>
-            <li><strong>2. "수치가 좋아지면 끊어도 된다"</strong></li>
-            <li><strong>3. "안정되면 이틀에 한 번만 먹어도 된다"</strong></li>
-            <li><strong>4. "나이 들면 130~140은 괜찮다"</strong></li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <div class="card-label card-label--steel">근거 있는 접근 · FACT</div>
-          <ul class="card-list">
-            <li><strong>1. 아침 수치 하나로 그날 약을 거르지 않습니다</strong> — 정해진 시간에 매일 먹습니다</li>
-            <li><strong>2. 좋은 수치는 약이 잘 맞고 있다는 신호</strong> — 스스로 끊지 않고 진료에서 상의합니다</li>
-            <li><strong>3. 줄여야 할 때도 격일이 아닌 약한 용량으로 매일</strong> — 판단은 여러 날 평균으로 상의합니다</li>
-            <li><strong>4. 나이만으로 목표를 정하지 않습니다</strong> — 개인 목표는 진료에서 정합니다</li>
-          </ul>
-        </div>
-
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="경고">흔한 오해 vs 올바른 접근 (Common Myths)</h2>
+      <table class="ge-table myths-table">
+        <thead>
+          <tr>
+            <th class="th-warning" style="width: 76mm;">자주 듣는 오해 · MYTH</th>
+            <th class="th-steel">근거 있는 접근 · FACT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-myth"><strong>1. "아침 혈압이 좋으면 그날은 안 먹어도 된다"</strong></td>
+            <td class="td-fact"><strong>1. 아침 수치 하나로 그날 약을 거르지 않습니다</strong> — 정해진 시간에 매일 먹습니다</td>
+          </tr>
+          <tr>
+            <td class="td-myth"><strong>2. "수치가 좋아지면 끊어도 된다"</strong></td>
+            <td class="td-fact"><strong>2. 좋은 수치는 약이 잘 맞고 있다는 신호</strong> — 스스로 끊지 않고 진료에서 상의합니다</td>
+          </tr>
+          <tr>
+            <td class="td-myth"><strong>3. "안정되면 이틀에 한 번만 먹어도 된다"</strong></td>
+            <td class="td-fact"><strong>3. 줄여야 할 때도 격일이 아닌 약한 용량으로 매일</strong> — 판단은 여러&nbsp;날&nbsp;평균으로&nbsp;상의합니다</td>
+          </tr>
+          <tr>
+            <td class="td-myth"><strong>4. "나이 들면 130~140은 괜찮다"</strong></td>
+            <td class="td-fact"><strong>4. 나이만으로 목표를 정하지 않습니다</strong> — 개인 목표는 진료에서 정합니다</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
   </main>

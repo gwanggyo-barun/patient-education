@@ -12,10 +12,197 @@
   <meta property="og:site_name" content="광교바른내과">
   <meta name="theme-color" content="#003366">
 
+  <!-- Pretendard Variable (the only font allowed) -->
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+  <style>
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page__body {
+      gap: 3.2mm;
+    }
+    .page__body > section {
+      gap: 1.4mm;
+    }
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -0.9mm;
+      margin-right: 1.2mm;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8mm;
+    }
+
+    /* 표 공통 스타일 */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.4pt;
+      line-height: 1.42;
+      color: var(--color-ink-soft);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.6mm 2.4mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .ge-table thead th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.6pt;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+
+    /* 검사 결과 핵심 그리드 (그림 + 2x2 수치 칸) */
+    .key-results-grid {
+      display: grid;
+      grid-template-columns: 64mm 1fr;
+      gap: 3.2mm;
+      align-items: stretch;
+    }
+    .carotid-plaque-figure {
+      margin: 0;
+      width: 64mm;
+      height: 48mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .carotid-plaque-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carotid-plaque-caption {
+      position: absolute;
+      left: 1.5mm;
+      right: 1.5mm;
+      bottom: 1.5mm;
+      padding: 0.8mm 1.2mm;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 3px;
+      font-size: 7.2pt;
+      line-height: 1.25;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+      border: 1px solid rgba(0, 51, 102, 0.15);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+    .stats-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2.2mm;
+    }
+    .stats-2x2 .stat-cell {
+      padding: 2mm 2mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+    .stats-2x2 .stat-cell__label {
+      margin-bottom: 1mm;
+    }
+    .stats-2x2 .stat-cell__value {
+      font-size: 15pt;
+      line-height: 1;
+    }
+    .stats-2x2 .stat-cell__unit {
+      margin-top: 0.8mm;
+      font-size: 7.6pt;
+    }
+
+    .table-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2mm;
+      font-size: 8.3pt;
+      line-height: 1.38;
+    }
+    .table-list li {
+      position: relative;
+      padding-left: 2.8mm;
+    }
+    .table-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-steel);
+      font-weight: bold;
+    }
+
+    /* DO / DON'T 표 */
+    .lifestyle-table th.th-ok {
+      background: var(--color-navy-mid);
+    }
+    .lifestyle-table th.th-no {
+      background: var(--color-danger);
+    }
+    .lifestyle-table td ul li strong {
+      color: var(--color-ink);
+    }
+
+    /* 흔한 오해 표 */
+    .myth-table thead th:first-child {
+      background: var(--color-navy);
+    }
+    .myth-table tbody th {
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      font-weight: var(--weight-semibold);
+      font-size: 8.4pt;
+      vertical-align: middle;
+    }
+
+    /* 응급 안내 박스 */
+    .warning-box {
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
+      border-radius: var(--radius-sm);
+      padding: 2.4mm 3.4mm;
+    }
+    .warning-title {
+      font-size: 8.6pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      margin-bottom: 1mm;
+      display: flex;
+      align-items: center;
+    }
+    .warning-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+    }
+    .warning-text strong {
+      color: var(--color-danger);
+    }
+  </style>
 </head>
 <body>
 
@@ -34,87 +221,122 @@
   <main class="page__body">
 
     <section>
-      <h2 class="section-heading">검사 결과에서 보는 핵심</h2>
-      <div class="stats-row">
-        <div class="stat-cell">
-          <div class="stat-cell__label">벽 두께</div>
-          <div class="stat-cell__value">1mm↑</div>
-          <div class="stat-cell__unit">동맥경화 시작 신호</div>
-        </div>
-        <div class="stat-cell stat-cell--high">
-          <div class="stat-cell__label">협착 정도</div>
-          <div class="stat-cell__value">70%↑</div>
-          <div class="stat-cell__unit">스텐트·수술 고민</div>
-        </div>
-        <div class="stat-cell stat-cell--low">
-          <div class="stat-cell__label">LDL 목표</div>
-          <div class="stat-cell__value">&lt; 70</div>
-          <div class="stat-cell__unit">플라크 있으면 강화(mg/dL)</div>
-        </div>
-        <div class="stat-cell stat-cell--ok">
-          <div class="stat-cell__label">생활관리</div>
-          <div class="stat-cell__value">금연</div>
-          <div class="stat-cell__unit">약 빠짐없이 복용</div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2 class="section-heading">스타틴과 LDL 목표</h2>
-      <div class="body-2col">
-        <div class="card">
-          <div class="card-label card-label--steel">스타틴이 하는 일</div>
-          <ul class="card-list">
-            <li>스타틴은 <strong>진행을 늦추고 플라크를 안정시켜</strong>, 터져서 혈전이 되는 위험을 낮춥니다.</li>
-            <li><strong>혈관은 젊을 때로 되돌릴 수 없습니다.</strong></li>
-          </ul>
-        </div>
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">LDL 목표와 복약</div>
-          <ul class="card-list">
-            <li>플라크가 있으면 <strong>LDL 목표가 70 아래로 내려갑니다.</strong></li>
-            <li>처방받은 <strong>약을 빠지지 않고 먹고, 금연합니다.</strong></li>
-          </ul>
+      <h2 class="section-heading"><img data-asset="hi-filled-ultrasound-scanner" src="../../../shared/assets/healthicons/filled/devices/ultrasound-scanner.svg" class="icon-sm" alt="초음파">검사 결과에서 보는 핵심</h2>
+      <div class="key-results-grid">
+        <figure class="carotid-plaque-figure" id="carotid-plaque-figure">
+          <img src="../../../shared/assets/generated/carotid-plaque-anatomy-20260925.jpg"
+               alt="경동맥 분지부 혈관벽에 쌓인 플라크와 좁아진 혈류를 나타낸 해부도">
+          <figcaption class="carotid-plaque-caption">플라크가 쌓여 혈관 통로가 좁아진 모습</figcaption>
+        </figure>
+        <div class="stats-2x2">
+          <div class="stat-cell">
+            <div class="stat-cell__label">벽 두께</div>
+            <div class="stat-cell__value">1mm↑</div>
+            <div class="stat-cell__unit">동맥경화 시작 신호</div>
+          </div>
+          <div class="stat-cell stat-cell--high">
+            <div class="stat-cell__label">협착 정도</div>
+            <div class="stat-cell__value">70%↑</div>
+            <div class="stat-cell__unit">스텐트·수술 고민</div>
+          </div>
+          <div class="stat-cell stat-cell--low">
+            <div class="stat-cell__label">LDL 목표</div>
+            <div class="stat-cell__value">&lt; 70</div>
+            <div class="stat-cell__unit">플라크 있으면 강화(mg/dL)</div>
+          </div>
+          <div class="stat-cell stat-cell--ok">
+            <div class="stat-cell__label">생활관리</div>
+            <div class="stat-cell__value">금연</div>
+            <div class="stat-cell__unit">약 빠짐없이 복용</div>
+          </div>
         </div>
       </div>
     </section>
 
     <section>
-      <h2 class="section-heading">생활에서 지킬 것</h2>
-      <div class="body-2col">
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">피해야 할 것</div>
-          <ul class="card-list">
-            <li><strong>목 마사지나 경락</strong>은 피합니다.</li>
-            <li><strong>혈액순환제라는 이름만으로 작용을 판단할 수 없습니다.</strong> 복용 중인 제품을 알려주시고 처방약을 대신하지 마세요.</li>
-            <li>임의로 약을 중단하거나 용량을 조절하지 않습니다.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-label card-label--steel">꼭 할 것</div>
-          <ul class="card-list">
-            <li>처방받은 약을 <strong>빠짐없이 복용</strong>합니다.</li>
-            <li><strong>금연</strong>합니다.</li>
-            <li>진료실에서 정한 간격으로 <strong>정기 추적검사</strong>를 받습니다.</li>
-          </ul>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-blood-vessel" src="../../../shared/assets/healthicons/filled/body/blood-vessel.svg" class="icon-sm" alt="혈관">스타틴과 LDL 목표</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 50%;"><img data-asset="hi-filled-blister-pills_round_x1" src="../../../shared/assets/healthicons/filled/medications/blister-pills_round_x1.svg" class="icon-sm" alt="스타틴">스타틴이 하는 일</th>
+            <th style="width: 50%;"><img data-asset="hi-filled-cardiology" src="../../../shared/assets/healthicons/filled/specialties/cardiology.svg" class="icon-sm" alt="LDL 목표">LDL 목표와 복약</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ul class="table-list">
+                <li>스타틴은 <strong>진행을 늦추고 플라크를 안정시켜</strong>,<br>터져서 혈전이 되는 위험을 낮춥니다.</li>
+                <li><strong>혈관은 젊을 때로 되돌릴 수 없습니다.</strong></li>
+              </ul>
+            </td>
+            <td>
+              <ul class="table-list">
+                <li>플라크가 있으면 <strong>LDL 목표가 70 아래로 내려갑니다.</strong></li>
+                <li>처방받은 <strong>약을 빠지지 않고 먹고, 금연합니다.</strong></li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <div class="card card--navy">
-        <div class="card-label">흔한 오해 바로잡기</div>
-        <div style="font-size:9.5pt; line-height:1.55;">
-          <strong style="color:var(--color-sky);">"혈액순환이 잘 되면 플라크가 떨어진다"</strong> — 플라크는 없애는 대상이 아니라 <strong style="color:var(--color-sky);">안정시키는</strong> 대상입니다.<br>
-          <strong style="color:var(--color-sky);">"경동맥이 괜찮으면 LDL이 높아도 된다"</strong> — 검사 한 곳의 결과만으로 전체 혈관 위험을 판단할 수 없습니다.
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-cardiology" src="../../../shared/assets/healthicons/filled/specialties/cardiology.svg" class="icon-sm" alt="생활 관리">생활에서 지킬 것</h2>
+      <table class="ge-table lifestyle-table">
+        <thead>
+          <tr>
+            <th class="th-ok" style="width: 50%;">꼭 할 것</th>
+            <th class="th-no" style="width: 50%;"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="주의">피해야 할 것</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ul class="table-list">
+                <li>처방받은 약을 <strong>빠짐없이 복용</strong>합니다.</li>
+                <li><strong>금연</strong>합니다.</li>
+                <li>진료실에서 정한 간격으로 <strong>정기 추적검사</strong>를 받습니다.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="table-list">
+                <li><strong>목 마사지나 경락</strong>은 피합니다.</li>
+                <li><strong>혈액순환제라는 이름만으로 작용을 판단할 수 없습니다.</strong> 복용 중인 제품을 알려주시고 처방약을 대신하지 마세요.</li>
+                <li>임의로 약을 중단하거나 용량을 조절하지 않습니다.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <div class="card card--warning">
-        <div class="card-label card-label--warning">즉시 응급실로 가야 하는 경우</div>
-        <div style="font-size:9.3pt; line-height:1.5;">
+      <h2 class="section-heading"><img data-asset="hi-filled-question-circle" src="../../../shared/assets/healthicons/filled/symbols/question-circle.svg" class="icon-sm" alt="흔한 오해">흔한 오해 바로잡기</h2>
+      <table class="ge-table myth-table">
+        <thead>
+          <tr>
+            <th style="width: 42%;">흔한 오해</th>
+            <th style="width: 58%;">의학적 사실 (바로 알기)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>"혈액순환이 잘 되면 플라크가 떨어진다"</th>
+            <td>플라크는 없애는 대상이 아니라 <strong>안정시키는</strong> 대상입니다.</td>
+          </tr>
+          <tr>
+            <th>"경동맥이 괜찮으면 LDL이 높아도 된다"</th>
+            <td>검사 한 곳의 결과만으로 전체 혈관 위험을 판단할 수 없습니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="warning-box">
+        <div class="warning-title"><img data-asset="hi-filled-ambulance" src="../../../shared/assets/healthicons/filled/vehicles/ambulance.svg" class="icon-sm" alt="응급">즉시 응급실로 가야 하는 경우</div>
+        <div class="warning-text">
           갑자기 <strong>한쪽 팔·다리에 힘이 빠지거나</strong>, <strong>말이 어눌해지거나</strong>, <strong>한쪽 눈이 갑자기 안 보이면</strong> 증상이 금방 좋아지더라도 즉시 119를 부르거나 응급실로 가세요.
         </div>
       </div>

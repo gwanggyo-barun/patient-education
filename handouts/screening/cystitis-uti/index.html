@@ -12,80 +12,299 @@
   <meta property="og:site_name" content="광교바른내과">
   <meta name="theme-color" content="#003366">
 
-  <!-- Pretendard Variable (the only font allowed) -->
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+  <style>
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page {
+      gap: 5.5mm;
+      padding: 13mm 14mm 10mm;
+    }
+    .page__header {
+      padding-bottom: 3mm;
+    }
+    .page__title-block {
+      gap: 1.6mm;
+    }
+    .page__title {
+      font-size: 21pt;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .page__subtitle {
+      font-size: 8.9pt;
+      line-height: 1.48;
+      color: var(--color-ink-soft);
+    }
+    .page__body {
+      gap: 5mm;
+      justify-content: start;
+    }
+    .page__body > section {
+      flex: 0 0 auto;
+      gap: 2mm;
+    }
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -1mm;
+      margin-right: 1.4mm;
+    }
+    .section-heading {
+      font-size: 11pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.2mm;
+    }
+
+    /* 섹션 1 그리드: 소변검사 사진 + 3대 원칙 표 */
+    .principle-grid {
+      display: grid;
+      grid-template-columns: 96mm 1fr;
+      gap: 4mm;
+      align-items: stretch;
+    }
+    .urine-test-figure {
+      margin: 0;
+      width: 96mm;
+      height: 72mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
+    }
+    .urine-test-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 공통 표 스타일 */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.5pt;
+      line-height: 1.46;
+      color: var(--color-ink-soft);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 2.2mm 2.8mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .principle-table th,
+    .principle-table td {
+      padding: 1.8mm 2.6mm;
+    }
+    .distinction-table th,
+    .distinction-table td {
+      padding: 2.6mm 3.0mm;
+    }
+    .myth-table th,
+    .myth-table td {
+      padding: 2.4mm 3.0mm;
+    }
+    .ge-table th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.6pt;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table .row-label {
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-weight: var(--weight-bold);
+      text-align: center;
+      vertical-align: middle;
+      font-size: 10.5pt;
+    }
+
+    /* 구분 표 */
+    .distinction-table th.th-warning {
+      background: var(--color-danger);
+      color: #FFFFFF;
+    }
+    .distinction-table th.th-steel {
+      background: var(--color-navy);
+      color: #FFFFFF;
+    }
+    .tbl-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6mm;
+    }
+    .tbl-list li {
+      padding-left: 3.5mm;
+      position: relative;
+      font-size: 8.4pt;
+      line-height: 1.42;
+    }
+    .tbl-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0.5mm;
+      color: var(--color-navy);
+    }
+    .tbl-list li.warn-item::before {
+      color: var(--color-danger);
+    }
+    .tbl-list li.warn-item strong {
+      color: var(--color-danger);
+    }
+    .er-notice {
+      margin-top: 1.6mm;
+      padding: 1.6mm 2.4mm;
+      border-radius: var(--radius-sm);
+      background: var(--color-danger-bg);
+      border-left: 3px solid var(--color-danger);
+      font-size: 8.2pt;
+      line-height: 1.4;
+      color: var(--color-danger);
+      font-weight: var(--weight-medium);
+    }
+
+    /* 오해 바로잡기 표 */
+    .myth-table .myth-q {
+      font-weight: var(--weight-semibold);
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      font-size: 8.7pt;
+    }
+    .page__footer {
+      padding-top: 3mm;
+    }
+  </style>
 </head>
 <body>
 
 <div class="page">
-
   <header class="page__header">
     <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
     <div class="page__eyebrow">PATIENT HANDOUT · <strong>UROLOGY · CYSTITIS</strong></div>
   </header>
 
   <section class="page__title-block">
-    <h1 class="page__title">방광염 — 항생제 전에 소변검사,<br>그리고 끝까지</h1>
+    <h1 class="page__title">방광염 — 항생제 전에 소변검사, 그리고 끝까지</h1>
     <p class="page__subtitle">방광염은 방광에 세균이 들어와 생기는 흔한 감염으로, 소변 볼 때 따갑거나 갑자기 자주 마려운 증상이 대표적입니다. 검사와 복용 순서를 지키는 것이 정확한 진단과 재발 예방의 핵심입니다.</p>
   </section>
 
   <main class="page__body">
-
+    <!-- 섹션 1: 치료의 원칙 3가지 (그림 + 표) -->
     <section>
-      <h2 class="section-heading">치료의 원칙 3가지</h2>
-      <div class="checklist">
-        <div class="checklist__item">
-          <div class="checklist__num">1</div>
-          <div class="checklist__text"><strong>항생제를 먹기 전에 소변검사를 받으세요</strong> — 약을 먹은 뒤에는 검사가 부정확할 수 있습니다. 필요하면 배양검사도 함께 하고, 결과가 나오면 더 잘 듣는 약으로 바꿀 수 있습니다.</div>
-        </div>
-        <div class="checklist__item">
-          <div class="checklist__num">2</div>
-          <div class="checklist__text"><strong>처방받은 기간(예: 5일) 끝까지 드세요</strong> — 증상이 좋아져도 임의로 중단하지 마세요. 약마다 정해진 기간이 다르므로, 처방받은 대로 끝까지 복용하는 것이 핵심입니다.</div>
-        </div>
-        <div class="checklist__item">
-          <div class="checklist__num">3</div>
-          <div class="checklist__text"><strong>물을 많이 마시고 소변을 참지 마세요</strong> — 수분을 충분히 섭취하고, 소변이 마려울 때 습관적으로 오래 참지 않는 것이 회복과 재발 예방에 도움이 됩니다.</div>
-        </div>
+      <h2 class="section-heading">
+        <img data-asset="hi-filled-bladder" src="../../../shared/assets/healthicons/filled/body/bladder.svg" class="icon-sm" alt="방광">치료의 원칙 3가지
+      </h2>
+      <div class="principle-grid">
+        <figure class="urine-test-figure">
+          <img src="../../../shared/assets/generated/cystitis-uti-urine-test-20260925.jpg"
+               alt="소변 검체 용기와 요시험지 검사 스트립">
+        </figure>
+        <table class="ge-table principle-table">
+          <thead>
+            <tr>
+              <th style="width:18%; text-align:center"><img data-asset="hi-filled-urine-sample" src="../../../shared/assets/healthicons/filled/devices/urine-sample.svg" class="icon-sm" alt="소변검사">원칙</th>
+              <th>실천 방법</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-label">1</td>
+              <td><strong>항생제를 먹기 전에 소변검사를 받으세요</strong> — 약을 먹은 뒤에는 검사가 부정확할 수 있습니다. 필요하면 배양검사도 함께 하고, 결과가 나오면 더 잘 듣는 약으로 바꿀 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td class="row-label">2</td>
+              <td><strong>처방받은 기간(예: 5일) 끝까지 드세요</strong> — 증상이 좋아져도 임의로 중단하지 마세요. 약마다 정해진 기간이 다르므로, 처방받은 대로 끝까지 복용하는&nbsp;것이 핵심입니다.</td>
+            </tr>
+            <tr>
+              <td class="row-label">3</td>
+              <td><strong>물을 많이 마시고 소변을 참지 마세요</strong> — 수분을 충분히 섭취하고, 소변이 마려울 때 습관적으로 오래 참지 않는&nbsp;것이 회복과 재발 예방에 도움이 됩니다.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
+    <!-- 섹션 2: 흔한 오해 바로잡기 (비교 표) -->
     <section>
-      <h2 class="section-heading">이런 경우는 구분이 필요합니다</h2>
-      <div class="body-2col">
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">신우신염 의심 · 바로 오세요</div>
-          <ul class="card-list">
-            <li><strong>옆구리 통증, 열·오한</strong>이 있으면 신우신염일 수 있습니다. 바로&nbsp;오세요.</li>
-            <li><strong>메스꺼움·구토</strong>가 함께 있는 경우</li>
-            <li><strong>방광염 약을 먹는데도</strong> 증상이 나아지지 않거나 오히려 나빠지는&nbsp;경우</li>
-            <li>몹시 아프거나 상태가 빠르게 나빠지는 경우 — 열이 높고 구토로 약을 못 드시거나 크게 처지면 응급실로</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-label card-label--steel">오래된 빈뇨는 다를 수 있음</div>
-          <ul class="card-list">
-            <li><strong>오래된 빈뇨는 염증이 아니라 과민성 방광</strong>일 수 있습니다.</li>
-            <li>새로 갑자기 생긴 배뇨통·빈뇨는 방광염 쪽에 가깝습니다.</li>
-            <li>오래 지속된 빈뇨만으로는 급성 방광염으로 단정하지 않습니다.</li>
-            <li>구분이 애매하면 진료 시 함께 확인하세요.</li>
-          </ul>
-        </div>
-      </div>
+      <h2 class="section-heading">
+        <img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" class="icon-sm" alt="약">흔한 오해 바로잡기
+      </h2>
+      <table class="ge-table myth-table">
+        <thead>
+          <tr>
+            <th style="width:36%">흔한 오해</th>
+            <th>바로 알기</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="myth-q">“소변이 잦으면 콩팥이 나쁜 것”</td>
+            <td>아닙니다. 빈뇨는 대개 방광의 문제이고, 콩팥까지 번진 경우는 열·옆구리 통증으로&nbsp;나타납니다.</td>
+          </tr>
+          <tr>
+            <td class="myth-q">“주사 항생제 한 방이면 된다”</td>
+            <td>주사 항생제는 상황에 따라 함께 쓸 수 있지만, 방광염 치료의 기본은 처방받은 기간 동안 먹는 항생제를 다 복용하는 것입니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
+    <!-- 섹션 3: 이런 경우는 구분이 필요합니다 (비교 표) -->
     <section>
-      <div class="card card--navy">
-        <div class="card-label">흔한 오해 바로잡기</div>
-        <ul class="card-list">
-          <li><strong>“소변이 잦으면 콩팥이 나쁜 것”</strong> — 아닙니다. 빈뇨는 대개 방광의 문제이고, 콩팥까지 번진 경우는 열·옆구리 통증으로 나타납니다.</li>
-          <li><strong>“주사 항생제 한 방이면 된다”</strong> — 주사 항생제는 상황에 따라 함께 쓸 수 있지만, 방광염 치료의 기본은 처방받은 기간 동안 먹는 항생제를 다 복용하는 것입니다.</li>
-        </ul>
-      </div>
+      <h2 class="section-heading">
+        <img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" class="icon-sm" alt="콩팥">이런 경우는 구분이 필요합니다
+      </h2>
+      <table class="ge-table distinction-table">
+        <thead>
+          <tr>
+            <th style="width:50%" class="th-warning">
+              <img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="경고">신우신염 의심 · 바로 오세요
+            </th>
+            <th class="th-steel">
+              <img data-asset="hi-filled-running-water" src="../../../shared/assets/healthicons/filled/objects/running-water.svg" class="icon-sm" alt="배뇨">오래된 빈뇨는 다를 수 있음
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ul class="tbl-list">
+                <li class="warn-item"><strong>옆구리 통증, 열·오한</strong>이 있으면 신우신염일 수 있습니다. 바로&nbsp;오세요.</li>
+                <li><strong>메스꺼움·구토</strong>가 함께 있는 경우</li>
+                <li><strong>방광염 약을 먹는데도</strong> 증상이 나아지지 않거나 오히려 나빠지는&nbsp;경우</li>
+              </ul>
+              <div class="er-notice">
+                몹시 아프거나 상태가 빠르게 나빠지는 경우 — 열이 높고 구토로 약을 못 드시거나 크게 처지면 응급실로
+              </div>
+            </td>
+            <td>
+              <ul class="tbl-list">
+                <li><strong>오래된 빈뇨는 염증이 아니라 과민성 방광</strong>일 수 있습니다.</li>
+                <li>새로 갑자기 생긴 배뇨통·빈뇨는 방광염 쪽에 가깝습니다.</li>
+                <li>오래 지속된 빈뇨만으로는 급성 방광염으로 단정하지 않습니다.</li>
+                <li>구분이 애매하면 진료 시 함께 확인하세요.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
-
   </main>
 
   <footer class="page__footer">
@@ -102,7 +321,6 @@
       <div class="qr-mini__url">edu.gwanggyobarun.com/handouts/screening/cystitis-uti/</div>
     </div>
   </footer>
-
 </div>
 
 </body>

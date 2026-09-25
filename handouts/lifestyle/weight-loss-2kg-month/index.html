@@ -19,24 +19,192 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    /* 본문 6섹션이 조밀해 기본 gap/line-height로는 1페이지 여유가 빠듯함 — 이 핸드아웃 한정 타이트화 */
-    .page__body { gap: 4mm; }
-    .page__body > section { gap: 1.8mm; }
-    .page__body .card-list { line-height: 1.42; }
-
-    /* 목표 감량 속도 빈칸 — 원장님이 환자별로 손으로 적어 넣는 자리 */
-    .goal-fill {
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page {
+      padding: 7.5mm 14mm 6.5mm;
+      gap: 2.8mm;
+    }
+    .page__header {
+      padding-bottom: 1.4mm;
+    }
+    .page__title-block {
+      gap: 0.8mm;
+      margin-bottom: 0;
+    }
+    .page__title {
+      font-size: 21pt;
+      line-height: 1.15;
+    }
+    .page__subtitle {
+      max-width: 172mm;
+      font-size: 9.4pt;
+      line-height: 1.34;
+    }
+    .page__body {
+      justify-content: flex-start;
+      gap: 3.2mm;
+    }
+    .page__body > section {
+      flex: 0 0 auto;
+      gap: 0.6mm;
+    }
+    .section-heading {
+      font-size: 9.4pt;
+      margin-bottom: 0.3mm;
       display: flex;
-      align-items: baseline;
+      align-items: center;
+    }
+    .icon-sm {
+      width: 4.2mm;
+      height: 4.2mm;
+      vertical-align: middle;
+      margin-right: 1.2mm;
+      flex-shrink: 0;
+    }
+
+    /* 상단 비주얼 + 원리 그리드 */
+    .wl-hero-grid {
+      display: grid;
+      grid-template-columns: 60mm 1fr;
       gap: 2mm;
-      font-size: 10pt;
+      align-items: stretch;
+    }
+    .wl-figure {
+      margin: 0;
+      width: 60mm;
+      height: 40mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .wl-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .wl-figure__cap {
+      position: absolute;
+      left: 1.2mm;
+      right: 1.2mm;
+      bottom: 1.2mm;
+      padding: 0.6mm 1.2mm;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 3px;
+      font-size: 7.2pt;
+      line-height: 1.2;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+    }
+    .wl-hero-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2mm;
+      justify-content: space-between;
+    }
+    .wl-hero-cards .card {
+      padding: 1.8mm 2.4mm;
+    }
+    .wl-hero-cards .card-label {
+      margin-bottom: 0.5mm;
+      font-size: 8.4pt;
+    }
+    .wl-hero-cards .card-list {
+      font-size: 8.2pt;
+      line-height: 1.34;
+      margin: 0;
+    }
+    .wl-hero-cards .card-list li + li {
+      margin-top: 0.5mm;
+    }
+
+    /* 공통 표 스타일 */
+    .wl-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.6pt;
+      line-height: 1.32;
+      color: var(--color-ink-soft);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+    .wl-table th,
+    .wl-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.1mm 2.0mm;
+      vertical-align: middle;
+      text-align: left;
+    }
+    .wl-table-note {
+      font-size: 8.2pt;
+      line-height: 1.3;
+      color: var(--color-navy);
+      font-weight: var(--weight-medium);
+      margin-top: 0.5mm;
+    }
+    .wl-table th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.5pt;
+    }
+    .wl-table td strong {
+      color: var(--color-navy);
+    }
+    .wl-table .row-label {
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+      white-space: nowrap;
+    }
+    .wl-table th.th-do {
+      background: var(--color-navy-mid);
+    }
+    .wl-table th.th-dont {
+      background: var(--color-danger);
+    }
+    .wl-table th.th-myth {
+      background: var(--color-warning);
+    }
+    .wl-table td.td-myth {
+      background: var(--color-warning-bg);
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+    }
+    .sub-rule {
+      display: block;
+      margin-top: 0.4mm;
+      font-size: 8.4pt;
       color: var(--color-ink-soft);
     }
-    .goal-fill__line {
-      display: inline-block;
-      min-width: 26mm;
-      border-bottom: 1px solid var(--color-navy);
-      height: 4mm;
+
+    /* 경고 박스 */
+    .card--navy {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      padding: 2.4mm 3.0mm;
+      border-radius: var(--radius-sm);
+      justify-content: flex-start;
+    }
+    .card--navy .card-label {
+      color: #FFFFFF;
+      font-size: 8.6pt;
+      font-weight: var(--weight-semibold);
+      margin-bottom: 0.5mm;
+      display: flex;
+      align-items: center;
+    }
+    .card--navy .alert-text {
+      font-size: 8.2pt;
+      line-height: 1.36;
+      color: var(--color-canvas);
     }
   </style>
 </head>
@@ -64,102 +232,146 @@
 
     <!-- 왜 천천히 빼야 하는가 -->
     <section>
-      <h2 class="section-heading">왜 천천히 빼야 할까요?</h2>
-      <div class="body-2col">
-
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">굶거나 단식하면 생기는 일</div>
-          <ul class="card-list">
-            <li>굶거나 단식하면 <strong>근육부터 함께 빠지고</strong>, 몸이 에너지를 아끼는 <strong>'저전력 모드'</strong>로 바뀌면서 요요가 오기 쉽습니다.</li>
-            <li>탄수화물을 전부 끊을 필요는 없습니다. 줄여야 하는 것은 흰쌀·빵·단 음료 같은 <strong>정제 탄수화물</strong>이고, 단백질과 채소는 그대로 유지합니다.</li>
-          </ul>
+      <h2 class="section-heading"><img data-asset="hi-filled-body" src="../../../shared/assets/healthicons/filled/body/body.svg" class="icon-sm" alt="신체"> 왜 천천히 빼야 할까요?</h2>
+      <div class="wl-hero-grid">
+        <figure class="wl-figure">
+          <img src="../../../shared/assets/generated/weight-loss-2kg-month-plate-20260925.jpg" alt="채소 넉넉히, 단백질, 적은 양의 잡곡밥으로 구성된 균형 잡힌 한 끼 식판">
+          <figcaption class="wl-figure__cap">균형 잡힌 한 끼: 채소 넉넉히 · 단백질 유지</figcaption>
+        </figure>
+        <div class="wl-hero-cards">
+          <div class="card card--accent">
+            <div class="card-label card-label--navy">굶거나 단식하면 생기는 일</div>
+            <ul class="card-list">
+              <li>굶거나 단식하면 <strong>근육부터 함께 빠지고</strong>, 몸이 에너지를 아끼는 <strong>'저전력 모드'</strong>로 바뀌면서 요요가 오기&nbsp;쉽습니다.</li>
+              <li>탄수화물을 전부 끊을 필요는 없습니다. 줄여야 하는 것은 흰쌀·빵·단 음료 같은 <strong>정제 탄수화물</strong>이고, 단백질과 채소는 그대로 유지합니다.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-label card-label--navy">체중이 빠지는 방식</div>
+            <ul class="card-list">
+              <li>체중은 <strong>계단식으로</strong> 빠집니다. 며칠 정체돼도 실패가 아니며, <strong>1년 이상 꾸준히 유지</strong>해야 몸의 기준점이 서서히&nbsp;바뀝니다.</li>
+              <li>목표는 <strong>한 달 2kg 안팎(주 0.5~1kg 이내)</strong>이 정답입니다 — 빨리 빼기보다 오래 유지하는 속도가&nbsp;중요합니다.</li>
+            </ul>
+          </div>
         </div>
-
-        <div class="card">
-          <div class="card-label card-label--steel">체중이 빠지는 방식</div>
-          <ul class="card-list">
-            <li>체중은 <strong>계단식으로</strong> 빠집니다. 며칠 정체돼도 실패가 아니며, <strong>1년 이상 꾸준히 유지</strong>해야 몸의 기준점이 서서히 바뀝니다.</li>
-            <li>목표는 <strong>한 달 2kg 안팎(주 0.5~1kg 이내)</strong>이 정답입니다 — 빨리 빼기보다 오래 유지하는 속도가 중요합니다.</li>
-          </ul>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 흔한 오해 -->
-    <section>
-      <h2 class="section-heading">흔한 오해</h2>
-      <div class="card card--warning">
-        <ul class="card-list" style="columns:2; column-gap:8mm;">
-          <li><strong>"적게 먹을수록 빨리 빠져서 좋다"</strong> — 빨리 빼면 근육 손실과 절전 반응이 커져 오히려 요요 위험이 높아집니다.</li>
-          <li><strong>"밥 끊고 고기만 먹으면 된다"</strong> — 탄수화물을 전부 끊을 필요는 없습니다. 정제 탄수화물만 줄이면 됩니다.</li>
-        </ul>
       </div>
     </section>
 
     <!-- 핵심 수치 -->
     <section>
-      <h2 class="section-heading">한눈에 보는 핵심 수치 (한국 성인 기준)</h2>
-      <div class="stats-row">
-        <div class="stat-cell">
-          <div class="stat-cell__label">과체중 기준</div>
-          <div class="stat-cell__value">23</div>
-          <div class="stat-cell__unit">BMI 이상 (아시아 기준)</div>
-        </div>
-        <div class="stat-cell stat-cell--high">
-          <div class="stat-cell__label">비만 기준</div>
-          <div class="stat-cell__value">25</div>
-          <div class="stat-cell__unit">BMI 이상</div>
-        </div>
-        <div class="stat-cell stat-cell--ok">
-          <div class="stat-cell__label">감량 속도</div>
-          <div class="stat-cell__value">2</div>
-          <div class="stat-cell__unit">kg / 월 안팎 (주 0.5~1kg)</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-cell__label">유지 기간</div>
-          <div class="stat-cell__value">1년+</div>
-          <div class="stat-cell__unit">몸의 기준점이 바뀌는 기간</div>
-        </div>
-      </div>
-      <div class="goal-fill" style="margin-top:3mm;">
-        <span>나의 목표 감량 속도는 건강 상태에 맞춰 진료 때 함께 정합니다.</span>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-body-mass_index" src="../../../shared/assets/healthicons/filled/symbols/body-mass_index.svg" class="icon-sm" alt="체질량지수"> 한눈에 보는 핵심 수치 (한국 성인 기준)</h2>
+      <table class="wl-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">구분</th>
+            <th style="width: 32%;">기준 수치</th>
+            <th style="width: 43%;">임상적 의미 및 권고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">과체중 기준</td>
+            <td><strong>BMI 23</strong> 이상</td>
+            <td>아시아 성인 기준 과체중 단계</td>
+          </tr>
+          <tr>
+            <td class="row-label">비만 기준</td>
+            <td><strong>BMI 25</strong> 이상</td>
+            <td>한국 성인 비만 진단 기준</td>
+          </tr>
+          <tr>
+            <td class="row-label">복부비만 기준</td>
+            <td><strong>허리둘레 남 90cm·여 85cm</strong> 이상</td>
+            <td>한국인 복부비만 진단 기준</td>
+          </tr>
+          <tr>
+            <td class="row-label">첫 감량 목표</td>
+            <td><strong>6개월간 현재 체중의 5~10%</strong> 감량</td>
+            <td>혈압·혈당·중성지방 등 대사 지표 개선에 도움</td>
+          </tr>
+          <tr>
+            <td class="row-label">권장 감량 속도</td>
+            <td><strong>한 달 2kg 안팎</strong> (주 0.5~1kg)</td>
+            <td>평소보다 하루 500~1,000kcal 적게 섭취 시 안전한&nbsp;감량에&nbsp;도움</td>
+          </tr>
+          <tr>
+            <td class="row-label">유지 기간</td>
+            <td><strong>1년 이상</strong></td>
+            <td>몸의 기준점이 서서히 바뀌는 기간</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="wl-table-note">나의 목표 감량 속도는 건강 상태에 맞춰 진료 때 함께 정합니다.</div>
     </section>
 
     <!-- 실천 원칙 -->
     <section>
-      <h2 class="section-heading">실천 원칙 (Do &amp; Don't)</h2>
-      <div class="body-2col">
+      <h2 class="section-heading"><img data-asset="hi-filled-nutrition" src="../../../shared/assets/healthicons/filled/nutrition/nutrition.svg" class="icon-sm" alt="영양"> 실천 원칙 (Do &amp; Don't)</h2>
+      <table class="wl-table">
+        <thead>
+          <tr>
+            <th style="width: 15%;">구분</th>
+            <th class="th-do" style="width: 42.5%;"><img data-asset="hi-filled-vegetables" src="../../../shared/assets/healthicons/filled/nutrition/vegetables.svg" class="icon-sm" alt="권장"> 이렇게 하세요 · DO</th>
+            <th class="th-dont" style="width: 42.5%;"><img data-asset="hi-filled-alert" src="../../../shared/assets/healthicons/filled/symbols/alert.svg" class="icon-sm" alt="주의"> 이것은 피하세요 · DON'T</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">식사</td>
+            <td>
+              <strong>1.</strong> 흰쌀·빵·단 음료 같은 정제 탄수화물만 줄이기<br>
+              <strong>2.</strong> 단백질·채소는 끼니마다 그대로 유지<br>
+              <span class="sub-rule">· 하루 500~1,000kcal 적게 먹으면 주 0.5~1kg&nbsp;감량에&nbsp;도움</span>
+            </td>
+            <td>
+              <strong>1.</strong> 극단적인 단식·굶기·식사 거르기<br>
+              <strong>2.</strong> 고기·단백질 한 가지만 먹고 탄수화물 완전히 끊기
+            </td>
+          </tr>
+          <tr>
+            <td class="row-label">운동·점검</td>
+            <td>
+              <strong>3.</strong> 근력 운동을 함께해 근육 지키기<br>
+              <span class="sub-rule">· 중강도 유산소 주 150분+ 및 근력 운동&nbsp;주&nbsp;2~3회&nbsp;권장</span>
+              <div style="margin-top: 0.6mm;"><strong>4.</strong> 인바디·체중은 하루 숫자보다 <strong>몇 주 흐름</strong>으로 보기 — 수분 상태에 따라&nbsp;흔들립니다</div>
+            </td>
+            <td>
+              <strong>3.</strong> 며칠 정체됐다고 포기하기 — 계단식 정체는 정상입니다<br>
+              <div style="margin-top: 0.6mm;"><strong>4.</strong> 목표 체중에 도달했다고 관리를 바로 끝내기</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-        <div class="card">
-          <div class="card-label card-label--steel">이렇게 하세요 · DO</div>
-          <ul class="card-list">
-            <li><strong>1.</strong> 흰쌀·빵·단 음료 같은 정제 탄수화물만 줄이기</li>
-            <li><strong>2.</strong> 단백질·채소는 끼니마다 그대로 유지</li>
-            <li><strong>3.</strong> 근력 운동을 함께해 근육 지키기</li>
-            <li><strong>4.</strong> 인바디·체중은 하루 숫자보다 <strong>몇 주 흐름</strong>으로 보기 — 수분 상태에 따라 흔들립니다</li>
-          </ul>
-        </div>
-
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">이것은 피하세요 · DON'T</div>
-          <ul class="card-list">
-            <li><strong>1.</strong> 극단적인 단식·굶기·식사 거르기</li>
-            <li><strong>2.</strong> 고기·단백질 한 가지만 먹고 탄수화물 완전히 끊기</li>
-            <li><strong>3.</strong> 며칠 정체됐다고 포기하기 — 계단식 정체는 정상입니다</li>
-            <li><strong>4.</strong> 목표 체중에 도달했다고 관리를 바로 끝내기</li>
-          </ul>
-        </div>
-
-      </div>
+    <!-- 흔한 오해 -->
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-alert-circle" src="../../../shared/assets/healthicons/filled/symbols/alert-circle.svg" class="icon-sm" alt="주의"> 흔한 오해</h2>
+      <table class="wl-table">
+        <thead>
+          <tr>
+            <th class="th-myth" style="width: 40%;">흔한 오해</th>
+            <th style="width: 60%;">올바른 사실</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-myth">"적게 먹을수록 빨리 빠져서 좋다"</td>
+            <td>빨리 빼면 근육 손실과 절전 반응이 커져 오히려 요요 위험이 높아집니다.</td>
+          </tr>
+          <tr>
+            <td class="td-myth">"밥 끊고 고기만 먹으면 된다"</td>
+            <td>탄수화물을 전부 끊을 필요는 없습니다. 정제 탄수화물만 줄이면 됩니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <!-- 위험 신호 -->
     <section>
       <div class="card card--navy">
-        <div class="card-label">이럴 땐 응급실·바로 진료 · IMPORTANT</div>
-        <div style="font-size:10pt; line-height:1.6;">
+        <div class="card-label"><img data-asset="hi-filled-accident-and_emergency" src="../../../shared/assets/healthicons/filled/specialties/accident-and_emergency.svg" class="icon-sm" alt="응급실"> 이럴 땐 응급실·바로 진료 · IMPORTANT</div>
+        <div class="alert-text">
           식사를 심하게 제한하는 중 <strong style="color:var(--color-sky);">실신·의식 저하·물도 못 마시는 상태</strong>가 있으면 계획을 멈추고 응급실로 가세요. <strong style="color:var(--color-sky);">반복 구토·일상생활이 어려운 쇠약감</strong>이 있으면 즉시 진료받으세요. 당뇨약 복용 중이면 식사를 크게 줄이기 전에 의료진과 먼저 상의하세요. (☏ 031-893-4560)
         </div>
       </div>

@@ -18,8 +18,11 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
     .compact-body {
-      gap: 3.2mm;
+      gap: 2.4mm;
       justify-content: start;
     }
     .compact-body > section {
@@ -27,17 +30,84 @@
       gap: 1.6mm;
     }
     .compact-body .section-heading {
-      margin-bottom: 1mm;
+      margin-bottom: 0.8mm;
+      font-size: 10.5pt;
+    }
+    .icon-sm {
+      width: 4.5mm;
+      height: 4.5mm;
+      vertical-align: -1mm;
+      margin-right: 1.2mm;
+    }
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.6pt;
+      line-height: 1.45;
+      color: var(--color-ink-soft);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.0mm 2.2mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .ge-table th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.8pt;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table .row-label {
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+    }
+    .notify-compare-grid {
+      display: grid;
+      grid-template-columns: 105mm 72mm;
+      gap: 3.5mm;
+      align-items: start;
+    }
+    .consult-figure {
+      margin: 0;
+      width: 72mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .consult-figure img {
+      display: block;
+      width: 72mm;
+      height: 48mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas-warm);
+      object-fit: cover;
+    }
+    .consult-figure__cap {
+      margin-top: 1.2mm;
+      font-size: 7.2pt;
+      line-height: 1.2;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
     }
     .compact-card {
-      padding: 3.2mm 4mm;
+      padding: 2.6mm 3.6mm;
     }
     .compact-card .card-label {
-      margin-bottom: 1.4mm;
+      margin-bottom: 1.2mm;
     }
     .compact-card .card-list {
       font-size: 8.8pt;
-      line-height: 1.5;
+      line-height: 1.48;
     }
     .notify-strip {
       display: flex;
@@ -49,21 +119,8 @@
       border: 1px solid var(--color-danger-border);
       border-left: 3px solid var(--color-danger);
     }
-    .notify-strip__icon {
-      width: 7mm;
-      height: 7mm;
-      border-radius: 999px;
-      background: var(--color-danger);
-      color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10pt;
-      font-weight: var(--weight-bold);
-      flex: 0 0 auto;
-    }
     .notify-strip__text {
-      font-size: 9pt;
+      font-size: 8.8pt;
       color: var(--color-ink);
       line-height: 1.45;
     }
@@ -115,45 +172,80 @@
     </section>
 
     <section>
-      <h2 class="section-heading">문자 · 전화, 무엇이 다른가요</h2>
-      <div class="body-2col">
-        <div class="card card--accent compact-card">
-          <div class="card-label card-label--navy">문자로 안내하는 경우</div>
-          <ul class="card-list">
-            <li><strong>결과가 좋으면 원칙적으로 문자로</strong> 안내해 드립니다.</li>
-            <li>문자에 적힌 <strong>검사명과 결과 범위</strong>를 확인해 주세요.</li>
-            <li>같은 날 시행한 다른 검사는 아직 진행 중일 수 있습니다.</li>
-            <li>문자 내용이 이해되지 않으시면 진료 예약 후 다시 여쭤보세요.</li>
-          </ul>
-        </div>
-        <div class="card card--warning compact-card">
-          <div class="card-label card-label--warning">전화로 안내하는 경우</div>
-          <ul class="card-list">
-            <li><strong>설명이 필요한 결과는 전화로</strong> 안내해 드립니다.</li>
-            <li>다음 진료·재검 일정을 함께 정하기 위한 연락입니다.</li>
-            <li>전화를 못 받으셨다면 <strong>다시 걸어 주세요.</strong></li>
-            <li>전화 통화만으로 병의 경중을 미리 짐작하지 않으셔도 됩니다.</li>
-          </ul>
-        </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-phone" src="../../../shared/assets/healthicons/filled/objects/phone.svg" class="icon-sm" alt="안내">문자 · 전화, 무엇이 다른가요</h2>
+      <div class="notify-compare-grid">
+        <table class="ge-table">
+          <thead>
+            <tr>
+              <th style="width:16%">구분</th>
+              <th style="width:42%"><img data-asset="hi-filled-yes" src="../../../shared/assets/healthicons/filled/symbols/yes.svg" class="icon-sm" alt="정상">문자로 안내하는 경우</th>
+              <th style="width:42%"><img data-asset="hi-filled-call-centre" src="../../../shared/assets/healthicons/filled/people/call-centre.svg" class="icon-sm" alt="상담">전화로 안내하는 경우</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-label">대상 기준</td>
+              <td><strong>결과가 좋으면 원칙적으로 문자로</strong> 안내해 드립니다.</td>
+              <td><strong>설명이 필요한 결과는 전화로</strong> 안내해 드립니다.</td>
+            </tr>
+            <tr>
+              <td class="row-label">확인 및 목적</td>
+              <td>문자에 적힌 <strong>검사명과 결과 범위</strong>를 확인해&nbsp;주세요.</td>
+              <td>다음 진료·재검 일정을 함께 정하기 위한 연락입니다.</td>
+            </tr>
+            <tr>
+              <td class="row-label">진행 및 유의</td>
+              <td>같은 날 시행한 다른 검사는 아직 진행 중일 수 있습니다.</td>
+              <td>전화를 못 받으셨다면 <strong>다시 걸어 주세요.</strong></td>
+            </tr>
+            <tr>
+              <td class="row-label">추가 안내</td>
+              <td>문자 내용이 이해되지 않으시면 진료 예약 후 다시 여쭤보세요.</td>
+              <td>전화 통화만으로 병의 경중을 미리 짐작하지 않으셔도 됩니다.</td>
+            </tr>
+          </tbody>
+        </table>
+        <figure class="consult-figure">
+          <img src="../../../shared/assets/generated/results-notification-card-consult-20260925.jpg"
+               alt="진료실에서 의사가 환자에게 모니터를 활용해 검사 결과를 상세히 설명하는 의학 일러스트">
+          <figcaption class="consult-figure__cap">설명이 필요한 결과는 전화·재방문으로 안내</figcaption>
+        </figure>
       </div>
     </section>
 
     <section>
-      <h2 class="section-heading">결과가 나오는 시간 · 서류 발급</h2>
-      <div class="card compact-card">
-        <div class="card-label card-label--steel">조직검사 · CLO · 실손서류</div>
-        <ul class="card-list">
-          <li><strong>조직검사(Biopsy)</strong> 결과는 대개 <strong>1주 뒤</strong> 나옵니다. 추가 검사가 필요하면 더 걸릴 수 있습니다.</li>
-          <li><strong>CLO 검사(헬리코박터 신속검사)</strong>는 <strong>24시간 이내</strong>에 결과가 나옵니다.</li>
-          <li><strong>실손보험 서류</strong>는 조직검사 결과로 진단명이 확정된 <strong>뒤에</strong> 발급해 드립니다.</li>
-          <li>발급 가능한 서류 종류는 진료 시 접수 데스크와 확인해 주세요.</li>
-        </ul>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-microscope" src="../../../shared/assets/healthicons/filled/devices/microscope.svg" class="icon-sm" alt="검사">결과가 나오는 시간 · 서류 발급</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width:28%">검사·서류</th>
+            <th>소요 시간 및 발급 안내</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">조직검사</td>
+            <td><strong>조직검사(Biopsy)</strong> 결과는 대개 <strong>1주 뒤</strong> 나옵니다. 추가 검사가 필요하면 더 걸릴 수 있습니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label">CLO 검사</td>
+            <td><strong>CLO 검사(헬리코박터 신속검사)</strong>는 <strong>24시간 이내</strong>에 결과가&nbsp;나옵니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label">실손보험 서류</td>
+            <td><strong>실손보험 서류</strong>는 조직검사 결과로 진단명이 확정된 <strong>뒤에</strong> 발급해 드립니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label">발급 종류</td>
+            <td>발급 가능한 서류 종류는 진료 시 접수 데스크와 확인해&nbsp;주세요.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
       <div class="card card--warning compact-card">
-        <div class="card-label card-label--warning">헬리코박터 재검 날짜는 직접 챙겨 주세요</div>
+        <div class="card-label card-label--warning"><img data-asset="hi-filled-bacteria" src="../../../shared/assets/healthicons/filled/body/bacteria.svg" class="icon-sm" alt="세균">헬리코박터 재검 날짜는 직접 챙겨 주세요</div>
         <ul class="card-list">
           <li>제균 치료를 마치셨다면 <strong>확인 검사</strong>가 필요합니다.</li>
           <li>확인 검사는 <strong>치료를 마친 날부터 최소 4주</strong>가 지나야 정확합니다.</li>
@@ -165,7 +257,7 @@
 
     <section>
       <div class="notify-strip">
-        <div class="notify-strip__icon">!</div>
+        <img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="경고" style="width:6mm;height:6mm;flex:0 0 auto;">
         <div class="notify-strip__text">
           <strong>안내받은 날짜가 지났는데 문자도 전화도 못 받으셨다면</strong> 결과가 정상이라고 넘겨짚지 마시고 광교바른내과로 확인 전화 주세요.
         </div>

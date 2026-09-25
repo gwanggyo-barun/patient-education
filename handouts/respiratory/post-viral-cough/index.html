@@ -18,49 +18,144 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
     .page {
-      gap: 5.5mm;
-      padding-bottom: 10mm;
+      gap: 2.2mm;
+      padding-bottom: 6mm;
     }
     .page__subtitle {
       max-width: 172mm;
     }
     .cough-body {
-      gap: 2.6mm;
+      gap: 1.6mm;
       justify-content: start;
     }
     .cough-body > section {
       flex: 0 0 auto;
-      gap: 1.6mm;
+      gap: 1mm;
     }
     .cough-body .section-heading {
-      margin-bottom: 0.8mm;
+      margin-bottom: 0.5mm;
+    }
+    .icon-sm {
+      width: 4.4mm;
+      height: 4.4mm;
+      vertical-align: -1mm;
+      margin-right: 1.2mm;
     }
     .cough-intro {
-      font-size: 9pt;
-      line-height: 1.5;
+      font-size: 8.5pt;
+      line-height: 1.38;
       color: var(--color-ink-soft);
-      margin-bottom: 1.4mm;
+      margin-bottom: 0.6mm;
     }
     .compact-card {
-      padding: 3mm 3.6mm;
+      padding: 1.8mm 2.2mm;
     }
     .compact-card .card-label {
-      margin-bottom: 1.2mm;
+      margin-bottom: 0.6mm;
+      color: var(--color-navy);
+      font-size: 8.2pt;
     }
     .compact-card .card-list,
     .compact-card p {
-      font-size: 8.7pt;
-      line-height: 1.52;
+      font-size: 8.0pt;
+      line-height: 1.36;
+      margin: 0;
     }
+
+    /* 테이블 공통 스타일 */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.2pt;
+      line-height: 1.35;
+      color: var(--color-ink-soft);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 0.7mm 1.8mm;
+      vertical-align: middle;
+      text-align: left;
+    }
+    .ge-table th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.3pt;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table .row-label {
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+    }
+
+    /* 생활 관리 및 흡입기 3열 그리드 */
+    .cough-care-grid {
+      display: grid;
+      grid-template-columns: 52mm 62mm 1fr;
+      gap: 2.2mm;
+      align-items: stretch;
+    }
+    .cough-figure {
+      width: 52mm;
+      height: 39mm;
+      margin: 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      overflow: hidden;
+      position: relative;
+    }
+    .cough-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cough-figure__cap {
+      position: absolute;
+      left: 1.2mm;
+      right: 1.2mm;
+      bottom: 1.2mm;
+      padding: 0.6mm 1.2mm;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 3px;
+      font-size: 7.1pt;
+      line-height: 1.2;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+    }
+    .cough-stack-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6mm;
+      justify-content: space-between;
+    }
+    .cause-table th,
+    .cause-table td {
+      padding: 0.6mm 1.8mm;
+      font-size: 8.0pt;
+      line-height: 1.32;
+    }
+
+    /* 경고 타일 스트립 */
     .alert-strip {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 3mm;
+      gap: 2mm;
     }
     .alert-tile {
-      min-height: 25mm;
-      padding: 3.2mm 3mm;
+      padding: 1.8mm 2mm;
       border: 1px solid var(--color-border);
       border-top: 3px solid var(--color-steel);
       border-radius: var(--radius-sm);
@@ -71,42 +166,55 @@
       background: var(--color-danger-bg);
     }
     .alert-tile__kicker {
-      font-size: 7pt;
+      font-size: 6.8pt;
       font-weight: var(--weight-semibold);
       letter-spacing: var(--tracking-wide);
-      color: var(--color-slate);
+      color: var(--color-navy);
       text-transform: uppercase;
-      margin-bottom: 1.2mm;
+      margin-bottom: 0.6mm;
     }
     .alert-tile__title {
-      font-size: 10.8pt;
+      font-size: 9.3pt;
       font-weight: var(--weight-semibold);
       color: var(--color-navy);
-      line-height: 1.18;
-      margin-bottom: 1mm;
+      line-height: 1.2;
+      margin-bottom: 0.6mm;
       letter-spacing: -0.01em;
     }
     .alert-tile__text {
-      font-size: 8pt;
-      line-height: 1.42;
+      font-size: 7.7pt;
+      line-height: 1.35;
       color: var(--color-ink-soft);
     }
     .faq-list {
       list-style: none;
-      font-size: 8.6pt;
-      line-height: 1.5;
+      font-size: 8.3pt;
+      line-height: 1.42;
       display: flex;
       flex-direction: column;
-      gap: 1.8mm;
+      gap: 1.2mm;
+      margin: 0;
+      padding: 0;
     }
     .faq-list li strong.myth {
       display: block;
       color: var(--color-warning);
       font-weight: var(--weight-semibold);
-      margin-bottom: 0.4mm;
+      margin-bottom: 0.2mm;
     }
     .page__footer {
-      padding-top: 3mm;
+      padding-top: 2mm;
+    }
+    @media screen {
+      .page__footer {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        align-items: flex-start !important;
+        gap: 3mm;
+      }
+      .page__footer-info {
+        width: 100% !important;
+      }
     }
   </style>
 </head>
@@ -124,11 +232,12 @@
   </section>
 
   <main class="page__body cough-body">
+    <!-- 1. 기침 악순환 및 생활 관리 -->
     <section>
-      <h2 class="section-heading">감기 뒤 기침, 왜 오래갈까요</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-coughing" src="../../../shared/assets/healthicons/filled/emotions/coughing.svg" class="icon-sm" alt="기침">감기 뒤 기침, 왜 오래갈까요</h2>
       <div class="body-2col">
         <div class="card compact-card">
-          <div class="card-label card-label--steel">기관지가 예민해진 상태 · AIRWAY SENSITIVITY</div>
+          <div class="card-label card-label--navy">기관지가 예민해진 상태 · AIRWAY SENSITIVITY</div>
           <p>감기 후 2주가 넘도록 기침이 이어지는 경우가 있습니다. 감염을 앓으며 기관지가 예민해진 상태이기 때문입니다.</p>
         </div>
         <div class="card card--accent compact-card">
@@ -138,23 +247,103 @@
       </div>
     </section>
 
+    <!-- 2. 기간별로 보는 기침 (표 1) -->
     <section>
-      <h2 class="section-heading">오래 가는 기침의 흔한 원인</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-calendar" src="../../../shared/assets/healthicons/filled/objects/calendar.svg" class="icon-sm" alt="달력">기간별로 보는 기침 경과와 대처</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 17%;">구분</th>
+            <th style="width: 17%;">기간</th>
+            <th style="width: 36%;">대개의 경과</th>
+            <th style="width: 30%;">할 일 및 권장 대처</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">급성 기침</td>
+            <td><strong>3주 미만</strong></td>
+            <td>감기 등 급성 상기도 감염이 대부분입니다.</td>
+            <td>충분한 휴식과 수분 섭취, 대증 치료를 합니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label">아급성 기침</td>
+            <td><strong>3~8주</strong></td>
+            <td>감기 뒤 기침은 대개 여기 속하고 저절로 좋아지는 경우가 많습니다.</td>
+            <td>헛기침을 줄이고 참을 수 있는 기침은 참으며 기다립니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label">만성 기침</td>
+            <td><strong>8주 이상</strong></td>
+            <td>특정 원인 질환이 있을 수 있습니다.</td>
+            <td><strong>원인을 찾는 정밀 검사</strong>가 필요합니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. 오래 가는 기침의 흔한 원인 (표 2) -->
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-ear-nose_throat" src="../../../shared/assets/healthicons/filled/symbols/ear-nose_throat.svg" class="icon-sm" alt="이비인후">오래 가는 기침의 흔한 원인</h2>
       <p class="cough-intro">오래 가는 기침의 흔한 원인 1·2위는 비염(후비루)과 역류성 식도염입니다. 원인에 따라 코 스프레이나 식도염 약을 사용합니다.</p>
-      <div class="body-2col">
-        <div class="card compact-card">
-          <div class="card-label card-label--steel">비염 · 후비루 · NASAL DRIP</div>
-          <p>콧물이 목 뒤로 넘어가 기침을 유발할 수 있습니다. 코 스프레이 사용법은 <strong>알러지 비염 코 스프레이 사용법</strong> 안내문을 참고하세요.</p>
+      <table class="ge-table cause-table">
+        <thead>
+          <tr>
+            <th style="width: 22%;">구분</th>
+            <th style="width: 78%;">주요 특징 및 치료</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">비염·부비동염<br>(후비루)</td>
+            <td><strong>콧물이 목 뒤로 넘어가 기침을 유발할 수 있습니다.</strong> 코 스프레이 사용법은 <strong>알러지 비염 코 스프레이 사용법</strong> 안내문을&nbsp;참고하세요.</td>
+          </tr>
+          <tr>
+            <td class="row-label">역류성 식도염</td>
+            <td>속쓰림·신물 같은 증상이 함께 있다면 역류가 기침과 관련될 수 있어 식도염 약을 사용합니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label">천식<br>(기침형 천식)</td>
+            <td>기침형 천식을 포함한 천식으로 기침이 지속될 수 있으며, 필요 시 흡입제 치료를 상의합니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label">복용 약물<br>(혈압약 등)</td>
+            <td>혈압약 중 ACE 억제제(이름이 '-프릴'로 끝나는 약)는 마른기침을 일으킬&nbsp;수&nbsp;있습니다 — 복용 중이면 진료 때 알려 주세요.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 4. 흡입기 처방과 흔한 오해 및 생활 관리 -->
+    <section>
+      <div class="cough-care-grid">
+        <figure class="cough-figure" id="pnd-figure">
+          <img src="../../../shared/assets/generated/post-viral-cough-pnd-20260925.jpg" alt="물 자주 마시기와 실내 습도 관리">
+          <figcaption class="cough-figure__cap">물 자주 마시기와 실내 습도 관리</figcaption>
+        </figure>
+        <div class="cough-stack-col">
+          <div class="card compact-card">
+            <div class="card-label card-label--navy"><img data-asset="hi-filled-smoking-cessation" src="../../../shared/assets/healthicons/filled/symbols/smoking-cessation.svg" class="icon-sm" alt="금연">생활 관리 · LIFESTYLE</div>
+            <p>담배는 기침을 오래 끌게 합니다. 금연하고 간접흡연을 피하세요. 물을 자주 마시고 실내가 너무 건조하지 않게 관리하세요.</p>
+          </div>
+          <div class="card card--accent compact-card">
+            <div class="card-label card-label--navy"><img data-asset="hi-filled-asthma-inhaler" src="../../../shared/assets/healthicons/filled/devices/asthma-inhaler.svg" class="icon-sm" alt="흡입기">매일 쓰는 흡입기라면 · DAILY INHALER</div>
+            <p>흡입기는 증상이 없어도 매일 씁니다. 임의로 중단하지 마세요. 자세한 사용법은 <strong>심비코트 라피헬러 흡입기 사용법</strong> 안내문을 참고하세요.</p>
+          </div>
         </div>
         <div class="card compact-card">
-          <div class="card-label card-label--steel">역류성 식도염 · REFLUX</div>
-          <p>속쓰림·신물 같은 증상이 함께 있다면 역류가 기침과 관련될 수 있어 식도염 약을 사용합니다.</p>
+          <div class="card-label card-label--navy">흔한 오해 · FAQ</div>
+          <ul class="faq-list">
+            <li><strong class="myth">✕ "3~8주 기침이면 또 검사해야 한다"</strong>이미 초기 평가를 받았고 호전 중이면 같은 검사를 반복할 필요는 없습니다. 새 증상이 생기면 다시 확인합니다.</li>
+            <li><strong class="myth">✕ "흡입기는 불편할 때만 쓴다"</strong>매일 쓰도록 처방된 흡입기는 증상이 없는 날에도 꾸준히 사용합니다.</li>
+          </ul>
         </div>
       </div>
     </section>
 
+    <!-- 5. 다시 진료가 필요한 경우 -->
     <section>
-      <h2 class="section-heading">다시 진료가 필요한 경우</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="경고">다시 진료가 필요한 경우</h2>
       <div class="alert-strip">
         <div class="alert-tile alert-tile--danger">
           <div class="alert-tile__kicker">FEVER · SPUTUM</div>
@@ -178,23 +367,6 @@
         </div>
       </div>
     </section>
-
-    <section>
-      <h2 class="section-heading">흡입기 처방과 흔한 오해</h2>
-      <div class="body-2col">
-        <div class="card card--accent compact-card">
-          <div class="card-label card-label--navy">매일 쓰는 흡입기라면 · DAILY INHALER</div>
-          <p>흡입기는 증상이 없어도 매일 씁니다. 임의로 중단하지 마세요. 자세한 사용법은 <strong>심비코트 라피헬러 흡입기 사용법</strong> 안내문을 참고하세요.</p>
-        </div>
-        <div class="card compact-card">
-          <div class="card-label card-label--steel">흔한 오해 · FAQ</div>
-          <ul class="faq-list">
-            <li><strong class="myth">✕ "3~8주 기침이면 또 검사해야 한다"</strong>이미 초기 평가를 받았고 호전 중이면 같은 검사를 반복할 필요는 없습니다. 새 증상이 생기면 다시 확인합니다.</li>
-            <li><strong class="myth">✕ "흡입기는 불편할 때만 쓴다"</strong>매일 쓰도록 처방된 흡입기는 증상이 없는 날에도 꾸준히 사용합니다.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="page__footer">
@@ -207,9 +379,9 @@
     </div>
     <div class="qr-mini">
       <div class="qr-mini__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM16,2H17V3H16zM25,2H26V3H25zM26,2H27V3H26zM27,2H28V3H27zM28,2H29V3H28zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM22,3H23V4H22zM24,3H25V4H24zM26,3H27V4H26zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM13,4H14V5H13zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM20,4H21V5H20zM23,4H24V5H23zM26,4H27V5H26zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM15,5H16V6H15zM16,5H17V6H16zM17,5H18V6H17zM18,5H19V6H18zM19,5H20V6H19zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM13,6H14V7H13zM15,6H16V7H15zM16,6H17V7H16zM17,6H18V7H17zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM13,7H14V8H13zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM19,7H20V8H19zM24,7H25V8H24zM27,7H28V8H27zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM13,9H14V10H13zM16,9H17V10H16zM17,9H18V10H17zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM14,10H15V11H14zM17,10H18V11H17zM18,10H19V11H18zM21,10H22V11H21zM23,10H24V11H23zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM3,11H4V12H3zM6,11H7V12H6zM9,11H10V12H9zM10,11H11V12H10zM11,11H12V12H11zM13,11H14V12H13zM14,11H15V12H14zM15,11H16V12H15zM17,11H18V12H17zM19,11H20V12H19zM20,11H21V12H20zM22,11H23V12H22zM25,11H26V12H25zM30,11H31V12H30zM31,11H32V12H31zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM5,12H6V13H5zM6,12H7V13H6zM8,12H9V13H8zM10,12H11V13H10zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM21,12H22V13H21zM24,12H25V13H24zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM34,12H35V13H34zM35,12H36V13H35zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM2,13H3V14H2zM5,13H6V14H5zM6,13H7V14H6zM7,13H8V14H7zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM17,13H18V14H17zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM25,13H26V14H25zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM2,14H3V15H2zM4,14H5V15H4zM5,14H6V15H5zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM12,14H13V15H12zM13,14H14V15H13zM16,14H17V15H16zM17,14H18V15H17zM18,14H19V15H18zM19,14H20V15H19zM21,14H22V15H21zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM4,15H5V16H4zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM14,15H15V16H14zM18,15H19V16H18zM21,15H22V16H21zM22,15H23V16H22zM25,15H26V16H25zM30,15H31V16H30zM33,15H34V16H33zM37,15H38V16H37zM3,16H4V17H3zM4,16H5V17H4zM8,16H9V17H8zM9,16H10V17H9zM12,16H13V17H12zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM26,16H27V17H26zM29,16H30V17H29zM30,16H31V17H30zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM3,17H4V18H3zM5,17H6V18H5zM12,17H13V18H12zM13,17H14V18H13zM14,17H15V18H14zM15,17H16V18H15zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM4,18H5V19H4zM5,18H6V19H5zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM14,18H15V19H14zM15,18H16V19H15zM17,18H18V19H17zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM3,19H4V20H3zM7,19H8V20H7zM9,19H10V20H9zM10,19H11V20H10zM13,19H14V20H13zM14,19H15V20H14zM16,19H17V20H16zM17,19H18V20H17zM18,19H19V20H18zM23,19H24V20H23zM25,19H26V20H25zM30,19H31V20H30zM35,19H36V20H35zM37,19H38V20H37zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM10,20H11V21H10zM11,20H12V21H11zM15,20H16V21H15zM16,20H17V21H16zM22,20H23V21H22zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM3,21H4V22H3zM5,21H6V22H5zM9,21H10V22H9zM10,21H11V22H10zM11,21H12V22H11zM13,21H14V22H13zM15,21H16V22H15zM16,21H17V22H16zM18,21H19V22H18zM23,21H24V22H23zM24,21H25V22H24zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM32,21H33V22H32zM34,21H35V22H34zM38,21H39V22H38zM3,22H4V23H3zM5,22H6V23H5zM8,22H9V23H8zM11,22H12V23H11zM16,22H17V23H16zM19,22H20V23H19zM24,22H25V23H24zM27,22H28V23H27zM28,22H29V23H28zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM36,22H37V23H36zM3,23H4V24H3zM4,23H5V24H4zM7,23H8V24H7zM12,23H13V24H12zM13,23H14V24H13zM14,23H15V24H14zM18,23H19V24H18zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM2,24H3V25H2zM3,24H4V25H3zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM13,24H14V25H13zM16,24H17V25H16zM17,24H18V25H17zM19,24H20V25H19zM23,24H24V25H23zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM2,25H3V26H2zM3,25H4V26H3zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM13,25H14V26H13zM14,25H15V26H14zM15,25H16V26H15zM16,25H17V26H16zM19,25H20V26H19zM20,25H21V26H20zM23,25H24V26H23zM24,25H25V26H24zM26,25H27V26H26zM30,25H31V26H30zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM38,25H39V26H38zM3,26H4V27H3zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM11,26H12V27H11zM13,26H14V27H13zM14,26H15V27H14zM17,26H18V27H17zM18,26H19V27H18zM21,26H22V27H21zM23,26H24V27H23zM27,26H28V27H27zM29,26H30V27H29zM31,26H32V27H31zM32,26H33V27H32zM33,26H34V27H33zM34,26H35V27H34zM36,26H37V27H36zM38,26H39V27H38zM2,27H3V28H2zM7,27H8V28H7zM12,27H13V28H12zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM17,27H18V28H17zM20,27H21V28H20zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM31,27H32V28H31zM33,27H34V28H33zM2,28H3V29H2zM6,28H7V29H6zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM15,28H16V29H15zM16,28H17V29H16zM17,28H18V29H17zM18,28H19V29H18zM21,28H22V29H21zM24,28H25V29H24zM29,28H30V29H29zM31,28H32V29H31zM32,28H33V29H32zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM5,29H6V30H5zM6,29H7V30H6zM7,29H8V30H7zM9,29H10V30H9zM10,29H11V30H10zM12,29H13V30H12zM13,29H14V30H13zM14,29H15V30H14zM17,29H18V30H17zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM28,29H29V30H28zM29,29H30V30H29zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM12,30H13V31H12zM16,30H17V31H16zM17,30H18V31H17zM18,30H19V31H18zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM14,31H15V32H14zM15,31H16V32H15zM18,31H19V32H18zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM37,31H38V32H37zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM12,32H13V33H12zM13,32H14V33H13zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM24,32H25V33H24zM26,32H27V33H26zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM25,33H26V34H25zM26,33H27V34H26zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM37,33H38V34H37zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM13,34H14V35H13zM14,34H15V35H14zM16,34H17V35H16zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM14,35H15V36H14zM15,35H16V36H15zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM36,35H37V36H36zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM36,36H37V37H36zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM14,37H15V38H14zM16,37H17V38H16zM18,37H19V38H18zM23,37H24V38H23zM24,37H25V38H24zM25,37H26V38H25zM26,37H27V38H26zM28,37H29V38H28zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM15,38H16V39H15zM19,38H20V39H19zM20,38H21V39H20zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
-      <div class="qr-mini__label">집에서 다시 보기</div>
-      <div class="qr-mini__url">edu.gwanggyobarun.com/handouts/respiratory/post-viral-cough/</div>
-    </div>
+    <div class="qr-mini__label">집에서 다시 보기</div>
+    <div class="qr-mini__url">edu.gwanggyobarun.com/handouts/respiratory/post-viral-cough/</div>
+  </div>
   </footer>
 </div>
 
