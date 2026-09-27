@@ -18,59 +18,69 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    .page { padding: 11mm 13mm 9mm; gap: 3mm; }
-    .page__header { padding-bottom: 2.2mm; }
-    .page__title { font-size: 18.5pt; }
-    .page__subtitle { font-size: 8.6pt; line-height: 1.3; }
-    .page__body { gap: 2.6mm; }
-    .page__body > section { gap: 1.2mm; }
-    .section-heading { font-size: 9.6pt; margin-bottom: 0.3mm; }
-    .stat-cell { padding: 1.5mm 2mm; }
-    .stat-cell__value { font-size: 10.4pt; }
-    .stat-cell__unit { font-size: 6.8pt; margin-top: 0.3mm; }
+    body { font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif; }
+    .section-heading { display: flex; align-items: center; margin-bottom: 0.6mm; }
+    .icon-sm { width: 4.4mm; height: 4.4mm; vertical-align: -0.9mm; margin-right: 1.2mm; flex-shrink: 0; }
+    .card-label { display: flex; align-items: center; }
+    .warning-title { display: flex; align-items: center; }
+    .card--navy .icon-sm { filter: brightness(0) invert(1); }
+    .bp-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 8.6pt; line-height: 1.36;
+      color: var(--color-ink-soft); border: 1px solid var(--color-border); }
+    .bp-table th, .bp-table td { border: 1px solid var(--color-border); padding: 1.0mm 2.0mm; vertical-align: middle; text-align: left; }
+    .bp-table thead th { background: var(--color-navy); color: #FFFFFF; font-weight: var(--weight-semibold); font-size: 8.4pt; }
+    .bp-table thead th.th-ok { background: var(--color-navy-mid); }
+    .bp-table thead th.th-no { background: var(--color-danger); }
+    .bp-table tbody th { background: var(--color-canvas-warm); color: var(--color-navy); font-weight: var(--weight-semibold); }
+    .bp-table td strong { color: var(--color-navy); }
+    .bp-table .num { text-align: center; font-weight: 700; color: var(--color-navy); white-space: nowrap; }
+    .bp-table .hi { color: var(--color-danger); }
+    .bp-note { font-size: 8.0pt; line-height: 1.34; color: var(--color-slate); margin-top: 0.6mm; }
+    .bp-figure { margin: 0; border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm); overflow: hidden; position: relative; }
+    .bp-figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .bp-figure figcaption { position: absolute; left: 1.2mm; right: 1.2mm; bottom: 1.2mm; padding: 0.6mm 1.2mm;
+      background: rgba(255,255,255,0.92); border-radius: 3px; font-size: 7.4pt; line-height: 1.2; color: var(--color-navy);
+      font-weight: var(--weight-semibold); text-align: center; }
+    .qr-pair { display: flex; align-items: flex-start; gap: 3mm; flex-shrink: 0; }
+    .src-qr { display: flex; flex-direction: column; align-items: center; gap: 1.5mm; }
+    .src-qr__code { width: 16mm; height: 16mm; background: var(--color-canvas); border: 1px solid var(--color-border);
+      border-radius: 2mm; padding: 1mm; box-sizing: border-box; }
+    .src-qr__code svg { width: 100%; height: 100%; display: block; }
+    .src-qr__label { font-size: 7pt; font-weight: var(--weight-semibold); color: var(--color-slate); text-align: center; line-height: 1.2; }
+    .qr-mini__code { width: 16mm; height: 16mm; }
+    .warning-box { border: 1px solid var(--color-warning-border); border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg); border-radius: var(--radius-sm); padding: 2.2mm 3.2mm; }
+    .warning-title { font-size: 8.8pt; font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: 0.8mm; }
+    .warning-text { font-size: 8.6pt; line-height: 1.45; color: var(--color-ink); }
+    .warning-text strong { color: var(--color-danger); }
 
-    /* ---- class-average chart ---- */
-    .eff-chart { display: flex; flex-direction: column; gap: 1.3mm; }
-    .eff-row { display: grid; grid-template-columns: 46mm 1fr; align-items: center; gap: 3mm; }
-    .eff-name { font-size: 8pt; color: var(--color-ink); font-weight: var(--weight-semibold); line-height: 1.12; }
-    .eff-name .eff-sub { display: block; font-size: 6.3pt; color: var(--color-slate); font-weight: var(--weight-regular); margin-top: 0.1mm; }
-    .eff-track { background: var(--color-border-soft); border-radius: var(--radius-sm); height: 6mm; overflow: hidden; }
-    .eff-fill { height: 100%; border-radius: var(--radius-sm); background: var(--color-navy); display: flex; align-items: center; justify-content: flex-end; padding-right: 2.2mm; min-width: 15mm; }
-    .eff-val { color: var(--color-canvas); font-size: 7.6pt; font-weight: var(--weight-bold); white-space: nowrap; }
-    .chart-note { font-size: 6.8pt; color: var(--color-slate); margin-top: 0.4mm; line-height: 1.28; }
-
-    /* ---- per-agent bar + feature rows ---- */
-    .bar-list { border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; }
-    .bar-row { display: grid; grid-template-columns: 29mm 40mm 1fr; align-items: center; gap: 2.4mm; padding: 1.05mm 2mm; border-bottom: 1px solid var(--color-border-soft); }
-    .bar-row:last-child { border-bottom: 0; }
-    .bar-row:nth-child(even) { background: var(--color-canvas-warm); }
-    .br-name { font-size: 7.5pt; color: var(--color-navy); font-weight: var(--weight-semibold); line-height: 1.12; }
-    .br-name span { display: block; font-size: 6.2pt; color: var(--color-slate); font-weight: var(--weight-regular); margin-top: 0.1mm; }
-    .br-track { background: var(--color-border-soft); border-radius: 2mm; height: 5mm; overflow: hidden; }
-    .br-fill { height: 100%; border-radius: 2mm; display: flex; align-items: center; justify-content: flex-end; padding-right: 1.6mm; min-width: 10mm; }
-    .br-val { color: var(--color-canvas); font-size: 6.9pt; font-weight: var(--weight-bold); white-space: nowrap; }
-    .fill--navy { background: var(--color-navy); }
-    .fill--steel { background: var(--color-steel); }
-    .fill--green { background: var(--color-success); }
-    .fill--slate { background: var(--color-slate); }
-    .br-feat { font-size: 6.85pt; color: var(--color-ink); line-height: 1.2; }
-    .br-feat b { color: var(--color-navy); }
-    .br-feat .warn { color: var(--color-warning); font-weight: var(--weight-semibold); }
-    .ladder-note { font-size: 6.7pt; color: var(--color-slate); margin-top: 0.4mm; line-height: 1.28; }
-
-    .cmap { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8mm; }
-    .cmap-item { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.2mm 2mm; font-size: 7.5pt; line-height: 1.26; background: var(--color-canvas); }
-    .cmap-item b { color: var(--color-navy); }
-    .cmap-item .arrow { color: var(--color-steel); font-weight: var(--weight-bold); }
-
-    .callout-line { padding: 1.2mm 2.2mm; border-radius: var(--radius-sm); border: 1px solid var(--color-danger-border); background: var(--color-danger-bg); color: var(--color-danger); font-size: 7.5pt; line-height: 1.3; }
-    .callout-line b { font-weight: var(--weight-bold); }
-    .acei-note { font-size: 7.4pt; color: var(--color-slate); line-height: 1.3; }
-    .acei-note strong { color: var(--color-navy); }
-
-    .page__footer { gap: 6mm; padding-top: 2.2mm; }
-    .page__footer-info { gap: 0.5mm; font-size: 6.6pt; }
-    .disclaimer { font-size: 5.9pt; }
+    .page { padding: 11mm 13mm 9mm; gap: 2.6mm; }
+    .page__title { font-size: 19pt; }
+    .page__subtitle { font-size: 8.8pt; line-height: 1.4; }
+    .section-heading { font-size: 10pt; }
+    .page__footer-info { font-size: 7.4pt; }
+    .disclaimer { font-size: 7pt; }
+    .page__body { justify-content: flex-start; gap: 2.4mm; }
+    .page__body > section { flex: 0 0 auto; gap: 0.8mm; }
+    .stat-cell { padding: 1.6mm 2mm; }
+    .stat-cell__value { font-size: 12pt; }
+    .stat-cell__unit { font-size: 7.6pt; }
+    .as-grid { display: grid; grid-template-columns: 1fr 54mm; gap: 3mm; align-items: center; }
+    .as-figure { width: 54mm; height: 36mm; }
+    .eff-chart { display: flex; flex-direction: column; gap: 1.2mm; }
+    .eff-row { display: grid; grid-template-columns: 40mm 1fr; align-items: center; gap: 2.4mm; }
+    .eff-name { font-size: 8.4pt; color: var(--color-ink); font-weight: var(--weight-semibold); line-height: 1.15; }
+    .eff-name .eff-sub { display: block; font-size: 7.6pt; color: var(--color-slate); font-weight: var(--weight-regular); }
+    .eff-track { background: var(--color-border-soft); border-radius: var(--radius-sm); height: 5.4mm; overflow: hidden; }
+    .eff-fill { height: 100%; border-radius: var(--radius-sm); background: var(--color-navy); display: flex; align-items: center; justify-content: flex-end; padding-right: 2mm; min-width: 15mm; }
+    .eff-val { color: var(--color-canvas); font-size: 8pt; font-weight: var(--weight-bold); white-space: nowrap; }
+    .as-table td, .as-table th { font-size: 8.2pt; padding: 0.9mm 1.8mm; line-height: 1.34; }
+    .as-table td.num { font-size: 8.4pt; }
+    .as-callout { padding: 1.6mm 2.6mm; border-radius: var(--radius-sm); border: 1px solid var(--color-danger-border);
+      background: var(--color-danger-bg); color: var(--color-danger); font-size: 8.3pt; line-height: 1.4; }
+    .as-callout strong { font-weight: var(--weight-bold); }
+    .as-acei { padding: 2mm 3mm; }
+    .as-acei .card-text { font-size: 8.4pt; line-height: 1.42; }
   </style>
 <!-- seo:geo2 --><meta name="description" content="ARB·CCB·이뇨제·베타차단제 4계열의 혈압강하를 계열 평균과 성분별 막대그래프로 보여주고, 성분마다 특장점·주의점을 함께 정리한 A4 환자 안내. 아질사르탄·피마사르탄·아달라트·클로르탈리돈 등 한국 유통 성분 포함.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/handouts/medication/antihypertensive-strength/">
@@ -78,7 +88,6 @@
 </head>
 <body>
 
-<!-- ============================ PAGE 1 ============================ -->
 <div class="page">
 
   <header class="page__header">
@@ -88,109 +97,68 @@
 
   <section class="page__title-block">
     <h1 class="page__title">혈압약, 얼마나 센가요? — 계열·성분별 비교</h1>
-    <p class="page__subtitle">표준용량에서 4계열의 혈압강하 효과는 <strong>서로 비슷합니다(약 8~10 / 4~7 mmHg).</strong> 약은 '세기'보다 <strong>내 동반질환에 맞는지</strong>로 고릅니다. 계열 평균과 성분별 강하폭을 막대로, 성분마다 특장점·주의점을 함께 정리했습니다.</p>
+    <p class="page__subtitle">표준용량에서 4계열의 혈압 강하 효과는 서로 비슷합니다(수축기 약 8~10 / 이완기 4~7 mmHg). 약은 '세기'보다 내 동반질환에 맞는지로 고릅니다. 계열 평균과 성분별 강하 폭, 특징·주의점을 정리했습니다.</p>
   </section>
 
   <main class="page__body">
 
     <section>
-      <h2 class="section-heading">한눈에 보기</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-blood-pressure" src="../../../shared/assets/healthicons/filled/devices/blood-pressure.svg" class="icon-sm" alt="혈압">한눈에 보기</h2>
       <div class="stats-row">
-        <div class="stat-cell stat-cell--ok">
-          <div class="stat-cell__label">계열 평균 강하</div>
-          <div class="stat-cell__value">8~10 / 4~7</div>
-          <div class="stat-cell__unit">mmHg (수축기/이완기)</div>
-        </div>
-        <div class="stat-cell stat-cell--high">
-          <div class="stat-cell__label">가장 강한 ARB</div>
-          <div class="stat-cell__value">아질사르탄</div>
-          <div class="stat-cell__unit">이달비 · 직접비교 최강</div>
-        </div>
-        <div class="stat-cell stat-cell--low">
-          <div class="stat-cell__label">통풍·고요산이면</div>
-          <div class="stat-cell__value">로살탄</div>
-          <div class="stat-cell__unit">요산도 함께 ↓</div>
-        </div>
-        <div class="stat-cell stat-cell--high">
-          <div class="stat-cell__label">임신 중에는</div>
-          <div class="stat-cell__value">라베탈롤</div>
-          <div class="stat-cell__unit">ACEi·ARB는 금기</div>
-        </div>
+        <div class="stat-cell"><div class="stat-cell__label">계열 평균 강하</div><div class="stat-cell__value">8~10 / 4~7</div><div class="stat-cell__unit">mmHg (수축기/이완기)</div></div>
+        <div class="stat-cell stat-cell--ok"><div class="stat-cell__label">직접 비교에서 앞선 ARB</div><div class="stat-cell__value">아질사르탄</div><div class="stat-cell__unit">이달비 · 나머지 ARB는 서로 비슷</div></div>
+        <div class="stat-cell"><div class="stat-cell__label">통풍·고요산이면</div><div class="stat-cell__value">로살탄</div><div class="stat-cell__unit">요산도 함께 ↓</div></div>
+        <div class="stat-cell stat-cell--high"><div class="stat-cell__label">임신 중에는</div><div class="stat-cell__value">라베탈롤</div><div class="stat-cell__unit">ACE 억제제·ARB는 금기</div></div>
       </div>
     </section>
 
     <section>
-      <h2 class="section-heading">계열별 평균 수축기 혈압강하 (mmHg, 표준용량·위약 대비)</h2>
-      <div class="eff-chart">
-        <div class="eff-row">
-          <div class="eff-name">ARB<span class="eff-sub">안지오텐신 수용체 차단제 (이완기 5.7)</span></div>
-          <div class="eff-track"><div class="eff-fill" style="width:94%;"><span class="eff-val">10.3 mmHg</span></div></div>
+      <h2 class="section-heading"><img data-asset="hi-filled-chart-bar" src="../../../shared/assets/healthicons/filled/graphs/chart-bar.svg" class="icon-sm" alt="계열 비교">계열별 평균 수축기 혈압 강하 (mmHg, 표준용량·가짜약 대비)</h2>
+      <div class="as-grid">
+        <div class="eff-chart">
+          <div class="eff-row"><div class="eff-name">ARB<span class="eff-sub">안지오텐신 수용체 차단제</span></div><div class="eff-track"><div class="eff-fill" style="width:94%;"><span class="eff-val">10.3</span></div></div></div>
+          <div class="eff-row"><div class="eff-name">베타차단제<span class="eff-sub">심장 박동을 늦추는 약</span></div><div class="eff-track"><div class="eff-fill" style="width:84%;"><span class="eff-val">9.2</span></div></div></div>
+          <div class="eff-row"><div class="eff-name">칼슘차단제 (CCB)<span class="eff-sub">혈관을 넓히는 약</span></div><div class="eff-track"><div class="eff-fill" style="width:80%;"><span class="eff-val">8.8</span></div></div></div>
+          <div class="eff-row"><div class="eff-name">이뇨제 (티아지드)<span class="eff-sub">염분·수분을 빼는 약</span></div><div class="eff-track"><div class="eff-fill" style="width:80%;"><span class="eff-val">8.8</span></div></div></div>
+          <div class="eff-row"><div class="eff-name">ACE 억제제<span class="eff-sub">ARB의 형제 약</span></div><div class="eff-track"><div class="eff-fill" style="width:77%;"><span class="eff-val">8.5</span></div></div></div>
         </div>
-        <div class="eff-row">
-          <div class="eff-name">베타차단제<span class="eff-sub">(이완기 6.7)</span></div>
-          <div class="eff-track"><div class="eff-fill" style="width:84%;"><span class="eff-val">9.2 mmHg</span></div></div>
-        </div>
-        <div class="eff-row">
-          <div class="eff-name">CCB<span class="eff-sub">칼슘차단제 (이완기 5.9)</span></div>
-          <div class="eff-track"><div class="eff-fill" style="width:80%;"><span class="eff-val">8.8 mmHg</span></div></div>
-        </div>
-        <div class="eff-row">
-          <div class="eff-name">이뇨제 (치아지드)<span class="eff-sub">(이완기 4.4)</span></div>
-          <div class="eff-track"><div class="eff-fill" style="width:80%;"><span class="eff-val">8.8 mmHg</span></div></div>
-        </div>
-        <div class="eff-row">
-          <div class="eff-name">ACE 억제제<span class="eff-sub">(이완기 4.7)</span></div>
-          <div class="eff-track"><div class="eff-fill" style="width:77%;"><span class="eff-val">8.5 mmHg</span></div></div>
-        </div>
+        <figure class="bp-figure as-figure" data-visual-intent="Comparison">
+          <img src="../../../shared/assets/generated/antihypertensive-strength-pill-kinds-20260927.jpg" alt="서로 다른 모양의 혈압약 네 무리가 각각 작은 접시에 담겨 있고 옆에 위팔 자동혈압계와 물 한 잔이 놓인 그림">
+          <figcaption>계열이 달라도 효과는 비슷</figcaption>
+        </figure>
       </div>
-      <div class="chart-note">막대가 비슷한 길이 = 계열 간 차이가 작다는 뜻입니다 (Law MR, BMJ 2003). 약 선택은 raw 강도가 아니라 동반질환·내약성이 좌우합니다.</div>
+      <p class="bp-note">막대 길이가 비슷하다 = 계열 간 차이가 작다는 뜻입니다. 약은 세기 자체보다 동반질환과 부작용(몸에 맞는지)으로 고릅니다.</p>
     </section>
 
     <section>
-      <h2 class="section-heading">① ARB — 가장 많이 쓰는 혈압약 (성분별 수축기 강하 mmHg)</h2>
-      <div class="bar-list">
-        <div class="bar-row">
-          <div class="br-name">아질사르탄<span>이달비</span></div>
-          <div class="br-track"><div class="br-fill fill--navy" style="width:81%;"><span class="br-val">~13</span></div></div>
-          <div class="br-feat"><b>직접비교상 가장 강한 ARB.</b> 80mg이 발사르탄 320·올메사르탄 40mg보다 우위 (White·Bakris 2011).</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">올메사르탄</div>
-          <div class="br-track"><div class="br-fill fill--navy" style="width:75%;"><span class="br-val">~12</span></div></div>
-          <div class="br-feat">구형 ARB 중 강한 편. 하루 한 번 24시간 안정.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">텔미사르탄</div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:69%;"><span class="br-val">~11</span></div></div>
-          <div class="br-feat"><b>반감기가 가장 길어(~24h)</b> 새벽까지 유지. 깜빡 늦게 먹어도 비교적 안정.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">피마사르탄<span>카나브 · 국산</span></div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:69%;"><span class="br-val">~11</span></div></div>
-          <div class="br-feat">국내 개발 ARB. 직접비교서 <b>발사르탄보다 우위</b>, 칸데·올메와 대등 (FAST 2020).</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">칸데사르탄</div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:63%;"><span class="br-val">~10</span></div></div>
-          <div class="br-feat"><b>심부전 입원·심장사망↓</b> 근거 (CHARM). 심장이 약한 분에 우선.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">이르베사르탄</div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:63%;"><span class="br-val">~10</span></div></div>
-          <div class="br-feat">널리 쓰이는 표준 ARB. 부종·콩팥보호 근거.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">발사르탄</div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:50%;"><span class="br-val">~8</span></div></div>
-          <div class="br-feat"><b>심부전 추가 치료</b> 근거 (Val-HeFT). 복합제가 다양.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">로살탄</div>
-          <div class="br-track"><div class="br-fill fill--green" style="width:50%;"><span class="br-val">~8</span></div></div>
-          <div class="br-feat">ARB 중 약한 편이나 <b>요산을 함께 낮춰</b> 통풍·고요산에 유리 (Hamada 2008).</div>
-        </div>
-      </div>
-      <div class="ladder-note">⚠️ 최상위 근거(Cochrane, 46개 RCT)는 <b>ARB 성분 간 혈압강하 차이가 거의 없다</b>고 봅니다. 위 mmHg는 서로 다른 시험·허가자료 기준의 <b>대략치</b>이며 직접 비교엔 한계가 있습니다.</div>
+      <h2 class="section-heading"><img data-asset="hi-filled-pills-2" src="../../../shared/assets/healthicons/filled/medications/pills-2.svg" class="icon-sm" alt="ARB">① ARB — 가장 많이 쓰는 혈압약</h2>
+      <table class="bp-table as-table">
+        <thead><tr><th style="width:22%;">묶음</th><th style="width:36%;">성분 · 수축기 강하 (대략)</th><th style="width:42%;">특징</th></tr></thead>
+        <tbody>
+          <tr><th>직접 비교에서 앞선 약</th><td>아질사르탄 (이달비) ~13</td><td>80mg이 발사르탄 320mg·올메사르탄 40mg보다 혈압을 더 낮춘 직접 비교 연구가 있습니다.</td></tr>
+          <tr><th>표준 ARB — 서로 비슷</th><td><span style="white-space:nowrap">올메사르탄 ~12</span> · <span style="white-space:nowrap">텔미사르탄 ~11</span> · <span style="white-space:nowrap">피마사르탄 (카나브·국산) ~11</span> · <span style="white-space:nowrap">칸데사르탄 ~10</span> · <span style="white-space:nowrap">이르베사르탄 ~10</span></td><td>텔미사르탄: 작용이 길어 새벽까지 유지 · 칸데사르탄: 심장이 약한 분의 입원을 줄인 근거 · 피마사르탄: 국내 개발 · 이르베사르탄: 콩팥 보호 근거</td></tr>
+          <tr><th>상대적으로 약한 편</th><td>발사르탄 ~8 · 로살탄 ~8</td><td>발사르탄: 심부전 치료 근거, 복합제가 다양 · 로살탄: 요산을 함께 낮춰 통풍·고요산에 유리</td></tr>
+          </tbody>
+      </table>
+      <p class="bp-note">⚠️ 여러 연구(46개)를 모은 최상위 근거는 ARB 성분 간 혈압 강하 차이가 거의 없다고 봅니다. 숫자는 서로 다른 시험·허가자료의 대략치라 순위처럼 읽지 마세요.</p>
+    </section>
+
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-blood-vessel" src="../../../shared/assets/healthicons/filled/body/blood-vessel.svg" class="icon-sm" alt="혈관">② 칼슘차단제 (CCB) — 혈관을 넓히는 약</h2>
+      <table class="bp-table as-table">
+        <thead><tr><th style="width:24%;">성분 (제품 예)</th><th style="width:15%;">수축기 강하 (대략)</th><th style="width:61%;">특징·주의</th></tr></thead>
+        <tbody>
+          <tr><th>암로디핀</th><td class="num">~9</td><td>하루 한 번, 효과가 매우 오래감(반감기 30~50시간). 한 번 잊어도 효과 유지. 가장 많이 쓰는 기준 약.</td></tr>
+          <tr><th>S-암로디핀</th><td class="num">~9</td><td>유효 성분만 모은 약(2.5mg ≈ 암로디핀 5mg). 다리 부종이 더 적은 편.</td></tr>
+          <tr><th>니페디핀 서방형 (아달라트 오로스)</th><td class="num">~9</td><td>천천히 녹는 제형으로 하루 한 번. 오래 검증됐고 임신 중에도 사용 가능.</td></tr>
+          <tr><th>아젤니디핀</th><td class="num">~9</td><td>암로디핀급 강하 + 맥박을 오히려 늦춰 두근거림이 적음.</td></tr>
+          <tr><th>레르카니디핀</th><td class="num">~8</td><td>효과는 암로디핀급, 다리 부종이 훨씬 적음(부종 7% 대 14%).</td></tr>
+          <tr><th>실니디핀</th><td class="num">~8</td><td>교감신경을 함께 눌러 부종·두근거림이 적고 단백뇨에도 유리.</td></tr>
+          <tr><th>펠로디핀·베니디핀·라시디핀</th><td class="num">~8</td><td>혈관에 주로 작용하는 약들. 효과는 암로디핀과 대체로 비슷, 하루 한 번.</td></tr>
+          <tr><th>딜티아젬·베라파밀</th><td class="num">~5</td><td>혈압 강하는 약하나 맥박을 늦춤 → 협심증·빠른 맥 부정맥에 함께 쓸 때 유용.</td></tr>
+          </tbody>
+      </table>
+      <p class="bp-note">칼슘차단제는 성분별 가짜약 대비 자료가 충분치 않아 계열값 기준 대략치입니다 — 성분 간 강하 차이는 크지 않고, 실제 차이는 부종·맥박·작용 시간입니다.</p>
     </section>
 
   </main>
@@ -198,8 +166,10 @@
   <footer class="page__footer">
     <div class="page__footer-info">
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
-      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560 · 평일 08:30~18:30 · 토 08:30~13:30</div>
-      <div class="disclaimer">근거: Law BMJ 2003 · Cochrane Heran 2008(ARB) · FDA 허가자료 · White/Bakris 2011 · FAST 2020 · 대한고혈압학회 2022. 2·3페이지에 CCB·이뇨제·베타차단제가 이어집니다.</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
+      <div class="clinic-meta">근거 — Law 등, BMJ 2003 (계열별 강하) · 코크란 Heran 2008 (ARB 46개 연구) · White 2011·Bakris 2011 (아질사르탄 직접 비교) · FAST 2020 (피마사르탄) · 식약처·FDA 허가자료 · 대한고혈압학회 2022</div>
+      <div class="disclaimer">2쪽에 이뇨제·베타차단제와 동반질환별 선택이 이어집니다.</div>
     </div>
     <div class="qr-mini">
       <div class="qr-mini__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM14,2H15V3H14zM16,2H17V3H16zM20,2H21V3H20zM24,2H25V3H24zM25,2H26V3H25zM27,2H28V3H27zM28,2H29V3H28zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM13,3H14V4H13zM22,3H23V4H22zM24,3H25V4H24zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM14,4H15V5H14zM15,4H16V5H15zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM20,4H21V5H20zM21,4H22V5H21zM22,4H23V5H22zM23,4H24V5H23zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM16,5H17V6H16zM17,5H18V6H17zM19,5H20V6H19zM21,5H22V6H21zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM13,6H14V7H13zM15,6H16V7H15zM17,6H18V7H17zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM16,7H17V8H16zM18,7H19V8H18zM19,7H20V8H19zM27,7H28V8H27zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM12,9H13V10H12zM14,9H15V10H14zM15,9H16V10H15zM16,9H17V10H16zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM15,10H16V11H15zM16,10H17V11H16zM18,10H19V11H18zM21,10H22V11H21zM24,10H25V11H24zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM2,11H3V12H2zM3,11H4V12H3zM5,11H6V12H5zM6,11H7V12H6zM7,11H8V12H7zM9,11H10V12H9zM11,11H12V12H11zM17,11H18V12H17zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM24,11H25V12H24zM25,11H26V12H25zM26,11H27V12H26zM28,11H29V12H28zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM5,12H6V13H5zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM15,12H16V13H15zM16,12H17V13H16zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM24,12H25V13H24zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM37,12H38V13H37zM38,12H39V13H38zM6,13H7V14H6zM9,13H10V14H9zM10,13H11V14H10zM12,13H13V14H12zM13,13H14V14H13zM15,13H16V14H15zM16,13H17V14H16zM17,13H18V14H17zM23,13H24V14H23zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM32,13H33V14H32zM38,13H39V14H38zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM17,14H18V15H17zM19,14H20V15H19zM21,14H22V15H21zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM3,15H4V16H3zM4,15H5V16H4zM10,15H11V16H10zM11,15H12V16H11zM16,15H17V16H16zM18,15H19V16H18zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM25,15H26V16H25zM30,15H31V16H30zM33,15H34V16H33zM2,16H3V17H2zM4,16H5V17H4zM5,16H6V17H5zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM12,16H13V17H12zM13,16H14V17H13zM15,16H16V17H15zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM26,16H27V17H26zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM4,17H5V18H4zM9,17H10V18H9zM13,17H14V18H13zM15,17H16V18H15zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM23,17H24V18H23zM25,17H26V18H25zM26,17H27V18H26zM30,17H31V18H30zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM2,18H3V19H2zM3,18H4V19H3zM7,18H8V19H7zM8,18H9V19H8zM10,18H11V19H10zM11,18H12V19H11zM13,18H14V19H13zM17,18H18V19H17zM20,18H21V19H20zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM38,18H39V19H38zM5,19H6V20H5zM6,19H7V20H6zM7,19H8V20H7zM10,19H11V20H10zM13,19H14V20H13zM15,19H16V20H15zM17,19H18V20H17zM18,19H19V20H18zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM30,19H31V20H30zM31,19H32V20H31zM33,19H34V20H33zM37,19H38V20H37zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM14,20H15V21H14zM15,20H16V21H15zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM35,20H36V21H35zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM9,21H10V22H9zM10,21H11V22H10zM14,21H15V22H14zM16,21H17V22H16zM18,21H19V22H18zM22,21H23V22H22zM23,21H24V22H23zM24,21H25V22H24zM25,21H26V22H25zM28,21H29V22H28zM29,21H30V22H29zM32,21H33V22H32zM33,21H34V22H33zM34,21H35V22H34zM38,21H39V22H38zM3,22H4V23H3zM8,22H9V23H8zM10,22H11V23H10zM12,22H13V23H12zM14,22H15V23H14zM15,22H16V23H15zM19,22H20V23H19zM24,22H25V23H24zM27,22H28V23H27zM28,22H29V23H28zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM35,22H36V23H35zM36,22H37V23H36zM2,23H3V24H2zM4,23H5V24H4zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM10,23H11V24H10zM11,23H12V24H11zM12,23H13V24H12zM13,23H14V24H13zM14,23H15V24H14zM15,23H16V24H15zM18,23H19V24H18zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM5,24H6V25H5zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM12,24H13V25H12zM13,24H14V25H13zM15,24H16V25H15zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM3,25H4V26H3zM6,25H7V26H6zM14,25H15V26H14zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM18,25H19V26H18zM19,25H20V26H19zM20,25H21V26H20zM23,25H24V26H23zM26,25H27V26H26zM28,25H29V26H28zM30,25H31V26H30zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM37,25H38V26H37zM38,25H39V26H38zM2,26H3V27H2zM6,26H7V27H6zM8,26H9V27H8zM11,26H12V27H11zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM18,26H19V27H18zM21,26H22V27H21zM22,26H23V27H22zM24,26H25V27H24zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM2,27H3V28H2zM4,27H5V28H4zM7,27H8V28H7zM9,27H10V28H9zM11,27H12V28H11zM13,27H14V28H13zM15,27H16V28H15zM17,27H18V28H17zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM25,27H26V28H25zM27,27H28V28H27zM30,27H31V28H30zM35,27H36V28H35zM36,27H37V28H36zM2,28H3V29H2zM5,28H6V29H5zM7,28H8V29H7zM8,28H9V29H8zM9,28H10V29H9zM11,28H12V29H11zM13,28H14V29H13zM14,28H15V29H14zM17,28H18V29H17zM18,28H19V29H18zM22,28H23V29H22zM24,28H25V29H24zM29,28H30V29H29zM31,28H32V29H31zM32,28H33V29H32zM34,28H35V29H34zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM5,29H6V30H5zM6,29H7V30H6zM10,29H11V30H10zM12,29H13V30H12zM13,29H14V30H13zM16,29H17V30H16zM17,29H18V30H17zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM28,29H29V30H28zM29,29H30V30H29zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM10,30H11V31H10zM12,30H13V31H12zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM13,31H14V32H13zM14,31H15V32H14zM18,31H19V32H18zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM12,32H13V33H12zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM23,32H24V33H23zM24,32H25V33H24zM26,32H27V33H26zM27,32H28V33H27zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM25,33H26V34H25zM26,33H27V34H26zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM13,34H14V35H13zM14,34H15V35H14zM16,34H17V35H16zM20,34H21V35H20zM21,34H22V35H21zM24,34H25V35H24zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM14,35H15V36H14zM15,35H16V36H15zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM21,35H22V36H21zM22,35H23V36H22zM25,35H26V36H25zM27,35H28V36H27zM28,35H29V36H28zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM36,35H37V36H36zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM14,36H15V37H14zM19,36H20V37H19zM20,36H21V37H20zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM36,36H37V37H36zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM14,37H15V38H14zM15,37H16V38H15zM18,37H19V38H18zM21,37H22V38H21zM22,37H23V38H22zM23,37H24V38H23zM24,37H25V38H24zM25,37H26V38H25zM26,37H27V38H26zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM13,38H14V39H13zM19,38H20V39H19zM20,38H21V39H20zM21,38H22V39H21zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
@@ -210,93 +180,72 @@
 
 </div>
 
-<!-- ============================ PAGE 2 ============================ -->
 <div class="page">
 
   <header class="page__header">
     <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
-    <div class="page__eyebrow">혈압약 비교 · <strong>② CCB(칼슘차단제) · ③ 이뇨제</strong></div>
+    <div class="page__eyebrow">혈압약 비교 · <strong>③ 이뇨제 · ④ 베타차단제 · 맞춤 선택</strong></div>
   </header>
 
-  <main class="page__body" style="padding-top:1mm;">
+  <main class="page__body">
 
     <section>
-      <h2 class="section-heading">② CCB — 혈관을 넓히는 약 (성분별 수축기 강하 mmHg)</h2>
-      <div class="bar-list">
-        <div class="bar-row">
-          <div class="br-name">암로디핀</div>
-          <div class="br-track"><div class="br-fill fill--navy" style="width:56%;"><span class="br-val">~9</span></div></div>
-          <div class="br-feat"><b>하루 한 번, 매우 오래감</b>(반감기 30~50h). 한 번 잊어도 효과 유지. 가장 많이 쓰는 기준 약.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">S-암로디핀<span>좌선성 이성질체</span></div>
-          <div class="br-track"><div class="br-fill fill--navy" style="width:56%;"><span class="br-val">~9</span></div></div>
-          <div class="br-feat">유효 성분만 모은 약(2.5mg ≈ 암로디핀 5mg). <b>다리 부종이 더 적은</b> 편.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">니페디핀 서방형<span>아달라트 오로스</span></div>
-          <div class="br-track"><div class="br-fill fill--navy" style="width:56%;"><span class="br-val">~9</span></div></div>
-          <div class="br-feat"><b>서방형(OROS)으로 24시간 1일 1회.</b> 오래 검증, <b>임신 중에도 사용 가능</b>.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">아젤니디핀</div>
-          <div class="br-track"><div class="br-fill fill--navy" style="width:56%;"><span class="br-val">~9</span></div></div>
-          <div class="br-feat">암로디핀급 강하 + <b>맥박을 오히려 늦춰</b> 두근거림(반사 빈맥)이 적음 (Kuramoto 2003).</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">레르카니디핀</div>
-          <div class="br-track"><div class="br-fill fill--green" style="width:50%;"><span class="br-val">~8</span></div></div>
-          <div class="br-feat">효과는 암로디핀급, <b>다리 부종이 훨씬 적음</b>(부종 7% vs 14%, Makarounas 2009).</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">실니디핀<span>L/N형</span></div>
-          <div class="br-track"><div class="br-fill fill--green" style="width:50%;"><span class="br-val">~8</span></div></div>
-          <div class="br-feat">교감신경을 함께 눌러 <b>부종·두근거림이 적고</b> 단백뇨에도 유리.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">펠로디핀·베니디핀·라시디핀</div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:50%;"><span class="br-val">~8</span></div></div>
-          <div class="br-feat">혈관 선택적 CCB들. 효과는 암로디핀과 대체로 비슷, 1일 1회.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">딜티아젬·베라파밀<span>비-DHP</span></div>
-          <div class="br-track"><div class="br-fill fill--slate" style="width:31%;"><span class="br-val">~5</span></div></div>
-          <div class="br-feat">혈압강하는 약하나 <b>맥박을 늦춤</b> → 협심증·부정맥(빠른 맥)에 함께 쓸 때 유용.</div>
-        </div>
-      </div>
-      <div class="ladder-note">CCB는 성분별 위약 대비 mmHg 자료가 충분치 않아 <b>계열값 기준 대략치</b>입니다 — 성분 간 강하 차이는 크지 않고, 실제 차이는 부종·맥박·반감기 등 특성입니다.</div>
+      <h2 class="section-heading"><img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" class="icon-sm" alt="이뇨제">③ 이뇨제 — 염분·수분을 몸 밖으로</h2>
+      <table class="bp-table as-table">
+        <thead><tr><th style="width:24%;">성분 (제품 예)</th><th style="width:15%;">수축기 강하 (대략)</th><th style="width:61%;">특징·주의</th></tr></thead>
+        <tbody>
+          <tr><th>클로르탈리돈</th><td class="num">~12</td><td>티아지드 계열 중 작용이 길고 강하 폭이 큰 편. 다만 흔히 쓰는 히드로클로로티아지드와 직접 비교한 대규모 연구(2022)에서 <strong>심혈관 사건 예방 효과는 차이가 없었고, 칼륨 저하는 <span style="white-space:nowrap">더 많았습니다.</span></strong></td></tr>
+          <tr><th>인다파미드</th><td class="num">~9</td><td>80세 이상 고령에서도 뇌졸중·사망을 줄인 연구가 있음. 혈당·요산 부담이 적은 편.</td></tr>
+          <tr><th>히드로클로로티아지드 (HCTZ)</th><td class="num">6~8</td><td>흔하고 저렴(25mg 약 8 / 12.5mg 약 6). 저용량은 지속력이 약해 복합제로 많이 사용.</td></tr>
+          <tr><th>스피로놀락톤·에플레레논 (칼륨 보존)</th><td class="num">~8.7</td><td>3가지 약으로도 안 잡히는 고혈압에 4번째로 추가(연구는 가정혈압 기준). 칼륨 수치 점검 필요.</td></tr>
+          <tr><th>푸로세미드·토라세미드 (라식스 등)</th><td class="num">~8</td><td>일상 혈압 조절용이 아니라 콩팥 기능 저하·부종이 있을 때 사용.</td></tr>
+          </tbody>
+      </table>
+      <p class="bp-note">이뇨제 수치는 가짜약 대비 진료실 수축기 혈압, 단독 사용 기준입니다. 스피로놀락톤은 가정혈압·추가 사용 기준이라 척도가 다릅니다. 이뇨제를 시작하면 칼륨·나트륨·요산 등 혈액검사를 확인합니다.</p>
+    </section>
+
+
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-heart-organ" src="../../../shared/assets/healthicons/filled/body/heart-organ.svg" class="icon-sm" alt="심장">④ 베타차단제 — 심장 부담을 줄이는 약</h2>
+      <table class="bp-table as-table">
+        <thead><tr><th style="width:24%;">성분 (제품 예)</th><th style="width:15%;">수축기 강하 (대략)</th><th style="width:61%;">특징·주의</th></tr></thead>
+        <tbody>
+          <tr><th>비소프롤롤</th><td class="num">~10</td><td>심장에 주로 작용하고 하루 한 번. 호흡기 영향이 적고 심부전 표준 약.</td></tr>
+          <tr><th>메토프롤롤·베탁솔롤</th><td class="num">~10</td><td>협심증·심부전·심근경색 후 표준 (메토프롤롤은 서방정 권장).</td></tr>
+          <tr><th>아테놀롤</th><td class="num">~10</td><td>오래된 약. 합병증 없는 고혈압의 첫 약으로는 권하지 않고, 임신 중에는 피합니다<span style="white-space:nowrap">(태아 성장 제한).</span></td></tr>
+          <tr><th>네비볼롤</th><td class="num">~6</td><td>심장 선택성 + 혈관을 넓히는 작용. 피로·성기능 부작용이 비교적 적음.</td></tr>
+          <tr><th>라베탈롤</th><td class="num">~6</td><td>임신 중 우선 사용하는 혈압약 중 하나.</td></tr>
+          <tr><th>카베딜롤</th><td class="num">~4</td><td>혈압 강하는 약하나 심부전·심근경색 후 심장 보호 근거, 혈당 등 대사에 덜 불리.</td></tr>
+          <tr><th>프로프라놀롤</th><td class="num">~8</td><td>혈압보다 편두통 예방·손떨림·긴장 조절에 주로 사용.</td></tr>
+          </tbody>
+      </table>
+      <p class="bp-note">⚠️ 베타차단제는 합병증 없는 고혈압의 첫 약은 아니며, 심부전·협심증·심근경색 후·부정맥·임신 등에서 우선 씁니다. 성분별 수치는 계열 추정치라 근거 수준이 낮습니다.</p>
     </section>
 
     <section>
-      <h2 class="section-heading">③ 이뇨제 — 염분·수분 배출 (성분별 수축기 강하 mmHg)</h2>
-      <div class="bar-list">
-        <div class="bar-row">
-          <div class="br-name">클로르탈리돈</div>
-          <div class="br-track"><div class="br-fill fill--navy" style="width:75%;"><span class="br-val">~12</span></div></div>
-          <div class="br-feat"><b>티아지드 중 가장 강하고 오래감.</b> 심혈관 예방 근거 풍부(ALLHAT). <span class="warn">칼륨 저하 주의.</span></div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">인다파미드</div>
-          <div class="br-track"><div class="br-fill fill--navy" style="width:56%;"><span class="br-val">~9</span></div></div>
-          <div class="br-feat">초고령서도 <b>뇌졸중·사망↓</b>(HYVET). 대사 부담이 적음.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">HCTZ<span>히드로클로로티아지드</span></div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:50%;"><span class="br-val">6~8</span></div></div>
-          <div class="br-feat">흔하고 저렴(25mg 8 / 12.5mg 6). <span class="warn">저용량은 24h 지속력이 약해</span> 복합제로 많이 사용.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">스피로놀락톤·에플레레논<span>칼륨 보존</span></div>
-          <div class="br-track"><div class="br-fill fill--green" style="width:54%;"><span class="br-val">~8.7</span></div></div>
-          <div class="br-feat"><b>저항성 고혈압의 4번째 약</b>(PATHWAY-2, 가정혈압 기준). <span class="warn">칼륨 수치 점검.</span></div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">푸로세미드·토라세미드<span>라식스 등 · 루프</span></div>
-          <div class="br-track"><div class="br-fill fill--slate" style="width:50%;"><span class="br-val">~8</span></div></div>
-          <div class="br-feat">일상 혈압조절용이 아니라 <b>콩팥기능 저하·부종</b>이 있을 때 사용.</div>
-        </div>
+      <div class="card card--accent as-acei">
+        <div class="card-label card-label--steel"><img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" class="icon-sm" alt="ACE 억제제">ACE 억제제 (ARB의 형제 약)</div>
+        <div class="card-text">라미프릴·페린도프릴 — ARB와 비슷한 효과 + 심혈관 보호 근거. 단, <strong>마른기침</strong>이 생기면 ARB로 바꿉니다(동아시아인에서 더 흔함). 임신 중에는 ARB와 마찬가지로 금기입니다.</div>
       </div>
-      <div class="ladder-note">이뇨제 mmHg는 위약 대비 진료실 수축기 단독요법 기준(Cochrane Musini 2014). 스피로놀락톤은 가정혈압·추가요법 기준이라 척도가 다릅니다.</div>
+    </section>
+
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-medical-advice" src="../../../shared/assets/healthicons/filled/symbols/medical-advice.svg" class="icon-sm" alt="맞춤 선택">내 동반질환엔 어떤 약? (세기보다 중요)</h2>
+      <table class="bp-table as-table">
+        <thead><tr><th style="width:30%;">이런 분</th><th style="width:70%;">먼저 고려하는 약</th></tr></thead>
+        <tbody>
+          <tr><th>당뇨 · 단백뇨</th><td>ARB / ACE 억제제 (콩팥 보호)</td></tr>
+          <tr><th>통풍 · 고요산</th><td>로살탄 (요산도 ↓)</td></tr>
+          <tr><th>협심증 · 빠른 맥박</th><td>베타차단제 · 딜티아젬·베라파밀</td></tr>
+          <tr><th>심부전 (심장 수축력 저하)</th><td>심장내과 표준 4가지 — 엔트레스토(ARNI) 또는 ARB·ACE 억제제 + 베타차단제(비소프롤롤·카베딜롤 등) + 스피로놀락톤 계열 + SGLT2 억제제, 필요하면 이뇨제</td></tr>
+          <tr><th>다리 부종 (칼슘차단제 복용 중)</th><td>레르카니디핀 · S-암로디핀 · 실니디핀</td></tr>
+          <tr><th>3가지 약으로도 안 잡힘</th><td>+ 스피로놀락톤</td></tr>
+          </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="as-callout"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="주의"><strong>임신 중 주의:</strong> ACE 억제제·ARB는 태아에 해로워 절대 금기입니다. 임신 중 혈압약은 라베탈롤·니페디핀 서방형(메틸도파)을 사용하며, 아테놀롤은 피합니다. <strong>임신 계획이 있거나 임신을 확인하면 즉시 알려 주세요.</strong></div>
     </section>
 
   </main>
@@ -304,96 +253,8 @@
   <footer class="page__footer">
     <div class="page__footer-info">
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
-      <div class="clinic-meta">근거: Cochrane Ghamami 2014(CCB) · Musini 2014(이뇨제) · Ernst 2006 · Roush 2015 · PATHWAY-2(Williams 2015).</div>
-      <div class="disclaimer">성분별 막대는 위약 대비 수치(이뇨제)와 계열값·특성(CCB)을 종합한 대략치입니다. 실제 약·용량 선택은 환자 상태에 따라 주치의가 결정합니다.</div>
-    </div>
-    <div></div>
-  </footer>
-
-</div>
-
-<!-- ============================ PAGE 3 ============================ -->
-<div class="page">
-
-  <header class="page__header">
-    <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
-    <div class="page__eyebrow">혈압약 비교 · <strong>④ 베타차단제 · ACEi · 맞춤 선택</strong></div>
-  </header>
-
-  <main class="page__body" style="padding-top:1mm;">
-
-    <section>
-      <h2 class="section-heading">④ 베타차단제 — 심장 부담 감소 (성분별 수축기 강하 mmHg)</h2>
-      <div class="bar-list">
-        <div class="bar-row">
-          <div class="br-name">비소프롤롤</div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:63%;"><span class="br-val">~10</span></div></div>
-          <div class="br-feat"><b>심장 선택성이 높고 하루 한 번.</b> 호흡기 영향 적고 심부전 표준(CIBIS-II).</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">메토프롤롤·베탁솔롤</div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:63%;"><span class="br-val">~10</span></div></div>
-          <div class="br-feat">협심증·심부전·심근경색 후 표준(메토프롤롤 서방정 권장).</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">아테놀롤</div>
-          <div class="br-track"><div class="br-fill fill--slate" style="width:63%;"><span class="br-val">~10</span></div></div>
-          <div class="br-feat">구형 약. <span class="warn">합병증 없는 고혈압 1차약 아님, 임신 중 회피</span>(태아 성장 제한).</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">네비볼롤</div>
-          <div class="br-track"><div class="br-fill fill--steel" style="width:38%;"><span class="br-val">~6</span></div></div>
-          <div class="br-feat">심장 선택 + <b>혈관을 넓히는(NO)</b> 작용. 피로·성기능 부작용이 비교적 적음.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">라베탈롤</div>
-          <div class="br-track"><div class="br-fill fill--green" style="width:38%;"><span class="br-val">~6</span></div></div>
-          <div class="br-feat"><b>임신 중 우선 사용하는 베타차단제</b>(ACOG). 임신성 고혈압 1차 선택 중 하나.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">카베딜롤</div>
-          <div class="br-track"><div class="br-fill fill--slate" style="width:25%;"><span class="br-val">~4</span></div></div>
-          <div class="br-feat">혈압강하 자체는 약하나 <b>심부전·심근경색 후 보호</b>(COPERNICUS) + 대사에 우호적.</div>
-        </div>
-        <div class="bar-row">
-          <div class="br-name">프로프라놀롤</div>
-          <div class="br-track"><div class="br-fill fill--slate" style="width:50%;"><span class="br-val">~8</span></div></div>
-          <div class="br-feat">혈압보다 <b>편두통 예방·수전증·긴장</b> 조절에 주로 사용.</div>
-        </div>
-      </div>
-      <div class="ladder-note">⚠️ 베타차단제는 합병증 없는 고혈압의 1차약은 아니며(심부전·협심증·심근경색 후·부정맥·임신 등에서 우선), 성분별 mmHg는 <b>계열(subclass) 추정·근거 수준 낮음</b>입니다.</div>
-    </section>
-
-    <section>
-      <h2 class="section-heading">ACE 억제제 (ARB의 형제 약)</h2>
-      <div class="acei-note"><strong>라미프릴 · 페린도프릴</strong> — ARB와 비슷한 효과 + 심혈관 보호(HOPE·EUROPA). 단, <strong>마른기침</strong>이 생기면 ARB로 바꿉니다(동아시아인에서 더 흔함). 임신 중에는 ARB와 마찬가지로 금기.</div>
-    </section>
-
-    <section>
-      <h2 class="section-heading">내 동반질환엔 어떤 약? (강도보다 중요)</h2>
-      <div class="cmap">
-        <div class="cmap-item"><b>당뇨 · 단백뇨</b> <span class="arrow">→</span> ARB / ACE억제제 <span style="color:var(--color-slate);">(콩팥 보호)</span></div>
-        <div class="cmap-item"><b>통풍 · 고요산</b> <span class="arrow">→</span> 로살탄 <span style="color:var(--color-slate);">(요산도 ↓)</span></div>
-        <div class="cmap-item"><b>협심증 · 빠른 맥박</b> <span class="arrow">→</span> 베타차단제 · 비-DHP CCB</div>
-        <div class="cmap-item"><b>심부전</b> <span class="arrow">→</span> ARB(칸데)+베타(카베딜롤·비소프롤롤)+이뇨제</div>
-        <div class="cmap-item"><b>다리 부종(CCB)</b> <span class="arrow">→</span> 레르카니디핀 · S-암로디핀 · 실니디핀</div>
-        <div class="cmap-item"><b>3제로도 안 잡힘</b> <span class="arrow">→</span> + 스피로놀락톤</div>
-      </div>
-    </section>
-
-    <section>
-      <div class="callout-line">
-        <b>⚠️ 임신 중 주의:</b> ACE 억제제·ARB는 태아에 해로워 <b>절대 금기</b>입니다. 임신 중 혈압약은 <b>라베탈롤 · 니페디핀 서방형(메틸도파)</b>을 사용하며, 아테놀롤은 피합니다. 임신 계획이 있거나 임신을 확인하면 즉시 알려주세요.
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="page__footer">
-    <div class="page__footer-info">
-      <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
-      <div class="clinic-meta">근거: Cochrane Wong/Wright(베타차단제) · Lindholm Lancet 2005 · ACOG PB 203(임신) · 대한고혈압학회 2022 · ESC/ESH 2023.</div>
-      <div class="disclaimer">본 자료는 진료실 설명용이며, 모든 수치는 임상시험 평균(측정법·시험에 따라 편차)입니다. 실제 약·용량 선택은 환자 상태에 따라 주치의가 결정합니다.</div>
+      <div class="clinic-meta">근거 — 코크란 Ghamami 2014 (칼슘차단제) · Musini 2014 (이뇨제) · Ernst 2006 · Roush 2015 · 이뇨제 직접 비교 연구 (Ishani, NEJM 2022) · HYVET · PATHWAY-2 (Williams, Lancet 2015) · 코크란 Wong·Wright (베타차단제) · Lindholm, Lancet 2005 · ACOG PB 203 (임신) · 2022 AHA/ACC/HFSA 심부전 지침 · 대한고혈압학회 2022 · ESH 2023</div>
+      <div class="disclaimer">성분별 수치는 임상시험 평균을 모은 대략치(측정법·시험에 따라 차이)입니다. 실제 약·용량 선택은 환자 상태에 따라 주치의가 결정합니다.</div>
     </div>
     <div></div>
   </footer>

@@ -17,146 +17,220 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    .page--ultrasound {
-      gap: 4mm;
-      padding-top: 12mm;
-      padding-bottom: 8mm;
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page__body {
+      gap: 2.3mm;
+    }
+    .page__body > section {
+      gap: 1mm;
+    }
+    .page__title .title-sub {
+      font-weight: 500;
+      font-size: 0.56em;
+      color: var(--color-ink-soft);
+    }
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -0.9mm;
+      margin-right: 1.2mm;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5mm;
     }
 
-    .page--ultrasound .page__title {
-      font-size: 21pt;
-    }
-
-    .page--ultrasound .page__subtitle {
-      font-size: 9.4pt;
-    }
-
-    .page--ultrasound .page__body {
-      gap: 2.8mm;
-      justify-content: start;
-    }
-
-    .page--ultrasound .page__body > section {
-      flex: 0 0 auto;
-      gap: 2mm;
-    }
-
-    .ultra-hero {
-      height: 43mm;
+    /* 표 공통 스타일 (H10 본보기와 같은 표) */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.1pt;
+      line-height: 1.38;
+      color: var(--color-ink-soft);
       border: 1px solid var(--color-border);
-      border-radius: 4mm;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.1mm 2mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .ge-table thead th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.5pt;
+    }
+    .ge-table thead th.th-ok {
+      background: var(--color-navy-mid);
+    }
+    .ge-table thead th.th-no,
+    .ge-table thead th.th-er {
+      background: var(--color-danger);
+    }
+    .ge-table thead th.th-soft {
+      background: var(--color-steel-deep);
+    }
+    .ge-table tbody th {
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      font-weight: var(--weight-semibold);
+      font-size: 8.3pt;
+      vertical-align: middle;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table td strong.danger {
+      color: var(--color-danger);
+    }
+    .table-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8mm;
+      font-size: 8.1pt;
+      line-height: 1.38;
+    }
+    .table-list li {
+      position: relative;
+      padding-left: 2.8mm;
+    }
+    .table-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-steel);
+      font-weight: bold;
+    }
+
+    /* 그림 + 옆 칸 */
+    .key-grid {
+      display: grid;
+      grid-template-columns: 60mm 1fr;
+      gap: 3.2mm;
+      align-items: stretch;
+    }
+    .fig-slot {
+      margin: 0;
+      width: 60mm;
+      height: 45mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
       overflow: hidden;
       position: relative;
-      background: var(--color-canvas-warm);
     }
-
-    .ultra-hero img {
+    .fig-slot img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
-      display: block;
     }
-
-    .ultra-hero__badge {
+    .fig-caption {
       position: absolute;
-      left: 5mm;
-      top: 5mm;
-      width: 64mm;
-      padding: 2.4mm 3.5mm;
-      border: 1px solid rgba(248, 113, 113, 0.86);
-      border-radius: 3mm;
+      left: 1.5mm;
+      right: 1.5mm;
+      bottom: 1.5mm;
+      padding: 0.8mm 1.2mm;
       background: rgba(255, 255, 255, 0.92);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .ultra-hero__badge strong {
-      display: block;
-      color: var(--color-danger);
-      font-size: 15.5pt;
-      font-weight: var(--weight-bold);
-      line-height: 1.05;
-      letter-spacing: var(--tracking-snug);
-    }
-
-    .ultra-hero__badge span {
-      display: block;
-      margin-top: 1.2mm;
-      color: var(--color-ink);
-      font-size: 8pt;
-      font-weight: var(--weight-semibold);
+      border-radius: 3px;
+      font-size: 7.2pt;
       line-height: 1.25;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+      border: 1px solid rgba(0, 51, 102, 0.15);
+    }
+    .side-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6mm;
+    }
+    .side-text p {
+      margin: 0;
+    }
+    .side-text strong {
+      color: var(--color-navy);
     }
 
-    .ultra-stats {
-      grid-template-columns: 1.15fr 1fr 1fr 1.25fr;
-    }
-
-    .ultra-icons {
-      border: 1px solid var(--color-border);
+    /* 응급 안내 박스 */
+    .warning-box {
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
       border-radius: var(--radius-sm);
+      padding: 2.2mm 3.2mm;
+    }
+    .warning-title {
+      font-size: 8.6pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      margin-bottom: 1mm;
+      display: flex;
+      align-items: center;
+    }
+    .warning-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+    }
+    .warning-text strong {
+      color: var(--color-danger);
+    }
+
+    /* 짝 자료 안내 한 줄 */
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 1.6mm;
+      font-size: 8pt;
+      line-height: 1.4;
+      color: var(--color-ink-soft);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--radius-sm);
+      padding: 1.4mm 2.4mm;
       background: var(--color-canvas-warm);
-      padding: 2mm 3mm 2.2mm;
     }
-
-    .ultra-icons img {
-      display: block;
-      width: 100%;
-      height: 25mm;
-      object-fit: contain;
+    .link-row strong {
+      color: var(--color-navy);
     }
-
-    .ultra-icon-labels {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 1.5mm;
-      margin-top: 1.5mm;
-      color: var(--color-danger);
-      font-size: 6.9pt;
+    .link-row .url {
+      white-space: nowrap;
+      color: var(--color-steel-deep);
       font-weight: var(--weight-semibold);
-      text-align: center;
-      line-height: 1.15;
     }
-
-    .prep-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3mm;
-    }
-
-    .prep-card {
-      padding: 2.7mm 3.5mm;
-    }
-
-    .prep-card .card-label {
-      margin-bottom: 1.5mm;
-    }
-
-    .prep-card .card-list {
-      font-size: 8.45pt;
-      line-height: 1.38;
-    }
-
-    .prep-card .card-list li + li {
-      margin-top: 0.8mm;
-    }
-
+    .nb { white-space: nowrap; }
+    .key-grid { grid-template-columns: 84mm 1fr; }
+    .fig-slot { width: 84mm; height: 47.25mm; }   /* slot 84 × 47.25mm = 16:9 */
+    .ge-table { font-size: 9pt; line-height: 1.48; }
+    .ge-table th, .ge-table td { padding: 1.8mm 2.5mm; }
+    .page__body { justify-content: flex-start; gap: 3.9mm; }
+    .page__body > section { flex: 0 0 auto; }
     .fasting-alert {
-      border: 1.4px solid var(--color-danger);
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
       border-radius: var(--radius-sm);
-      background: var(--color-danger-bg);
-      padding: 2.1mm 3.5mm;
-      color: var(--color-danger);
-      font-size: 8.7pt;
-      font-weight: var(--weight-semibold);
-      text-align: center;
-      line-height: 1.35;
-    }
-
-    .footnote-source {
-      color: var(--color-slate);
-      font-size: 6.8pt;
-      line-height: 1.35;
+      padding: 2.2mm 3.2mm;
+      font-size: 8.8pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
     }
   </style>
 <!-- seo:geo2 --><meta name="description" content="복부초음파 검사 전 8시간 금식, 물·커피·우유·껌·담배 제한, 약 복용과 당뇨약 주의사항을 한 장으로 정리했습니다.">
@@ -165,7 +239,7 @@
 </head>
 <body>
 
-<div class="page page--ultrasound">
+<div class="page">
 
   <header class="page__header">
     <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
@@ -174,105 +248,135 @@
 
   <section class="page__title-block">
     <h1 class="page__title">복부초음파 검사 전 준비 안내</h1>
-    <p class="page__subtitle">상복부 초음파는 간·담낭·담도·췌장 부위를 보는 검사입니다. 음식·음료·담배·껌은 영상 품질을 떨어뜨릴 수 있어 금식이 가장 중요합니다. 예약 지침에서 허용한 경우에만 맑은 물은 검사 2시간 전까지 소량 가능합니다.</p>
+    <p class="page__subtitle">상복부 초음파는 간·담낭·담도·췌장 부위를 보는 검사입니다. 음식·음료·담배·껌은 영상 품질을 떨어뜨릴 수 있어 <strong>금식이 가장 중요합니다.</strong></p>
   </section>
 
   <main class="page__body">
 
-    <section class="ultra-hero" aria-label="복부초음파와 금식 금지 항목 인포그래픽">
-      <img src="../../../shared/assets/generated/abdominal-ultrasound-hero-20260512.png" alt="복부초음파 검사와 금식 중 피해야 할 항목">
-      <div class="ultra-hero__badge">
-        <strong>검사 전 8시간 금식</strong>
-        <span>물 · 커피 · 우유 · 음료 · 껌 · 사탕 · 담배를 모두 피해주세요.</span>
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-ultrasound-scanner" src="../../../shared/assets/healthicons/filled/devices/ultrasound-scanner.svg" class="icon-sm" alt="초음파">핵심 준비 4가지</h2>
+      <div class="key-grid">
+        <figure class="fig-slot" id="us-exam-figure">
+          <img src="../../../shared/assets/generated/abdominal-ultrasound-exam-20260927.jpg"
+               alt="누운 환자의 오른쪽 윗배에 의료진이 초음파 탐촉자를 대고 검사하는 모습">
+          <figcaption class="fig-caption">검사 전 8시간 금식 — 물·커피·우유·음료·껌·사탕·담배 모두 피해주세요</figcaption>
+        </figure>
+        <table class="ge-table">
+          <thead>
+            <tr>
+              <th style="width: 34%;">준비</th>
+              <th style="width: 66%;">이렇게 하세요</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>금식</th>
+              <td><strong class="danger">검사 전 8시간 완전 금식</strong></td>
+            </tr>
+            <tr>
+              <th>마실 것</th>
+              <td><strong>물·커피 포함 금지</strong></td>
+            </tr>
+            <tr>
+              <th>약</th>
+              <td><strong>혈압약·당뇨약</strong>은 미리 확인</td>
+            </tr>
+            <tr>
+              <th>금식을 못 지켰다면</th>
+              <td>검사 전 꼭 <strong>알려주세요</strong></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
     <section>
-      <h2 class="section-heading">핵심 준비 4가지</h2>
-      <div class="stats-row ultra-stats">
-        <div class="stat-cell stat-cell--high">
-          <div class="stat-cell__label">FASTING</div>
-          <div class="stat-cell__value">8시간</div>
-          <div class="stat-cell__unit">완전 금식</div>
-        </div>
-        <div class="stat-cell stat-cell--low">
-          <div class="stat-cell__label">DRINK</div>
-          <div class="stat-cell__value">금지</div>
-          <div class="stat-cell__unit">물·커피 포함</div>
-        </div>
-        <div class="stat-cell stat-cell--ok">
-          <div class="stat-cell__label">MEDS</div>
-          <div class="stat-cell__value">확인</div>
-          <div class="stat-cell__unit">혈압약·당뇨약</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-cell__label">금식을 못 지켰다면</div>
-          <div class="stat-cell__value">알려주세요</div>
-          <div class="stat-cell__unit">검사 전 확인</div>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-sugar" src="../../../shared/assets/healthicons/filled/nutrition/sugar.svg" class="icon-sm" alt="금식">금식 중 피해야 할 것</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 34%;"><img data-asset="hi-filled-dairy" src="../../../shared/assets/healthicons/filled/nutrition/dairy.svg" class="icon-sm" alt="마실 것">마실 것</th>
+            <th style="width: 33%;"><img data-asset="hi-filled-sugar-alt" src="../../../shared/assets/healthicons/filled/nutrition/sugar-alt.svg" class="icon-sm" alt="입에 넣는 것">입에 넣는 것</th>
+            <th style="width: 33%;"><img data-asset="hi-filled-smoking" src="../../../shared/assets/healthicons/filled/symbols/smoking.svg" class="icon-sm" alt="담배">담배</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>물 · 커피 · 우유 · 탄산음료</strong></td>
+            <td><strong>껌 · 사탕</strong></td>
+            <td><strong>담배</strong></td>
+          </tr>
+          <tr>
+            <td colspan="3">모두 <strong>영상 품질을 떨어뜨릴 수 있어</strong> 금식 중에는 피해주세요. 음주와 탄산음료는 장내 가스도 늘립니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2 class="section-heading">금식 중 피해야 할 것</h2>
-      <div class="ultra-icons">
-        <img src="../../../shared/assets/generated/abdominal-ultrasound-fasting-icons-crop-20260512.png" alt="물, 커피, 우유, 탄산음료, 껌, 사탕, 담배 금지 아이콘">
-        <div class="ultra-icon-labels">
-          <span>물</span>
-          <span>커피</span>
-          <span>우유</span>
-          <span>탄산음료</span>
-          <span>껌</span>
-          <span>사탕</span>
-          <span>담배</span>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-calendar" src="../../../shared/assets/healthicons/filled/objects/calendar.svg" class="icon-sm" alt="일정">전날과 당일 체크</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th class="th-soft" style="width: 50%;">검사 전날</th>
+            <th style="width: 50%;">검사 당일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ul class="table-list">
+                <li><strong>저녁은 가볍게</strong> 드시고 과식·기름진 음식·야식은 피합니다.</li>
+                <li><strong>음주와 탄산음료</strong>는 장내 가스를 늘릴 수 있어 피합니다.</li>
+                <li><strong>오전 검사</strong>라면 전날 밤부터 금식을 시작하세요.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="table-list">
+                <li><strong>복부가 보이기 쉬운 옷</strong>으로 내원하면 검사 준비가 빠릅니다.</li>
+                <li><strong>이전 초음파·CT 결과</strong>가 있으면 가져오세요.</li>
+                <li><strong>하복부 검사를 함께</strong> 하면 소변을 참는 안내가 있을 수 있습니다.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2 class="section-heading">전날과 당일 체크</h2>
-      <div class="prep-grid">
-        <div class="card prep-card">
-          <div class="card-label card-label--steel">검사 전날</div>
-          <ul class="card-list">
-            <li><strong>저녁은 가볍게</strong> 드시고 과식·기름진 음식·야식은 피합니다.</li>
-            <li><strong>음주와 탄산음료</strong>는 장내 가스를 늘릴 수 있어 피합니다.</li>
-            <li><strong>오전 검사</strong>라면 전날 밤부터 금식을 시작하세요.</li>
-          </ul>
-        </div>
-        <div class="card card--accent prep-card">
-          <div class="card-label card-label--navy">검사 당일</div>
-          <ul class="card-list">
-            <li><strong>복부가 보이기 쉬운 옷</strong>으로 내원하면 검사 준비가 빠릅니다.</li>
-            <li><strong>이전 초음파·CT 결과</strong>가 있으면 가져오세요.</li>
-            <li><strong>하복부 검사를 함께</strong> 하면 소변을 참는 안내가 있을 수 있습니다.</li>
-          </ul>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-blister-pills_round_x1" src="../../../shared/assets/healthicons/filled/medications/blister-pills_round_x1.svg" class="icon-sm" alt="약">약 복용과 예외 상황</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th class="th-er" style="width: 56%;"><img data-asset="hi-filled-symbols-diabetes" src="../../../shared/assets/healthicons/filled/symbols/diabetes.svg" class="icon-sm" alt="사전 확인">사전 확인 필요</th>
+            <th class="th-ok" style="width: 44%;">검사 후</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ul class="table-list">
+                <li><strong>당뇨약·인슐린</strong>은 금식 중 저혈당 위험이 있어 예약 시 주치의 상의로 인슐린 용량 조정 여부를 확인하세요.</li>
+                <li><strong>혈압약·심장약</strong>은 소량의 물과 복용 가능한 경우가 많지만 안내를 우선합니다.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="table-list">
+                <li>별도 안내가 없으면 검사 후 식사 가능합니다.</li>
+                <li>대부분 바로 일상생활이 가능하며, 결과는 진료실에서 설명드립니다.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2 class="section-heading">약 복용과 예외 상황</h2>
-      <div class="prep-grid">
-        <div class="card card--warning prep-card">
-          <div class="card-label card-label--warning">사전 확인 필요</div>
-          <ul class="card-list">
-            <li><strong>당뇨약·인슐린</strong>은 금식 중 저혈당 위험이 있어 예약 시 주치의 상의로 인슐린 용량 조정 여부를 확인하세요.</li>
-            <li><strong>혈압약·심장약</strong>은 소량의 물과 복용 가능한 경우가 많지만 안내를 우선합니다.</li>
-          </ul>
-        </div>
-        <div class="card prep-card">
-          <div class="card-label card-label--steel">검사 후</div>
-          <ul class="card-list">
-            <li>별도 안내가 없으면 검사 후 식사 가능합니다.</li>
-            <li>대부분 바로 일상생활이 가능하며, 결과는 진료실에서 설명드립니다.</li>
-          </ul>
-        </div>
-      </div>
+      <div class="fasting-alert"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="주의"><span>금식을 못 지켰거나 물·커피·담배·껌을 하셨다면 <strong>검사 전 꼭 말씀해 주세요.</strong> 검사 진행 여부와 시간을 의료진이 확인합니다.</span></div>
     </section>
 
     <section>
-      <div class="fasting-alert">금식을 못 지켰거나 물·커피·담배·껌을 하셨다면 검사 전 꼭 말씀해 주세요. 검사 진행 여부와 시간을 의료진이 확인합니다.</div>
+      <div class="link-row"><img data-asset="hi-filled-liver" src="../../../shared/assets/healthicons/filled/body/liver.svg" class="icon-sm" alt="결과 안내"><span><strong>결과지에 물혹·담석·용종이 나왔다면</strong> — 복부초음파에서 자주 나오는 소견<br><span class="url">edu.gwanggyobarun.com/handouts/imaging/abdominal-us-common-findings/</span></span></div>
     </section>
 
   </main>
@@ -282,7 +386,7 @@
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
       <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
       <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
-      <div class="footnote-source">근거 - RadiologyInfo, NHS 및 국내 병원 복부초음파 준비 안내의 공통 권고를 바탕으로 환자용으로 단순화했습니다.</div>
+      <div class="clinic-meta">근거 — RadiologyInfo, NHS 및 국내 병원 복부초음파 준비 안내의 공통 권고를 바탕으로 환자용으로 단순화했습니다.</div>
       <div class="disclaimer">본 자료는 일반 안내입니다. 예약 시 받은 개별 지침과 담당 의료진 안내를 우선하세요.</div>
     </div>
     <div class="qr-mini">

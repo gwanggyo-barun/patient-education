@@ -19,15 +19,51 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    /* handout-local: 오차표 '바로잡기' 열은 문장형 → badge 미사용 (Gotcha 17) */
-    .bp-fix { font-size: 8pt; font-weight: 540; color: var(--color-navy); align-self: center; line-height: 1.3; }
-    /* 4열 auto는 행마다 트랙폭이 달라져 헤더-데이터 정렬이 깨짐 → 고정폭 + 우측 플러시 */
-    .lab-row { grid-template-columns: 1.4fr 0.7fr 1fr 30mm; }
-    .lab-row--header > div:last-child, .bp-fix { text-align: right; }
-    /* §2 자세 카드: 이미지(3:2) 높이에 stretch되는 카드 안에서 5개 항목을 세로 분산 */
-    .posture-card .card-list, .routine-card .card-list { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
-    /* navy 카드 항목 경계 */
-    .card--navy .card-list li + li { margin-top: 0.5mm; }
+    body { font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif; }
+    .section-heading { display: flex; align-items: center; margin-bottom: 0.6mm; }
+    .icon-sm { width: 4.4mm; height: 4.4mm; vertical-align: -0.9mm; margin-right: 1.2mm; flex-shrink: 0; }
+    .card-label { display: flex; align-items: center; }
+    .warning-title { display: flex; align-items: center; }
+    .card--navy .icon-sm { filter: brightness(0) invert(1); }
+    .bp-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 8.6pt; line-height: 1.36;
+      color: var(--color-ink-soft); border: 1px solid var(--color-border); }
+    .bp-table th, .bp-table td { border: 1px solid var(--color-border); padding: 1.0mm 2.0mm; vertical-align: middle; text-align: left; }
+    .bp-table thead th { background: var(--color-navy); color: #FFFFFF; font-weight: var(--weight-semibold); font-size: 8.4pt; }
+    .bp-table thead th.th-ok { background: var(--color-navy-mid); }
+    .bp-table thead th.th-no { background: var(--color-danger); }
+    .bp-table tbody th { background: var(--color-canvas-warm); color: var(--color-navy); font-weight: var(--weight-semibold); }
+    .bp-table td strong { color: var(--color-navy); }
+    .bp-table .num { text-align: center; font-weight: 700; color: var(--color-navy); white-space: nowrap; }
+    .bp-table .hi { color: var(--color-danger); }
+    .bp-note { font-size: 8.0pt; line-height: 1.34; color: var(--color-slate); margin-top: 0.6mm; }
+    .bp-figure { margin: 0; border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm); overflow: hidden; position: relative; }
+    .bp-figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .bp-figure figcaption { position: absolute; left: 1.2mm; right: 1.2mm; bottom: 1.2mm; padding: 0.6mm 1.2mm;
+      background: rgba(255,255,255,0.92); border-radius: 3px; font-size: 7.4pt; line-height: 1.2; color: var(--color-navy);
+      font-weight: var(--weight-semibold); text-align: center; }
+    .qr-pair { display: flex; align-items: flex-start; gap: 3mm; flex-shrink: 0; }
+    .src-qr { display: flex; flex-direction: column; align-items: center; gap: 1.5mm; }
+    .src-qr__code { width: 16mm; height: 16mm; background: var(--color-canvas); border: 1px solid var(--color-border);
+      border-radius: 2mm; padding: 1mm; box-sizing: border-box; }
+    .src-qr__code svg { width: 100%; height: 100%; display: block; }
+    .src-qr__label { font-size: 7pt; font-weight: var(--weight-semibold); color: var(--color-slate); text-align: center; line-height: 1.2; }
+    .qr-mini__code { width: 16mm; height: 16mm; }
+    .warning-box { border: 1px solid var(--color-warning-border); border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg); border-radius: var(--radius-sm); padding: 2.2mm 3.2mm; }
+    .warning-title { font-size: 8.8pt; font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: 0.8mm; }
+    .warning-text { font-size: 8.6pt; line-height: 1.45; color: var(--color-ink); }
+    .warning-text strong { color: var(--color-danger); }
+
+    .page__body { justify-content: flex-start; gap: 2.8mm; }
+    .page__body > section { flex: 0 0 auto; gap: 0.8mm; }
+    .hb-grid { display: grid; grid-template-columns: 56mm 1fr; gap: 3mm; align-items: stretch; }
+    .hb-figure { width: 56mm; height: 42mm; }
+    .hb-posture-table td { font-size: 8.4pt; padding: 0.9mm 1.8mm; }
+    .hb-posture { padding: 2.2mm 3mm; display: flex; flex-direction: column; justify-content: center; }
+    .hb-posture .card-list { font-size: 8.8pt; line-height: 1.5; }
+    .hb-judge { padding: 2.2mm 3.2mm; }
+    .hb-judge .card-list { font-size: 8.6pt; line-height: 1.4; }
   </style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
@@ -35,152 +71,99 @@
 
 <div class="page">
 
-  <!-- HEADER -->
   <header class="page__header">
     <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
     <div class="page__eyebrow">PATIENT HANDOUT · <strong>HYPERTENSION · HOME BP</strong></div>
   </header>
 
-  <!-- TITLE BLOCK -->
   <section class="page__title-block">
     <h1 class="page__title">혈압, 이렇게 재야 정확합니다</h1>
     <p class="page__subtitle">가정혈압 (Home BP) 측정법 — 집에서 잰 혈압이 치료 판단 기준입니다. 방법에 따라 40mmHg까지 달라집니다.</p>
   </section>
 
-  <!-- BODY -->
-  <main class="page__body page__body--visual-strip">
+  <main class="page__body">
 
-    <!-- §1 핵심 숫자 4 -->
     <section>
-      <h2 class="section-heading">먼저, 이 네 가지 숫자만 기억하세요</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-blood-pressure_monitor" src="../../../shared/assets/healthicons/filled/devices/blood-pressure_monitor.svg" class="icon-sm" alt="혈압계">먼저, 이 네 가지 숫자만 기억하세요</h2>
       <div class="stats-row">
-        <div class="stat-cell">
-          <div class="stat-cell__label">재기 전</div>
-          <div class="stat-cell__value">30분</div>
-          <div class="stat-cell__unit">담배·커피·술·운동 피하기</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-cell__label">재기 전 안정</div>
-          <div class="stat-cell__value">5분</div>
-          <div class="stat-cell__unit">등받이 의자에 앉아서</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-cell__label">아침·저녁</div>
-          <div class="stat-cell__value">2번씩</div>
-          <div class="stat-cell__unit">1~2분 쉬고 한 번 더 재기</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-cell__label">가정혈압 기준</div>
-          <div class="stat-cell__value">135/85</div>
-          <div class="stat-cell__unit">여러 날 평균으로 판단 (mmHg)</div>
-        </div>
+        <div class="stat-cell"><div class="stat-cell__label">재기 전</div><div class="stat-cell__value">30분</div><div class="stat-cell__unit">담배·커피·술·운동 피하기</div></div>
+        <div class="stat-cell"><div class="stat-cell__label">재기 전 안정</div><div class="stat-cell__value">5분</div><div class="stat-cell__unit">등받이 의자에 앉아서</div></div>
+        <div class="stat-cell stat-cell--ok"><div class="stat-cell__label">아침·저녁</div><div class="stat-cell__value">2번씩</div><div class="stat-cell__unit">1~2분 쉬고 한 번 더 재기</div></div>
+        <div class="stat-cell stat-cell--high"><div class="stat-cell__label">가정혈압 기준</div><div class="stat-cell__value">135/85</div><div class="stat-cell__unit">여러 날 평균으로 판단 (mmHg)</div></div>
       </div>
     </section>
 
-    <!-- §2 올바른 자세 (이미지 + 5계명 카드) -->
     <section>
-      <div class="body-2col">
-        <figure class="ai-visual" style="width:100%; aspect-ratio:3/2; height:auto; min-height:0; margin:0;" data-visual-intent="Action: correct seated home BP measurement posture">
-          <img class="ai-visual__image" src="../../../shared/assets/generated/home-bp-measurement-posture-20260721.jpg" alt="올바른 가정혈압 측정 자세 — 등받이에 기대앉아 커프를 심장 높이에 감고 팔을 테이블에 올린 모습">
-          <figcaption class="ai-visual__caption">정확한 혈압은 자세부터입니다</figcaption>
+      <h2 class="section-heading"><img data-asset="hi-filled-man" src="../../../shared/assets/healthicons/filled/people/man.svg" class="icon-sm" alt="자세">정확한 혈압은 자세부터입니다</h2>
+      <div class="hb-grid">
+        <figure class="bp-figure hb-figure" data-visual-intent="Action">
+          <img src="../../../shared/assets/generated/home-bp-measurement-posture-20260927.jpg" alt="등받이에 기대 앉아 발을 바닥에 붙이고, 위팔에 커프를 감은 채 팔을 테이블에 올려 혈압을 재는 모습">
+          <figcaption>등 기대기 · 발 바닥에 · 팔은 테이블 위</figcaption>
         </figure>
-        <div class="card posture-card">
-          <div class="card-label card-label--steel">올바른 자세 5가지 · POSTURE</div>
-          <ul class="card-list">
-            <li><strong>1. 등</strong>은 등받이에 편안히 기대 주세요</li>
-            <li><strong>2. 커프(팔에 감는 띠)</strong>는 심장 높이, 맨살이나 얇은 옷 위에</li>
-            <li><strong>3. 팔</strong>은 테이블 위에 올려 힘을 빼 주세요</li>
-            <li><strong>4. 다리</strong>는 꼬지 않고, 발바닥은 바닥에 붙여 주세요</li>
-            <li><strong>5. 재는 동안</strong> 움직이거나 말하지 마세요</li>
-          </ul>
-        </div>
+        <table class="bp-table hb-posture-table">
+          <thead><tr><th style="width:56%;">올바른 자세 5가지 · POSTURE</th><th style="width:44%;"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="오차">틀리면 (단위: mmHg)</th></tr></thead>
+          <tbody>
+            <tr><td>1. 등은 등받이에 편안히 기대 주세요</td><td>안 기대면 <strong class="hi">5~10</strong> 높게</td></tr>
+            <tr><td>2. 커프(팔에 감는 띠)는 심장 높이, 맨살·얇은 옷 위에</td><td>낮으면 <strong class="hi">10~40</strong> 높게 (높으면 반대)</td></tr>
+            <tr><td>3. 팔은 테이블 위에 올려 힘을 빼 주세요</td><td>팔을 테이블에 올리면 커프가 심장 높이에 맞춰집니다</td></tr>
+            <tr><td>4. 다리는 꼬지 않고, 발바닥은 바닥에 붙여 주세요</td><td>다리를 꼬면 <strong class="hi">2~8</strong> 높게</td></tr>
+            <tr><td>5. 재는 동안 움직이거나 말하지 마세요</td><td>움직이거나 말하면 값이 흔들립니다</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="bp-note">누워서 재면 조금 높게 나오는 편이라 앉아서 재는 것이 기준입니다. 위팔에 감는 자동혈압계 기준이며, 손목형·손가락형은 권장하지 않습니다. 계절에 따라서도 달라지는데 여름엔 낮고 겨울엔 높은 편입니다.</p>
+    </section>
+
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-i-schedule_school_date_time" src="../../../shared/assets/healthicons/filled/symbols/i-schedule_school_date_time.svg" class="icon-sm" alt="측정 시간">매일 측정 루틴 · 4가지</h2>
+      <table class="bp-table">
+        <thead><tr><th style="width:24%;">언제</th><th style="width:76%;">어떻게</th></tr></thead>
+        <tbody>
+          <tr><th>아침 2번</th><td>일어나서 1시간 안에, 소변 본 후, 아침 식사·혈압약 드시기 전</td></tr>
+          <tr><th>저녁 2번</th><td>잠자리에 들기 전, 같은 팔·같은 자세로</td></tr>
+          <tr><th>처음 한 번</th><td>양쪽 팔 모두 재고, 그 뒤로는 더 높게 나온 팔에서</td></tr>
+          <tr><th>맥박이 불규칙하면</th><td>부정맥이 있는 분은 한 번에 3번 이상 재 주세요</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="card hb-judge">
+        <div class="card-label card-label--navy"><img data-asset="hi-filled-chart-line" src="../../../shared/assets/healthicons/filled/graphs/chart-line.svg" class="icon-sm" alt="판정">판정 기준 · 진료 준비</div>
+        <ul class="card-list">
+          <li><strong>1~2주 평균 135/85mmHg 이상이면 고혈압</strong>입니다 (위·아래 중 한쪽만 넘어도)</li>
+          <li>집에서는 병원(140/90mmHg)보다 조금 낮게 나오는 게 보통이라 기준도 낮습니다</li>
+          <li>두 번 잰 값은 평균해서 적고, 높든 낮든 골라내지 말고 그대로 기록해 주세요</li>
+          <li>혈압계가 정확한지 궁금하시면 진료 오실 때 가져오세요 — 진료실 혈압계와 비교해 드립니다</li>
+        </ul>
       </div>
     </section>
 
-    <!-- §3 자세가 만드는 오차 -->
     <section>
-      <h2 class="section-heading">자세가 만드는 혈압 오차 (단위: mmHg)</h2>
-      <div>
-        <div class="lab-row lab-row--header">
-          <div class="lab-row__label">이렇게 재면</div>
-          <div class="lab-row__value">오차</div>
-          <div class="lab-row__range">실제보다</div>
-          <div>바로잡기</div>
-        </div>
-        <div class="lab-row">
-          <div class="lab-row__label">등을 기대지 않고 앉으면</div>
-          <div class="lab-row__value">5~10</div>
-          <div class="lab-row__range">만큼 높게 나옴</div>
-          <div class="bp-fix">등받이에 기대기</div>
-        </div>
-        <div class="lab-row">
-          <div class="lab-row__label">다리를 꼬고 앉으면</div>
-          <div class="lab-row__value">2~8</div>
-          <div class="lab-row__range">만큼 높게 나옴</div>
-          <div class="bp-fix">발바닥은 바닥에</div>
-        </div>
-        <div class="lab-row">
-          <div class="lab-row__label">커프가 심장보다 낮으면 (높으면 반대)</div>
-          <div class="lab-row__value">10~40</div>
-          <div class="lab-row__range">만큼 높게 나옴</div>
-          <div class="bp-fix">팔은 테이블 위에</div>
-        </div>
-      </div>
-      <div style="font-size:7.5pt; color:var(--color-slate); margin-top:0; margin-bottom:0.8mm;">누워서 재면 조금 높게 나오는 편이라 <strong>앉아서 재는 것이 기준</strong>입니다. 위팔에 감는 자동혈압계 기준이며, 손목형·손가락형은 권장하지 않습니다. 계절에 따라서도 달라지는데 <strong>여름엔 낮고 겨울엔 높은 편</strong>입니다.</div>
-    </section>
-
-    <!-- §4 측정 루틴 + 판정·진료 준비 -->
-    <section>
-      <div class="body-2col">
-
-        <div class="card routine-card">
-          <div class="card-label card-label--steel">매일 측정 루틴 · 4가지</div>
-          <ul class="card-list">
-            <li><strong>1. 아침 2번</strong> — 일어나서 1시간 안에, 소변 본 후,<br>아침 식사·혈압약 드시기 전</li>
-            <li><strong>2. 저녁 2번</strong> — 잠자리에 들기 전, 같은 팔·같은 자세로</li>
-            <li><strong>3. 맨 처음 한 번은 양쪽 팔 모두</strong> —<br>그 뒤로는 더 높게 나온 팔에서</li>
-            <li><strong>4. 맥박이 불규칙한 분(부정맥)</strong>은 한 번에 3번 이상 재 주세요</li>
-          </ul>
-        </div>
-
-        <div class="card card--navy">
-          <div class="card-label">판정 기준 · 진료 준비</div>
-          <ul class="card-list">
-            <li>1~2주 <strong style="color:var(--color-sky);">평균 135/85mmHg 이상</strong>이면 고혈압입니다<br>(위·아래 중 한쪽만 넘어도)</li>
-            <li>집에서는 병원(140/90mmHg)보다<br><strong style="color:var(--color-sky);">조금 낮게 나오는 게 보통</strong>이라 기준도 낮습니다</li>
-            <li>두 번 잰 값은 평균해서 적고,<br>높든 낮든 골라내지 말고 <strong style="color:var(--color-sky);">그대로 기록</strong>해 주세요</li>
-            <li>혈압계가 정확한지 궁금하시면 진료 오실 때 가져오세요 —<br>진료실 혈압계와 비교해 드립니다</li>
-          </ul>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- §5 안전 경고 -->
-    <section>
-      <div class="card card--warning">
-        <div class="card-label card-label--warning">이럴 땐 응급실·당일 진료 · WARNING</div>
-        <div style="font-size:9.5pt; line-height:1.55;">
-          <strong>가슴 통증·호흡곤란·한쪽 마비·심한 두통</strong>이 있으면 혈압 수치와 관계없이 즉시 응급실로 가세요. 이런 증상 없이 <strong>180/120mmHg 이상</strong>이 반복되면 <span style="white-space:nowrap">당일 진료 연락을 주세요</span>. 수치와 관계없이 <strong>혈압약은 임의로 중단·조절하지 마세요</strong>.
-        </div>
+      <div class="warning-box">
+        <div class="warning-title"><img data-asset="hi-filled-ambulance" src="../../../shared/assets/healthicons/filled/vehicles/ambulance.svg" class="icon-sm" alt="응급">이럴 땐 응급실·당일 진료 · WARNING</div>
+        <div class="warning-text">가슴 통증·호흡곤란·한쪽 마비·심한 두통이 있으면 혈압 수치와 관계없이 <strong>즉시 응급실</strong>로 가세요. 이런 증상 없이 180/120mmHg 이상이 반복되면 <strong>당일 진료 연락</strong>을 주세요. 수치와 관계없이 혈압약은 임의로 중단·조절하지 마세요.</div>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER -->
   <footer class="page__footer">
     <div class="page__footer-info">
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
-      <div class="clinic-meta">경기도 용인시 수지구 광교중앙로 298, 4층 402-404호 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
       <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
-      <div class="clinic-meta">근거 — 대한고혈압학회 고혈압 진료지침 (2022) · 가정혈압 관리지침</div>
+      <div class="clinic-meta">근거 — 대한고혈압학회 고혈압 진료지침 (2022) · 가정혈압 관리지침 · 2025 미국 고혈압 지침 (AHA/ACC)</div>
+      <div class="clinic-meta">함께 보기 — 진료실 설명 슬라이드 「아침 고혈압」 edu.gwanggyobarun.com/decks/cardio/htn/morning/</div>
       <div class="disclaimer">본 자료는 일반적인 안내이며, 환자별 목표 혈압과 측정 방법은 담당 의사와 상담해 결정하시기 바랍니다.</div>
     </div>
-    <div class="qr-mini">
+    <div class="qr-pair">
+      <div class="src-qr"><div class="src-qr__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM12,2H13V3H12zM13,2H14V3H13zM15,2H16V3H15zM16,2H17V3H16zM18,2H19V3H18zM20,2H21V3H20zM23,2H24V3H23zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM14,3H15V4H14zM18,3H19V4H18zM19,3H20V4H19zM20,3H21V4H20zM24,3H25V4H24zM26,3H27V4H26zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM14,4H15V5H14zM15,4H16V5H15zM17,4H18V5H17zM19,4H20V5H19zM20,4H21V5H20zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM17,5H18V6H17zM19,5H20V6H19zM20,5H21V6H20zM23,5H24V6H23zM24,5H25V6H24zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM14,6H15V7H14zM17,6H18V7H17zM19,6H20V7H19zM20,6H21V7H20zM23,6H24V7H23zM24,6H25V7H24zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM13,7H14V8H13zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM22,7H23V8H22zM23,7H24V8H23zM24,7H25V8H24zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM11,9H12V10H11zM13,9H14V10H13zM16,9H17V10H16zM17,9H18V10H17zM18,9H19V10H18zM20,9H21V10H20zM24,9H25V10H24zM2,10H3V11H2zM4,10H5V11H4zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM18,10H19V11H18zM22,10H23V11H22zM26,10H27V11H26zM29,10H30V11H29zM32,10H33V11H32zM34,10H35V11H34zM2,11H3V12H2zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM7,11H8V12H7zM12,11H13V12H12zM13,11H14V12H13zM15,11H16V12H15zM17,11H18V12H17zM18,11H19V12H18zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM26,11H27V12H26zM28,11H29V12H28zM31,11H32V12H31zM34,11H35V12H34zM3,12H4V13H3zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM13,12H14V13H13zM17,12H18V13H17zM21,12H22V13H21zM25,12H26V13H25zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM31,12H32V13H31zM32,12H33V13H32zM34,12H35V13H34zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM7,13H8V14H7zM13,13H14V14H13zM15,13H16V14H15zM17,13H18V14H17zM18,13H19V14H18zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM30,13H31V14H30zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM3,14H4V15H3zM5,14H6V15H5zM8,14H9V15H8zM10,14H11V15H10zM12,14H13V15H12zM14,14H15V15H14zM15,14H16V15H15zM20,14H21V15H20zM22,14H23V15H22zM24,14H25V15H24zM26,14H27V15H26zM28,14H29V15H28zM33,14H34V15H33zM34,14H35V15H34zM4,15H5V16H4zM10,15H11V16H10zM15,15H16V16H15zM21,15H22V16H21zM22,15H23V16H22zM25,15H26V16H25zM26,15H27V16H26zM28,15H29V16H28zM29,15H30V16H29zM32,15H33V16H32zM33,15H34V16H33zM34,15H35V16H34zM3,16H4V17H3zM5,16H6V17H5zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM12,16H13V17H12zM13,16H14V17H13zM14,16H15V17H14zM15,16H16V17H15zM17,16H18V17H17zM20,16H21V17H20zM21,16H22V17H21zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM25,16H26V17H25zM30,16H31V17H30zM34,16H35V17H34zM3,17H4V18H3zM4,17H5V18H4zM5,17H6V18H5zM12,17H13V18H12zM15,17H16V18H15zM16,17H17V18H16zM21,17H22V18H21zM22,17H23V18H22zM24,17H25V18H24zM25,17H26V18H25zM26,17H27V18H26zM27,17H28V18H27zM28,17H29V18H28zM31,17H32V18H31zM2,18H3V19H2zM4,18H5V19H4zM5,18H6V19H5zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM13,18H14V19H13zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM18,18H19V19H18zM22,18H23V19H22zM26,18H27V19H26zM28,18H29V19H28zM29,18H30V19H29zM33,18H34V19H33zM2,19H3V20H2zM5,19H6V20H5zM6,19H7V20H6zM10,19H11V20H10zM12,19H13V20H12zM14,19H15V20H14zM15,19H16V20H15zM17,19H18V20H17zM18,19H19V20H18zM19,19H20V20H19zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM25,19H26V20H25zM28,19H29V20H28zM31,19H32V20H31zM34,19H35V20H34zM2,20H3V21H2zM3,20H4V21H3zM4,20H5V21H4zM5,20H6V21H5zM7,20H8V21H7zM8,20H9V21H8zM10,20H11V21H10zM13,20H14V21H13zM17,20H18V21H17zM21,20H22V21H21zM25,20H26V21H25zM28,20H29V21H28zM29,20H30V21H29zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM2,21H3V22H2zM3,21H4V22H3zM9,21H10V22H9zM12,21H13V22H12zM14,21H15V22H14zM17,21H18V22H17zM20,21H21V22H20zM24,21H25V22H24zM26,21H27V22H26zM30,21H31V22H30zM31,21H32V22H31zM33,21H34V22H33zM2,22H3V23H2zM3,22H4V23H3zM7,22H8V23H7zM8,22H9V23H8zM11,22H12V23H11zM15,22H16V23H15zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM22,22H23V23H22zM25,22H26V23H25zM26,22H27V23H26zM28,22H29V23H28zM29,22H30V23H29zM34,22H35V23H34zM6,23H7V24H6zM10,23H11V24H10zM16,23H17V24H16zM18,23H19V24H18zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM28,23H29V24H28zM29,23H30V24H29zM34,23H35V24H34zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM16,24H17V25H16zM18,24H19V25H18zM19,24H20V25H19zM21,24H22V25H21zM22,24H23V25H22zM25,24H26V25H25zM28,24H29V25H28zM34,24H35V25H34zM6,25H7V26H6zM7,25H8V26H7zM9,25H10V26H9zM10,25H11V26H10zM12,25H13V26H12zM13,25H14V26H13zM14,25H15V26H14zM17,25H18V26H17zM18,25H19V26H18zM20,25H21V26H20zM21,25H22V26H21zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM33,25H34V26H33zM34,25H35V26H34zM2,26H3V27H2zM3,26H4V27H3zM6,26H7V27H6zM8,26H9V27H8zM9,26H10V27H9zM12,26H13V27H12zM13,26H14V27H13zM15,26H16V27H15zM18,26H19V27H18zM21,26H22V27H21zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM34,26H35V27H34zM10,27H11V28H10zM11,27H12V28H11zM12,27H13V28H12zM13,27H14V28H13zM15,27H16V28H15zM17,27H18V28H17zM18,27H19V28H18zM19,27H20V28H19zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM12,28H13V29H12zM13,28H14V29H13zM15,28H16V29H15zM16,28H17V29H16zM17,28H18V29H17zM18,28H19V29H18zM21,28H22V29H21zM23,28H24V29H23zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM34,28H35V29H34zM2,29H3V30H2zM8,29H9V30H8zM14,29H15V30H14zM16,29H17V30H16zM17,29H18V30H17zM18,29H19V30H18zM19,29H20V30H19zM21,29H22V30H21zM22,29H23V30H22zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM11,30H12V31H11zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM16,30H17V31H16zM19,30H20V31H19zM21,30H22V31H21zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM11,31H12V32H11zM19,31H20V32H19zM21,31H22V32H21zM22,31H23V32H22zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM31,31H32V32H31zM32,31H33V32H32zM33,31H34V32H33zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM12,32H13V33H12zM14,32H15V33H14zM17,32H18V33H17zM21,32H22V33H21zM26,32H27V33H26zM27,32H28V33H27zM29,32H30V33H29zM30,32H31V33H30zM33,32H34V33H33zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM12,33H13V34H12zM16,33H17V34H16zM21,33H22V34H21zM22,33H23V34H22zM24,33H25V34H24zM26,33H27V34H26zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM31,33H32V34H31zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM13,34H14V35H13zM14,34H15V35H14zM17,34H18V35H17zM18,34H19V35H18zM20,34H21V35H20zM22,34H23V35H22zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM34,34H35V35H34z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div><div class="src-qr__label">설명 슬라이드</div></div>
+      <div class="qr-mini">
       <div class="qr-mini__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM17,2H18V3H17zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM28,2H29V3H28zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM12,3H13V4H12zM14,3H15V4H14zM15,3H16V4H15zM22,3H23V4H22zM23,3H24V4H23zM24,3H25V4H24zM26,3H27V4H26zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM15,4H16V5H15zM18,4H19V5H18zM20,4H21V5H20zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM27,4H28V5H27zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM12,5H13V6H12zM15,5H16V6H15zM16,5H17V6H16zM17,5H18V6H17zM18,5H19V6H18zM19,5H20V6H19zM21,5H22V6H21zM22,5H23V6H22zM23,5H24V6H23zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM29,5H30V6H29zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM13,6H14V7H13zM15,6H16V7H15zM17,6H18V7H17zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM23,6H24V7H23zM28,6H29V7H28zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM13,7H14V8H13zM19,7H20V8H19zM20,7H21V8H20zM25,7H26V8H25zM28,7H29V8H28zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM12,9H13V10H12zM13,9H14V10H13zM15,9H16V10H15zM16,9H17V10H16zM27,9H28V10H27zM2,10H3V11H2zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM15,10H16V11H15zM17,10H18V11H17zM18,10H19V11H18zM20,10H21V11H20zM22,10H23V11H22zM24,10H25V11H24zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM34,10H35V11H34zM36,10H37V11H36zM37,10H38V11H37zM38,10H39V11H38zM3,11H4V12H3zM5,11H6V12H5zM14,11H15V12H14zM19,11H20V12H19zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM33,11H34V12H33zM34,11H35V12H34zM35,11H36V12H35zM36,11H37V12H36zM37,11H38V12H37zM2,12H3V13H2zM4,12H5V13H4zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM11,12H12V13H11zM14,12H15V13H14zM16,12H17V13H16zM24,12H25V13H24zM25,12H26V13H25zM27,12H28V13H27zM29,12H30V13H29zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM35,12H36V13H35zM38,12H39V13H38zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM9,13H10V14H9zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM14,13H15V14H14zM17,13H18V14H17zM19,13H20V14H19zM24,13H25V14H24zM25,13H26V14H25zM28,13H29V14H28zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM37,13H38V14H37zM38,13H39V14H38zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM8,14H9V15H8zM12,14H13V15H12zM14,14H15V15H14zM15,14H16V15H15zM18,14H19V15H18zM21,14H22V15H21zM22,14H23V15H22zM25,14H26V15H25zM30,14H31V15H30zM32,14H33V15H32zM33,14H34V15H33zM38,14H39V15H38zM2,15H3V16H2zM5,15H6V16H5zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM12,15H13V16H12zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM23,15H24V16H23zM25,15H26V16H25zM27,15H28V16H27zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM2,16H3V17H2zM4,16H5V17H4zM6,16H7V17H6zM8,16H9V17H8zM9,16H10V17H9zM11,16H12V17H11zM12,16H13V17H12zM13,16H14V17H13zM15,16H16V17H15zM17,16H18V17H17zM19,16H20V17H19zM21,16H22V17H21zM22,16H23V17H22zM26,16H27V17H26zM27,16H28V17H27zM29,16H30V17H29zM31,16H32V17H31zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM3,17H4V18H3zM10,17H11V18H10zM14,17H15V18H14zM18,17H19V18H18zM19,17H20V18H19zM20,17H21V18H20zM22,17H23V18H22zM25,17H26V18H25zM26,17H27V18H26zM29,17H30V18H29zM31,17H32V18H31zM32,17H33V18H32zM33,17H34V18H33zM35,17H36V18H35zM36,17H37V18H36zM37,17H38V18H37zM3,18H4V19H3zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM18,18H19V19H18zM19,18H20V19H19zM22,18H23V19H22zM23,18H24V19H23zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM32,18H33V19H32zM36,18H37V19H36zM37,18H38V19H37zM38,18H39V19H38zM3,19H4V20H3zM6,19H7V20H6zM7,19H8V20H7zM11,19H12V20H11zM12,19H13V20H12zM14,19H15V20H14zM15,19H16V20H15zM16,19H17V20H16zM18,19H19V20H18zM19,19H20V20H19zM20,19H21V20H20zM22,19H23V20H22zM24,19H25V20H24zM28,19H29V20H28zM29,19H30V20H29zM30,19H31V20H30zM31,19H32V20H31zM33,19H34V20H33zM2,20H3V21H2zM5,20H6V21H5zM7,20H8V21H7zM8,20H9V21H8zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM15,20H16V21H15zM17,20H18V21H17zM19,20H20V21H19zM22,20H23V21H22zM24,20H25V21H24zM25,20H26V21H25zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM36,20H37V21H36zM38,20H39V21H38zM2,21H3V22H2zM4,21H5V22H4zM10,21H11V22H10zM11,21H12V22H11zM12,21H13V22H12zM14,21H15V22H14zM16,21H17V22H16zM24,21H25V22H24zM27,21H28V22H27zM32,21H33V22H32zM33,21H34V22H33zM35,21H36V22H35zM38,21H39V22H38zM2,22H3V23H2zM3,22H4V23H3zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM14,22H15V23H14zM15,22H16V23H15zM16,22H17V23H16zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM25,22H26V23H25zM28,22H29V23H28zM29,22H30V23H29zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM34,22H35V23H34zM35,22H36V23H35zM2,23H3V24H2zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM10,23H11V24H10zM11,23H12V24H11zM12,23H13V24H12zM14,23H15V24H14zM15,23H16V24H15zM17,23H18V24H17zM21,23H22V24H21zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM29,23H30V24H29zM31,23H32V24H31zM34,23H35V24H34zM36,23H37V24H36zM37,23H38V24H37zM3,24H4V25H3zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM15,24H16V25H15zM16,24H17V25H16zM17,24H18V25H17zM19,24H20V25H19zM20,24H21V25H20zM22,24H23V25H22zM24,24H25V25H24zM25,24H26V25H25zM27,24H28V25H27zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM35,24H36V25H35zM38,24H39V25H38zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM14,25H15V26H14zM16,25H17V26H16zM19,25H20V26H19zM23,25H24V26H23zM24,25H25V26H24zM25,25H26V26H25zM26,25H27V26H26zM28,25H29V26H28zM29,25H30V26H29zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM35,25H36V26H35zM36,25H37V26H36zM38,25H39V26H38zM3,26H4V27H3zM4,26H5V27H4zM6,26H7V27H6zM8,26H9V27H8zM13,26H14V27H13zM15,26H16V27H15zM18,26H19V27H18zM19,26H20V27H19zM20,26H21V27H20zM23,26H24V27H23zM25,26H26V27H25zM26,26H27V27H26zM29,26H30V27H29zM31,26H32V27H31zM32,26H33V27H32zM33,26H34V27H33zM38,26H39V27H38zM2,27H3V28H2zM3,27H4V28H3zM10,27H11V28H10zM12,27H13V28H12zM14,27H15V28H14zM15,27H16V28H15zM18,27H19V28H18zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM29,27H30V28H29zM30,27H31V28H30zM34,27H35V28H34zM35,27H36V28H35zM36,27H37V28H36zM2,28H3V29H2zM3,28H4V29H3zM6,28H7V29H6zM8,28H9V29H8zM10,28H11V29H10zM12,28H13V29H12zM15,28H16V29H15zM16,28H17V29H16zM18,28H19V29H18zM21,28H22V29H21zM22,28H23V29H22zM27,28H28V29H27zM29,28H30V29H29zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM34,28H35V29H34zM35,28H36V29H35zM36,28H37V29H36zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM4,29H5V30H4zM5,29H6V30H5zM6,29H7V30H6zM9,29H10V30H9zM10,29H11V30H10zM12,29H13V30H12zM14,29H15V30H14zM16,29H17V30H16zM17,29H18V30H17zM20,29H21V30H20zM22,29H23V30H22zM29,29H30V30H29zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM35,29H36V30H35zM36,29H37V30H36zM37,29H38V30H37zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM6,30H7V31H6zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM11,30H12V31H11zM12,30H13V31H12zM13,30H14V31H13zM15,30H16V31H15zM22,30H23V31H22zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM17,31H18V32H17zM21,31H22V32H21zM22,31H23V32H22zM24,31H25V32H24zM30,31H31V32H30zM34,31H35V32H34zM36,31H37V32H36zM37,31H38V32H37zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM16,32H17V33H16zM17,32H18V33H17zM21,32H22V33H21zM23,32H24V33H23zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM27,32H28V33H27zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM20,33H21V34H20zM24,33H25V34H24zM25,33H26V34H25zM26,33H27V34H26zM27,33H28V34H27zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM14,34H15V35H14zM23,34H24V35H23zM24,34H25V35H24zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM37,34H38V35H37zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM15,35H16V36H15zM16,35H17V36H16zM18,35H19V36H18zM20,35H21V36H20zM23,35H24V36H23zM25,35H26V36H25zM27,35H28V36H27zM32,35H33V36H32zM35,35H36V36H35zM36,35H37V36H36zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM11,36H12V37H11zM15,36H16V37H15zM17,36H18V37H17zM18,36H19V37H18zM20,36H21V37H20zM21,36H22V37H21zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM30,36H31V37H30zM31,36H32V37H31zM34,36H35V37H34zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM13,37H14V38H13zM15,37H16V38H15zM16,37H17V38H16zM18,37H19V38H18zM19,37H20V38H19zM21,37H22V38H21zM22,37H23V38H22zM26,37H27V38H26zM28,37H29V38H28zM34,37H35V38H34zM36,37H37V38H36zM37,37H38V38H37zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM12,38H13V39H12zM16,38H17V39H16zM17,38H18V39H17zM18,38H19V39H18zM20,38H21V39H20zM22,38H23V39H22zM24,38H25V39H24zM25,38H26V39H25zM26,38H27V39H26zM30,38H31V39H30zM32,38H33V39H32zM33,38H34V39H33zM35,38H36V39H35zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
       <div class="qr-mini__label">집에서 다시 보기</div>
       <div class="qr-mini__url">edu.gwanggyobarun.com/handouts/lifestyle/home-bp-measurement/</div>
+    </div>
     </div>
   </footer>
 

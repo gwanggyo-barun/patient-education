@@ -18,24 +18,204 @@
 
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
-
   <style>
-    /* ── stomach-supplements-evidence (handout-local) ─────────────────────── */
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page__body {
+      gap: 2.3mm;
+    }
+    .page__body > section {
+      gap: 1mm;
+    }
+    .page__title .title-sub {
+      font-weight: 500;
+      font-size: 0.56em;
+      color: var(--color-ink-soft);
+    }
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -0.9mm;
+      margin-right: 1.2mm;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5mm;
+    }
 
-    /* 줄바꿈 품질: keep-all(어절 단위)은 공용 CSS에서 이미 적용됨.
-       여기서는 행 끝 고아 어절을 줄이기 위해 텍스트 블록에 balance/pretty 적용. */
-    .page__subtitle,
-    .ss-key__txt,
-    .ss-grade__items,
-    .ss-grade__verdict,
-    .ss-jp__what,
-    .ss-clin .card-list li { text-wrap: pretty; }
-    .page__subtitle,
-    .ss-key__txt { text-wrap: balance; }
-    /* 좁은 컬럼에서 갈라지면 안 되는 짧은 구(괄호·명사구)는 통째로 유지 */
+    /* 표 공통 스타일 (H10 본보기와 같은 표) */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.1pt;
+      line-height: 1.38;
+      color: var(--color-ink-soft);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.1mm 2mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .ge-table thead th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.5pt;
+    }
+    .ge-table thead th.th-ok {
+      background: var(--color-navy-mid);
+    }
+    .ge-table thead th.th-no,
+    .ge-table thead th.th-er {
+      background: var(--color-danger);
+    }
+    .ge-table thead th.th-soft {
+      background: var(--color-steel-deep);
+    }
+    .ge-table tbody th {
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      font-weight: var(--weight-semibold);
+      font-size: 8.3pt;
+      vertical-align: middle;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table td strong.danger {
+      color: var(--color-danger);
+    }
+    .table-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8mm;
+      font-size: 8.1pt;
+      line-height: 1.38;
+    }
+    .table-list li {
+      position: relative;
+      padding-left: 2.8mm;
+    }
+    .table-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-steel);
+      font-weight: bold;
+    }
+
+    /* 그림 + 옆 칸 */
+    .key-grid {
+      display: grid;
+      grid-template-columns: 60mm 1fr;
+      gap: 3.2mm;
+      align-items: stretch;
+    }
+    .fig-slot {
+      margin: 0;
+      width: 60mm;
+      height: 45mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .fig-slot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .fig-caption {
+      position: absolute;
+      left: 1.5mm;
+      right: 1.5mm;
+      bottom: 1.5mm;
+      padding: 0.8mm 1.2mm;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 3px;
+      font-size: 7.2pt;
+      line-height: 1.25;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+      border: 1px solid rgba(0, 51, 102, 0.15);
+    }
+    .side-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6mm;
+    }
+    .side-text p {
+      margin: 0;
+    }
+    .side-text strong {
+      color: var(--color-navy);
+    }
+
+    /* 응급 안내 박스 */
+    .warning-box {
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
+      border-radius: var(--radius-sm);
+      padding: 2.2mm 3.2mm;
+    }
+    .warning-title {
+      font-size: 8.6pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      margin-bottom: 1mm;
+      display: flex;
+      align-items: center;
+    }
+    .warning-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+    }
+    .warning-text strong {
+      color: var(--color-danger);
+    }
+
+    /* 짝 자료 안내 한 줄 */
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 1.6mm;
+      font-size: 8pt;
+      line-height: 1.4;
+      color: var(--color-ink-soft);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--radius-sm);
+      padding: 1.4mm 2.4mm;
+      background: var(--color-canvas-warm);
+    }
+    .link-row strong {
+      color: var(--color-navy);
+    }
+    .link-row .url {
+      white-space: nowrap;
+      color: var(--color-steel-deep);
+      font-weight: var(--weight-semibold);
+    }
     .nb { white-space: nowrap; }
-
-    /* 1. 히어로: 좌측 대형 이미지 + 우측 핵심 메시지 */
     .ss-hero {
       display: grid;
       grid-template-columns: 104mm 72mm;
@@ -50,7 +230,6 @@
       border: 1px solid var(--color-border);
       border-radius: var(--radius-sm);
       background: linear-gradient(135deg, var(--color-border-soft) 0%, var(--color-sky) 100%);
-      box-shadow: var(--shadow-soft);
     }
     .ss-hero__figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
     .ss-hero__cap {
@@ -65,7 +244,6 @@
       font-size: 7.4pt;
       font-weight: var(--weight-semibold);
       line-height: 1.3;
-      box-shadow: var(--shadow-soft);
     }
     .ss-key {
       display: flex; flex-direction: column; gap: 2mm;
@@ -74,68 +252,22 @@
       background: var(--color-navy);
       border-radius: var(--radius-sm);
       color: #FFFFFF;
-      box-shadow: var(--shadow-soft);
     }
     .ss-key__head {
       font-size: 9.5pt; font-weight: var(--weight-semibold);
-      letter-spacing: var(--tracking-snug);
       color: var(--color-sky);
       padding-bottom: 1.6mm;
       border-bottom: 1px solid rgba(255, 255, 255, 0.28);
     }
     .ss-key__item { display: grid; grid-template-columns: 6.5mm 1fr; gap: 1mm; align-items: start; }
-    .ss-key__no {
-      font-size: 12pt; font-weight: 800; color: var(--color-sky); line-height: 1.05;
-    }
-    .ss-key__txt { font-size: 8.3pt; line-height: 1.4; color: var(--color-border-soft); }
+    .ss-key__no { font-size: 12pt; font-weight: 800; color: var(--color-sky); line-height: 1.05; }
+    .ss-key__txt { font-size: 8.3pt; line-height: 1.4; color: var(--color-border-soft); text-wrap: balance; }
     .ss-key__txt b { color: #FFFFFF; font-weight: var(--weight-semibold); }
-
-    /* 2. 근거 등급표 */
-    .ss-grade { display: flex; flex-direction: column; gap: 1.2mm; }
-    .ss-grade__row {
-      display: grid;
-      grid-template-columns: 20mm 1fr;
-      gap: 3mm; align-items: stretch;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      background: #FFFFFF;
-    }
-    .ss-grade__badge {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.4mm; padding: 1.6mm 1mm; text-align: center;
-      color: #FFFFFF;
-    }
-    .ss-grade__badge b { font-size: 13pt; font-weight: 800; line-height: 1; }
-    .ss-grade__badge span { font-size: 6.2pt; font-weight: var(--weight-semibold); letter-spacing: var(--tracking-wide); }
-    .ss-grade__row--a .ss-grade__badge { background: var(--color-success); }
-    .ss-grade__row--b .ss-grade__badge { background: var(--color-steel); }
-    .ss-grade__row--c .ss-grade__badge { background: var(--color-slate); }
-    .ss-grade__row--d .ss-grade__badge { background: var(--color-danger); }
-    .ss-grade__body { padding: 1.4mm 3mm; display: flex; flex-direction: column; justify-content: center; gap: 0.5mm; }
-    .ss-grade__items { font-size: 8.2pt; line-height: 1.35; color: var(--color-ink); }
-    .ss-grade__items b { color: var(--color-navy); font-weight: var(--weight-semibold); }
-    .ss-grade__verdict { font-size: 7.3pt; line-height: 1.3; color: var(--color-slate); }
-    .ss-grade__verdict strong { color: var(--color-ink); font-weight: var(--weight-semibold); }
-
-    /* 3. 일본 위장약 실체 표 */
-    .ss-jp { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm 4mm; }
-    .ss-jp__row {
-      display: grid; grid-template-columns: 26mm 1fr; gap: 2.6mm; align-items: baseline;
-      padding: 1.0mm 0;
-      border-bottom: 1px solid var(--color-border);
-    }
-    .ss-jp__name { font-size: 8.4pt; font-weight: var(--weight-semibold); color: var(--color-navy); line-height: 1.2; }
-    .ss-jp__name small { display: block; font-size: 6.4pt; font-weight: var(--weight-regular); color: var(--color-steel); letter-spacing: var(--tracking-wide); }
-    .ss-jp__what { font-size: 7.8pt; line-height: 1.34; color: var(--color-ink); }
-    .ss-jp__what b { color: var(--color-danger); font-weight: var(--weight-semibold); }
-    .ss-jp__what i { font-style: normal; color: var(--color-steel-deep); font-weight: var(--weight-semibold); }
-
-    /* 4. 임상 포인트 3열 */
-    .ss-clin { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
-    .ss-clin .card { padding: 2.0mm 3.2mm; }
-    .ss-clin .card-list { margin: 0; }
-    .ss-clin .card-list li { font-size: 7.5pt; line-height: 1.3; }
+    .grade-a { background: var(--color-success-bg) !important; color: var(--color-success) !important; }
+    .grade-c { background: var(--color-canvas-warm) !important; color: var(--color-slate) !important; }
+    .grade-d { background: var(--color-warning-bg) !important; color: var(--color-warning) !important; }
+    .ge-table tbody th small { display: block; font-weight: 500; font-size: 7.8pt; }
+    .jp-name small { display: block; font-size: 7.8pt; color: var(--color-slate); font-weight: 500; }
   </style>
 <!-- seo:geo2 --><meta name="description" content="양배추즙·마스틱검·마누카꿀부터 캬베진·오타이산·세이로간까지, 위에 좋다는 영양제와 일본 위장약을 임상 근거 등급(권장/시도가능/근거부족)으로 정리했습니다. 일본 위장약의 실체, 감초·제산제 안전 주의, 병원에 와야 하는 신호까지 A4 한 장에 담았습니다.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/handouts/gi/stomach-supplements-evidence/">
@@ -145,22 +277,18 @@
 
 <div class="page">
 
-  <!-- HEADER -->
   <header class="page__header">
-    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
+    <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
     <div class="page__eyebrow">PATIENT HANDOUT · <strong>STOMACH · SUPPLEMENTS</strong></div>
   </header>
 
-  <!-- TITLE BLOCK -->
   <section class="page__title-block">
     <h1 class="page__title">“위에 좋다”는 것들, 근거로 봅니다</h1>
     <p class="page__subtitle">양배추즙·마스틱검·마누카꿀부터 <strong>캬베진·오타이산·세이로간</strong>까지 — 정말 위를 치료하는지 임상 근거로 정리했습니다. <strong>속이 자주 불편하면 제품보다 검사가 먼저</strong>입니다.</p>
   </section>
 
-  <!-- BODY -->
   <main class="page__body">
 
-    <!-- 1. 히어로 이미지 + 핵심 메시지 -->
     <section>
       <div class="ss-hero">
         <figure class="ss-hero__figure" data-visual-intent="Comparison spread: popular 'stomach-friendly' items (cabbage juice, seeds/greens, honey jar, probiotic capsules) beside Japanese-style OTC stomach medicine boxes and antacid tablets">
@@ -168,7 +296,6 @@
                alt="양배추즙·씨앗·녹색채소·꿀·유산균 캡슐 등 위에 좋다는 식품과 일본식 위장약 상자·제산제 정제를 한자리에 비교한 부드러운 의료 일러스트">
           <figcaption class="ss-hero__cap">‘위에 좋다’는 말과 실제 근거는 다를 수 있습니다</figcaption>
         </figure>
-
         <div class="ss-key">
           <div class="ss-key__head">먼저 알아둘 3가지</div>
           <div class="ss-key__item">
@@ -187,102 +314,113 @@
       </div>
     </section>
 
-    <!-- 2. 근거 등급 한눈에 -->
     <section>
-      <h2 class="section-heading">근거 등급으로 본 “위에 좋다는” 것들</h2>
-      <div class="ss-grade">
-        <div class="ss-grade__row ss-grade__row--a">
-          <div class="ss-grade__badge"><b>A·B</b><span>근거 있는 편</span></div>
-          <div class="ss-grade__body">
-            <div class="ss-grade__items"><b>유산균(프로바이오틱스)</b> · <b>아연카르노신(폴라프레징크)</b> · 브로콜리새싹 · 아티초크 추출물</div>
-            <div class="ss-grade__verdict"><strong>보조로는 시도할 만함.</strong> 단 유산균은 “제균 부작용을 줄이는” 용도이지 위를 치료하는 약이 아닙니다.</div>
-          </div>
-        </div>
-        <div class="ss-grade__row ss-grade__row--c">
-          <div class="ss-grade__badge"><b>C</b><span>근거 부족</span></div>
-          <div class="ss-grade__body">
-            <div class="ss-grade__items">양배추즙·비타민U · <b>마스틱검</b> · 마누카꿀 · 프로폴리스 · 알로에 · 마즙 · 감자즙 · 슬리퍼리엘름 · DGL감초</div>
-            <div class="ss-grade__verdict">시험관·옛 연구 수준이거나 사람 근거가 없습니다. <strong>먹어도 무방하지만 치료로 믿지 마세요.</strong></div>
-          </div>
-        </div>
-        <div class="ss-grade__row ss-grade__row--d">
-          <div class="ss-grade__badge"><b>주의</b><span>과신·오남용</span></div>
-          <div class="ss-grade__body">
-            <div class="ss-grade__items"><b>일반 감초 장기복용</b> · <b>제산제(소다·마그네슘) 남용</b></div>
-            <div class="ss-grade__verdict">감초는 오래 먹으면 혈압↑·저칼륨, 제산제 남용은 신장·심장에 부담. <strong>이걸 믿고 내시경·진료를 미루는 것이 가장 위험합니다.</strong></div>
-          </div>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-nutrition" src="../../../shared/assets/healthicons/filled/nutrition/nutrition.svg" class="icon-sm" alt="식품·보충제">근거 등급으로 본 “위에 좋다는” 것들</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 15%;">근거 등급</th>
+            <th style="width: 43%;">해당하는 것</th>
+            <th style="width: 42%;">어떻게 보면 되나</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="grade-a">A·B<small>근거 있는 편</small></th>
+            <td><strong>유산균(프로바이오틱스)</strong> · <strong>아연카르노신(폴라프레징크)</strong> · 브로콜리새싹 · 아티초크 추출물</td>
+            <td><strong>보조로는 시도할 만함.</strong> 단 유산균은 “제균 부작용을 줄이는” 용도이지 위를 치료하는 약이 아닙니다.</td>
+          </tr>
+          <tr>
+            <th class="grade-c">C<small>근거 부족</small></th>
+            <td>양배추즙·비타민U · <strong>마스틱검</strong> · 마누카꿀 · 프로폴리스 · 알로에 · 마즙 · 감자즙 · 슬리퍼리엘름 · DGL감초</td>
+            <td>시험관·옛 연구 수준이거나 사람 근거가 없습니다. <strong>먹어도 무방하지만 치료로 믿지 마세요.</strong></td>
+          </tr>
+          <tr>
+            <th class="grade-d">주의<small>과신·오남용</small></th>
+            <td><strong>일반 감초 장기복용</strong> · <strong>제산제(소다·마그네슘) 남용</strong></td>
+            <td>감초는 오래 먹으면 혈압↑·저칼륨, 제산제 남용은 신장·심장에 부담. <strong>이걸 믿고 내시경·진료를 미루는 것이 가장 위험합니다.</strong></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
-    <!-- 3. 일본 위장약 실체 -->
     <section>
-      <h2 class="section-heading">일본에서 사 오는 위장약, 실체는?</h2>
-      <div class="ss-jp">
-        <div class="ss-jp__row">
-          <div class="ss-jp__name">캬베진 코와 <small>KABAGIN</small></div>
-          <div class="ss-jp__what">성분의 <i>대부분이 제산제</i> — 속쓰림 완화용이지 <span class="nb">‘위 영양제’ 아님</span></div>
-        </div>
-        <div class="ss-jp__row">
-          <div class="ss-jp__name">오타이산 <small>OHTA'S ISAN</small></div>
-          <div class="ss-jp__what">역시 <i>제산제 중심</i> + 소화효소·생약. 과식 후 더부룩함용</div>
-        </div>
-        <div class="ss-jp__row">
-          <div class="ss-jp__name">셀벨 <small>SELBELLE</small></div>
-          <div class="ss-jp__what">위점막 <i>보호제</i>(테프레논). 그나마 위약다운 위장약</div>
-        </div>
-        <div class="ss-jp__row">
-          <div class="ss-jp__name">이노세아 <small>INOCEA</small></div>
-          <div class="ss-jp__what">궤양에 쓰는 <i>점막보호약</i>(수크랄페이트). 정식 의약품</div>
-        </div>
-        <div class="ss-jp__row">
-          <div class="ss-jp__name">우루소 <small>URSO</small></div>
-          <div class="ss-jp__what"><i>담즙약</i>(UDCA) — 소화제가 아니라 지방소화·담즙 제제</div>
-        </div>
-        <div class="ss-jp__row">
-          <div class="ss-jp__name">세이로간 <small>SEIROGAN</small></div>
-          <div class="ss-jp__what"><b>설사약입니다 — 위장약 아님.</b> <span class="nb">위염·속쓰림에</span> <span class="nb">쓰지 마세요</span></div>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-specialties-pharmacy" src="../../../shared/assets/healthicons/filled/specialties/pharmacy.svg" class="icon-sm" alt="위장약">일본에서 사 오는 위장약, 실체는?</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 15%;">제품</th>
+            <th style="width: 35%;">실제 성분·용도</th>
+            <th style="width: 15%;">제품</th>
+            <th style="width: 35%;">실제 성분·용도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="jp-name">캬베진 코와<small>KABAGIN</small></th>
+            <td>성분의 <strong>대부분이 제산제</strong> — 속쓰림 완화용이지 <span class="nb">‘위 영양제’ 아님</span></td>
+            <th class="jp-name">오타이산<small>OHTA'S ISAN</small></th>
+            <td>역시 <strong>제산제 중심</strong> + 소화효소·생약. 과식 후 더부룩함용</td>
+          </tr>
+          <tr>
+            <th class="jp-name">셀벨<small>SELBELLE</small></th>
+            <td>위점막 <strong>보호제</strong>(테프레논). 그나마 위약다운 위장약</td>
+            <th class="jp-name">이노세아<small>INOCEA</small></th>
+            <td>궤양에 쓰는 <strong>점막보호약</strong>(수크랄페이트). 정식 의약품</td>
+          </tr>
+          <tr>
+            <th class="jp-name">우루소<small>URSO</small></th>
+            <td><strong>담즙약</strong>(UDCA) — 소화제가 아니라 지방소화·담즙&nbsp;제제</td>
+            <th class="jp-name">세이로간<small>SEIROGAN</small></th>
+            <td><strong class="danger">설사약입니다 — 위장약 아님.</strong> <span class="nb">위염·속쓰림에</span> <span class="nb">쓰지 마세요</span></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
-    <!-- 4. 안전 주의 + 병원 신호 -->
     <section>
-      <h2 class="section-heading">안전하게 · 이럴 땐 진료받으세요</h2>
-      <div class="ss-clin">
-        <div class="card">
-          <div class="card-label card-label--steel">이런 분은 주의</div>
-          <ul class="card-list">
-            <li><strong>신장·심장·고혈압</strong> 있으면 <span class="nb">제산제(마그네슘·소다)</span> 주의</li>
-            <li><strong>감초</strong>는 오래(30일↑) 먹으면 혈압↑·저칼륨 — 특히 고령·이뇨제 복용</li>
-          </ul>
-        </div>
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">약과 함께 먹을 때</div>
-          <ul class="card-list">
-            <li>제산제는 다른 약 흡수를 방해 — <strong>2시간 간격</strong> 두기</li>
-            <li>진통제(NSAID)·항혈전제 드시면 <strong>속쓰림을 혼자 덮지 말고</strong> 상담</li>
-          </ul>
-        </div>
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">미루지 말고 오세요</div>
-          <ul class="card-list">
-            <li><strong>체중 감소·삼킴 곤란</strong></li>
-            <li><strong>검은 변·토혈·빈혈</strong></li>
-            <li>속쓰림·소화불량이 <strong>낫지 않고 반복</strong></li>
-          </ul>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="주의">안전하게 · 이럴 땐 진료받으세요</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th class="th-soft" style="width: 35%;"><img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" class="icon-sm" alt="주의할 분">이런 분은 주의</th>
+            <th style="width: 33%;"><img data-asset="hi-filled-blister-pills_round_x1" src="../../../shared/assets/healthicons/filled/medications/blister-pills_round_x1.svg" class="icon-sm" alt="약">약과 함께 먹을 때</th>
+            <th class="th-er" style="width: 32%;"><img data-asset="hi-filled-ambulance" src="../../../shared/assets/healthicons/filled/vehicles/ambulance.svg" class="icon-sm" alt="응급">미루지 말고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ul class="table-list">
+                <li><strong>신장·심장·고혈압</strong> 있으면 <span class="nb">제산제(마그네슘·소다) 주의</span></li>
+                <li><strong>감초</strong>는 오래(30일↑) 먹으면 혈압↑·저칼륨 — 특히 고령·이뇨제 복용</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="table-list">
+                <li>제산제는 다른 약 흡수를 방해 — <span class="nb"><strong>2시간 간격</strong> 두기</span></li>
+                <li>진통제(NSAID)·항혈전제 드시면 <strong>속쓰림을 혼자 덮지 말고</strong> 상담</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="table-list">
+                <li><strong class="danger">검은 변·피를 토함</strong> → <strong class="danger">바로 응급실로</strong></li>
+                <li><strong>체중 감소·삼킴 곤란·빈혈</strong>, 속쓰림·소화불량이 <strong>낫지 않고 반복</strong> → 빨리 진료</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
+
 
   </main>
 
-  <!-- FOOTER (mini QR + clinic info) -->
   <footer class="page__footer">
     <div class="page__footer-info">
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
       <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
-      <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일 · 공휴일 휴진</div>
+      <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
       <div class="clinic-meta">근거 — ACG·CAG 소화불량 진료지침 (2017) · H. pylori 제균 보조 유산균 메타분석 (Cochrane·다기관) · 폴라프레진크 메타분석 (Nutrients 2022) · 제품 성분은 일본 KEGG·JAPIC 의약품 DB 및 제조사 공식자료</div>
       <div class="disclaimer">이 안내문은 일반적인 교육 자료로, 개인별 진단·처방을 대신하지 않습니다. 복용 중인 약·건강기능식품이 있으면 진료 시 알려 주세요. 반복되는 소화기 증상은 원인 검사(내시경·헬리코박터)가 우선입니다.</div>
     </div>

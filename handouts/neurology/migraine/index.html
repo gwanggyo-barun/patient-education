@@ -18,187 +18,53 @@
 
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
-
   <style>
-    /* Local extensions — uses only design tokens */
+    body { font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif; }
+    .page__body { gap: 2.8mm; justify-content: flex-start; }
+    .page__body > section { flex: 0 0 auto; gap: 1.2mm; }
+    .icon-sm { width: 4.6mm; height: 4.6mm; vertical-align: -0.9mm; margin-right: 1.2mm; flex-shrink: 0; }
+    .section-heading { display: flex; align-items: center; margin-bottom: 0.6mm; }
+    .ge-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 8.3pt; line-height: 1.4; color: var(--color-ink-soft); border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; background: var(--color-canvas); }
+    .ge-table th, .ge-table td { border: 1px solid var(--color-border); padding: 1.3mm 2.2mm; vertical-align: top; text-align: left; }
+    .ge-table thead th { background: var(--color-navy); color: #FFFFFF; font-weight: var(--weight-semibold); font-size: 8.4pt; }
+    .ge-table thead th.th-ok { background: var(--color-navy-mid); }
+    .ge-table thead th.th-no { background: var(--color-danger); }
+    .ge-table thead th .icon-sm { filter: brightness(0) invert(1); }
+    .ge-table td strong { color: var(--color-navy); }
+    .ge-table tbody th { color: var(--color-navy); background: var(--color-canvas-warm); font-weight: var(--weight-semibold); font-size: 8.3pt; vertical-align: middle; }
+    .table-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.9mm; font-size: 8.3pt; line-height: 1.38; }
+    .table-list li { position: relative; padding-left: 2.8mm; }
+    .table-list li::before { content: "•"; position: absolute; left: 0; color: var(--color-steel); font-weight: bold; }
+    .fig-grid { display: grid; grid-template-columns: 64mm 1fr; gap: 3mm; align-items: stretch; }
+    .fig-grid .ge-table td, .fig-grid .ge-table tbody th { vertical-align: middle; }
+    .fig-box { margin: 0; width: 64mm; height: 48mm; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-canvas-warm); overflow: hidden; position: relative; }
+    .fig-box img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .fig-cap { position: absolute; left: 1.5mm; right: 1.5mm; bottom: 1.5mm; padding: 0.8mm 1.2mm; background: rgba(255,255,255,0.92); border-radius: 3px; font-size: 7.4pt; line-height: 1.25; color: var(--color-navy); font-weight: var(--weight-semibold); text-align: center; border: 1px solid rgba(0,51,102,0.15); }
+    .stats-2x2 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2mm; }
+    .stats-2x2 .stat-cell { padding: 1.8mm 2mm; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+    .stats-2x2 .stat-cell__label { margin-bottom: 0.8mm; }
+    .stats-2x2 .stat-cell__value { font-size: 14pt; line-height: 1; }
+    .stats-2x2 .stat-cell__unit { margin-top: 0.8mm; font-size: 7.8pt; }
+    .note-line { font-size: 8.2pt; line-height: 1.4; color: var(--color-slate); margin-top: 0.4mm; }
+    .note-line strong { color: var(--color-navy); }
+    .see-also { font-size: 8.2pt; line-height: 1.4; color: var(--color-navy); border-top: 1px dashed var(--color-border); padding-top: 1.2mm; }
+    .see-also strong { font-weight: var(--weight-semibold); }
+    .warning-box { border: 1px solid var(--color-warning-border); border-left: 4px solid var(--color-warning); background: var(--color-warning-bg); border-radius: var(--radius-sm); padding: 2.2mm 3.2mm; }
+    .warning-title { font-size: 8.8pt; font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: 0.8mm; display: flex; align-items: center; }
+    .warning-text { font-size: 8.4pt; line-height: 1.45; color: var(--color-ink); }
+    .warning-text strong { color: var(--color-danger); }
+    .warning-box .table-list { font-size: 8.4pt; }
+    .info-box { border: 1px solid var(--color-border); border-left: 4px solid var(--color-navy); background: var(--color-canvas-warm); border-radius: var(--radius-sm); padding: 2.2mm 3.2mm; }
+    .info-box .warning-text strong { color: var(--color-navy); }
+    .page__body { gap: 4.4mm; }
+    .ge-table { font-size: 8.6pt; line-height: 1.42; }
+    .ge-table th, .ge-table td { padding: 1.6mm 2.4mm; }
+    .ge-table tbody th { font-size: 8.5pt; }
+    .fig-box { height: 52mm; }
+    .gi-box { padding: 2mm 3mm; }
+    .gi-box .warning-text { font-size: 8.3pt; line-height: 1.42; }
+    .seven td { width: 50%; }
 
-    /* Top hero stat banner */
-    .stat-banner {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 6mm;
-      align-items: center;
-      background: var(--color-navy);
-      color: var(--color-canvas);
-      padding: 5mm 6mm;
-      border-radius: var(--radius-sm);
-    }
-    .stat-banner__value {
-      font-size: 28pt;
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-snug);
-      line-height: 1;
-    }
-    .stat-banner__value em {
-      color: var(--color-sky);
-      font-style: normal;
-    }
-    .stat-banner__text {
-      font-size: 9.5pt;
-      line-height: 1.5;
-      opacity: 0.95;
-    }
-    .stat-banner__text strong {
-      color: var(--color-sky);
-      font-weight: var(--weight-semibold);
-    }
-
-    /* 2x2 grid of GI patterns */
-    .pattern-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2.5mm;
-    }
-    .pattern-card {
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-left: 3px solid var(--color-steel);
-      border-radius: var(--radius-sm);
-      padding: 3mm 3.5mm;
-    }
-    .pattern-card--accent {
-      background: var(--color-cream);
-      border-left-color: var(--color-navy);
-    }
-    .pattern-card__index {
-      font-size: 7pt;
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
-      color: var(--color-slate);
-      margin-bottom: 1mm;
-    }
-    .pattern-card--accent .pattern-card__index {
-      color: var(--color-navy);
-    }
-    .pattern-card__title {
-      font-size: 10pt;
-      font-weight: var(--weight-bold);
-      color: var(--color-navy);
-      line-height: 1.25;
-      letter-spacing: var(--tracking-snug);
-      margin-bottom: 1.5mm;
-    }
-    .pattern-card__body {
-      font-size: 8.5pt;
-      line-height: 1.45;
-      color: var(--color-ink-soft);
-    }
-    .pattern-card__body strong {
-      color: var(--color-navy);
-      font-weight: var(--weight-semibold);
-    }
-
-    /* Compact 2-col clue list */
-    .clue-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 4mm;
-      row-gap: 1.5mm;
-    }
-    .clue-item {
-      display: grid;
-      grid-template-columns: 4mm 1fr;
-      gap: 2mm;
-      align-items: start;
-      font-size: 8.5pt;
-      line-height: 1.4;
-    }
-    .clue-item__num {
-      width: 4mm;
-      height: 4mm;
-      background: var(--color-steel);
-      color: var(--color-canvas);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 7pt;
-      font-weight: var(--weight-bold);
-      flex-shrink: 0;
-      margin-top: 0.4mm;
-    }
-    .clue-item strong {
-      color: var(--color-navy);
-      font-weight: var(--weight-semibold);
-    }
-
-    /* Compact info block (Tx / Red flag) */
-    .info-block {
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 3.5mm 4mm;
-    }
-    .info-block--warning {
-      background: var(--color-warning-bg);
-      border-color: var(--color-warning);
-      border-left: 3px solid var(--color-warning);
-    }
-    .info-block__label {
-      font-size: 7.5pt;
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
-      color: var(--color-slate);
-      margin-bottom: 1.5mm;
-    }
-    .info-block--warning .info-block__label { color: var(--color-warning); }
-    .info-block__title {
-      font-size: 10pt;
-      font-weight: var(--weight-bold);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      margin-bottom: 1.5mm;
-    }
-    .info-block--warning .info-block__title { color: var(--color-warning); }
-    .info-block__body {
-      font-size: 8.5pt;
-      line-height: 1.5;
-      color: var(--color-ink-soft);
-    }
-    .info-block__body strong {
-      color: var(--color-navy);
-      font-weight: var(--weight-semibold);
-    }
-    .info-block--warning .info-block__body strong { color: var(--color-warning); }
-    .info-block__list {
-      list-style: none;
-      font-size: 8.5pt;
-      line-height: 1.55;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 4mm;
-      row-gap: 0.5mm;
-    }
-    .info-block__list li::before {
-      content: "·";
-      color: var(--color-steel);
-      font-weight: var(--weight-bold);
-      margin-right: 1.5mm;
-    }
-    .info-block--warning .info-block__list li::before {
-      color: var(--color-warning);
-    }
-
-    /* Tighten layout for single-page fit */
-    .page { padding: 10mm 12mm 8mm; gap: 4mm; }
-    .page__body { gap: 3.5mm; }
-    .page__header { padding-bottom: 2.5mm; }
-    .page__footer { padding-top: 2.5mm; }
-    .section-heading { margin-bottom: 1.5mm; font-size: 10.5pt; padding-left: 2.5mm; }
-    .page__title { font-size: 20pt; }
-    .page__subtitle { font-size: 9.5pt; }
   </style>
 <!-- seo:geo2 --><meta name="description" content="소화불량·메스꺼움을 호소하는 환자에서 놓치지 말아야 할 편두통. A4 한 장 요약.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/handouts/neurology/migraine/">
@@ -210,129 +76,69 @@
 
   <header class="page__header">
     <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
-    <div class="page__eyebrow">PATIENT HANDOUT · <strong>NEUROLOGY</strong></div>
+    <div class="page__eyebrow">PATIENT HANDOUT · <strong>NEUROLOGY · MIGRAINE</strong></div>
   </header>
 
   <section class="page__title-block">
     <h1 class="page__title">편두통 — 위장 증상에 가려진 진짜 원인</h1>
-    <p class="page__subtitle">소화불량·메스꺼움과 함께 오는 두통은 단순히 "체한 것"이 아닙니다 · ICHD-3 기준</p>
-</section>
+    <p class="page__subtitle">메스꺼움·소화불량과 함께 오는 두통은 단순히 "체한 것"이 아닐 수 있습니다. 편두통 환자의 60~90%가 메스꺼움·구토 같은 위장 증상을 함께 겪습니다. 집에서는 두통일기와 규칙적인 생활이 치료의 기본입니다.</p>
+  </section>
 
-  <main class="page__body page__body--visual-strip">
+  <main class="page__body">
 
-    <section class="handout-visual-section" aria-label="핵심 그림 요약">
-      <figure class="handout-visual-panel" data-visual-intent="Mechanism and action">
-        <img src="../../../shared/assets/generated/migraine-brain-routine-20260531.png" alt="편두통 이해: 뇌, 전조, 빛 민감, 어두운 휴식, 예방 루틴">
-        <figcaption class="handout-visual-caption">편두통은 전조, 빛 민감, 휴식 환경, 예방 루틴을 연결해서 이해합니다.</figcaption>
-      </figure>
-    </section>
-
-    <!-- Hero stat banner -->
     <section>
-      <div class="stat-banner">
-        <div class="stat-banner__value"><em>60~90</em>%</div>
-        <div class="stat-banner__text">
-          편두통 환자의 <strong>60~90%</strong>는 오심·구토·소화불량 등 위장 증상을 동반합니다.
-          두통보다 소화 증상을 먼저 호소하는 경우가 흔해, 내과에서 가장 놓치기 쉬운 질환 중 하나입니다.
-        </div>
+      <div class="info-box gi-box">
+        <div class="warning-title"><img data-asset="hi-filled-headache" src="../../../shared/assets/healthicons/filled/conditions/headache.svg" class="icon-sm" alt="두통">위장 증상으로 먼저 오는 편두통</div>
+        <div class="warning-text">두통 하루이틀 전의 메스꺼움·식욕 변화, 발작 중 위가 느려져 <strong>먹은 약이 잘 안 듣는 것</strong>, 두통 없이 반복되는 복통·구토도 편두통의 한 모습일 수 있습니다. 내시경·복부 검사가 정상인데 이런 증상이 발작처럼 되풀이되면 진료 때 말씀해 주세요. 편두통은 4~72시간 이어지는 두통이 ①한쪽 ②욱신거림 ③중간 이상 세기 ④움직이면 심해짐 중 두 가지 이상이고, 메스꺼움·구토나 빛·소리 과민이 함께 오는 발작이 5번 이상 되풀이될 때 진단합니다.</div>
       </div>
     </section>
 
-    <!-- 편두통의 위장 표현 4가지 -->
     <section>
-      <h2 class="section-heading">편두통이 위장 질환처럼 보이는 4가지 양상</h2>
-      <div class="pattern-grid">
-        <div class="pattern-card pattern-card--accent">
-          <div class="pattern-card__index">PATTERN · 01 · 전구기</div>
-          <div class="pattern-card__title">두통 전 위장 증상 (Prodrome)</div>
-          <div class="pattern-card__body">두통 시작 <strong>24~48시간 전</strong> 식욕 변화·메스꺼움·변비·설사·갈증. "체할 것 같다"고 표현합니다.</div>
-        </div>
-        <div class="pattern-card pattern-card--accent">
-          <div class="pattern-card__index">PATTERN · 02 · 발작 중</div>
-          <div class="pattern-card__title">편두통 위마비 (Gastroparesis)</div>
-          <div class="pattern-card__body">발작 중 위 배출 <strong>최대 78% 지연</strong>. 식후 더부룩함·구토·경구약 흡수 저하 — 진통제가 듣지 않는 흔한 원인.</div>
-        </div>
-        <div class="pattern-card">
-          <div class="pattern-card__index">PATTERN · 03</div>
-          <div class="pattern-card__title">복부 편두통 (Abdominal migraine)</div>
-          <div class="pattern-card__body">소아에 흔하지만 성인도 가능. 반복적 중앙 복통 + 오심·창백·식욕부진, <strong>두통은 약하거나 없음</strong>. 내시경·복부검사 정상.</div>
-        </div>
-        <div class="pattern-card">
-          <div class="pattern-card__index">PATTERN · 04</div>
-          <div class="pattern-card__title">순환성 구토 증후군 (CVS)</div>
-          <div class="pattern-card__body">발작적 심한 오심·구토 (수 시간~수일) → 무증상기 → 다시 반복. 본인·가족력 편두통이 흔합니다.</div>
-        </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-register-book" src="../../../shared/assets/healthicons/filled/objects/register-book.svg" class="icon-sm" alt="두통일기">두통일기 — 적어서 다음 진료 때 가져오세요</h2>
+      <div class="fig-grid">
+        <figure class="fig-box">
+          <img src="../../../shared/assets/generated/migraine-headache-diary-20260927.jpg"
+               alt="아침 식탁에서 두통일기 공책에 기록하는 여성 일러스트">
+          <figcaption class="fig-cap">두통이 올 때마다 바로 적기</figcaption>
+        </figure>
+        <table class="ge-table">
+          <thead><tr><th style="width:27%">적을 것</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><th>날짜·시각</th><td>시작한 때와 끝난 때</td></tr>
+            <tr><th>강도</th><td>0(없음)~10(가장 심함) 중 몇 점인지</td></tr>
+            <tr><th>유발 요인</th><td>잠 부족·늦잠, 끼니 거름, 생리, 스트레스, 술·음식, 날씨</td></tr>
+            <tr><th>먹은 약</th><td>약 이름·먹은 시각·효과가 있었는지</td></tr>
+            <tr><th>함께 온 증상</th><td>메스꺼움·구토, 빛·소리가 거슬림, 체한 느낌</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <!-- 의심 단서 6가지 -->
     <section>
-      <h2 class="section-heading">소화불량 호소 환자에서 편두통 의심 단서 6가지</h2>
-      <div class="clue-grid">
-        <div class="clue-item">
-          <div class="clue-item__num">1</div>
-          <div><strong>발작적·간헐적</strong> 양상 (사이에 무증상기)</div>
-        </div>
-        <div class="clue-item">
-          <div class="clue-item__num">2</div>
-          <div>위내시경·복부검사 모두 <strong>정상</strong></div>
-        </div>
-        <div class="clue-item">
-          <div class="clue-item__num">3</div>
-          <div>증상 시 <strong>두통·머리 무거움</strong> 동반</div>
-        </div>
-        <div class="clue-item">
-          <div class="clue-item__num">4</div>
-          <div>빛·소리·냄새에 평소보다 <strong>예민</strong></div>
-        </div>
-        <div class="clue-item">
-          <div class="clue-item__num">5</div>
-          <div>가족력 — <strong>편두통·멀미</strong> · 어린 시절 반복 복통</div>
-        </div>
-        <div class="clue-item">
-          <div class="clue-item__num">6</div>
-          <div><strong>생리·수면 변화·날씨</strong>와 연관된 패턴</div>
-        </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-sleepy" src="../../../shared/assets/healthicons/filled/emotions/sleepy.svg" class="icon-sm" alt="규칙적 생활">오늘부터 실천할 7가지</h2>
+      <table class="ge-table seven">
+        <thead><tr><th class="th-ok"><img data-asset="hi-filled-exercise" src="../../../shared/assets/healthicons/filled/exercise/exercise.svg" class="icon-sm" alt="생활 습관">생활 습관</th><th class="th-ok"><img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" class="icon-sm" alt="약">약 먹는 법 · 운동</th></tr></thead>
+        <tbody>
+          <tr><td><strong>① 두통일기</strong> 쓰기 — 날짜·강도·유발 요인·먹은 약</td><td><strong>⑤ 발작이 시작되면 처방받은 약을 바로</strong> — 참다 먹으면 효과가 떨어집니다</td></tr>
+          <tr><td><strong>② 매일 같은 시각</strong>에 자고 일어나기 (주말 포함)</td><td><strong>⑥ 진통제는 한 달에 10일 이하</strong> — 약물 과용 두통 예방</td></tr>
+          <tr><td><strong>③ 끼니 거르지 않기</strong> · 물 충분히 마시기</td><td><strong>⑦ 걷기 같은 유산소 운동</strong>을 꾸준히 · 명상·요가</td></tr>
+          <tr><td><strong>④ 카페인은 일정하게</strong> — 갑자기 늘리거나 끊지 않기</td><td>메스꺼움이 심하면 <strong>구토를 줄이는 약(진토제)</strong>을<br>함께 처방받을 수 있습니다</td></tr>
+        </tbody>
+      </table>
+      <div class="info-box">
+        <div class="warning-text"><strong>두통약을 한 달에 10일 넘게</strong> 먹으면 두통이 더 잦아지는 <strong>'약물 과용 두통'</strong>이 올 수 있습니다.<br>발작이 한 달 4번 이상이거나 일상이 힘들면 <strong>예방약</strong>을 상담하세요.</div>
       </div>
     </section>
 
-    <!-- 진단 + 치료 (2-col) -->
     <section>
-      <div class="body-2col">
-        <div class="info-block">
-          <div class="info-block__label">DIAGNOSIS · ICHD-3</div>
-          <div class="info-block__title">진단 기준 — 5회 이상 반복</div>
-          <div class="info-block__body">
-            <strong>두통 특성 2가지 이상</strong> ① 한쪽 ② 박동성 ③ 중등도~심한 강도 ④ 일상 활동에 의해 악화 ·
-            <strong>동반증상 1가지 이상</strong> ① 오심·구토 ② 빛·소리 과민 ·
-            지속 <strong>4~72시간</strong>.
-          </div>
-        </div>
-        <div class="info-block">
-          <div class="info-block__label">TREATMENT</div>
-          <div class="info-block__title">치료 — 급성기 · 예방</div>
-          <ul class="info-block__list">
-            <li>NSAIDs (1차)</li>
-            <li>트립탄 (중증)</li>
-            <li>제토제 병용</li>
-            <li>월 4회+ 예방치료</li>
-            <li>약물과용두통 주의</li>
-            <li>(월 10일 이하)</li>
-          </ul>
-        </div>
+      <div class="warning-box">
+        <div class="warning-title"><img data-asset="hi-filled-ambulance" src="../../../shared/assets/healthicons/filled/vehicles/ambulance.svg" class="icon-sm" alt="응급">이런 두통은 즉시 응급실 또는 정밀검사</div>
+        <ul class="table-list warning-text">
+          <li><strong>벼락 두통</strong> — 몇 초 만에 극심해짐 · <strong>50세 이후 처음</strong> 시작된 두통 · <strong>열·목 뻣뻣함</strong>이 함께 옴</li>
+          <li><strong>한쪽 마비·말이 어눌함·시야가 가려짐</strong> · 며칠~몇 주에 걸쳐 <strong>점점 심해짐</strong> · 기침·재채기에 심해짐</li>
+        </ul>
       </div>
-    </section>
-
-    <!-- Red flag warning -->
-    <section>
-      <div class="info-block info-block--warning">
-        <div class="info-block__label">RED FLAGS · 즉시 응급실 또는 정밀검사</div>
-        <div class="info-block__body">
-          <strong>벼락 두통</strong> (수초 만에 극심) · <strong>50세 이후 처음 시작된 두통</strong> ·
-          <strong>발열·경부강직</strong> 동반 · <strong>한쪽 마비·언어장애·시야 결손</strong> ·
-          며칠~몇 주에 걸쳐 <strong>점점 심해지는 두통</strong> · 기침·재채기에 악화되는 두통.
-        </div>
-      </div>
+      <div class="see-also">함께 보기 — 진료실에서 보신 설명 자료 「편두통 — 위장 증상에 가려진 진짜 원인」 edu.gwanggyobarun.com/decks/neurology/migraine/diagnosis/</div>
     </section>
 
   </main>
@@ -342,12 +148,12 @@
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
       <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
       <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
-      <div class="clinic-meta">근거 — ICHD-3 (2018) · 대한두통학회 진료지침 (2021) · AHS Consensus Statement 2021</div>
+      <div class="clinic-meta">근거 — 국제두통분류 3판(ICHD-3, 2018) · 대한두통학회 진료지침 (2021) · AHS Consensus Statement 2021</div>
       <div class="disclaimer">본 자료는 일반 환자교육용입니다. 두통 양상이 변하거나 위험 신호가 나타나면 즉시 내원해 주세요.</div>
     </div>
     <div class="qr-mini">
       <div class="qr-mini__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM17,2H18V3H17zM18,2H19V3H18zM20,2H21V3H20zM21,2H22V3H21zM23,2H24V3H23zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM13,3H14V4H13zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM23,3H24V4H23zM25,3H26V4H25zM26,3H27V4H26zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM12,4H13V5H12zM14,4H15V5H14zM15,4H16V5H15zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM24,4H25V5H24zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM12,5H13V6H12zM13,5H14V6H13zM14,5H15V6H14zM15,5H16V6H15zM16,5H17V6H16zM18,5H19V6H18zM20,5H21V6H20zM21,5H22V6H21zM22,5H23V6H22zM24,5H25V6H24zM25,5H26V6H25zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM14,6H15V7H14zM16,6H17V7H16zM20,6H21V7H20zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM14,7H15V8H14zM17,7H18V8H17zM18,7H19V8H18zM21,7H22V8H21zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM11,9H12V10H11zM13,9H14V10H13zM16,9H17V10H16zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM26,9H27V10H26zM2,10H3V11H2zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM15,10H16V11H15zM16,10H17V11H16zM18,10H19V11H18zM23,10H24V11H23zM26,10H27V11H26zM27,10H28V11H27zM29,10H30V11H29zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM9,11H10V12H9zM11,11H12V12H11zM12,11H13V12H12zM14,11H15V12H14zM15,11H16V12H15zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM22,11H23V12H22zM26,11H27V12H26zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM33,11H34V12H33zM34,11H35V12H34zM4,12H5V13H4zM8,12H9V13H8zM11,12H12V13H11zM12,12H13V13H12zM14,12H15V13H14zM15,12H16V13H15zM16,12H17V13H16zM18,12H19V13H18zM20,12H21V13H20zM21,12H22V13H21zM23,12H24V13H23zM24,12H25V13H24zM26,12H27V13H26zM29,12H30V13H29zM30,12H31V13H30zM32,12H33V13H32zM34,12H35V13H34zM2,13H3V14H2zM3,13H4V14H3zM7,13H8V14H7zM10,13H11V14H10zM12,13H13V14H12zM13,13H14V14H13zM15,13H16V14H15zM18,13H19V14H18zM20,13H21V14H20zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM30,13H31V14H30zM31,13H32V14H31zM33,13H34V14H33zM2,14H3V15H2zM5,14H6V15H5zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM13,14H14V15H13zM16,14H17V15H16zM17,14H18V15H17zM18,14H19V15H18zM19,14H20V15H19zM21,14H22V15H21zM22,14H23V15H22zM23,14H24V15H23zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM31,14H32V15H31zM33,14H34V15H33zM3,15H4V16H3zM9,15H10V16H9zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM19,15H20V16H19zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM24,15H25V16H24zM26,15H27V16H26zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM33,15H34V16H33zM34,15H35V16H34zM2,16H3V17H2zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM12,16H13V17H12zM13,16H14V17H13zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM25,16H26V17H25zM26,16H27V17H26zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM2,17H3V18H2zM4,17H5V18H4zM6,17H7V18H6zM7,17H8V18H7zM10,17H11V18H10zM11,17H12V18H11zM14,17H15V18H14zM15,17H16V18H15zM16,17H17V18H16zM18,17H19V18H18zM19,17H20V18H19zM21,17H22V18H21zM23,17H24V18H23zM24,17H25V18H24zM28,17H29V18H28zM29,17H30V18H29zM33,17H34V18H33zM4,18H5V19H4zM5,18H6V19H5zM8,18H9V19H8zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM14,18H15V19H14zM15,18H16V19H15zM17,18H18V19H17zM19,18H20V19H19zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM26,18H27V19H26zM28,18H29V19H28zM30,18H31V19H30zM33,18H34V19H33zM4,19H5V20H4zM5,19H6V20H5zM9,19H10V20H9zM13,19H14V20H13zM18,19H19V20H18zM19,19H20V20H19zM20,19H21V20H20zM23,19H24V20H23zM25,19H26V20H25zM27,19H28V20H27zM29,19H30V20H29zM31,19H32V20H31zM33,19H34V20H33zM3,20H4V21H3zM4,20H5V21H4zM5,20H6V21H5zM8,20H9V21H8zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM16,20H17V21H16zM20,20H21V21H20zM23,20H24V21H23zM27,20H28V21H27zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM5,21H6V22H5zM6,21H7V22H6zM10,21H11V22H10zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM15,21H16V22H15zM16,21H17V22H16zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM25,21H26V22H25zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM33,21H34V22H33zM2,22H3V23H2zM3,22H4V23H3zM5,22H6V23H5zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM15,22H16V23H15zM18,22H19V23H18zM21,22H22V23H21zM23,22H24V23H23zM25,22H26V23H25zM27,22H28V23H27zM29,22H30V23H29zM5,23H6V24H5zM9,23H10V24H9zM11,23H12V24H11zM13,23H14V24H13zM15,23H16V24H15zM16,23H17V24H16zM17,23H18V24H17zM19,23H20V24H19zM22,23H23V24H22zM24,23H25V24H24zM26,23H27V24H26zM27,23H28V24H27zM28,23H29V24H28zM32,23H33V24H32zM33,23H34V24H33zM34,23H35V24H34zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM11,24H12V25H11zM12,24H13V25H12zM15,24H16V25H15zM18,24H19V25H18zM21,24H22V25H21zM23,24H24V25H23zM24,24H25V25H24zM28,24H29V25H28zM31,24H32V25H31zM34,24H35V25H34zM3,25H4V26H3zM4,25H5V26H4zM5,25H6V26H5zM6,25H7V26H6zM11,25H12V26H11zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM18,25H19V26H18zM20,25H21V26H20zM21,25H22V26H21zM23,25H24V26H23zM26,25H27V26H26zM28,25H29V26H28zM31,25H32V26H31zM33,25H34V26H33zM2,26H3V27H2zM4,26H5V27H4zM5,26H6V27H5zM8,26H9V27H8zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM18,26H19V27H18zM19,26H20V27H19zM21,26H22V27H21zM23,26H24V27H23zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM10,27H11V28H10zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM21,27H22V28H21zM22,27H23V28H22zM24,27H25V28H24zM26,27H27V28H26zM30,27H31V28H30zM31,27H32V28H31zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM11,28H12V29H11zM16,28H17V29H16zM18,28H19V29H18zM22,28H23V29H22zM24,28H25V29H24zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM13,29H14V30H13zM15,29H16V30H15zM16,29H17V30H16zM18,29H19V30H18zM19,29H20V30H19zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM30,29H31V30H30zM33,29H34V30H33zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM15,31H16V32H15zM19,31H20V32H19zM23,31H24V32H23zM28,31H29V32H28zM30,31H31V32H30zM31,31H32V32H31zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM11,32H12V33H11zM12,32H13V33H12zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM19,32H20V33H19zM23,32H24V33H23zM25,32H26V33H25zM26,32H27V33H26zM30,32H31V33H30zM31,32H32V33H31zM32,32H33V33H32zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM17,33H18V34H17zM19,33H20V34H19zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM26,33H27V34H26zM27,33H28V34H27zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM18,34H19V35H18zM20,34H21V35H20zM21,34H22V35H21zM23,34H24V35H23zM26,34H27V35H26zM27,34H28V35H27zM30,34H31V35H30zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
-      <div class="qr-mini__label">상세 보기</div>
+      <div class="qr-mini__label">집에서 다시 보기</div>
       <div class="qr-mini__url">edu.gwanggyobarun.com/handouts/neurology/migraine/</div>
     </div>
   </footer>

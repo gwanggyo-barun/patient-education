@@ -18,58 +18,204 @@
 
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
-
   <style>
-    /* functional-dyspepsia (handout-local extensions only) */
-    .card-list.fd-list li {
-      position: relative;
-      padding-left: 3.4mm;
-      margin-bottom: 1.4mm;
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
     }
-    .card-list.fd-list li:last-child { margin-bottom: 0; }
-    .card-list.fd-list li::before {
-      content: "·";
-      position: absolute;
-      left: 0.4mm;
-      color: var(--color-steel);
-      font-weight: var(--weight-bold);
+    .page__body {
+      gap: 2.3mm;
     }
-    .card-list.fd-myth li {
-      position: relative;
-      padding-left: 3.4mm;
-      margin-bottom: 2mm;
-      line-height: 1.5;
+    .page__body > section {
+      gap: 1mm;
     }
-    .card-list.fd-myth li:last-child { margin-bottom: 0; }
-    .card-list.fd-myth li::before {
-      content: "·";
-      position: absolute;
-      left: 0.4mm;
-      color: var(--color-steel);
-      font-weight: var(--weight-bold);
+    .page__title .title-sub {
+      font-weight: 500;
+      font-size: 0.56em;
+      color: var(--color-ink-soft);
     }
-    .card-list.fd-myth li strong { color: var(--color-navy); }
-    .card .card-label + p,
-    .card .card-label + ul,
-    .card .card-label + div { margin-top: 0; }
-    table.fd-tbl {
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -0.9mm;
+      margin-right: 1.2mm;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5mm;
+    }
+
+    /* 표 공통 스타일 (H10 본보기와 같은 표) */
+    .ge-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 8.3pt;
-      margin-top: 2mm;
-    }
-    table.fd-tbl th, table.fd-tbl td {
+      table-layout: fixed;
+      font-size: 8.1pt;
+      line-height: 1.38;
+      color: var(--color-ink-soft);
       border: 1px solid var(--color-border);
-      padding: 1.4mm 2.4mm;
-      text-align: left;
-      line-height: 1.3;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas);
     }
-    table.fd-tbl th {
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.1mm 2mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .ge-table thead th {
       background: var(--color-navy);
       color: #FFFFFF;
       font-weight: var(--weight-semibold);
+      font-size: 8.5pt;
     }
-    table.fd-tbl tbody tr:nth-child(even) td { background: var(--color-canvas-warm); }
+    .ge-table thead th.th-ok {
+      background: var(--color-navy-mid);
+    }
+    .ge-table thead th.th-no,
+    .ge-table thead th.th-er {
+      background: var(--color-danger);
+    }
+    .ge-table thead th.th-soft {
+      background: var(--color-steel-deep);
+    }
+    .ge-table tbody th {
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      font-weight: var(--weight-semibold);
+      font-size: 8.3pt;
+      vertical-align: middle;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table td strong.danger {
+      color: var(--color-danger);
+    }
+    .table-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8mm;
+      font-size: 8.1pt;
+      line-height: 1.38;
+    }
+    .table-list li {
+      position: relative;
+      padding-left: 2.8mm;
+    }
+    .table-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-steel);
+      font-weight: bold;
+    }
+
+    /* 그림 + 옆 칸 */
+    .key-grid {
+      display: grid;
+      grid-template-columns: 60mm 1fr;
+      gap: 3.2mm;
+      align-items: stretch;
+    }
+    .fig-slot {
+      margin: 0;
+      width: 60mm;
+      height: 45mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .fig-slot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .fig-caption {
+      position: absolute;
+      left: 1.5mm;
+      right: 1.5mm;
+      bottom: 1.5mm;
+      padding: 0.8mm 1.2mm;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 3px;
+      font-size: 7.2pt;
+      line-height: 1.25;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+      border: 1px solid rgba(0, 51, 102, 0.15);
+    }
+    .side-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6mm;
+    }
+    .side-text p {
+      margin: 0;
+    }
+    .side-text strong {
+      color: var(--color-navy);
+    }
+
+    /* 응급 안내 박스 */
+    .warning-box {
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
+      border-radius: var(--radius-sm);
+      padding: 2.2mm 3.2mm;
+    }
+    .warning-title {
+      font-size: 8.6pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      margin-bottom: 1mm;
+      display: flex;
+      align-items: center;
+    }
+    .warning-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+    }
+    .warning-text strong {
+      color: var(--color-danger);
+    }
+
+    /* 짝 자료 안내 한 줄 */
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 1.6mm;
+      font-size: 8pt;
+      line-height: 1.4;
+      color: var(--color-ink-soft);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--radius-sm);
+      padding: 1.4mm 2.4mm;
+      background: var(--color-canvas-warm);
+    }
+    .link-row strong {
+      color: var(--color-navy);
+    }
+    .link-row .url {
+      white-space: nowrap;
+      color: var(--color-steel-deep);
+      font-weight: var(--weight-semibold);
+    }
+    .nb { white-space: nowrap; }
   </style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
@@ -78,97 +224,144 @@
 <div class="page">
 
   <header class="page__header">
-    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
+    <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
     <div class="page__eyebrow">PATIENT HANDOUT · <strong>GASTROENTEROLOGY</strong></div>
   </header>
 
   <section class="page__title-block">
-    <h1 class="page__title">기능성 소화불량 — 내시경은 괜찮은데 왜 더부룩할까</h1>
-    <p class="page__subtitle">위가 움직이고 느끼는 방식의 문제일 수 있습니다 · 위장약 반응을 보며 다음 단계를 정합니다</p>
+    <h1 class="page__title">기능성 소화불량</h1>
+    <p class="page__subtitle"><strong>내시경은 괜찮은데 왜 더부룩할까?</strong> 위가 움직이고 느끼는 방식의 문제일 수 있습니다.</p>
   </section>
 
   <main class="page__body">
 
     <section>
-      <h2 class="section-heading">왜 내시경이 정상인데 더부룩할까요?</h2>
-      <div class="card">
-        <p>
-          내시경에서 큰 이상이 보이지 않아도 식후 더부룩함, 조금만 먹어도 배부른 느낌, 명치 통증·쓰림은 실제로 생길 수 있습니다.
-          위가 음식을 받아들이고 내보내는 방식, 위의 감각, 뇌와 장의 상호작용 문제일 때가 많아
-          <strong>병보다 기능 문제일 확률이 높습니다.</strong> 흔히 있는 문제이며, '정상' 검사 결과가 증상이 없다는 뜻은 아닙니다.
-          식후 꽉 찬 느낌·조금만 먹어도 배부른 느낌과 명치 통증·쓰림은 치료 방향을 정할 때 구분해 볼 증상이니 진료 때 자세히 말씀해 주세요. 위와 뇌 신호가 예민해진 상태입니다.
-        </p>
+      <h2 class="section-heading"><img data-asset="hi-filled-stomach" src="../../../shared/assets/healthicons/filled/body/stomach.svg" class="icon-sm" alt="위">왜 내시경이 정상인데 더부룩할까요?</h2>
+      <div class="side-text"><p>내시경에서 큰 이상이 보이지 않아도 증상은 실제로 생길 수 있습니다. 위가 음식을 받아들이고 내보내는 방식, 위의 감각, 뇌와 장의 상호작용 문제일 때가 많아 <strong>병보다 기능 문제일 확률이 높습니다.</strong> 흔히 있는 문제이며, '정상' 검사 결과가 증상이 없다는 뜻은 아닙니다. 위와 뇌 신호가 예민해진 상태입니다. 아래 두 가지는 치료 방향을 정할 때 구분해 볼 증상이니 <strong>진료 때 자세히 말씀해 주세요.</strong></p></div>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 50%;">식후에 불편한 쪽</th>
+            <th class="th-soft" style="width: 50%;">명치가 아픈 쪽</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>식후 <strong>꽉 찬 느낌</strong> · 조금만 먹어도 <strong>배부른 느낌</strong></td>
+            <td>명치 <strong>통증 · 쓰림</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-bacteria" src="../../../shared/assets/healthicons/filled/body/bacteria.svg" class="icon-sm" alt="헬리코박터">다음 단계는 이렇게 정합니다</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 24%;">순서</th>
+            <th style="width: 76%;">하는 일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>① 헬리코박터균 확인</th>
+            <td>아직 검사하지 않았다면 <strong>헬리코박터균 검사를 먼저</strong> 확인하고, 있으면 <strong>제균 치료</strong>를 합니다.</td>
+          </tr>
+          <tr>
+            <th><img data-asset="hi-filled-blister-pills_round_x1" src="../../../shared/assets/healthicons/filled/medications/blister-pills_round_x1.svg" class="icon-sm" alt="위장약">② 위장약 반응 보기</th>
+            <td><strong>약을 써 보며 증상 변화를 확인합니다.</strong> 먹다 말다 하지 말고 처방대로 끝까지 복용한 뒤 진료 때 경과를 알려 주세요. 며칠 먹고 좋아졌다는 이유만으로 다른 병이 없다고 확정할 수는 없습니다.</td>
+          </tr>
+          <tr>
+            <th>③ 안 좋아지면</th>
+            <td>다른 약이나 검사를 다시 상의합니다(필요하면 초음파·CT). 위험 신호가 있으면 먼저 알려주세요.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-hot-meal" src="../../../shared/assets/healthicons/filled/nutrition/hot-meal.svg" class="icon-sm" alt="식사">지금 식사 · 생활습관</h2>
+      <div class="key-grid">
+        <figure class="fig-slot" id="fd-meal-figure">
+          <img src="../../../shared/assets/generated/functional-dyspepsia-small-meal-20260927.jpg"
+               alt="식탁에 앉아 쌀죽을 천천히 조금씩 먹는 중년 성인과 두부·삶은 감자 반찬">
+          <figcaption class="fig-caption">불편할 때는 부드러운 음식을 천천히, 조금씩</figcaption>
+        </figure>
+        <table class="ge-table">
+          <thead>
+            <tr>
+              <th style="width: 59%;">식사는 이렇게</th>
+              <th class="th-ok" style="width: 41%;">습관은 이렇게</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <ul class="table-list">
+                  <li>증상이 심한 동안에는 잡곡·생야채·샐러드·과일·밀가루처럼 <strong>몸에 좋은 음식도 더부룩함을 키울&nbsp;수&nbsp;있으니</strong> 잠시 줄여 보세요.</li>
+                  <li>불편할 때는 <strong>죽·누룽지·쌀밥·감자·두부</strong>로 위를 쉬게&nbsp;하세요.</li>
+                  <li>불편한 음식은 사람마다 다르니, <strong>드신 음식과 증상을 같이 기록</strong>해 두면 도움이 됩니다.</li>
+                  <li>증상이 가라앉으면 식사 범위를 다시 넓혀 갑니다.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="table-list">
+                  <li>식후엔 가볍게 걷기 — <strong>담즙 역류에도&nbsp;도움</strong></li>
+                  <li>평소 마시던 <strong>커피는 갑자기 끊지</strong> 않습니다.</li>
+                  <li><strong>편두통</strong>이 위장 증상으로 먼저 오기도&nbsp;합니다.</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
     <section>
-      <h2 class="section-heading">위장약을 먼저 먹어 보며 다음 단계를 정합니다</h2>
-      <div class="card card--accent">
-        <div class="card-label card-label--navy">먼저 해보는 것</div>
-        <p>
-          <strong>약을 써 보며 증상 변화를 확인합니다.</strong>
-          안 들으면 그때 초음파·CT를 합니다.
-          다만 며칠 약을 먹고 좋아졌다는 이유만으로 다른 병이 없다고 확정할 수는 없으니,
-          먹다 말다 하지 말고 처방대로 끝까지 복용한 뒤 진료 때 경과를 알려 주세요. 필요하면 헬리코박터균 검사도 함께 고려합니다. 안 좋아지면 다른 약이나 검사를 다시 상의합니다. 위험 신호가 있으면 먼저 알려주세요.
-        </p>
-      </div>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 44%;"><img data-asset="hi-filled-question-circle" src="../../../shared/assets/healthicons/filled/symbols/question-circle.svg" class="icon-sm" alt="오해">자주 나오는 오해</th>
+            <th class="th-ok" style="width: 56%;">바로 알기</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>"양배추·채소는 위에 좋으니 많이 먹을수록 좋다"</th>
+            <td>건강식이라도 지금은 증상을 키울 수 있습니다.</td>
+          </tr>
+          <tr>
+            <th>"초음파로 췌장을 다 볼 수 있다"</th>
+            <td>초음파 한 번으로 췌장 문제를 모두 배제할 수 없습니다. 필요하면 CT를 봅니다.</td>
+          </tr>
+          <tr>
+            <th>"더부룩하면 내시경·초음파를 바로 다 해봐야 안심"</th>
+            <td>필요한 검사는 나이·위험 신호·증상 양상에 따라 다릅니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2 class="section-heading">지금 식사 · 생활습관</h2>
-      <div class="body-2col">
-        <div class="card">
-          <div class="card-label card-label--navy">식사는 이렇게</div>
-          <ul class="card-list fd-list">
-            <li>잡곡·생야채·샐러드·과일·밀가루는 몸에 좋아도 지금은 소화가 안 됩니다.</li>
-            <li>죽·누룽지·쌀밥·감자·두부로 위를 쉬게 하세요.</li>
-            <li>어떤 음식이 불편한지는 사람마다 다르니, 드신 음식과 증상을 같이 기록해 두면 도움이 됩니다.</li>
-            <li>증상이 가라앉으면 식사 범위를 다시 넓혀 갑니다.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-label card-label--navy">습관은 이렇게</div>
-          <div class="checklist">
-            <div class="checklist__item">
-              <div class="checklist__num">1</div>
-              <div class="checklist__text">식후엔 가볍게 걷기 — <strong>담즙 역류에도 도움</strong></div>
-            </div>
-            <div class="checklist__item">
-              <div class="checklist__num">2</div>
-              <div class="checklist__text">처방약은 먹다 말다 하지 말고 <strong>끝까지 복용</strong>합니다.</div>
-            </div>
-            <div class="checklist__item">
-              <div class="checklist__num">3</div>
-              <div class="checklist__text">평소 마시던 <strong>커피는 갑자기 끊지</strong> 않습니다.</div>
-            </div>
-            <div class="checklist__item">
-              <div class="checklist__num">4</div>
-              <div class="checklist__text"><strong>편두통</strong>이 위장 증상으로 먼저 오기도 합니다.</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th class="th-er" style="width: 27%;"><img data-asset="hi-filled-ambulance" src="../../../shared/assets/healthicons/filled/vehicles/ambulance.svg" class="icon-sm" alt="응급">바로 응급실로</th>
+            <th style="width: 73%;"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="위험 신호">며칠 더 지켜보지 말고 진료받으세요</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong class="danger">피를 토하거나 검은 변</strong>을 볼 때</td>
+            <td>삼키기 점점 어려워짐 · 반복되거나 계속되는 구토 · 원인 모를 체중 감소 · 덩어리가 만져짐 · 황달 · 치료해도 계속 나빠짐. <strong>위암 가족력</strong>, 최근 <strong>진통소염제·항혈전제</strong> 사용도 꼭 알려주세요. 국내 지침은 일정 연령 이상에서 새로 생긴 소화불량에는 내시경을 먼저 권합니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <div class="body-2col">
-        <div class="card">
-          <div class="card-label card-label--navy">자주 나오는 오해</div>
-          <ul class="card-list fd-myth">
-            <li><strong>"양배추·채소는 위에 좋으니 많이 먹을수록 좋다"</strong> → 건강식이라도 지금은 증상을 키울 수 있습니다.</li>
-            <li><strong>"초음파로 췌장을 다 볼 수 있다"</strong> → 초음파 한 번으로 췌장 문제를 모두 배제할 수 없습니다. 필요하면 CT를 봅니다.</li>
-            <li><strong>"더부룩하면 내시경·초음파를 바로 다 해봐야 안심"</strong> → 필요한 검사는 나이·위험 신호·증상 양상에 따라 다릅니다.</li>
-          </ul>
-        </div>
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">RED FLAGS · 미루지 말고 진료</div>
-          <p>
-            삼키기 점점 어려워짐 · 반복되거나 계속되는 구토 · 원인 모를 체중 감소가 있으면
-            며칠 더 지켜보지 말고 진료받으세요. <strong>피를 토하거나 검은 변을 보면 응급실로 가세요.</strong> <strong>위암 가족력</strong>, 최근 <strong>진통소염제·항혈전제</strong> 사용도 꼭 알려주세요.
-            국내 지침은 일정 연령 이상에서 새로 생긴 소화불량에는 내시경을 먼저 권합니다. 치료해도 계속 나빠지면 다시 진료받으세요. 덩어리가 만져지거나 황달이 있어도 마찬가지입니다.
-          </p>
-        </div>
-      </div>
+      <div class="link-row"><img data-asset="hi-filled-gastroenterology" src="../../../shared/assets/healthicons/filled/specialties/gastroenterology.svg" class="icon-sm" alt="관련 자료"><span><strong>약을 끊으면 다시 불편해질 때</strong> 진료실 설명 슬라이드 <span class="url">edu.gwanggyobarun.com/decks/gi/refractory-dyspepsia/</span><br><strong>위에 좋다는 영양제가 궁금하면</strong> <span class="url">edu.gwanggyobarun.com/handouts/gi/stomach-supplements-evidence/</span></span></div>
     </section>
 
   </main>

@@ -19,16 +19,68 @@
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
 
   <style>
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
     .page {
-      gap: 4mm;
+      padding: 9.5mm 12.5mm 6.5mm;
+      gap: 2.5mm;
+    }
+    .icon-sm {
+      width: 4.4mm;
+      height: 4.4mm;
+      vertical-align: -1mm;
+      margin-right: 1.2mm;
+    }
+    .pair-links {
+      font-size: 7.4pt;
+      line-height: 1.35;
+      color: var(--color-slate);
+    }
+    .pair-links strong { color: var(--color-navy); }
+    .pair-links .nw { white-space: nowrap; }
+    .page__footer {
+      padding-top: 1.8mm;
+    }
+    /* ③ 누적 노출 그림 슬롯 (3:2 고정) */
+    .early-figure {
+      width: 45mm;
+      height: 30mm;
+      margin: 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      overflow: hidden;
+      position: relative;
+      align-self: center;
+    }
+    .early-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .early-figure__cap {
+      position: absolute;
+      left: 1.2mm;
+      right: 1.2mm;
+      bottom: 1.2mm;
+      padding: 0.5mm 1.2mm;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 3px;
+      font-size: 6.8pt;
+      line-height: 1.2;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
     }
     .ldl-body {
-      gap: 2.1mm;
+      gap: 1.7mm;
       justify-content: start;
     }
     .ldl-body > section {
       flex: 0 0 auto;
-      gap: 1.6mm;
+      gap: 1.2mm;
     }
     .ldl-body .section-heading {
       margin-bottom: 0;
@@ -38,8 +90,8 @@
     .ldl-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 8.8pt;
-      line-height: 1.35;
+      font-size: 8.3pt;
+      line-height: 1.32;
     }
     .ldl-table th {
       background: var(--color-navy);
@@ -115,15 +167,15 @@
     /* ② LDL vs 중성지방 */
     .compare-grid {
       display: grid;
-      grid-template-columns: 1.75fr 1fr;
+      grid-template-columns: 1.5fr 1fr;
       gap: 4mm;
       align-items: stretch;
     }
-    .compare-table th:first-child { width: 21%; }
-    .compare-table th:nth-child(2) { width: 42%; }
+    .compare-table th:first-child { width: 20%; }
+    .compare-table th:nth-child(2) { width: 47%; }
     .compare-note {
-      font-size: 8.6pt;
-      line-height: 1.45;
+      font-size: 8.3pt;
+      line-height: 1.4;
       padding: 2.4mm 3.4mm;
     }
     .compare-note strong { color: var(--color-navy); }
@@ -131,24 +183,31 @@
     /* ③ 일찍·꾸준히 */
     .early-grid {
       display: grid;
-      grid-template-columns: 1fr 0.92fr 1.3fr;
+      grid-template-columns: 47mm 45mm 1fr;
+      align-items: center;
       gap: 3mm;
-      gap: 4mm;
       align-items: stretch;
     }
     .early-card { padding: 2.4mm 3.4mm; }
     .early-list {
-      font-size: 8.8pt;
-      line-height: 1.5;
+      font-size: 8.3pt;
+      line-height: 1.4;
     }
     .early-list li + li { margin-top: 0.8mm; }
     .glasses {
-      padding: 2.4mm 3.4mm;
-      font-size: 8.8pt;
-      line-height: 1.5;
+      padding: 1.6mm 3.2mm;
+      font-size: 8.3pt;
+      line-height: 1.4;
+    }
+    .glasses .card-label { margin-bottom: 0.6mm; }
+    .glasses__body {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 4mm;
+      align-items: center;
     }
     .glasses__quote {
-      font-size: 10.4pt;
+      font-size: 9.4pt;
       font-weight: var(--weight-semibold);
       color: var(--color-navy);
       line-height: 1.35;
@@ -156,7 +215,7 @@
     }
 
     /* ③-a 누적 노출 개념도 (AUC) */
-    .auc-fig { margin: 0; padding: 1.6mm 2mm 1mm; }
+    .auc-fig { margin: 0; padding: 1.2mm 1.6mm 0.8mm; align-self: center; }
     .auc-fig .auc-t { font-size: 13px; font-weight: 600; fill: var(--color-ink); }
     .auc-fig .auc-h { font-size: 11px; font-weight: 600; fill: var(--color-slate); }
     .auc-fig .auc-x { font-size: 11px; fill: var(--color-slate); }
@@ -175,7 +234,7 @@
     /* ④ 커피·식단 */
     .alert-strip {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1.45fr 1fr 1fr;
       gap: 3mm;
     }
     .alert-tile {
@@ -198,7 +257,7 @@
       margin-bottom: 0.8mm;
     }
     .alert-tile__title {
-      font-size: 10.4pt;
+      font-size: 9.6pt;
       font-weight: var(--weight-semibold);
       color: var(--color-navy);
       line-height: 1.2;
@@ -237,22 +296,22 @@
 
     <!-- ① 위험도별 목표 -->
     <section>
-      <h2 class="section-heading">목표는 위험도에 따라 다릅니다 (My LDL Target)</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-risk-analysis" src="../../../shared/assets/healthicons/filled/symbols/risk-analysis.svg" class="icon-sm" alt="위험도">목표는 위험도에 따라 다릅니다</h2>
       <div class="target-grid">
         <table class="ldl-table target-table">
           <tr><th>나의 상황</th><th style="text-align:right">LDL 목표</th></tr>
           <tr><td><span class="risk-bar"></span>저위험 (위험인자 0~1개)</td><td class="target-val">160 <small>mg/dL 미만</small></td></tr>
           <tr><td><span class="risk-bar risk-bar--2"></span>위험인자 2개 이상</td><td class="target-val">130 <small>mg/dL 미만</small></td></tr>
-          <tr><td><span class="risk-bar risk-bar--3"></span>당뇨 (10년 미만·위험인자 없음)</td><td class="target-val">100 <small>mg/dL 미만</small></td></tr>
-          <tr class="is-high"><td><span class="risk-bar risk-bar--4"></span>당뇨 (10년 이상·위험인자·합병증)</td><td class="target-val">70 <small>mg/dL 미만</small></td></tr>
+          <tr><td><span class="risk-bar risk-bar--3"></span>당뇨 (10년 미만 · 위험인자·합병증 없음)</td><td class="target-val">100 <small>mg/dL 미만</small></td></tr>
+          <tr class="is-high"><td><span class="risk-bar risk-bar--4"></span>당뇨 (10년 이상, 또는 위험인자·합병증 중 하나라도)</td><td class="target-val">70 <small>mg/dL 미만</small></td></tr>
           <tr class="is-high"><td><span class="risk-bar risk-bar--4"></span>경동맥 플라크* · 뇌졸중(뇌경색) 과거력* · 일과성 허혈발작(TIA)*</td><td class="target-val">70 <small>mg/dL 미만</small></td></tr>
-          <tr class="is-high"><td><span class="risk-bar risk-bar--5"></span>스텐트 · 심근경색</td><td class="target-val">55 <small>mg/dL 미만</small></td></tr>
+          <tr class="is-high"><td><span class="risk-bar risk-bar--5"></span>스텐트 · 심근경색 <small>(+ 치료 전보다 50% 이상 감소)</small></td><td class="target-val">55 <small>mg/dL 미만</small></td></tr>
         </table>
         <div class="card card--navy mytarget">
           <div>
             <div class="card-label">검진 '정상' ≠ 내 목표 · NOTE</div>
             <div class="mytarget__lead">검진표의 <strong>'정상'</strong>으로 보이는 수치도 <strong>내 치료 목표보다는 높을 수 있습니다.</strong> 위험이 높을수록 목표를 더 낮게&nbsp;잡습니다.</div>
-            <div class="mytarget__foot">* 경동맥 플라크는 좁아진 정도와 전체 위험도를, 뇌경색·TIA는 원인(동맥경화 동반 여부)을 확인해 목표를 정합니다. 해당 고위험군에서는 치료 전보다 LDL을 50% 이상 낮추는 것도 함께 목표로 합니다.</div>
+            <div class="mytarget__foot">* 경동맥 플라크는 좁아진 정도와 전체 위험도를, 뇌경색·TIA는 원인(동맥경화 동반 여부)을 확인해 목표를 정합니다. 스텐트·심근경색은 55 미만과 함께 치료 전보다 LDL을 50% 이상 낮추는 것을 목표로 하며, 해당 고위험군에서도 50% 이상 감소를 함께&nbsp;봅니다.</div>
           </div>
         </div>
       </div>
@@ -260,22 +319,22 @@
 
     <!-- ② 간의 콜레스테롤 생성·처리 능력 -->
     <section>
-      <h2 class="section-heading">LDL은 간의 콜레스테롤 생성·처리 능력(유전적 요인)이 크게 좌우합니다 (Why Diet Alone Isn't Enough)</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-liver" src="../../../shared/assets/healthicons/filled/body/liver.svg" class="icon-sm" alt="간">LDL은 간의 콜레스테롤 생성·처리 능력(유전적 요인)이 크게 좌우합니다</h2>
       <div class="compare-grid">
         <table class="ldl-table compare-table">
           <tr><th></th><th>LDL (나쁜 콜레스테롤)</th><th>중성지방</th></tr>
           <tr><td><strong>주로 정하는 것</strong></td><td>음식보다 <strong>간의 생성·처리 능력</strong></td><td>식사 · 술 · 체중</td></tr>
-          <tr><td><strong>운동·식사만으로</strong></td><td>잘 안 떨어집니다</td><td>생활습관에 잘 반응합니다</td></tr>
+          <tr><td><strong>식사요법</strong></td><td>모두에게 <strong>기본 치료</strong> — 다만 식사만으로는 목표에 못&nbsp;미치는&nbsp;경우가&nbsp;많습니다</td><td>생활습관에 잘 반응합니다</td></tr>
         </table>
         <div class="card card--accent compare-note">
-          식사를 잘 지켜도 목표에 못 미치면 <strong>약이 필요합니다</strong> — 노력 부족 탓만이 아니라, <strong>유전적 요인 등으로</strong> 식사만으로는 잘 안 떨어질 수 있습니다. 포화지방 줄이기는 <strong>약과 함께</strong> 계속합니다.
+          식사요법(포화지방 줄이기)은 모두에게 <strong>기본 치료</strong>이고 <strong>약과 함께 계속</strong>합니다. 다만 LDL은 <strong>간의 생성·처리 능력(유전 영향)</strong>이 커서 식사만으로는 목표에 못 미치는 경우가 많습니다 — 이때 <strong>약이&nbsp;필요합니다</strong>.
         </div>
       </div>
     </section>
 
     <!-- ③ 일찍, 꾸준히 -->
     <section>
-      <h2 class="section-heading">일찍, 꾸준히 — 위험은 '누적 노출'이 정합니다 (Earlier is Better)</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-blood-vessel" src="../../../shared/assets/healthicons/filled/body/blood-vessel.svg" class="icon-sm" alt="혈관">일찍, 꾸준히 — 위험은 '누적 노출'이 정합니다</h2>
       <div class="early-grid">
         <figure class="trend-chart auc-fig">
 <svg viewBox="0 0 320 232" role="img" aria-label="LDL 누적 노출 개념도: 계속 높은 사람의 곡선 아래 면적이 가장 크고, 일찍부터 꾸준히 치료한 사람이 가장 작으며, 약을 먹다 말다 한 사람은 그 중간입니다." xmlns="http://www.w3.org/2000/svg">
@@ -307,38 +366,41 @@
 <text x="10" y="229" class="auc-note">개념도입니다 — 실제 수치나 위험 비율이 아닙니다.</text>
 </svg>
         </figure>
-        <div class="card early-card">
-          <ul class="card-list early-list">
-            <li><strong>2026 ACC/AHA 가이드라인</strong>의 메시지 — <strong>"Earlier is better"</strong></li>
-            <li>위험은 <strong>LDL 곡선 아래 면적(누적 노출)</strong>이 정합니다. 얼마나 높았는지 × 얼마나 오래였는지입니다.</li>
-            <li><strong>일찍 시작할수록</strong> 그 이득이 오래 이어질&nbsp;수&nbsp;있습니다(레거시&nbsp;효과).</li>
-          </ul>
-        </div>
-        <div class="card card--accent glasses">
-          <div class="card-label card-label--navy" style="margin-bottom:1mm">약을 끊으면? · STOPPING</div>
+        <figure class="early-figure">
+          <img src="../../../shared/assets/generated/ldl-target-by-risk-early-20260927.jpg" alt="LDL 입자가 오랜 기간 혈관벽 안으로 스며들어 쌓이며 동맥이 좁아지는 모습의 일러스트">
+          <figcaption class="early-figure__cap">오래 높을수록 혈관벽에 쌓입니다</figcaption>
+        </figure>
+          <div class="card early-card">
+            <ul class="card-list early-list">
+              <li><strong>2026 미국심장학회(ACC/AHA) 가이드라인</strong>의 메시지 — <strong>"일찍 시작할수록&nbsp;좋다"</strong></li>
+              <li>위험은 <strong>LDL 곡선 아래 면적(누적 노출)</strong>이 정합니다. 얼마나 높았는지 × 얼마나 오래였는지입니다.</li>
+              <li><strong>일찍 시작할수록</strong> 그 이득이 오래 이어질&nbsp;수&nbsp;있습니다(레거시&nbsp;효과).</li>
+            </ul>
+          </div>
+      </div>
+      <div class="card card--accent glasses">
+        <div class="card-label card-label--navy"><img data-asset="hi-filled-pills-2" src="../../../shared/assets/healthicons/filled/medications/pills-2.svg" class="icon-sm" alt="약">약을 끊으면?</div>
+        <div class="glasses__body">
           <div class="glasses__quote">"나빠지는" 게 아니라 다시 올라갈 뿐입니다.<br>안경을 벗으면 다시 흐려지는 것과 같습니다.</div>
-          좋아진 수치는 약이 일하는 중이라는 뜻입니다. 끊으면 올라간 기간만큼 <strong>누적 노출이 다시 쌓입니다.</strong>
+          <div class="glasses__text">좋아진 수치는 약이 일하는 중이라는 뜻입니다. 끊으면 올라간 기간만큼 <strong>누적 노출이 다시 쌓입니다.</strong></div>
         </div>
       </div>
     </section>
 
     <!-- ④ 커피·식단 -->
     <section>
-      <h2 class="section-heading">커피와 식단도 LDL을 움직입니다 (Coffee &amp; Diet)</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-hot-meal" src="../../../shared/assets/healthicons/filled/nutrition/hot-meal.svg" class="icon-sm" alt="식사">커피와 식단도 LDL을 움직입니다</h2>
       <div class="alert-strip">
         <div class="alert-tile alert-tile--danger">
-          <div class="alert-tile__kicker">ESPRESSO</div>
           <div class="alert-tile__title">아메리카노 · 라떼</div>
-          <div class="alert-tile__text">에스프레소 커피는 <strong>크레마가 LDL을 올립니다.</strong></div>
+          <div class="alert-tile__text">에스프레소처럼 종이필터를 거치지 않은 커피에는 <strong>LDL을 올리는 기름 성분(카페스톨)</strong>이 남아 있습니다.</div>
         </div>
         <div class="alert-tile">
-          <div class="alert-tile__kicker">INSTANT · PAPER FILTER</div>
           <div class="alert-tile__title">믹스커피 · 종이필터 드립</div>
           <div class="alert-tile__text">LDL 면에서는 <strong>괜찮습니다.</strong></div>
         </div>
         <div class="alert-tile alert-tile--danger">
-          <div class="alert-tile__kicker">LOW-CARB HIGH-FAT</div>
-          <div class="alert-tile__title">저탄고지</div>
+          <div class="alert-tile__title"><img data-asset="hi-filled-unhealthy-food" src="../../../shared/assets/healthicons/filled/nutrition/unhealthy-food.svg" class="icon-sm" alt="기름진 음식">저탄고지</div>
           <div class="alert-tile__text">LDL에는 <strong>가장 나쁜 식단</strong>입니다.</div>
         </div>
       </div>
@@ -346,15 +408,16 @@
 
     <!-- ⑤ 흔한 오해 -->
     <section>
-      <h2 class="section-heading">흔한 오해 vs 사실 (Common Myths)</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-question-circle" src="../../../shared/assets/healthicons/filled/symbols/question-circle.svg" class="icon-sm" alt="질문">흔한 오해 vs 사실</h2>
       <table class="ldl-table myth-table">
         <tr><th>자주 듣는 오해 · MYTH</th><th>바로잡기 · FACT</th></tr>
         <tr><td>"콜레스테롤은 몸에 꼭 필요하니 너무 낮추면 안 된다"</td><td>몸에 필요한 콜레스테롤은 <strong>세포가 스스로 만듭니다.</strong></td></tr>
-        <tr><td>"수치가 좋아지면 끊어도 된다"</td><td>좋아진 건 <strong>약 덕분</strong>입니다. 끊으면 다시 올라갑니다.</td></tr>
         <tr><td>"러닝하면 고기 먹어도 된다"</td><td>운동으로 LDL은 크게 안 내려갑니다. <strong>포화지방은 여전히 LDL을 올립니다.</strong></td></tr>
         <tr><td>"오메가3로 LDL을 잡는다"</td><td>오메가3는 중성지방을 일부 낮추고 항염증 효과가 있지만, <strong>LDL을 낮추지는 못합니다.</strong></td></tr>
       </table>
     </section>
+
+    <div class="pair-links"><strong>함께 보기</strong> — 진료실 설명 슬라이드: <span class="nw">edu.gwanggyobarun.com/decks/endocrine/dyslipidemia/</span> · 스타틴 강도 표: <span class="nw">edu.gwanggyobarun.com/handouts/medication/statin-ldl-strength/</span> · 식단: <span class="nw">edu.gwanggyobarun.com/handouts/lifestyle/dyslipidemia-diet/</span></div>
 
   </main>
 
@@ -362,8 +425,8 @@
   <footer class="page__footer">
     <div class="page__footer-info">
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
-      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
-      <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
+      <div class="clinic-meta">경기도 용인시 수지구 광교중앙로 298, 4층 402-404호 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">평일 08:30~18:30 (점심 13:00~14:00) · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
       <div class="clinic-meta">근거 — 한국지질·동맥경화학회 이상지질혈증 진료지침 제5판(2022) · 2026 ACC/AHA/Multisociety Dyslipidemia Guideline · EAS Consensus (Eur Heart J 2017) · LDL 누적 노출 (JACC 2020 · Nat Rev Cardiol 2024) · 커피 디테르펜 (Nutr J 2011) · 저탄고지 (Nutrients 2021)</div>
       <div class="disclaimer">본 자료는 일반 안내입니다. 개인별 LDL 목표와 약 조정은 위험도와 검사 결과를 보고 진료실에서 정하며, 약은 임의로 끊지 마시고 상의해 주세요.</div>
     </div>

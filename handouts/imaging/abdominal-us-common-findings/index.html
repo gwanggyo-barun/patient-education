@@ -16,6 +16,205 @@
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
+  <style>
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page__body {
+      gap: 2.3mm;
+    }
+    .page__body > section {
+      gap: 1mm;
+    }
+    .page__title .title-sub {
+      font-weight: 500;
+      font-size: 0.56em;
+      color: var(--color-ink-soft);
+    }
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -0.9mm;
+      margin-right: 1.2mm;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5mm;
+    }
+
+    /* 표 공통 스타일 (H10 본보기와 같은 표) */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.1pt;
+      line-height: 1.38;
+      color: var(--color-ink-soft);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.1mm 2mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .ge-table thead th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.5pt;
+    }
+    .ge-table thead th.th-ok {
+      background: var(--color-navy-mid);
+    }
+    .ge-table thead th.th-no,
+    .ge-table thead th.th-er {
+      background: var(--color-danger);
+    }
+    .ge-table thead th.th-soft {
+      background: var(--color-steel-deep);
+    }
+    .ge-table tbody th {
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      font-weight: var(--weight-semibold);
+      font-size: 8.3pt;
+      vertical-align: middle;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table td strong.danger {
+      color: var(--color-danger);
+    }
+    .table-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8mm;
+      font-size: 8.1pt;
+      line-height: 1.38;
+    }
+    .table-list li {
+      position: relative;
+      padding-left: 2.8mm;
+    }
+    .table-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-steel);
+      font-weight: bold;
+    }
+
+    /* 그림 + 옆 칸 */
+    .key-grid {
+      display: grid;
+      grid-template-columns: 60mm 1fr;
+      gap: 3.2mm;
+      align-items: stretch;
+    }
+    .fig-slot {
+      margin: 0;
+      width: 60mm;
+      height: 45mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .fig-slot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .fig-caption {
+      position: absolute;
+      left: 1.5mm;
+      right: 1.5mm;
+      bottom: 1.5mm;
+      padding: 0.8mm 1.2mm;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 3px;
+      font-size: 7.2pt;
+      line-height: 1.25;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+      border: 1px solid rgba(0, 51, 102, 0.15);
+    }
+    .side-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6mm;
+    }
+    .side-text p {
+      margin: 0;
+    }
+    .side-text strong {
+      color: var(--color-navy);
+    }
+
+    /* 응급 안내 박스 */
+    .warning-box {
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
+      border-radius: var(--radius-sm);
+      padding: 2.2mm 3.2mm;
+    }
+    .warning-title {
+      font-size: 8.6pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      margin-bottom: 1mm;
+      display: flex;
+      align-items: center;
+    }
+    .warning-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+    }
+    .warning-text strong {
+      color: var(--color-danger);
+    }
+
+    /* 짝 자료 안내 한 줄 */
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 1.6mm;
+      font-size: 8pt;
+      line-height: 1.4;
+      color: var(--color-ink-soft);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--radius-sm);
+      padding: 1.4mm 2.4mm;
+      background: var(--color-canvas-warm);
+    }
+    .link-row strong {
+      color: var(--color-navy);
+    }
+    .link-row .url {
+      white-space: nowrap;
+      color: var(--color-steel-deep);
+      font-weight: var(--weight-semibold);
+    }
+    .nb { white-space: nowrap; }
+  </style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
@@ -35,82 +234,107 @@
   <main class="page__body">
 
     <section>
-      <h2 class="section-heading">간 물혹과 콩팥 물혹</h2>
-      <div class="body-2col">
-        <div class="card">
-          <div class="card-label card-label--steel">간 물혹 — 단순 물혹은 임상적으로 의미가 크지 않습니다</div>
-          <ul class="card-list">
-            <li>간의 단순 물혹은 흔히 발견되며, <strong>임상적으로 의미가 크지 않아</strong> 증상이 없으면 치료 없이 지켜봅니다.</li>
-            <li>벽이 두껍거나 모양이 애매하면 추가 영상검사를 상담합니다.</li>
-          </ul>
-        </div>
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">콩팥 물혹 — 단순 물혹은 위험도가 높지 않습니다</div>
-          <ul class="card-list">
-            <li>단순 물혹은 <strong>위험도가 높지 않습니다</strong>. 다만 <strong>격벽(물혹 안의 칸막이)·벽 두께·조영증강 부분</strong>을 보고 <strong>보즈니악(Bosniak) 분류</strong>로 위험도를 나누는 것이 중요합니다.</li>
-            <li>격벽이 보이거나 복잡하면 CT·MRI로 분류를 확인합니다.</li>
-          </ul>
-        </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-liver" src="../../../shared/assets/healthicons/filled/body/liver.svg" class="icon-sm" alt="간">간 물혹과 콩팥 물혹</h2>
+      <div class="key-grid">
+        <figure class="fig-slot" id="us-findings-figure">
+          <img src="../../../shared/assets/generated/abdominal-us-common-findings-organs-20260927.jpg"
+               alt="간과 콩팥에 생긴 맑은 물혹, 담낭 안의 담석을 함께 나타낸 장기 그림">
+          <figcaption class="fig-caption">간·콩팥의 물혹과 담낭 안 담석</figcaption>
+        </figure>
+        <table class="ge-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">소견</th>
+              <th class="th-ok" style="width: 39%;">대부분은</th>
+              <th class="th-soft" style="width: 39%;">더 확인하는 경우</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>간 물혹</th>
+              <td>간의 단순 물혹은 흔히 발견되며, <strong>임상적으로 의미가 크지 않아</strong> 증상이 없으면 치료 없이 지켜봅니다.</td>
+              <td>벽이 두껍거나 모양이 애매하면 추가 영상검사를 상담합니다.</td>
+            </tr>
+            <tr>
+              <th><img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" class="icon-sm" alt="콩팥">콩팥 물혹</th>
+              <td>단순 물혹은 <strong>위험도가 높지 않습니다.</strong></td>
+              <td>물혹 안에 <strong>칸막이</strong>가 있거나 <strong>벽이 두껍거나</strong>, 조영제를 넣고 찍었을 때 <strong>진하게 보이는 부분</strong>이 있으면 CT·MRI로 위험도를 나눕니다(보즈니악 분류).</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
     <section>
-      <h2 class="section-heading">담석 — 증상 없으면 관찰합니다</h2>
-      <div class="body-2col">
-        <div class="card">
-          <div class="card-label card-label--steel">증상이 없을 때</div>
-          <ul class="card-list">
-            <li>증상이 없는 <strong>담낭 담석</strong>은 대부분 바로 수술하지 않고 관찰합니다.</li>
-            <li>담석이 <strong>3cm를 넘으면</strong> 증상이 없어도 수술의 이득과 위험을 상담할 수 있습니다.</li>
-          </ul>
-        </div>
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">통증이 생기면</div>
-          <ul class="card-list">
-            <li>기름진 식사 뒤 <strong>오른쪽 갈비뼈 아래나 명치</strong>가 쥐어짜듯 아프면 외과 진료를 상담하세요.</li>
-            <li>통증이 계속되거나 <strong>열이 함께</strong> 나면 예정된 진료를 기다리지 말고 빨리 오세요.</li>
-          </ul>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-gallbladder" src="../../../shared/assets/healthicons/filled/body/gallbladder.svg" class="icon-sm" alt="담낭">담석 · 담낭용종</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 16%;">소견</th>
+            <th class="th-ok" style="width: 42%;">증상이 없을 때</th>
+            <th class="th-er" style="width: 42%;">이럴 때는</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>담석</th>
+            <td>증상이 없는 <strong>담낭 담석</strong>은 대부분 바로 수술하지 않고 관찰합니다. 담석이 <strong>3cm를 넘으면</strong> 증상이 없어도 수술의 이득과 위험을 상담할 수 있습니다.</td>
+            <td>기름진 식사 뒤 <strong>오른쪽 갈비뼈 아래나 명치</strong>가 쥐어짜듯 아프면 외과 진료를 상담하세요. 통증이 계속되면 예정된 진료를 기다리지 말고 빨리 진료받으세요. <strong class="danger">열이나 황달이 함께 생기면 응급실로 가세요.</strong></td>
+          </tr>
+          <tr>
+            <th>담낭용종</th>
+            <td><strong>크기·모양에 따라 관찰하거나 수술을 상담합니다.</strong> 추적 중 저절로 없어지기도 합니다.</td>
+            <td>크기별 기준은 <span class="nb"><strong>‘담낭 폴립 추적 안내’</strong>를 참고하세요.</span></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2 class="section-heading">담낭용종과 초음파의 한계</h2>
-      <div class="body-2col">
-        <div class="card">
-          <div class="card-label card-label--steel">담낭용종</div>
-          <ul class="card-list">
-            <li><strong>1cm 이상이면 수술</strong>을 상담하고, 작으면 <strong>1년마다</strong> 크기를&nbsp;봅니다.</li>
-            <li>추적 중 저절로 없어지기도 합니다. 크기별 세부 기준은 <strong>‘담낭 폴립 추적 안내’</strong> 유인물에서 자세히 안내합니다.</li>
-          </ul>
-        </div>
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">초음파의 한계</div>
-          <ul class="card-list">
-            <li>복부초음파는 장 속 공기에 가려 <strong>췌장은 일부만</strong> 보일&nbsp;수&nbsp;있습니다.</li>
-            <li>검사 전 <strong>금식</strong>하면 담낭이 잘 펴져 더 정확하게 보입니다.</li>
-          </ul>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-ultrasound-scanner" src="../../../shared/assets/healthicons/filled/devices/ultrasound-scanner.svg" class="icon-sm" alt="초음파">초음파의 한계와 흔한 오해</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 44%;"><img data-asset="hi-filled-question-circle" src="../../../shared/assets/healthicons/filled/symbols/question-circle.svg" class="icon-sm" alt="오해">흔한 오해 · 알아 두기</th>
+            <th class="th-ok" style="width: 56%;">바로 알기</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>“담석이 있으면 무조건 수술해야 한다”</th>
+            <td>증상이 없으면 대부분 관찰합니다.</td>
+          </tr>
+          <tr>
+            <th>“초음파로 복통 원인을 다 알 수 있다”</th>
+            <td>복부초음파는 장 속 공기에 가려 <strong>췌장은 일부만</strong> 보일 수 있어, 필요하면 <span class="nb">다른 검사를 함께 봅니다.</span></td>
+          </tr>
+          <tr>
+            <th>알아 두기 — 검사 전 금식</th>
+            <td>검사 전 <strong>금식</strong>하면 담낭이 잘 펴져 더 정확하게 보입니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <div class="body-2col">
-        <div class="card card--warning">
-          <div class="card-label card-label--warning">흔한 오해</div>
-          <ul class="card-list">
-            <li><strong>“담석이 있으면 무조건 수술해야 한다”</strong> → 증상이 없으면 대부분 관찰합니다.</li>
-            <li><strong>“초음파로 복통 원인을 다 알 수 있다”</strong> → 장 속 공기에 가려 일부만 보일 수 있어, 필요하면 다른 검사를 함께 봅니다.</li>
-          </ul>
-        </div>
-        <div class="card card--navy">
-          <div class="card-label">빨리 진료가 필요한 경우</div>
-          <ul class="card-list">
-            <li>오른쪽 윗배 통증이 계속될 때 — <strong>열이나 황달</strong>이 함께 생기면 응급실로</li>
-            <li>콩팥 물혹이 있는 분에서 <strong>혈뇨, 발열, 새로 생긴 옆구리 통증</strong>이 있을 때</li>
-          </ul>
-        </div>
-      </div>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th class="th-er" style="width: 50%;"><img data-asset="hi-filled-ambulance" src="../../../shared/assets/healthicons/filled/vehicles/ambulance.svg" class="icon-sm" alt="응급">응급실로</th>
+            <th style="width: 50%;"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="진료">빨리 진료가 필요한 경우</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>오른쪽 윗배 통증이 계속되면서 <strong class="danger">열이나 황달</strong>이 함께 생길 때</td>
+            <td>콩팥 물혹이 있는 분에서 <strong>혈뇨, 발열, 새로 생긴 옆구리 통증</strong>이 있을 때</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="link-row"><img data-asset="hi-filled-sonography" src="../../../shared/assets/healthicons/filled/specialties/sonography.svg" class="icon-sm" alt="관련 안내문"><span><strong>담낭 폴립 추적 안내</strong> <span class="url">edu.gwanggyobarun.com/handouts/gi/gallbladder-polyp-followup/</span><br><strong>검사 전 준비 안내</strong> <span class="url">edu.gwanggyobarun.com/handouts/imaging/abdominal-ultrasound-prep/</span></span></div>
     </section>
 
   </main>

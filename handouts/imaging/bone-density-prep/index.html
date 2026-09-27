@@ -17,91 +17,47 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    .bone-density-body {
-      gap: 3.2mm;
-      justify-content: start;
-    }
-    .bone-density-body > section {
-      flex: 0 0 auto;
-      gap: 1.6mm;
-    }
-    .bone-density-body .section-heading {
-      margin-bottom: 1mm;
-    }
-    .visual-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3mm;
-    }
-    .image-panel {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background: #FFFFFF;
-    }
-    .image-panel img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: contain;
-      padding: 1.5mm;
-    }
-    .image-panel--pose,
-    .image-panel--sites {
-      height: 44mm;
-    }
-    .image-label {
-      position: absolute;
-      left: 2.5mm;
-      bottom: 2.5mm;
-      padding: 1mm 2.4mm;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.95);
-      color: var(--color-navy);
-      font-size: 7.6pt;
-      font-weight: var(--weight-semibold);
-      box-shadow: var(--shadow-soft);
-    }
-    .compact-card {
-      padding: 3.2mm 4mm;
-    }
-    .compact-card .card-label {
-      margin-bottom: 1.4mm;
-    }
-    .compact-card .card-list {
-      font-size: 8.8pt;
-      line-height: 1.48;
-    }
-    .tscore-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3mm;
-      align-items: stretch;
-    }
-    .tscore-card {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5mm;
-    }
-    .tscore-curve {
-      height: 28mm;
-      background: #FFFFFF;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-    }
-    .tscore-curve img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      padding: 1.5mm;
-      display: block;
-    }
-    .tscore-list {
-      font-size: 8.8pt;
-      line-height: 1.5;
-    }
+    body { font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif; }
+    .page__body { gap: 2.8mm; justify-content: flex-start; }
+    .page__body > section { flex: 0 0 auto; gap: 1.2mm; }
+    .icon-sm { width: 4.6mm; height: 4.6mm; vertical-align: -0.9mm; margin-right: 1.2mm; flex-shrink: 0; }
+    .section-heading { display: flex; align-items: center; margin-bottom: 0.6mm; }
+    .ge-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 8.3pt; line-height: 1.4; color: var(--color-ink-soft); border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; background: var(--color-canvas); }
+    .ge-table th, .ge-table td { border: 1px solid var(--color-border); padding: 1.3mm 2.2mm; vertical-align: top; text-align: left; }
+    .ge-table thead th { background: var(--color-navy); color: #FFFFFF; font-weight: var(--weight-semibold); font-size: 8.4pt; }
+    .ge-table thead th.th-ok { background: var(--color-navy-mid); }
+    .ge-table thead th.th-no { background: var(--color-danger); }
+    .ge-table thead th .icon-sm { filter: brightness(0) invert(1); }
+    .ge-table td strong { color: var(--color-navy); }
+    .ge-table tbody th { color: var(--color-navy); background: var(--color-canvas-warm); font-weight: var(--weight-semibold); font-size: 8.3pt; vertical-align: middle; }
+    .table-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.9mm; font-size: 8.3pt; line-height: 1.38; }
+    .table-list li { position: relative; padding-left: 2.8mm; }
+    .table-list li::before { content: "•"; position: absolute; left: 0; color: var(--color-steel); font-weight: bold; }
+    .fig-grid { display: grid; grid-template-columns: 64mm 1fr; gap: 3mm; align-items: stretch; }
+    .fig-grid .ge-table td, .fig-grid .ge-table tbody th { vertical-align: middle; }
+    .fig-box { margin: 0; width: 64mm; height: 48mm; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-canvas-warm); overflow: hidden; position: relative; }
+    .fig-box img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .fig-cap { position: absolute; left: 1.5mm; right: 1.5mm; bottom: 1.5mm; padding: 0.8mm 1.2mm; background: rgba(255,255,255,0.92); border-radius: 3px; font-size: 7.4pt; line-height: 1.25; color: var(--color-navy); font-weight: var(--weight-semibold); text-align: center; border: 1px solid rgba(0,51,102,0.15); }
+    .stats-2x2 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2mm; }
+    .stats-2x2 .stat-cell { padding: 1.8mm 2mm; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+    .stats-2x2 .stat-cell__label { margin-bottom: 0.8mm; }
+    .stats-2x2 .stat-cell__value { font-size: 14pt; line-height: 1; }
+    .stats-2x2 .stat-cell__unit { margin-top: 0.8mm; font-size: 7.8pt; }
+    .note-line { font-size: 8.2pt; line-height: 1.4; color: var(--color-slate); margin-top: 0.4mm; }
+    .note-line strong { color: var(--color-navy); }
+    .see-also { font-size: 8.2pt; line-height: 1.4; color: var(--color-navy); border-top: 1px dashed var(--color-border); padding-top: 1.2mm; }
+    .see-also strong { font-weight: var(--weight-semibold); }
+    .warning-box { border: 1px solid var(--color-warning-border); border-left: 4px solid var(--color-warning); background: var(--color-warning-bg); border-radius: var(--radius-sm); padding: 2.2mm 3.2mm; }
+    .warning-title { font-size: 8.8pt; font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: 0.8mm; display: flex; align-items: center; }
+    .warning-text { font-size: 8.4pt; line-height: 1.45; color: var(--color-ink); }
+    .warning-text strong { color: var(--color-danger); }
+    .warning-box .table-list { font-size: 8.4pt; }
+    .info-box { border: 1px solid var(--color-border); border-left: 4px solid var(--color-navy); background: var(--color-canvas-warm); border-radius: var(--radius-sm); padding: 2.2mm 3.2mm; }
+    .info-box .warning-text strong { color: var(--color-navy); }
+    .bd-grid { display: grid; grid-template-columns: 70mm 1fr; gap: 3mm; align-items: start; }
+    .bd-card { padding: 2mm 3mm; }
+    .bd-card .card-label { display: flex; align-items: center; }
+
   </style>
 <!-- seo:geo2 --><meta name="description" content="DEXA 골밀도 검사 측정 부위, 검사 자세, T-score 결과 해석, 검사 전·당일 준비를 한 장으로 정리했습니다.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/handouts/imaging/bone-density-prep/">
@@ -118,13 +74,13 @@
 
   <section class="page__title-block">
     <h1 class="page__title">골밀도 검사 안내</h1>
-    <p class="page__subtitle">DEXA 골밀도 검사는 저선량 X-선으로 요추(L1~L4)와 대퇴골 경부의 뼈 강도를 측정해 골다공증을 조기에 진단하는 표준 검사입니다.</p>
+    <p class="page__subtitle">DEXA 골밀도 검사는 적은 양의 X선으로 허리뼈(요추 L1~L4)와 엉덩이뼈(대퇴골 경부)의 뼈 강도를 재서 골다공증을 일찍 진단하는 표준 검사입니다.</p>
   </section>
 
-  <main class="page__body bone-density-body">
+  <main class="page__body">
 
     <section>
-      <h2 class="section-heading">검사 한눈에 보기</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-radiology" src="../../../shared/assets/healthicons/filled/specialties/radiology.svg" class="icon-sm" alt="영상 검사">검사 한눈에 보기</h2>
       <div class="stats-row">
         <div class="stat-cell stat-cell--ok">
           <div class="stat-cell__label">소요 시간</div>
@@ -150,51 +106,62 @@
     </section>
 
     <section>
-      <h2 class="section-heading">측정 부위와 검사 자세</h2>
-      <div class="visual-pair">
-        <div class="image-panel image-panel--sites">
-          <img src="../../../shared/assets/generated/bone-density-anatomy.png"
-               alt="DEXA 측정 부위 — 요추 L1~L4와 대퇴골 경부">
-          <div class="image-label">파란 영역 = 요추 L1~L4 + 대퇴골 경부</div>
-        </div>
-        <div class="image-panel image-panel--pose">
-          <img src="../../../shared/assets/generated/bone-density-exam-pose.png"
-               alt="DEXA 검사 자세 — 무릎을 굽혀 쿠션 위에 올리고 누운 자세">
-          <div class="image-label">무릎 쿠션 위에서 10~15분 누운 자세</div>
-        </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-xray" src="../../../shared/assets/healthicons/filled/devices/xray.svg" class="icon-sm" alt="검사 장비">측정 부위와 검사 자세</h2>
+      <div class="fig-grid">
+        <figure class="fig-box">
+          <img src="../../../shared/assets/generated/bone-density-prep-exam-pose-20260927.jpg"
+               alt="무릎 아래 쿠션을 받치고 골밀도 검사대에 반듯이 누운 모습과 위를 지나는 측정 장비 일러스트">
+          <figcaption class="fig-cap">무릎 쿠션 위에서 10~15분 누운 자세</figcaption>
+        </figure>
+        <table class="ge-table">
+          <thead><tr><th style="width:26%">항목</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><th>측정 부위</th><td><strong>허리뼈(요추 L1~L4)</strong>와 <strong>엉덩이뼈 윗부분(대퇴골 경부)</strong>을 잽니다.</td></tr>
+            <tr><th>검사 자세</th><td>무릎을 쿠션 위에 올리고 반듯이 누운 채 10~15분 움직이지 않습니다.</td></tr>
+            <tr><th>결과 판정</th><td>척추와 고관절 중 <strong>더 낮은 쪽</strong> 점수로 판정합니다.</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
     <section>
-      <h2 class="section-heading">검사 전·당일 체크리스트</h2>
-      <div class="body-2col">
-        <div class="card card--warning compact-card">
-          <div class="card-label card-label--warning">검사 전 피할 것</div>
-          <ul class="card-list">
-            <li><strong>칼슘제·종합비타민 24시간 중단</strong> — 척추 영상에 비쳐 결과 왜곡</li>
-            <li><strong>위장조영(바륨) 후 1~2주 회피</strong> — 잔류 조영제로 측정값 흐림</li>
-            <li><strong>같은 날 CT 조영제 검사 금지</strong></li>
-            <li><strong>임신 가능성 미리 알리기</strong> — X-선 노출 평가</li>
-          </ul>
-        </div>
-        <div class="card card--accent compact-card">
-          <div class="card-label card-label--navy">검사 당일 준비</div>
-          <ul class="card-list">
-            <li><strong>편한 옷차림</strong> — 금속 단추·지퍼·와이어 브래지어 피하기</li>
-            <li><strong>금속 액세서리 제거</strong> — 목걸이·허리띠·열쇠</li>
-            <li><strong>평소 복용약 그대로</strong> — 혈압·갑상선약 중단 X</li>
-            <li><strong>인공관절·척추 수술력 알리기</strong></li>
-          </ul>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-i-note_action" src="../../../shared/assets/healthicons/filled/symbols/i-note_action.svg" class="icon-sm" alt="체크리스트">검사 전·당일 체크리스트</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th class="th-no" style="width:50%"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="주의">검사 전 피할 것</th>
+            <th class="th-ok" style="width:50%"><img data-asset="hi-filled-calendar" src="../../../shared/assets/healthicons/filled/objects/calendar.svg" class="icon-sm" alt="검사 당일">검사 당일 준비</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ul class="table-list">
+                <li><strong>칼슘제·종합비타민 24시간 중단</strong> — 척추 영상에 비쳐 결과 왜곡</li>
+                <li><strong>위장조영(바륨) 후 1~2주 회피</strong> — 남은 조영제로 측정값 흐림</li>
+                <li><strong>같은 날 CT 조영제 검사 금지</strong></li>
+                <li><strong>임신 가능성 미리 알리기</strong> — X-선 노출 평가</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="table-list">
+                <li><strong>편한 옷차림</strong> — 금속 단추·지퍼·와이어 브래지어 피하기</li>
+                <li><strong>금속 액세서리 제거</strong> — 목걸이·허리띠·열쇠</li>
+                <li><strong>평소 복용약 그대로</strong> — 혈압·갑상선약은 끊지 않습니다</li>
+                <li><strong>인공관절·척추 수술력 알리기</strong></li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2 class="section-heading">권고 대상자와 결과 해석 (T-score)</h2>
-      <div class="tscore-grid">
-        <div class="card tscore-card compact-card">
-          <div class="card-label card-label--steel">이런 분께 권고됩니다</div>
-          <ul class="card-list" style="font-size:8.8pt; line-height:1.48;">
+      <h2 class="section-heading"><img data-asset="hi-filled-skeleton" src="../../../shared/assets/healthicons/filled/body/skeleton.svg" class="icon-sm" alt="뼈">권고 대상자와 결과 해석 (T점수)</h2>
+      <div class="bd-grid">
+        <div class="card card--accent bd-card">
+          <div class="card-label card-label--steel"><img data-asset="hi-filled-elderly" src="../../../shared/assets/healthicons/filled/people/elderly.svg" class="icon-sm" alt="권고 대상">이런 분께 권고됩니다</div>
+          <ul class="table-list">
             <li><strong>65세 이상 여성, 70세 이상 남성</strong></li>
             <li><strong>폐경 후 여성</strong> — 저체중·가족력·흡연 시 65세 이전</li>
             <li><strong>장기 스테로이드 복용</strong> — 3개월 이상</li>
@@ -202,19 +169,17 @@
             <li><strong>갑상선항진증·만성 신질환</strong></li>
           </ul>
         </div>
-        <div class="card card--navy tscore-card compact-card">
-          <div class="card-label">T-score 분포와 해석</div>
-          <div class="tscore-curve">
-            <img src="../../../shared/assets/generated/bone-density-tscore-curve.png"
-                 alt="T-score 분포 곡선 — 정상 / 골감소증 / 골다공증 3구간">
-          </div>
-          <ul class="card-list tscore-list">
-            <li><strong>≥ -1.0 정상</strong> · 추적 2~5년 간격</li>
-            <li><strong>-1.0 ~ -2.5 골감소증</strong> · 1~2년, 생활 관리</li>
-            <li><strong>≤ -2.5 골다공증</strong> · 약물 치료 시작</li>
-          </ul>
-        </div>
+        <table class="ge-table">
+          <thead><tr><th style="width:27%">T점수</th><th style="width:22%">판정</th><th>그다음</th></tr></thead>
+          <tbody>
+            <tr><th>−1.0 이상</th><td>정상</td><td>2~5년 간격으로 추적</td></tr>
+            <tr><th>−1.0 미만 ~ −2.5 초과</th><td>골감소증</td><td>생활 관리 + 1~2년 뒤 재검. <strong>골절 위험도를 계산해 높으면 약을 검토</strong>합니다.</td></tr>
+            <tr><th>−2.5 이하</th><td>골다공증</td><td><strong>약물 치료 시작</strong></td></tr>
+          </tbody>
+        </table>
       </div>
+      <p class="note-line">폐경 전 여성과 50세 미만 남성은 다른 기준(Z점수)으로 봅니다. 결과는 진료 때 설명해 드립니다.</p>
+      <div class="see-also">함께 보기 — 진료실에서 보신 설명 자료 「골다공증 환자교육」 edu.gwanggyobarun.com/decks/endocrine/osteoporosis/</div>
     </section>
 
   </main>
@@ -224,7 +189,7 @@
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
       <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
       <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
-      <div class="clinic-meta">근거 — 대한골대사학회 골다공증 진료지침 2024 · ISCD Official Positions · NOF Clinician's Guide</div>
+      <div class="clinic-meta">근거 — 대한골대사학회 골다공증 진료지침 2024 · ISCD Official Positions · NOF Clinician's Guide · 세계보건기구 FRAX</div>
       <div class="disclaimer">본 자료는 일반적 안내입니다. 개별 위험 인자, 동반 질환, 검사 동반 여부에 따라 준비법이 달라질 수 있습니다.</div>
     </div>
     <div class="qr-mini">

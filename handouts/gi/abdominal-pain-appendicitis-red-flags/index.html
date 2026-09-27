@@ -17,199 +17,211 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    .page {
-      gap: 4.2mm;
-      padding-bottom: 9mm;
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
     }
-    .page__title {
-      font-size: 23pt;
-      letter-spacing: 0;
+    .page__body {
+      gap: 2.3mm;
     }
-    .page__subtitle {
-      max-width: 170mm;
+    .page__body > section {
+      gap: 1mm;
     }
-    .abdomen-body {
-      gap: 3mm;
-      justify-content: start;
+    .page__title .title-sub {
+      font-weight: 500;
+      font-size: 0.56em;
+      color: var(--color-ink-soft);
     }
-    .abdomen-body > section {
-      flex: 0 0 auto;
-      gap: 1.6mm;
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -0.9mm;
+      margin-right: 1.2mm;
     }
-    .abdomen-body .section-heading {
-      margin-bottom: 0.6mm;
-    }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 80mm 1fr;
-      gap: 4mm;
-      align-items: stretch;
-    }
-    .infographic-frame {
-      height: 112mm;
-      padding: 2mm;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background: #FFFFFF;
+    .section-heading {
       display: flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      margin-bottom: 0.5mm;
     }
-    .infographic-frame img {
+
+    /* 표 공통 스타일 (H10 본보기와 같은 표) */
+    .ge-table {
       width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.1pt;
+      line-height: 1.38;
+      color: var(--color-ink-soft);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas);
     }
-    .key-panel {
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.1mm 2mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .ge-table thead th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.5pt;
+    }
+    .ge-table thead th.th-ok {
+      background: var(--color-navy-mid);
+    }
+    .ge-table thead th.th-no,
+    .ge-table thead th.th-er {
+      background: var(--color-danger);
+    }
+    .ge-table thead th.th-soft {
+      background: var(--color-steel-deep);
+    }
+    .ge-table tbody th {
+      color: var(--color-navy);
+      background: var(--color-canvas-warm);
+      font-weight: var(--weight-semibold);
+      font-size: 8.3pt;
+      vertical-align: middle;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table td strong.danger {
+      color: var(--color-danger);
+    }
+    .table-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 2.2mm;
-    }
-    .chief-alert {
-      padding: 3.2mm;
-      border: 1px solid var(--color-danger-border);
-      border-left: 4px solid var(--color-danger);
-      border-radius: var(--radius-sm);
-      background: linear-gradient(135deg, #FEF2F2 0%, #FFF7ED 100%);
-    }
-    .chief-alert__label {
-      font-size: 7.2pt;
-      font-weight: var(--weight-semibold);
-      letter-spacing: var(--tracking-wide);
-      color: var(--color-danger);
-      text-transform: uppercase;
-      margin-bottom: 1.1mm;
-    }
-    .chief-alert__title {
-      font-size: 16pt;
-      font-weight: var(--weight-bold);
-      line-height: 1.12;
-      color: var(--color-navy);
-      letter-spacing: 0;
-      margin-bottom: 1.4mm;
-    }
-    .chief-alert__text {
-      font-size: 8.7pt;
-      line-height: 1.42;
-      color: var(--color-ink);
-    }
-    .cue-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2mm;
-    }
-    .cue-card {
-      min-height: 24mm;
-      padding: 2.5mm;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background: #FFFFFF;
-    }
-    .cue-card--danger {
-      border-color: var(--color-danger-border);
-      background: var(--color-danger-bg);
-    }
-    .cue-card__title {
-      font-size: 9.6pt;
-      font-weight: var(--weight-bold);
-      line-height: 1.2;
-      color: var(--color-navy);
-      margin-bottom: 0.9mm;
-    }
-    .cue-card--danger .cue-card__title {
-      color: var(--color-danger);
-    }
-    .cue-card__text {
-      font-size: 7.9pt;
+      gap: 0.8mm;
+      font-size: 8.1pt;
       line-height: 1.38;
-      color: var(--color-ink-soft);
     }
-    .ct-card {
-      padding: 2.8mm 3.2mm;
+    .table-list li {
+      position: relative;
+      padding-left: 2.8mm;
     }
-    .ct-card .card-label {
-      margin-bottom: 1mm;
+    .table-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-steel);
+      font-weight: bold;
     }
-    .ct-card__text {
-      font-size: 8.5pt;
-      line-height: 1.43;
-      color: var(--color-ink);
-    }
-    .timeline {
+
+    /* 그림 + 옆 칸 */
+    .key-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 3mm;
+      grid-template-columns: 60mm 1fr;
+      gap: 3.2mm;
+      align-items: stretch;
     }
-    .timeline-step {
-      min-height: 26mm;
-      padding: 2.7mm;
+    .fig-slot {
+      margin: 0;
+      width: 60mm;
+      height: 45mm;
       border: 1px solid var(--color-border);
-      border-top: 3px solid var(--color-steel);
       border-radius: var(--radius-sm);
       background: var(--color-canvas-warm);
+      overflow: hidden;
+      position: relative;
     }
-    .timeline-step--danger {
-      border-top-color: var(--color-danger);
-      background: var(--color-danger-bg);
+    .fig-slot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-    .timeline-step__num {
-      width: 5.6mm;
-      height: 5.6mm;
-      margin-bottom: 1.2mm;
-      border-radius: 50%;
-      background: var(--color-navy);
-      color: var(--color-canvas);
+    .fig-caption {
+      position: absolute;
+      left: 1.5mm;
+      right: 1.5mm;
+      bottom: 1.5mm;
+      padding: 0.8mm 1.2mm;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 3px;
+      font-size: 7.2pt;
+      line-height: 1.25;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+      border: 1px solid rgba(0, 51, 102, 0.15);
+    }
+    .side-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6mm;
+    }
+    .side-text p {
+      margin: 0;
+    }
+    .side-text strong {
+      color: var(--color-navy);
+    }
+
+    /* 응급 안내 박스 */
+    .warning-box {
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
+      border-radius: var(--radius-sm);
+      padding: 2.2mm 3.2mm;
+    }
+    .warning-title {
+      font-size: 8.6pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      margin-bottom: 1mm;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 7.6pt;
-      font-weight: var(--weight-bold);
     }
-    .timeline-step__title {
-      font-size: 10pt;
-      font-weight: var(--weight-semibold);
-      color: var(--color-navy);
-      line-height: 1.18;
-      margin-bottom: 0.8mm;
+    .warning-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
     }
-    .timeline-step__text {
-      font-size: 7.7pt;
-      line-height: 1.35;
-      color: var(--color-ink-soft);
+    .warning-text strong {
+      color: var(--color-danger);
     }
-    .bottom-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3mm;
-    }
-    .bottom-card {
-      min-height: 29mm;
-      padding: 3mm;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background: #FFFFFF;
-    }
-    .bottom-card--danger {
-      background: var(--color-danger-bg);
-      border-color: var(--color-danger-border);
-    }
-    .bottom-card__title {
-      font-size: 10pt;
-      font-weight: var(--weight-semibold);
-      color: var(--color-navy);
-      line-height: 1.2;
-      margin-bottom: 1mm;
-    }
-    .bottom-card__text {
+
+    /* 짝 자료 안내 한 줄 */
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 1.6mm;
       font-size: 8pt;
-      line-height: 1.38;
+      line-height: 1.4;
       color: var(--color-ink-soft);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--radius-sm);
+      padding: 1.4mm 2.4mm;
+      background: var(--color-canvas-warm);
     }
-    .page__footer {
-      padding-top: 3mm;
+    .link-row strong {
+      color: var(--color-navy);
     }
+    .link-row .url {
+      white-space: nowrap;
+      color: var(--color-steel-deep);
+      font-weight: var(--weight-semibold);
+    }
+    .nb { white-space: nowrap; }
+    .page__body { justify-content: flex-start; gap: 3.6mm; }
+    .page__body > section { flex: 0 0 auto; }
+    .ge-table { font-size: 9pt; line-height: 1.48; }
+    .ge-table th, .ge-table td { padding: 1.9mm 2.5mm; }
+    .ge-table thead th, .ge-table tbody th { font-size: 9.1pt; }
+    .warning-text { font-size: 9.1pt; }
+    .key-grid { grid-template-columns: 68mm 1fr; }
+    .fig-slot { width: 68mm; height: 51mm; }
   </style>
 <!-- seo:geo2 --><meta name="description" content="초기 맹장염은 명치·배꼽 주변 불편감으로 시작할 수 있습니다. 우하복부 통증, 반발 압통, 복통 지속·악화 시 응급실 영상검사가 필요한 신호를 정리했습니다.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/handouts/gi/abdominal-pain-appendicitis-red-flags/">
@@ -218,6 +230,7 @@
 <body>
 
 <div class="page">
+
   <header class="page__header">
     <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
     <div class="page__eyebrow">PATIENT HANDOUT · <strong>GI · ABDOMINAL PAIN</strong></div>
@@ -228,88 +241,110 @@
     <p class="page__subtitle">초기 맹장염(급성충수염)은 처음부터 오른쪽 아랫배가 딱 아프지 않을 수 있습니다. 명치 불편감, 배꼽 주변 통증, 체한 느낌으로 시작해 시간이 지나며 우측 하복부 통증으로 바뀌는 경우가 있습니다.</p>
   </section>
 
-  <main class="page__body abdomen-body">
+  <main class="page__body">
+
     <section>
-      <h2 class="section-heading">우측 하복부 통증과 반발 압통을 확인하세요</h2>
-      <div class="hero-grid">
-        <figure class="infographic-frame">
-          <img src="../../../shared/assets/generated/appendicitis-rebound-tenderness-20260511.png" alt="우측 하복부 통증과 반발 압통을 설명하는 복부 인포그래픽">
+      <h2 class="section-heading"><img data-asset="hi-filled-intestinal-pain" src="../../../shared/assets/healthicons/filled/conditions/intestinal-pain.svg" class="icon-sm" alt="복통">우측 하복부 통증과 반발 압통을 확인하세요</h2>
+      <div class="key-grid">
+        <figure class="fig-slot" id="appendicitis-figure">
+          <img src="../../../shared/assets/generated/appendicitis-rlq-anatomy-20260927.jpg"
+               alt="대장 그림에서 몸 기준 오른쪽 아래 맹장 끝에 달린 충수가 붓고 붉게 염증이 생긴 모습">
+          <figcaption class="fig-caption">몸 기준 오른쪽 아랫배 — 맹장 끝 충수에 생긴 염증</figcaption>
         </figure>
-        <div class="key-panel">
-          <div class="chief-alert">
-            <div class="chief-alert__label">오늘 바로 확인해야 하는 신호</div>
-            <div class="chief-alert__title">우측 하복부 통증이나<br>반발 압통이 생기면</div>
-            <div class="chief-alert__text">성인에서는 응급실에서 진찰과 복부 CT 등 영상검사 여부를 확인하는 것이 안전합니다. 소아는 초음파 후 필요 시 CT/MRI로 이어질 수 있습니다.</div>
+        <div class="side-text">
+          <div class="warning-box">
+            <div class="warning-title"><img data-asset="hi-filled-ambulance" src="../../../shared/assets/healthicons/filled/vehicles/ambulance.svg" class="icon-sm" alt="응급">오늘 바로 확인해야 하는 신호</div>
+            <div class="warning-text"><strong>우측 하복부 통증이나 반발 압통이 생기면</strong> 성인에서는 응급실에서 진찰과 복부 CT 등 영상검사 여부를 확인하는 것이 안전합니다. 소아는 초음파 후 필요 시 CT/MRI로 이어질 수 있습니다.</div>
           </div>
-          <div class="cue-grid">
-            <div class="cue-card cue-card--danger">
-              <div class="cue-card__title">오른쪽 아랫배 통증</div>
-              <div class="cue-card__text">걷거나 기침할 때 더 아프고, 특정 부위를 누르면 뚜렷하게 아픕니다.</div>
-            </div>
-            <div class="cue-card cue-card--danger">
-              <div class="cue-card__title">반발 압통</div>
-              <div class="cue-card__text">2-3초 눌렀다가 손을 뗄 때 통증이 더 심해지면 의심 신호입니다.</div>
-            </div>
-            <div class="cue-card">
-              <div class="cue-card__title">통증 지속·악화</div>
-              <div class="cue-card__text">장염약·복통약을 먹어도 좋아지지 않고 통증이 계속됩니다.</div>
-            </div>
-            <div class="cue-card">
-              <div class="cue-card__title">동반 증상</div>
-              <div class="cue-card__text">식욕저하, 구역, 발열, 무기력감이 함께 생길 수 있습니다.</div>
-            </div>
-          </div>
-          <div class="card card--warning ct-card">
-            <div class="card-label card-label--warning">응급실 영상검사 고려</div>
-            <div class="ct-card__text">우측 하복부 통증, 반발 압통, 배가 단단해짐, 걷기 어려운 통증이 있으면 맹장염·복막 자극 여부를 빠르게 확인해야 합니다.</div>
-          </div>
+          <table class="ge-table">
+            <thead>
+              <tr>
+                <th style="width: 32%;">신호</th>
+                <th style="width: 68%;">이렇게 나타납니다</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>오른쪽 아랫배 통증</th>
+                <td>걷거나 기침할 때 더 아프고, 특정 부위를 누르면 뚜렷하게 아픕니다.</td>
+              </tr>
+              <tr>
+                <th>반발 압통</th>
+                <td>2-3초 눌렀다가 손을 뗄 때 통증이 더 심해지면 의심&nbsp;신호입니다.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 50%;"><img data-asset="hi-filled-pain" src="../../../shared/assets/healthicons/filled/conditions/pain.svg" class="icon-sm" alt="통증">통증 지속·악화</th>
+            <th style="width: 50%;"><img data-asset="hi-filled-chills-fever" src="../../../shared/assets/healthicons/filled/conditions/chills-fever.svg" class="icon-sm" alt="동반 증상">동반 증상</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>장염약·복통약을 먹어도 좋아지지 않고 통증이 계속됩니다.</td>
+            <td>식욕저하, 구역, 발열, 무기력감이 함께 생길 수 있습니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-nausea" src="../../../shared/assets/healthicons/filled/conditions/nausea.svg" class="icon-sm" alt="진행">맹장염 통증은 이렇게 시작될 수 있습니다</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">① 명치·배꼽 주변 불편감</th>
+            <th style="width: 25%;">② 구역·식욕저하</th>
+            <th class="th-er" style="width: 25%;">③ 우측 하복부로 이동</th>
+            <th class="th-er" style="width: 25%;">④ 복막 자극 신호</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>초기에는 위염·체기처럼 애매한 상복부 불편감으로 느껴질&nbsp;수&nbsp;있습니다.</td>
+            <td>설사가 뚜렷하지 않아도 속이 메스껍고 식욕이 떨어질&nbsp;수&nbsp;있습니다.</td>
+            <td>진행하면 오른쪽 아랫배 압통, 움직임·기침 시 통증이 뚜렷해집니다.</td>
+            <td>반발 압통, 배가 단단해짐, 통증 악화는 <strong class="danger">응급 평가가 필요합니다.</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="warning-box">
+        <div class="warning-title"><img data-asset="hi-filled-radiology" src="../../../shared/assets/healthicons/filled/specialties/radiology.svg" class="icon-sm" alt="영상검사">응급실 영상검사 고려</div>
+        <div class="warning-text">우측 하복부 통증, 반발 압통, <strong>배가 단단해짐</strong>, <strong>걷기 어려운 통증</strong>이 있으면 맹장염·복막 자극 여부를 빠르게 확인해야 합니다.</div>
       </div>
     </section>
 
     <section>
-      <h2 class="section-heading">맹장염 통증은 이렇게 시작될 수 있습니다</h2>
-      <div class="timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__num">1</div>
-          <div class="timeline-step__title">명치·배꼽 주변 불편감</div>
-          <div class="timeline-step__text">초기에는 위염·체기처럼 애매한 상복부 불편감으로 느껴질 수 있습니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__num">2</div>
-          <div class="timeline-step__title">구역·식욕저하</div>
-          <div class="timeline-step__text">설사가 뚜렷하지 않아도 속이 메스껍고 식욕이 떨어질 수 있습니다.</div>
-        </div>
-        <div class="timeline-step timeline-step--danger">
-          <div class="timeline-step__num">3</div>
-          <div class="timeline-step__title">우측 하복부로 이동</div>
-          <div class="timeline-step__text">진행하면 오른쪽 아랫배 압통, 움직임·기침 시 통증이 뚜렷해집니다.</div>
-        </div>
-        <div class="timeline-step timeline-step--danger">
-          <div class="timeline-step__num">4</div>
-          <div class="timeline-step__title">복막 자극 신호</div>
-          <div class="timeline-step__text">반발 압통, 배가 단단해짐, 통증 악화는 응급 평가가 필요합니다.</div>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="주의">오른쪽 아랫배가 아니어도 의심해야 하는 경우</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th class="th-er" style="width: 34%;"><img data-asset="hi-filled-geriatrics" src="../../../shared/assets/healthicons/filled/specialties/geriatrics.svg" class="icon-sm" alt="고령·소아">고령·소아</th>
+            <th style="width: 33%;">약 복용 후 지속</th>
+            <th style="width: 33%;">다른 복통 원인</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>통증·열·압통이 약하거나 위치 설명이 어려워 장염처럼 보일 수 있습니다.</td>
+            <td>일반 장염약·복통약 후에도 통증이 계속되면 같은 날 재평가가 필요합니다.</td>
+            <td>장염·위염, 요로결석, 담낭 질환, 여성 골반통도 감별이 필요합니다.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2 class="section-heading">오른쪽 아랫배가 아니어도 의심해야 하는 경우</h2>
-      <div class="bottom-grid">
-        <div class="bottom-card bottom-card--danger">
-          <div class="bottom-card__title">고령·소아</div>
-          <div class="bottom-card__text">통증·열·압통이 약하거나 위치 설명이 어려워 장염처럼 보일 수 있습니다.</div>
-        </div>
-        <div class="bottom-card">
-          <div class="bottom-card__title">약 복용 후 지속</div>
-          <div class="bottom-card__text">일반 장염약·복통약 후에도 통증이 계속되면 같은 날 재평가가 필요합니다.</div>
-        </div>
-        <div class="bottom-card">
-          <div class="bottom-card__title">다른 복통 원인</div>
-          <div class="bottom-card__text">장염·위염, 요로결석, 담낭 질환, 여성 골반통도 감별이 필요합니다.</div>
-        </div>
-      </div>
+      <div class="link-row"><img data-asset="hi-filled-gastroenterology" src="../../../shared/assets/healthicons/filled/specialties/gastroenterology.svg" class="icon-sm" alt="진료실 설명 자료"><span><strong>진료실 설명 슬라이드</strong>(맹장염·게실염 구분) — <span class="url">edu.gwanggyobarun.com/decks/gi/appendicitis-diverticulitis/</span></span></div>
     </section>
+
   </main>
 
   <footer class="page__footer">
@@ -326,6 +361,7 @@
       <div class="qr-mini__url">edu.gwanggyobarun.com/handouts/gi/abdominal-pain-appendicitis-red-flags/</div>
     </div>
   </footer>
+
 </div>
 
 </body>

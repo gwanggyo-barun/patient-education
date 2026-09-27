@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>GERD Lifestyle Management — Gwanggyo Barun Internal Medicine</title>
+  <title>역류성 식도염 생활관리 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,703 +18,398 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
-  <style>
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-  </style>
+  <link rel="stylesheet" href="../../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5A-redesign 2026-09-27 (원장님 49113 · HQ3F 방식) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{white-space:nowrap;font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num--long{font-size:48px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)){padding-top:16px;padding-bottom:16px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-block + .v2-block{padding-top:12px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-head{margin-bottom:6px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="증상부터 식이·생활습관까지, 한눈에 이해하는 GERD 환자 교육 자료">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/gi/gerd/lifestyle/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "GERD Lifestyle Management — Gwanggyo Barun Internal Medicine", "description": "증상부터 식이·생활습관까지, 한눈에 이해하는 GERD 환자 교육 자료", "url": "https://edu.gwanggyobarun.com/decks/gi/gerd/lifestyle/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "역류성 식도염 생활관리 — 광교바른내과", "description": "증상부터 식이·생활습관까지, 한눈에 이해하는 GERD 환자 교육 자료", "url": "https://edu.gwanggyobarun.com/decks/gi/gerd/lifestyle/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">역류성 식도염<br><em>생활관리 안내</em></h1>
-      <p class="slide__subtitle">증상부터 식이·생활습관까지, 한눈에 이해하는 GERD</p>
+      <p class="slide__subtitle">증상부터 식이·생활습관까지, 한눈에 이해하는 역류성 식도염</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">GERD · Gastroesophageal Reflux Disease</span>
-      <span class="slide__page">광교바른내과 소화기내과</span>
+      <span class="slide__source">역류성 식도염(위식도역류질환) · 증상 · 식이 · 생활습관</span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER pattern — prevalence stat
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한국인 10명 중 1명</h2>
-      <p class="slide__subtitle">서구화된 식습관과 비만 증가로 매년 늘어나는 GERD</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>7~13</em>%</div>
-          <div class="pattern-hero-number__caption">한국 성인의 GERD 유병률 — 1주 2회 이상 전형적 증상이 있다면 진단이 고려됩니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why it matters</div>
-          <div class="pattern-hero-number__detail-text">
-            방치하면 식도협착·바렛식도(Barrett's esophagus)로 진행할&nbsp;수&nbsp;있으며,
-            드물게 식도선암 위험을 높입니다. 그러나 대부분의 환자는
-            적절한 약물치료와 생활관리로 잘 조절됩니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACG Clinical Guideline for GERD (2022); 대한소화기학회 GERD 진료 지침</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — definition + supporting metrics
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">역류성 식도염이란</h2>
-      <p class="slide__subtitle">위 내용물이 식도로 거꾸로 올라오면서 점막이 손상되는 만성 질환</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">하부식도괄약근 기능 저하와 <em>복압 증가</em>가 만나는 지점에서 GERD는 시작됩니다.</p>
-          <p class="pattern-split__supporting">
-            정상적으로 닫혀있어야 할 식도-위 경계가 약해지면, 산성 위 내용물이 식도로 역류해 점막을 자극합니다.
-            반복되면 식도염, 협착, 바렛식도로 이어질 수 있습니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Diagnostic threshold</div>
-            <div class="pattern-split__metric-value">주 2회 이상</div>
-            <div class="pattern-split__metric-detail">전형적 증상 빈도가 이 수준을 넘으면 임상 진단을 고려합니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Long-term risk</div>
-            <div class="pattern-split__metric-value">식도협착 · 바렛식도</div>
-            <div class="pattern-split__metric-detail">방치 시 점막 변화와 협착 위험이 누적됩니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Pathophysiology — Lower esophageal sphincter dysfunction + intra-abdominal pressure</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 2x3 — symptoms (typical + atypical)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>SYMPTOMS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">이런 증상이 있나요</h2>
-      <p class="slide__subtitle">전형적 증상과 비전형적 증상을 함께 살펴봅니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">TYPICAL · 01</div>
-          <div class="tile__title">가슴쓰림</div>
-          <div class="tile__body">Heartburn — 가슴 한가운데가 타는 듯한 느낌. 식후나 누운 자세에서 악화됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">TYPICAL · 02</div>
-          <div class="tile__title">산 역류</div>
-          <div class="tile__body">Regurgitation — 신물 또는 쓴물이 입까지 올라옵니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">TYPICAL · 03</div>
-          <div class="tile__title">잦은 트림 · 소화불량</div>
-          <div class="tile__body">식후 부글거림, 더부룩함이 동반됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ATYPICAL · 04</div>
-          <div class="tile__title">만성 기침 · 쉰 목소리</div>
-          <div class="tile__body">3주 이상 지속되는 기침이라면 GERD를 한 번쯤 의심합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ATYPICAL · 05</div>
-          <div class="tile__title">인후부 이물감</div>
-          <div class="tile__body">Globus sensation — 목에 무엇이 걸린 듯한 느낌이 반복됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ATYPICAL · 06</div>
-          <div class="tile__title">야간 흉통</div>
-          <div class="tile__body">심장 원인을 배제한 후, 비심인성 흉통의 흔한 원인입니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../../shared/assets/generated/gi-gerd-lifestyle-s04-anatomy-gi-e15729fd-20260530-raster-20260531.jpg" alt="이런 증상이 있나요 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">Typical vs. Atypical — Montreal Definition (2006), updated by Lyon Consensus 2.0 (2023)</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 3x2 — risk factors / causes
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>RISK FACTORS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">왜 생기나요</h2>
-      <p class="slide__subtitle">하부식도괄약근 이완과 복압 증가가 핵심 — 일상에서 누적됩니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">FACTOR · 01</div>
-          <div class="tile__title">체중 · 복압</div>
-          <div class="tile__body">비만, 복부 비만, 임신 — 복압이 올라가 위 내용물이 위로 밀려 올라옵니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 02</div>
-          <div class="tile__title">식습관</div>
-          <div class="tile__body">과식, 야식, 식후 즉시 눕기, 기름진 음식 — 위 배출이&nbsp;늦어집니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 03</div>
-          <div class="tile__title">기호품</div>
-          <div class="tile__body">흡연, 음주, 카페인 — 하부식도괄약근을 직접 이완시킵니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 04</div>
-          <div class="tile__title">약물 영향</div>
-          <div class="tile__body">칼슘차단제, 질산염제, 일부 천식약 — 복용 약 검토가&nbsp;필요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 05</div>
-          <div class="tile__title">해부학적 원인</div>
-          <div class="tile__body">식도열공탈장(hiatal hernia) 등 구조적 이상이 동반될&nbsp;수&nbsp;있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 06</div>
-          <div class="tile__title">스트레스</div>
-          <div class="tile__body">증상 인지를 증폭시키고 식습관 악화로 이어집니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Modifiable vs. non-modifiable factors — counseling priority on lifestyle</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · TIMELINE — diagnostic pathway
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>DIAGNOSIS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">어떻게 진단하나요</h2>
-      <p class="slide__subtitle">전형적 증상이 명확하면 임상 진단 후 경험적 치료를 시작합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">병력 · 증상 평가</div>
-          <div class="timeline-step__body">전형적 증상 빈도, 경고 증상(체중감소·삼킴곤란·출혈) 유무를 확인합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">PPI 시험치료</div>
-          <div class="timeline-step__body">2~4주간 표준용량 PPI를 처방하고 증상 반응을 평가합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">상부위장관 내시경</div>
-          <div class="timeline-step__body">경고 증상·약물 반응 부족·50세 이상 새 증상 시. LA 분류로 평가합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">정밀 검사</div>
-          <div class="timeline-step__body">24시간 식도 pH·임피던스, 식도 내압 — 약물 불응성·수술 고려&nbsp;시.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../../shared/assets/generated/gi-gerd-lifestyle-s06-comparison-gi-8a9c2c34-20260530-raster-20260531.jpg" alt="어떻게 진단하나요 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">LA Classification A–D · 24h pH-impedance · High-resolution manometry</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · DENSITY GRID 2x2 — pharmacotherapy + alert strip
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>TREATMENT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">약물 치료</h2>
-      <p class="slide__subtitle">위산 분비 억제가 중심 — 처방된 기간을 지키는 것이 가장 중요합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2" style="grid-template-rows: 1fr 1fr auto;">
-        <div class="tile">
-          <div class="tile__index">FIRST LINE</div>
-          <div class="tile__title">PPI · 양성자펌프억제제</div>
-          <div class="tile__body">에소메프라졸·란소프라졸·판토프라졸 등. 식전&nbsp;30~60분 복용, 보통 4~8주 처방.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">RAPID ONSET</div>
-          <div class="tile__title">P-CAB · 칼륨경쟁적 산분비억제제</div>
-          <div class="tile__body">테고프라잔·보노프라잔. 식사와 무관하게 복용, 빠른 산 억제가 장점.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ADJUNCT</div>
-          <div class="tile__title">H2 차단제 · 제산제</div>
-          <div class="tile__body">증상이 가벼울 때 보조 사용. 즉각 완화에는 액상&nbsp;제산제.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ADJUNCT</div>
-          <div class="tile__title">위장운동 촉진제</div>
-          <div class="tile__body">위 배출 지연이 동반될 때 보조. 단독 치료는 권장되지 않습니다.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">중요</span>
-        <span class="alert-strip__text">증상이 좋아져도 처방 기간은 유지하세요. 갑작스러운 자가 중단은 산 분비가 반동성으로 증가할 수 있습니다 (rebound acid hypersecretion).</span>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../../shared/assets/generated/gi-gerd-lifestyle-s07-action-gi-7e4a7c7a-20260530-raster-20260531.jpg" alt="약물 치료 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">PPI · P-CAB · H2RA — Korean NHI coverage applies for endoscopy-proven cases</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · COMPARISON — diet (avoid vs prefer, navy/steel)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>DIET</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">식이요법 — 피하기 vs. 권장</h2>
-      <p class="slide__subtitle">개인차가 있습니다. 본인 증상을 악화시키는 음식을 우선 피하세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">−</span>
-            피하기
-          </div>
-          <ul class="compare-col__list">
-            <li>기름진 음식, 튀김류</li>
-            <li>매운 음식, 강한 향신료</li>
-            <li>커피·홍차·콜라 (카페인)</li>
-            <li>초콜릿, 박하 사탕</li>
-            <li>알코올 (특히 야간 음주)</li>
-            <li>오렌지·토마토 등 산성 과일</li>
-            <li>탄산음료, 야식</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            권장
-          </div>
-          <ul class="compare-col__list">
-            <li>천천히, 잘 씹어 먹기</li>
-            <li>1회 식사량 줄이고 횟수 분할</li>
-            <li>식후 2~3시간은 눕지 않기</li>
-            <li>미지근한 물 자주 마시기</li>
-            <li>식이섬유 (현미, 채소, 통곡물)</li>
-            <li>저지방 단백질 (생선, 닭가슴살)</li>
-            <li>잠들기 3시간 전 식사 종료</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Personalized elimination diet — patient-led trigger identification recommended</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · DENSITY GRID 3x2 — lifestyle modifications
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>LIFESTYLE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">생활습관 관리</h2>
-      <p class="slide__subtitle">약물치료의 효과를 좌우하는 핵심 — 약과 함께 반드시 실천</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">HABIT · 01</div>
-          <div class="tile__title">적정 체중 유지</div>
-          <div class="tile__body">BMI 25 미만 유지. 체중의 5~10% 감량만으로도 증상이 크게 호전됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HABIT · 02</div>
-          <div class="tile__title">금연 · 절주</div>
-          <div class="tile__body">담배·알코올은 하부식도괄약근을 이완시켜 역류를 직접 유발합니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">HABIT · 03</div>
-          <div class="tile__title">상체 거상 수면</div>
-          <div class="tile__body">머리 쪽 침대 다리를 15~20cm 높이거나 쐐기형 베개 사용. 베개만 높이는 것은 효과가 떨어집니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HABIT · 04</div>
-          <div class="tile__title">복압 줄이기</div>
-          <div class="tile__body">꽉 끼는 벨트·스키니진 피하기. 식사 직후 허리 굽히기 자제.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HABIT · 05</div>
-          <div class="tile__title">식후 가벼운 활동</div>
-          <div class="tile__body">식후 바로 눕거나 격렬한 운동 모두 피하고, 가볍게 산책하세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HABIT · 06</div>
-          <div class="tile__title">좌측 측와위 수면</div>
-          <div class="tile__body">왼쪽으로 누워 자면 우측보다 야간 역류가 줄어든다는 보고가 있습니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../../shared/assets/generated/gi-gerd-lifestyle-s09-action-gi-8b1be73d-20260530-raster-20260531.jpg" alt="생활습관 관리 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">Lifestyle modification — Strong recommendation, ACG 2022; weight loss has strongest evidence</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · DENSITY GRID 3x2 alert — alarm features
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>RED FLAGS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">즉시 진료가 필요한 경우</h2>
-      <p class="slide__subtitle">아래 증상이 있으면 자가관리하지 마시고 바로 내원하세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--alert">
-          <div class="tile__index">RED FLAG · 01</div>
-          <div class="tile__title">삼킴 곤란</div>
-          <div class="tile__body">Dysphagia — 음식이 걸리거나 잘 안 넘어감. 식도 협착·종양 감별이 필요합니다.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">RED FLAG · 02</div>
-          <div class="tile__title">의도하지 않은 체중 감소</div>
-          <div class="tile__body">3~6개월 사이 5% 이상 빠진 경우.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">RED FLAG · 03</div>
-          <div class="tile__title">흑색변 · 토혈</div>
-          <div class="tile__body">검은색 변, 피토함, 커피찌꺼기 같은 구토물.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">RED FLAG · 04</div>
-          <div class="tile__title">새로운 흉통</div>
-          <div class="tile__body">처음 겪는 흉통은 심장 원인 배제가 우선입니다.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">RED FLAG · 05</div>
-          <div class="tile__title">치료 반응 불충분</div>
-          <div class="tile__body">PPI 4~8주 충분 복용에도 증상이 지속되거나 재발합니다.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">RED FLAG · 06</div>
-          <div class="tile__title">50세 이상 새 증상</div>
-          <div class="tile__body">늦게 발생한 GERD 증상은 반드시 내시경 평가를 받습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Alarm features — endoscopy indication regardless of PPI response</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — daily action items
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘부터 실천할 7가지</h2>
-      <p class="slide__subtitle">작은 습관 변화가 약물치료의 효과를 결정짓습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">식후 <strong>2~3시간은 눕지 않기</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">잠들기 <strong>3시간 전까지</strong> 식사 마치기</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">야식 · 과식 <strong>완전히 끊기</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">커피 · 술 · 담배 <strong>줄이거나 끊기</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">잠자리 머리쪽 <strong>15~20cm 높이기</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">꽉 끼는 옷 · 벨트 <strong>피하기</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">처방 약 <strong>임의 중단 없이 복용</strong></div>
-        </div>
-        <div class="check-item" style="border-bottom: none;">
-          <div class="check-item__num" style="color: var(--color-navy);">→</div>
-          <div class="check-item__text" style="color: var(--color-slate);">매일 체크하면서 습관으로 만들어 보세요</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — sustained adherence over 4–8 weeks predicts symptom remission</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">건강한 식도,<br><em>편안한 일상</em></h2>
-      <p class="slide__subtitle">증상이 변하거나 궁금한 점이 있으면 언제든 내원해 주세요.</p>
-    </div>
-        <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Specialty</div>
-            <div class="contact-card__value">소화기내과 · 일반내과<br>5대암 검진</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 한눈에</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">한국인 10명 중 1명이 겪는 흔한 병입니다</h2>
+  <p class="v2-sub">서구화된 식습관과 비만이 늘며 해마다 늘고 있습니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:564px;height:160px">
+    <div class="q-stat__num">7~13<span>%</span></div><div class="q-stat__lab">한국 성인 유병률</div><div class="q-stat__cap">성인 약 10명 중 1명꼴입니다</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:652px;top:206px;width:564px;height:160px">
+    <div class="q-stat__num">2<span>회+</span></div><div class="q-stat__lab">일주일에 2번 이상</div><div class="q-stat__cap">대표 증상이 이만큼 잦으면 진단을 생각합니다</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.75 11C19.75 11.4142 19.4142 11.75 19 11.75C18.5858 11.75 18.25 11.4142 18.25 11C18.25 10.5858 18.5858 10.25 19 10.25C19.4142 10.25 19.75 10.5858 19.75 11Z" fill="currentColor"/>
+<path d="M21.25 14.5C21.25 15.3284 20.5784 16 19.75 16C18.9216 16 18.25 15.3284 18.25 14.5C18.25 13.6716 18.9216 13 19.75 13C20.5784 13 21.25 13.6716 21.25 14.5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.3022 4.00333L24.2663 8.61535L24.2651 8.61526C25.28 9.2254 26.0143 10.3035 26.0042 11.6562C26.6253 12.3349 27.0174 13.2494 26.9997 14.2841C26.9745 15.7595 26.0548 17.4851 24.2496 17.9066C24.2495 17.9067 24.2497 17.9066 24.2496 17.9066L24.2406 20.6V20.6018C24.2406 20.8112 24.236 20.9864 24.2319 21.1433C24.2253 21.3953 24.2199 21.6005 24.2366 21.8246C24.2601 22.1391 24.3237 22.2981 24.409 22.4041C24.5238 22.5468 24.6141 22.5776 24.7205 22.5873C24.8769 22.6017 25.1069 22.5657 25.462 22.4498C25.6326 22.3941 25.8108 22.3275 26.0087 22.2525L26.0697 22.2293C26.2452 22.1627 26.4364 22.0901 26.6276 22.0241C27.0464 21.8795 27.5544 21.7332 28.0819 21.7332C31.3281 21.7332 33.211 24.3846 34.4034 26.6112C35.9096 29.4238 35.8464 32.9285 34.2418 35.6821C33.1992 37.4711 31.8461 39.0574 29.7708 39.9023C26.7785 41.1205 23.4912 40.6434 20.8018 39.253C20.4276 39.0596 19.9173 39.3511 19.9173 39.8101V44H12.46V39.9846C12.46 39.0971 12.625 38.2176 12.9464 37.3928C13.69 35.4849 14.7249 34.5119 16.047 33.9391C16.6676 33.6703 17.3299 33.4988 17.9808 33.3437C18.1124 33.3123 18.2439 33.2816 18.3756 33.2507C18.9129 33.125 19.4546 32.9982 20.0349 32.8244C20.7428 32.6124 21.3035 32.0495 21.5135 31.4305C21.706 30.8628 21.6166 30.2335 20.9786 29.6932C20.85 29.5843 20.717 29.4738 20.5811 29.3609C19.6455 28.5836 18.5721 27.6917 17.8561 26.4286C16.8299 24.6181 16.8352 22.6788 16.84 20.9473C16.8403 20.8306 16.8406 20.7147 16.8406 20.6V18.0051C16.8403 18.0049 16.84 18.0046 16.8396 18.0043C15.7203 17.1353 15 15.7768 15 14.25C15 13.744 15.1091 13.2311 15.2626 12.771C15.1172 12.4168 15 11.9824 15 11.5C15 10.01 15.7241 8.68921 16.8396 7.87023C16.84 7.86994 16.8404 7.86964 16.8408 7.86935V4L24.3022 4.00333ZM23.8367 12.1228C23.8502 12.0362 23.8571 11.9475 23.8571 11.8571C23.8571 10.9104 23.0896 10.1428 22.1429 10.1428C21.912 10.1428 21.6919 10.1884 21.4909 10.2712C21.4472 10.2891 21.4045 10.3088 21.3627 10.3302C21.3364 10.273 21.3078 10.2171 21.2769 10.1626C20.8846 9.46854 20.1399 9 19.2857 9C18.0233 9 17 10.0234 17 11.2857C17 11.7869 17.1613 12.2503 17.4348 12.6271C17.1593 13.0664 17 13.586 17 14.1428C17 15.7208 18.2792 17 19.8571 17C20.7799 17 21.6005 16.5626 22.1228 15.8837C22.1998 15.7837 22.2703 15.6785 22.3337 15.5686C22.3965 15.6107 22.4622 15.6486 22.5305 15.6822C22.7583 15.7942 23.0147 15.8571 23.2857 15.8571C24.2325 15.8571 25 15.0896 25 14.1428C25 13.4865 24.6312 12.9163 24.0895 12.6282C23.9787 12.5693 23.8607 12.5222 23.7371 12.4886C23.7832 12.3723 23.8169 12.2499 23.8367 12.1228Z" fill="currentColor"/>
+</svg></div><b>왜 관리해야 하나요</b></div><div class="v2-body">그대로 두면 식도가 좁아지거나(협착) 식도 점막이 위 점막처럼 바뀌는 바렛식도로 진행할 수 있고, 드물게 식도암 위험을 높입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><b>대부분 잘 조절됩니다</b></div><div class="v2-body">알맞은 약물치료와 생활관리로 대부분의 환자는 증상을 잘 조절할&nbsp;수&nbsp;있습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 흔한 병이지만, 오래가면 식도에 변화가 쌓이므로 꾸준히 관리합니다.</span><span class="v2-src">근거 · 미국소화기학회(ACG) 역류질환 진료지침 2022 · 대한소화기학회 역류성 식도염 진료지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 무엇인가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">위 내용물이 식도로 거꾸로 올라오는 병입니다</h2>
+  <p class="v2-sub">위산이 식도 점막을 자극해 상처를 내는 만성 질환입니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:608px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><b>식도와 위 사이의 조임근이 약해짐</b></div><div class="v2-body">평소 닫혀 있어야 할 식도-위 경계(하부식도괄약근)가 약해지면 산성 위 내용물이 식도로&nbsp;올라옵니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 13C26.4853 13 28.5 10.9853 28.5 8.5C28.5 6.01472 26.4853 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13ZM36.5596 17.0799C37.6201 17.3889 38.2292 18.4992 37.9201 19.5596C37.6111 20.6201 36.5009 21.2292 35.4404 20.9201C34.3489 20.602 33.3213 20.3256 32.3433 20.0894L32.3912 20.2384C33.6992 24.3151 35.0282 28.4572 32.8172 32.0289L30.4503 42.4432C30.2246 43.4362 29.2889 44.1011 28.277 43.9875C27.2651 43.874 26.5 43.0183 26.5 42V35.9302C25.7042 36 24.8762 36 24 36C23.3058 36 22.6417 36 22 35.9653V42C22 43.0183 21.2349 43.874 20.223 43.9875C19.2111 44.1011 18.2754 43.4362 18.0497 42.4432L15.9101 33.0287C12.7197 29.2431 14.1769 24.7016 15.6089 20.2384L15.6458 20.1234C14.6639 20.355 13.6318 20.6228 12.5348 20.9272C11.4704 21.2225 10.3682 20.5991 10.0728 19.5347C9.7775 18.4704 10.4009 17.3681 11.4653 17.0728C16.2296 15.7508 20.0803 15.0178 23.9908 15.0003C27.9083 14.9828 31.768 15.6834 36.5596 17.0799Z" fill="currentColor"/>
+</svg></div><b>배 속 압력이 올라감</b></div><div class="v2-body">뱃살·과식·꽉 끼는 옷처럼 배 속 압력을 높이는 요인이 겹치면 역류가 더 쉬워집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.75 11C19.75 11.4142 19.4142 11.75 19 11.75C18.5858 11.75 18.25 11.4142 18.25 11C18.25 10.5858 18.5858 10.25 19 10.25C19.4142 10.25 19.75 10.5858 19.75 11Z" fill="currentColor"/>
+<path d="M21.25 14.5C21.25 15.3284 20.5784 16 19.75 16C18.9216 16 18.25 15.3284 18.25 14.5C18.25 13.6716 18.9216 13 19.75 13C20.5784 13 21.25 13.6716 21.25 14.5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.3022 4.00333L24.2663 8.61535L24.2651 8.61526C25.28 9.2254 26.0143 10.3035 26.0042 11.6562C26.6253 12.3349 27.0174 13.2494 26.9997 14.2841C26.9745 15.7595 26.0548 17.4851 24.2496 17.9066C24.2495 17.9067 24.2497 17.9066 24.2496 17.9066L24.2406 20.6V20.6018C24.2406 20.8112 24.236 20.9864 24.2319 21.1433C24.2253 21.3953 24.2199 21.6005 24.2366 21.8246C24.2601 22.1391 24.3237 22.2981 24.409 22.4041C24.5238 22.5468 24.6141 22.5776 24.7205 22.5873C24.8769 22.6017 25.1069 22.5657 25.462 22.4498C25.6326 22.3941 25.8108 22.3275 26.0087 22.2525L26.0697 22.2293C26.2452 22.1627 26.4364 22.0901 26.6276 22.0241C27.0464 21.8795 27.5544 21.7332 28.0819 21.7332C31.3281 21.7332 33.211 24.3846 34.4034 26.6112C35.9096 29.4238 35.8464 32.9285 34.2418 35.6821C33.1992 37.4711 31.8461 39.0574 29.7708 39.9023C26.7785 41.1205 23.4912 40.6434 20.8018 39.253C20.4276 39.0596 19.9173 39.3511 19.9173 39.8101V44H12.46V39.9846C12.46 39.0971 12.625 38.2176 12.9464 37.3928C13.69 35.4849 14.7249 34.5119 16.047 33.9391C16.6676 33.6703 17.3299 33.4988 17.9808 33.3437C18.1124 33.3123 18.2439 33.2816 18.3756 33.2507C18.9129 33.125 19.4546 32.9982 20.0349 32.8244C20.7428 32.6124 21.3035 32.0495 21.5135 31.4305C21.706 30.8628 21.6166 30.2335 20.9786 29.6932C20.85 29.5843 20.717 29.4738 20.5811 29.3609C19.6455 28.5836 18.5721 27.6917 17.8561 26.4286C16.8299 24.6181 16.8352 22.6788 16.84 20.9473C16.8403 20.8306 16.8406 20.7147 16.8406 20.6V18.0051C16.8403 18.0049 16.84 18.0046 16.8396 18.0043C15.7203 17.1353 15 15.7768 15 14.25C15 13.744 15.1091 13.2311 15.2626 12.771C15.1172 12.4168 15 11.9824 15 11.5C15 10.01 15.7241 8.68921 16.8396 7.87023C16.84 7.86994 16.8404 7.86964 16.8408 7.86935V4L24.3022 4.00333ZM23.8367 12.1228C23.8502 12.0362 23.8571 11.9475 23.8571 11.8571C23.8571 10.9104 23.0896 10.1428 22.1429 10.1428C21.912 10.1428 21.6919 10.1884 21.4909 10.2712C21.4472 10.2891 21.4045 10.3088 21.3627 10.3302C21.3364 10.273 21.3078 10.2171 21.2769 10.1626C20.8846 9.46854 20.1399 9 19.2857 9C18.0233 9 17 10.0234 17 11.2857C17 11.7869 17.1613 12.2503 17.4348 12.6271C17.1593 13.0664 17 13.586 17 14.1428C17 15.7208 18.2792 17 19.8571 17C20.7799 17 21.6005 16.5626 22.1228 15.8837C22.1998 15.7837 22.2703 15.6785 22.3337 15.5686C22.3965 15.6107 22.4622 15.6486 22.5305 15.6822C22.7583 15.7942 23.0147 15.8571 23.2857 15.8571C24.2325 15.8571 25 15.0896 25 14.1428C25 13.4865 24.6312 12.9163 24.0895 12.6282C23.9787 12.5693 23.8607 12.5222 23.7371 12.4886C23.7832 12.3723 23.8169 12.2499 23.8367 12.1228Z" fill="currentColor"/>
+</svg></div><b>반복되면 합병증</b></div><div class="v2-body">역류가 되풀이되면 식도염, 식도가 좁아지는 협착, 바렛식도로 이어질 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:704px;top:206px;width:512px;height:288px">
+    <img class="v2-fig__img q-fig__img" style="width:512px;height:288px" src="../../../../shared/assets/generated/gi-gerd-lifestyle-s04-anatomy-gi-e15729fd-20260530-raster-20260531.jpg" alt="가슴을 움켜쥔 남성과 위에서 식도로 올라오는 위산, 기침하는 사람과 입을 가린 사람">
+  </div>
+  <div class="v2-panel q-figcap" style="left:704px;top:506px;width:512px;height:100px"><div class="q-figcap__t">설명용 그림 · 위산(주황색)이 식도로 올라와 가슴쓰림·기침·신물을 일으킵니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 조임근 기능 저하와 배 속 압력 증가 — 이 두 가지가 만나는 곳에서 역류가 시작됩니다.</span><span class="v2-src">근거 · 대한소화기학회 역류성 식도염 진료지침 · 미국소화기학회(ACG) 역류질환 진료지침 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 증상</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이런 증상이 있나요</h2>
+  <p class="v2-sub">대표 증상과 함께, 역류가 원인인 줄 모르기 쉬운 증상도 살펴봅니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">대표 증상</div><div class="v2-vs__lead">역류성 식도염에서 흔히 겪습니다</div><ul class="v2-vs__list"><li>가슴쓰림 — 가슴 한가운데가 타는 듯함, 식후·누우면 심해짐</li><li>신물·쓴물 — 위 내용물이 입까지 올라옴</li><li>잦은 트림·소화불량 — 식후 부글거림·더부룩함</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">놓치기 쉬운 증상</div><div class="v2-vs__lead">역류가 원인일 수 있습니다</div><ul class="v2-vs__list"><li>3주 넘는 기침·쉰 목소리</li><li>목에 무엇이 걸린 듯한 이물감이 반복됨</li><li>밤에 가슴 통증 — 심장 원인을 먼저 확인한 뒤 역류를 생각합니다</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 3주 넘게 기침이 계속되면 역류도 한 번쯤 의심해 봅니다.</span><span class="v2-src">근거 · 몬트리올 정의 2006 · 리옹 합의 2.0 2023</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 원인</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">왜 생기나요</h2>
+  <p class="v2-sub">조임근이 풀리고 배 속 압력이 오르는 일이 일상에서 쌓입니다</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 13C26.4853 13 28.5 10.9853 28.5 8.5C28.5 6.01472 26.4853 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13ZM36.5596 17.0799C37.6201 17.3889 38.2292 18.4992 37.9201 19.5596C37.6111 20.6201 36.5009 21.2292 35.4404 20.9201C34.3489 20.602 33.3213 20.3256 32.3433 20.0894L32.3912 20.2384C33.6992 24.3151 35.0282 28.4572 32.8172 32.0289L30.4503 42.4432C30.2246 43.4362 29.2889 44.1011 28.277 43.9875C27.2651 43.874 26.5 43.0183 26.5 42V35.9302C25.7042 36 24.8762 36 24 36C23.3058 36 22.6417 36 22 35.9653V42C22 43.0183 21.2349 43.874 20.223 43.9875C19.2111 44.1011 18.2754 43.4362 18.0497 42.4432L15.9101 33.0287C12.7197 29.2431 14.1769 24.7016 15.6089 20.2384L15.6458 20.1234C14.6639 20.355 13.6318 20.6228 12.5348 20.9272C11.4704 21.2225 10.3682 20.5991 10.0728 19.5347C9.7775 18.4704 10.4009 17.3681 11.4653 17.0728C16.2296 15.7508 20.0803 15.0178 23.9908 15.0003C27.9083 14.9828 31.768 15.6834 36.5596 17.0799Z" fill="currentColor"/>
+</svg></div><b>체중·배 속 압력</b></div><div class="v2-body">비만·복부비만은 역류 위험을 높입니다. 2025년 연구에서 체질량지수(BMI)가 10 높을 때 역류질환 위험은 약 68% 높았습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.0677 20.1473L9.62842 11.0438L15.23 5.80745L17.0001 12.4093V8.78977L24.0001 6.64833V10.5416L30.0858 7.62947L30.0172 8.6399L31.2276 4H38.3442L35.5752 13.2299L37.3418 12.7784L35.1947 20.7918C35.3339 20.6574 35.4741 20.5208 35.6151 20.3819C35.8596 20.1414 36.1928 20 36.5357 20C37.3133 20 37.9149 20.6815 37.8185 21.4532L35.2191 42.2481C35.094 43.2489 34.2432 44 33.2346 44H14.7657C13.757 44 12.9062 43.2489 12.7811 42.2481L10.1824 21.4583C10.0856 20.6839 10.6894 20 11.4698 20C11.6785 20 11.8837 20.0522 12.0677 20.1473ZM31.5913 16.7667L34.4309 15.9148L32.4717 23.2267C31.3565 24.1345 30.2936 24.8767 29.2637 25.4536L31.5913 16.7667ZM26.7968 26.5359L27.8582 10.9127L25.2682 12.152L24.2621 26.9624C25.1027 26.943 25.9434 26.8009 26.7968 26.5359ZM19.0001 25.5438C20.0275 26.0984 21.0211 26.4908 22.0001 26.7207V9.35167L19.0001 10.2694V25.5438ZM14.7857 22.5635C15.5478 23.2115 16.2841 23.7881 17.0001 24.2931V20.1317L14.1613 9.54423L11.8709 11.6853L14.7857 22.5635ZM33.3137 13.8079L30.5518 14.5139L32.7727 6L35.6561 6L33.3137 13.8079Z" fill="currentColor"/>
+</svg></div><b>식습관</b></div><div class="v2-body">과식·야식·식후 바로 눕기·기름진 음식은 위가 비워지는 것을 늦춥니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:848px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 24C42 28.6107 40.2664 32.8166 37.4155 36.0013L29.0001 27.5859L29 26.8439C29 24.1266 27.8985 21.5205 25.9379 19.5991C25.8404 19.5036 25.7857 19.3741 25.7857 19.2391V10.7C25.7857 10.3134 25.4659 10 25.0714 10H23.2857C22.8912 10 22.5714 10.3134 22.5714 10.7V19.2271C22.5714 19.369 22.51 19.5042 22.4024 19.5991C20.2366 21.5093 19 24.2305 19 27.0859V36.4543C19 37.308 19.7061 38 20.5773 38H27.3168C28.2464 38 29 37.2615 29 36.3504V30.4142L36.0013 37.4155C32.8166 40.2664 28.6108 42 24 42C14.0589 42 6 33.9411 6 24C6 19.262 7.83061 14.9515 10.8231 11.7373L18.2929 19.2071C18.6834 19.5976 19.3166 19.5976 19.7071 19.2071C20.0976 18.8166 20.0976 18.1834 19.7071 17.7929L12.265 10.3508C15.4161 7.63912 19.5166 6 24 6C33.9411 6 42 14.0589 42 24ZM44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24ZM21 26H27V31H21V26Z" fill="currentColor"/>
+</svg></div><b>담배·술·카페인</b></div><div class="v2-body">식도와 위 사이 조임근을 직접 느슨하게 만듭니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><b>먹는 약</b></div><div class="v2-body">일부 혈압약(칼슘차단제)·협심증약(질산염)·천식약 — 먹는 약을 함께 점검합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><b>구조 이상</b></div><div class="v2-body">위 일부가 가슴 쪽으로 올라가는 식도열공탈장이 함께 있을 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:848px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 24C6 14.0589 14.0589 6 24 6V8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40C32.8366 40 40 32.8366 40 24C40 22.4015 39.7656 20.8577 39.3293 19.4012L41.2454 18.8264C41.7363 20.4649 42 22.2017 42 24C42 33.9411 33.9411 42 24 42C14.0589 42 6 33.9411 6 24Z" fill="currentColor"/>
+<path d="M18.5301 13.9516C18.0518 14.2278 17.8879 14.8394 18.164 15.3177C18.4402 15.796 19.0518 15.9598 19.5301 15.6837L20.4665 15.143L20.0147 18.8934C19.9694 19.2694 20.1404 19.6388 20.4565 19.8475C20.7726 20.0562 21.1795 20.0684 21.5075 19.879L24.5095 18.1458C24.9878 17.8696 25.1517 17.2581 24.8756 16.7798C24.5994 16.3015 23.9878 16.1376 23.5095 16.4137L22.2395 17.147L22.6914 13.3966C22.7367 13.0206 22.5656 12.6512 22.2495 12.4425C21.9335 12.2338 21.5266 12.2216 21.1986 12.411L18.5301 13.9516Z" fill="currentColor"/>
+<path d="M25.8172 9.29408C25.6743 8.76062 25.9909 8.21228 26.5244 8.06934L30.3881 7.03406C30.7539 6.93603 31.1438 7.05312 31.3951 7.33652C31.6464 7.61992 31.716 8.02097 31.5749 8.37249L29.5262 13.4767L31.941 12.8296C32.4744 12.6867 33.0228 13.0033 33.1657 13.5367C33.3087 14.0702 32.9921 14.6185 32.4586 14.7615L28.1119 15.9262C27.7461 16.0242 27.3562 15.9071 27.1049 15.6237C26.8536 15.3403 26.784 14.9392 26.9251 14.5877L28.9738 9.48355L27.042 10.0012C26.5085 10.1441 25.9602 9.82755 25.8172 9.29408Z" fill="currentColor"/>
+<path d="M36.5556 6C36.0033 6 35.5556 6.44772 35.5556 7C35.5556 7.55228 36.0033 8 36.5556 8H39.1958L35.152 14.47C34.9593 14.7783 34.9491 15.1668 35.1254 15.4848C35.3016 15.8027 35.6365 16 36 16H41C41.5523 16 42 15.5523 42 15C42 14.4477 41.5523 14 41 14H37.8042L41.848 7.53C42.0407 7.22173 42.0509 6.83319 41.8746 6.51523C41.6984 6.19728 41.3635 6 41 6H36.5556Z" fill="currentColor"/>
+<path d="M12.8884 27.1057C12.9643 27.849 13.6309 28.4029 14.4039 28.6487C15.2116 28.9055 16.2592 28.8836 17.371 28.4025C18.5269 27.9024 19.2033 27.0055 19.503 26.1071C19.7926 25.2391 19.7526 24.2876 19.3505 23.6822C19.256 23.54 19.0955 23.4558 18.9248 23.459C18.7541 23.4621 18.5968 23.5521 18.5076 23.6977C17.2142 25.8092 15.3637 26.7386 13.4326 26.5571C13.2837 26.5431 13.1363 26.5965 13.0309 26.7028C12.9255 26.809 12.8732 26.9568 12.8884 27.1057Z" fill="currentColor"/>
+<path d="M32.2802 21.9097C32.5862 22.5914 32.2859 23.4043 31.7393 24.0037C31.1682 24.63 30.25 25.1348 29.0466 25.2741C27.7955 25.4189 26.7612 24.9803 26.0525 24.3522C25.3677 23.7453 24.9266 22.9012 24.9722 22.1759C24.9829 22.0055 25.0798 21.8523 25.2292 21.7697C25.3786 21.6871 25.5598 21.6864 25.7099 21.7679C27.8858 22.9497 29.953 22.8293 31.5346 21.7067C31.6566 21.6201 31.811 21.5926 31.9554 21.6319C32.0998 21.6713 32.2189 21.7732 32.2802 21.9097Z" fill="currentColor"/>
+<path d="M32.4478 31.855C30.1969 28.7708 26.8611 27.1403 23.7407 27.9764C20.6203 28.8125 18.5467 31.8924 18.1395 35.6889C18.0249 36.7578 19.0627 37.512 20.1011 37.2338L31.5215 34.1737C32.5599 33.8955 33.0815 32.7233 32.4478 31.855Z" fill="currentColor"/>
+</svg></div><b>스트레스</b></div><div class="v2-body">증상을 더 예민하게 느끼게 하고 식습관도 나빠지게&nbsp;합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 바꿀 수 있는 원인부터 — 체중·식습관·담배·술이 상담의 우선순위입니다.</span><span class="v2-src">근거 · ACG 역류질환 지침 2022 · Mao, Frontiers in Physiology, 2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 진단</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">어떻게 진단하나요</h2>
+  <p class="v2-sub">대표 증상이 뚜렷하면 먼저 진단하고 약으로 치료를 시작합니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:480px;height:270px">
+    <img class="v2-fig__img q-fig__img" style="width:480px;height:270px" src="../../../../shared/assets/generated/gi-gerd-lifestyle-s06-comparison-gi-8a9c2c34-20260530-raster-20260531.jpg" alt="내시경 화면을 보며 설명하는 의사와 기록지, 목·위·잠든 사람을 담은 작은 그림들">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:488px;width:480px;height:118px"><div class="q-figcap__t">설명용 그림 · 의사가 내시경 화면으로 식도를 살펴봅니다. 목·위·밤 증상도 함께 확인합니다.</div></div>
+  <div class="v2-panel q-text" style="left:576px;top:206px;width:640px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">증상 확인<span class="q-srow__tag">진료</span></div><div class="v2-body">증상이 얼마나 잦은지, 체중 감소·삼킴 곤란·출혈 같은 위험 신호가 있는지 봅니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">위산억제제 시험 치료<span class="q-srow__tag">8주</span></div><div class="v2-body">위험 신호가 없다면 위산억제제(PPI)를 식전 하루 한 번 8주 복용합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">위 내시경<span class="q-srow__tag">필요할 때</span></div><div class="v2-body">위험 신호가 있거나 약이 잘 안 듣거나 50세 이상에 새로 생긴 증상일 때. 식도염 정도를 A~D 네 단계(LA 분류)로 나눕니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">정밀 검사<span class="q-srow__tag">드물게</span></div><div class="v2-body">24시간 식도 산도·임피던스 검사, 식도 운동(내압) 검사 — 약이 안 듣거나 수술을 생각할 때.</div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 모든 분이 내시경부터 하지는 않습니다 — 위험 신호가 있으면 먼저 합니다.</span><span class="v2-src">근거 · 미국소화기학회(ACG) 역류질환 진료지침 2022 · 리옹 합의 2.0 2023</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 약물 치료</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">약물 치료 — 위산을 줄이는 것이 중심입니다</h2>
+  <p class="v2-sub">처방받은 기간을 지키는 것이 가장 중요합니다 — 내시경으로 확인된 경우 건강보험이 적용됩니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:608px"><colgroup><col style="width:160px"><col style="width:448px"></colgroup><thead><tr><th>약 종류</th><th>대표 약과 먹는 법</th></tr></thead><tbody><tr><th style="height:78px">위산억제제(PPI)<br><span class="q-hl">1차 치료</span></th><td style="height:78px">에소메프라졸 등 · 식전 30~60분 · 하루 한 번 8주 시험 치료</td></tr><tr><th style="height:78px">칼륨경쟁적<br>위산억제제</th><td style="height:78px">테고프라잔·보노프라잔 · 식사와 상관없이, 빠르게 위산을 줄임</td></tr><tr><th style="height:78px">H2 차단제·제산제</th><td style="height:78px">증상이 가벼울 때 보조로 · 바로 가라앉히려면 물약 제산제</td></tr><tr><th style="height:78px">위장운동 촉진제</th><td style="height:78px">위가 늦게 비워질 때 보조로 · 이것만 단독으로는 권하지 않음</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:704px;top:206px;width:512px;height:288px">
+    <img class="v2-fig__img q-fig__img" style="width:512px;height:288px" src="../../../../shared/assets/generated/gi-gerd-lifestyle-s07-action-gi-7e4a7c7a-20260530-raster-20260531.jpg" alt="알약과 물컵, 시계, 보호막이 덮인 위와 물을 마시는 여성">
+  </div>
+  <div class="v2-panel q-figcap" style="left:704px;top:506px;width:512px;height:100px"><div class="q-figcap__t">설명용 그림 · 정해진 시간에 약을 먹으면 위산이 줄어 식도 점막이 회복됩니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 좋아져도 처방 기간은 지키세요 — 갑자기 끊으면 위산이 오히려 늘 수 있습니다.</span><span class="v2-src">근거 · 미국소화기학회(ACG) 역류질환 진료지침 2022 · 대한소화기학회 역류성 식도염 진료지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 식이</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">음식 — 피할 것과 권하는 것</h2>
+  <p class="v2-sub">사람마다 다릅니다. 내 증상을 나빠지게 하는 음식부터 피하세요</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">피하기</div><div class="v2-vs__lead">증상을 부르기 쉬운 음식·습관</div><ul class="v2-vs__list"><li>기름진 음식·튀김, 맵고 향신료가 강한 음식</li><li>커피·홍차·콜라 같은 카페인 음료</li><li>초콜릿·박하사탕</li><li>술(특히 밤에 마시는 술)</li><li>오렌지·토마토 같은 신 과일, 탄산음료·야식</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">권장</div><div class="v2-vs__lead">역류를 줄이는 먹는 방법</div><ul class="v2-vs__list"><li>천천히, 잘 씹어 먹기</li><li>한 번에 먹는 양은 줄이고 여러 번 나눠 먹기</li><li>식후 2~3시간은 눕지 않기 · 잠들기 3시간 전 식사 마치기</li><li>현미·채소·통곡물 같은 식이섬유</li><li>생선·닭가슴살 같은 저지방 단백질, 미지근한 물</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 일괄 금지보다 — 먹고 나서 증상이 생긴 음식을 기록해 내 유발 음식을 찾아보세요.</span><span class="v2-src">근거 · 미국소화기학회(ACG) 역류질환 진료지침 2022 · 대한소화기학회 역류성 식도염 진료지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 생활습관</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">생활습관 — 약의 효과를 좌우합니다</h2>
+  <p class="v2-sub">약과 함께 반드시 실천하세요</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:680px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">적정 체중 유지<span class="q-srow__tag">근거 가장 강함</span></div><div class="v2-body">5~10% 감량은 지침 수치가 아닌 관행적인 목표입니다. 개인 목표는 진료에서 정합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">금연·절주</div><div class="v2-body">담배·술은 조임근을 느슨하게 해 역류를 직접 일으킵니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">상체를 높여 자기<span class="q-srow__tag">15~20cm</span></div><div class="v2-body">침대 머리 쪽 다리를 높이거나 쐐기형 베개 — 베개만 높이면 효과가 덜합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">배 조이지 않기</div><div class="v2-body">꽉 끼는 벨트·옷을 피하고 식사 직후 허리 굽히기를 줄입니다.</div></div></div><div class="q-srow"><span class="q-srow__n">5</span><div class="q-srow__c"><div class="q-srow__h">식후 가벼운 활동</div><div class="v2-body">식후 바로 눕거나 격렬한 운동은 피하고 가볍게 걷습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">6</span><div class="q-srow__c"><div class="q-srow__h">왼쪽으로 누워 자기</div><div class="v2-body">오른쪽보다 밤사이 역류가 줄었다는 보고가 있습니다.</div></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:776px;top:206px;width:440px;height:248px">
+    <img class="v2-fig__img q-fig__img" style="width:440px;height:248px" src="../../../../shared/assets/generated/gi-gerd-lifestyle-s09-action-gi-8b1be73d-20260530-raster-20260531.jpg" alt="식사하는 여성, 머리 쪽이 높은 침대, 왼쪽으로 누운 모습, 체중계와 시계가 그려진 접시">
+  </div>
+  <div class="v2-panel q-figcap" style="left:776px;top:466px;width:440px;height:140px"><div class="q-figcap__t">설명용 그림 · 저녁을 일찍 가볍게 먹고, 상체를 높여 왼쪽으로 눕고, 체중을 관리합니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 생활습관 가운데 근거가 가장 강한 것은 체중 감량입니다.</span><span class="v2-src">근거 · ACG 역류질환 지침 2022 · 서울 합의 2020 — 5~10%는 지침 수치 아님</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 위험 신호</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이럴 땐 바로 진료를 받으세요</h2>
+  <p class="v2-sub">아래 증상이 있으면 혼자 관리하지 마시고 바로 내원하세요</p>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:64px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.0677 20.1473L9.62842 11.0438L15.23 5.80745L17.0001 12.4093V8.78977L24.0001 6.64833V10.5416L30.0858 7.62947L30.0172 8.6399L31.2276 4H38.3442L35.5752 13.2299L37.3418 12.7784L35.1947 20.7918C35.3339 20.6574 35.4741 20.5208 35.6151 20.3819C35.8596 20.1414 36.1928 20 36.5357 20C37.3133 20 37.9149 20.6815 37.8185 21.4532L35.2191 42.2481C35.094 43.2489 34.2432 44 33.2346 44H14.7657C13.757 44 12.9062 43.2489 12.7811 42.2481L10.1824 21.4583C10.0856 20.6839 10.6894 20 11.4698 20C11.6785 20 11.8837 20.0522 12.0677 20.1473ZM31.5913 16.7667L34.4309 15.9148L32.4717 23.2267C31.3565 24.1345 30.2936 24.8767 29.2637 25.4536L31.5913 16.7667ZM26.7968 26.5359L27.8582 10.9127L25.2682 12.152L24.2621 26.9624C25.1027 26.943 25.9434 26.8009 26.7968 26.5359ZM19.0001 25.5438C20.0275 26.0984 21.0211 26.4908 22.0001 26.7207V9.35167L19.0001 10.2694V25.5438ZM14.7857 22.5635C15.5478 23.2115 16.2841 23.7881 17.0001 24.2931V20.1317L14.1613 9.54423L11.8709 11.6853L14.7857 22.5635ZM33.3137 13.8079L30.5518 14.5139L32.7727 6L35.6561 6L33.3137 13.8079Z" fill="currentColor"/>
+</svg></div><b>삼키기 어려움</b></div><div class="v2-body">음식이 걸리거나 잘 안 넘어갑니다. 식도가 좁아졌거나 종양인지 확인해야 합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28.5 8.5C28.5 10.9853 26.4853 13 24 13C21.5147 13 19.5 10.9853 19.5 8.5C19.5 6.01472 21.5147 4 24 4C26.4853 4 28.5 6.01472 28.5 8.5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32.2683 27.4758C33.0834 27.3276 33.624 26.5467 33.4758 25.7317C33.424 25.4468 33.3555 25.0102 33.2739 24.4905C33.1133 23.4681 32.9022 22.1233 32.6682 20.9753C32.485 20.0769 32.2641 19.1627 31.995 18.4296C31.862 18.0672 31.6938 17.683 31.4744 17.351C31.2847 17.0638 30.8892 16.5556 30.2083 16.3722C25.7676 15.1762 22.2083 15.2312 17.7953 16.4082C17.1154 16.5895 16.719 17.0946 16.528 17.3818C16.3079 17.7129 16.1392 18.096 16.006 18.4568C15.7365 19.1869 15.5154 20.097 15.3322 20.9912C15.0966 22.1411 14.8852 23.483 14.7246 24.5029C14.6439 25.0156 14.576 25.447 14.5242 25.7317C14.376 26.5467 14.9166 27.3276 15.7317 27.4758C16.5468 27.624 17.3276 27.0834 17.4758 26.2683C17.5529 25.8443 17.6321 25.3372 17.7196 24.7773C17.869 23.8201 18.0426 22.7085 18.2711 21.5934C18.446 20.7398 18.6312 20.0082 18.8204 19.4957C18.8645 19.3763 18.9038 19.2826 18.937 19.2108C19.3445 19.1073 19.7426 19.0149 20.1334 18.9337L21 25L19.5 30.5V42.5C19.5 43.3284 20.1716 44 21 44C21.8284 44 22.5 43.3284 22.5 42.5V30.5H25.5V42.5C25.5 43.3284 26.1716 44 27 44C27.8284 44 28.5 43.3284 28.5 42.5V30.5L27 25L27.8716 18.8987C28.2601 18.978 28.6556 19.0692 29.0602 19.1725C29.0939 19.2455 29.1339 19.3412 29.1787 19.4632C29.3683 19.9798 29.5537 20.7164 29.7286 21.5746C29.9566 22.6928 30.1291 23.8014 30.2778 24.7575C30.3661 25.3247 30.446 25.8383 30.5242 26.2683C30.6724 27.0834 31.4533 27.624 32.2683 27.4758ZM28.9546 18.982C28.9545 18.9826 28.9594 18.9898 28.9695 19.0018C28.9598 18.9873 28.9547 18.9813 28.9546 18.982ZM19.0424 19.0209C19.0423 19.0203 19.0374 19.0262 19.0279 19.0403C19.0378 19.0286 19.0425 19.0216 19.0424 19.0209Z" fill="currentColor"/>
+</svg></div><b>뜻하지 않은 체중 감소</b></div><div class="v2-body">3~6개월 사이 체중이 5% 넘게 빠졌을 때.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:848px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 4L23.3098 4.66021L23.3061 4.6638L23.2973 4.67227L23.2648 4.70366C23.2367 4.73095 23.1956 4.7709 23.1426 4.82303C23.0366 4.92728 22.8826 5.08029 22.6874 5.27827C22.297 5.67417 21.7417 6.25029 21.0763 6.97632C19.7465 8.42723 17.9719 10.4826 16.1951 12.8995C12.6815 17.6788 9 24.0809 9 30.0801C9 37.845 15.796 44 24 44C32.204 44 39 37.845 39 30.0801C39 24.0809 35.3185 17.6788 31.8049 12.8995C30.0281 10.4826 28.2535 8.42723 26.9237 6.97632C26.2583 6.25029 25.703 5.67417 25.3126 5.27827C25.1174 5.08029 24.9634 4.92728 24.8574 4.82303C24.8044 4.7709 24.7634 4.73095 24.7352 4.70366L24.7027 4.67227L24.6939 4.6638L24.6902 4.66021L24 4ZM15.4649 31.3985C15.2943 30.8716 14.7301 30.5833 14.2049 30.7545C13.6796 30.9257 13.3922 31.4915 13.5628 32.0183C14.3133 34.3349 15.7757 36.3536 17.7404 37.7853C19.7052 39.217 22.0714 39.9882 24.5 39.9882C25.0523 39.9882 25.5 39.5391 25.5 38.9852C25.5 38.4313 25.0523 37.9822 24.5 37.9822C22.4938 37.9822 20.5391 37.3452 18.916 36.1625C17.293 34.9798 16.0849 33.3121 15.4649 31.3985Z" fill="currentColor"/>
+</svg></div><b>검은 변·피를 토함</b></div><div class="v2-body">검은 변, 피를 토함, 커피 찌꺼기 같은 구토물.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><b>처음 겪는 가슴 통증</b></div><div class="v2-body">처음 생긴 가슴 통증은 심장 원인부터 확인합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:456px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><b>약이 잘 안 들을 때</b></div><div class="v2-body">위산억제제를 8주 충분히 먹어도 증상이 남거나 다시 생깁니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:848px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 10C13.1046 10 14 9.10457 14 8C14 6.89543 13.1046 6 12 6C11.2597 6 10.6134 6.4022 10.2676 7H10C8.34315 7 7 8.34315 7 10V19C6.44774 19 5.99531 19.4487 6.04543 19.9987C6.27792 22.5499 7.39568 24.952 9.22186 26.7782C10.561 28.1173 12.2098 29.0755 14 29.583V32C14 33.3064 14.835 34.4177 16.0004 34.8294C16.043 38.7969 19.2725 42 23.25 42C27.2541 42 30.5 38.7541 30.5 34.75V30.75C30.5 28.6789 32.1789 27 34.25 27C36.3211 27 38 28.6789 38 30.75V33.1707C36.8348 33.5825 36 34.6938 36 36C36 37.6569 37.3431 39 39 39C40.6569 39 42 37.6569 42 36C42 34.6938 41.1652 33.5825 40 33.1707V30.75C40 27.5744 37.4256 25 34.25 25C31.0744 25 28.5 27.5744 28.5 30.75V34.75C28.5 37.6495 26.1495 40 23.25 40C20.3769 40 18.0429 37.6921 18.0006 34.8291C19.1655 34.4171 20 33.306 20 32V29.583C21.7902 29.0755 23.4391 28.1173 24.7782 26.7782C26.6044 24.952 27.7221 22.5499 27.9546 19.9987C28.0048 19.4487 27.5523 19 27 19L27 10C27 8.34315 25.6569 7 24 7H23.7324C23.3866 6.4022 22.7403 6 22 6C20.8954 6 20 6.89543 20 8C20 9.10457 20.8954 10 22 10C22.7403 10 23.3866 9.5978 23.7324 9H24C24.5523 9 25 9.44772 25 10V19H25.2095C24.6572 19 24.2166 19.4499 24.1403 19.9969C23.9248 21.5406 23.2127 22.983 22.0979 24.0979C20.7458 25.4499 18.9121 26.2095 17 26.2095C15.088 26.2095 13.2542 25.4499 11.9022 24.0979C10.7873 22.983 10.0753 21.5406 9.8598 19.9969C9.78344 19.4499 9.34286 19 8.79057 19L9 19V10C9 9.44772 9.44772 9 10 9H10.2676C10.6134 9.5978 11.2597 10 12 10Z" fill="currentColor"/>
+</svg></div><b>50세 이상 새 증상</b></div><div class="v2-body">늦게 시작된 역류 증상은 꼭 내시경으로 확인합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 위험 신호가 있으면 약이 듣든 안 듣든 내시경 검사를 받습니다.</span><span class="v2-src">근거 · 미국소화기학회(ACG) 역류질환 진료지침 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 오늘부터</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘부터 실천할 일곱 가지</h2>
+  <p class="v2-sub">작은 습관 변화가 약물치료의 효과를 결정합니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">식후 2~3시간은 눕지 않기</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">잠들기 3시간 전까지 식사 마치기</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">야식·과식 끊기</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">커피·술·담배 줄이거나 끊기</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">잠자리 머리 쪽 15~20cm 높이기</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">꽉 끼는 옷·벨트 피하기</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">처방약은 마음대로 끊지 않고 먹기</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 8주 꾸준히 지키면 증상이 좋아지는 경우가 많습니다 — 매일 체크해 습관으로 만드세요.</span><span class="v2-src">근거 · 미국소화기학회(ACG) 역류질환 진료지침 2022 · 대한소화기학회 역류성 식도염 진료지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">증상이 달라지거나 궁금한 점이 있으면 언제든 내원해 주세요</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">역류성 식도염 진단을 받았거나 증상이 있는 분을 위한 생활관리 설명자료입니다. 약과 검사는 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">미국소화기학회(ACG) 역류질환 진료지침 2022 · 대한소화기학회 역류성 식도염 진료지침 · 몬트리올 정의 2006 · 리옹 합의 2.0 2023</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM15,2H16V3H15zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM23,3H24V4H23zM24,3H25V4H24zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM23,4H24V5H23zM25,4H26V5H25zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM16,5H17V6H16zM18,5H19V6H18zM19,5H20V6H19zM20,5H21V6H20zM24,5H25V6H24zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM17,6H18V7H17zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM20,7H21V8H20zM24,7H25V8H24zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM14,9H15V10H14zM16,9H17V10H16zM17,9H18V10H17zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM25,10H26V11H25zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM2,11H3V12H2zM3,11H4V12H3zM6,11H7V12H6zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM14,11H15V12H14zM18,11H19V12H18zM19,11H20V12H19zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM11,12H12V13H11zM13,12H14V13H13zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM22,12H23V13H22zM23,12H24V13H23zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM7,13H8V14H7zM10,13H11V14H10zM11,13H12V14H11zM13,13H14V14H13zM16,13H17V14H16zM18,13H19V14H18zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM27,13H28V14H27zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM5,14H6V15H5zM8,14H9V15H8zM10,14H11V15H10zM13,14H14V15H13zM14,14H15V15H14zM20,14H21V15H20zM21,14H22V15H21zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM2,15H3V16H2zM3,15H4V16H3zM4,15H5V16H4zM6,15H7V16H6zM10,15H11V16H10zM13,15H14V16H13zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM25,15H26V16H25zM26,15H27V16H26zM28,15H29V16H28zM29,15H30V16H29zM33,15H34V16H33zM34,15H35V16H34zM2,16H3V17H2zM8,16H9V17H8zM10,16H11V17H10zM12,16H13V17H12zM15,16H16V17H15zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM26,16H27V17H26zM27,16H28V17H27zM28,16H29V17H28zM31,16H32V17H31zM33,16H34V17H33zM4,17H5V18H4zM6,17H7V18H6zM7,17H8V18H7zM9,17H10V18H9zM11,17H12V18H11zM12,17H13V18H12zM13,17H14V18H13zM14,17H15V18H14zM15,17H16V18H15zM16,17H17V18H16zM18,17H19V18H18zM20,17H21V18H20zM23,17H24V18H23zM24,17H25V18H24zM27,17H28V18H27zM28,17H29V18H28zM29,17H30V18H29zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM16,18H17V19H16zM19,18H20V19H19zM21,18H22V19H21zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM34,18H35V19H34zM2,19H3V20H2zM5,19H6V20H5zM7,19H8V20H7zM9,19H10V20H9zM10,19H11V20H10zM12,19H13V20H12zM13,19H14V20H13zM16,19H17V20H16zM18,19H19V20H18zM19,19H20V20H19zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM25,19H26V20H25zM26,19H27V20H26zM28,19H29V20H28zM29,19H30V20H29zM31,19H32V20H31zM32,19H33V20H32zM34,19H35V20H34zM4,20H5V21H4zM6,20H7V21H6zM8,20H9V21H8zM10,20H11V21H10zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM17,20H18V21H17zM18,20H19V21H18zM19,20H20V21H19zM22,20H23V21H22zM24,20H25V21H24zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM3,21H4V22H3zM4,21H5V22H4zM10,21H11V22H10zM13,21H14V22H13zM16,21H17V22H16zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM27,21H28V22H27zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM14,22H15V23H14zM15,22H16V23H15zM17,22H18V23H17zM18,22H19V23H18zM21,22H22V23H21zM22,22H23V23H22zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM2,23H3V24H2zM9,23H10V24H9zM11,23H12V24H11zM13,23H14V24H13zM17,23H18V24H17zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM2,24H3V25H2zM4,24H5V25H4zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM15,24H16V25H15zM17,24H18V25H17zM18,24H19V25H18zM24,24H25V25H24zM26,24H27V25H26zM27,24H28V25H27zM30,24H31V25H30zM31,24H32V25H31zM33,24H34V25H33zM2,25H3V26H2zM4,25H5V26H4zM7,25H8V26H7zM11,25H12V26H11zM12,25H13V26H12zM15,25H16V26H15zM17,25H18V26H17zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM32,25H33V26H32zM34,25H35V26H34zM2,26H3V27H2zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM19,26H20V27H19zM22,26H23V27H22zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM33,26H34V27H33zM10,27H11V28H10zM13,27H14V28H13zM16,27H17V28H16zM18,27H19V28H18zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM32,27H33V28H32zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM16,28H17V29H16zM17,28H18V29H17zM20,28H21V29H20zM22,28H23V29H22zM23,28H24V29H23zM24,28H25V29H24zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM11,29H12V30H11zM12,29H13V30H12zM15,29H16V30H15zM18,29H19V30H18zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM10,30H11V31H10zM13,30H14V31H13zM14,30H15V31H14zM20,30H21V31H20zM22,30H23V31H22zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM15,31H16V32H15zM17,31H18V32H17zM18,31H19V32H18zM19,31H20V32H19zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM24,31H25V32H24zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM31,31H32V32H31zM33,31H34V32H33zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM14,32H15V33H14zM15,32H16V33H15zM19,32H20V33H19zM22,32H23V33H22zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM14,33H15V34H14zM18,33H19V34H18zM20,33H21V34H20zM21,33H22V34H21zM23,33H24V34H23zM24,33H25V34H24zM25,33H26V34H25zM27,33H28V34H27zM30,33H31V34H30zM31,33H32V34H31zM32,33H33V34H32zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM14,34H15V35H14zM19,34H20V35H19zM20,34H21V35H20zM24,34H25V35H24zM25,34H26V35H25zM26,34H27V35H26zM27,34H28V35H27zM29,34H30V35H29zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -722,95 +417,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

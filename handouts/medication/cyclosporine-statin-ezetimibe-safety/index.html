@@ -14,62 +14,290 @@
 
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    body { font-family: var(--font-family); } /* Pretendard typography lock */
-    .page { padding: 11mm 13mm 9mm; gap: 3mm; }
-    .page__header { padding-bottom: 2.4mm; }
-    .page__title { font-size: 20.5pt; }
-    .page__subtitle { font-size: 9pt; line-height: 1.36; }
-    .page__body { gap: 2.6mm; }
-    .page__body > section { gap: 1.4mm; }
-    .section-heading { font-size: 9.8pt; margin-bottom: 0.2mm; }
-    .stat-cell { padding: 1.7mm 2mm; }
-    .stat-cell__label,
-    .stat-cell__unit { color: var(--color-ink); }
-    .stat-cell__value { font-size: 11.4pt; line-height: 1.05; }
-    .stat-cell__unit { font-size: 6.8pt; margin-top: 0.4mm; }
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
+    .page {
+      padding: 9.5mm 12.5mm 6.5mm;
+      gap: 2.5mm;
+    }
+    .page__subtitle {
+      max-width: 176mm;
+    }
+    .page__body {
+      gap: 1.7mm;
+      justify-content: start;
+    }
+    .page__body > section {
+      flex: 0 0 auto;
+      gap: 1mm;
+    }
+    .section-heading {
+      margin-bottom: 0.5mm;
+    }
+    .icon-sm {
+      width: 4.4mm;
+      height: 4.4mm;
+      vertical-align: -1mm;
+      margin-right: 1.2mm;
+    }
+    .icon-inv {
+      filter: brightness(0) invert(1);
+    }
 
-    .safety-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
-    .safety-card { padding: 2.2mm 2.6mm; border-radius: var(--radius-sm); border: 1px solid var(--color-border); background: var(--color-canvas); }
+    /* 표 공통 */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.1pt;
+      line-height: 1.36;
+      color: var(--color-ink-soft);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 0.95mm 1.8mm;
+      vertical-align: middle;
+      text-align: left;
+    }
+    .ge-table th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.2pt;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table .row-label {
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+    }
+    .ge-table tr.row-warn td:nth-child(2) strong {
+      color: var(--color-danger);
+    }
+    .heading-tag {
+      margin-left: 2mm;
+      padding: 0.3mm 2.2mm;
+      border-radius: 999px;
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-size: 7.9pt;
+      font-weight: var(--weight-semibold);
+      vertical-align: 0.3mm;
+    }
+    .table-note {
+      margin-top: 0.8mm;
+      font-size: 7.9pt;
+      line-height: 1.38;
+      color: var(--color-ink-soft);
+    }
+    .table-note strong {
+      color: var(--color-navy);
+    }
+
+    /* 기전: 그림 + 단계 */
+    .mech-grid {
+      display: grid;
+      grid-template-columns: 56mm 1fr;
+      gap: 3mm;
+      align-items: stretch;
+    }
+    .mech-figure {
+      width: 56mm;
+      height: 31.5mm;
+      margin: 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      overflow: hidden;
+      position: relative;
+      align-self: center;
+    }
+    .mech-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .mech-figure__cap {
+      position: absolute;
+      left: 1.2mm;
+      right: 1.2mm;
+      bottom: 1.2mm;
+      padding: 0.5mm 1.2mm;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 3px;
+      font-size: 6.8pt;
+      line-height: 1.2;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+    }
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 1mm;
+      justify-content: space-between;
+    }
+    .flow-step {
+      display: grid;
+      grid-template-columns: 5mm 1fr;
+      gap: 2mm;
+      align-items: start;
+      padding: 1mm 2.2mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+    }
+    .flow-num {
+      width: 5mm;
+      height: 5mm;
+      border-radius: 50%;
+      background: var(--color-navy);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7.4pt;
+      font-weight: var(--weight-bold);
+    }
+    .flow-main {
+      font-size: 8.3pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      line-height: 1.25;
+    }
+    .flow-sub {
+      font-size: 8.1pt;
+      line-height: 1.36;
+      color: var(--color-ink-soft);
+      margin-top: 0.3mm;
+    }
+
+    /* 오늘부터 지킬 것 */
+    .safety-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm 3mm;
+    }
+    .safety-card {
+      padding: 1.4mm 2.6mm;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-canvas);
+    }
     .safety-card--cream { background: var(--color-cream); border-color: var(--color-cream-deep); }
     .safety-card--warn { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
-    .safety-card--danger { background: var(--color-danger-bg); border-color: var(--color-danger-border); }
-    .safety-top { display: flex; align-items: center; gap: 1.7mm; margin-bottom: 1mm; }
-    .safety-icon { width: 5mm; height: 5mm; flex: 0 0 auto; opacity: 0.9; }
-    .safety-title { font-size: 8.2pt; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.2; }
-    .safety-card--danger .safety-title { color: var(--color-danger); }
-    .safety-text { font-size: 7.4pt; line-height: 1.38; color: var(--color-ink); }
+    .safety-top {
+      display: flex;
+      align-items: center;
+      gap: 1.5mm;
+      margin-bottom: 0.7mm;
+    }
+    .safety-top .icon-sm {
+      margin-right: 0;
+      flex: 0 0 auto;
+    }
+    .safety-title {
+      font-size: 8.4pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      line-height: 1.25;
+    }
+    .safety-text {
+      font-size: 8.1pt;
+      line-height: 1.38;
+      color: var(--color-ink);
+    }
     .safety-text strong { color: var(--color-navy); }
-    .safety-card--danger .safety-text strong { color: var(--color-danger); }
 
-    .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4mm; }
-    .flow-step { position: relative; padding: 2mm 2.2mm; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-canvas-warm); }
-    .flow-step::after { content: ""; position: absolute; top: 50%; right: -2mm; width: 2mm; border-top: 1.5px solid var(--color-steel); }
-    .flow-step:last-child::after { display: none; }
-    .flow-kicker { font-size: 6.4pt; font-weight: var(--weight-semibold); letter-spacing: var(--tracking-wide); color: var(--color-steel-deep); text-transform: uppercase; margin-bottom: 0.7mm; }
-    .flow-main { font-size: 8pt; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.18; }
-    .flow-sub { font-size: 6.9pt; line-height: 1.32; color: var(--color-ink-soft); margin-top: 0.8mm; }
+    .symptom-table td.row-label {
+      color: var(--color-danger);
+    }
+    .er-line {
+      margin-top: 1mm;
+      padding: 1.4mm 2.6mm;
+      border-radius: var(--radius-sm);
+      background: var(--color-danger-bg);
+      border: 1px solid var(--color-danger-border);
+      font-size: 8.3pt;
+      line-height: 1.38;
+      color: var(--color-ink);
+    }
+    .er-line strong { color: var(--color-danger); }
 
-    .watch-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.2mm; }
-    .watch-item { min-height: 20mm; border: 1px solid var(--color-danger-border); border-radius: var(--radius-sm); background: var(--color-danger-bg); padding: 1.8mm 1.9mm; }
-    .watch-label { font-size: 6.4pt; font-weight: var(--weight-semibold); letter-spacing: var(--tracking-wide); color: var(--color-danger); text-transform: uppercase; margin-bottom: 0.8mm; }
-    .watch-main { font-size: 8.2pt; font-weight: var(--weight-bold); color: var(--color-danger); line-height: 1.15; }
-    .watch-sub { font-size: 6.7pt; line-height: 1.25; color: var(--color-ink); margin-top: 0.8mm; }
-
-    .plan-list { display: grid; grid-template-columns: 1fr 1fr; gap: 2.4mm 3mm; }
-    .plan-item { display: grid; grid-template-columns: 5mm 1fr; gap: 1.8mm; align-items: start; padding: 1.6mm 2mm; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-canvas); }
-    .plan-num { width: 5mm; height: 5mm; border-radius: 50%; background: var(--color-navy); color: var(--color-canvas); display: flex; align-items: center; justify-content: center; font-size: 7pt; font-weight: var(--weight-bold); }
-    .plan-text { font-size: 7.3pt; line-height: 1.34; color: var(--color-ink); }
+    /* 체크리스트 */
+    .plan-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.6mm 3mm;
+    }
+    .plan-item {
+      display: grid;
+      grid-template-columns: 5mm 1fr;
+      gap: 1.8mm;
+      align-items: start;
+      padding: 1.1mm 2mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas);
+    }
+    .plan-num {
+      width: 5mm;
+      height: 5mm;
+      border-radius: 50%;
+      background: var(--color-navy);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7.4pt;
+      font-weight: var(--weight-bold);
+    }
+    .plan-text {
+      font-size: 8.1pt;
+      line-height: 1.36;
+      color: var(--color-ink);
+    }
     .plan-text strong { color: var(--color-navy); }
 
-    .bottom-note { padding: 1.8mm 2.2mm; border-radius: var(--radius-sm); background: var(--color-navy); color: var(--color-white-95); font-size: 7.4pt; line-height: 1.36; }
+    .bottom-note {
+      padding: 1.8mm 3mm;
+      border-radius: var(--radius-sm);
+      background: var(--color-navy);
+      color: var(--color-white-95);
+      font-size: 8.3pt;
+      line-height: 1.4;
+    }
     .bottom-note strong { color: var(--color-sky); }
-    .page__footer { gap: 6mm; padding-top: 2.5mm; }
-    .page__footer-info { gap: 0.5mm; font-size: 6.8pt; }
-    .disclaimer { font-size: 5.8pt; line-height: 1.28; }
+    .link-line {
+      margin-top: 1mm;
+      font-size: 7.8pt;
+      line-height: 1.4;
+      color: var(--color-ink-soft);
+    }
+    .link-line strong { color: var(--color-navy); }
+
+    .page__footer {
+      padding-top: 1.8mm;
+    }
+    @media screen {
+      .page__footer {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        align-items: flex-start !important;
+        gap: 3mm;
+      }
+      .page__footer-info {
+        width: 100% !important;
+      }
+    }
   </style>
 <!-- seo:geo2 --><meta name="description" content="사이클로스포린 복용 중 스타틴·에제티미브를 안전하게 쓰기 위한 환자 안내. 약을 바꾼 이유, 근육 증상·소변색 변화 연락 기준, 혈중농도 모니터링까지 A4 한 장으로 정리.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/handouts/medication/cyclosporine-statin-ezetimibe-safety/">
@@ -91,119 +319,139 @@
 
   <main class="page__body">
 
+    <!-- 1. 약별 정리 (표 1) -->
     <section>
-      <h2 class="section-heading">핵심만 먼저</h2>
-      <div class="stats-row">
-        <div class="stat-cell stat-cell--high">
-          <div class="stat-cell__label">로수바스타틴 노출</div>
-          <div class="stat-cell__value">약 7배 ↑</div>
-          <div class="stat-cell__unit">산디문 병용 시 보고</div>
-        </div>
-        <div class="stat-cell stat-cell--low">
-          <div class="stat-cell__label">에제티미브 노출</div>
-          <div class="stat-cell__value">약 3.4배 ↑</div>
-          <div class="stat-cell__unit">신장기능 저하 시 더 클 수 있음</div>
-        </div>
-        <div class="stat-cell stat-cell--ok">
-          <div class="stat-cell__label">현재 방향</div>
-          <div class="stat-cell__value">낮은 상호작용</div>
-          <div class="stat-cell__unit">스타틴 선택 + 병용약 모니터링</div>
-        </div>
-        <div class="stat-cell stat-cell--high">
-          <div class="stat-cell__label">바로 연락</div>
-          <div class="stat-cell__value">근육통·갈색뇨</div>
-          <div class="stat-cell__unit">횡문근융해 의심 신호</div>
+      <h2 class="section-heading"><img data-asset="hi-filled-pill-1" src="../../../shared/assets/healthicons/filled/medications/pill-1.svg" class="icon-sm" alt="알약">핵심만 먼저 — 약별 정리 <span class="heading-tag">현재 방향: 상호작용이 낮은 스타틴 선택 + 병용약 모니터링</span></h2>
+      <table class="ge-table drug-table">
+        <thead>
+          <tr>
+            <th style="width: 21%;">고지혈증약</th>
+            <th style="width: 36%;">산디문과 함께 쓸 때</th>
+            <th>우리 병원 방향</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-warn">
+            <td class="row-label">로수바스타틴</td>
+            <td>혈중 노출 <strong>약 7배 ↑</strong> (산디문 병용 시 보고)</td>
+            <td>병용 제한이 있을 수 있어 <strong>임의로 다시 먹지 않습니다</strong></td>
+          </tr>
+          <tr class="row-warn">
+            <td class="row-label">심바·로바·피타바스타틴</td>
+            <td>산디문과 <strong>병용 제한</strong>이 있을 수 있음</td>
+            <td>처방전 그대로만 복용합니다</td>
+          </tr>
+          <tr>
+            <td class="row-label">프라바·플루바스타틴</td>
+            <td>상호작용이 상대적으로 낮은 스타틴</td>
+            <td><strong>상대적으로 안전한 선택지</strong>로 우선 검토합니다</td>
+          </tr>
+          <tr>
+            <td class="row-label">에제티미브</td>
+            <td>노출 <strong>약 3.4배 ↑</strong> — 신장기능 저하 시 더 클 수 있음</td>
+            <td>금기약은 아니며, 필요 시 <strong>산디문 혈중농도·신장기능</strong>을 확인합니다</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 2. 왜 조심해야 하나요 (그림 + 단계) -->
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-liver" src="../../../shared/assets/healthicons/filled/body/liver.svg" class="icon-sm" alt="간">왜 조심해야 하나요?</h2>
+      <div class="mech-grid">
+        <figure class="mech-figure">
+          <img src="../../../shared/assets/generated/cyclosporine-statin-ezetimibe-safety-mechanism-20260927.jpg" alt="간세포 표면의 약 입구 통로가 막혀, 고지혈증약 알갱이가 간으로 들어가지 못하고 혈관에 쌓이는 모습을 보여 주는 모식도">
+          <figcaption class="mech-figure__cap">간 입구 통로가 막히면 약이 혈액에 쌓입니다</figcaption>
+        </figure>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-num">1</div>
+            <div class="flow-sub"><span class="flow-main">산디문이 통로를 막음</span> — 약을 간으로 들여보내는 통로(수송체)와 일부 대사 경로가 억제됩니다.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">2</div>
+            <div class="flow-sub"><span class="flow-main">스타틴 농도 상승</span> — 일부 스타틴은 혈중농도가 크게 올라 근육 부작용 위험이 커집니다.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">3</div>
+            <div class="flow-sub"><span class="flow-main">약을 골라서 사용</span> — 프라바스타틴·플루바스타틴 등 상대적으로 안전한 선택지를 우선 검토합니다.</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section>
-      <h2 class="section-heading">왜 조심해야 하나요?</h2>
-      <div class="flow">
-        <div class="flow-step">
-          <div class="flow-kicker">STEP 1</div>
-          <div class="flow-main">산디문이 통로를 막음</div>
-          <div class="flow-sub">간으로 약이 들어가는 수송체와 일부 대사 경로가 억제됩니다.</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-kicker">STEP 2</div>
-          <div class="flow-main">스타틴 농도 상승</div>
-          <div class="flow-sub">일부 스타틴은 혈중농도가 크게 올라 근육 부작용 위험이 커집니다.</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-kicker">STEP 3</div>
-          <div class="flow-main">약을 골라서 사용</div>
-          <div class="flow-sub">프라바스타틴·플루바스타틴 등 상대적으로 안전한 선택지를 우선 검토합니다.</div>
-        </div>
-      </div>
-    </section>
-
+    <!-- 3. 오늘부터 지킬 것 -->
     <section>
       <h2 class="section-heading">오늘부터 지킬 것</h2>
       <div class="safety-grid">
         <div class="safety-card safety-card--cream">
           <div class="safety-top">
-            <img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" class="safety-icon" alt="약">
+            <img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" class="icon-sm" alt="약">
             <div class="safety-title">남은 고지혈증약을 임의로 재복용하지 마세요</div>
           </div>
           <div class="safety-text">특히 <strong>로수바스타틴·심바스타틴·로바스타틴·피타바스타틴</strong> 계열은 산디문과 병용 제한이 있을 수 있습니다. 처방전 그대로만 복용하세요.</div>
         </div>
         <div class="safety-card safety-card--warn">
           <div class="safety-top">
-            <img data-asset="hi-filled-medical-advice" src="../../../shared/assets/healthicons/filled/symbols/medical-advice.svg" class="safety-icon" alt="의료 상담">
+            <img data-asset="hi-filled-medical-advice" src="../../../shared/assets/healthicons/filled/symbols/medical-advice.svg" class="icon-sm" alt="의료 상담">
             <div class="safety-title">새 약·항생제·건강기능식품은 먼저 알려주세요</div>
           </div>
           <div class="safety-text">산디문은 상호작용이 많은 약입니다. 다른 병원 처방, 약국 일반약, 보충제를 시작하기 전 <strong>산디문 복용 중</strong>이라고 말해 주세요.</div>
         </div>
         <div class="safety-card">
           <div class="safety-top">
-            <img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" class="safety-icon" alt="콩팥">
+            <img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" class="icon-sm" alt="콩팥">
             <div class="safety-title">에제티미브는 사용 가능하지만 검사와 함께 갑니다</div>
           </div>
-          <div class="safety-text">에제티미브는 금기약은 아니지만 산디문 농도와 에제티미브 노출이 함께 오를 수 있어, 필요 시 <strong>산디문 혈중농도·신장기능</strong>을 확인합니다.</div>
+          <div class="safety-text">에제티미브는 금기약은 아니지만 산디문 농도와 에제티미브 노출이 함께 오를&nbsp;수 있어, 필요 시 <strong>산디문 혈중농도·신장기능</strong>을 확인합니다.</div>
         </div>
         <div class="safety-card">
           <div class="safety-top">
-            <img data-asset="hi-filled-medical-records" src="../../../shared/assets/healthicons/filled/specialties/medical-records.svg" class="safety-icon" alt="의무기록">
+            <img data-asset="hi-filled-medical-records" src="../../../shared/assets/healthicons/filled/specialties/medical-records.svg" class="icon-sm" alt="의무기록">
             <div class="safety-title">검사 일정은 약효 확인과 안전 확인을 같이 봅니다</div>
           </div>
-          <div class="safety-text">LDL 콜레스테롤 반응, 간수치, 신장기능, 근육 증상 여부를 함께 봅니다. 증상이 있으면 CK 검사를 추가할 수 있습니다.</div>
+          <div class="safety-text">LDL 콜레스테롤 반응, 간수치, 신장기능, 근육 증상 여부를 함께 봅니다. 증상이 있으면 CK(근육 효소) 검사를 추가할 수 있습니다.</div>
         </div>
       </div>
     </section>
 
+    <!-- 4. 바로 연락할 증상 (표 2) -->
     <section>
-      <h2 class="section-heading">이런 증상은 바로 병원에 연락하세요</h2>
-      <div class="watch-list">
-        <div class="watch-item">
-          <div class="watch-label">MUSCLE</div>
-          <div class="watch-main">새로운 근육통</div>
-          <div class="watch-sub">허벅지·어깨가 이유 없이 아프거나 눌러도 아픔</div>
-        </div>
-        <div class="watch-item">
-          <div class="watch-label">WEAKNESS</div>
-          <div class="watch-main">힘 빠짐</div>
-          <div class="watch-sub">계단 오르기·의자에서 일어서기가 갑자기 힘듦</div>
-        </div>
-        <div class="watch-item">
-          <div class="watch-label">URINE</div>
-          <div class="watch-main">진한 갈색 소변</div>
-          <div class="watch-sub">콜라색 소변, 소변량 감소, 붓기 동반</div>
-        </div>
-        <div class="watch-item">
-          <div class="watch-label">SYSTEMIC</div>
-          <div class="watch-main">열·심한 몸살감</div>
-          <div class="watch-sub">근육 증상과 함께 열, 극심한 피로가 있으면 즉시 상담</div>
-        </div>
-      </div>
+      <h2 class="section-heading"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="경고">이런 증상은 바로 병원에 연락하세요</h2>
+      <table class="ge-table symptom-table">
+        <thead>
+          <tr>
+            <th style="width: 15%;">증상</th>
+            <th style="width: 35%;">이런 모습</th>
+            <th style="width: 14%;">증상</th>
+            <th>이런 모습</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">새로운 근육통</td>
+            <td>허벅지·어깨가 이유 없이 아프거나 눌러도 아픔</td>
+            <td class="row-label">힘 빠짐</td>
+            <td>계단 오르기·의자에서 일어서기가 갑자기 힘듦</td>
+          </tr>
+          <tr>
+            <td class="row-label">진한 갈색 소변</td>
+            <td>콜라색 소변, 소변량 감소, 붓기 동반</td>
+            <td class="row-label">열·심한 몸살감</td>
+            <td>근육 증상과 함께 열, 극심한 피로가 있으면 즉시 상담</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="er-line">근육통·갈색뇨는 횡문근융해(근육이 심하게 손상되는 상태)를 의심하는 신호입니다. <strong>진한 갈색(콜라색) 소변과 함께 소변량이 줄거나 근육통이 심하면 기다리지 말고 응급실로 가세요.</strong></div>
     </section>
 
+    <!-- 5. 체크리스트 -->
     <section>
       <h2 class="section-heading">다음 진료 전 체크리스트</h2>
       <div class="plan-list">
         <div class="plan-item">
           <div class="plan-num">1</div>
-          <div class="plan-text"><strong>복용 중인 약 사진</strong>을 모두 찍어 오세요. 타 병원 처방과 보충제도 포함합니다.</div>
+          <div class="plan-text"><strong>복용 중인 약 사진</strong>을 모두 찍어 오세요. 타 병원 처방과 보충제도&nbsp;포함합니다.</div>
         </div>
         <div class="plan-item">
           <div class="plan-num">2</div>
@@ -215,14 +463,14 @@
         </div>
         <div class="plan-item">
           <div class="plan-num">4</div>
-          <div class="plan-text">목표 LDL에 못 미치면 증량보다 <strong>PCSK9 억제제 등 상호작용 적은 옵션</strong>을 검토할 수 있습니다.</div>
+          <div class="plan-text">목표 LDL에 못 미치면 증량보다 <strong>PCSK9 억제제(주사형 콜레스테롤 약) 등 상호작용 적은 옵션</strong>을 검토할 수 있습니다.</div>
         </div>
       </div>
     </section>
 
     <section>
       <div class="bottom-note">
-        핵심은 <strong>산디문을 안전하게 유지하면서 LDL을 낮추는 것</strong>입니다. 약을 스스로 끊거나 예전 약으로 되돌리면 산디문 농도·근육 부작용·신장 기능에 문제가 생길 수 있습니다.
+        핵심은 <strong>산디문을 안전하게 유지하면서 LDL을 낮추는 것</strong>입니다. 약을 스스로 끊거나 예전 약으로 되돌리면 산디문 농도·근육 부작용·신장 기능에 문제가&nbsp;생길&nbsp;수&nbsp;있습니다.
       </div>
     </section>
 
@@ -231,8 +479,11 @@
   <footer class="page__footer">
     <div class="page__footer-info">
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
-      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560 · 평일 08:30~18:30 · 토 08:30~13:30</div>
-      <div class="disclaimer">근거: FDA CRESTOR/ZETIA prescribing information(2023) · AHA Scientific Statement on statin drug interactions(2016) · UK EMC Rosuvastatin SmPC · 약학정보원 cyclosporine/ezetimibe 상호작용. 본 안내문은 일반 교육자료이며, 실제 약 선택·용량·검사 간격은 환자별 신장기능·산디문 농도·심혈관 위험도에 따라 달라집니다.</div>
+      <div class="clinic-meta">경기도 용인시 수지구 광교중앙로 298, 4층 402-404호 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">평일 08:30~18:30 (점심 13:00~14:00) · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
+      <div class="clinic-meta link-line">스타틴 부작용 일반 설명(진료실 슬라이드): <strong>edu.gwanggyobarun.com/decks/endocrine/statin-side-effects/</strong></div>
+      <div class="clinic-meta">근거 — FDA CRESTOR/ZETIA prescribing information(2023) · AHA Scientific Statement on statin drug interactions(2016) · UK EMC Rosuvastatin SmPC · 약학정보원 cyclosporine/ezetimibe 상호작용</div>
+      <div class="disclaimer">본 안내문은 일반 교육자료이며, 실제 약 선택·용량·검사 간격은 환자별 신장기능·산디문 농도·심혈관 위험도에 따라 달라집니다.</div>
     </div>
     <div class="qr-mini">
       <div class="qr-mini__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM14,2H15V3H14zM15,2H16V3H15zM17,2H18V3H17zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM24,2H25V3H24zM25,2H26V3H25zM27,2H28V3H27zM28,2H29V3H28zM29,2H30V3H29zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM12,3H13V4H12zM15,3H16V4H15zM20,3H21V4H20zM22,3H23V4H22zM23,3H24V4H23zM24,3H25V4H24zM25,3H26V4H25zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM31,3H32V4H31zM34,3H35V4H34zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM16,4H17V5H16zM20,4H21V5H20zM26,4H27V5H26zM27,4H28V5H27zM31,4H32V5H31zM34,4H35V5H34zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM14,5H15V6H14zM17,5H18V6H17zM19,5H20V6H19zM20,5H21V6H20zM23,5H24V6H23zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM31,5H32V6H31zM33,5H34V6H33zM34,5H35V6H34zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM12,6H13V7H12zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM20,6H21V7H20zM23,6H24V7H23zM24,6H25V7H24zM25,6H26V7H25zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM14,7H15V8H14zM17,7H18V8H17zM18,7H19V8H18zM20,7H21V8H20zM21,7H22V8H21zM23,7H24V8H23zM26,7H27V8H26zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM33,7H34V8H33zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM11,9H12V10H11zM15,9H16V10H15zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM25,9H26V10H25zM28,9H29V10H28zM29,9H30V10H29zM31,9H32V10H31zM32,9H33V10H32zM33,9H34V10H33zM34,9H35V10H34zM2,10H3V11H2zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM10,10H11V11H10zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM21,10H22V11H21zM22,10H23V11H22zM23,10H24V11H23zM25,10H26V11H25zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM33,10H34V11H33zM35,10H36V11H35zM37,10H38V11H37zM2,11H3V12H2zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM9,11H10V12H9zM11,11H12V12H11zM15,11H16V12H15zM18,11H19V12H18zM19,11H20V12H19zM22,11H23V12H22zM23,11H24V12H23zM26,11H27V12H26zM27,11H28V12H27zM30,11H31V12H30zM31,11H32V12H31zM34,11H35V12H34zM36,11H37V12H36zM39,11H40V12H39zM40,11H41V12H40zM41,11H42V12H41zM42,11H43V12H42zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM11,12H12V13H11zM15,12H16V13H15zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM21,12H22V13H21zM22,12H23V13H22zM24,12H25V13H24zM27,12H28V13H27zM30,12H31V13H30zM33,12H34V13H33zM35,12H36V13H35zM37,12H38V13H37zM39,12H40V13H39zM40,12H41V13H40zM41,12H42V13H41zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM7,13H8V14H7zM11,13H12V14H11zM12,13H13V14H12zM15,13H16V14H15zM17,13H18V14H17zM20,13H21V14H20zM22,13H23V14H22zM23,13H24V14H23zM25,13H26V14H25zM26,13H27V14H26zM27,13H28V14H27zM30,13H31V14H30zM32,13H33V14H32zM35,13H36V14H35zM37,13H38V14H37zM38,13H39V14H38zM40,13H41V14H40zM42,13H43V14H42zM2,14H3V15H2zM3,14H4V15H3zM6,14H7V15H6zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM18,14H19V15H18zM19,14H20V15H19zM23,14H24V15H23zM26,14H27V15H26zM27,14H28V15H27zM31,14H32V15H31zM33,14H34V15H33zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM39,14H40V15H39zM42,14H43V15H42zM2,15H3V16H2zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM12,15H13V16H12zM15,15H16V16H15zM19,15H20V16H19zM20,15H21V16H20zM23,15H24V16H23zM24,15H25V16H24zM25,15H26V16H25zM26,15H27V16H26zM27,15H28V16H27zM29,15H30V16H29zM30,15H31V16H30zM32,15H33V16H32zM34,15H35V16H34zM39,15H40V16H39zM40,15H41V16H40zM41,15H42V16H41zM8,16H9V17H8zM12,16H13V17H12zM13,16H14V17H13zM16,16H17V17H16zM20,16H21V17H20zM22,16H23V17H22zM26,16H27V17H26zM31,16H32V17H31zM33,16H34V17H33zM36,16H37V17H36zM37,16H38V17H37zM38,16H39V17H38zM39,16H40V17H39zM40,16H41V17H40zM41,16H42V17H41zM42,16H43V17H42zM2,17H3V18H2zM4,17H5V18H4zM6,17H7V18H6zM7,17H8V18H7zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM14,17H15V18H14zM16,17H17V18H16zM19,17H20V18H19zM21,17H22V18H21zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM27,17H28V18H27zM28,17H29V18H28zM29,17H30V18H29zM31,17H32V18H31zM32,17H33V18H32zM34,17H35V18H34zM36,17H37V18H36zM37,17H38V18H37zM38,17H39V18H38zM41,17H42V18H41zM2,18H3V19H2zM3,18H4V19H3zM4,18H5V19H4zM6,18H7V19H6zM8,18H9V19H8zM13,18H14V19H13zM14,18H15V19H14zM19,18H20V19H19zM21,18H22V19H21zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM25,18H26V19H25zM30,18H31V19H30zM31,18H32V19H31zM34,18H35V19H34zM37,18H38V19H37zM39,18H40V19H39zM41,18H42V19H41zM42,18H43V19H42zM2,19H3V20H2zM3,19H4V20H3zM4,19H5V20H4zM6,19H7V20H6zM9,19H10V20H9zM11,19H12V20H11zM12,19H13V20H12zM15,19H16V20H15zM16,19H17V20H16zM17,19H18V20H17zM24,19H25V20H24zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM28,19H29V20H28zM30,19H31V20H30zM31,19H32V20H31zM32,19H33V20H32zM36,19H37V20H36zM37,19H38V20H37zM41,19H42V20H41zM42,19H43V20H42zM3,20H4V21H3zM4,20H5V21H4zM5,20H6V21H5zM6,20H7V21H6zM8,20H9V21H8zM10,20H11V21H10zM18,20H19V21H18zM20,20H21V21H20zM23,20H24V21H23zM28,20H29V21H28zM31,20H32V21H31zM34,20H35V21H34zM36,20H37V21H36zM38,20H39V21H38zM39,20H40V21H39zM41,20H42V21H41zM42,20H43V21H42zM2,21H3V22H2zM6,21H7V22H6zM7,21H8V22H7zM10,21H11V22H10zM11,21H12V22H11zM14,21H15V22H14zM15,21H16V22H15zM16,21H17V22H16zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM22,21H23V22H22zM24,21H25V22H24zM25,21H26V22H25zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM33,21H34V22H33zM34,21H35V22H34zM36,21H37V22H36zM37,21H38V22H37zM39,21H40V22H39zM2,22H3V23H2zM7,22H8V23H7zM8,22H9V23H8zM11,22H12V23H11zM12,22H13V23H12zM14,22H15V23H14zM15,22H16V23H15zM16,22H17V23H16zM19,22H20V23H19zM20,22H21V23H20zM21,22H22V23H21zM25,22H26V23H25zM26,22H27V23H26zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM35,22H36V23H35zM36,22H37V23H36zM39,22H40V23H39zM40,22H41V23H40zM42,22H43V23H42zM2,23H3V24H2zM6,23H7V24H6zM7,23H8V24H7zM13,23H14V24H13zM20,23H21V24H20zM26,23H27V24H26zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM34,23H35V24H34zM35,23H36V24H35zM36,23H37V24H36zM39,23H40V24H39zM41,23H42V24H41zM42,23H43V24H42zM2,24H3V25H2zM3,24H4V25H3zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM11,24H12V25H11zM13,24H14V25H13zM19,24H20V25H19zM21,24H22V25H21zM22,24H23V25H22zM23,24H24V25H23zM24,24H25V25H24zM27,24H28V25H27zM28,24H29V25H28zM30,24H31V25H30zM33,24H34V25H33zM34,24H35V25H34zM37,24H38V25H37zM38,24H39V25H38zM40,24H41V25H40zM41,24H42V25H41zM6,25H7V26H6zM11,25H12V26H11zM12,25H13V26H12zM14,25H15V26H14zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM23,25H24V26H23zM24,25H25V26H24zM25,25H26V26H25zM27,25H28V26H27zM30,25H31V26H30zM33,25H34V26H33zM35,25H36V26H35zM36,25H37V26H36zM37,25H38V26H37zM40,25H41V26H40zM42,25H43V26H42zM2,26H3V27H2zM8,26H9V27H8zM11,26H12V27H11zM13,26H14V27H13zM16,26H17V27H16zM18,26H19V27H18zM19,26H20V27H19zM20,26H21V27H20zM21,26H22V27H21zM23,26H24V27H23zM26,26H27V27H26zM27,26H28V27H27zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM34,26H35V27H34zM35,26H36V27H35zM36,26H37V27H36zM41,26H42V27H41zM42,26H43V27H42zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM5,27H6V28H5zM6,27H7V28H6zM7,27H8V28H7zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM14,27H15V28H14zM16,27H17V28H16zM21,27H22V28H21zM22,27H23V28H22zM24,27H25V28H24zM26,27H27V28H26zM31,27H32V28H31zM32,27H33V28H32zM33,27H34V28H33zM35,27H36V28H35zM39,27H40V28H39zM2,28H3V29H2zM4,28H5V29H4zM5,28H6V29H5zM7,28H8V29H7zM8,28H9V29H8zM9,28H10V29H9zM16,28H17V29H16zM17,28H18V29H17zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM22,28H23V29H22zM24,28H25V29H24zM25,28H26V29H25zM28,28H29V29H28zM30,28H31V29H30zM31,28H32V29H31zM34,28H35V29H34zM37,28H38V29H37zM38,28H39V29H38zM41,28H42V29H41zM42,28H43V29H42zM2,29H3V30H2zM3,29H4V30H3zM5,29H6V30H5zM6,29H7V30H6zM11,29H12V30H11zM12,29H13V30H12zM17,29H18V30H17zM18,29H19V30H18zM19,29H20V30H19zM20,29H21V30H20zM21,29H22V30H21zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM27,29H28V30H27zM30,29H31V30H30zM31,29H32V30H31zM34,29H35V30H34zM37,29H38V30H37zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM13,30H14V31H13zM18,30H19V31H18zM19,30H20V31H19zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM29,30H30V31H29zM31,30H32V31H31zM34,30H35V31H34zM41,30H42V31H41zM42,30H43V31H42zM6,31H7V32H6zM7,31H8V32H7zM9,31H10V32H9zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM15,31H16V32H15zM18,31H19V32H18zM21,31H22V32H21zM23,31H24V32H23zM28,31H29V32H28zM29,31H30V32H29zM30,31H31V32H30zM32,31H33V32H32zM33,31H34V32H33zM34,31H35V32H34zM35,31H36V32H35zM36,31H37V32H36zM37,31H38V32H37zM41,31H42V32H41zM42,31H43V32H42zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM13,32H14V33H13zM21,32H22V33H21zM22,32H23V33H22zM27,32H28V33H27zM29,32H30V33H29zM30,32H31V33H30zM31,32H32V33H31zM32,32H33V33H32zM37,32H38V33H37zM39,32H40V33H39zM40,32H41V33H40zM41,32H42V33H41zM42,32H43V33H42zM6,33H7V34H6zM9,33H10V34H9zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM18,33H19V34H18zM19,33H20V34H19zM20,33H21V34H20zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM25,33H26V34H25zM31,33H32V34H31zM32,33H33V34H32zM33,33H34V34H33zM34,33H35V34H34zM35,33H36V34H35zM38,33H39V34H38zM2,34H3V35H2zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM13,34H14V35H13zM15,34H16V35H15zM17,34H18V35H17zM18,34H19V35H18zM20,34H21V35H20zM21,34H22V35H21zM23,34H24V35H23zM25,34H26V35H25zM26,34H27V35H26zM27,34H28V35H27zM29,34H30V35H29zM30,34H31V35H30zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM40,34H41V35H40zM42,34H43V35H42zM10,35H11V36H10zM15,35H16V36H15zM16,35H17V36H16zM22,35H23V36H22zM23,35H24V36H23zM26,35H27V36H26zM30,35H31V36H30zM31,35H32V36H31zM32,35H33V36H32zM33,35H34V36H33zM34,35H35V36H34zM38,35H39V36H38zM39,35H40V36H39zM41,35H42V36H41zM42,35H43V36H42zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM16,36H17V37H16zM19,36H20V37H19zM21,36H22V37H21zM32,36H33V37H32zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM41,36H42V37H41zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM13,37H14V38H13zM16,37H17V38H16zM17,37H18V38H17zM18,37H19V38H18zM19,37H20V38H19zM21,37H22V38H21zM22,37H23V38H22zM23,37H24V38H23zM24,37H25V38H24zM26,37H27V38H26zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM40,37H41V38H40zM41,37H42V38H41zM42,37H43V38H42zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM11,38H12V39H11zM14,38H15V39H14zM16,38H17V39H16zM17,38H18V39H17zM21,38H22V39H21zM22,38H23V39H22zM24,38H25V39H24zM25,38H26V39H25zM26,38H27V39H26zM30,38H31V39H30zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM39,38H40V39H39zM41,38H42V39H41zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM12,39H13V40H12zM13,39H14V40H13zM14,39H15V40H14zM19,39H20V40H19zM21,39H22V40H21zM22,39H23V40H22zM23,39H24V40H23zM26,39H27V40H26zM27,39H28V40H27zM30,39H31V40H30zM31,39H32V40H31zM32,39H33V40H32zM33,39H34V40H33zM35,39H36V40H35zM36,39H37V40H36zM38,39H39V40H38zM39,39H40V40H39zM42,39H43V40H42zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM11,40H12V41H11zM14,40H15V41H14zM16,40H17V41H16zM18,40H19V41H18zM19,40H20V41H19zM20,40H21V41H20zM22,40H23V41H22zM23,40H24V41H23zM24,40H25V41H24zM25,40H26V41H25zM27,40H28V41H27zM28,40H29V41H28zM31,40H32V41H31zM34,40H35V41H34zM38,40H39V41H38zM40,40H41V41H40zM41,40H42V41H41zM42,40H43V41H42zM2,41H3V42H2zM8,41H9V42H8zM11,41H12V42H11zM12,41H13V42H12zM14,41H15V42H14zM15,41H16V42H15zM16,41H17V42H16zM18,41H19V42H18zM20,41H21V42H20zM22,41H23V42H22zM23,41H24V42H23zM25,41H26V42H25zM27,41H28V42H27zM31,41H32V42H31zM32,41H33V42H32zM33,41H34V42H33zM34,41H35V42H34zM36,41H37V42H36zM37,41H38V42H37zM41,41H42V42H41zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM14,42H15V43H14zM15,42H16V43H15zM16,42H17V43H16zM17,42H18V43H17zM22,42H23V43H22zM23,42H24V43H23zM24,42H25V43H24zM25,42H26V43H25zM26,42H27V43H26zM31,42H32V43H31zM32,42H33V43H32zM34,42H35V43H34zM36,42H37V43H36zM37,42H38V43H37zM38,42H39V43H38zM39,42H40V43H39zM41,42H42V43H41z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>

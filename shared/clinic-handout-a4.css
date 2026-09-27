@@ -783,6 +783,13 @@ body {
     white-space: normal;
     text-align: left;
     margin-top: 1.2mm;
+    /* 띄어쓰기 없는 긴 주소도 칸 안에서 줄을 바꾼다 — 안 그러면 화면 오른쪽 밖으로
+       나가 가로 스크롤이 생긴다(갑상선 결절 안내문, MV2 · 원장님 49206). 칸 폭을 넘을
+       때만 끊으므로 이미 칸 안에 들어가던 주소의 줄바꿈 자리는 그대로다. anywhere 라야
+       가운데 정렬 flex 칸(QR 17mm 칸) 안의 주소가 칸 폭까지 줄어든다(break-word 는 못 줄임).
+       폭 제한(max-width)은 걸지 않는다 — 자기 <style> 로 한 줄 절대배치를 유지하는
+       안내문(통풍·예방접종 등)에서 좁은 QR 칸 폭에 묶여 주소가 오른쪽으로 삐져나간다. */
+    overflow-wrap: anywhere;
   }
 
   /* 개별 핸드아웃이 A4 한 장에 밀어넣으려고 줄여둔 **공용** 미세활자를 화면에서는
@@ -862,6 +869,24 @@ body {
   .page .mg-rank__mg {
     white-space: normal !important;
   }
+
+  /* 종이 한 칸 높이에 맞춰 못박아 둔 높이(고정 height·max-height)는 한 칼럼으로
+     접으면 내용보다 작아져 아래 글과 겹친다(MV2 · 원장님 49206 — 컴퓨터 화면
+     실측: 고혈압 약 안내문 합병증 그림 카드 8곳, 마그네슘 안내문 급원 순위 11곳).
+     화면에서는 내용 높이대로 흐르게 풀고, 가장자리로 밀어 둔 라벨 카드는 칸 폭을
+     채운다. 종이(인쇄·PDF)는 이 절 밖이라 그대로다. */
+  .page .htn-bodymap {
+    max-height: none !important;
+  }
+  .page .htn-bodymap__col {
+    align-items: stretch !important;
+  }
+  .page .htn-bodymap .bodylabel {
+    max-width: none !important;
+  }
+  .page .mg-rank {
+    height: auto !important;
+  }
 }
 
 @container style(--ccs-wide-k: 1px) {
@@ -895,6 +920,10 @@ body {
   html, body { margin: 0; }
   body { overflow-x: hidden; }
   .page { margin: 0 auto; }
+  /* 종이 옆(바깥)에 붙은 줄(예: 폐기능검사 안내문의 '관련 자료' 링크, 폭 210mm 고정)도
+     종이와 같은 배율로 줄인다 — 안 그러면 그 줄만 원래 크기로 남아 화면 밖으로
+     잘린다(MV2 · 원장님 49206, 텔레그램 인앱 360px 실측). */
+  body > :not(.page) { zoom: var(--screen-zoom); }
 }
 @media screen and (pointer: coarse) and (max-width: 810px) { :root { --screen-zoom: 1.0000; } }
 @media screen and (pointer: coarse) and (max-width: 800px) { :root { --screen-zoom: 0.9950; } }

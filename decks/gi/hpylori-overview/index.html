@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>H. pylori Overview — Gwanggyo Barun Internal Medicine</title>
+  <title>헬리코박터 파일로리 개요·진단 안내 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,188 +18,113 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-  <style>
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    /* ====================================================================
-       box-spacing fix 2026-06-13 (진료설명 리뷰 피드백):
-       박스 안 "핵심 문구(제목)"와 바로 아래 작은 설명 글씨는 하나의 묶음이다.
-       space-between / margin-top:auto 로 둘을 위·아래 끝으로 벌리지 말고,
-       타이트한 간격으로 묶어 배치한다. 핵심 문구는 키운다.
-       단, 박스/카드 자체는 세로 컬럼을 채워(footer underfill 방지) 묶음은 그 안에 가운데.
-       ==================================================================== */
-    /* tiles — 04·06·07·08·09·13 : 묶음 가운데, 바닥고정 해제, 제목 확대 */
-    .tile { justify-content: center; gap: 10px; }
-    .tile__body { margin-top: 0; }
-    .pattern-grid--2 .tile__title { font-size: 1.2rem; line-height: 1.24; }
-    .pattern-grid--3 .tile__title { font-size: 1.08rem; line-height: 1.2; }
-    .pattern-grid--2 .tile__body { font-size: 0.97rem; line-height: 1.4; }
-    .pattern-grid--3 .tile__body { font-size: 0.92rem; line-height: 1.32; }
-    /* timeline — 05 : node+제목+본문 한 묶음, 화살표 간격 정중앙 */
-    .pattern-timeline { --timeline-gap: 30px; align-items: stretch; }   /* 카드가 타임라인 영역을 꽉 채움(내용은 중앙) → 위 여백 제거 */
-    .timeline-step { justify-content: center; gap: 10px; min-height: 300px; }
-    .timeline-step__title { font-size: 1.1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.36; }
-    .timeline-step:not(:last-child)::after {
-      content: "\2192"; right: -30px; width: 30px; text-align: center;
-      top: 50%; transform: translateY(-50%);
-      font-size: 1.5rem; color: var(--color-steel); font-weight: 540;
-    }
-    /* hero number — 02 : 값+캡션 한 묶음 가운데, 숫자 키워 여백 흡수 */
-    .pattern-hero-number { align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: center; gap: 26px; }
-    .pattern-hero-number__value { font-size: 13rem; }
-    .pattern-hero-number__caption { max-width: 100%; font-size: 1.42rem; line-height: 1.5; }
-    .pattern-hero-number__detail { justify-content: center; gap: 18px; }
-    .pattern-hero-number__detail-text { font-size: 1.18rem; line-height: 1.62; }
-    /* split metrics — 03·11 : 두 박스 같은 높이로 컬럼 채워 균형, 박스 안은 가운데 */
-    .pattern-split__detail { justify-content: stretch; gap: 18px; }
-    .pattern-split__metric { flex: 1 1 0; justify-content: center; padding: 20px 22px; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5A-redesign 2026-09-27 (원장님 49113 · HQ3F 방식) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{white-space:nowrap;font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num--long{font-size:48px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)){padding-top:16px;padding-bottom:16px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-block + .v2-block{padding-top:12px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-head{margin-bottom:6px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="감염 경로, 내시경 소견, 진단검사, 치료 적응증까지 한눈에 정리한 안내">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/gi/hpylori-overview/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "H. pylori Overview — Gwanggyo Barun Internal Medicine", "description": "감염 경로, 내시경 소견, 진단검사, 치료 적응증까지 한눈에 정리한 안내", "url": "https://edu.gwanggyobarun.com/decks/gi/hpylori-overview/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "헬리코박터 파일로리 개요·진단 안내 — 광교바른내과", "description": "감염 경로, 내시경 소견, 진단검사, 치료 적응증까지 한눈에 정리한 안내", "url": "https://edu.gwanggyobarun.com/decks/gi/hpylori-overview/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
@@ -209,608 +134,378 @@
       <p class="slide__subtitle">감염 의미, 내시경 소견, 진단검사, 치료 필요성을 한 번에 정리합니다</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Helicobacter pylori · Transmission · Diagnosis · Indications</span>
-      <span class="slide__page">광교바른내과 소화기내과</span>
+      <span class="slide__source">헬리코박터 파일로리 · 감염 경로 · 진단 · 치료 대상</span>
+      <span class="slide__page">01 / 14</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — Korean adult prevalence
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한국 성인 약 3명 중 1명이 감염</h2>
-      <p class="slide__subtitle">위생 환경 개선으로 줄었지만 여전히 흔한 감염 — 그러나 대부분은 무증상</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>30</em>%</div>
-          <div class="pattern-hero-number__caption">한국 성인 H. pylori 감염률 — 1998년 약 67%에서 지속적으로 감소했지만 여전히 높은 수준입니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why it matters</div>
-          <div class="pattern-hero-number__detail-text">
-            대부분의 감염자는 평생 무증상으로 지내지만, 일부에서 만성 위염·소화성 궤양·위암으로 진행됩니다.
-            WHO는 H. pylori를 <strong>Group 1 발암물질</strong>로 분류하며, 위암 위험을 약 <strong>6배</strong> 높이는 것으로 보고됩니다.
-            그래서 적절한 진단과 선택적 제균 치료가 중요합니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 대한헬리코박터·상부위장관연구학회 (2022) · IARC Monograph Vol. 100B</span>
-      <span class="slide__page">02 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — what is H. pylori
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IS H. PYLORI</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">헬리코박터 파일로리란 (Helicobacter pylori)</h2>
-      <p class="slide__subtitle">강한 위산 속에서 살아남는 유일한 세균 — 위 점막에 평생 자리잡습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">H. pylori는 <em>요소분해효소(urease)</em>로 자신을 둘러싼 위산을 중화시키며, 나선형 모양과 편모로 위 점막 깊숙이 파고듭니다.</p>
-          <p class="pattern-split__supporting">
-            한 번 감염되면 자연 소실되지 않고 평생 지속되며, 만성 염증을 통해 다양한 위장 질환의 시발점이 됩니다.
-            특히 <strong>CagA 양성 균주</strong>는 위 상피세포에 직접 단백질을 주입해 발암 과정에 관여하며, 한국·일본 동아시아 균주의 대부분이 CagA 양성으로 알려져 있습니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Cancer risk</div>
-            <div class="pattern-split__metric-value">위암 약 6배 ↑</div>
-            <div class="pattern-split__metric-detail">WHO Group 1 발암물질 — IARC 분류.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">CagA strain</div>
-            <div class="pattern-split__metric-value">동아시아 우세</div>
-            <div class="pattern-split__metric-detail">한국 균주 대부분 CagA 양성 — 더 높은 위암 위험.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Pathophysiology — Urease · CagA virulence factor · WHO Group 1 carcinogen</span>
-      <span class="slide__page">03 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 2×2 — Transmission routes
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>TRANSMISSION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">어떻게 감염되나요</h2>
-      <p class="slide__subtitle">대부분 어린 시절 가족 내에서 감염되며, 성인 간 전염은 드뭅니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">ROUTE · 01 · 가장 흔함</div>
-          <div class="tile__title">구강-구강 (Oral-Oral)</div>
-          <div class="tile__body">가족 내 식기·수저·컵 공유, 음식 나눠 먹기, 입맞춤 등 타액을 통한 전파. 한국식 찌개·반찬 공유 문화에서 가족 내 감염이 흔히 일어납니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ROUTE · 02</div>
-          <div class="tile__title">분변-구강 (Fecal-Oral)</div>
-          <div class="tile__body">위생 상태가 미흡한 식수·식품 섭취. 감염자의 대변에 오염된 손·물·음식을 통해 전파됩니다. 손 씻기·식수 위생이 중요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ROUTE · 03</div>
-          <div class="tile__title">소아기 감염이 핵심</div>
-          <div class="tile__body">대부분 5세 이전에 감염됩니다. 부모가 감염되어 있으면 자녀 감염 위험이 크게 높아집니다. 성인이 새로 감염되는 경우는 매우 드뭅니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ROUTE · 04</div>
-          <div class="tile__title">재감염은 드물다</div>
-          <div class="tile__body">제균 치료 성공 후 성인의 연간 재감염률은 약 2~3%로 낮습니다. 일단 제균에 성공하면 대부분 재감염 없이 유지됩니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/gi-hpylori-overview-s04-anatomy-gi-bdecdbe5-20260530-raster-20260531.jpg" alt="어떻게 감염되나요 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 대한헬리코박터·상부위장관연구학회 진료지침 (2022)</span>
-      <span class="slide__page">04 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · TIMELINE — Natural history (Correa cascade)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>NATURAL HISTORY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">감염 후 어떻게 진행되나요</h2>
-      <p class="slide__subtitle">대부분 무증상이지만, 일부에서 위암으로 이어지는 Correa cascade를 따릅니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">감염 · 만성 위염</div>
-          <div class="timeline-step__body">감염자의 대부분은 무증상 만성 위염 상태로 지냅니다. 전체 감염자의 약 80~90%가 평생 별다른 증상 없이 살아갑니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">소화성 궤양 (10~15%)</div>
-          <div class="timeline-step__body">위궤양·십이지장 궤양으로 진행. 명치 통증·속쓰림·식후 불편감이 나타나며, 출혈·천공의 위험이 있습니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">위축성 위염 → 장상피화생</div>
-          <div class="timeline-step__body">만성 염증이 수십 년간 지속되면 위 점막이 얇아지고(위축), 장 점막처럼 변화(장상피화생)합니다. 전암성 변화입니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">위암 (0.1~3%) · MALT 림프종</div>
-          <div class="timeline-step__body">이형성을 거쳐 위암으로 진행. 별도로 위 MALT 림프종(0.01% 미만)도 발생 가능. 조기 발견과 제균이 핵심입니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Correa cascade · Int J Oncol 2006 · N Engl J Med 2001 · Lancet 2008</span>
-      <span class="slide__page">05 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 2×2 — Endoscopic findings
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>ENDOSCOPY FINDINGS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">내시경에서 어떤 모습으로 보이나요</h2>
-      <p class="slide__subtitle">CLO 검사만이 아니라 점막 모양도 감염의 힌트를 줍니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--accent">
-          <div class="tile__index">ACUTE · 비교적 초기</div>
-          <div class="tile__title">발적 · 부종 · 붉은 줄무늬</div>
-          <div class="tile__body">점상 발적(spotty redness), 미만성 발적, 점막 부종, red streak가 보일 수 있습니다. 염증이 활발한 시기의 단서입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CHRONIC · 오래 지속된 감염</div>
-          <div class="tile__title">위축 · 장상피화생</div>
-          <div class="tile__body">감염이 오래가면 위 점막이 얇아지고 장 점막처럼 바뀌는 변화가 동반될 수 있습니다. 위암 위험 평가와 추적 간격 결정에 중요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CHARACTERISTIC · 특징적 변화</div>
-          <div class="tile__title">결절상 변화 · 림프여포성 위염</div>
-          <div class="tile__body">특히 결절성 변화나 lymphofollicular gastritis는 H. pylori 감염에서 관찰되는 대표적 소견입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FOLLOW-UP · 치료 전후</div>
-          <div class="tile__title">발적과 결절이 호전될 수 있음</div>
-          <div class="tile__body">제균 후에는 점막 발적·부종·결절성 변화가 줄 수 있습니다. 다만 위축과 장상피화생은 별도 추적이 필요할 수 있습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Endoscopic clues — spotty redness · nodular change · atrophy · intestinal metaplasia</span>
-      <span class="slide__page">06 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · DENSITY GRID 3×2 — Diagnostic methods
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>DIAGNOSIS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">어떻게 진단하나요</h2>
-      <p class="slide__subtitle">검사는 침습 유무에 따라 나뉩니다 — 한국에서는 내시경 시 동시 진단이 일반적</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--accent">
-          <div class="tile__index">INVASIVE · 01</div>
-          <div class="tile__title">신속요소분해효소검사 (CLO test)</div>
-          <div class="tile__body">내시경 시 위 조직을 채취해 즉시 검사. 결과를 30분~24시간 내 확인하며, 한국에서 가장 흔히 사용됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">INVASIVE · 02</div>
-          <div class="tile__title">조직검사 (Biopsy)</div>
-          <div class="tile__body">위 점막 조직을 현미경으로 관찰. 위염·위축·장상피화생 동반 평가가 가능해 진단 정확도가 높습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">INVASIVE · 03</div>
-          <div class="tile__title">세균 배양 (Culture)</div>
-          <div class="tile__body">항생제 감수성 검사가 가능 — 1·2차 제균 실패 후 3차 맞춤 치료를 결정할 때 결정적 정보를 줍니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">NON-INVASIVE · 04</div>
-          <div class="tile__title">요소호기검사 (UBT)</div>
-          <div class="tile__body">표지된 요소를 마신 뒤 호기를 분석. 정확도 95% 이상으로, 제균 치료 후 재검사의 표준 방법입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">NON-INVASIVE · 05</div>
-          <div class="tile__title">분변 항원검사</div>
-          <div class="tile__body">대변에서 H. pylori 항원을 검출. 어린이·고령자에게도 부담이 적고 재검사용으로도 활용됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">NON-INVASIVE · 06</div>
-          <div class="tile__title">혈청 항체검사</div>
-          <div class="tile__body">과거 감염도 양성으로 나오므로 현재 감염 진단에는 한계가 있습니다. 치료 후 추적에는 사용하지 않습니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/gi-hpylori-overview-s06-risk-gi-9ae2357d-20260530-raster-20260531.jpg" alt="어떻게 진단하나요 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">초기 진단은 침습/비침습 모두 가능 · 치료 후 재검사는 UBT 또는 분변 항원검사 표준</span>
-      <span class="slide__page">07 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · DENSITY GRID 3×2 — Definite indications (per Korean guideline)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>DEFINITE INDICATIONS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">반드시 제균 치료가 필요한 경우 (Definite)</h2>
-      <p class="slide__subtitle">대한 헬리코박터학회 가이드라인 — 강력 권고 적응증</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--accent">
-          <div class="tile__index">DEFINITE · 01</div>
-          <div class="tile__title">소화성 궤양</div>
-          <div class="tile__body">위궤양·십이지장 궤양 — 활동성·과거력 모두 해당. 제균 시 재발률을 크게 낮춥니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">DEFINITE · 02</div>
-          <div class="tile__title">위 MALT 림프종</div>
-          <div class="tile__body">조기 단계에서 제균만으로 관해(remission)를 유도할 수 있는 유일한 림프종입니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">DEFINITE · 03</div>
-          <div class="tile__title">조기 위암 절제술 후</div>
-          <div class="tile__body">EMR/ESD 후 제균 시 이시성(metachronous) 위암 발생을 약 50% 감소시킵니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">DEFINITE · 04</div>
-          <div class="tile__title">특발성 혈소판감소 자반증 (ITP)</div>
-          <div class="tile__body">원인 불명의 ITP 환자에서 제균 시 약 50%가 혈소판 수치 호전을 보입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DEFINITE · 05</div>
-          <div class="tile__title">위암 가족력</div>
-          <div class="tile__body">직계 가족(부모·형제) 중 위암 환자가 있는 경우 — 한국 NHI 보험 적용 대상입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DEFINITE · 06</div>
-          <div class="tile__title">위축성 위염 / 장상피화생</div>
-          <div class="tile__body">전암성 병변. 제균 시 위암 진행을 지연·차단할 수 있어 검토를 권합니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Process">
-        <img src="../../../shared/assets/generated/gi-hpylori-overview-s07-process-gi-a959ef93-20260530-raster-20260531.jpg" alt="반드시 제균 치료가 필요한 경우 (Definite) 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 대한헬리코박터·상부위장관연구학회 진료지침 (2022) · 한국 NHI 기준</span>
-      <span class="slide__page">08 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · DENSITY GRID 2×2 — Conditional / possible indications
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>CONDITIONAL</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">선택적으로 고려하는 경우 (Conditional)</h2>
-      <p class="slide__subtitle">의학적 이득과 부담을 함께 고려해 환자와 상의 후 결정합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">CONDITIONAL · 01</div>
-          <div class="tile__title">아스피린·NSAIDs 장기 복용</div>
-          <div class="tile__body">진통제·항혈전제를 장기간 복용해야 하는 환자에서 위·십이지장 궤양 병력이 있다면 제균을 권합니다. 위장 출혈 위험을 낮춥니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CONDITIONAL · 02</div>
-          <div class="tile__title">원인 불명 철결핍성 빈혈</div>
-          <div class="tile__body">출혈 원인이 명확하지 않은 만성 철결핍성 빈혈에서 제균 시 빈혈 호전이 보고되어 있어 검토 대상입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CONDITIONAL · 03</div>
-          <div class="tile__title">기능성 소화불량</div>
-          <div class="tile__body">반복되는 명치 불편감·식후 더부룩함이 있는 일부 환자에서 제균 후 증상이 호전됩니다. 다른 적응증과 함께 검토합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CONDITIONAL · 04</div>
-          <div class="tile__title">환자가 치료를 원하는 경우</div>
-          <div class="tile__body">이득과 부작용·항생제 내성을 충분히 설명한 후 환자가 치료를 원하면 제균을 진행할 수 있습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 대한헬리코박터·상부위장관연구학회 진료지침 (2022) · Conditional recommendations</span>
-      <span class="slide__page">09 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · COMPARISON — When to test vs not to test
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>WHO TO TEST</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">검사를 권하는 경우 vs 권하지 않는 경우</h2>
-      <p class="slide__subtitle">"검사 후 치료(test-and-treat)" 원칙 — 치료할 의사가 있을 때만 검사합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            검사를 권하는 경우
-          </div>
-          <ul class="compare-col__list">
-            <li>위·십이지장 궤양이 발견됐을 때</li>
-            <li>가족 중 위암 환자가 있을 때</li>
-            <li>위축성 위염·장상피화생 진단 시</li>
-            <li>아스피린·NSAIDs 장기 복용 + 궤양 병력</li>
-            <li>원인 불명 철결핍성 빈혈·ITP</li>
-            <li>조기 위암 절제 후 추적</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">!</span>
-            일반적으로 권하지 않는 경우
-          </div>
-          <ul class="compare-col__list">
-            <li>증상이 전혀 없는 일반 건강인</li>
-            <li>위장 증상이 가볍고 일시적일 때</li>
-            <li>치료 의사가 없는 경우 (검사 무의미)</li>
-            <li>임신 중·급성기 활동성 출혈 시</li>
-            <li>최근 PPI·항생제 복용 직후 (위음성 위험)</li>
-            <li>매우 고령에서 기대 수명이 짧은 경우</li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/gi-hpylori-overview-s09-comparison-gi-050fe669-20260530-raster-20260531.jpg" alt="검사를 권하는 경우 vs 권하지 않는 경우 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">Test-and-treat principle · 대한헬리코박터학회 가이드라인 (2022)</span>
-      <span class="slide__page">10 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · ASYMMETRIC SPLIT — Treatment overview (links to eradication deck)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>TREATMENT OUTLINE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">제균 치료의 큰 그림</h2>
-      <p class="slide__subtitle">단계별 항생제 치료 — 자세한 약물·주의사항은 별도 "제균 치료 안내" 자료 참조</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">PPI + 항생제 2~3종을 <em>10~14일간 복용</em>하는 단계적 치료 — 1차 실패 시 2차, 그래도 실패하면 감수성 검사 기반 3차로 이행합니다.</p>
-          <p class="pattern-split__supporting">
-            치료 종료 후 최소 4주 경과 후 요소호기검사(UBT) 또는 분변 항원검사로 제균 여부를 확인합니다.
-            성공의 가장 큰 변수는 <strong>복약 순응도</strong> — 한 알도 빼먹지 않고 끝까지 복용하는 것이 핵심이며, 자가 중단은 항생제 내성을 만들어 다음 치료까지 어렵게 합니다.
-            치료 기간 동안 <strong>금주</strong>는 필수입니다 (메트로니다졸 + 알코올 = 안타뷰스 반응).
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">1st-line success</div>
-            <div class="pattern-split__metric-value">약 70~85%</div>
-            <div class="pattern-split__metric-detail">한국 클라리스로마이신 내성률 약 23%로 점차 상승.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Cumulative success</div>
-            <div class="pattern-split__metric-value">95% +</div>
-            <div class="pattern-split__metric-detail">단계별 치료를 거치면 대부분 제균에 성공합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">자세한 약물 조합 · 부작용 · 복약 규칙은 "제균 치료 안내" 별도 자료 참조</span>
-      <span class="slide__page">11 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CHECKLIST — 7 things to remember
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">12</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>KEY TAKEAWAYS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 7가지</h2>
-      <p class="slide__subtitle">감염·진단·치료 결정의 핵심 원칙입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">한국 성인 약 30%가 감염 — 그러나 <strong>대부분은 무증상</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">감염은 주로 <strong>어린 시절 가족 내</strong>에서 일어납니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">위암 위험을 약 6배 높이는 <strong>WHO Group 1 발암물질</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">진단은 내시경 + CLO test 또는 <strong>UBT·분변 항원검사</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">소화성 궤양·MALT·조기위암 후·ITP는 <strong>반드시 제균</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">치료 종료 후 <strong>4주 이상 지나서</strong> 제균 확인 검사</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">가족도 검사·치료 <strong>함께 검토</strong> 권장</div>
-        </div>
-        <div class="check-item" style="border-bottom: none;">
-          <div class="check-item__num" style="color: var(--color-navy);">→</div>
-          <div class="check-item__text" style="color: var(--color-slate);">"검사할 거면 치료할 의사가 있을 때만" — Test-and-treat 원칙</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Awareness · diagnosis · selective treatment — the three pillars</span>
-      <span class="slide__page">12 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 13 · FAQ — common patient questions
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">13</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 11 · <strong>FAQ</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">자주 묻는 질문</h2>
-      <p class="slide__subtitle">검사·치료 결정을 앞두고 가장 많이 묻는 내용을 정리했습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--accent">
-          <div class="tile__index">Q · 01</div>
-          <div class="tile__title">감염되면 반드시 치료해야 하나요?</div>
-          <div class="tile__body">모든 감염자가 즉시 치료 대상은 아닙니다. 궤양, 위암 가족력, 위축성 위염·장상피화생, MALT 림프종, 조기 위암 치료 후 등에서는 적극 제균을 권합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">Q · 02</div>
-          <div class="tile__title">제균 후 다시 감염될 수 있나요?</div>
-          <div class="tile__body">성인 재감염률은 연 2~3% 정도로 낮습니다. 성공적으로 제균되면 대개 오래 유지되며, 재검사는 UBT 또는 분변 항원검사로 확인합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">Q · 03</div>
-          <div class="tile__title">가족에게 전염되나요?</div>
-          <div class="tile__body">주로 어린 시절 가족 내 구강-구강 또는 분변-구강 경로로 감염됩니다. 성인 간 전염은 드물지만, 가족력이나 위암 위험이 있으면 검사 여부를 함께 상의합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">Q · 04</div>
-          <div class="tile__title">약 복용과 부작용은 어디서 보나요?</div>
-          <div class="tile__body">약 이름, 복용 시간, 금주, 흔한 부작용, 병원 방문 신호는 별도 <strong>헬리코박터 제균 치료 안내</strong> 자료에서 자세히 확인합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">FAQ — indications · recurrence · family transmission · eradication guide handoff</span>
-      <span class="slide__page">13 / 14</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 14 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">건강한 위,<br><em>건강한 삶</em></h2>
-      <p class="slide__subtitle">검사·치료·관리에 대해 궁금한 점이 있으시면 언제든 문의해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Specialty</div>
-            <div class="contact-card__value">소화기내과 · 일반내과<br>5대암 검진</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 한눈에</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">한국 성인 약 3명 중 1명이 감염돼 있습니다</h2>
+  <p class="v2-sub">위생 환경이 좋아지며 줄었지만 여전히 흔합니다 — 그리고 대부분은 증상이 없습니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">30<span>%</span></div><div class="q-stat__lab">한국 성인 감염률</div><div class="q-stat__cap">1998년 약 67%에서 줄었지만 여전히 높습니다</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num q-stat__num--long">80~90%</div><div class="q-stat__lab">평생 증상 없음</div><div class="q-stat__cap">감염자 대부분은 별다른 증상 없이 지냅니다</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">6<span>배</span></div><div class="q-stat__lab">위암 위험</div><div class="q-stat__cap">감염되면 위암 위험이 약 6배 높아집니다</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.6321 17.5251C32.9153 16.9632 33.8129 15.6733 33.8129 14.1719C33.8129 12.1542 32.1918 10.5184 30.192 10.5184L30.1635 10.5185C30.1823 10.3676 30.192 10.2137 30.192 10.0576C30.192 8.03981 28.5709 6.40408 26.5712 6.40408C26.0715 6.40408 25.5955 6.50619 25.1625 6.69087C24.9493 3.80166 22.5585 1.52441 19.6407 1.52441C16.5936 1.52441 14.1214 4.00777 14.1034 7.07806C13.7004 6.94354 13.2695 6.87073 12.8218 6.87073C10.5698 6.87073 8.74424 8.71278 8.74424 10.9851C8.74424 12.4349 9.48739 13.7095 10.6103 14.4423C10.0392 14.842 9.57413 15.3851 9.26636 16.0201C8.66908 15.6739 7.9767 15.476 7.23851 15.476C4.98652 15.476 3.16093 17.3181 3.16093 19.5903C3.16093 21.2921 4.18482 22.7525 5.64489 23.3786C3.81069 24.0484 2.5 25.8214 2.5 27.9033C2.5 30.5601 4.6345 32.7139 7.26753 32.7139C8.65637 32.7139 9.90651 32.1147 10.7779 31.1585C10.6127 31.6464 10.5231 32.1696 10.5231 32.7139C10.5231 35.3707 12.6576 37.5244 15.2907 37.5244C17.7293 37.5244 19.7403 35.677 20.0239 33.2935C21.0386 34.4531 22.5229 35.1845 24.1764 35.1845C25.4333 35.1845 26.5923 34.762 27.5216 34.0501C28.2979 34.7543 29.3355 35.1845 30.4753 35.1845C32.8806 35.1845 34.8305 33.2688 34.8305 30.9057C34.8305 30.7446 34.8214 30.5856 34.8038 30.4292C36.3993 29.6514 37.5 28.003 37.5 26.0952C37.5 23.4384 35.3655 21.2846 32.7325 21.2846C32.6591 21.2846 32.5861 21.2863 32.5136 21.2896C32.5416 21.0629 32.5561 20.8318 32.5561 20.5973C32.5561 19.4594 32.2155 18.4022 31.6321 17.5251ZM19.2632 8.4895C20.2631 8.4895 21.0736 7.67164 21.0736 6.66275C21.0736 5.65386 20.2631 4.836 19.2632 4.836C18.2633 4.836 17.4528 5.65386 17.4528 6.66275C17.4528 7.67164 18.2633 8.4895 19.2632 8.4895ZM9.14941 27.8916C9.14941 28.9005 8.33885 29.7184 7.33899 29.7184C6.33912 29.7184 5.52857 28.9005 5.52857 27.8916C5.52857 26.8827 6.33912 26.0648 7.33899 26.0648C8.33885 26.0648 9.14941 26.8827 9.14941 27.8916ZM28.2543 21.96C28.9209 21.96 29.4612 21.4148 29.4612 20.7422C29.4612 20.0696 28.9209 19.5243 28.2543 19.5243C27.5877 19.5243 27.0474 20.0696 27.0474 20.7422C27.0474 21.4148 27.5877 21.96 28.2543 21.96ZM25.4712 30.9362C25.4712 31.6088 24.9308 32.154 24.2642 32.154C23.5977 32.154 23.0573 31.6088 23.0573 30.9362C23.0573 30.2636 23.5977 29.7184 24.2642 29.7184C24.9308 29.7184 25.4712 30.2636 25.4712 30.9362ZM13.3384 19.5243C14.0049 19.5243 14.5453 18.9791 14.5453 18.3065C14.5453 17.6339 14.0049 17.0887 13.3384 17.0887C12.6718 17.0887 12.1314 17.6339 12.1314 18.3065C12.1314 18.9791 12.6718 19.5243 13.3384 19.5243ZM17.4767 25.7006L16.7243 26.3676C16.6836 26.3711 16.6422 26.3749 16.6005 26.3791C15.7453 26.4644 14.8648 26.6805 14.2768 27.1008C13.6967 27.5155 13.2936 28.1819 13.0311 28.8343C12.9043 29.1495 12.8213 29.4344 12.7706 29.638C12.7454 29.7392 12.7286 29.8183 12.7188 29.8687C12.7138 29.8939 12.7106 29.9117 12.7089 29.9214L12.7079 29.9272L12.7076 29.9289C12.6036 30.5911 11.9882 31.0447 11.3309 30.942C10.6722 30.8392 10.2208 30.217 10.3228 29.5523L11.5155 29.7385C10.3228 29.5523 10.3228 29.5523 10.3228 29.5523L10.323 29.5507L10.3233 29.549L10.324 29.5447L10.3258 29.5335L10.3313 29.5007C10.3359 29.4743 10.3423 29.4389 10.3508 29.3955C10.3679 29.3088 10.3934 29.1892 10.4295 29.0444C10.5013 28.7561 10.6168 28.3599 10.7944 27.9183C11.1408 27.0574 11.7695 25.9081 12.8815 25.1133C13.9856 24.3241 15.3732 24.0539 16.3631 23.9552C16.4718 23.9444 16.5779 23.9354 16.6805 23.9281C16.5667 23.3822 16.5431 22.8568 16.5478 22.4432C16.5523 22.0452 16.5842 21.6971 16.6149 21.4474C16.6304 21.3218 16.6458 21.2192 16.6578 21.1454C16.6638 21.1085 16.6691 21.0786 16.673 21.0566L16.6781 21.0294L16.6798 21.0203L16.6804 21.0169L16.6807 21.0155C16.6807 21.0155 16.6809 21.0143 17.8649 21.2512L16.6809 21.0143C16.8106 20.3546 17.4457 19.9258 18.0996 20.0566C18.7525 20.1872 19.1771 20.8264 19.0493 21.4851L19.049 21.487L19.0478 21.4933C19.0462 21.5025 19.0433 21.5187 19.0396 21.5414C19.0322 21.5868 19.0215 21.6573 19.0104 21.7477C18.9879 21.9299 18.9647 22.1846 18.9615 22.4709C18.9546 23.0881 19.044 23.6612 19.2534 24.0201C19.4582 24.3711 19.8587 24.6733 20.3213 24.902C20.5383 25.0092 20.7386 25.0853 20.883 25.1339C20.9544 25.1579 21.0102 25.1746 21.045 25.1844C21.052 25.1864 21.0581 25.1881 21.0633 25.1895C21.0706 25.1915 21.076 25.193 21.0796 25.1939L21.0813 25.1944L21.083 25.1948C21.7284 25.3532 22.127 26.0088 21.9725 26.6613C21.8176 27.3155 21.1664 27.7191 20.5181 27.5628L20.7985 26.3783C20.5181 27.5628 20.5181 27.5628 20.5181 27.5628L20.5167 27.5625L20.5151 27.5621L20.5114 27.5612L20.5021 27.5589L20.4754 27.552C20.4542 27.5465 20.4262 27.539 20.3921 27.5293C20.324 27.51 20.2312 27.4821 20.1195 27.4445C19.8977 27.3699 19.5939 27.2546 19.2594 27.0893C18.919 26.9211 18.5077 26.6819 18.1138 26.3523C18.0822 26.3522 18.0504 26.3509 18.0183 26.3483L18.0171 26.3482L18.0021 26.3471C17.9873 26.3461 17.9627 26.3446 17.9292 26.3429C17.8622 26.3395 17.7603 26.3355 17.631 26.334C17.3978 26.3314 17.0814 26.3371 16.7243 26.3676L17.4767 25.7006ZM21.0813 25.1944L19.0493 21.4851L21.0796 25.1939L21.0813 25.1944Z" fill="currentColor"/>
+</svg></div><b>왜 중요한가요</b></div><div class="v2-body">일부에서는 만성 위염·소화성 궤양·위암으로 진행합니다. 세계보건기구 국제암연구소는 헬리코박터를 1군 발암 요인으로 분류합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 10C13.1046 10 14 9.10457 14 8C14 6.89543 13.1046 6 12 6C11.2597 6 10.6134 6.4022 10.2676 7H10C8.34315 7 7 8.34315 7 10V19C6.44774 19 5.99531 19.4487 6.04543 19.9987C6.27792 22.5499 7.39568 24.952 9.22186 26.7782C10.561 28.1173 12.2098 29.0755 14 29.583V32C14 33.3064 14.835 34.4177 16.0004 34.8294C16.043 38.7969 19.2725 42 23.25 42C27.2541 42 30.5 38.7541 30.5 34.75V30.75C30.5 28.6789 32.1789 27 34.25 27C36.3211 27 38 28.6789 38 30.75V33.1707C36.8348 33.5825 36 34.6938 36 36C36 37.6569 37.3431 39 39 39C40.6569 39 42 37.6569 42 36C42 34.6938 41.1652 33.5825 40 33.1707V30.75C40 27.5744 37.4256 25 34.25 25C31.0744 25 28.5 27.5744 28.5 30.75V34.75C28.5 37.6495 26.1495 40 23.25 40C20.3769 40 18.0429 37.6921 18.0006 34.8291C19.1655 34.4171 20 33.306 20 32V29.583C21.7902 29.0755 23.4391 28.1173 24.7782 26.7782C26.6044 24.952 27.7221 22.5499 27.9546 19.9987C28.0048 19.4487 27.5523 19 27 19L27 10C27 8.34315 25.6569 7 24 7H23.7324C23.3866 6.4022 22.7403 6 22 6C20.8954 6 20 6.89543 20 8C20 9.10457 20.8954 10 22 10C22.7403 10 23.3866 9.5978 23.7324 9H24C24.5523 9 25 9.44772 25 10V19H25.2095C24.6572 19 24.2166 19.4499 24.1403 19.9969C23.9248 21.5406 23.2127 22.983 22.0979 24.0979C20.7458 25.4499 18.9121 26.2095 17 26.2095C15.088 26.2095 13.2542 25.4499 11.9022 24.0979C10.7873 22.983 10.0753 21.5406 9.8598 19.9969C9.78344 19.4499 9.34286 19 8.79057 19L9 19V10C9 9.44772 9.44772 9 10 9H10.2676C10.6134 9.5978 11.2597 10 12 10Z" fill="currentColor"/>
+</svg></div><b>그래서 이렇게 합니다</b></div><div class="v2-body">감염된 모든 분을 치료하기보다, <b>정확히 진단하고 치료가 필요한 분을 골라 제균</b>하는 것이 원칙입니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 감염 자체보다 ‘누가 치료가 필요한지’를 가리는 것이 핵심입니다.</span><span class="v2-src">근거 · 대한헬리코박터·상부위장관연구학회 진료지침 2022 · 국제암연구소(IARC)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 헬리코박터란</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">강한 위산 속에서 살아남는 세균입니다</h2>
+  <p class="v2-sub">위 점막에 평생 자리잡고, 오랜 염증으로 여러 위장 질환의 출발점이 됩니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9525 10.4616C19.712 9.08283 17.9626 8.17095 16 8.02165V5H14V8.13723C11.902 8.54591 10.1197 9.83753 9.05552 11.6096L6.5 10.1342L5.5 11.8662L8.26322 13.4616C8.09162 14.0881 8 14.7476 8 15.4286C8 17.4437 8.24257 19.4021 8.7001 21.2763L5.74115 22.0691L6.25879 24.001L9.25381 23.1985C10.1227 25.8074 11.4173 28.2218 13.055 30.3593L10.2929 33.1214L11.7072 34.5356L14.3403 31.9025C15.8901 33.6166 17.6783 35.111 19.6525 36.3337L18.1339 38.9639L19.866 39.9639L21.3944 37.3166C24.0239 38.662 26.9279 39.5476 30 39.8671V43H32V39.9935C32.19 39.9978 32.3804 40 32.5714 40C34.8687 40 36.9225 38.9572 38.2851 37.3191L40.9641 38.8658L41.9641 37.1338L39.3465 35.6225C39.7663 34.6917 40 33.6589 40 32.5714C40 29.8398 38.5256 27.4525 36.3292 26.162L37.8661 23.5L36.134 22.5L34.4672 25.387C33.862 25.2277 33.2266 25.1429 32.5714 25.1429C30.2491 25.1429 28.1171 24.3279 26.4458 22.9685L28.7071 20.7072L27.2928 19.293L25.0316 21.5542C23.6721 19.8829 22.8571 17.7509 22.8571 15.4286C22.8571 14.2508 22.583 13.137 22.0951 12.1475L24.5354 9.70718L23.1212 8.29297L20.9525 10.4616ZM15 15C14.4477 15 14 15.4477 14 16C14 16.5523 14.4477 17 15 17C15.5523 17 16 16.5523 16 16C16 15.4477 15.5523 15 15 15ZM12 16C12 14.3431 13.3431 13 15 13C16.6569 13 18 14.3431 18 16C18 17.6569 16.6569 19 15 19C13.3431 19 12 17.6569 12 16ZM24 29C23.4477 29 23 29.4477 23 30C23 30.5523 23.4477 31 24 31C24.5523 31 25 30.5523 25 30C25 29.4477 24.5523 29 24 29ZM21 30C21 28.3431 22.3431 27 24 27C25.6569 27 27 28.3431 27 30C27 31.6569 25.6569 33 24 33C22.3431 33 21 31.6569 21 30ZM17 26C18.1046 26 19 25.1046 19 24C19 22.8954 18.1046 22 17 22C15.8954 22 15 22.8954 15 24C15 25.1046 15.8954 26 17 26ZM34 32C34 33.1046 33.1046 34 32 34C30.8954 34 30 33.1046 30 32C30 30.8954 30.8954 30 32 30C33.1046 30 34 30.8954 34 32Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">01</span></div>
+    <div class="q-card__h">위산을 견딥니다</div>
+    <div class="v2-body">스스로 만드는 효소(요소분해효소)로 주변 위산을 중화하고, 나선형 몸과 꼬리털로 위 점막 깊이 파고듭니다.</div>
+    <div class="q-card__k">위산 속에서도 생존</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">02</span></div>
+    <div class="q-card__h">저절로 없어지지 않습니다</div>
+    <div class="v2-body">한 번 감염되면 평생 지속되며, 만성 염증을 통해 여러 위장 질환이 시작됩니다.</div>
+    <div class="q-card__k">치료해야 없어집니다</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35 9.22967V6H33V9H15V6H13V9.22967C13 14.6524 15.5895 19.6466 19.8037 22.7875C20.4275 22.3933 21.0782 22.0334 21.7536 21.7107C19.8831 20.4891 18.329 18.8727 17.1851 17H30.8149C29.2395 19.5789 26.8863 21.6719 24 22.9172C23.9947 22.9194 23.9894 22.9217 23.9841 22.924C23.8665 22.9746 23.748 23.0238 23.6286 23.0715C22.9531 23.3417 22.302 23.6524 21.6777 24C16.8813 26.6708 13.6672 31.5245 13.0925 37H13V38.7703V39V42H15V39H33V42H35V39V38.7703V37H34.9075C34.4113 32.2723 31.9474 28.0082 28.1963 25.2125C27.5725 25.6067 26.9218 25.9666 26.2464 26.2893C28.1169 27.5109 29.671 29.1273 30.8149 31H17.1851C18.7605 28.4211 21.1137 26.3281 24 25.0828C24.0053 25.0806 24.0106 25.0783 24.0159 25.076C24.1335 25.0254 24.252 24.9762 24.3714 24.9285C25.0469 24.6583 25.698 24.3476 26.3223 24C31.63 21.0445 35 15.4159 35 9.22967ZM31.8385 33H16.1615C15.6308 34.2636 15.2711 35.608 15.1051 37H32.8949C32.7289 35.608 32.3692 34.2636 31.8385 33ZM16.1615 15H31.8385C32.3692 13.7364 32.7289 12.392 32.8949 11H15.1051C15.2711 12.392 15.6308 13.7364 16.1615 15Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">03</span></div>
+    <div class="q-card__h">한국 균은 더 독합니다</div>
+    <div class="v2-body">위 세포에 발암 과정을 돕는 단백질(CagA)을 넣는 균이 있습니다. 한국·일본 균 대부분이 이 형태로 알려져 있습니다.</div>
+    <div class="q-card__k">위암 위험이 더 높은 형태</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 그래서 한국에서는 헬리코박터와 위암의 연관이 특히 중요하게 다뤄집니다.</span><span class="v2-src">근거 · 대한헬리코박터·상부위장관연구학회 진료지침 2022 · 국제암연구소(IARC) 1군 발암 요인</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 감염 경로</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">대부분 어린 시절 가족 안에서 감염됩니다</h2>
+  <p class="v2-sub">어른끼리 새로 옮는 경우는 드뭅니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:720px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 24C20.8675 24 24 20.8675 24 17C24 13.1325 20.8675 10 17 10C13.1325 10 10 13.1325 10 17C10 20.8675 13.1325 24 17 24Z" fill="currentColor"/>
+<path d="M39 20.5C39 23.5387 36.5387 26 33.5 26C30.4613 26 28 23.5387 28 20.5C28 17.4612 30.4613 15 33.5 15C36.5387 15 39 17.4612 39 20.5Z" fill="currentColor"/>
+<path d="M17 26C19.7336 26 24.183 26.8511 27.1011 28.5452C28.293 29.7585 29 31.0814 29 32.4V38H4V32.4C4 28.144 12.6612 26 17 26Z" fill="currentColor"/>
+<path d="M44 38H31V32.4C31 30.9837 30.4886 29.6801 29.6764 28.5166C31.2173 28.1725 32.7343 28 33.8927 28C37.6211 28 44 29.7867 44 33.3333V38Z" fill="currentColor"/>
+</svg></div><b>입에서 입으로 — 가장 흔함</b></div><div class="v2-body">식기·수저·컵을 같이 쓰거나 음식을 나눠 먹을 때 침으로 옮습니다. 찌개·반찬을 함께 먹는 문화에서 가족 내 감염이 흔합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 23L7 42H9L9 23H10V12H9L9 6H7L7 12H6V23H7Z" fill="currentColor"/>
+<path d="M25 7C25 7.55228 24.5523 8 24 8H19V11H25V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7Z" fill="currentColor"/>
+<path d="M30 11C35.5228 11 40 15.4772 40 21V24H42V30H28V24H30V23C30 21.8954 29.1046 21 28 21H27V11H30Z" fill="currentColor"/>
+<path d="M35.5 42C37.433 42 39 40.3719 39 38.3636C39 35.1818 35.5 32 35.5 32C35.5 32 32 35.1818 32 38.3636C32 40.3719 33.567 42 35.5 42Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6H7L7 12H6V23H7L7 42H9L9 23H10V12H9L9 6ZM35.5 34.9879C35.4543 35.0478 35.4085 35.109 35.3628 35.1714C34.5524 36.2765 34 37.4318 34 38.3636C34 39.3401 34.7429 40 35.5 40C36.2571 40 37 39.3401 37 38.3636C37 37.4318 36.4476 36.2765 35.6372 35.1714C35.5915 35.109 35.5457 35.0478 35.5 34.9879ZM29.7324 22C29.9026 22.2942 30 22.6357 30 23V24H28V30H42V24H40V21C40 15.4772 35.5228 11 30 11H27V21H28C28.7403 21 29.3866 21.4022 29.7324 22ZM29 19.126C30.7252 19.5701 32 21.1362 32 23V26H30V28H40V26H38V21C38 16.5817 34.4183 13 30 13H29V19.126ZM14 13V22H23V13H14ZM25 11V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7C25 7.55228 24.5523 8 24 8H19V11H25ZM39 38.3636C39 40.3719 37.433 42 35.5 42C33.567 42 32 40.3719 32 38.3636C32 35.1818 35.5 32 35.5 32C35.5 32 39 35.1818 39 38.3636Z" fill="currentColor"/>
+</svg></div><b>오염된 물·음식</b></div><div class="v2-body">감염된 사람의 대변에 오염된 손·물·음식으로 옮을 수 있어 손 씻기와 식수 위생이 중요합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>5세 이전이 핵심</b></div><div class="v2-body">대부분 5세 이전에 감염되며, 부모가 감염돼 있으면 자녀 감염 위험이 크게 높아집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9525 10.4616C19.712 9.08283 17.9626 8.17095 16 8.02165V5H14V8.13723C11.902 8.54591 10.1197 9.83753 9.05552 11.6096L6.5 10.1342L5.5 11.8662L8.26322 13.4616C8.09162 14.0881 8 14.7476 8 15.4286C8 17.4437 8.24257 19.4021 8.7001 21.2763L5.74115 22.0691L6.25879 24.001L9.25381 23.1985C10.1227 25.8074 11.4173 28.2218 13.055 30.3593L10.2929 33.1214L11.7072 34.5356L14.3403 31.9025C15.8901 33.6166 17.6783 35.111 19.6525 36.3337L18.1339 38.9639L19.866 39.9639L21.3944 37.3166C24.0239 38.662 26.9279 39.5476 30 39.8671V43H32V39.9935C32.19 39.9978 32.3804 40 32.5714 40C34.8687 40 36.9225 38.9572 38.2851 37.3191L40.9641 38.8658L41.9641 37.1338L39.3465 35.6225C39.7663 34.6917 40 33.6589 40 32.5714C40 29.8398 38.5256 27.4525 36.3292 26.162L37.8661 23.5L36.134 22.5L34.4672 25.387C33.862 25.2277 33.2266 25.1429 32.5714 25.1429C30.2491 25.1429 28.1171 24.3279 26.4458 22.9685L28.7071 20.7072L27.2928 19.293L25.0316 21.5542C23.6721 19.8829 22.8571 17.7509 22.8571 15.4286C22.8571 14.2508 22.583 13.137 22.0951 12.1475L24.5354 9.70718L23.1212 8.29297L20.9525 10.4616ZM15 15C14.4477 15 14 15.4477 14 16C14 16.5523 14.4477 17 15 17C15.5523 17 16 16.5523 16 16C16 15.4477 15.5523 15 15 15ZM12 16C12 14.3431 13.3431 13 15 13C16.6569 13 18 14.3431 18 16C18 17.6569 16.6569 19 15 19C13.3431 19 12 17.6569 12 16ZM24 29C23.4477 29 23 29.4477 23 30C23 30.5523 23.4477 31 24 31C24.5523 31 25 30.5523 25 30C25 29.4477 24.5523 29 24 29ZM21 30C21 28.3431 22.3431 27 24 27C25.6569 27 27 28.3431 27 30C27 31.6569 25.6569 33 24 33C22.3431 33 21 31.6569 21 30ZM17 26C18.1046 26 19 25.1046 19 24C19 22.8954 18.1046 22 17 22C15.8954 22 15 22.8954 15 24C15 25.1046 15.8954 26 17 26ZM34 32C34 33.1046 33.1046 34 32 34C30.8954 34 30 33.1046 30 32C30 30.8954 30.8954 30 32 30C33.1046 30 34 30.8954 34 32Z" fill="currentColor"/>
+</svg></div><b>제균 뒤 재감염은 드묾</b></div><div class="v2-body">성인의 재감염은 한 해 약 2~3%로 낮아, 제균에 성공하면 대부분 그대로 유지됩니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:816px;top:206px;width:400px;height:225px">
+    <img class="v2-fig__img q-fig__img" style="width:400px;height:225px" src="../../../shared/assets/generated/gi-hpylori-overview-s04-anatomy-gi-bdecdbe5-20260530-raster-20260531.jpg" alt="위 점막의 나선형 세균 확대 그림과 손 씻기, 물컵, 반찬을 함께 먹는 식탁 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:816px;top:443px;width:400px;height:163px"><div class="q-figcap__t">설명용 그림 · 위 점막의 헬리코박터(확대)와 손 씻기·식수·함께 먹는 식탁 — 대표적인 감염 경로입니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 가족 중 제균한 분이 있으면 다른 가족의 검사 여부도 함께 상의하세요.</span><span class="v2-src">근거 · 대한헬리코박터·상부위장관연구학회 진료지침 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 감염 뒤 경과</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">감염되면 어떻게 진행되나요</h2>
+  <p class="v2-sub">대부분은 증상 없이 지나가지만, 일부는 위암으로 가는 단계를 밟습니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:267px;height:400px">
+    <div class="q-step__n">1</div><div class="q-step__h">만성 위염</div><div class="q-step__tag">80~90%</div><div class="v2-body">감염자 대부분은 증상 없는 만성 위염 상태로 평생 지냅니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:359px;top:206px;width:267px;height:400px">
+    <div class="q-step__n">2</div><div class="q-step__h">소화성 궤양</div><div class="q-step__tag">10~15%</div><div class="v2-body">위·십이지장 궤양이 생겨 명치 통증·속쓰림이 나타나고, 출혈·천공 위험이 있습니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:654px;top:206px;width:267px;height:400px">
+    <div class="q-step__n">3</div><div class="q-step__h">위축 → 장상피화생</div><div class="q-step__tag">수십 년</div><div class="v2-body">오랜 염증으로 위 점막이 얇아지고 장 점막처럼 바뀝니다. 위암 전 단계 변화입니다.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:949px;top:206px;width:267px;height:400px">
+    <div class="q-step__n">4</div><div class="q-step__h">위암 · 말트 림프종</div><div class="q-step__tag">0.1~3%</div><div class="v2-body">일부가 위암으로 진행하고, 드물게(0.01% 미만) 위 말트 림프종이 생깁니다. 일찍 찾고 제균하는 것이 핵심입니다.</div>
+  </div>
+  <div class="q-arrow" style="left:337px;top:242px"></div>
+  <div class="q-arrow" style="left:632px;top:242px"></div>
+  <div class="q-arrow" style="left:927px;top:242px"></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 위암까지 가는 분은 일부입니다 — 단계마다 멈출 기회가 있습니다.</span><span class="v2-src">근거 · 코레아 위암 발생 단계 · Int J Oncol 2006 · N Engl J Med 2001 · Lancet 2008</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 내시경 소견</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">내시경에서는 이렇게 보입니다</h2>
+  <p class="v2-sub">조직 검사뿐 아니라 점막의 모양도 감염의 단서가 됩니다</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><b>비교적 초기 — 붉어지고 붓습니다</b></div><div class="v2-body">점상 출혈반·점상 발적, 넓게 붉어진 점막, 점막 부종이 보일 수 있습니다. 염증이 활발한 시기의 단서입니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.9886 38H35.9774C35.9775 37.8505 35.9438 37.6987 35.8727 37.5556L31.642 29.0509L44 29.9311V34C44 36.2091 42.204 38 39.9886 38ZM36.8199 33.8021C37.3737 33.8021 37.8227 33.3544 37.8227 32.8021C37.8227 32.2498 37.3737 31.8021 36.8199 31.8021C36.266 31.8021 35.817 32.2498 35.817 32.8021C35.817 33.3544 36.266 33.8021 36.8199 33.8021Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M33.2097 20.0273L31.2535 27.0182L44 27.926V19.093L33.8071 19.9978L33.2097 20.0273ZM35.817 24.8021C35.817 25.3544 35.368 25.8021 34.8141 25.8021C34.2603 25.8021 33.8113 25.3544 33.8113 24.8021C33.8113 24.2498 34.2603 23.8021 34.8141 23.8021C35.368 23.8021 35.817 24.2498 35.817 24.8021Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.1397 27.8758L29.142 27.1223L31.0982 20.1314L16.1785 20.8672L18.1397 27.8758ZM23.7827 25.8021C24.3366 25.8021 24.7856 25.3544 24.7856 24.8021C24.7856 24.2498 24.3366 23.8021 23.7827 23.8021C23.2288 23.8021 22.7798 24.2498 22.7798 24.8021C22.7798 25.3544 23.2288 25.8021 23.7827 25.8021Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.4311 29.1073L18.232 29.8742L15.9583 38H33.8548L29.4311 29.1073ZM25.606 34C26.1599 34 26.6089 33.5523 26.6089 33C26.6089 32.4477 26.1599 32 25.606 32C25.0522 32 24.6032 32.4477 24.6032 33C24.6032 33.5523 25.0522 34 25.606 34Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.1246 20.9685L16.0856 27.9768L4 27.0801V19.0456L13.3816 21.0051L14.1246 20.9685ZM10.9081 24.2023C10.9081 24.7546 10.4591 25.2023 9.90526 25.2023C9.3514 25.2023 8.9024 24.7546 8.9024 24.2023C8.9024 23.65 9.3514 23.2023 9.90526 23.2023C10.4591 23.2023 10.9081 23.65 10.9081 24.2023Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.1187 29.9848L4 29.0857V34C4 36.2091 5.79598 38 8.01143 38H13.914C13.914 37.9112 13.926 37.8209 13.9511 37.7312L16.1187 29.9848ZM11.9085 34.3668C12.4624 34.3668 12.9114 33.9191 12.9114 33.3668C12.9114 32.8145 12.4624 32.3668 11.9085 32.3668C11.3547 32.3668 10.9057 32.8145 10.9057 33.3668C10.9057 33.9191 11.3547 34.3668 11.9085 34.3668Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44 17.0851L33.6686 18.0022L33.2461 18.023L31.0011 10H39.9886C42.204 10 44 11.7909 44 14V17.0851ZM38.8256 14.8021C38.8256 15.3544 38.3766 15.8021 37.8227 15.8021C37.2689 15.8021 36.8199 15.3544 36.8199 14.8021C36.8199 14.2498 37.2689 13.8021 37.8227 13.8021C38.3766 13.8021 38.8256 14.2498 38.8256 14.8021Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.1921 18.1243L28.994 10.2688C28.9689 10.1791 28.9569 10.0888 28.9569 10H20.9345C20.9346 10.1495 20.901 10.3013 20.8298 10.4444L16.6527 18.8414L31.1921 18.1243ZM27.7941 14.8021C27.7941 15.3544 27.3451 15.8021 26.7913 15.8021C26.2374 15.8021 25.7884 15.3544 25.7884 14.8021C25.7884 14.2498 26.2374 13.8021 26.7913 13.8021C27.3451 13.8021 27.7941 14.2498 27.7941 14.8021Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.3575 18.9546L18.8119 10H8.01143C5.79598 10 4 11.7909 4 14V17.0065C4.03034 17.01 4.06079 17.0149 4.09127 17.0212L13.5402 18.9949L14.3575 18.9546ZM12.7513 15.8021C13.3051 15.8021 13.7541 15.3544 13.7541 14.8021C13.7541 14.2498 13.3051 13.8021 12.7513 13.8021C12.1974 13.8021 11.7484 14.2498 11.7484 14.8021C11.7484 15.3544 12.1974 15.8021 12.7513 15.8021Z" fill="currentColor"/>
+</svg></div><b>오래된 감염 — 얇아지고 바뀝니다</b></div><div class="v2-body">위 점막이 얇아지는 위축, 장 점막처럼 바뀌는 장상피화생이 함께 보일 수 있습니다. 위암 위험과 추적 간격을 정할 때 중요합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M21.2628 7.45335L19.7725 8.30133L18.5536 6.11377L15.9236 7.55774L17.1648 9.78518L15.6565 10.6434L16.7178 12.4816C15.9661 13.4147 15.825 14.7493 16.465 15.8498L17.0605 16.8737C14.3072 18.4587 12.1866 20.3519 11.0013 22.7054C9.85852 24.9745 9.64219 27.5564 10.4036 30.4838C8.31701 32.3165 7 35.0043 7 37.9997C7 39.422 7.2969 40.7748 7.83209 41.9997H40C40.5523 41.9997 41 41.552 41 40.9997C41 40.4475 40.5523 39.9997 40 39.9997H26.8C26.9311 39.3535 27 38.6847 27 37.9997C27 36.4632 26.6535 35.0076 26.0343 33.7069L38.0764 26.9207L37.0836 25.1845L25.0036 31.992L25.9963 33.7281L19.4822 37.3991L18.4895 35.6629L24.9975 31.9954C23.1728 29.569 20.2697 27.9997 17 27.9997C15.2478 27.9997 13.6009 28.4504 12.1688 29.2421C11.7274 27.0309 11.9897 25.1892 12.7876 23.605C13.7356 21.7227 15.503 20.0767 18.0659 18.6026L20.9877 23.6267C21.8206 25.0589 23.6611 25.5521 25.0986 24.7282L25.7658 24.3458L26.3749 25.5231L29.0488 24.1607L28.3717 22.8521L29.2202 22.3658C30.6576 21.5419 31.1477 19.7129 30.3148 18.2806L25.7921 10.5037C25.0646 9.25274 23.5684 8.71818 22.2435 9.15192L21.2628 7.45335Z" fill="currentColor"/>
+</svg></div><b>특징적 변화 — 오돌토돌한 결절</b></div><div class="v2-body">점막이 오돌토돌하게 솟는 결절 변화(림프여포성 위염)는 헬리코박터 감염에서 보이는 대표적 소견입니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 10C13.1046 10 14 9.10457 14 8C14 6.89543 13.1046 6 12 6C11.2597 6 10.6134 6.4022 10.2676 7H10C8.34315 7 7 8.34315 7 10V19C6.44774 19 5.99531 19.4487 6.04543 19.9987C6.27792 22.5499 7.39568 24.952 9.22186 26.7782C10.561 28.1173 12.2098 29.0755 14 29.583V32C14 33.3064 14.835 34.4177 16.0004 34.8294C16.043 38.7969 19.2725 42 23.25 42C27.2541 42 30.5 38.7541 30.5 34.75V30.75C30.5 28.6789 32.1789 27 34.25 27C36.3211 27 38 28.6789 38 30.75V33.1707C36.8348 33.5825 36 34.6938 36 36C36 37.6569 37.3431 39 39 39C40.6569 39 42 37.6569 42 36C42 34.6938 41.1652 33.5825 40 33.1707V30.75C40 27.5744 37.4256 25 34.25 25C31.0744 25 28.5 27.5744 28.5 30.75V34.75C28.5 37.6495 26.1495 40 23.25 40C20.3769 40 18.0429 37.6921 18.0006 34.8291C19.1655 34.4171 20 33.306 20 32V29.583C21.7902 29.0755 23.4391 28.1173 24.7782 26.7782C26.6044 24.952 27.7221 22.5499 27.9546 19.9987C28.0048 19.4487 27.5523 19 27 19L27 10C27 8.34315 25.6569 7 24 7H23.7324C23.3866 6.4022 22.7403 6 22 6C20.8954 6 20 6.89543 20 8C20 9.10457 20.8954 10 22 10C22.7403 10 23.3866 9.5978 23.7324 9H24C24.5523 9 25 9.44772 25 10V19H25.2095C24.6572 19 24.2166 19.4499 24.1403 19.9969C23.9248 21.5406 23.2127 22.983 22.0979 24.0979C20.7458 25.4499 18.9121 26.2095 17 26.2095C15.088 26.2095 13.2542 25.4499 11.9022 24.0979C10.7873 22.983 10.0753 21.5406 9.8598 19.9969C9.78344 19.4499 9.34286 19 8.79057 19L9 19V10C9 9.44772 9.44772 9 10 9H10.2676C10.6134 9.5978 11.2597 10 12 10Z" fill="currentColor"/>
+</svg></div><b>제균 뒤 — 좋아질 수 있습니다</b></div><div class="v2-body">붉어짐·부종·결절은 제균 뒤 줄어들 수 있습니다. 다만 위축과 장상피화생은 따로 추적이 필요할 수 있습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 내시경 결과지에 이런 표현이 있으면 헬리코박터 검사 결과와 함께 설명을 들으세요.</span><span class="v2-src">근거 · 교토 위염 분류 연구 2020 · 대한상부위장관·헬리코박터학회 진료지침 2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 진단</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">어떻게 진단하나요</h2>
+  <p class="v2-sub">한국에서는 내시경을 할 때 함께 진단하는 경우가 많습니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:608px"><colgroup><col style="width:176px"><col style="width:432px"></colgroup><thead><tr><th>검사</th><th>방법과 특징</th></tr></thead><tbody><tr><th style="height:50px">신속요소분해효소<br>검사(CLO)</th><td style="height:50px">내시경 때 떼어 낸 조직으로 바로 검사 · 30분~24시간 안에 결과, 한국에서 가장 흔함</td></tr><tr><th style="height:50px">조직검사</th><td style="height:50px">현미경으로 확인 · 위축·장상피화생도 함께 평가</td></tr><tr><th style="height:50px">세균 배양</th><td style="height:50px">잘 듣는 항생제 확인 · 두 번 실패한 뒤 맞춤 치료에 결정적</td></tr><tr><th style="height:50px">요소호기검사</th><td style="height:50px">약을 마신 뒤 내쉰 숨으로 검사 · 정확도 95% 이상, 치료 후 확인의 표준</td></tr><tr><th style="height:50px">대변 항원검사</th><td style="height:50px">대변으로 검사 · 어린이·고령자도 부담이 적음</td></tr><tr><th style="height:50px">혈액 항체검사</th><td style="height:50px">과거 감염도 양성 · 치료 후 확인에는 쓰지 않음</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:704px;top:206px;width:512px;height:288px">
+    <img class="v2-fig__img q-fig__img" style="width:512px;height:288px" src="../../../shared/assets/generated/gi-hpylori-overview-s06-risk-gi-9ae2357d-20260530-raster-20260531.jpg" alt="숨을 불어 넣는 호기 검사, 대변 검사 키트, 내시경으로 조직을 떼는 모습">
+  </div>
+  <div class="v2-panel q-figcap" style="left:704px;top:506px;width:512px;height:100px"><div class="q-figcap__t">설명용 그림 · 왼쪽 위는 요소호기검사, 왼쪽 아래는 대변 검사, 오른쪽은 내시경으로 조직을 떼어 검사하는 모습입니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 처음 진단은 어느 검사로든 할 수 있고, 치료 뒤 확인은 요소호기검사나 대변 항원검사로 합니다.</span><span class="v2-src">근거 · 대한헬리코박터·상부위장관연구학회 진료지침 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 꼭 치료하는 경우</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">반드시 제균 치료를 권하는 여섯 가지</h2>
+  <p class="v2-sub">진료지침이 강하게 권고하는 경우입니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:680px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">소화성 궤양<span class="q-srow__tag">지금·과거</span></div><div class="v2-body">위·십이지장 궤양 — 제균하면 재발이 크게 줄어듭니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">위 말트 림프종<span class="q-srow__tag">초기</span></div><div class="v2-body">제균만으로 좋아질 수 있는 유일한 림프종입니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">조기 위암 절제 뒤<span class="q-srow__tag">약 50%↓</span></div><div class="v2-body">내시경 절제술 뒤 새 위암이 생길 위험을 줄입니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">원인 모를 혈소판 감소<span class="q-srow__tag">약 50% 호전</span></div><div class="v2-body">특발성 혈소판감소성 자반증에서 혈소판이 좋아집니다.</div></div></div><div class="q-srow"><span class="q-srow__n">5</span><div class="q-srow__c"><div class="q-srow__h">위암 가족력<span class="q-srow__tag">보험 적용</span></div><div class="v2-body">부모·형제 중 위암 환자가 있는 경우입니다.</div></div></div><div class="q-srow"><span class="q-srow__n">6</span><div class="q-srow__c"><div class="q-srow__h">위축성 위염·장상피화생<span class="q-srow__tag">위암 전 단계</span></div><div class="v2-body">진행을 늦추거나 막을 수 있어 검토를 권합니다.</div></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:776px;top:206px;width:440px;height:248px">
+    <img class="v2-fig__img q-fig__img" style="width:440px;height:248px" src="../../../shared/assets/generated/gi-hpylori-overview-s07-process-gi-a959ef93-20260530-raster-20260531.jpg" alt="위궤양, 림프종 세포, 가족, 절제 흉터가 있는 위가 가운데 위 그림으로 이어지는 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:776px;top:466px;width:440px;height:140px"><div class="q-figcap__t">설명용 그림 · 궤양·림프종·가족력·위암 절제 뒤 — 제균을 강하게 권하는 대표적인 경우입니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 해당한다면 제균 치료를 미루지 않는 것이 좋습니다.</span><span class="v2-src">근거 · 대한헬리코박터·상부위장관연구학회 진료지침 2022 · 건강보험 적용 기준</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 상황에 따라</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이득과 부담을 따져 함께 정하는 경우</h2>
+  <p class="v2-sub">진료지침이 조건부로 권하는 경우 — 상의 후 결정합니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">01</span></div>
+    <div class="q-card__h">아스피린·소염진통제를 오래 드실 때</div>
+    <div class="v2-body">궤양 병력이 있다면 제균을 권합니다. 위장 출혈 위험을 낮춥니다.</div>
+    <div class="q-card__k">궤양 병력이 있으면</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:358px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 4L23.3098 4.66021L23.3061 4.6638L23.2973 4.67227L23.2648 4.70366C23.2367 4.73095 23.1956 4.7709 23.1426 4.82303C23.0366 4.92728 22.8826 5.08029 22.6874 5.27827C22.297 5.67417 21.7417 6.25029 21.0763 6.97632C19.7465 8.42723 17.9719 10.4826 16.1951 12.8995C12.6815 17.6788 9 24.0809 9 30.0801C9 37.845 15.796 44 24 44C32.204 44 39 37.845 39 30.0801C39 24.0809 35.3185 17.6788 31.8049 12.8995C30.0281 10.4826 28.2535 8.42723 26.9237 6.97632C26.2583 6.25029 25.703 5.67417 25.3126 5.27827C25.1174 5.08029 24.9634 4.92728 24.8574 4.82303C24.8044 4.7709 24.7634 4.73095 24.7352 4.70366L24.7027 4.67227L24.6939 4.6638L24.6902 4.66021L24 4ZM15.4649 31.3985C15.2943 30.8716 14.7301 30.5833 14.2049 30.7545C13.6796 30.9257 13.3922 31.4915 13.5628 32.0183C14.3133 34.3349 15.7757 36.3536 17.7404 37.7853C19.7052 39.217 22.0714 39.9882 24.5 39.9882C25.0523 39.9882 25.5 39.5391 25.5 38.9852C25.5 38.4313 25.0523 37.9822 24.5 37.9822C22.4938 37.9822 20.5391 37.3452 18.916 36.1625C17.293 34.9798 16.0849 33.3121 15.4649 31.3985Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">02</span></div>
+    <div class="q-card__h">원인 모를 철결핍 빈혈</div>
+    <div class="v2-body">출혈 원인이 분명하지 않은 만성 빈혈에서 제균 뒤 좋아진 보고가 있습니다.</div>
+    <div class="q-card__k">검토 대상</div>
+  </div>
+  <div class="v2-panel q-card" style="left:652px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">03</span></div>
+    <div class="q-card__h">기능성 소화불량</div>
+    <div class="v2-body">반복되는 명치 불편·식후 더부룩함이 있는 일부에서 제균&nbsp;뒤 증상이 좋아집니다.</div>
+    <div class="q-card__k">다른 이유와 함께 검토</div>
+  </div>
+  <div class="v2-panel q-card" style="left:946px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M37.5 16.8449C37.5 12.8705 35.9682 9.75541 33.4947 7.64469C31.0848 5.58823 27.9616 4.63223 24.923 4.51312C19.1007 4.28488 12.0377 7.23751 10.5604 13.8405C10.2589 15.1879 11.1068 16.5246 12.4542 16.8261C13.8016 17.1275 15.1383 16.2796 15.4397 14.9322C16.1624 11.7019 20.0994 9.32786 24.7271 9.50928C26.9135 9.59499 28.8778 10.2779 30.2491 11.4481C31.5569 12.5641 32.5 14.2635 32.5 16.8449C32.5 19.394 31.228 21.0713 29.3719 22.2558C27.4261 23.4975 24.9842 24.0682 23.3259 24.184C22.0159 24.2755 21.0001 25.3648 21.0001 26.678V31C21.0001 32.3807 22.1193 33.5 23.5001 33.5C24.8808 33.5 26.0001 32.3807 26.0001 31V28.8489C27.9106 28.4606 30.1018 27.7213 32.0616 26.4707C34.9776 24.6099 37.5 21.5072 37.5 16.8449Z" fill="currentColor"/>
+<path d="M24 36C21.7909 36 20 37.7909 20 40C20 42.2091 21.7909 44 24 44C26.2092 44 28 42.2091 28 40C28 37.7909 26.2092 36 24 36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.0001 28.8489C24.0001 27.8978 24.6698 27.0783 25.6018 26.8889C27.3366 26.5364 29.2825 25.8716 30.9857 24.7848C33.4812 23.1923 35.5 20.6587 35.5 16.8449C35.5 13.4272 34.2034 10.8786 32.1965 9.16606C30.2025 7.46449 27.5431 6.61736 24.8446 6.51158C22.271 6.41069 19.4279 7.01999 17.1068 8.3503C14.8123 9.66542 13.1043 11.6303 12.5121 14.2772C12.4518 14.5467 12.6214 14.814 12.8909 14.8743C13.1604 14.9346 13.4277 14.765 13.488 14.4955C14.5077 9.93772 19.6698 7.30949 24.8055 7.51081C27.3339 7.60993 29.7613 8.40265 31.5474 9.92675C33.3208 11.4401 34.5 13.7055 34.5 16.8449C34.5 20.2334 32.7339 22.4829 30.4477 23.9418C28.1499 25.4082 25.3616 26.0467 23.4652 26.1792C23.2032 26.1975 23.0001 26.4153 23.0001 26.678V31C23.0001 31.2761 23.2239 31.5 23.5001 31.5C23.7762 31.5 24.0001 31.2761 24.0001 31V28.8489ZM24 38C22.8955 38 22 38.8954 22 40C22 41.1046 22.8955 42 24 42C25.1046 42 26 41.1046 26 40C26 38.8954 25.1046 38 24 38ZM33.4947 7.64469C35.9682 9.75541 37.5 12.8705 37.5 16.8449C37.5 21.5072 34.9776 24.6099 32.0616 26.4707C30.1018 27.7213 27.9106 28.4606 26.0001 28.8489V31C26.0001 32.3807 24.8808 33.5 23.5001 33.5C22.1193 33.5 21.0001 32.3807 21.0001 31V26.678C21.0001 25.3648 22.0159 24.2755 23.3259 24.184C24.9842 24.0682 27.4261 23.4975 29.3719 22.2558C31.228 21.0713 32.5 19.394 32.5 16.8449C32.5 14.2635 31.5569 12.5641 30.2491 11.4481C28.8778 10.2779 26.9135 9.59499 24.7271 9.50928C20.0994 9.32786 16.1624 11.7019 15.4397 14.9322C15.1383 16.2796 13.8016 17.1275 12.4542 16.8261C11.1068 16.5246 10.2589 15.1879 10.5604 13.8405C12.0377 7.23751 19.1007 4.28488 24.923 4.51312C27.9616 4.63223 31.0848 5.58823 33.4947 7.64469ZM20 40C20 37.7909 21.7909 36 24 36C26.2092 36 28 37.7909 28 40C28 42.2091 26.2092 44 24 44C21.7909 44 20 42.2091 20 40Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">04</span></div>
+    <div class="q-card__h">본인이 치료를 원할 때</div>
+    <div class="v2-body">이득과 부작용·항생제 내성을 충분히 설명들은 뒤 원하면 진행할 수 있습니다.</div>
+    <div class="q-card__k">충분히 설명 듣고</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 조건부 권고는 ‘해도 되고 안 해도 된다’가 아니라 ‘상황을 보고 함께 정한다’는 뜻입니다.</span><span class="v2-src">근거 · 대한헬리코박터·상부위장관연구학회 진료지침 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 누가 검사받나</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">검사를 권하는 경우와 권하지 않는 경우</h2>
+  <p class="v2-sub">검사하면 치료까지 — 치료할 생각이 있을 때만 검사하는 것이 원칙입니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">검사를 권하는 경우</div><div class="v2-vs__lead">양성이면 제균 치료로 이어집니다</div><ul class="v2-vs__list"><li>위·십이지장 궤양이 발견됐을 때</li><li>가족 중 위암 환자가 있을 때</li><li>위축성 위염·장상피화생으로 진단됐을 때</li><li>아스피린·소염진통제를 오래 먹고 궤양 병력이 있을 때</li><li>원인 모를 철결핍 빈혈·혈소판 감소</li><li>조기 위암을 떼어 낸 뒤 추적할 때</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">일반적으로 권하지 않는 경우</div><div class="v2-vs__lead">검사해도 도움이 적거나 결과가 부정확합니다</div><ul class="v2-vs__list"><li>증상이 전혀 없는 일반 건강인</li><li>위장 증상이 가볍고 일시적일 때</li><li>치료할 생각이 없을 때(검사가 의미 없음)</li><li>위산억제제·항생제를 먹은 직후(음성으로 잘못 나올 수 있음)</li><li>임신 중</li><li>매우 고령으로 기대 수명이 짧을 때</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 급성 출혈 때 시행한 검사에서 음성이면 지혈 후 다시 확인할 수 있습니다.</span><span class="v2-src">근거 · 유럽소화기내시경학회(ESGE) 출혈 지침 2021</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 치료의 큰 그림</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">제균 치료는 단계적으로 합니다</h2>
+  <p class="v2-sub">처방에 따라 동시요법 10일 또는 표준 삼제요법 14일을 복용하고, 치료 후 균이 없어졌는지 확인합니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num q-stat__num--long">70~85%</div><div class="q-stat__lab">1차 치료 성공률</div><div class="q-stat__cap">최근 국내 조사(2021~2023년): 내성률 약 33%</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">95<span>%+</span></div><div class="q-stat__lab">단계별 누적 성공률</div><div class="q-stat__cap">1·2차, 필요하면 맞춤 3차까지</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">4<span>주+</span></div><div class="q-stat__lab">치료 끝나고 확인까지</div><div class="q-stat__cap">요소호기검사·대변 검사로 확인</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><b>성공의 열쇠는 빠짐없이 먹기</b></div><div class="v2-body">한 알도 빼먹지 않고 끝까지 먹는 것이 핵심입니다. 스스로 끊으면 약이 안 듣는 균이 생겨 다음 치료까지 어려워집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 24C42 28.6107 40.2664 32.8166 37.4155 36.0013L29.0001 27.5859L29 26.8439C29 24.1266 27.8985 21.5205 25.9379 19.5991C25.8404 19.5036 25.7857 19.3741 25.7857 19.2391V10.7C25.7857 10.3134 25.4659 10 25.0714 10H23.2857C22.8912 10 22.5714 10.3134 22.5714 10.7V19.2271C22.5714 19.369 22.51 19.5042 22.4024 19.5991C20.2366 21.5093 19 24.2305 19 27.0859V36.4543C19 37.308 19.7061 38 20.5773 38H27.3168C28.2464 38 29 37.2615 29 36.3504V30.4142L36.0013 37.4155C32.8166 40.2664 28.6108 42 24 42C14.0589 42 6 33.9411 6 24C6 19.262 7.83061 14.9515 10.8231 11.7373L18.2929 19.2071C18.6834 19.5976 19.3166 19.5976 19.7071 19.2071C20.0976 18.8166 20.0976 18.1834 19.7071 17.7929L12.265 10.3508C15.4161 7.63912 19.5166 6 24 6C33.9411 6 42 14.0589 42 24ZM44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24ZM21 26H27V31H21V26Z" fill="currentColor"/>
+</svg></div><b>치료 중에는 금주</b></div><div class="v2-body">메트로니다졸 복용 중과 마지막 복용 뒤 72시간 금주하세요. 자세한 약과 주의사항은 ‘제균 치료 안내’ 자료를 보세요.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약 조합·부작용·복용 규칙은 별도 ‘헬리코박터 제균 치료 안내’ 자료에 자세히 있습니다.</span><span class="v2-src">근거 · 대한상부위장관·헬리코박터학회 진료지침 2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 11 · 오늘 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 일곱 가지</h2>
+  <p class="v2-sub">감염·진단·치료 결정의 핵심입니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">한국 성인 약 30%가 감염 — 대부분은 증상이 없습니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">감염은 주로 어린 시절 가족 안에서 일어납니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">위암 위험을 약 6배 높이는 1군 발암 요인입니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">진단은 내시경 조직 검사나 요소호기검사·대변 검사로</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">궤양·말트 림프종·조기 위암 절제 뒤·혈소판 감소는 꼭 제균</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">치료가 끝나고 4주 이상 지나 제균 확인 검사</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">가족도 검사·치료를 함께 상의하기</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 검사할 거라면 치료할 생각이 있을 때 — 이것이 원칙입니다.</span><span class="v2-src">근거 · 대한헬리코박터·상부위장관연구학회 진료지침 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 12 · 자주 묻는 질문</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">검사·치료를 앞두고 가장 많이 묻는 네 가지</h2>
+  <p class="v2-sub">결정을 앞두고 궁금한 점을 먼저 정리했습니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:400px;height:225px">
+    <img class="v2-fig__img q-fig__img" style="width:400px;height:225px" src="../../../shared/assets/generated/gi-hpylori-overview-s09-comparison-gi-050fe669-20260530-raster-20260531.jpg" alt="저울과 증상이 있는 사람, 고민하는 의사, 방패를 든 사람이 화살표로 이어진 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:443px;width:400px;height:163px"><div class="q-figcap__t">설명용 그림 · 치료할지는 이득과 부담을 저울질해 의사와 함께 정합니다.</div></div>
+  <div class="v2-panel q-text" style="left:496px;top:206px;width:720px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M37.5 16.8449C37.5 12.8705 35.9682 9.75541 33.4947 7.64469C31.0848 5.58823 27.9616 4.63223 24.923 4.51312C19.1007 4.28488 12.0377 7.23751 10.5604 13.8405C10.2589 15.1879 11.1068 16.5246 12.4542 16.8261C13.8016 17.1275 15.1383 16.2796 15.4397 14.9322C16.1624 11.7019 20.0994 9.32786 24.7271 9.50928C26.9135 9.59499 28.8778 10.2779 30.2491 11.4481C31.5569 12.5641 32.5 14.2635 32.5 16.8449C32.5 19.394 31.228 21.0713 29.3719 22.2558C27.4261 23.4975 24.9842 24.0682 23.3259 24.184C22.0159 24.2755 21.0001 25.3648 21.0001 26.678V31C21.0001 32.3807 22.1193 33.5 23.5001 33.5C24.8808 33.5 26.0001 32.3807 26.0001 31V28.8489C27.9106 28.4606 30.1018 27.7213 32.0616 26.4707C34.9776 24.6099 37.5 21.5072 37.5 16.8449Z" fill="currentColor"/>
+<path d="M24 36C21.7909 36 20 37.7909 20 40C20 42.2091 21.7909 44 24 44C26.2092 44 28 42.2091 28 40C28 37.7909 26.2092 36 24 36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.0001 28.8489C24.0001 27.8978 24.6698 27.0783 25.6018 26.8889C27.3366 26.5364 29.2825 25.8716 30.9857 24.7848C33.4812 23.1923 35.5 20.6587 35.5 16.8449C35.5 13.4272 34.2034 10.8786 32.1965 9.16606C30.2025 7.46449 27.5431 6.61736 24.8446 6.51158C22.271 6.41069 19.4279 7.01999 17.1068 8.3503C14.8123 9.66542 13.1043 11.6303 12.5121 14.2772C12.4518 14.5467 12.6214 14.814 12.8909 14.8743C13.1604 14.9346 13.4277 14.765 13.488 14.4955C14.5077 9.93772 19.6698 7.30949 24.8055 7.51081C27.3339 7.60993 29.7613 8.40265 31.5474 9.92675C33.3208 11.4401 34.5 13.7055 34.5 16.8449C34.5 20.2334 32.7339 22.4829 30.4477 23.9418C28.1499 25.4082 25.3616 26.0467 23.4652 26.1792C23.2032 26.1975 23.0001 26.4153 23.0001 26.678V31C23.0001 31.2761 23.2239 31.5 23.5001 31.5C23.7762 31.5 24.0001 31.2761 24.0001 31V28.8489ZM24 38C22.8955 38 22 38.8954 22 40C22 41.1046 22.8955 42 24 42C25.1046 42 26 41.1046 26 40C26 38.8954 25.1046 38 24 38ZM33.4947 7.64469C35.9682 9.75541 37.5 12.8705 37.5 16.8449C37.5 21.5072 34.9776 24.6099 32.0616 26.4707C30.1018 27.7213 27.9106 28.4606 26.0001 28.8489V31C26.0001 32.3807 24.8808 33.5 23.5001 33.5C22.1193 33.5 21.0001 32.3807 21.0001 31V26.678C21.0001 25.3648 22.0159 24.2755 23.3259 24.184C24.9842 24.0682 27.4261 23.4975 29.3719 22.2558C31.228 21.0713 32.5 19.394 32.5 16.8449C32.5 14.2635 31.5569 12.5641 30.2491 11.4481C28.8778 10.2779 26.9135 9.59499 24.7271 9.50928C20.0994 9.32786 16.1624 11.7019 15.4397 14.9322C15.1383 16.2796 13.8016 17.1275 12.4542 16.8261C11.1068 16.5246 10.2589 15.1879 10.5604 13.8405C12.0377 7.23751 19.1007 4.28488 24.923 4.51312C27.9616 4.63223 31.0848 5.58823 33.4947 7.64469ZM20 40C20 37.7909 21.7909 36 24 36C26.2092 36 28 37.7909 28 40C28 42.2091 26.2092 44 24 44C21.7909 44 20 42.2091 20 40Z" fill="currentColor"/>
+</svg></div><b>감염되면 꼭 치료해야 하나요?</b></div><div class="v2-body">모두가 바로 치료 대상은 아닙니다. 궤양·위암 가족력·위축성 위염·말트 림프종·조기 위암 치료 뒤 등에서 적극&nbsp;권합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9525 10.4616C19.712 9.08283 17.9626 8.17095 16 8.02165V5H14V8.13723C11.902 8.54591 10.1197 9.83753 9.05552 11.6096L6.5 10.1342L5.5 11.8662L8.26322 13.4616C8.09162 14.0881 8 14.7476 8 15.4286C8 17.4437 8.24257 19.4021 8.7001 21.2763L5.74115 22.0691L6.25879 24.001L9.25381 23.1985C10.1227 25.8074 11.4173 28.2218 13.055 30.3593L10.2929 33.1214L11.7072 34.5356L14.3403 31.9025C15.8901 33.6166 17.6783 35.111 19.6525 36.3337L18.1339 38.9639L19.866 39.9639L21.3944 37.3166C24.0239 38.662 26.9279 39.5476 30 39.8671V43H32V39.9935C32.19 39.9978 32.3804 40 32.5714 40C34.8687 40 36.9225 38.9572 38.2851 37.3191L40.9641 38.8658L41.9641 37.1338L39.3465 35.6225C39.7663 34.6917 40 33.6589 40 32.5714C40 29.8398 38.5256 27.4525 36.3292 26.162L37.8661 23.5L36.134 22.5L34.4672 25.387C33.862 25.2277 33.2266 25.1429 32.5714 25.1429C30.2491 25.1429 28.1171 24.3279 26.4458 22.9685L28.7071 20.7072L27.2928 19.293L25.0316 21.5542C23.6721 19.8829 22.8571 17.7509 22.8571 15.4286C22.8571 14.2508 22.583 13.137 22.0951 12.1475L24.5354 9.70718L23.1212 8.29297L20.9525 10.4616ZM15 15C14.4477 15 14 15.4477 14 16C14 16.5523 14.4477 17 15 17C15.5523 17 16 16.5523 16 16C16 15.4477 15.5523 15 15 15ZM12 16C12 14.3431 13.3431 13 15 13C16.6569 13 18 14.3431 18 16C18 17.6569 16.6569 19 15 19C13.3431 19 12 17.6569 12 16ZM24 29C23.4477 29 23 29.4477 23 30C23 30.5523 23.4477 31 24 31C24.5523 31 25 30.5523 25 30C25 29.4477 24.5523 29 24 29ZM21 30C21 28.3431 22.3431 27 24 27C25.6569 27 27 28.3431 27 30C27 31.6569 25.6569 33 24 33C22.3431 33 21 31.6569 21 30ZM17 26C18.1046 26 19 25.1046 19 24C19 22.8954 18.1046 22 17 22C15.8954 22 15 22.8954 15 24C15 25.1046 15.8954 26 17 26ZM34 32C34 33.1046 33.1046 34 32 34C30.8954 34 30 33.1046 30 32C30 30.8954 30.8954 30 32 30C33.1046 30 34 30.8954 34 32Z" fill="currentColor"/>
+</svg></div><b>제균 뒤 다시 감염되나요?</b></div><div class="v2-body">성인 재감염은 한 해 2~3% 정도로 낮습니다. 성공하면 대개 오래 유지됩니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 24C20.8675 24 24 20.8675 24 17C24 13.1325 20.8675 10 17 10C13.1325 10 10 13.1325 10 17C10 20.8675 13.1325 24 17 24Z" fill="currentColor"/>
+<path d="M39 20.5C39 23.5387 36.5387 26 33.5 26C30.4613 26 28 23.5387 28 20.5C28 17.4612 30.4613 15 33.5 15C36.5387 15 39 17.4612 39 20.5Z" fill="currentColor"/>
+<path d="M17 26C19.7336 26 24.183 26.8511 27.1011 28.5452C28.293 29.7585 29 31.0814 29 32.4V38H4V32.4C4 28.144 12.6612 26 17 26Z" fill="currentColor"/>
+<path d="M44 38H31V32.4C31 30.9837 30.4886 29.6801 29.6764 28.5166C31.2173 28.1725 32.7343 28 33.8927 28C37.6211 28 44 29.7867 44 33.3333V38Z" fill="currentColor"/>
+</svg></div><b>가족에게 옮나요?</b></div><div class="v2-body">주로 어린 시절 가족 안에서 옮습니다. 어른끼리는 드물지만, 가족력이 있으면 검사를 함께 상의합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>약과 부작용은 어디서 보나요?</b></div><div class="v2-body">약 이름·먹는 시간·금주·부작용·병원에 올 신호는 ‘제균 치료 안내’ 자료에 있습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 그 밖에 궁금한 점은 진료 때 편하게 물어보세요.</span><span class="v2-src">근거 · 대한헬리코박터·상부위장관연구학회 진료지침 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">13 / 14</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">헬리코박터 감염이 궁금하거나 검사를 권유받은 분과 가족을 위한 설명자료입니다. 치료 여부는 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">대한상부위장관·헬리코박터학회 진료지침 2025 · 국제암연구소(IARC) 발암물질 분류 · 교토 위염 분류&nbsp;2014</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM12,2H13V3H12zM15,2H16V3H15zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM12,3H13V4H12zM13,3H14V4H13zM15,3H16V4H15zM18,3H19V4H18zM19,3H20V4H19zM22,3H23V4H22zM23,3H24V4H23zM25,3H26V4H25zM26,3H27V4H26zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM13,4H14V5H13zM20,4H21V5H20zM24,4H25V5H24zM25,4H26V5H25zM26,4H27V5H26zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM16,5H17V6H16zM18,5H19V6H18zM19,5H20V6H19zM24,5H25V6H24zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM13,6H14V7H13zM15,6H16V7H15zM16,6H17V7H16zM19,6H20V7H19zM21,6H22V7H21zM26,6H27V7H26zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM12,7H13V8H12zM16,7H17V8H16zM21,7H22V8H21zM23,7H24V8H23zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM24,9H25V10H24zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM12,10H13V11H12zM14,10H15V11H14zM16,10H17V11H16zM18,10H19V11H18zM19,10H20V11H19zM20,10H21V11H20zM21,10H22V11H21zM23,10H24V11H23zM25,10H26V11H25zM28,10H29V11H28zM31,10H32V11H31zM33,10H34V11H33zM34,10H35V11H34zM2,11H3V12H2zM4,11H5V12H4zM6,11H7V12H6zM9,11H10V12H9zM10,11H11V12H10zM13,11H14V12H13zM14,11H15V12H14zM18,11H19V12H18zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM4,12H5V13H4zM5,12H6V13H5zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM14,12H15V13H14zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM25,12H26V13H25zM27,12H28V13H27zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM33,12H34V13H33zM34,12H35V13H34zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM9,13H10V14H9zM13,13H14V14H13zM15,13H16V14H15zM16,13H17V14H16zM17,13H18V14H17zM20,13H21V14H20zM22,13H23V14H22zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM34,13H35V14H34zM2,14H3V15H2zM3,14H4V15H3zM5,14H6V15H5zM6,14H7V15H6zM8,14H9V15H8zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM19,14H20V15H19zM21,14H22V15H21zM22,14H23V15H22zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM3,15H4V16H3zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM21,15H22V16H21zM26,15H27V16H26zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM2,16H3V17H2zM4,16H5V17H4zM8,16H9V17H8zM12,16H13V17H12zM13,16H14V17H13zM14,16H15V17H14zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM21,16H22V17H21zM24,16H25V17H24zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM32,16H33V17H32zM2,17H3V18H2zM4,17H5V18H4zM6,17H7V18H6zM10,17H11V18H10zM12,17H13V18H12zM18,17H19V18H18zM20,17H21V18H20zM21,17H22V18H21zM23,17H24V18H23zM24,17H25V18H24zM27,17H28V18H27zM28,17H29V18H28zM29,17H30V18H29zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM2,18H3V19H2zM4,18H5V19H4zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM13,18H14V19H13zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM27,18H28V19H27zM28,18H29V19H28zM30,18H31V19H30zM32,18H33V19H32zM2,19H3V20H2zM4,19H5V20H4zM5,19H6V20H5zM7,19H8V20H7zM9,19H10V20H9zM11,19H12V20H11zM13,19H14V20H13zM14,19H15V20H14zM15,19H16V20H15zM17,19H18V20H17zM20,19H21V20H20zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM30,19H31V20H30zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM2,20H3V21H2zM6,20H7V21H6zM8,20H9V21H8zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM19,20H20V21H19zM22,20H23V21H22zM23,20H24V21H23zM24,20H25V21H24zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM2,21H3V22H2zM5,21H6V22H5zM6,21H7V22H6zM9,21H10V22H9zM10,21H11V22H10zM11,21H12V22H11zM15,21H16V22H15zM17,21H18V22H17zM19,21H20V22H19zM20,21H21V22H20zM22,21H23V22H22zM24,21H25V22H24zM25,21H26V22H25zM26,21H27V22H26zM28,21H29V22H28zM30,21H31V22H30zM33,21H34V22H33zM34,21H35V22H34zM2,22H3V23H2zM3,22H4V23H3zM4,22H5V23H4zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM12,22H13V23H12zM13,22H14V23H13zM14,22H15V23H14zM19,22H20V23H19zM22,22H23V23H22zM23,22H24V23H23zM31,22H32V23H31zM32,22H33V23H32zM2,23H3V24H2zM3,23H4V24H3zM4,23H5V24H4zM6,23H7V24H6zM9,23H10V24H9zM10,23H11V24H10zM12,23H13V24H12zM13,23H14V24H13zM17,23H18V24H17zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM6,24H7V25H6zM8,24H9V25H8zM10,24H11V25H10zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM18,24H19V25H18zM19,24H20V25H19zM20,24H21V25H20zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM3,25H4V26H3zM6,25H7V26H6zM10,25H11V26H10zM12,25H13V26H12zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM18,25H19V26H18zM20,25H21V26H20zM21,25H22V26H21zM22,25H23V26H22zM24,25H25V26H24zM29,25H30V26H29zM30,25H31V26H30zM33,25H34V26H33zM2,26H3V27H2zM4,26H5V27H4zM5,26H6V27H5zM8,26H9V27H8zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM13,26H14V27H13zM15,26H16V27H15zM17,26H18V27H17zM19,26H20V27H19zM22,26H23V27H22zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM34,26H35V27H34zM10,27H11V28H10zM11,27H12V28H11zM12,27H13V28H12zM17,27H18V28H17zM18,27H19V28H18zM21,27H22V28H21zM23,27H24V28H23zM26,27H27V28H26zM30,27H31V28H30zM31,27H32V28H31zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM13,28H14V29H13zM14,28H15V29H14zM15,28H16V29H15zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM23,28H24V29H23zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM11,29H12V30H11zM12,29H13V30H12zM13,29H14V30H13zM14,29H15V30H14zM16,29H17V30H16zM18,29H19V30H18zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM11,30H12V31H11zM13,30H14V31H13zM16,30H17V31H16zM17,30H18V31H17zM19,30H20V31H19zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM19,31H20V32H19zM22,31H23V32H22zM29,31H30V32H29zM31,31H32V32H31zM32,31H33V32H32zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM12,32H13V33H12zM14,32H15V33H14zM19,32H20V33H19zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM14,33H15V34H14zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM21,33H22V34H21zM24,33H25V34H24zM26,33H27V34H26zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM15,34H16V35H15zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM21,34H22V35H21zM23,34H24V35H23zM25,34H26V35H25zM27,34H28V35H27zM30,34H31V35H30zM32,34H33V35H32z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -818,96 +513,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">14 / 14</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">14 / 14</div>
+</section>
 </body>
 </html>
