@@ -26,329 +26,83 @@
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
 
   <!-- Local extensions for this deck (Lp(a) risk classification table + biomarker comparison) -->
-  <style>
-    /* Lp(a) risk classification table for slide 7 */
-    .pattern-risk-table {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .risk-row {
-      display: grid;
-      grid-template-columns: 92px 90px 76px minmax(0, 1fr);
-      gap: var(--space-2);
-      align-items: center;
-      padding: var(--space-2) var(--space-3);
-      background: var(--color-canvas);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-    }
-    .risk-row--head {
-      background: var(--color-navy);
-      color: var(--color-canvas);
-      border-color: var(--color-navy);
-      font-weight: var(--weight-bold);
-      font-size: var(--text-body);
-      letter-spacing: var(--tracking-snug);
-    }
-    .risk-row--alert {
-      background: var(--color-danger-bg);
-      border-color: var(--color-danger);
-    }
-    .risk-row__class {
-      font-weight: var(--weight-bold);
-      color: var(--color-navy);
-      font-size: var(--text-body);
-      letter-spacing: var(--tracking-snug);
-      white-space: nowrap;
-    }
-    .risk-row--head .risk-row__class { color: var(--color-canvas); }
-    .risk-row--alert .risk-row__class { color: var(--color-danger); }
-    .risk-row__nmol, .risk-row__mg {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-black);
-      color: var(--color-navy);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-      white-space: nowrap;
-    }
-    .risk-row--head .risk-row__nmol,
-    .risk-row--head .risk-row__mg {
-      color: var(--color-canvas);
-      font-size: var(--text-body);
-    }
-    .risk-row--alert .risk-row__nmol,
-    .risk-row--alert .risk-row__mg {
-      color: var(--color-danger);
-    }
-    .risk-row__meaning {
-      font-size: 0.95rem;
-      font-weight: var(--weight-450);
-      color: var(--color-ink-soft);
-      line-height: 1.32;
-      word-break: keep-all;
-      overflow-wrap: break-word;
-    }
-    .risk-row--head .risk-row__meaning { color: var(--color-canvas); opacity: 0.92; }
-    .risk-row--alert .risk-row__meaning { color: var(--color-ink); }
-    .slide__body--risk-tiers {
-      grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
-      gap: var(--space-5);
-      align-items: stretch;
-    }
-    .slide__body--risk-tiers .pattern-risk-table {
-      height: 100%;
-    }
-    .slide__body--risk-tiers .risk-row { flex: 1 1 0; min-height: 0; }
-    .slide__body--risk-tiers .risk-row--head { flex: 0 0 auto; }
-    .slide__body--risk-tiers > .ai-visual--focus {
-      align-self: center;
-      height: auto;
-      aspect-ratio: 16 / 9;
-    }
-
-    /* 3-stat row for slide 2 — single row of 3 large circular stats + supporting card */
-    .pattern-stats3 {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-6);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .stats3-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-      align-items: center;
-      justify-items: center;
-    }
-    .stats3-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .stats3-cell__circle {
-      width: 168px;
-      height: 168px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-canvas);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-    }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__num {
-      font-size: 3rem;
-      font-weight: var(--weight-black);
-      line-height: 1;
-      letter-spacing: var(--tracking-mega);
-    }
-    .stats3-cell__unit {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      margin-top: var(--space-2);
-      opacity: 0.92;
-    }
-    .stats3-cell__label {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      text-align: center;
-      max-width: 240px;
-      line-height: var(--lh-snug);
-    }
-    .stats3-note {
-      padding: var(--space-5) var(--space-6);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-relaxed);
-    }
-
-    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.2rem; line-height: 1.25; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 1rem; line-height: 1.46; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 18px 24px 14px; gap: 8px; }
-    .tile__body { font-size: 1.02rem; line-height: 1.5; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    /* readability fixes 2026-06: no mid-word breaks in Korean text (eojeol wrapping) */
-    .slide__title, .slide__subtitle, .tile__title { word-break: keep-all; }
-    .slide__body { word-break: keep-all; overflow-wrap: break-word; }
-    /* closing slide: spread contact items horizontally to fill the card */
-    .closing-grid > .contact-card { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: var(--space-6); }
-    /* slide 2: caption sits directly under the hero number; note card anchors the bottom */
-    .hero-lead { display: flex; flex-direction: column; gap: var(--space-4); }
-    .pattern-hero-number__value { font-size: 7rem; }
-    .hero-note {
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-left: 3px solid var(--color-steel);
-      border-radius: var(--radius-md);
-      font-size: 1rem;
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: 1.5;
-      word-break: keep-all;
-    }
-    /* slide 3: center the split primary column instead of leaving a bottom void */
-    .pattern-split__primary { display: flex; flex-direction: column; justify-content: center; gap: var(--space-5); }
-    /* slide 3: metric cards share the column height instead of floating apart */
-    .pattern-split__detail { justify-content: stretch; gap: var(--space-5); }
-    .pattern-split__metric { flex: 1 1 0; display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); }
-    .pattern-split__metric-value { font-size: 2.2rem; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3C-redesign 2026-09-27 (원장님 49028) — v1 덱을 v2 룩으로 옮기며 한 가지 틀 반복을 카드·대비 2단·표·
+    가로 도해·2x2·글+그림 분할로 섞었다. 그림칸은 그림 원본 비율 그대로(잘림·레터박스 없음), 본문 글자 16px 이상. */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:10px}
+ .q-text .v2-body{font-size:16px;line-height:1.6}
+ /* 그림 패널 — 그림이 칸을 채운다(비율 = 원본) */
+ .q-fig,.q-figw{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before,.q-figw::before{content:none}
+ .q-fig .v2-fig__img,.q-figw .v2-figwide__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:28px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+ .q-card__top .v2-chip{width:56px;height:56px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:34px;height:34px}
+ .q-card__n{font-size:56px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:23px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:16px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ /* 표 — 셀 글자를 한 단계 키운다 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;height:64px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:16px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:12px 0 12px 22px}
+ .v2-vs__list li::before{top:21px}
+ /* 가로 도해 */
+ .q-flow{display:flex;flex-direction:column;padding:26px 22px}
+ .q-flow__lab{align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--chip);color:var(--rule);font-size:15px;font-weight:800;margin-bottom:14px}
+ .q-flow__h{font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:12px}
+ .q-flow .v2-body{font-size:17px;line-height:1.65}
+ .q-flow__k{margin-top:auto;padding:10px 12px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ .q-arrow{position:absolute;height:28px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;color:var(--v2-accent);line-height:1}
+ /* 2x2 */
+ .q-grid4{position:absolute;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(168px,auto);column-gap:24px;row-gap:24px;align-content:center}
+ .q-grid4 > .v2-panel{position:relative;left:auto;top:auto;padding:26px 28px}
+ .q-four{display:flex;flex-direction:column;justify-content:center}
+ .q-four .v2-head{margin-bottom:12px}
+ .q-four .v2-head b{font-size:22px}
+ .q-four .v2-body{font-size:18px;line-height:1.65}
+ /* 행동 목록 */
+ .q-check{padding:18px 26px}
+ .q-check__list{list-style:none;margin:0;padding:0;height:100%;display:flex;flex-direction:column;justify-content:space-evenly}
+ .q-check__list li{display:flex;align-items:flex-start;gap:14px;font-size:18px;line-height:1.5;color:var(--v2-ink);word-break:keep-all}
+ .q-check__list li + li{border-top:1px dashed var(--v2-line);padding-top:12px}
+ .q-check__list i{flex:none;font-style:normal;width:36px;height:36px;border-radius:10px;background:var(--chip);color:var(--rule);font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-check__list b{color:var(--v2-navy)}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+ .q-qr .qr-block{flex-direction:column;align-items:center;text-align:center;gap:14px}
+ .q-qr .qr-block__code{width:190px;height:190px}
+ .q-qr .qr-block__label{font-size:13px}
+ .q-qr .qr-block__heading{font-size:22px}
+ .q-qr .qr-block__hint{font-size:15px;line-height:1.5}
+  .q-act{display:flex;flex-direction:column;justify-content:center;padding:16px 22px}
+ .q-act .v2-head{margin-bottom:6px}
+ .q-act .v2-body{font-size:16px;line-height:1.55}
+</style>
 <!-- seo:geo2 --><meta name="description" content="LDL-C만으로 부족한 심혈관 위험 평가 — ApoB, Lp(a), Homocysteine을 알면 진짜 위험이 보입니다">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/advanced-lipid-biomarkers/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Advanced Lipid Biomarkers — Gwanggyo Barun Internal Medicine", "description": "LDL-C만으로 부족한 심혈관 위험 평가 — ApoB, Lp(a), Homocysteine을 알면 진짜 위험이 보입니다", "url": "https://edu.gwanggyobarun.com/decks/endocrine/advanced-lipid-biomarkers/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
@@ -362,502 +116,279 @@
       <span class="slide__page">광교바른내과 일반내과</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — 8-23% LDL-C/ApoB discordance
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">LDL-C가 정상이어도 위험할 수 있습니다</h2>
-      <p class="slide__subtitle">전체 인구의 8~23%에서 LDL-C(콜레스테롤 양)와 ApoB(입자 수)가 일치하지 않습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="hero-lead">
-            <div class="pattern-hero-number__value"><em>8&ndash;23</em>%</div>
-            <div class="pattern-hero-number__caption">LDL-C와 ApoB의 불일치(discordance) 발생 비율 — 같은 LDL-C 수치라도 입자 수(ApoB)가 다르면 심혈관 위험은 크게 달라집니다.</div>
-          </div>
-          <div class="hero-note">특히 <strong>당뇨·대사증후군·비만·고중성지방</strong> 환자에서 불일치가 흔합니다 — LDL-C가 정상이어도 ApoB 추가 확인이 권고되는 이유입니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why beyond LDL-C matters</div>
-          <div class="pattern-hero-number__detail-text">
-            UK Biobank 29만 명 연구에서 ASCVD(죽상경화성 심혈관질환) 위험은 LDL-C가 아닌 <em>ApoB(입자 수)</em>를 따랐습니다. 당뇨·비만·고중성지방 환자는 LDL-C가 낮아도 ApoB가 높을 수 있어, 추가 바이오마커 검사가 위험을 정확히 가늠하는 열쇠가 됩니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — UK Biobank (n=290,000) · 2026 ACC/AHA Lipid Guideline</span>
-      <span class="slide__page">02 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — Why traditional LDL alone misses CV risk
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHY ADVANCED PANEL</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">기존 LDL-C 검사의 한계</h2>
-      <p class="slide__subtitle">택배 비유로 이해하는 콜레스테롤 양(LDL-C) vs 입자 수(ApoB)</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">LDL-C는 <em>택배 상자 안 내용물의 무게</em>를 잰 값이고, ApoB는 <em>혈관에 들어가는 택배 상자의 개수</em>를 직접 센 값입니다.</p>
-          <p class="pattern-split__supporting">
-            상자가 많으면 그만큼 혈관벽에 부딪혀 침투할 확률이 높아져 동맥경화로 이어집니다. 특히 <strong>small dense LDL(작고 많은 입자)</strong>은 같은 LDL-C 수치에서도 위험을 크게 높입니다. 당뇨·대사증후군·비만 환자에서 자주 관찰되며, 전통적 LDL-C 검사로는 찾아낼 수 없습니다. hsCRP(혈관 염증 지표)와 CIMT(경동맥 내중막 두께)도 함께 보면 위험 평가가 더 정확해집니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Discordance prevalence</div>
-            <div class="pattern-split__metric-value">8 &ndash; 23%</div>
-            <div class="pattern-split__metric-detail">LDL-C와 ApoB가 일치하지 않는 비율 — 위험 평가를 놓칠 수 있는 구간.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">UK Biobank cohort</div>
-            <div class="pattern-split__metric-value">29만명</div>
-            <div class="pattern-split__metric-detail">ASCVD 위험은 LDL-C가 아닌 ApoB를 따랐습니다 — 입자 수가 진짜 지표.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — UK Biobank Lancet 2021 · 2026 ACC/AHA Beyond LDL-C</span>
-      <span class="slide__page">03 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 3×2 — ApoB (Apolipoprotein B) explained
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>APO B</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">ApoB (Apolipoprotein B) — 나쁜 콜레스테롤 입자 수</h2>
-      <p class="slide__subtitle">모든 죽상경화 유발 지단백 1개당 ApoB 1개가 결합 — 가장 정확한 입자 수 지표</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">CONCEPT · 01</div>
-          <div class="tile__title">입자 수의 직접 측정</div>
-          <div class="tile__body">LDL·VLDL·IDL·Lp(a) — 모든 죽상경화 유발 지단백마다 ApoB 1분자가 표면에 박혀 있습니다. 따라서 ApoB 수치가 곧 위험 입자의 총 개수입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CONCEPT · 02</div>
-          <div class="tile__title">small dense LDL을 잡아냅니다</div>
-          <div class="tile__body">크기가 작고 수가 많은 LDL은 LDL-C 검사에서는 정상으로 보일 수 있으나, 혈관벽 침투율이 높아 가장 위험합니다. ApoB는 이를 직접 반영합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CONCEPT · 03</div>
-          <div class="tile__title">공복 불필요·검사 편의</div>
-          <div class="tile__body">ApoB는 식사 영향을 거의 받지 않아 공복 채혈 없이 측정 가능합니다. LDL-C가 정확하지 않은 고중성지방 환자에서 더 신뢰할 수 있는 지표입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">WHO NEEDS · 04</div>
-          <div class="tile__title">당뇨병·대사증후군 환자</div>
-          <div class="tile__body">인슐린 저항성으로 small dense LDL이 흔히 동반되어 LDL-C로는 위험이 과소평가될 수 있습니다. ApoB 추가 검사가 강력히 권고됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">WHO NEEDS · 05</div>
-          <div class="tile__title">고중성지방·비만 환자</div>
-          <div class="tile__body">중성지방이 높을 때 LDL-C 계산이 부정확하고, VLDL 입자가 함께 늘어나 ApoB가 더 정확한 위험 평가 도구입니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">WHO NEEDS · 06</div>
-          <div class="tile__title">가족성 고콜레스테롤혈증(FH)</div>
-          <div class="tile__body">유전적으로 ApoB 입자가 매우 많아 조기 ASCVD 위험이 큽니다. ApoB는 가족 검사·치료 효과 평가의 핵심 지표로 활용됩니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s04-risk-lipid-969f1aca-20260530-raster-20260531.jpg" alt="ApoB (Apolipoprotein B) — 나쁜 콜레스테롤 입자 수 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 2026 ACC/AHA Lipid Guideline · ESC/EAS 2024 ApoB Position</span>
-      <span class="slide__page">04 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 3×2 — ApoB targets by risk + drug effects
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>APO B TARGETS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">위험도별 ApoB 목표와 약물 효과</h2>
-      <p class="slide__subtitle">위험이 높을수록 더 낮은 목표 — 약물 조합으로 단계적으로 도달합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">RISK · 01 · 초고위험</div>
-          <div class="tile__title">ApoB &lt; 55~65 mg/dL</div>
-          <div class="tile__body">관상동맥질환·뇌졸중·말초동맥질환 병력. 이미 심혈관 사건을 겪은 분으로, 가장 적극적인 ApoB 감소가 필요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 02 · 고위험</div>
-          <div class="tile__title">ApoB &lt; 70~80 mg/dL</div>
-          <div class="tile__body">당뇨병 또는 주요 위험인자(고혈압·흡연·가족력) 다수 동반. 이차 예방에 가까운 강도의 치료가 권고됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 03 · 중위험</div>
-          <div class="tile__title">ApoB &lt; 90~100 mg/dL</div>
-          <div class="tile__body">위험인자 2개 이상이 있는 분. 생활습관 교정과 함께 약물 치료 시작 여부를 의사와 상의합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 04</div>
-          <div class="tile__title">고강도 스타틴</div>
-          <div class="tile__body">ApoB를 약 <strong>50%</strong> 감소시킵니다. 1차 치료로 권고되며, 대부분의 중·고위험 환자에서 첫 선택입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 05</div>
-          <div class="tile__title">+ 에제티미브 (Ezetimibe)</div>
-          <div class="tile__body">스타틴에 추가 시 ApoB가 약 <strong>65%</strong> 감소. 스타틴 단독으로 목표 미달인 환자에게 안전한 추가 옵션입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 06</div>
-          <div class="tile__title">+ PCSK9 억제제</div>
-          <div class="tile__body">ApoB가 약 <strong>85%</strong>까지 감소. 초고위험·가족성 고콜레스테롤혈증 또는 스타틴 불내성 환자에게 강력한 무기입니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 2026 ACC/AHA Cholesterol Guideline · KSLA 2022</span>
-      <span class="slide__page">05 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 3×2 — Lp(a) characteristics & mechanisms
-       1 alert tile for high-risk Lp(a) ≥50 mg/dL highlight
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>LIPOPROTEIN(a)</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">지질단백질(a) (Lp(a)) — 유전적 심혈관 위험인자</h2>
-      <p class="slide__subtitle">90% 이상이 유전으로 결정 — 식이·운동으로 변하지 않으며 평생 1회 검사로 충분합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">MECHANISM · 01</div>
-          <div class="tile__title">죽상경화 촉진</div>
-          <div class="tile__body">동맥 내벽에 침투해 oxidized phospholipid(산화 인지질)를 운반 → 혈관벽 손상을 가속합니다. LDL보다 입자당 약 6배 강력한 죽상경화 유발능을 보입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">MECHANISM · 02</div>
-          <div class="tile__title">혈전 형성 촉진</div>
-          <div class="tile__body">plasminogen(혈전 분해 단백)과 구조가 비슷해 혈전 분해를 방해합니다 → 심근경색·뇌졸중에서 혈전 위험이 추가로 증가합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">MECHANISM · 03</div>
-          <div class="tile__title">대동맥판막 석회화</div>
-          <div class="tile__body">혈관·판막 세포의 염증·석회화 유전자를 활성화 → 대동맥판막 협착의 가장 강력한 유전적 위험인자로 보고됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACT · 04</div>
-          <div class="tile__title">90% 유전 결정 · 평생 안정</div>
-          <div class="tile__body">약 5세에 이미 성인 수준에 도달하고 평생 거의 변하지 않습니다. 따라서 <strong>전 성인 1회 검사</strong>로 충분합니다(2026 ACC/AHA Class I 권고).</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACT · 05 · 한국인</div>
-          <div class="tile__title">한국인 12.8% 고위험</div>
-          <div class="tile__body">강북삼성 27만명 코호트에서 중앙값 18.5 mg/dL, 약 12.8%가 ≥50 mg/dL로 고위험에 해당. 가족 cascade 검사가 권고됩니다.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">ALERT · 06 · HIGH RISK</div>
-          <div class="tile__title">Lp(a) &gt; 50 mg/dL</div>
-          <div class="tile__body">심혈관 사망 HR <strong>1.83배</strong>, ≥100 mg/dL이면 <strong>2.45배</strong>. 다른 위험인자(LDL-C·혈압·혈당·금연)를 더 적극적으로 관리해야 합니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s06-risk-lipid-2ca74aa8-20260530-raster-20260531.jpg" alt="지질단백질(a) (Lp(a)) — 유전적 심혈관 위험인자 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 2026 ACC/AHA Lp(a) Class I · 강북삼성 코호트(n=270,000)</span>
-      <span class="slide__page">06 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · RISK TABLE — Lp(a) risk classification (4 tiers)
-       1 alert row for high-risk Lp(a) ≥50 mg/dL category
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>LP(A) RISK TIERS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Lp(a) 수치별 위험 분류</h2>
-      <p class="slide__subtitle">≥50 mg/dL부터 고위험, ≥100 mg/dL은 ASCVD 위험이 2배 이상으로 급증합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus slide__body--risk-tiers">
-      <div class="pattern-risk-table">
-        <div class="risk-row risk-row--head">
-          <div class="risk-row__class">위험 분류</div>
-          <div class="risk-row__nmol">nmol/L</div>
-          <div class="risk-row__mg">mg/dL</div>
-          <div class="risk-row__meaning">임상적 의미와 권고</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-row__class">저위험</div>
-          <div class="risk-row__nmol">&lt; 75</div>
-          <div class="risk-row__mg">&lt; 30</div>
-          <div class="risk-row__meaning">추가 조치 불필요. 일반 LDL-C 관리만으로 충분합니다.</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-row__class">회색지대</div>
-          <div class="risk-row__nmol">75~125</div>
-          <div class="risk-row__mg">30~50</div>
-          <div class="risk-row__meaning">다른 위험인자(LDL-C, 혈압, 혈당, 가족력)를 함께 고려해 치료 강도 결정.</div>
-        </div>
-        <div class="risk-row risk-row--alert">
-          <div class="risk-row__class">고위험</div>
-          <div class="risk-row__nmol">&ge; 125</div>
-          <div class="risk-row__mg">&ge; 50</div>
-          <div class="risk-row__meaning">ASCVD 위험 약 1.4배. LDL-C 목표를 더 엄격히 적용하고 가족 cascade 검사 권고.</div>
-        </div>
-        <div class="risk-row risk-row--alert">
-          <div class="risk-row__class">초고위험</div>
-          <div class="risk-row__nmol">&ge; 250</div>
-          <div class="risk-row__mg">&ge; 100</div>
-          <div class="risk-row__meaning">ASCVD 위험 2배 이상. 심혈관 사망 HR 2.45 — 신약 임상시험 대상으로 고려됩니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s07-risk-lipid-9177cd64-20260530-raster-20260531.jpg" alt="Lp(a) 수치별 위험 분류 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 2026 ACC/AHA Lp(a) Class I · ESC/EAS 2022 Risk Tiers</span>
-      <span class="slide__page">07 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · DENSITY GRID 3×2 — Homocysteine & MTHFR (Korean context)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>HOMOCYSTEINE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">호모시스테인 (Homocysteine) — 한국인의 뇌졸중 연관 인자</h2>
-      <p class="slide__subtitle">심근경색 예방 효과는 미입증, 뇌졸중에서만 의미 있는 감소 효과가 확인되었습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">FACT · 01</div>
-          <div class="tile__title">5 µmol/L 상승당 뇌졸중 60% ↑</div>
-          <div class="tile__body">관상동맥질환은 20~30% 증가하고, 뇌졸중은 60% 증가하는 강한 역학적 연관이 있습니다. 내피세포 손상·혈전 촉진이 가설입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACT · 02</div>
-          <div class="tile__title">RCT 결과 — 뇌졸중에만 효과</div>
-          <div class="tile__body">대규모 RCT에서 심근경색·전체 사망에는 효과 없으나, 뇌졸중은 10~25% 감소했습니다(HOPE-2, CSPPT, Cochrane 71,422명).</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACT · 03</div>
-          <div class="tile__title">CSPPT (n=20,702) — 양성</div>
-          <div class="tile__body">중국 고혈압 환자에서 엽산 보충이 <strong>뇌졸중 21%&nbsp;↓</strong>. 곡물 엽산 강화 미시행 인구에서 효과가 확인되었습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">KOREA · 04</div>
-          <div class="tile__title">한국인 MTHFR TT 14~18%</div>
-          <div class="tile__body">엽산 대사 효소 변이(MTHFR C677T TT 유전형)가 한국인의 14~18%에서 발견되어, 호모시스테인 상승에 더 취약합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">KOREA · 05</div>
-          <div class="tile__title">곡물 엽산 강화 미시행</div>
-          <div class="tile__body">미국·캐나다는 1998년부터 의무 강화로 baseline 엽산이 충분하나, 한국은 미시행 + 평균 섭취량 318 µgDFE로 권장량 미달 상태입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">KOREA · 06</div>
-          <div class="tile__title">엽산 보충 — 누구에게?</div>
-          <div class="tile__body">고혈압 + 호모시스테인 상승 + 엽산 섭취 부족 환자에서 뇌졸중 예방 목적으로 고려할 수 있습니다. 일상적 단독 보충은 비권고.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — HOPE-2 · CSPPT · Cochrane Review (n=71,422)</span>
-      <span class="slide__page">08 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · COMPARISON — ApoB vs Lp(a) clinical positioning
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>HOW TO USE EACH</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">ApoB vs Lp(a) — 임상적 위치 비교</h2>
-      <p class="slide__subtitle">두 바이오마커는 역할이 다릅니다 — 함께 활용하면 위험 평가가 더 정확합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            ApoB &mdash; "더 나은 LDL-C"
-          </div>
-          <ul class="compare-col__list">
-            <li>LDL-C보다 정확한 위험 예측 지표</li>
-            <li>당뇨·대사증후군·고중성지방에서 특히 유용</li>
-            <li>스타틴·에제티미브·PCSK9i로 효과적 감소</li>
-            <li>비용 저렴, 공복 채혈 불필요</li>
-            <li>치료 시작/변경 후 8~12주에 재검 추적</li>
-            <li>이차 치료 목표(secondary target)로 권고</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">!</span>
-            Lp(a) &mdash; "유전적 위험인자"
-          </div>
-          <ul class="compare-col__list">
-            <li>90% 이상 유전적으로 결정, 평생 일정</li>
-            <li>전 성인 1회 검사가 Class I 권고 (2026)</li>
-            <li>현재 Lp(a) 특이 승인 치료제 없음</li>
-            <li>혁신 신약 4종 Phase 3 진행 중 (2026~2028 결과)</li>
-            <li>가족 cascade 검사 권고 (1차 친족)</li>
-            <li>≥50 mg/dL → 다른 위험인자 적극 관리</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 2026 ACC/AHA Lipid Guideline · ESC/EAS 2022</span>
-      <span class="slide__page">09 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · CHECKLIST — Today's 8 essentials
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">진료 시 주치의와 상의해 추가 검사·치료 강도를 함께 결정하세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">LDL-C와 ApoB는 다릅니다 — <strong>입자 수(ApoB)</strong>가 진짜 위험을 보여줍니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">당뇨·비만·고중성지방이 있다면 <strong>ApoB 추가 검사</strong>를 고려하세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">Lp(a) 검사는 <strong>평생 1회</strong> — 아직 안 받았다면 주치의와 상의</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">Lp(a) ≥ 50 mg/dL → LDL-C·혈압·혈당 <strong>더 엄격히</strong> 관리</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">Lp(a) 높으면 부모·형제·자녀 <strong>가족 cascade 검사</strong> 권유</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">호모시스테인 단독 보충 ≠ 심장 예방 — <strong>뇌졸중에만</strong> 의미</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">엽산 풍부한 음식 (시금치·깻잎·브로콜리·콩류) <strong>식이로 보강</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">ApoB 목표 도달 여부 — 치료 후 <strong>8~12주에 재검</strong>으로 확인</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — beyond LDL-C, sharper risk assessment</span>
-      <span class="slide__page">10 / 11</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">고급 지질 바이오마커로<br><em>나의 심혈관 위험을 더 정확하게</em></h2>
-      <p class="slide__subtitle">ApoB · Lp(a) · Homocysteine — 궁금한 점은 진료 시 편하게 말씀해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 결론 먼저</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">먼저 결론 — 콜레스테롤 수치 너머 세 가지</h2>
+  <p class="v2-sub">보통 피검사의 LDL 수치만으로는 놓치는 위험이 있습니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M25.0001 14.3333C25.0001 14.7874 24.6299 15.441 23.4859 16.0402C22.3892 16.6147 20.8049 17 19.0001 17C17.1954 17 15.611 16.6147 14.5144 16.0402C13.3703 15.441 13.0001 14.7874 13.0001 14.3333C13.0001 13.9367 13.274 13.3911 14.1358 12.8445L13.0645 11.1555C11.9273 11.8769 11.0001 12.9571 11.0001 14.3333C11.0001 15.9043 12.1969 17.0841 13.5864 17.8119C15.0232 18.5645 16.9389 19 19.0001 19C21.0613 19 22.977 18.5645 24.4139 17.8119C25.8033 17.0841 27.0001 15.9043 27.0001 14.3333C27.0001 12.9571 26.073 11.8769 24.9357 11.1555L23.8645 12.8445C24.7263 13.3911 25.0001 13.9367 25.0001 14.3333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.00012 15.5C6.00012 18.4759 7.87252 21.1321 10.8034 22.874C6.32904 25.5355 4.29161 30.3908 6.25181 33.786C8.23323 37.2179 13.549 37.8584 18.1249 35.2165C22.5586 32.6566 24.6709 27.9545 22.9955 24.5429C28.2204 23.311 32.0001 19.7281 32.0001 15.5C32.0001 10.2533 26.1798 6 19.0001 6C11.8204 6 6.00012 10.2533 6.00012 15.5ZM27.0125 20.6027C28.9891 19.1582 30.0001 17.3301 30.0001 15.5C30.0001 13.6699 28.9891 11.8418 27.0125 10.3973C25.0373 8.95388 22.211 8 19.0001 8C15.7892 8 12.9629 8.95388 10.9878 10.3973C9.0111 11.8418 8.00012 13.6699 8.00012 15.5C8.00012 17.3301 9.0111 19.1582 10.9878 20.6027C12.9629 22.0461 15.7892 23 19.0001 23C22.211 23 25.0373 22.0461 27.0125 20.6027ZM16.5658 24.8337C17.2795 24.9325 18.0138 24.9887 18.7636 24.9984C18.9612 25.1841 19.1359 25.4005 19.2802 25.6504C19.9239 26.7654 19.6897 28.0595 19.1126 29.1193C18.5258 30.1968 17.5099 31.2027 16.2331 31.9399C14.9563 32.677 13.5773 33.0539 12.3507 33.0233C11.1443 32.9932 9.90645 32.5489 9.26273 31.434C8.70025 30.4597 8.80992 29.3401 9.22847 28.3775L11.0626 29.175C10.8035 29.7708 10.8506 30.1842 10.9948 30.434C11.1583 30.7172 11.5787 31.0034 12.4006 31.0239C13.2024 31.0439 14.2219 30.7916 15.2331 30.2078C16.2443 29.624 16.9725 28.8672 17.3561 28.1628C17.7493 27.4408 17.7116 26.9336 17.5481 26.6504C17.4039 26.4006 17.0695 26.1532 16.4239 26.0796L16.5658 24.8337Z" fill="currentColor"/>
+<path d="M35.8355 24.7644C38.2305 25.4061 40.5622 24.4702 41.0435 22.6739C41.5248 20.8777 39.9734 18.9013 37.5784 18.2596C35.1835 17.6179 32.8518 18.5538 32.3705 20.35C31.8892 22.1463 33.4405 24.1226 35.8355 24.7644Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42.2452 36.457C41.1739 40.4552 35.9838 42.5385 30.6528 41.11C25.3218 39.6816 21.8687 35.2824 22.94 31.2842C24.0113 27.286 29.2014 25.2027 34.5324 26.6311C39.8634 28.0596 43.3165 32.4588 42.2452 36.457ZM35.3073 35.3754C36.1393 35.1301 36.5027 34.7196 36.5966 34.369C36.6794 34.06 36.6077 33.616 36.1797 33.0778L37.7449 31.8328C38.4219 32.6839 38.8278 33.7696 38.5285 34.8866C38.186 36.1649 37.0739 36.9396 35.873 37.2938C34.6528 37.6535 33.168 37.6467 31.6872 37.2499C30.2063 36.8531 28.917 36.1166 28.0402 35.195C27.1773 34.2879 26.6015 33.0609 26.944 31.7826C27.2433 30.6656 28.1377 29.9283 29.1495 29.5297L29.8826 31.3905C29.2428 31.6425 28.9587 31.9912 28.8759 32.3002C28.7819 32.6508 28.8914 33.1881 29.4893 33.8165C30.0732 34.4303 31.0202 35.0007 32.2048 35.3181C33.3894 35.6355 34.4947 35.615 35.3073 35.3754Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">ApoB — 나쁜 입자의 ‘개수’</div>
+    <div class="v2-body">LDL 수치가 정상이어도 입자 개수가 많으면 위험할 수 있습니다. 당뇨·비만·중성지방이 높은 분에게 특히 쓸모가 있습니다.</div>
+    <div class="q-card__k">LDL 정상이어도 한 번 더 확인</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35 9.22967V6H33V9H15V6H13V9.22967C13 14.6524 15.5895 19.6466 19.8037 22.7875C20.4275 22.3933 21.0782 22.0334 21.7536 21.7107C19.8831 20.4891 18.329 18.8727 17.1851 17H30.8149C29.2395 19.5789 26.8863 21.6719 24 22.9172C23.9947 22.9194 23.9894 22.9217 23.9841 22.924C23.8665 22.9746 23.748 23.0238 23.6286 23.0715C22.9531 23.3417 22.302 23.6524 21.6777 24C16.8813 26.6708 13.6672 31.5245 13.0925 37H13V38.7703V39V42H15V39H33V42H35V39V38.7703V37H34.9075C34.4113 32.2723 31.9474 28.0082 28.1963 25.2125C27.5725 25.6067 26.9218 25.9666 26.2464 26.2893C28.1169 27.5109 29.671 29.1273 30.8149 31H17.1851C18.7605 28.4211 21.1137 26.3281 24 25.0828C24.0053 25.0806 24.0106 25.0783 24.0159 25.076C24.1335 25.0254 24.252 24.9762 24.3714 24.9285C25.0469 24.6583 25.698 24.3476 26.3223 24C31.63 21.0445 35 15.4159 35 9.22967ZM31.8385 33H16.1615C15.6308 34.2636 15.2711 35.608 15.1051 37H32.8949C32.7289 35.608 32.3692 34.2636 31.8385 33ZM16.1615 15H31.8385C32.3692 13.7364 32.7289 12.392 32.8949 11H15.1051C15.2711 12.392 15.6308 13.7364 16.1615 15Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">Lp(a) — 타고나는 위험</div>
+    <div class="v2-body">대부분 유전으로 정해지고 평생 거의 변하지 않습니다. 그래서 <b>평생 한 번</b> 재 보면 됩니다.</div>
+    <div class="q-card__k">아직 안 쟀다면 주치의와 상의</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.9645 9.16263C21.8055 8.05919 20.1386 7.51048 17.9672 8.04371C17.5014 7.41474 16.8092 6.77117 15.8899 6.37651C14.5542 5.8031 12.8769 5.815 10.9856 6.90161C9.0077 7.82463 8.05482 9.18247 7.79227 10.6063C7.61382 11.5741 7.76893 12.4919 8.02385 13.2165C6.34565 14.6843 5.84115 16.36 6.08212 17.9391C6.29052 19.3048 7.03706 20.472 7.76902 21.2642C7.64293 21.8429 7.62641 22.4092 7.73113 22.9423C8.04139 22.7211 8.18808 22.6205 8.52484 22.4831C9.07459 22.2587 9.52484 22.2333 10.0248 22.2333C11.5998 22.2333 12.511 22.4158 14.0129 22.8327C14.8986 23.0786 15.6186 23.3808 16.2798 23.7481C16.335 23.7787 16.3898 23.8098 16.4442 23.8414L16.7282 23.7186C17.0853 23.5642 17.4796 23.5173 17.863 23.5834L21.3761 24.1897C21.3246 23.916 21.2818 23.6403 21.2475 23.3687C21.1866 22.8868 21.1523 22.4175 21.1433 21.9934C21.115 20.6556 21.3701 19.3269 21.892 18.0946C22.4139 16.8622 23.1908 15.7541 24.1717 14.8428C24.4339 14.5992 24.7092 14.3711 24.9959 14.1595C25.2316 13.9856 25.475 13.8227 25.7254 13.6715C25.8698 13.5842 26.0165 13.5008 26.1654 13.4214C25.7816 13.0105 25.2933 12.6855 24.7267 12.4487C24.4961 11.3958 23.966 10.1161 22.9645 9.16263ZM13.1391 10.2801C13.6341 10.0356 14.2339 10.2383 14.4787 10.7328L15.2704 12.3325L16.8829 10.6061C17.2597 10.2027 17.8925 10.1808 18.2963 10.5572C18.7001 10.9336 18.722 11.5657 18.3452 11.9691L16.2179 14.2467L17.0206 15.8684L18.352 14.6585C18.7605 14.2872 19.393 14.3171 19.7646 14.7252C20.1362 15.1333 20.1063 15.7651 19.6978 16.1364L17.9427 17.7314L18.9987 19.865C19.2435 20.3596 19.0406 20.9587 18.5455 21.2032C18.0505 21.4478 17.4507 21.2451 17.2059 20.7505L16.1106 18.5376L14.1466 18.9347C13.6053 19.0441 13.0777 18.6945 12.9681 18.1537C12.8586 17.613 13.2086 17.0859 13.7499 16.9765L15.1935 16.6846L14.3982 15.0778L11.359 15.5351C10.8128 15.6173 10.3034 15.2416 10.2212 14.696C10.1389 14.1505 10.515 13.6416 11.0611 13.5594L13.4674 13.1974L12.6859 11.6184C12.4411 11.1238 12.644 10.5246 13.1391 10.2801Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.1363 24.6951C23.9386 24.6562 23.7677 24.623 23.6285 24.5961C23.4483 24.1014 23.3154 23.5918 23.2338 23.0733L23.2187 23.0121C23.1167 22.5961 23.0488 22.2287 23.0429 21.9532C23.0202 20.883 23.2243 19.82 23.6418 18.8341C24.0594 17.8482 24.6809 16.9617 25.4656 16.2327C25.5272 16.1755 25.5897 16.1255 25.653 16.0818C27.6684 14.2827 30.4862 13.969 32.6678 15.7554C32.6426 13.3026 33.6388 10.907 36.0482 9.51735L36.8927 10.9786C34.852 12.1556 34.0931 14.3584 34.431 16.7135C39.086 15.1835 42.709 19.5865 41.3494 24.6555C40.9207 26.2537 40.0143 27.6088 38.8016 28.6326C38.6055 28.5638 38.402 28.4927 38.1925 28.42C36.3851 27.7926 34.1097 27.0345 32.2913 26.5327C30.5241 26.0452 28.2486 25.5404 26.4286 25.1598C25.5156 24.9689 24.7119 24.8082 24.1363 24.6951ZM37.5538 19.9861C38.096 19.8811 38.6207 20.2352 38.7258 20.7768C39.0901 22.6554 38.4106 24.5203 36.9228 25.7254C36.4938 26.0729 35.8641 26.0072 35.5162 25.5786C35.1684 25.1501 35.2342 24.521 35.6632 24.1735C36.5773 23.4331 36.9861 22.311 36.7623 21.1568C36.6572 20.6152 37.0116 20.091 37.5538 19.9861Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.2356 41.9984C13.2354 41.8312 15.0922 40.9782 16.2365 39.7291C16.6912 40.3391 17.4545 40.6927 18.2797 40.5629C19.1258 40.4298 20.1689 40.255 21.3779 40.0319V35.3473H23.6072V39.6011C26.4277 39.0317 29.8589 38.2479 33.6392 37.1948V34.2338H35.8685V36.5536C37.3921 36.1013 38.9612 35.6065 40.5601 35.0658C42.48 34.4166 42.48 31.8239 40.5601 31.1747C36.4875 29.7976 32.6087 28.7178 29.1805 27.8817V34.2338L26.9512 34.2338L26.9512 27.3568C23.2611 26.5188 20.241 25.9862 18.2797 25.6776C17.4544 25.5478 16.6911 25.9015 16.2365 26.5115C15.0922 25.2624 13.2353 24.4094 10.2356 24.2423C9.62092 24.208 9.11458 24.7124 9.12342 25.3273C9.14947 27.1402 9.25973 28.5801 9.63771 29.7034C8.41338 30.167 7.25745 31.1032 6.2022 32.512C5.9326 32.8719 5.9326 33.3687 6.2022 33.7286C7.24888 35.126 8.39461 36.0584 9.60789 36.5259C9.28585 37.6167 9.15814 39.0452 9.12544 40.9104C9.11467 41.5253 9.62092 42.0326 10.2356 41.9984ZM12.4346 31.0259L10.4279 31.7858C9.87237 31.9962 9.24764 32.4074 8.58864 33.1203C9.24067 33.8257 9.85918 34.2358 10.4101 34.448L12.3275 35.1868L11.7462 37.1558C11.5747 37.7367 11.4602 38.5299 11.3992 39.6442C13.5484 39.3131 14.4568 38.5174 14.9264 37.792C15.6014 36.7492 15.8044 35.2273 15.8044 33.1203C15.8044 31.0133 15.6014 29.4915 14.9264 28.4487C14.4563 27.7226 13.5467 26.926 11.393 26.5955C11.4498 27.6754 11.5623 28.4334 11.7508 28.9938L12.4346 31.0259Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">호모시스테인 — 뇌졸중과 관련</div>
+    <div class="v2-body">엽산 보충은 뇌졸중을 줄였다는 연구가 있지만, 심근경색 예방 효과는 확인되지 않았습니다.</div>
+    <div class="q-card__k">엽산 보충제 단독은 권하지 않음</div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 세 검사 모두 ‘치료할지·얼마나 세게 할지’를 정할 때 도움을 주는 추가 정보입니다.</span><span class="v2-src">근거 · 2026 ACC/AHA 지질 지침 · HOPE-2·CSPPT</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · ApoB</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">LDL 수치와 입자 개수는 다를 수 있습니다</h2>
+  <p class="v2-sub">택배로 비유하면 — LDL은 짐의 무게, ApoB는 상자의 개수입니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:470px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.9896 29.0025C33.3205 28.9646 31.2731 29.3354 27.378 30.9258L26.622 29.0742C30.7491 27.389 33.0599 26.9618 37.0103 27.0027L36.9896 29.0025Z" fill="currentColor"/>
+<path d="M27.378 26.9258C31.2731 25.3354 33.3205 24.9646 36.9896 25.0025L37.0103 23.0027C33.0599 22.9618 30.7491 23.389 26.622 25.0742L27.378 26.9258Z" fill="currentColor"/>
+<path d="M36.9896 21.0025C33.3205 20.9646 31.2731 21.3354 27.378 22.9258L26.622 21.0742C30.7491 19.389 33.0599 18.9618 37.0103 19.0027L36.9896 21.0025Z" fill="currentColor"/>
+<path d="M34.5 16V13H36.5V16H34.5Z" fill="currentColor"/>
+<path d="M31 14V17H33V14H31Z" fill="currentColor"/>
+<path d="M27.5 18V15H29.5V18H27.5Z" fill="currentColor"/>
+<path d="M11.0104 29.0025C14.6795 28.9646 16.7269 29.3354 20.622 30.9258L21.378 29.0742C17.2509 27.389 14.9401 26.9618 10.9896 27.0027L11.0104 29.0025Z" fill="currentColor"/>
+<path d="M20.622 26.9258C16.7269 25.3354 14.6795 24.9646 11.0104 25.0025L10.9896 23.0027C14.9401 22.9618 17.2509 23.389 21.378 25.0742L20.622 26.9258Z" fill="currentColor"/>
+<path d="M11.0104 21.0025C14.6795 20.9646 16.7269 21.3354 20.622 22.9258L21.378 21.0742C17.2509 19.389 14.9401 18.9618 10.9896 19.0027L11.0104 21.0025Z" fill="currentColor"/>
+<path d="M13.5 16V13H11.5V16H13.5Z" fill="currentColor"/>
+<path d="M17 14V17H15V14H17Z" fill="currentColor"/>
+<path d="M20.5 18V15H18.5V18H20.5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 10.9838C42.4057 11.073 42.8198 11.1686 43.2434 11.2707C43.6888 11.378 44 11.7783 44 12.2365V37.7749C44 38.4077 43.4173 38.8804 42.7957 38.7618C36.5832 37.5766 32.3951 37.4936 26.6742 38.3611C26.1781 39.3339 25.1669 40 24 40C22.8331 40 21.8219 39.3339 21.3258 38.3611C15.6049 37.4936 11.4168 37.5766 5.20425 38.7618C4.58268 38.8804 4 38.4077 4 37.7749V12.2365C4 11.7783 4.31119 11.378 4.75659 11.2707C5.18022 11.1686 5.59433 11.073 6 10.9838V10.524C6 9.63895 6.589 8.83011 7.48401 8.60493C13.6344 7.0576 18.1123 8.69563 23.2406 11.0814C23.4904 11.1326 23.7435 11.1855 24 11.2401C24.2565 11.1855 24.5096 11.1326 24.7594 11.0814C29.8877 8.69563 34.3656 7.0576 40.516 8.60493C41.411 8.83011 42 9.63895 42 10.524V10.9838ZM40 33.9681L40 33.967V10.5375C34.3416 9.12233 30.3169 10.6723 25 13.1762V36.4187L25.0028 36.4209C25.0034 36.4213 25.0041 36.4217 25.0047 36.4221C25.009 36.4244 25.0125 36.4251 25.0139 36.4252L25.015 36.4252L25.0173 36.4246C25.0186 36.4242 25.0204 36.4236 25.0227 36.4225C29.9319 34.2006 34.2143 32.9404 39.9457 33.9865C39.9564 33.9884 39.9645 33.9877 39.9714 33.9859C39.9795 33.9838 39.9871 33.9798 39.9932 33.9749C39.997 33.9719 39.999 33.9694 40 33.9681ZM22.9972 36.4209L23 36.4189V13.1772C17.6831 10.6732 13.6584 9.12233 8 10.5375V33.967L8.00001 33.9681C8.00095 33.9694 8.003 33.9719 8.00678 33.9749C8.01286 33.9798 8.02054 33.9838 8.02856 33.9859C8.03554 33.9877 8.04358 33.9884 8.05429 33.9865C13.7857 32.9404 18.0681 34.2006 22.9773 36.4225C22.9823 36.4248 22.9847 36.4252 22.985 36.4252L22.9861 36.4252C22.9877 36.4251 22.9921 36.4242 22.9972 36.4209Z" fill="currentColor"/>
+</svg></div><b>무게와 개수</b></div><div class="v2-body">LDL 수치는 상자 속 콜레스테롤의 <b>양</b>이고, ApoB는 혈관을 도는 상자의 <b>개수</b>를 직접 센 값입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.9996 6V25.3798L15.0743 23.36L15.166 23.3499L14.2005 14.5931L12.2125 14.8123L12.9968 21.9255L6.37998 17.3567L4.87305 23.3844L9.29292 26.8736L5.23806 27.8952L5.72665 29.8346L11.2735 28.4371L17.6221 33.4489L17.6283 33.4537C17.8607 33.6313 17.9996 33.9105 17.9996 34.2095V42H27.9996V27.1135C27.9996 26.7783 28.1896 26.455 28.519 26.2841L33.67 23.6112L41.2632 25.4582L41.736 23.5148L36.2978 22.192L42.2777 18.9437L40.0094 13.651L32.4333 17.2479L33.4762 12.5124L31.523 12.0822L30.143 18.3481L27.9996 19.4295V6H17.9996ZM23.2265 8.84951C23.5179 9.31868 23.3738 9.93522 22.9046 10.2266C22.4354 10.518 21.8189 10.3738 21.5275 9.90467C21.2361 9.4355 21.3803 8.81896 21.8494 8.52759C22.3186 8.23621 22.9352 8.38034 23.2265 8.84951ZM24.9046 14.2266C25.3738 13.9352 25.5179 13.3187 25.2265 12.8495C24.9352 12.3803 24.3186 12.2362 23.8494 12.5276C23.3803 12.819 23.2361 13.4355 23.5275 13.9047C23.8189 14.3738 24.4354 14.518 24.9046 14.2266ZM22.9046 23.2266C23.3738 22.9352 23.5179 22.3187 23.2265 21.8495C22.9352 21.3803 22.3186 21.2362 21.8494 21.5276C21.3803 21.819 21.2361 22.4355 21.5275 22.9047C21.8189 23.3738 22.4354 23.518 22.9046 23.2266ZM24.2265 28.8495C24.5179 29.3187 24.3738 29.9352 23.9046 30.2266C23.4354 30.518 22.8189 30.3738 22.5275 29.9047C22.2361 29.4355 22.3803 28.819 22.8494 28.5276C23.3186 28.2362 23.9352 28.3803 24.2265 28.8495ZM22.9046 39.2266C23.3738 38.9352 23.5179 38.3187 23.2265 37.8495C22.9352 37.3803 22.3186 37.2362 21.8494 37.5276C21.3803 37.819 21.2361 38.4355 21.5275 38.9047C21.8189 39.3738 22.4354 39.518 22.9046 39.2266Z" fill="currentColor"/>
+</svg></div><b>개수가 많으면</b></div><div class="v2-body">작은 입자가 많을수록 혈관 벽에 부딪혀 파고들 기회가 늘어 동맥경화로 이어집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M33 9.22967V6H31V9H13V6H11V9.22967C11 14.6524 13.5895 19.6466 17.8037 22.7875C18.4275 22.3933 19.0782 22.0334 19.7536 21.7107C17.8831 20.4891 16.329 18.8727 15.1851 17H23.1319C23.2566 16.2999 23.4669 15.6295 23.7517 15H14.1615C13.6308 13.7364 13.2711 12.392 13.1051 11H27.4964C28.6894 10.3618 30.0525 10 31.5 10C32.0035 10 32.4968 10.0438 32.9763 10.1277C32.992 9.82987 33 9.53043 33 9.22967Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22 22.9172C22.611 22.6536 23.1981 22.352 23.7589 22.0158C24.0375 22.6283 24.3867 23.2018 24.7959 23.7261C24.6398 23.8198 24.4819 23.9111 24.3223 24C23.698 24.3476 23.0469 24.6583 22.3714 24.9285C22.252 24.9762 22.1335 25.0254 22.0159 25.076L22 25.0828C19.1137 26.3281 16.7605 28.4211 15.1851 31H28.8149C27.671 29.1273 26.1169 27.5109 24.2464 26.2893C24.9218 25.9666 25.5725 25.6067 26.1963 25.2125C29.9474 28.0082 32.4113 32.2723 32.9075 37L33 42H31V39H13V42H11L11.0925 37C11.6672 31.5245 14.8813 26.6708 19.6777 24C20.302 23.6524 20.9531 23.3417 21.6286 23.0715C21.748 23.0238 21.8665 22.9746 21.9841 22.924L22 22.9172ZM29.8385 33H14.1615C13.6308 34.2636 13.2711 35.608 13.1051 37H30.8949C30.7289 35.608 30.3692 34.2636 29.8385 33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.5 25C33.0621 25 34.4955 24.449 35.6164 23.5307L39.293 27.2072L40.7072 25.793L36.9531 22.0389C37.6153 21.0206 38 19.8052 38 18.5C38 14.9101 35.0899 12 31.5 12C27.9101 12 25 14.9101 25 18.5C25 22.0899 27.9101 25 31.5 25ZM31.5 23C33.9853 23 36 20.9853 36 18.5C36 16.0147 33.9853 14 31.5 14C29.0147 14 27 16.0147 27 18.5C27 20.9853 29.0147 23 31.5 23Z" fill="currentColor"/>
+</svg></div><b>어긋나는 사람</b></div><div class="v2-body">성인의 <b>8~23%</b>는 LDL 수치와 ApoB가 서로 맞지 않습니다.</div></div>
+  </div>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:562px;top:222px;width:654px;height:368px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s04-risk-lipid-969f1aca-20260530-raster-20260531.jpg" alt="작은 지단백 입자들이 동맥 벽 안으로 파고드는 모습" style="width:654px;height:368px">
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">그림 · 작은 입자(ApoB)가 많을수록 혈관 벽으로 더 많이 파고듭니다(설명용 그림).</span><span class="v2-src">근거 · UK Biobank 29만 명 · 2026 ACC/AHA</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · ApoB</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">ApoB 검사가 특히 도움이 되는 분</h2>
+  <p class="v2-sub">LDL 수치가 실제 위험을 낮게 보여 주기 쉬운 경우입니다</p>
+  <div class="q-grid4" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-panel q-four"><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M43 29.143C43 30.743 41.68 32.0001 40 32.0001C38.32 32.0001 37 30.743 37 29.143C37 27.543 40 24.0001 40 24.0001C40 24.0001 43 27.6573 43 29.143Z" fill="currentColor"/>
+<path d="M24.1528 17.7833H41.8719C43.0472 17.7833 44 18.7361 44 19.9114C44 21.0867 43.0472 22.0395 41.8719 22.0395H41.8685C41.9544 21.8721 42.0014 21.6902 42.0012 21.5001C42.0005 20.6717 41.1046 20.0009 40 20.0018C38.8954 20.0027 38.0005 20.675 38.0012 21.5034C38.0014 21.6923 38.0481 21.8731 38.1332 22.0395H25.1111V23.1035H32C33.1046 23.1035 34 23.999 34 25.1035V25.3597C34 26.4643 33.1046 27.3597 32 27.3597H25.1111V28.4238H30.8889C31.9935 28.4238 32.8889 29.3192 32.8889 30.4238V30.6799C32.8889 31.7845 31.9935 32.6799 30.8889 32.6799H22.8889V33.7439H27C28.1046 33.7439 29 34.6394 29 35.7439V36.0001C29 37.1047 28.1046 38.0001 27 38.0001H15.4562C9.12912 38.0001 4 32.871 4 26.5439C4 21.8893 6.8162 17.6974 11.1254 15.9378L24.0124 10.6756C24.9864 10.2779 26.106 10.5891 26.735 11.4324C27.6143 12.6113 27.1815 14.301 25.8437 14.9119L23.7374 15.8737C22.76 16.32 23.0783 17.7833 24.1528 17.7833Z" fill="currentColor"/>
+</svg></div><b>당뇨병 · 대사증후군</b></div><div class="v2-body">작고 많은 LDL 입자가 흔해, LDL 수치만 보면 위험이 실제보다 낮게 보일 수 있습니다.</div></div></div>
+    <div class="v2-panel q-four v2-panel--accent"><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 13C26.4853 13 28.5 10.9853 28.5 8.5C28.5 6.01472 26.4853 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13ZM36.5596 17.0799C37.6201 17.3889 38.2292 18.4992 37.9201 19.5596C37.6111 20.6201 36.5009 21.2292 35.4404 20.9201C34.3489 20.602 33.3213 20.3256 32.3433 20.0894L32.3912 20.2384C33.6992 24.3151 35.0282 28.4572 32.8172 32.0289L30.4503 42.4432C30.2246 43.4362 29.2889 44.1011 28.277 43.9875C27.2651 43.874 26.5 43.0183 26.5 42V35.9302C25.7042 36 24.8762 36 24 36C23.3058 36 22.6417 36 22 35.9653V42C22 43.0183 21.2349 43.874 20.223 43.9875C19.2111 44.1011 18.2754 43.4362 18.0497 42.4432L15.9101 33.0287C12.7197 29.2431 14.1769 24.7016 15.6089 20.2384L15.6458 20.1234C14.6639 20.355 13.6318 20.6228 12.5348 20.9272C11.4704 21.2225 10.3682 20.5991 10.0728 19.5347C9.7775 18.4704 10.4009 17.3681 11.4653 17.0728C16.2296 15.7508 20.0803 15.0178 23.9908 15.0003C27.9083 14.9828 31.768 15.6834 36.5596 17.0799Z" fill="currentColor"/>
+</svg></div><b>중성지방이 높거나 비만인 분</b></div><div class="v2-body">중성지방이 높으면 LDL 계산값이 부정확해지고, 다른 입자도 함께&nbsp;늘어납니다.</div></div></div>
+    <div class="v2-panel q-four"><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35 9.22967V6H33V9H15V6H13V9.22967C13 14.6524 15.5895 19.6466 19.8037 22.7875C20.4275 22.3933 21.0782 22.0334 21.7536 21.7107C19.8831 20.4891 18.329 18.8727 17.1851 17H30.8149C29.2395 19.5789 26.8863 21.6719 24 22.9172C23.9947 22.9194 23.9894 22.9217 23.9841 22.924C23.8665 22.9746 23.748 23.0238 23.6286 23.0715C22.9531 23.3417 22.302 23.6524 21.6777 24C16.8813 26.6708 13.6672 31.5245 13.0925 37H13V38.7703V39V42H15V39H33V42H35V39V38.7703V37H34.9075C34.4113 32.2723 31.9474 28.0082 28.1963 25.2125C27.5725 25.6067 26.9218 25.9666 26.2464 26.2893C28.1169 27.5109 29.671 29.1273 30.8149 31H17.1851C18.7605 28.4211 21.1137 26.3281 24 25.0828C24.0053 25.0806 24.0106 25.0783 24.0159 25.076C24.1335 25.0254 24.252 24.9762 24.3714 24.9285C25.0469 24.6583 25.698 24.3476 26.3223 24C31.63 21.0445 35 15.4159 35 9.22967ZM31.8385 33H16.1615C15.6308 34.2636 15.2711 35.608 15.1051 37H32.8949C32.7289 35.608 32.3692 34.2636 31.8385 33ZM16.1615 15H31.8385C32.3692 13.7364 32.7289 12.392 32.8949 11H15.1051C15.2711 12.392 15.6308 13.7364 16.1615 15Z" fill="currentColor"/>
+</svg></div><b>가족성 고콜레스테롤혈증</b></div><div class="v2-body">타고나기를 입자가 매우 많아 이른 나이에 심혈관 질환이 올 수 있습니다. 가족 검사와 치료 효과 확인에 씁니다.</div></div></div>
+    <div class="v2-panel q-four v2-panel--accent"><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>검사는 간단합니다</b></div><div class="v2-body">ApoB는 식사 영향을 거의 받지 않아 <b>공복 없이</b> 피를 뽑아도 됩니다.</div></div></div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 당뇨·비만·높은 중성지방이 있다면 LDL이 정상이어도 ApoB를 함께 볼지 여쭤 보세요.</span><span class="v2-src">근거 · 2026 ACC/AHA · ESC/EAS 2024</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · ApoB 목표</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">위험이 클수록 ApoB 목표가 낮아집니다</h2>
+  <p class="v2-sub">내가 어느 칸인지는 병력과 위험 요인으로 주치의가 정합니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:260px"><col style="width:300px"><col style="width:592px"></colgroup><thead><tr><th>위험 정도</th><th>ApoB 목표</th><th>이런 분입니다</th></tr></thead><tbody><tr style="height:100px"><th>초고위험</th><td><b>55~65 mg/dL 미만</b></td><td>심근경색·뇌졸중·말초동맥질환을 이미 겪은 분</td></tr><tr style="height:100px"><th>고위험</th><td><b>70~80 mg/dL 미만</b></td><td>당뇨가 있거나 고혈압·흡연·가족력 같은 위험 요인이 여럿인 분</td></tr><tr style="height:100px"><th>중간 위험</th><td><b>90~100 mg/dL 미만</b></td><td>위험 요인이 2개 이상 — 생활습관 교정과 함께 약을 쓸지 상의</td></tr></tbody></table>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 목표는 한 번에 가지 않아도 됩니다. 약을 단계적으로 더해 가며 맞춥니다(다음 장).</span><span class="v2-src">근거 · 2026 ACC/AHA · KSLA 2022</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 약 치료</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">약을 하나씩 더해 ApoB를 낮춥니다</h2>
+  <p class="v2-sub">한 가지 약으로 목표에 못 미치면 다음 약을 더합니다</p>
+  <div class="v2-panel q-flow" style="left:64px;top:206px;width:265px;height:400px">
+    <div class="q-flow__lab">1단계</div><div class="q-flow__h">스타틴</div><div class="v2-body">대부분의 분에게 첫 약입니다. ApoB를 <b>약 50%</b> 낮춥니다.</div><div class="q-flow__k">첫 선택</div>
+  </div>
+  <div class="q-arrow" style="left:329px;top:392px;width:30px">&#8250;</div>
+  <div class="v2-panel q-flow" style="left:359px;top:206px;width:265px;height:400px">
+    <div class="q-flow__lab">2단계</div><div class="q-flow__h">+ 에제티미브</div><div class="v2-body">스타틴만으로 목표에 못 미치면 더합니다. 합치면 <b>약 65%</b> 낮아집니다.</div><div class="q-flow__k">목표에 못 미칠 때</div>
+  </div>
+  <div class="q-arrow" style="left:624px;top:392px;width:30px">&#8250;</div>
+  <div class="v2-panel q-flow" style="left:654px;top:206px;width:265px;height:400px">
+    <div class="q-flow__lab">3단계</div><div class="q-flow__h">+ PCSK9 억제제</div><div class="v2-body">초고위험·가족성 고콜레스테롤혈증·스타틴을 못 쓰는 분에게 씁니다. <b>약 85%</b>까지 낮아집니다.</div><div class="q-flow__k">위험이 아주 클 때</div>
+  </div>
+  <div class="q-arrow" style="left:919px;top:392px;width:30px">&#8250;</div>
+  <div class="v2-panel q-flow v2-panel--accent" style="left:949px;top:206px;width:265px;height:400px">
+    <div class="q-flow__lab">확인</div><div class="q-flow__h">8~12주 뒤 재검</div><div class="v2-body">약을 시작하거나 바꾼 뒤 8~12주에 다시 재서 목표에 닿았는지 봅니다.</div><div class="q-flow__k">다시 재서 확인</div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 퍼센트는 평균적인 감소 폭입니다. 실제 반응은 사람마다 다릅니다.</span><span class="v2-src">근거 · 2026 ACC/AHA 콜레스테롤 지침</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · Lp(a)</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">Lp(a) — 타고나는 콜레스테롤 입자</h2>
+  <p class="v2-sub">음식·운동으로 거의 바뀌지 않아 평생 한 번 재면 됩니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:470px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35 9.22967V6H33V9H15V6H13V9.22967C13 14.6524 15.5895 19.6466 19.8037 22.7875C20.4275 22.3933 21.0782 22.0334 21.7536 21.7107C19.8831 20.4891 18.329 18.8727 17.1851 17H30.8149C29.2395 19.5789 26.8863 21.6719 24 22.9172C23.9947 22.9194 23.9894 22.9217 23.9841 22.924C23.8665 22.9746 23.748 23.0238 23.6286 23.0715C22.9531 23.3417 22.302 23.6524 21.6777 24C16.8813 26.6708 13.6672 31.5245 13.0925 37H13V38.7703V39V42H15V39H33V42H35V39V38.7703V37H34.9075C34.4113 32.2723 31.9474 28.0082 28.1963 25.2125C27.5725 25.6067 26.9218 25.9666 26.2464 26.2893C28.1169 27.5109 29.671 29.1273 30.8149 31H17.1851C18.7605 28.4211 21.1137 26.3281 24 25.0828C24.0053 25.0806 24.0106 25.0783 24.0159 25.076C24.1335 25.0254 24.252 24.9762 24.3714 24.9285C25.0469 24.6583 25.698 24.3476 26.3223 24C31.63 21.0445 35 15.4159 35 9.22967ZM31.8385 33H16.1615C15.6308 34.2636 15.2711 35.608 15.1051 37H32.8949C32.7289 35.608 32.3692 34.2636 31.8385 33ZM16.1615 15H31.8385C32.3692 13.7364 32.7289 12.392 32.8949 11H15.1051C15.2711 12.392 15.6308 13.7364 16.1615 15Z" fill="currentColor"/>
+</svg></div><b>대부분 유전</b></div><div class="v2-body">90% 이상이 유전으로 정해집니다. 5살 무렵 이미 어른 수준이 되고 평생 거의 그대로입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.9996 6V25.3798L15.0743 23.36L15.166 23.3499L14.2005 14.5931L12.2125 14.8123L12.9968 21.9255L6.37998 17.3567L4.87305 23.3844L9.29292 26.8736L5.23806 27.8952L5.72665 29.8346L11.2735 28.4371L17.6221 33.4489L17.6283 33.4537C17.8607 33.6313 17.9996 33.9105 17.9996 34.2095V42H27.9996V27.1135C27.9996 26.7783 28.1896 26.455 28.519 26.2841L33.67 23.6112L41.2632 25.4582L41.736 23.5148L36.2978 22.192L42.2777 18.9437L40.0094 13.651L32.4333 17.2479L33.4762 12.5124L31.523 12.0822L30.143 18.3481L27.9996 19.4295V6H17.9996ZM23.2265 8.84951C23.5179 9.31868 23.3738 9.93522 22.9046 10.2266C22.4354 10.518 21.8189 10.3738 21.5275 9.90467C21.2361 9.4355 21.3803 8.81896 21.8494 8.52759C22.3186 8.23621 22.9352 8.38034 23.2265 8.84951ZM24.9046 14.2266C25.3738 13.9352 25.5179 13.3187 25.2265 12.8495C24.9352 12.3803 24.3186 12.2362 23.8494 12.5276C23.3803 12.819 23.2361 13.4355 23.5275 13.9047C23.8189 14.3738 24.4354 14.518 24.9046 14.2266ZM22.9046 23.2266C23.3738 22.9352 23.5179 22.3187 23.2265 21.8495C22.9352 21.3803 22.3186 21.2362 21.8494 21.5276C21.3803 21.819 21.2361 22.4355 21.5275 22.9047C21.8189 23.3738 22.4354 23.518 22.9046 23.2266ZM24.2265 28.8495C24.5179 29.3187 24.3738 29.9352 23.9046 30.2266C23.4354 30.518 22.8189 30.3738 22.5275 29.9047C22.2361 29.4355 22.3803 28.819 22.8494 28.5276C23.3186 28.2362 23.9352 28.3803 24.2265 28.8495ZM22.9046 39.2266C23.3738 38.9352 23.5179 38.3187 23.2265 37.8495C22.9352 37.3803 22.3186 37.2362 21.8494 37.5276C21.3803 37.819 21.2361 38.4355 21.5275 38.9047C21.8189 39.3738 22.4354 39.518 22.9046 39.2266Z" fill="currentColor"/>
+</svg></div><b>혈관에 하는 일</b></div><div class="v2-body">혈관 벽에 잘 쌓이고, 생긴 피떡이 녹는 것도 방해합니다. 대동맥판막이 굳는 데에도 관여합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>검사는 평생 한 번</b></div><div class="v2-body">어른이면 누구나 한 번 재 보도록 권합니다(2026 미국 지침 1등급&nbsp;권고).</div></div>
+  </div>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:562px;top:222px;width:654px;height:368px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s02-anatomy-ldl-vs-lpa-20260624.png" alt="보통 LDL 입자와, 꼬리 같은 단백질이 감긴 Lp(a) 입자를 나란히 놓은 그림" style="width:654px;height:368px">
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">그림 · 왼쪽은 보통 LDL 입자, 오른쪽은 단백질 고리가 더 붙은 Lp(a) 입자입니다(설명용 그림).</span><span class="v2-src">근거 · 2026 ACC/AHA Lp(a) 권고</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · Lp(a)</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">Lp(a) 수치는 이렇게 읽습니다</h2>
+  <p class="v2-sub">검사지 단위가 mg/dL인지 nmol/L인지 먼저 확인하세요</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:220px"><col style="width:210px"><col style="width:210px"><col style="width:512px"></colgroup><thead><tr><th>구분</th><th>mg/dL</th><th>nmol/L</th><th>의미</th></tr></thead><tbody><tr style="height:78px"><th>낮음</th><td>30 미만</td><td>75 미만</td><td>따로 할 일은 없습니다. 보통의 콜레스테롤 관리를 이어 갑니다.</td></tr><tr style="height:78px"><th>경계</th><td>30~50</td><td>75~125</td><td>LDL·혈압·혈당·가족력을 함께 보고 치료 강도를 정합니다.</td></tr><tr style="height:78px"><th>높음</th><td><b>50 이상</b></td><td><b>125 이상</b></td><td>다른 위험 요인을 더 엄격하게 관리하고, 가족 검사를 권합니다.</td></tr><tr style="height:78px"><th>매우 높음</th><td><span class="v2-td--alert">100 이상</span></td><td><span class="v2-td--alert">250 이상</span></td><td>위와 같이 관리하며, 새 치료제 연구 대상이 될 수 있습니다.</td></tr></tbody></table>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 한국인 27만 명 연구: 50 이상이면 심혈관 사망 위험 1.83배, 100 이상이면 2.45배였습니다.</span><span class="v2-src">근거 · 강북삼성 코호트 · ESC/EAS 2022</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · Lp(a)</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">Lp(a)가 높게 나왔다면 할 일 세 가지</h2>
+  <p class="v2-sub">한국인 약 12.8%가 50 mg/dL 이상 — 드물지 않습니다</p>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:64px;top:257px;width:530px;height:298px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s06-risk-lipid-2ca74aa8-20260530-raster-20260531.jpg" alt="Lp(a) 입자와 여러 세대의 가족, 좁아진 혈관을 함께 그린 그림" style="width:530px;height:298px">
+  </div>
+  <div class="v2-panel q-act" style="left:620px;top:206px;width:596px;height:120px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18.7241C6 12.6409 10.0359 7 15.5625 7C19.3976 7 22.2434 9.53088 24 13.1211C25.7565 9.53111 28.6022 7 32.4375 7C37.9647 7 42 12.6419 42 18.7241C42 31.7444 24 41 24 41C24 41 6 32.3045 6 18.7241Z" fill="currentColor"/>
+</svg></div><b>다른 위험을 더 줄입니다</b></div><div class="v2-body">LDL·혈압·혈당을 더 엄격히 관리하고 담배는 끊습니다.</div></div>
+  </div>
+  <div class="v2-panel q-act v2-panel--accent" style="left:620px;top:346px;width:596px;height:120px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 24C20.8675 24 24 20.8675 24 17C24 13.1325 20.8675 10 17 10C13.1325 10 10 13.1325 10 17C10 20.8675 13.1325 24 17 24Z" fill="currentColor"/>
+<path d="M39 20.5C39 23.5387 36.5387 26 33.5 26C30.4613 26 28 23.5387 28 20.5C28 17.4612 30.4613 15 33.5 15C36.5387 15 39 17.4612 39 20.5Z" fill="currentColor"/>
+<path d="M17 26C19.7336 26 24.183 26.8511 27.1011 28.5452C28.293 29.7585 29 31.0814 29 32.4V38H4V32.4C4 28.144 12.6612 26 17 26Z" fill="currentColor"/>
+<path d="M44 38H31V32.4C31 30.9837 30.4886 29.6801 29.6764 28.5166C31.2173 28.1725 32.7343 28 33.8927 28C37.6211 28 44 29.7867 44 33.3333V38Z" fill="currentColor"/>
+</svg></div><b>가족도 재 봅니다</b></div><div class="v2-body">부모·형제·자녀도 한 번 재 보도록 권합니다. 유전되기 때문입니다.</div></div>
+  </div>
+  <div class="v2-panel q-act" style="left:620px;top:486px;width:596px;height:120px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>전용 약은 아직 없습니다</b></div><div class="v2-body">Lp(a)만 낮추는 승인된 약은 아직 없고, 새 약 연구가 진행 중입니다.</div></div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">그림 · 타고나는 수치라 가족이 함께 높을 수 있습니다(설명용 그림).</span><span class="v2-src">근거 · 강북삼성 코호트(27만 명) · 2026 ACC/AHA</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 호모시스테인</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">호모시스테인 — 뇌졸중과 더 관련이 있습니다</h2>
+  <p class="v2-sub">높을수록 위험하지만, 낮추는 보충제의 효과는 뇌졸중에서만 확인됐습니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">알려진 사실</div><div class="v2-vs__lead">피 속 호모시스테인이 오를수록 <b>뇌졸중</b> 위험이 커집니다.</div><ul class="v2-vs__list"><li>5 µmol/L 오를 때마다 뇌졸중 위험 약 60% 증가</li><li>심장 혈관 질환은 20~30% 증가로 더 약합니다</li><li>엽산을 처리하는 효소가 약하게 타고난 분이 한국인의 14~18%</li><li>한국은 곡물에 엽산을 넣지 않아 섭취가 권장량에 못 미칩니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">엽산 보충의 효과</div><div class="v2-vs__lead">큰 연구들을 모아 보면 결과가 <b>엇갈립니다</b>.</div><ul class="v2-vs__list"><li>심근경색·전체 사망은 줄지 않았습니다</li><li>뇌졸중은 10~25% 줄었습니다</li><li>중국 고혈압 환자 연구에서는 뇌졸중 21% 감소</li><li><b>그래서</b> 고혈압 + 호모시스테인 상승 + 엽산 부족일 때만 고려합니다</li></ul></div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 엽산은 시금치·깻잎·브로콜리·콩류 같은 음식으로 먼저 채우세요. 보충제는 의사와 상의 후에.</span><span class="v2-src">근거 · HOPE-2 · CSPPT(2만 명) · 코크란 7만 명</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 한눈에 비교</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">세 검사, 한눈에 비교</h2>
+  <p class="v2-sub">역할이 서로 다릅니다 — 함께 보면 위험을 더 정확히 가늠합니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:220px"><col style="width:310px"><col style="width:310px"><col style="width:312px"></colgroup><thead><tr><th></th><th>ApoB</th><th>Lp(a)</th><th>호모시스테인</th></tr></thead><tbody><tr style="height:82px"><th>무엇을 보나</th><td>나쁜 입자의 개수</td><td>타고나는 입자의 양</td><td>혈관을 해치는 아미노산</td></tr><tr style="height:82px"><th>바뀌나</th><td>약·생활습관으로 <b>낮아짐</b></td><td>평생 <b>거의 그대로</b></td><td>엽산 섭취로 낮아질 수 있음</td></tr><tr style="height:82px"><th>검사 횟수</th><td>치료 시작·변경 뒤 8~12주에 확인, 이후 간격은 의사와 결정</td><td><b>평생 한 번</b></td><td>의사가 필요할 때</td></tr><tr style="height:82px"><th>높게 나오면</th><td>스타틴 등 약을 단계적으로</td><td>다른 위험 요인 엄격 관리 · 가족 검사</td><td>조건이 맞으면 엽산 보충 고려</td></tr></tbody></table>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 이 검사들은 보통 LDL 검사를 대신하지 않고, 더 정확하게 판단하도록 돕습니다.</span><span class="v2-src">근거 · 2026 ACC/AHA · ESC/EAS 2022</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 기억할 여섯 가지</h2>
+  <p class="v2-sub">진료 때 주치의와 함께 추가 검사와 치료 강도를 정합니다</p>
+  <div class="v2-panel q-check" style="left:64px;top:206px;width:640px;height:400px">
+    <ul class="q-check__list"><li><i>01</i><span>LDL이 정상이어도 <b>입자 개수(ApoB)</b>가 많을 수 있습니다</span></li><li><i>02</i><span>당뇨·비만·중성지방이 높다면 ApoB 검사를 상의하세요</span></li><li><i>03</i><span>Lp(a)는 <b>평생 한 번</b> — 아직 안 쟀다면 여쭤 보세요</span></li><li><i>04</i><span>Lp(a)가 높으면 부모·형제·자녀도 한 번 재 보세요</span></li><li><i>05</i><span>엽산 보충제 단독은 심장 예방약이 아닙니다</span></li><li><i>06</i><span>약을 시작하거나 바꾼 뒤 <b>8~12주</b>에 다시 재서 확인합니다</span></li></ul>
+  </div>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:734px;top:270px;width:482px;height:271px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/endocrine-advanced-lipid-biomarkers-s09-measurement-lipid-640a67ae-20260530-raster-20260531.jpg" alt="피검사 튜브와 결과지를 보며 상담하는 모습" style="width:482px;height:271px">
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 검사 결과지를 가져오시면 어느 칸에 해당하는지 함께 봐 드립니다.</span><span class="v2-src">근거 · 2026 ACC/AHA · HOPE-2·CSPPT</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">LDL 너머의 지질 검사(ApoB·Lp(a)·호모시스테인)를 안내하는 설명자료입니다. 검사 여부와 치료 강도는 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 10C9 7.23858 11.2386 5 14 5H38C38.5523 5 39 5.44772 39 6V36C39 36.5523 38.5523 37 38 37H14C12.3431 37 11 38.3431 11 40V41H38V43H10C9.44772 43 9 42.5523 9 42V10ZM23 26V21H18V19H23V14H25V19H30V21H25V26H23Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body q-refs">2026 ACC/AHA 지질 지침·Lp(a) 권고 · ESC/EAS 2022·2024 · KSLA 2022 · UK Biobank · 강북삼성 코호트 · HOPE-2 · CSPPT · 코크란 리뷰</div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM18,2H19V3H18zM21,2H22V3H21zM22,2H23V3H22zM24,2H25V3H24zM28,2H29V3H28zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM13,3H14V4H13zM14,3H15V4H14zM18,3H19V4H18zM19,3H20V4H19zM20,3H21V4H20zM22,3H23V4H22zM23,3H24V4H23zM24,3H25V4H24zM26,3H27V4H26zM27,3H28V4H27zM28,3H29V4H28zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM14,4H15V5H14zM17,4H18V5H17zM18,4H19V5H18zM23,4H24V5H23zM25,4H26V5H25zM26,4H27V5H26zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM14,5H15V6H14zM18,5H19V6H18zM19,5H20V6H19zM22,5H23V6H22zM23,5H24V6H23zM24,5H25V6H24zM26,5H27V6H26zM27,5H28V6H27zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM25,6H26V7H25zM27,6H28V7H27zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM14,7H15V8H14zM15,7H16V8H15zM17,7H18V8H17zM19,7H20V8H19zM22,7H23V8H22zM23,7H24V8H23zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM12,9H13V10H12zM15,9H16V10H15zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM24,9H25V10H24zM28,9H29V10H28zM2,10H3V11H2zM8,10H9V11H8zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM18,10H19V11H18zM24,10H25V11H24zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM35,10H36V11H35zM36,10H37V11H36zM37,10H38V11H37zM4,11H5V12H4zM5,11H6V12H5zM9,11H10V12H9zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM18,11H19V12H18zM20,11H21V12H20zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM33,11H34V12H33zM34,11H35V12H34zM35,11H36V12H35zM36,11H37V12H36zM37,11H38V12H37zM2,12H3V13H2zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM10,12H11V13H10zM14,12H15V13H14zM16,12H17V13H16zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM21,12H22V13H21zM24,12H25V13H24zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM34,12H35V13H34zM37,12H38V13H37zM38,12H39V13H38zM9,13H10V14H9zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM15,13H16V14H15zM16,13H17V14H16zM21,13H22V14H21zM22,13H23V14H22zM26,13H27V14H26zM28,13H29V14H28zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM3,14H4V15H3zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM13,14H14V15H13zM14,14H15V15H14zM15,14H16V15H15zM16,14H17V15H16zM17,14H18V15H17zM20,14H21V15H20zM22,14H23V15H22zM25,14H26V15H25zM30,14H31V15H30zM32,14H33V15H32zM33,14H34V15H33zM35,14H36V15H35zM38,14H39V15H38zM2,15H3V16H2zM5,15H6V16H5zM6,15H7V16H6zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM25,15H26V16H25zM29,15H30V16H29zM30,15H31V16H30zM33,15H34V16H33zM35,15H36V16H35zM8,16H9V17H8zM10,16H11V17H10zM12,16H13V17H12zM13,16H14V17H13zM15,16H16V17H15zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM26,16H27V17H26zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM3,17H4V18H3zM5,17H6V18H5zM6,17H7V18H6zM10,17H11V18H10zM13,17H14V18H13zM15,17H16V18H15zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM29,17H30V18H29zM31,17H32V18H31zM33,17H34V18H33zM35,17H36V18H35zM36,17H37V18H36zM5,18H6V19H5zM6,18H7V19H6zM8,18H9V19H8zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM17,18H18V19H17zM20,18H21V19H20zM22,18H23V19H22zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM37,18H38V19H37zM2,19H3V20H2zM3,19H4V20H3zM5,19H6V20H5zM6,19H7V20H6zM10,19H11V20H10zM11,19H12V20H11zM12,19H13V20H12zM14,19H15V20H14zM18,19H19V20H18zM19,19H20V20H19zM24,19H25V20H24zM25,19H26V20H25zM29,19H30V20H29zM30,19H31V20H30zM33,19H34V20H33zM35,19H36V20H35zM36,19H37V20H36zM37,19H38V20H37zM5,20H6V21H5zM6,20H7V21H6zM8,20H9V21H8zM11,20H12V21H11zM14,20H15V21H14zM18,20H19V21H18zM21,20H22V21H21zM24,20H25V21H24zM25,20H26V21H25zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM34,20H35V21H34zM38,20H39V21H38zM2,21H3V22H2zM3,21H4V22H3zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM10,21H11V22H10zM13,21H14V22H13zM15,21H16V22H15zM16,21H17V22H16zM17,21H18V22H17zM18,21H19V22H18zM24,21H25V22H24zM28,21H29V22H28zM30,21H31V22H30zM32,21H33V22H32zM35,21H36V22H35zM38,21H39V22H38zM2,22H3V23H2zM4,22H5V23H4zM5,22H6V23H5zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM14,22H15V23H14zM15,22H16V23H15zM19,22H20V23H19zM24,22H25V23H24zM25,22H26V23H25zM27,22H28V23H27zM28,22H29V23H28zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM35,22H36V23H35zM36,22H37V23H36zM3,23H4V24H3zM7,23H8V24H7zM11,23H12V24H11zM12,23H13V24H12zM14,23H15V24H14zM15,23H16V24H15zM16,23H17V24H16zM17,23H18V24H17zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM24,23H25V24H24zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM31,23H32V24H31zM34,23H35V24H34zM36,23H37V24H36zM5,24H6V25H5zM8,24H9V25H8zM12,24H13V25H12zM15,24H16V25H15zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM2,25H3V26H2zM3,25H4V26H3zM4,25H5V26H4zM7,25H8V26H7zM9,25H10V26H9zM10,25H11V26H10zM12,25H13V26H12zM14,25H15V26H14zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM18,25H19V26H18zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM26,25H27V26H26zM28,25H29V26H28zM29,25H30V26H29zM30,25H31V26H30zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM35,25H36V26H35zM37,25H38V26H37zM38,25H39V26H38zM3,26H4V27H3zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM25,26H26V27H25zM26,26H27V27H26zM29,26H30V27H29zM30,26H31V27H30zM32,26H33V27H32zM33,26H34V27H33zM37,26H38V27H37zM2,27H3V28H2zM4,27H5V28H4zM5,27H6V28H5zM6,27H7V28H6zM7,27H8V28H7zM9,27H10V28H9zM13,27H14V28H13zM14,27H15V28H14zM20,27H21V28H20zM22,27H23V28H22zM23,27H24V28H23zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM29,27H30V28H29zM30,27H31V28H30zM33,27H34V28H33zM2,28H3V29H2zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM16,28H17V29H16zM17,28H18V29H17zM18,28H19V29H18zM21,28H22V29H21zM24,28H25V29H24zM29,28H30V29H29zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM34,28H35V29H34zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM10,29H11V30H10zM13,29H14V30H13zM14,29H15V30H14zM15,29H16V30H15zM18,29H19V30H18zM21,29H22V30H21zM25,29H26V30H25zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM34,29H35V30H34zM35,29H36V30H35zM36,29H37V30H36zM38,29H39V30H38zM2,30H3V31H2zM5,30H6V31H5zM8,30H9V31H8zM9,30H10V31H9zM13,30H14V31H13zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM10,31H11V32H10zM12,31H13V32H12zM14,31H15V32H14zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM30,31H31V32H30zM34,31H35V32H34zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM12,32H13V33H12zM13,32H14V33H13zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM20,32H21V33H20zM21,32H22V33H21zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM14,33H15V34H14zM15,33H16V34H15zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM24,33H25V34H24zM25,33H26V34H25zM26,33H27V34H26zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM12,34H13V35H12zM14,34H15V35H14zM17,34H18V35H17zM20,34H21V35H20zM21,34H22V35H21zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM11,35H12V36H11zM15,35H16V36H15zM16,35H17V36H16zM19,35H20V36H19zM22,35H23V36H22zM23,35H24V36H23zM24,35H25V36H24zM25,35H26V36H25zM27,35H28V36H27zM28,35H29V36H28zM32,35H33V36H32zM35,35H36V36H35zM36,35H37V36H36zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM11,36H12V37H11zM14,36H15V37H14zM19,36H20V37H19zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM35,36H36V37H35zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM13,37H14V38H13zM14,37H15V38H14zM15,37H16V38H15zM17,37H18V38H17zM18,37H19V38H18zM20,37H21V38H20zM21,37H22V38H21zM22,37H23V38H22zM24,37H25V38H24zM26,37H27V38H26zM28,37H29V38H28zM30,37H31V38H30zM31,37H32V38H31zM32,37H33V38H32zM34,37H35V38H34zM35,37H36V38H35zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM16,38H17V39H16zM18,38H19V39H18zM22,38H23V39H22zM24,38H25V39H24zM26,38H27V39H26zM29,38H30V39H29zM30,38H31V39H30zM31,38H32V39H31zM32,38H33V39H32zM33,38H34V39H33zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -865,96 +396,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">11 / 11</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
+</section>
 </body>
 </html>

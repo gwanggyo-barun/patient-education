@@ -26,415 +26,86 @@
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
 
   <!-- Local extensions for this deck (Kimura class strip + Correa horizontal flow + age-prevalence row) -->
-  <style>
-    /* Three-stat row (slide 2) — single row of 3 large circular stats + supporting card */
-    .pattern-stats3 {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-6);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .stats3-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-      align-items: center;
-      justify-items: center;
-    }
-    .stats3-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .stats3-cell__circle {
-      width: 168px;
-      height: 168px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-canvas);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-    }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__num {
-      font-size: 3rem;
-      font-weight: var(--weight-black);
-      line-height: 1;
-      letter-spacing: var(--tracking-mega);
-    }
-    .stats3-cell__unit {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      margin-top: var(--space-2);
-      opacity: 0.92;
-    }
-    .stats3-cell__label {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      text-align: center;
-      max-width: 240px;
-      line-height: var(--lh-snug);
-    }
-    .stats3-note {
-      padding: var(--space-5) var(--space-6);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-relaxed);
-    }
-
-    /* Correa cascade — 5 horizontal nodes for cancer progression sequence */
-    .pattern-correa {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-5);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .correa-row {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: var(--space-3);
-      align-items: stretch;
-    }
-    .correa-step {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      padding: var(--space-4);
-      background: var(--color-canvas);
-      border: 1px solid var(--color-border);
-      border-left: 3px solid var(--color-steel);
-      border-radius: var(--radius-md);
-      position: relative;
-    }
-    .correa-step--cancer {
-      background: var(--color-navy);
-      border-left-color: var(--color-canvas);
-    }
-    .correa-step--cancer .correa-step__index,
-    .correa-step--cancer .correa-step__title,
-    .correa-step--cancer .correa-step__body { color: var(--color-canvas); }
-    .correa-step__index {
-      font-size: var(--text-eyebrow);
-      font-weight: var(--weight-bold);
-      color: var(--color-steel);
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
-    }
-    .correa-step__title {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      line-height: var(--lh-tight);
-    }
-    .correa-step__body {
-      font-size: var(--text-body-sm);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-    .correa-note {
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-relaxed);
-    }
-    .correa-note strong { color: var(--color-navy); font-weight: var(--weight-bold); }
-
-    /* Kimura classification strip — 6-cell band (C-1, C-2, C-3, O-1, O-2, O-3) */
-    .pattern-kimura {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-5);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .kimura-strip {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: var(--space-2);
-    }
-    .kimura-cell {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      padding: var(--space-4);
-      background: var(--color-canvas);
-      border: 1px solid var(--color-border);
-      border-top: 3px solid var(--color-steel);
-      border-radius: var(--radius-md);
-    }
-    .kimura-cell--open {
-      border-top-color: var(--color-navy);
-      background: var(--color-canvas-warm);
-    }
-    .kimura-cell__code {
-      font-size: var(--text-h3);
-      font-weight: var(--weight-bold);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-mega);
-    }
-    .kimura-cell__label {
-      font-size: var(--text-body-sm);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      line-height: var(--lh-tight);
-    }
-    .kimura-cell__detail {
-      font-size: var(--text-body-sm);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-    .kimura-legend {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-4);
-    }
-    .kimura-legend__item {
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-canvas);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body);
-      line-height: var(--lh-relaxed);
-    }
-    .kimura-legend__item strong { color: var(--color-navy); font-weight: var(--weight-bold); }
-
-    /* Age-prevalence rows — 6 horizontal bars showing prevalence by decade */
-    .pattern-prevalence {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .prev-row {
-      display: grid;
-      grid-template-columns: 72px 1fr 1fr;
-      gap: var(--space-4);
-      align-items: center;
-      padding: 6px var(--space-4);
-      background: var(--color-canvas);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-    }
-    .prev-row__age {
-      font-size: var(--text-body);
-      font-weight: var(--weight-bold);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-    }
-    .prev-bar {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .prev-bar__track {
-      flex: 1;
-      height: 12px;
-      background: var(--color-border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .prev-bar__fill {
-      height: 100%;
-      border-radius: 6px;
-    }
-    .prev-bar__fill--ag { background: var(--color-navy); }
-    .prev-bar__fill--im { background: var(--color-steel); }
-    .prev-bar__value {
-      font-size: var(--text-body-sm);
-      font-weight: var(--weight-540);
-      color: var(--color-ink);
-      width: 56px;
-      text-align: right;
-    }
-    .prev-legend {
-      display: flex;
-      gap: var(--space-6);
-      justify-content: center;
-      padding: var(--space-2);
-      font-size: var(--text-body-sm);
-      color: var(--color-slate);
-    }
-    .prev-legend__swatch {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border-radius: 3px;
-      margin-right: var(--space-2);
-      vertical-align: middle;
-    }
-
-    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(5) .pattern-kimura { justify-content: space-between; }
-    .slide:nth-of-type(5) .kimura-legend { margin-top: auto; }
-    .slide:nth-of-type(5) .kimura-legend__item { min-height: 146px; display: flex; align-items: center; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3C-redesign 2026-09-27 (원장님 49028) — v1 덱을 v2 룩으로 옮기며 한 가지 틀 반복을 카드·대비 2단·표·
+    가로 도해·2x2·글+그림 분할로 섞었다. 그림칸은 그림 원본 비율 그대로(잘림·레터박스 없음), 본문 글자 16px 이상. */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:10px}
+ .q-text .v2-body{font-size:16px;line-height:1.6}
+ /* 그림 패널 — 그림이 칸을 채운다(비율 = 원본) */
+ .q-fig,.q-figw{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before,.q-figw::before{content:none}
+ .q-fig .v2-fig__img,.q-figw .v2-figwide__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:28px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+ .q-card__top .v2-chip{width:56px;height:56px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:34px;height:34px}
+ .q-card__n{font-size:56px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:23px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:16px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ /* 표 — 셀 글자를 한 단계 키운다 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;height:64px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:16px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:12px 0 12px 22px}
+ .v2-vs__list li::before{top:21px}
+ /* 가로 도해 */
+ .q-flow{display:flex;flex-direction:column;padding:26px 22px}
+ .q-flow__lab{align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--chip);color:var(--rule);font-size:15px;font-weight:800;margin-bottom:14px}
+ .q-flow__h{font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:12px}
+ .q-flow .v2-body{font-size:17px;line-height:1.65}
+ .q-flow__k{margin-top:auto;padding:10px 12px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ .q-arrow{position:absolute;height:28px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;color:var(--v2-accent);line-height:1}
+ /* 2x2 */
+ .q-grid4{position:absolute;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(168px,auto);column-gap:24px;row-gap:24px;align-content:center}
+ .q-grid4 > .v2-panel{position:relative;left:auto;top:auto;padding:26px 28px}
+ .q-four{display:flex;flex-direction:column;justify-content:center}
+ .q-four .v2-head{margin-bottom:12px}
+ .q-four .v2-head b{font-size:22px}
+ .q-four .v2-body{font-size:18px;line-height:1.65}
+ /* 행동 목록 */
+ .q-check{padding:18px 26px}
+ .q-check__list{list-style:none;margin:0;padding:0;height:100%;display:flex;flex-direction:column;justify-content:space-evenly}
+ .q-check__list li{display:flex;align-items:flex-start;gap:14px;font-size:18px;line-height:1.5;color:var(--v2-ink);word-break:keep-all}
+ .q-check__list li + li{border-top:1px dashed var(--v2-line);padding-top:12px}
+ .q-check__list i{flex:none;font-style:normal;width:36px;height:36px;border-radius:10px;background:var(--chip);color:var(--rule);font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-check__list b{color:var(--v2-navy)}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+ .q-qr .qr-block{flex-direction:column;align-items:center;text-align:center;gap:14px}
+ .q-qr .qr-block__code{width:190px;height:190px}
+ .q-qr .qr-block__label{font-size:13px}
+ .q-qr .qr-block__heading{font-size:22px}
+ .q-qr .qr-block__hint{font-size:15px;line-height:1.5}
+  .q-text4{padding:18px 24px}
+ .q-text4 .v2-head{margin-bottom:4px;gap:12px}
+ .q-text4 .v2-chip{width:34px;height:34px}
+ .q-text4 .v2-chip svg{width:20px;height:20px}
+ .q-table--num tbody td{font-size:22px;font-weight:600;text-align:center}
+ .q-table--num thead th{text-align:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="위축성위염과 장상피화생의 의미, 위암 위험과 추적 관찰, H. pylori 제균 치료까지 한눈에">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/gi/atrophic-gastritis/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Atrophic Gastritis & Intestinal Metaplasia — Gwanggyo Barun Internal Medicine", "description": "위축성위염과 장상피화생의 의미, 위암 위험과 추적 관찰, H. pylori 제균 치료까지 한눈에", "url": "https://edu.gwanggyobarun.com/decks/gi/atrophic-gastritis/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
@@ -448,577 +119,282 @@
       <span class="slide__page">광교바른내과 소화기내과</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — Korean prevalence in 50+
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한국인 50대 절반 이상이 위축성위염을 가지고 있습니다</h2>
-      <p class="slide__subtitle">나이가 들수록 유병률이 가파르게 올라가는 흔한 위 점막 변화입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>57</em>%</div>
-          <div class="pattern-hero-number__caption">한국 50대 위축성위염 유병률 — 70대 이상에서는 약 76%까지 올라가며 장상피화생도 35%에 이릅니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why this matters</div>
-          <div class="pattern-hero-number__detail-text">
-            위축성위염과 장상피화생은 위암으로 진행하는 전암성 단계로 분류됩니다. 그러나 모든 환자가 위암이 되는 것은 아니며, 정기 내시경 추적과 H. pylori 제균을 통해 진행을 늦추거나 조기에 발견할 수 있습니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Lim JH et al. Gut Liver 2013;7:41-50 · Korean nationwide endoscopy data</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — Definitions
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>DEFINITION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">위축성위염과 장상피화생은 어떤 변화인가</h2>
-      <p class="slide__subtitle">위 점막이 얇아지고(위축) 다른 조직으로 바뀌는(화생) 만성 변화</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">위축성위염 (Atrophic Gastritis)은 위 점막의 분비샘이 <em>얇아지고 줄어드는</em> 만성 염증성 변화입니다.</p>
-          <p class="pattern-split__supporting">
-            장상피화생 (Intestinal Metaplasia)은 위 점막 세포가 위가 아닌 장 (소장·대장형) 점막 세포로 바뀌는 현상으로, 위축성위염이 더 진행된 단계로 봅니다. 두 변화 모두 위암으로 가는 단계적 진행 (Correa sequence)에 포함되지만, 모든 환자가 위암이 되지는 않습니다. 핵심은 정기 내시경 추적과 위험 인자 (H. pylori, 흡연, 짠 음식)의 적극적 관리입니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Cancer risk vs normal</div>
-            <div class="pattern-split__metric-value">3 – 5배</div>
-            <div class="pattern-split__metric-detail">정상 위 점막에 비해 위암 발생 위험이 수배 높아집니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Reversibility</div>
-            <div class="pattern-split__metric-value">제한적</div>
-            <div class="pattern-split__metric-detail">한 번 발생한 변화를 약으로 되돌리기는 어렵고, 진행을 늦추는 것이 목표입니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KSGE 2020 위암 검진 가이드라인 · Correa Cascade</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · CORREA SEQUENCE — 5-step cancer progression
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>CORREA SEQUENCE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">정상 위에서 위암까지 — 단계적 진행</h2>
-      <p class="slide__subtitle">Correa Cascade — 위 점막이 위암에 이르는 단계적 변화 모델</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-correa">
-        <div class="correa-row">
-          <div class="correa-step">
-            <div class="correa-step__index">STEP · 01</div>
-            <div class="correa-step__title">정상 위 점막</div>
-            <div class="correa-step__body">손상 없는 위 분비샘 — 산·점액·소화 효소가 정상 분비됩니다.</div>
-          </div>
-          <div class="correa-step">
-            <div class="correa-step__index">STEP · 02</div>
-            <div class="correa-step__title">만성 위염</div>
-            <div class="correa-step__body">H. pylori 감염 등으로 점막에 만성 염증이 생기고 면역 세포가 침윤합니다.</div>
-          </div>
-          <div class="correa-step">
-            <div class="correa-step__index">STEP · 03</div>
-            <div class="correa-step__title">위축성위염</div>
-            <div class="correa-step__body">분비샘이 얇아지고 줄어들면서 위 점막이 옅어 보이고 혈관이 비쳐 보입니다.</div>
-          </div>
-          <div class="correa-step">
-            <div class="correa-step__index">STEP · 04</div>
-            <div class="correa-step__title">장상피화생</div>
-            <div class="correa-step__body">위 점막이 장 세포 (소장·대장형)로 바뀌면서 점막 표면이 거칠고 둔덕 모양이 됩니다.</div>
-          </div>
-          <div class="correa-step correa-step--cancer">
-            <div class="correa-step__index">STEP · 05</div>
-            <div class="correa-step__title">위암</div>
-            <div class="correa-step__body">이형성 (dysplasia)을 거쳐 위 선암이 발생합니다 — 일부 환자에서만.</div>
-          </div>
-        </div>
-        <div class="correa-note">
-          <strong>핵심:</strong> 위축성위염과 장상피화생은 위암으로 가는 <strong>전 단계 변화</strong>이지만, 모든 환자가 위암이 되는 것은 아닙니다. <strong>H. pylori 감염, 50대 이상, 흡연, 짠 음식, 가족력</strong>이 동반될 때 진행 위험이 누적됩니다.
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
-        <img src="../../../shared/assets/generated/gi-atrophic-gastritis-s04-mechanism-gi-112282f5-20260530-raster-20260531.jpg" alt="정상 위에서 위암까지 — 단계적 진행 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Correa P. Cancer Res 1992 · KSGE 2020 위암 검진 가이드라인</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · KIMURA-TAKEMOTO 6-CELL STRIP
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>ENDOSCOPIC CLASSIFICATION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Kimura-Takemoto 분류 — 위축의 범위에 따라 6등급</h2>
-      <p class="slide__subtitle">내시경에서 위축 경계가 어디까지 올라왔는지에 따라 C-1부터 O-3까지 단계별로 표시합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-kimura">
-        <div class="kimura-strip">
-          <div class="kimura-cell">
-            <div class="kimura-cell__code">C-1</div>
-            <div class="kimura-cell__label">전정부 소만에 국한</div>
-            <div class="kimura-cell__detail">가장 경미한 단계 — 위축이 전정부 입구 부근에만 보입니다.</div>
-          </div>
-          <div class="kimura-cell">
-            <div class="kimura-cell__code">C-2</div>
-            <div class="kimura-cell__label">전정부 전체</div>
-            <div class="kimura-cell__detail">위축이 전정부 전체로 퍼지지만 위각 (incisura)은 넘지 않습니다.</div>
-          </div>
-          <div class="kimura-cell">
-            <div class="kimura-cell__code">C-3</div>
-            <div class="kimura-cell__label">위각 직하부까지</div>
-            <div class="kimura-cell__detail">위축이 위각 바로 아래까지 진행 — Closed type 의 마지막 단계.</div>
-          </div>
-          <div class="kimura-cell kimura-cell--open">
-            <div class="kimura-cell__code">O-1</div>
-            <div class="kimura-cell__label">위각을 넘어 체부 하부</div>
-            <div class="kimura-cell__detail">Open type 시작 — 위 체부 (corpus)로 위축이 진입합니다.</div>
-          </div>
-          <div class="kimura-cell kimura-cell--open">
-            <div class="kimura-cell__code">O-2</div>
-            <div class="kimura-cell__label">체부 중간부</div>
-            <div class="kimura-cell__detail">위축이 위 체부 중간까지 광범위하게 확장됩니다.</div>
-          </div>
-          <div class="kimura-cell kimura-cell--open">
-            <div class="kimura-cell__code">O-3</div>
-            <div class="kimura-cell__label">체부 상부 · 위저부까지</div>
-            <div class="kimura-cell__detail">가장 진행된 단계 — 위 전반에 광범위 위축. 위암 발생 위험이 가장 높습니다.</div>
-          </div>
-        </div>
-        <div class="kimura-legend">
-          <div class="kimura-legend__item">
-            <strong>Closed type (C-1 ~ C-3)</strong> — 위축 경계가 전정부에 국한된 비교적 경미한 단계입니다. 정기 추적 위주로 관리합니다.
-          </div>
-          <div class="kimura-legend__item">
-            <strong>Open type (O-1 ~ O-3)</strong> — 위 체부까지 위축이 확장된 진행성 단계로, 위암 발생 위험이 더 높아 짧은 추적 간격이 권고됩니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Kimura K, Takemoto T. Endoscopy 1969 · Japanese Endoscopic Atrophy Classification</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 3×2 — Risk factors
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>RISK FACTORS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진행을 가속하는 6가지 위험 인자</h2>
-      <p class="slide__subtitle">조절 가능한 인자를 찾아 적극적으로 줄이는 것이 추적 관찰의 핵심입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">FACTOR · 01</div>
-          <div class="tile__title">H. pylori 감염</div>
-          <div class="tile__body">위축성위염·장상피화생의 가장 강력한 원인. 장기 감염은 위암 위험을 약 6배 높이며, WHO Group 1 발암물질로 분류됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 02</div>
-          <div class="tile__title">나이 · 50세 이상</div>
-          <div class="tile__body">유병률은 50대 약 57%, 70대 이상 약 76%로 급격히 상승. 진단 후에도 나이가 많을수록 진행 속도가 빠릅니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 03</div>
-          <div class="tile__title">흡연</div>
-          <div class="tile__body">담배 연기 속 발암물질이 위 점막을 직접 자극. 위축성위염·장상피화생 진행과 위암 발생을 동시에 가속합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 04</div>
-          <div class="tile__title">짠 음식 · 짠 발효식품</div>
-          <div class="tile__body">젓갈·장아찌·소금 절임 식품의 잦은 섭취. 한국인의 짠 식습관이 위축·화생 진행과 위암 위험에 직결됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 05</div>
-          <div class="tile__title">가족력</div>
-          <div class="tile__body">직계 가족 중 위암 환자가 있는 경우 위험이 2~3배 높아집니다. 한국은 위암 가족력 빈도가 높은 편입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 06</div>
-          <div class="tile__title">자가면역 · 악성빈혈</div>
-          <div class="tile__body">자가면역성 위염은 체부 위주 위축을 일으키고 비타민 B12 결핍·악성빈혈을 동반할 수 있습니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/gi-atrophic-gastritis-s06-risk-gi-060d3e28-20260530-raster-20260531.jpg" alt="진행을 가속하는 6가지 위험 인자 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KSGE 2020 가이드라인 · IARC H. pylori 발암 평가 (Group 1)</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · PREVALENCE BY AGE — 6 horizontal rows (AG vs IM)
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>PREVALENCE BY AGE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">나이가 들수록 유병률이 가파르게 올라갑니다</h2>
-      <p class="slide__subtitle">한국인 위축성위염 (AG) · 장상피화생 (IM) 연령별 유병률</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-prevalence">
-        <div class="prev-row">
-          <div class="prev-row__age">20대</div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 13%;"></div></div>
-            <div class="prev-bar__value">AG 10%</div>
-          </div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 3%;"></div></div>
-            <div class="prev-bar__value">IM 2%</div>
-          </div>
-        </div>
-        <div class="prev-row">
-          <div class="prev-row__age">30대</div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 29%;"></div></div>
-            <div class="prev-bar__value">AG 22%</div>
-          </div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 7%;"></div></div>
-            <div class="prev-bar__value">IM 5%</div>
-          </div>
-        </div>
-        <div class="prev-row">
-          <div class="prev-row__age">40대</div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 50%;"></div></div>
-            <div class="prev-bar__value">AG 38%</div>
-          </div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 13%;"></div></div>
-            <div class="prev-bar__value">IM 10%</div>
-          </div>
-        </div>
-        <div class="prev-row">
-          <div class="prev-row__age">50대</div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 75%;"></div></div>
-            <div class="prev-bar__value">AG 57%</div>
-          </div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 29%;"></div></div>
-            <div class="prev-bar__value">IM 22%</div>
-          </div>
-        </div>
-        <div class="prev-row">
-          <div class="prev-row__age">60대</div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 89%;"></div></div>
-            <div class="prev-bar__value">AG 68%</div>
-          </div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 41%;"></div></div>
-            <div class="prev-bar__value">IM 31%</div>
-          </div>
-        </div>
-        <div class="prev-row">
-          <div class="prev-row__age">70대+</div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--ag" style="width: 100%;"></div></div>
-            <div class="prev-bar__value">AG 76%</div>
-          </div>
-          <div class="prev-bar">
-            <div class="prev-bar__track"><div class="prev-bar__fill prev-bar__fill--im" style="width: 46%;"></div></div>
-            <div class="prev-bar__value">IM 35%</div>
-          </div>
-        </div>
-        <div class="prev-legend">
-          <span><span class="prev-legend__swatch" style="background: var(--color-navy);"></span>AG · 위축성위염</span>
-          <span><span class="prev-legend__swatch" style="background: var(--color-steel);"></span>IM · 장상피화생</span>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/gi-atrophic-gastritis-s07-anatomy-gi-c113a8a0-20260530-raster-20260531.jpg" alt="나이가 들수록 유병률이 가파르게 올라갑니다 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Lim JH et al. Gut Liver 2013;7:41-50</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · DENSITY GRID 3×2 — H. pylori eradication indication strength
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>H. PYLORI ERADICATION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">H. pylori 제균 — 적응증의 강도별 정리</h2>
-      <p class="slide__subtitle">대한상부위장관·헬리코박터학회 가이드라인 기준 · 위축성위염/장상피화생은 권고적 적응증</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">STRONG · 01</div>
-          <div class="tile__title">소화성 궤양</div>
-          <div class="tile__body">위·십이지장 궤양 (활동성·반흔 모두). 제균 시 재발률이 약 80%에서 5% 미만으로 극적으로 떨어집니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STRONG · 02</div>
-          <div class="tile__title">저등급 위 MALT 림프종</div>
-          <div class="tile__body">위 MALT 림프종은 H. pylori 제균만으로 약 70~80%가 관해됩니다. 일차 치료로 제균이 권고됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STRONG · 03</div>
-          <div class="tile__title">조기 위암 내시경 절제 후</div>
-          <div class="tile__body">조기 위암 ESD/EMR 후 잔존 위 점막에 대한 제균은 이시성 위암 발생을 약 50% 감소시킵니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">RECOMMENDED · 04</div>
-          <div class="tile__title">위축성위염 / 장상피화생</div>
-          <div class="tile__body">제균이 점막 변화의 진행을 늦추고 위암 발생 위험을 줄입니다. 본 자료의 대상 환자가 해당하는 적응증입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RECOMMENDED · 05</div>
-          <div class="tile__title">위암 가족력 (1촌)</div>
-          <div class="tile__body">직계 가족 위암 병력이 있는 H. pylori 양성 환자에서 제균은 위암 위험을 의미 있게 낮춥니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CONSIDER · 06</div>
-          <div class="tile__title">기능성 소화불량 · 장기 NSAID</div>
-          <div class="tile__body">기능성 소화불량, 장기 아스피린/NSAID 복용 예정자, 특발성 혈소판감소증 등도 개별적 고려 대상입니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 대한상부위장관·헬리코박터학회 H. pylori 진료 가이드라인</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · TIMELINE — 4-step follow-up schedule
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>FOLLOW-UP SCHEDULE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">위축성위염 · 장상피화생, 추적 관찰 일정</h2>
-      <p class="slide__subtitle">진단 후 정기 내시경으로 변화의 진행 여부와 조기 위암을 함께 확인합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">진단 시점 · Baseline</div>
-          <div class="timeline-step__body">위축 범위 (Kimura 등급) 확인 + H. pylori 검사 + 조직검사로 화생·이형성 여부 평가.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">위축성위염 · 2~3년</div>
-          <div class="timeline-step__body">Closed type (C-1~C-3)는 2~3년 간격 추적. Open type은 더 짧게 권고됩니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">장상피화생 · 1~2년</div>
-          <div class="timeline-step__body">화생이 광범위하거나 위암 가족력이 동반된 고위험군은 1~2년 간격으로 단축.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">이형성 발견 시 · 즉시</div>
-          <div class="timeline-step__body">고도 이형성·조기 위암 의심 소견은 ESD/EMR 등 추가 처치를 고려합니다.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">중요</span>
-        <span class="alert-strip__text">권장 간격은 환자별 위험 인자 (Kimura 등급, 가족력, 흡연, H. pylori 상태)에 따라 달라집니다. 담당 의사와 개별 일정을 정하세요.</span>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/gi-atrophic-gastritis-s09-comparison-gi-dc96e44f-20260530-raster-20260531.jpg" alt="위축성위염 · 장상피화생, 추적 관찰 일정 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KSGE 위암 검진 가이드라인 · MAPS II 2019 (Europe)</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · COMPARISON — DO vs DON'T (lifestyle)
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>LIFESTYLE — DO &amp; DON'T</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진행을 늦추는 생활 관리</h2>
-      <p class="slide__subtitle">위축성위염·장상피화생 자체를 되돌리는 음식은 없지만, 진행 속도와 위암 위험을 줄일 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            이렇게 하세요 (DO)
-          </div>
-          <ul class="compare-col__list">
-            <li>신선한 채소·과일을 매끼 충분히</li>
-            <li>싱겁게 — 국물·찌개 절반만 섭취</li>
-            <li>H. pylori 양성이면 적극 제균 치료</li>
-            <li>금연 — 위 점막 자극 가장 강력한 인자</li>
-            <li>규칙적 운동과 적정 체중 유지</li>
-            <li>2~3년 간격 정기 위내시경 추적</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">−</span>
-            이것은 피하세요 (DON'T)
-          </div>
-          <ul class="compare-col__list">
-            <li>젓갈·장아찌·짠 발효식품 자주 섭취</li>
-            <li>훈제·태운 음식·가공육 (햄·소시지) 자주</li>
-            <li>과도한 음주 (주 2회 이상 폭음)</li>
-            <li>스트레스 누적·수면 부족 방치</li>
-            <li>증상 없다고 추적 내시경 미루기</li>
-            <li>처방 없이 위염 약 임의 장기 복용</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KSGE 생활관리 권고 · WCRF 위암 예방 식이</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — 8 essentials
-       ======================================================================== -->
-  <section class="slide">    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">위축성위염·장상피화생을 진단받은 분들이 일상에서 실천할 행동 체크리스트</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">위축성위염·장상피화생은 <strong>위암 전 단계</strong>이지만 모두 위암이 되지는 않음</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">한국 50대 약 57% · 70대+ 약 76% — <strong>나이 들수록 흔함</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">H. pylori 검사를 받고 양성이면 <strong>적극 제균 치료</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">금연 · 짠 음식 줄이기 · 신선 채소·과일 <strong>매끼 충분히</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">위축성위염은 <strong>2~3년</strong>, 장상피화생은 <strong>1~2년</strong> 간격 내시경 추적</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">Kimura <strong>Open type · 가족력</strong>은 추적 간격이 짧아짐</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">증상 없어도 <strong>추적 내시경 미루지 않기</strong> — 조기 발견이 핵심</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">체중 감소·흑색변·삼킴 곤란이 새로 생기면 <strong>즉시 내원</strong></div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — eradicate H. pylori, modify diet, follow up on schedule</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">정기적인 검진으로<br><em>건강한 위를 지켜가세요</em></h2>
-      <p class="slide__subtitle">궁금한 점은 언제든 주치의에게 문의해 주세요 — 함께 추적·관리하겠습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 결론 먼저</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">먼저 결론 — 위축성위염·장상피화생, 세 가지만</h2>
+  <p class="v2-sub">흔한 변화이고, 관리하면 위암을 일찍 찾거나 늦출 수 있습니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18 15C20.2091 15 22 13.2091 22 11C22 8.79086 20.2091 7 18 7C15.7909 7 14 8.79086 14 11C14 13.2091 15.7909 15 18 15Z" fill="currentColor"/>
+<path d="M12.5161 20.9354C12.6775 20.7418 12.8393 20.5632 13 20.3993V38C13 39.0616 13.8294 39.9382 14.8894 39.9969C15.9494 40.0556 16.8706 39.276 16.9878 38.2209L17.7901 31H18.2099L19.0123 38.2209C19.1295 39.276 20.0506 40.0556 21.1106 39.9969C22.1706 39.9382 23 39.0616 23 38L23 24.3603C23.1494 23.5645 23.7113 22.4114 24.5962 21.3282C25.389 22.3029 25.9217 23.3345 26.1285 24.1117C26.1069 25.7631 24.7785 31.9425 24.2316 34.421C24.107 34.9855 24.4844 35.537 25.0572 35.6155C28.75 36.1216 31.9406 36.121 35.6027 35.6554C36.2864 35.5685 36.6851 34.8112 36.4373 34.1681C35.7 32.2554 34.5001 28.2816 34.5001 22.6778L34.5001 19.7516C34.8908 20.0529 35.3004 20.4464 35.7082 20.9354C36.7648 22.2022 37.4209 23.653 37.5068 24.5548C37.5853 25.3795 38.3176 25.9844 39.1423 25.9059C39.9669 25.8273 40.5718 25.0951 40.4933 24.2704C40.3299 22.5543 39.2923 20.5488 38.012 19.0138C36.7678 17.522 34.8932 16 32.7903 16H28.1618C26.879 16 25.6609 16.5152 24.5999 17.2482C23.5426 16.5154 22.3281 16 21.0482 16H15.434C13.3311 16 11.4565 17.522 10.2123 19.0138C8.93198 20.5488 7.89441 22.5543 7.73098 24.2704C7.65245 25.0951 8.25733 25.8273 9.08202 25.9059C9.90672 25.9844 10.6389 25.3795 10.7175 24.5548C10.8034 23.653 11.4594 22.2022 12.5161 20.9354Z" fill="currentColor"/>
+<path d="M6 28.5C6 27.1193 7.11929 26 8.5 26C9.88071 26 11 27.1193 11 28.5V39C11 39.5523 10.5523 40 10 40C9.44772 40 9 39.5523 9 39V28.5C9 28.2239 8.77614 28 8.5 28C8.22386 28 8 28.2239 8 28.5V29.5128C8 30.0651 7.55228 30.5128 7 30.5128C6.44772 30.5128 6 30.0651 6 29.5128V28.5Z" fill="currentColor"/>
+<path d="M30.5001 15C32.7092 15 34.5001 13.2091 34.5001 11C34.5001 8.79086 32.7092 7 30.5001 7C28.291 7 26.5001 8.79086 26.5001 11C26.5001 13.2091 28.291 15 30.5001 15Z" fill="currentColor"/>
+<path d="M39.5001 26C38.1194 26 37.0001 27.1193 37.0001 28.5V29.5128C37.0001 30.0651 37.4478 30.5128 38.0001 30.5128C38.5524 30.5128 39.0001 30.0651 39.0001 29.5128V28.5C39.0001 28.2239 39.224 28 39.5001 28C39.7762 28 40.0001 28.2239 40.0001 28.5V39C40.0001 39.5523 40.4478 40 41.0001 40C41.5524 40 42.0001 39.5523 42.0001 39V28.5C42.0001 27.1193 40.8808 26 39.5001 26Z" fill="currentColor"/>
+<path d="M25.5 39.3877V37.1515C26.75 37.3096 27.9265 37.4031 29.0877 37.4336L28.4471 39.7824C28.2494 40.5074 27.5457 40.9742 26.8009 40.8744C26.0561 40.7747 25.5 40.1392 25.5 39.3877Z" fill="currentColor"/>
+<path d="M32.5529 39.7824L31.899 37.3848C33.0507 37.3157 34.2327 37.187 35.5 37V39.3877C35.5 40.1392 34.9439 40.7747 34.1991 40.8744C33.4543 40.9742 32.7506 40.5074 32.5529 39.7824Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">나이 들수록 흔합니다</div>
+    <div class="v2-body">나이가 들수록 흔해져, 50대 이후 위내시경에서 <b>자주</b> 발견되는 변화입니다.</div>
+    <div class="q-card__k">혼자만의 일이 아닙니다</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">모두 위암이 되지는 않습니다</div>
+    <div class="v2-body">위암으로 가는 길목의 변화이지만, 대부분은 위암으로 진행하지 않습니다.</div>
+    <div class="q-card__k">겁내기보다 관리하기</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.3163 10.7392L17.3163 10.7405C17.35 14.3482 17.817 16.1167 18.7342 17.0618C19.5398 17.892 20.8979 18.2938 23.4483 18.3692C23.6502 16.3334 24.4621 14.709 25.6552 13.5517C27.0283 12.2198 28.8467 11.5652 30.6465 11.5652C32.4464 11.5652 34.2647 12.2198 35.6379 13.5517C37.0228 14.895 37.894 16.8677 37.894 19.3824V27.7146C37.894 30.0693 37.503 32.5607 36.2917 34.4946C35.0351 36.5007 32.9564 37.8043 29.8822 37.8043C26.7189 37.8043 24.523 35.9216 22.5827 34.2475L22.5209 34.1941C20.5454 32.4895 18.7691 30.9566 16.2502 30.6086C15.1924 30.6197 14.4572 30.9033 13.9288 31.2903C13.3803 31.6921 12.9866 32.2557 12.7081 32.9075C12.1388 34.2399 12.12 35.7752 12.1475 36.4349C12.153 36.5657 12.1558 37.983 12.1578 39.3149C12.1587 39.9926 12.1595 40.6637 12.1599 41.1653L12.1606 41.9984L11.1922 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H17.3143L17.3161 10.6698L17.3162 10.7198L17.3162 10.7348L17.3163 10.7392ZM9 42H10.1606L10.1599 41.1672C10.1595 40.6657 10.1587 39.995 10.1578 39.3178C10.1568 38.6405 10.1555 37.9572 10.154 37.4304C10.1532 37.1668 10.1524 36.9432 10.1514 36.7793C10.151 36.6972 10.1505 36.6311 10.15 36.5829L10.1493 36.5229L10.1492 36.5171C10.1492 36.5164 10.1492 36.5168 10.1493 36.5182C10.1181 35.7703 10.1212 33.8715 10.869 32.1216C11.249 31.2323 11.8377 30.3428 12.747 29.6768C13.666 29.0037 14.8454 28.6083 16.3142 28.6083C16.709 28.6083 17.0741 28.6172 17.4211 28.6256C18.053 28.6409 18.625 28.6548 19.2082 28.6111C20.0595 28.5473 20.7286 28.3639 21.2728 27.956C22.2993 27.1866 23.2743 25.3012 23.3881 20.369C20.7403 20.2934 18.675 19.8726 17.2989 18.4547C15.769 16.8782 15.3497 14.3305 15.3164 10.7592C15.315 10.6179 15.3144 6.82757 15.3142 6H9C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42ZM25.0307 24.4664C27.426 23.3089 29.2699 24.2451 31.01 25.1287C32.6098 25.941 34.1219 26.7088 35.894 25.7637V19.3824C35.894 17.3524 35.2033 15.9164 34.2454 14.9873C33.2758 14.0468 31.9704 13.5652 30.6465 13.5652C29.3227 13.5652 28.0173 14.0468 27.0477 14.9873C26.0898 15.9164 25.3991 17.3524 25.3991 19.3824C25.3991 21.3933 25.2758 23.072 25.0307 24.4664Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">제균 · 생활 · 정기 내시경</div>
+    <div class="v2-body">헬리코박터균이 있으면 없애고, 금연·싱겁게 먹기, 정해진 간격의 내시경이 핵심입니다.</div>
+    <div class="q-card__k">내시경 날짜 지키기</div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 진단받았다는 것은 ‘조심해서 지켜볼 위’라는 뜻이지 위암이라는 뜻이 아닙니다.</span><span class="v2-src">근거 · 대한소화기내시경학회 2020 위암 검진 지침</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 무엇인가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">위 점막이 얇아지고, 다른 세포로 바뀝니다</h2>
+  <p class="v2-sub">오래된 염증으로 생기는 느린 변화입니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:470px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><b>위축성위염</b></div><div class="v2-body">위액을 만드는 샘이 줄어 위 점막이 <b>얇아진</b> 상태입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.2 4C27.8569 4 29.2 5.34315 29.2 7V11.8769C29.2 12.7103 28.9144 13.5172 28.3634 14.1676C27.8644 14.7568 27.2732 15.0716 26.8522 15.2434C26.064 15.565 25.2071 15.6459 24.6429 15.6823C24.0379 15.7213 23.36 15.7259 22.7505 15.73L22.6768 15.7305C22.0123 15.735 21.379 15.7403 20.7581 15.7731C19.4258 15.8434 18.6096 16.0283 18.1898 16.258C18.1063 16.3037 18.066 16.3367 18.0494 16.3529C18.2255 16.4205 18.4631 16.4925 18.7744 16.5615C20.1924 16.8759 22.1332 16.9383 24.5214 17.015L25.0984 17.0337C27.5102 17.1128 30.4236 17.2279 32.7451 17.9315C33.9361 18.2925 35.2493 18.8848 36.2859 19.9451C37.4045 21.0894 38 22.5752 38 24.2615C38 26.0512 37.289 27.5996 35.9694 28.6936C34.7921 29.6696 33.3442 30.1067 32.0942 30.3318C29.6993 30.7631 26.6763 30.622 24.1036 30.502L23.8608 30.4907C20.9864 30.3572 18.6275 30.2662 16.9768 30.5678C16.5988 30.6369 16.3228 30.7168 16.1294 30.793C16.0783 30.8131 16.036 30.8318 16.0014 30.8484C16.0073 31.0329 16.0307 31.1524 16.05 31.222C16.0712 31.2982 16.0916 31.3299 16.0979 31.3392C16.1027 31.3466 16.1605 31.4351 16.4274 31.5525C17.1024 31.8497 18.2904 31.9881 20.0269 31.9458C20.8178 31.9265 21.6166 31.8753 22.4349 31.8228L22.5152 31.8176C23.3257 31.7657 24.1994 31.7102 24.9757 31.7087C25.6783 31.7074 26.6714 31.741 27.5724 32.0533C28.0523 32.2196 28.7205 32.5362 29.2823 33.168C29.9031 33.8661 30.2 34.7318 30.2 35.6V41C30.2 42.6569 28.8569 44 27.2 44C25.5431 44 24.2 42.6569 24.2 41V37.73C23.8169 37.7474 23.3863 37.7741 22.8989 37.8054L22.7825 37.8128C21.9917 37.8636 21.0862 37.9217 20.1731 37.944C18.3596 37.9882 15.9976 37.9189 14.0101 37.0441C12.9513 36.578 11.8965 35.8407 11.1227 34.6929C10.3429 33.5363 10 32.1874 10 30.759C10 28.9705 10.7056 27.4201 12.0214 26.3204C13.1974 25.3374 14.6457 24.8945 15.8982 24.6656C18.3073 24.2254 21.3485 24.3671 23.9305 24.4874L24.1392 24.4971C27.0156 24.6307 29.3764 24.7247 31.0308 24.4268C31.4096 24.3586 31.6864 24.2794 31.8804 24.2038C31.9247 24.1865 31.9624 24.1703 31.9942 24.1556C31.9932 24.1475 31.9921 24.1407 31.9911 24.1351C31.9264 24.0716 31.6729 23.8761 31.0049 23.6736C29.5764 23.2407 27.4898 23.1154 24.9016 23.0304C24.673 23.0229 24.4395 23.0158 24.2022 23.0085H24.2022C22.0041 22.941 19.4789 22.8634 17.4756 22.4193C16.3536 22.1705 15.042 21.7394 13.9659 20.8637C12.7503 19.8745 12 18.4449 12 16.7179C12 15.4732 12.2828 14.2876 12.9161 13.2434C13.5465 12.2038 14.4151 11.4838 15.3102 10.9942C16.9904 10.075 18.9742 9.85886 20.4419 9.78141C21.221 9.7403 21.9877 9.73505 22.6357 9.73061C22.8378 9.72923 23.0253 9.7279 23.2 9.726V7C23.2 5.34315 24.5431 4 26.2 4Z" fill="currentColor"/>
+</svg></div><b>장상피화생</b></div><div class="v2-body">위 점막 세포가 <b>장 세포</b>처럼 바뀐 상태로, 위축보다 한 걸음 더 나아간 변화입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>위암 위험</b></div><div class="v2-body">정상 위보다 위암 위험이 <b>3~5배</b> 높고, 한 번 생긴 변화는 약으로 되돌리기 어렵습니다.</div></div>
+  </div>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:562px;top:222px;width:654px;height:368px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/gi-atrophic-gastritis-s04-mechanism-gi-112282f5-20260530-raster-20260531.jpg" alt="정상 위 점막이 얇아지고 장 세포로 바뀌어 가는 단계 그림" style="width:654px;height:368px">
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">그림 · 왼쪽 정상 점막에서 오른쪽으로 갈수록 점막이 얇아지고 모양이 바뀝니다(설명용 그림).</span><span class="v2-src">근거 · 대한소화기내시경학회 2020 위암 검진 지침</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 진행 단계</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">정상 위에서 위암까지 — 천천히 한 단계씩</h2>
+  <p class="v2-sub">대부분은 중간 단계에서 멈춥니다 — 위암까지 가는 분은 일부입니다</p>
+  <div class="v2-panel q-flow" style="left:64px;top:206px;width:206px;height:400px">
+    <div class="q-flow__lab">1</div><div class="q-flow__h">정상 위</div><div class="v2-body">위액·점액이 제대로 나옵니다.</div><div class="q-flow__k">건강한 점막</div>
+  </div>
+  <div class="q-arrow" style="left:270px;top:392px;width:30px">&#8250;</div>
+  <div class="v2-panel q-flow" style="left:300px;top:206px;width:206px;height:400px">
+    <div class="q-flow__lab">2</div><div class="q-flow__h">만성 위염</div><div class="v2-body">헬리코박터균 등으로 염증이 오래 이어집니다.</div><div class="q-flow__k">제균이 중요</div>
+  </div>
+  <div class="q-arrow" style="left:506px;top:392px;width:30px">&#8250;</div>
+  <div class="v2-panel q-flow" style="left:536px;top:206px;width:206px;height:400px">
+    <div class="q-flow__lab">3</div><div class="q-flow__h">위축성위염</div><div class="v2-body">위액 샘이 줄어 점막이 얇아집니다.</div><div class="q-flow__k">정기 내시경</div>
+  </div>
+  <div class="q-arrow" style="left:742px;top:392px;width:30px">&#8250;</div>
+  <div class="v2-panel q-flow v2-panel--accent" style="left:772px;top:206px;width:206px;height:400px">
+    <div class="q-flow__lab">4</div><div class="q-flow__h">장상피화생</div><div class="v2-body">점막 세포가 장 세포처럼 바뀝니다.</div><div class="q-flow__k">더 자주 내시경</div>
+  </div>
+  <div class="q-arrow" style="left:978px;top:392px;width:30px">&#8250;</div>
+  <div class="v2-panel q-flow v2-panel--accent" style="left:1008px;top:206px;width:206px;height:400px">
+    <div class="q-flow__lab">5</div><div class="q-flow__h">일부에서 위암</div><div class="v2-body">세포 이상(이형성)을 거쳐 생깁니다.</div><div class="q-flow__k">일찍 찾으면 내시경 치료</div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 헬리코박터균·50대 이상·흡연·짠 음식·가족력이 겹칠수록 진행 위험이 쌓입니다.</span><span class="v2-src">근거 · Correa 1992 · 대한소화기내시경학회 2020</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 결과지 읽기</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">내시경 결과지의 ‘C-1 ~ O-3’ 읽는 법</h2>
+  <p class="v2-sub">위축이 위의 아래쪽에만 있는지, 위 몸통까지 넓게 퍼졌는지를 적은 표시입니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:240px"><col style="width:420px"><col style="width:492px"></colgroup><thead><tr><th>결과지 표시</th><th>위축이 있는 곳</th><th>의미</th></tr></thead><tbody><tr style="height:150px"><th>C-1 · C-2 · C-3<br>(좁은 위축)</th><td>위의 아래쪽(출구 쪽)에 머뭅니다. 숫자가 클수록 조금 더 위로 올라온 것입니다.</td><td>비교적 가벼운 단계 — 정기 내시경으로 지켜봅니다.</td></tr><tr style="height:150px"><th>O-1 · O-2 · O-3<br>(넓은 위축)</th><td>위의 몸통까지 퍼졌습니다. O-3은 위 전체에 가깝게 넓습니다.</td><td><span class="v2-td--alert">위암 위험이 더 높아</span> 내시경 간격을 짧게 잡습니다.</td></tr></tbody></table>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 결과지에 표시가 없으면 진료 때 ‘위축이 좁은지 넓은지’ 여쭤 보세요.</span><span class="v2-src">근거 · Kimura·Takemoto 1969 내시경 위축 분류</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 위험 요인</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진행을 빠르게 하는 것들</h2>
+  <p class="v2-sub">바꿀 수 있는 요인을 찾아 줄이는 것이 관리의 핵심입니다</p>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:64px;top:260px;width:520px;height:292px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/gi-atrophic-gastritis-s06-risk-gi-060d3e28-20260530-raster-20260531.jpg" alt="헬리코박터균, 담배, 짠 음식, 나이, 가족을 위 그림 둘레에 배치한 그림" style="width:520px;height:292px">
+  </div>
+  <div class="v2-panel q-text q-text4" style="left:612px;top:206px;width:604px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9525 10.4616C19.712 9.08283 17.9626 8.17095 16 8.02165V5H14V8.13723C11.902 8.54591 10.1197 9.83753 9.05552 11.6096L6.5 10.1342L5.5 11.8662L8.26322 13.4616C8.09162 14.0881 8 14.7476 8 15.4286C8 17.4437 8.24257 19.4021 8.7001 21.2763L5.74115 22.0691L6.25879 24.001L9.25381 23.1985C10.1227 25.8074 11.4173 28.2218 13.055 30.3593L10.2929 33.1214L11.7072 34.5356L14.3403 31.9025C15.8901 33.6166 17.6783 35.111 19.6525 36.3337L18.1339 38.9639L19.866 39.9639L21.3944 37.3166C24.0239 38.662 26.9279 39.5476 30 39.8671V43H32V39.9935C32.19 39.9978 32.3804 40 32.5714 40C34.8687 40 36.9225 38.9572 38.2851 37.3191L40.9641 38.8658L41.9641 37.1338L39.3465 35.6225C39.7663 34.6917 40 33.6589 40 32.5714C40 29.8398 38.5256 27.4525 36.3292 26.162L37.8661 23.5L36.134 22.5L34.4672 25.387C33.862 25.2277 33.2266 25.1429 32.5714 25.1429C30.2491 25.1429 28.1171 24.3279 26.4458 22.9685L28.7071 20.7072L27.2928 19.293L25.0316 21.5542C23.6721 19.8829 22.8571 17.7509 22.8571 15.4286C22.8571 14.2508 22.583 13.137 22.0951 12.1475L24.5354 9.70718L23.1212 8.29297L20.9525 10.4616ZM15 15C14.4477 15 14 15.4477 14 16C14 16.5523 14.4477 17 15 17C15.5523 17 16 16.5523 16 16C16 15.4477 15.5523 15 15 15ZM12 16C12 14.3431 13.3431 13 15 13C16.6569 13 18 14.3431 18 16C18 17.6569 16.6569 19 15 19C13.3431 19 12 17.6569 12 16ZM24 29C23.4477 29 23 29.4477 23 30C23 30.5523 23.4477 31 24 31C24.5523 31 25 30.5523 25 30C25 29.4477 24.5523 29 24 29ZM21 30C21 28.3431 22.3431 27 24 27C25.6569 27 27 28.3431 27 30C27 31.6569 25.6569 33 24 33C22.3431 33 21 31.6569 21 30ZM17 26C18.1046 26 19 25.1046 19 24C19 22.8954 18.1046 22 17 22C15.8954 22 15 22.8954 15 24C15 25.1046 15.8954 26 17 26ZM34 32C34 33.1046 33.1046 34 32 34C30.8954 34 30 33.1046 30 32C30 30.8954 30.8954 30 32 30C33.1046 30 34 30.8954 34 32Z" fill="currentColor"/>
+</svg></div><b>헬리코박터균</b></div><div class="v2-body">가장 큰 원인입니다. 오래 감염되면 위암 위험이 약 <b>6배</b>입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M37 11C37 10.4477 37.4477 10 38 10C40.7614 10 43 12.2386 43 15V16.5909C43 17.979 42.3585 19.2173 41.3559 20.0255C42.9512 21.1039 44 22.9294 44 25V28C44 28.5523 43.5523 29 43 29C42.4477 29 42 28.5523 42 28V25C42 22.7909 40.2091 21 38 21C37.4477 21 37 20.5523 37 20C37 19.4477 37.4477 19 38 19H38.5909C39.9214 19 41 17.9214 41 16.5909V15C41 13.3431 39.6569 12 38 12C37.4477 12 37 11.5523 37 11Z" fill="currentColor"/>
+<path d="M34 17C32.3431 17 31 18.3431 31 20V21.8182C31 23.475 32.3431 24.8182 34 24.8182H37C38.6569 24.8182 40 26.1613 40 27.8182V28C40 28.5523 39.5523 29 39 29C38.4477 29 38 28.5523 38 28V27.8182C38 27.2659 37.5523 26.8182 37 26.8182H34C31.2386 26.8182 29 24.5796 29 21.8182V20C29 17.2386 31.2386 15 34 15C34.5523 15 35 15.4477 35 16C35 16.5523 34.5523 17 34 17Z" fill="currentColor"/>
+<path d="M7 31C5.89543 31 5 31.8954 5 33V35C5 36.1046 5.89543 37 7 37H34C35.1046 37 36 36.1046 36 35V33C36 31.8954 35.1046 31 34 31H7Z" fill="currentColor"/>
+<path d="M40 32C40 31.4477 39.5523 31 39 31C38.4477 31 38 31.4477 38 32V36C38 36.5523 38.4477 37 39 37C39.5523 37 40 36.5523 40 36V32Z" fill="currentColor"/>
+<path d="M44 32C44 31.4477 43.5523 31 43 31C42.4477 31 42 31.4477 42 32V36C42 36.5523 42.4477 37 43 37C43.5523 37 44 36.5523 44 36V32Z" fill="currentColor"/>
+</svg></div><b>담배 · 짠 음식</b></div><div class="v2-body">담배와 젓갈·장아찌 같은 짠 음식이 위 점막을 자극합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 24C20.8675 24 24 20.8675 24 17C24 13.1325 20.8675 10 17 10C13.1325 10 10 13.1325 10 17C10 20.8675 13.1325 24 17 24Z" fill="currentColor"/>
+<path d="M39 20.5C39 23.5387 36.5387 26 33.5 26C30.4613 26 28 23.5387 28 20.5C28 17.4612 30.4613 15 33.5 15C36.5387 15 39 17.4612 39 20.5Z" fill="currentColor"/>
+<path d="M17 26C19.7336 26 24.183 26.8511 27.1011 28.5452C28.293 29.7585 29 31.0814 29 32.4V38H4V32.4C4 28.144 12.6612 26 17 26Z" fill="currentColor"/>
+<path d="M44 38H31V32.4C31 30.9837 30.4886 29.6801 29.6764 28.5166C31.2173 28.1725 32.7343 28 33.8927 28C37.6211 28 44 29.7867 44 33.3333V38Z" fill="currentColor"/>
+</svg></div><b>나이 · 가족력</b></div><div class="v2-body">50대 이후 흔해지고, 부모·형제가 위암이면 위험이 <b>2~3배</b>입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M25.0001 14.3333C25.0001 14.7874 24.6299 15.441 23.4859 16.0402C22.3892 16.6147 20.8049 17 19.0001 17C17.1954 17 15.611 16.6147 14.5144 16.0402C13.3703 15.441 13.0001 14.7874 13.0001 14.3333C13.0001 13.9367 13.274 13.3911 14.1358 12.8445L13.0645 11.1555C11.9273 11.8769 11.0001 12.9571 11.0001 14.3333C11.0001 15.9043 12.1969 17.0841 13.5864 17.8119C15.0232 18.5645 16.9389 19 19.0001 19C21.0613 19 22.977 18.5645 24.4139 17.8119C25.8033 17.0841 27.0001 15.9043 27.0001 14.3333C27.0001 12.9571 26.073 11.8769 24.9357 11.1555L23.8645 12.8445C24.7263 13.3911 25.0001 13.9367 25.0001 14.3333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.00012 15.5C6.00012 18.4759 7.87252 21.1321 10.8034 22.874C6.32904 25.5355 4.29161 30.3908 6.25181 33.786C8.23323 37.2179 13.549 37.8584 18.1249 35.2165C22.5586 32.6566 24.6709 27.9545 22.9955 24.5429C28.2204 23.311 32.0001 19.7281 32.0001 15.5C32.0001 10.2533 26.1798 6 19.0001 6C11.8204 6 6.00012 10.2533 6.00012 15.5ZM27.0125 20.6027C28.9891 19.1582 30.0001 17.3301 30.0001 15.5C30.0001 13.6699 28.9891 11.8418 27.0125 10.3973C25.0373 8.95388 22.211 8 19.0001 8C15.7892 8 12.9629 8.95388 10.9878 10.3973C9.0111 11.8418 8.00012 13.6699 8.00012 15.5C8.00012 17.3301 9.0111 19.1582 10.9878 20.6027C12.9629 22.0461 15.7892 23 19.0001 23C22.211 23 25.0373 22.0461 27.0125 20.6027ZM16.5658 24.8337C17.2795 24.9325 18.0138 24.9887 18.7636 24.9984C18.9612 25.1841 19.1359 25.4005 19.2802 25.6504C19.9239 26.7654 19.6897 28.0595 19.1126 29.1193C18.5258 30.1968 17.5099 31.2027 16.2331 31.9399C14.9563 32.677 13.5773 33.0539 12.3507 33.0233C11.1443 32.9932 9.90645 32.5489 9.26273 31.434C8.70025 30.4597 8.80992 29.3401 9.22847 28.3775L11.0626 29.175C10.8035 29.7708 10.8506 30.1842 10.9948 30.434C11.1583 30.7172 11.5787 31.0034 12.4006 31.0239C13.2024 31.0439 14.2219 30.7916 15.2331 30.2078C16.2443 29.624 16.9725 28.8672 17.3561 28.1628C17.7493 27.4408 17.7116 26.9336 17.5481 26.6504C17.4039 26.4006 17.0695 26.1532 16.4239 26.0796L16.5658 24.8337Z" fill="currentColor"/>
+<path d="M35.8355 24.7644C38.2305 25.4061 40.5622 24.4702 41.0435 22.6739C41.5248 20.8777 39.9734 18.9013 37.5784 18.2596C35.1835 17.6179 32.8518 18.5538 32.3705 20.35C31.8892 22.1463 33.4405 24.1226 35.8355 24.7644Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42.2452 36.457C41.1739 40.4552 35.9838 42.5385 30.6528 41.11C25.3218 39.6816 21.8687 35.2824 22.94 31.2842C24.0113 27.286 29.2014 25.2027 34.5324 26.6311C39.8634 28.0596 43.3165 32.4588 42.2452 36.457ZM35.3073 35.3754C36.1393 35.1301 36.5027 34.7196 36.5966 34.369C36.6794 34.06 36.6077 33.616 36.1797 33.0778L37.7449 31.8328C38.4219 32.6839 38.8278 33.7696 38.5285 34.8866C38.186 36.1649 37.0739 36.9396 35.873 37.2938C34.6528 37.6535 33.168 37.6467 31.6872 37.2499C30.2063 36.8531 28.917 36.1166 28.0402 35.195C27.1773 34.2879 26.6015 33.0609 26.944 31.7826C27.2433 30.6656 28.1377 29.9283 29.1495 29.5297L29.8826 31.3905C29.2428 31.6425 28.9587 31.9912 28.8759 32.3002C28.7819 32.6508 28.8914 33.1881 29.4893 33.8165C30.0732 34.4303 31.0202 35.0007 32.2048 35.3181C33.3894 35.6355 34.4947 35.615 35.3073 35.3754Z" fill="currentColor"/>
+</svg></div><b>자가면역 위염</b></div><div class="v2-body">면역이 위를 공격하는 경우로, 비타민 B12 부족·빈혈(악성빈혈)이 올 수 있습니다.</div></div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">그림 · 여러 요인이 겹칠수록 위 점막 변화가 빨라집니다(설명용 그림).</span><span class="v2-src">근거 · 대한소화기내시경학회 2020 · IARC 1군 발암 평가</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 제균 치료</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">헬리코박터균 제균을 권하는 경우</h2>
+  <p class="v2-sub">위축성위염·장상피화생은 제균을 권하는 경우에 들어갑니다</p>
+  <div class="q-grid4" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-panel q-four"><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><b>위축성위염 · 장상피화생</b></div><div class="v2-body">제균하면 변화가 진행하는 속도를 늦추고 위암 위험을 줄입니다. <b>이 자료를 보시는 분</b>에 해당합니다.</div></div></div>
+    <div class="v2-panel q-four v2-panel--accent"><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.9092 6H16.0757C16.0757 6.15504 16.0754 6.30978 16.0751 6.46422C16.0705 9.1957 16.066 11.8294 17.5268 14.2842C18.5423 15.9905 20.053 17.1898 21.5767 18.3995C21.7998 18.5765 22.023 18.7538 22.2451 18.9329C25.2665 21.3699 23.3756 25.2268 20.1984 26.1331C19.2145 26.4138 18.2869 26.6205 17.4153 26.8147C13.9681 27.5828 11.3976 28.1556 9.68655 32.3378C9.23317 33.446 9 34.6285 9 35.8224V42H15.827V35.5539C15.827 33.785 17.8285 32.7045 19.3769 33.4669C23.4348 35.4651 28.2951 36.1013 32.6479 34.4134C35.5853 33.2743 37.5612 31.1218 39.1616 28.506C41.499 24.6855 41.5916 19.8049 39.397 15.9016C37.4738 12.4809 34.7986 9.12802 30.4682 9.12802C29.5955 9.12802 28.6576 9.46714 27.733 9.80141C26.1048 10.3901 24.5181 10.9638 23.4029 9.64336C22.7764 8.90155 22.8331 7.77693 22.8834 6.77772C22.8971 6.50578 22.9103 6.24312 22.9092 6ZM37.158 23.8193C38.329 24.5545 38.9179 26.0231 38.5851 27.244C39.7318 28.6724 33.5609 32.0258 30.1443 33.8825C29.3246 34.3279 28.6635 34.6872 28.2999 34.9131C28.1053 34.5999 27.9329 34.2802 27.7822 33.9563C26.5402 33.714 25.4842 32.5354 25.3437 31.1598C25.2032 29.7839 26.0273 28.6861 27.2311 28.5495C27.4025 27.917 27.6624 27.3226 28.0076 26.7877C27.4222 25.5274 27.7151 24.0974 28.7455 23.4572C29.7759 22.8169 31.1878 23.1878 32.0583 24.2709C32.6908 24.1983 33.3388 24.2286 33.9817 24.3551C34.6374 23.3364 35.9866 23.0839 37.158 23.8193Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.1616 28.506C41.499 24.6855 41.5916 19.8049 39.397 15.9016C37.4738 12.4809 34.7986 9.12802 30.4682 9.12802C29.5955 9.12802 28.6576 9.46714 27.733 9.80141C26.1048 10.3901 24.5181 10.9638 23.4029 9.64336C23.0261 9.19719 22.8964 8.61255 22.8639 8C22.8423 7.5941 22.8633 7.17595 22.8834 6.77772C22.896 6.52788 22.9082 6.28587 22.9092 6.05965C22.9093 6.03964 22.9093 6.01976 22.9092 6H16.0757C16.0757 6.15504 16.0754 6.30978 16.0751 6.46422C16.0746 6.77213 16.0741 7.07881 16.0757 7.38413C16.0767 7.59005 16.0787 7.79535 16.0824 8C16.121 10.1836 16.3417 12.2928 17.5268 14.2842C18.5423 15.9905 20.053 17.1898 21.5767 18.3995C21.7998 18.5765 22.023 18.7538 22.2451 18.9329C25.2665 21.3699 23.3756 25.2268 20.1984 26.1331C19.2145 26.4138 18.2869 26.6205 17.4153 26.8147C13.9681 27.5828 11.3976 28.1556 9.68655 32.3378C9.23317 33.446 9 34.6285 9 35.8224V42H15.827V35.5539C15.827 33.785 17.8285 32.7045 19.3769 33.4669C23.4348 35.4651 28.2951 36.1013 32.6479 34.4134C35.5853 33.2743 37.5612 31.1218 39.1616 28.506ZM13.827 40V35.5539C13.827 32.1134 17.5577 30.3418 20.2604 31.6727C23.9348 33.482 28.2054 33.9909 31.9248 32.5487C34.3023 31.6267 35.9818 29.8711 37.4555 27.4622C39.4153 24.2589 39.4927 20.1526 37.6537 16.8818C35.7556 13.5059 33.5912 11.128 30.4682 11.128C30.1931 11.128 29.8058 11.2064 29.2183 11.3996C28.9612 11.4841 28.7018 11.5779 28.4109 11.683C28.379 11.6946 28.3468 11.7062 28.3141 11.718C27.9966 11.8327 27.6411 11.96 27.2814 12.0718C26.5909 12.2865 25.6847 12.5121 24.731 12.4286C23.6765 12.3362 22.6703 11.8756 21.8749 10.9338C21.0503 9.95746 20.8932 8.79306 20.8617 8H18.0857C18.1256 10.0578 18.3191 11.7047 19.2455 13.2614C20.0603 14.6306 21.2588 15.5862 22.8061 16.8201C23.0303 16.9989 23.2619 17.1835 23.5007 17.3762C25.6884 19.1407 26.2009 21.614 25.4303 23.7779C24.7085 25.8047 22.9192 27.4368 20.7471 28.0564C19.7009 28.3548 18.7031 28.577 17.8284 28.7718C17.6265 28.8168 17.4311 28.8603 17.2432 28.9029C16.2024 29.1392 15.3866 29.3498 14.6809 29.641C13.4456 30.1507 12.416 30.9483 11.5376 33.0952C11.1822 33.9639 11 34.8893 11 35.8224V40H13.827Z" fill="currentColor"/>
+</svg></div><b>위암 가족력(부모·형제·자녀)</b></div><div class="v2-body">균이 있으면 제균해 위암 위험을 의미 있게 낮춥니다.</div></div></div>
+    <div class="v2-panel q-four"><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M41.8779 7.52115C42.1424 8.006 41.9637 8.61343 41.4789 8.8779L35.9789 11.8779C35.669 12.0469 35.293 12.0401 34.9895 11.8599C34.686 11.6797 34.5 11.3529 34.5 11V9.68454L30.4789 11.8779C29.994 12.1424 29.3866 11.9637 29.1221 11.4789C28.8576 10.994 29.0363 10.3866 29.5211 10.1221L35.0211 7.1221C35.331 6.9531 35.707 6.95994 36.0105 7.1401C36.314 7.32026 36.5 7.64706 36.5 8V9.31546L40.5211 7.1221C41.006 6.85764 41.6134 7.0363 41.8779 7.52115Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M30.0958 33.5728C30.3318 33.0735 30.9278 32.8599 31.4272 33.0958L36.7743 35.6222C37.0941 35.7733 37.3103 36.0821 37.3429 36.4343C37.3754 36.7864 37.2196 37.1296 36.9329 37.3368L35.6105 38.2926L39.4272 40.0958C39.9265 40.3318 40.1401 40.9278 39.9042 41.4272C39.6682 41.9265 39.0722 42.1401 38.5728 41.9042L33.2257 39.3778C32.9059 39.2267 32.6897 38.9179 32.6571 38.5657C32.6245 38.2136 32.7804 37.8704 33.0671 37.6632L34.3895 36.7074L30.5728 34.9042C30.0735 34.6682 29.8599 34.0722 30.0958 33.5728Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M37.5167 21.215C37.8116 21.4478 37.9512 21.8262 37.878 22.1948L37.4653 24.273L40.5823 22.84C41.0841 22.6093 41.6779 22.829 41.9086 23.3308C42.1393 23.8326 41.9195 24.4264 41.4177 24.6571L36.5206 26.9086C36.1791 27.0656 35.7785 27.0179 35.4835 26.7851C35.1884 26.5523 35.0488 26.1738 35.122 25.8052L35.5349 23.7262L32.4174 25.1581C31.9155 25.3886 31.3218 25.1686 31.0913 24.6667C30.8608 24.1648 31.0807 23.5711 31.5826 23.3406L36.4798 21.0913C36.8212 20.9344 37.2217 20.9822 37.5167 21.215Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.2 6V11.5385C22.2 13.1126 21.2549 14.1507 20.39 14.6691C19.6826 15.0931 18.9172 15.2585 18.4653 15.3422C17.9839 15.4314 17.4529 15.4928 17.0163 15.5433C16.9942 15.5459 16.9723 15.5484 16.9507 15.5509C16.4609 15.6076 16.0266 15.659 15.6062 15.731C14.7026 15.8857 14.2778 16.0758 14.1069 16.2069C14.0777 16.2293 14.0668 16.2422 14.0652 16.2441C14.0652 16.2441 14.0629 16.2468 14.0597 16.2535C14.0576 16.258 14.0386 16.2976 14.0227 16.3881C14.0626 16.4038 14.108 16.4206 14.1595 16.4383C15.0141 16.731 16.2315 16.8576 17.9883 17.0403C18.094 17.0513 18.2018 17.0625 18.3115 17.0739C19.9685 17.2469 22.2095 17.4888 24.0323 18.3001C25.0017 18.7315 26.0299 19.3952 26.8106 20.4511C27.6188 21.544 28 22.8391 28 24.2308C28 25.7204 27.5239 27.1081 26.4956 28.1991C25.538 29.2151 24.3304 29.729 23.2918 30.0132C21.3969 30.5317 19.0544 30.5276 17.2313 30.5244C17.152 30.5243 17.0737 30.5241 16.9964 30.524C14.8524 30.5215 13.3192 30.5449 12.3004 30.8269C12.1687 30.8634 12.0713 30.898 12.0011 30.9267C12.0108 31.262 12.0795 31.3759 12.0816 31.3793C12.0861 31.3872 12.0916 31.3955 12.1065 31.4097C12.1233 31.4257 12.162 31.4586 12.238 31.502C12.6355 31.7291 13.4229 31.9162 14.7543 31.9847C15.3581 32.0158 15.9707 32.0202 16.6222 32.0248L16.6775 32.0252C17.31 32.0297 18.0312 32.0348 18.6794 32.0845C19.2599 32.129 20.1598 32.229 20.9871 32.615C21.438 32.8253 22.0126 33.1861 22.4764 33.8062C22.972 34.4687 23.2 35.2397 23.2 36V42H17.2V38.0304C17.0261 38.028 16.8384 38.0265 16.635 38.025L16.5387 38.0243C15.9183 38.02 15.1861 38.0149 14.4457 37.9768C12.9771 37.9011 10.9645 37.6844 9.26203 36.712C8.35296 36.1927 7.49467 35.4383 6.8809 34.3715C6.26898 33.3079 6 32.1075 6 30.8462C6 29.3566 6.47273 27.9682 7.49646 26.8736C8.45161 25.8524 9.65831 25.3327 10.6996 25.0444C12.6057 24.5168 14.9613 24.5207 16.7899 24.5237C16.862 24.5238 16.9332 24.524 17.0036 24.524C19.1503 24.5266 20.6855 24.5058 21.7082 24.226C21.8333 24.1917 21.9275 24.1592 21.9969 24.1317C21.9927 24.0705 21.9851 24.0324 21.9791 24.0112C21.9506 23.983 21.8493 23.8959 21.5927 23.7817C20.7905 23.4247 19.5315 23.2339 17.6885 23.0415C17.5305 23.025 17.3663 23.0084 17.1968 22.9913C15.6848 22.8384 13.7612 22.644 12.2155 22.1146C11.3087 21.804 10.2434 21.2912 9.39215 20.3644C8.46931 19.3598 8 18.0882 8 16.6923C8 14.4332 8.90138 12.6377 10.4556 11.4458C11.8222 10.3978 13.4474 10.0133 14.5938 9.81706C15.1729 9.71791 15.7392 9.65117 16.2 9.59775V6H22.2ZM21.9704 23.9893C21.9704 23.9893 21.9736 23.9933 21.9772 24.0048C21.9718 23.9956 21.9704 23.9893 21.9704 23.9893Z" fill="currentColor"/>
+</svg></div><b>위·십이지장 궤양</b></div><div class="v2-body">제균하면 궤양 재발이 약 80%에서 5% 미만으로 크게 줄어듭니다.</div></div></div>
+    <div class="v2-panel q-four v2-panel--accent"><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.3163 10.7392L17.3163 10.7405C17.35 14.3482 17.817 16.1167 18.7342 17.0618C19.5398 17.892 20.8979 18.2938 23.4483 18.3692C23.6502 16.3334 24.4621 14.709 25.6552 13.5517C27.0283 12.2198 28.8467 11.5652 30.6465 11.5652C32.4464 11.5652 34.2647 12.2198 35.6379 13.5517C37.0228 14.895 37.894 16.8677 37.894 19.3824V27.7146C37.894 30.0693 37.503 32.5607 36.2917 34.4946C35.0351 36.5007 32.9564 37.8043 29.8822 37.8043C26.7189 37.8043 24.523 35.9216 22.5827 34.2475L22.5209 34.1941C20.5454 32.4895 18.7691 30.9566 16.2502 30.6086C15.1924 30.6197 14.4572 30.9033 13.9288 31.2903C13.3803 31.6921 12.9866 32.2557 12.7081 32.9075C12.1388 34.2399 12.12 35.7752 12.1475 36.4349C12.153 36.5657 12.1558 37.983 12.1578 39.3149C12.1587 39.9926 12.1595 40.6637 12.1599 41.1653L12.1606 41.9984L11.1922 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H17.3143L17.3161 10.6698L17.3162 10.7198L17.3162 10.7348L17.3163 10.7392ZM9 42H10.1606L10.1599 41.1672C10.1595 40.6657 10.1587 39.995 10.1578 39.3178C10.1568 38.6405 10.1555 37.9572 10.154 37.4304C10.1532 37.1668 10.1524 36.9432 10.1514 36.7793C10.151 36.6972 10.1505 36.6311 10.15 36.5829L10.1493 36.5229L10.1492 36.5171C10.1492 36.5164 10.1492 36.5168 10.1493 36.5182C10.1181 35.7703 10.1212 33.8715 10.869 32.1216C11.249 31.2323 11.8377 30.3428 12.747 29.6768C13.666 29.0037 14.8454 28.6083 16.3142 28.6083C16.709 28.6083 17.0741 28.6172 17.4211 28.6256C18.053 28.6409 18.625 28.6548 19.2082 28.6111C20.0595 28.5473 20.7286 28.3639 21.2728 27.956C22.2993 27.1866 23.2743 25.3012 23.3881 20.369C20.7403 20.2934 18.675 19.8726 17.2989 18.4547C15.769 16.8782 15.3497 14.3305 15.3164 10.7592C15.315 10.6179 15.3144 6.82757 15.3142 6H9C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42ZM25.0307 24.4664C27.426 23.3089 29.2699 24.2451 31.01 25.1287C32.6098 25.941 34.1219 26.7088 35.894 25.7637V19.3824C35.894 17.3524 35.2033 15.9164 34.2454 14.9873C33.2758 14.0468 31.9704 13.5652 30.6465 13.5652C29.3227 13.5652 28.0173 14.0468 27.0477 14.9873C26.0898 15.9164 25.3991 17.3524 25.3991 19.3824C25.3991 21.3933 25.2758 23.072 25.0307 24.4664Z" fill="currentColor"/>
+</svg></div><b>조기 위암을 내시경으로 뗀 뒤</b></div><div class="v2-body">남은 위에서 새 위암이 생길 위험이 약 절반으로 줄어듭니다.</div></div></div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 제균 치료 뒤에는 균이 없어졌는지 꼭 다시 확인합니다.</span><span class="v2-src">근거 · 대한상부위장관·헬리코박터학회 진료 지침</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 내시경 간격</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">나에게 맞는 내시경 간격</h2>
+  <p class="v2-sub">위축의 범위·장상피화생·가족력에 따라 담당 의사가 정합니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:650px"><colgroup><col style="width:230px"><col style="width:420px"></colgroup><thead><tr><th>이런 경우</th><th>내시경 간격</th></tr></thead><tbody><tr style="height:88px"><th>처음 진단받을 때</th><td>위축 범위를 보고, 헬리코박터균 검사와 조직검사를 함께&nbsp;합니다.</td></tr><tr style="height:88px"><th>좁은 위축성위염</th><td><b>보통 2년마다</b> — 국가 위암검진 간격보다 길게 두지 않습니다.</td></tr><tr style="height:88px"><th>넓은 위축 · 장상피화생이 넓음 · 위암 가족력</th><td><b>1~2년마다</b>로 간격을 좁힙니다.</td></tr><tr style="height:88px"><th>심한 세포 이상(고도 이형성)·조기 위암이 의심되면</th><td><span class="v2-td--alert">바로</span> 내시경 절제 등 치료를 상의합니다.</td></tr></tbody></table>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:744px;top:273px;width:472px;height:266px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/gi-atrophic-gastritis-s09-comparison-gi-dc96e44f-20260530-raster-20260531.jpg" alt="의사가 내시경 사진을 보며 달력에 다음 검사 일정을 잡는 그림" style="width:472px;height:266px">
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">그림 · 정해진 간격으로 내시경을 이어 가며 변화를 비교합니다(설명용 그림).</span><span class="v2-src">근거 · 대한소화기내시경학회 위암 검진 지침</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 생활 관리</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진행을 늦추는 생활 관리</h2>
+  <p class="v2-sub">되돌리는 음식은 없지만, 진행 속도와 위암 위험은 줄일 수 있습니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">이렇게 하세요</div><div class="v2-vs__lead">매일의 습관이 위 점막을 지킵니다.</div><ul class="v2-vs__list"><li>신선한 채소·과일을 끼니마다 충분히</li><li>싱겁게 — 국물·찌개는 절반만</li><li>담배는 끊기</li><li>규칙적인 운동과 알맞은 체중</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">이것은 피하세요</div><div class="v2-vs__lead">위 점막을 자꾸 자극하는 것들입니다.</div><ul class="v2-vs__list"><li>젓갈·장아찌 같은 짠 발효식품 자주 먹기</li><li>훈제·탄 음식·햄·소시지 자주 먹기</li><li>잦은 폭음</li><li>증상이 없다고 내시경 미루기</li></ul></div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 처방 없이 위염약을 오래 스스로 드시는 것은 피하고, 필요하면 진료에서 상의하세요.</span><span class="v2-src">근거 · 대한소화기내시경학회 생활 관리 권고 · WCRF</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 바로 내원</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이런 증상이 새로 생기면 바로 오세요</h2>
+  <p class="v2-sub">정해진 내시경 날짜를 기다리지 않아도 됩니다</p>
+  <div class="v2-panel q-card q-card--accent" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28.5 8.5C28.5 10.9853 26.4853 13 24 13C21.5147 13 19.5 10.9853 19.5 8.5C19.5 6.01472 21.5147 4 24 4C26.4853 4 28.5 6.01472 28.5 8.5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32.2683 27.4758C33.0834 27.3276 33.624 26.5467 33.4758 25.7317C33.424 25.4468 33.3555 25.0102 33.2739 24.4905C33.1133 23.4681 32.9022 22.1233 32.6682 20.9753C32.485 20.0769 32.2641 19.1627 31.995 18.4296C31.862 18.0672 31.6938 17.683 31.4744 17.351C31.2847 17.0638 30.8892 16.5556 30.2083 16.3722C25.7676 15.1762 22.2083 15.2312 17.7953 16.4082C17.1154 16.5895 16.719 17.0946 16.528 17.3818C16.3079 17.7129 16.1392 18.096 16.006 18.4568C15.7365 19.1869 15.5154 20.097 15.3322 20.9912C15.0966 22.1411 14.8852 23.483 14.7246 24.5029C14.6439 25.0156 14.576 25.447 14.5242 25.7317C14.376 26.5467 14.9166 27.3276 15.7317 27.4758C16.5468 27.624 17.3276 27.0834 17.4758 26.2683C17.5529 25.8443 17.6321 25.3372 17.7196 24.7773C17.869 23.8201 18.0426 22.7085 18.2711 21.5934C18.446 20.7398 18.6312 20.0082 18.8204 19.4957C18.8645 19.3763 18.9038 19.2826 18.937 19.2108C19.3445 19.1073 19.7426 19.0149 20.1334 18.9337L21 25L19.5 30.5V42.5C19.5 43.3284 20.1716 44 21 44C21.8284 44 22.5 43.3284 22.5 42.5V30.5H25.5V42.5C25.5 43.3284 26.1716 44 27 44C27.8284 44 28.5 43.3284 28.5 42.5V30.5L27 25L27.8716 18.8987C28.2601 18.978 28.6556 19.0692 29.0602 19.1725C29.0939 19.2455 29.1339 19.3412 29.1787 19.4632C29.3683 19.9798 29.5537 20.7164 29.7286 21.5746C29.9566 22.6928 30.1291 23.8014 30.2778 24.7575C30.3661 25.3247 30.446 25.8383 30.5242 26.2683C30.6724 27.0834 31.4533 27.624 32.2683 27.4758ZM28.9546 18.982C28.9545 18.9826 28.9594 18.9898 28.9695 19.0018C28.9598 18.9873 28.9547 18.9813 28.9546 18.982ZM19.0424 19.0209C19.0423 19.0203 19.0374 19.0262 19.0279 19.0403C19.0378 19.0286 19.0425 19.0216 19.0424 19.0209Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">모르게 빠지는 체중</div>
+    <div class="v2-body">식사량은 그대로인데 몸무게가 줄어듭니다.</div>
+    <div class="q-card__k">바로 진료</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M38 34.2618V10.3761C38 8.16691 36.2091 6.37605 34 6.37605H28L26.868 5.21169C25.2973 3.5961 22.7027 3.5961 21.132 5.21169L20 6.37605H14C11.7909 6.37605 10 8.16691 10 10.376V34.2618C10 36.4709 11.7909 38.2618 14 38.2618H18V40.2617H23V44.2617H25V40.2617H30V38.2618H34C36.2091 38.2618 38 36.4709 38 34.2618ZM26.566 7.77021C26.9426 8.15753 27.4598 8.37605 28 8.37605H34C35.1046 8.37605 36 9.27148 36 10.3761V27.8006C35.7222 27.5852 35.4135 27.3722 35.0748 27.1751C33.2501 26.1132 30.6105 25.5605 27.4918 27.4005C24.924 28.9155 22.5089 29.3254 19.8818 29.3813C18.711 29.4062 17.5141 29.3609 16.2308 29.3123C16.0558 29.3057 15.8789 29.299 15.7005 29.2924C14.5325 29.2493 13.3017 29.2116 12 29.2328V10.376C12 9.27148 12.8954 8.37605 14 8.37605H20C20.5402 8.37605 21.0574 8.15753 21.434 7.77021L22.566 6.60584C23.3514 5.79805 24.6486 5.79805 25.434 6.60584L26.566 7.77021Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">검은 변</div>
+    <div class="v2-body">짜장처럼 검은 변은 위에서 피가 나고 있다는 신호일 수 있습니다.</div>
+    <div class="q-card__k">바로 진료</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C7 18.5453 15.2 10.2545 24 14.1818C33 9.81822 41 18.5454 44 24C41 28.3636 32.8 36 24 36C15.2 36 7 28.3636 4 24ZM9.30929 23.5229C12.4149 22.4731 18.1843 21 24 21C29.7472 21 35.4492 22.4386 38.5799 23.4856C39.0367 23.6384 39.0113 24.2838 38.55 24.4225L38.5245 24.4302C35.5004 25.3398 29.9805 27 24 27C17.9208 27 12.3174 25.3748 9.32775 24.4265C8.88033 24.2845 8.86462 23.6732 9.30929 23.5229Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">삼키기 어려움</div>
+    <div class="v2-body">음식이 목이나 가슴에 걸리는 느낌이 계속됩니다.</div>
+    <div class="q-card__k">바로 진료</div>
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 이런 증상이 없더라도 정해진 간격의 내시경은 꼭 받으세요.</span><span class="v2-src">근거 · 대한소화기내시경학회 위암 검진 지침</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 기억할 여섯 가지</h2>
+  <p class="v2-sub">제균 · 생활 관리 · 정기 내시경 — 함께 지켜 가겠습니다</p>
+  <div class="v2-panel q-check" style="left:64px;top:206px;width:640px;height:400px">
+    <ul class="q-check__list"><li><i>01</i><span>위축성위염·장상피화생은 위암의 <b>길목</b>이지만 대부분 위암이 되지 않습니다</span></li><li><i>02</i><span>헬리코박터균 검사를 받고, 있으면 <b>제균</b>합니다</span></li><li><i>03</i><span>금연 · 싱겁게 · 채소와 과일을 충분히</span></li><li><i>04</i><span>좁은 위축은 <b>보통 2년</b>, 넓은 위축·장상피화생은 <b>1~2년</b>마다 내시경</span></li><li><i>05</i><span>증상이 없어도 내시경 날짜를 미루지 않습니다</span></li><li><i>06</i><span>체중 감소·검은 변·삼킴 곤란은 <b>바로</b> 진료</span></li></ul>
+  </div>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:734px;top:270px;width:482px;height:271px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/gi-atrophic-gastritis-s07-anatomy-gi-c113a8a0-20260530-raster-20260531.jpg" alt="나이 들어 가는 사람과 내시경 검사를 받는 어르신 그림" style="width:482px;height:271px">
+  </div>
+  <footer class="v2-tip"><span class="v2-tip__t">Tip · 지난 내시경 결과지를 가져오시면 간격을 정확히 정할 수 있습니다.</span><span class="v2-src">근거 · 대한소화기내시경학회 2020 · 헬리코박터학회 지침</span></footer>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">위축성위염·장상피화생을 진단받은 분을 위한 설명자료입니다. 내시경 간격과 치료는 담당 의사와 상의해&nbsp;정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 10C9 7.23858 11.2386 5 14 5H38C38.5523 5 39 5.44772 39 6V36C39 36.5523 38.5523 37 38 37H14C12.3431 37 11 38.3431 11 40V41H38V43H10C9.44772 43 9 42.5523 9 42V10ZM23 26V21H18V19H23V14H25V19H30V21H25V26H23Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body q-refs">대한소화기내시경학회 2020 위암 검진 지침 · Correa 1992 · Kimura·Takemoto 1969 · 대한상부위장관·헬리코박터학회 지침 · IARC · WCRF</div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM17,2H18V3H17zM18,2H19V3H18zM20,2H21V3H20zM21,2H22V3H21zM23,2H24V3H23zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM13,3H14V4H13zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM23,3H24V4H23zM24,3H25V4H24zM25,3H26V4H25zM26,3H27V4H26zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM14,4H15V5H14zM15,4H16V5H15zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM24,4H25V5H24zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM13,5H14V6H13zM14,5H15V6H14zM15,5H16V6H15zM16,5H17V6H16zM18,5H19V6H18zM20,5H21V6H20zM21,5H22V6H21zM22,5H23V6H22zM24,5H25V6H24zM25,5H26V6H25zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM16,6H17V7H16zM20,6H21V7H20zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM13,7H14V8H13zM14,7H15V8H14zM17,7H18V8H17zM18,7H19V8H18zM21,7H22V8H21zM22,7H23V8H22zM24,7H25V8H24zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM11,9H12V10H11zM13,9H14V10H13zM14,9H15V10H14zM16,9H17V10H16zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM22,9H23V10H22zM23,9H24V10H23zM25,9H26V10H25zM2,10H3V11H2zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM15,10H16V11H15zM16,10H17V11H16zM18,10H19V11H18zM23,10H24V11H23zM25,10H26V11H25zM26,10H27V11H26zM27,10H28V11H27zM29,10H30V11H29zM2,11H3V12H2zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM12,11H13V12H12zM14,11H15V12H14zM15,11H16V12H15zM18,11H19V12H18zM20,11H21V12H20zM22,11H23V12H22zM26,11H27V12H26zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM33,11H34V12H33zM34,11H35V12H34zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM11,12H12V13H11zM14,12H15V13H14zM15,12H16V13H15zM16,12H17V13H16zM18,12H19V13H18zM20,12H21V13H20zM21,12H22V13H21zM26,12H27V13H26zM29,12H30V13H29zM30,12H31V13H30zM32,12H33V13H32zM34,12H35V13H34zM2,13H3V14H2zM3,13H4V14H3zM7,13H8V14H7zM10,13H11V14H10zM13,13H14V14H13zM15,13H16V14H15zM18,13H19V14H18zM20,13H21V14H20zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM30,13H31V14H30zM31,13H32V14H31zM2,14H3V15H2zM3,14H4V15H3zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM13,14H14V15H13zM14,14H15V15H14zM16,14H17V15H16zM17,14H18V15H17zM18,14H19V15H18zM19,14H20V15H19zM21,14H22V15H21zM23,14H24V15H23zM25,14H26V15H25zM27,14H28V15H27zM28,14H29V15H28zM31,14H32V15H31zM34,14H35V15H34zM4,15H5V16H4zM5,15H6V16H5zM7,15H8V16H7zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM19,15H20V16H19zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM24,15H25V16H24zM26,15H27V16H26zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM34,15H35V16H34zM2,16H3V17H2zM6,16H7V17H6zM8,16H9V17H8zM9,16H10V17H9zM12,16H13V17H12zM14,16H15V17H14zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM25,16H26V17H25zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM33,16H34V17H33zM2,17H3V18H2zM4,17H5V18H4zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM11,17H12V18H11zM13,17H14V18H13zM14,17H15V18H14zM15,17H16V18H15zM16,17H17V18H16zM18,17H19V18H18zM19,17H20V18H19zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM28,17H29V18H28zM29,17H30V18H29zM30,17H31V18H30zM33,17H34V18H33zM4,18H5V19H4zM5,18H6V19H5zM8,18H9V19H8zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM14,18H15V19H14zM15,18H16V19H15zM17,18H18V19H17zM19,18H20V19H19zM21,18H22V19H21zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM28,18H29V19H28zM30,18H31V19H30zM31,18H32V19H31zM33,18H34V19H33zM4,19H5V20H4zM5,19H6V20H5zM9,19H10V20H9zM13,19H14V20H13zM18,19H19V20H18zM20,19H21V20H20zM23,19H24V20H23zM25,19H26V20H25zM27,19H28V20H27zM29,19H30V20H29zM31,19H32V20H31zM33,19H34V20H33zM3,20H4V21H3zM4,20H5V21H4zM5,20H6V21H5zM8,20H9V21H8zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM23,20H24V21H23zM24,20H25V21H24zM28,20H29V21H28zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM2,21H3V22H2zM5,21H6V22H5zM10,21H11V22H10zM11,21H12V22H11zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM15,21H16V22H15zM16,21H17V22H16zM18,21H19V22H18zM19,21H20V22H19zM23,21H24V22H23zM25,21H26V22H25zM26,21H27V22H26zM27,21H28V22H27zM29,21H30V22H29zM33,21H34V22H33zM2,22H3V23H2zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM14,22H15V23H14zM15,22H16V23H15zM18,22H19V23H18zM21,22H22V23H21zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM25,22H26V23H25zM26,22H27V23H26zM27,22H28V23H27zM33,22H34V23H33zM3,23H4V24H3zM4,23H5V24H4zM10,23H11V24H10zM11,23H12V24H11zM12,23H13V24H12zM14,23H15V24H14zM15,23H16V24H15zM17,23H18V24H17zM19,23H20V24H19zM22,23H23V24H22zM26,23H27V24H26zM28,23H29V24H28zM31,23H32V24H31zM33,23H34V24H33zM34,23H35V24H34zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM15,24H16V25H15zM18,24H19V25H18zM21,24H22V25H21zM23,24H24V25H23zM24,24H25V25H24zM26,24H27V25H26zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM34,24H35V25H34zM3,25H4V26H3zM4,25H5V26H4zM5,25H6V26H5zM6,25H7V26H6zM11,25H12V26H11zM13,25H14V26H13zM14,25H15V26H14zM15,25H16V26H15zM16,25H17V26H16zM18,25H19V26H18zM20,25H21V26H20zM21,25H22V26H21zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM28,25H29V26H28zM33,25H34V26H33zM2,26H3V27H2zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM18,26H19V27H18zM19,26H20V27H19zM23,26H24V27H23zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM21,27H22V28H21zM22,27H23V28H22zM24,27H25V28H24zM26,27H27V28H26zM30,27H31V28H30zM31,27H32V28H31zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM12,28H13V29H12zM15,28H16V29H15zM16,28H17V29H16zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM22,28H23V29H22zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM13,29H14V30H13zM15,29H16V30H15zM18,29H19V30H18zM19,29H20V30H19zM20,29H21V30H20zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM30,29H31V30H30zM33,29H34V30H33zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM14,30H15V31H14zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM15,31H16V32H15zM19,31H20V32H19zM20,31H21V32H20zM23,31H24V32H23zM28,31H29V32H28zM30,31H31V32H30zM31,31H32V32H31zM32,31H33V32H32zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM11,32H12V33H11zM12,32H13V33H12zM15,32H16V33H15zM16,32H17V33H16zM19,32H20V33H19zM23,32H24V33H23zM25,32H26V33H25zM26,32H27V33H26zM30,32H31V33H30zM31,32H32V33H31zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM14,33H15V34H14zM18,33H19V34H18zM19,33H20V34H19zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM26,33H27V34H26zM27,33H28V34H27zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM18,34H19V35H18zM20,34H21V35H20zM23,34H24V35H23zM26,34H27V35H26zM30,34H31V35H30zM31,34H32V35H31zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -1026,96 +402,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 검사 간격과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>
