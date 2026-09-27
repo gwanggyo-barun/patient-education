@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Graves' Disease — Gwanggyo Barun Internal Medicine</title>
+  <title>그레이브스병 환자 교육 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,793 +18,456 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <!-- Local extensions (mirrors validated hyperthyroidism deck: 3-stat row + diag-flow grid + alert-strip + checklist 8-up + layout-sweep spacing) -->
-  <style>
-    /* Hide decorative bg number so scrollHeight == clientHeight (validator-friendly) */
-    .slide__bg-num { display: none !important; }
-
-    /* Three-stat row (slide 2) */
-    .pattern-stats3 {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-6);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .stats3-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-      align-items: center;
-      justify-items: center;
-    }
-    .stats3-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .stats3-cell__circle {
-      width: 168px;
-      height: 168px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-canvas);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-    }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__num {
-      font-size: 2.6rem;
-      font-weight: var(--weight-black);
-      line-height: 1;
-      letter-spacing: var(--tracking-mega);
-    }
-    .stats3-cell__unit {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      margin-top: var(--space-2);
-      opacity: 0.92;
-    }
-    .stats3-cell__label {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      text-align: center;
-      max-width: 260px;
-      line-height: var(--lh-snug);
-    }
-    .stats3-note {
-      padding: var(--space-5) var(--space-6);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-relaxed);
-    }
-
-    /* Diagnostic-flow 5-step grid (3 + 2 layout) */
-    .pattern-grid--diag {
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 1fr;
-    }
-    .pattern-grid--diag .tile:nth-child(4) { grid-column: 1 / 2; }
-    .pattern-grid--diag .tile:nth-child(5) { grid-column: 2 / 4; }
-
-    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .alert-row { align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5E-redesign 2026-09-27 (원장님 49113 — HQ3F 방식) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{white-space:nowrap;font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-pillar{justify-content:center}
+ .q-pillar .v2-body{font-size:17px}
+ .q-band{display:flex;flex-direction:column;justify-content:center;padding:8px 26px}
+ .q-band .v2-head{margin-bottom:4px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="그레이브스병(Graves&#x27; disease) — 자가면역이 원인인 갑상선기능항진증. 진단(TRAb)·항갑상선제·재발과 관해·방사성요오드/수술·안병증까지 한눈에">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/graves-disease/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Graves' Disease — Gwanggyo Barun Internal Medicine", "description": "그레이브스병(Graves' disease) — 자가면역이 원인인 갑상선기능항진증. 진단(TRAb)·항갑상선제·재발과 관해·방사성요오드/수술·안병증까지 한눈에", "url": "https://edu.gwanggyobarun.com/decks/endocrine/graves-disease/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "그레이브스병 환자 교육 — 광교바른내과", "description": "그레이브스병(Graves' disease) — 자가면역이 원인인 갑상선기능항진증. 진단(TRAb)·항갑상선제·재발과 관해·방사성요오드/수술·안병증까지 한눈에", "url": "https://edu.gwanggyobarun.com/decks/endocrine/graves-disease/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">그레이브스병,<br><em>내 면역이 갑상선을 자극하는 병</em></h1>
-      <p class="slide__subtitle">그레이브스병 (Graves' disease) — 갑상선기능항진증의 가장 흔한 원인. 자가항체(TRAb)가 갑상선을 계속 자극합니다. 진단부터 항갑상선제·재발과 관해·방사성요오드/수술·눈 증상까지 함께 살펴봅니다</p>
+      <p class="slide__subtitle">그레이브스병 — 갑상선기능항진증의 가장 흔한 원인. 자가항체(TRAb)가 갑상선을 계속 자극합니다. 진단부터 항갑상선제·재발과 관해·방사성요오드/수술·눈 증상까지 함께&nbsp;살펴봅니다</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Graves' disease · TRAb · Antithyroid drug · RAI · Surgery · Thyroid eye disease</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__source">자가항체 · 먹는 약 · 재발과 관해 · 방사성요오드 · 수술 · 눈 증상</span>
+      <span class="slide__page">01 / 13</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · OVERVIEW (three-stat row)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">그레이브스병 (Graves' disease) 이란</h2>
-      <p class="slide__subtitle">면역계가 갑상선을 '켜진 상태'로 고정시키는 자가면역질환입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">70~80<span style="font-size:1.4rem;">%</span></div>
-            </div>
-            <div class="stats3-cell__label">갑상선기능항진증<br>원인 중 그레이브스병</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">약 5<span style="font-size:1.4rem;">배</span></div>
-            </div>
-            <div class="stats3-cell__label">여성에게 더 흔함<br>(남성 대비)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">20~50<span style="font-size:1.4rem;">대</span></div>
-            </div>
-            <div class="stats3-cell__label">주로 발병하는<br>연령대</div>
-          </div>
-        </div>
-        <div class="stats3-note">
-          <strong>왜 생기나요? — </strong>우리 몸의 면역계가 잘못 만든 자가항체(<em>TRAb</em>)가 갑상선의 스위치(TSH 수용체)를 계속 눌러 둡니다. 그 결과 갑상선이 쉬지 않고 호르몬을 만들어 대사가 빨라집니다. 감염병처럼 옮는 병이 아니며, 치료하면 대부분 잘 조절됩니다. 다만 방치하면 심방세동·심부전·골다공증으로 이어질 수 있어 꾸준한 관리가 중요합니다.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 Hyperthyroidism Guideline · 대한갑상선학회(KTA)</span>
-      <span class="slide__page">02 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · MECHANISM (asymmetric split)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>MECHANISM</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">왜 갑상선이 과하게 일하나 (기전)</h2>
-      <p class="slide__subtitle">자가항체가 갑상선의 스위치를 계속 눌러 두는 것이 핵심입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-split__primary" style="display:flex;flex-direction:column;justify-content:center;gap:16px;">
-        <p class="pattern-split__statement">면역계가 만든 자가항체 <em>TRAb</em>가 갑상선의 'TSH 수용체'를 계속 켜 둡니다. 스위치가 눌린 채 고정되어 갑상선이 <strong>쉬지 않고 호르몬을 만들어</strong> 냅니다.</p>
-        <p class="pattern-split__supporting">같은 항체와 염증이 눈 뒤 조직도 자극하면 <strong>눈이 붓고 튀어나오는 갑상선 안병증</strong>이 함께 올 수 있습니다. 갑상선은 전체가 고르게 부어(미만성 비대) 목 앞이 도톰해지고, 청진 시 혈류 잡음이 들리기도 합니다. 그래서 그레이브스병은 갑상선만의 병이 아니라 온몸에 영향을 주는 자가면역 반응입니다.</p>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
-        <img src="../../../shared/assets/generated/endocrine-graves-s03-mechanism-trab-20260709.png" alt="자가항체 TRAb가 갑상선 세포의 TSH 수용체에 결합해 호르몬 과다 생산을 일으키는 기전 설명 이미지">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Graves' orbitopathy review, Lancet Diabetes Endocrinol 2025 · ATA 2016</span>
-      <span class="slide__page">03 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · SYMPTOMS (density grid 3×2)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>SYMPTOMS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">주요 증상 (Symptoms)</h2>
-      <p class="slide__subtitle">대사가 빨라지면서 나타나는 전신 증상 — 눈·목의 변화가 함께 오면 그레이브스병을 의심합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 01</div>
-          <div class="tile__title">더위 못 견딤 · 땀 (Heat Intolerance)</div>
-          <div class="tile__body">평소보다 땀이 많고 더위를 견디기 어렵습니다. 피부가 따뜻하고 촉촉하게 느껴집니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 02</div>
-          <div class="tile__title">두근거림 · 빠른 맥박 (Palpitation)</div>
-          <div class="tile__body">쉬고 있어도 맥박이 분당 100회를 넘고, 가슴 두근거림·부정맥이 생길 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 03</div>
-          <div class="tile__title">체중 감소 · 식욕 증가</div>
-          <div class="tile__body">더 많이 먹는데도 체중이 빠집니다. 단기간에 5kg 이상 빠지면 꼭 확인이 필요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 04</div>
-          <div class="tile__title">손 떨림 · 불안 · 불면</div>
-          <div class="tile__body">미세한 손 떨림, 예민함·짜증, 집중력 저하, 잠들기 어려움 등이 흔합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 05 · 그레이브스 특징</div>
-          <div class="tile__title">눈 변화 (안구 돌출 · 복시)</div>
-          <div class="tile__body">눈이 튀어나오고, 눈물·이물감이 늘거나 물체가 겹쳐 보일 수 있습니다(갑상선 안병증). 안과 진료가 필요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 06 · 그레이브스 특징</div>
-          <div class="tile__title">목 앞 붓기 · 배변 잦음</div>
-          <div class="tile__body">갑상선 전체가 부어 목 앞이 도톰해집니다. 배변이 잦아지고 허벅지 근력이 약해질 수 있습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 / ETA 2018 Hyperthyroidism Guideline</span>
-      <span class="slide__page">04 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DIAGNOSIS (density grid 3+2, diag-flow)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>DIAGNOSIS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진단 흐름 (Diagnostic Flow)</h2>
-      <p class="slide__subtitle">피검사로 기능을 확인하고, 항체(TRAb)로 그레이브스병인지 확진합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--diag">
-        <div class="tile">
-          <div class="tile__index">STEP · 01 · 선별</div>
-          <div class="tile__title">TSH 측정</div>
-          <div class="tile__body">TSH가 크게 낮아져 있으면 갑상선이 과하게 일하는 신호입니다. TSH가 정상이면 항진증은 거의 배제됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEP · 02 · 확인</div>
-          <div class="tile__title">Free T4 · T3</div>
-          <div class="tile__body">갑상선 호르몬(Free T4·T3)이 실제로 높은지 확인합니다. 얼마나 심한지도 여기서 가늠합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEP · 03 · 확진</div>
-          <div class="tile__title">TRAb 항체 검사</div>
-          <div class="tile__body">한국에서는 이 항체 검사를 먼저 시행합니다(의사 94.5%가 사용). 양성이면 그레이브스병으로 확진되어, 별도 영상 없이 치료를 시작할 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEP · 04 · 영상</div>
-          <div class="tile__title">갑상선 초음파 + 도플러</div>
-          <div class="tile__body">결절이 만져지거나 항체가 애매할 때 시행. 갑상선 전체가 붓고 혈류가 늘어 있으면 그레이브스병에 부합합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEP · 05 · 보조</div>
-          <div class="tile__title">갑상선 스캔 (필요 시)</div>
-          <div class="tile__body">원인 감별이 어려운 일부에서만 시행합니다. 결절이 스스로 호르몬을 만드는 경우나 갑상선염과 구분하는 데 도움이 됩니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/endocrine-graves-s05-anatomy-thyroid-20260709.png" alt="목 앞 기도 위에 나비 모양으로 자리한 갑상선의 해부 구조 설명 이미지">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KTA Consensus (Endocrinol Metab 2013) · ATA 2016 진단 알고리즘</span>
-      <span class="slide__page">05 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · THREE TREATMENT OPTIONS (density grid 3×2)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>TREATMENT OPTIONS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">세 가지 치료 방법</h2>
-      <p class="slide__subtitle">그레이브스병은 항갑상선제 · 방사성요오드 · 수술 세 가지가 모두 가능합니다 — 상황에 맞게 함께 선택합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">OPTION · 01</div>
-          <div class="tile__title">항갑상선제 (먹는 약)</div>
-          <div class="tile__body">호르몬 생산을 줄이는 약(메티마졸)을 먹습니다. 대부분의 첫 치료로, 갑상선을 그대로 두고 기능만 정상화합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">OPTION · 02</div>
-          <div class="tile__title">방사성요오드 (RAI)</div>
-          <div class="tile__body">방사성요오드 캡슐을 한 번 복용해 갑상선을 서서히 줄입니다. 입원이 필요 없는 외래 치료입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">OPTION · 03</div>
-          <div class="tile__title">수술 (갑상선 절제)</div>
-          <div class="tile__body">갑상선을 제거하는 가장 빠르고 확실한 방법입니다. 전신마취가 필요한 목 수술입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">누구에게 · 01</div>
-          <div class="tile__title">약이 먼저 좋은 경우</div>
-          <div class="tile__body">처음 진단, 경증~중등도, 임신 계획 등 대부분의 환자에서 1차 선택입니다. 관해(약 없이 정상 유지)를 기대할 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">누구에게 · 02</div>
-          <div class="tile__title">방사성요오드를 고려</div>
-          <div class="tile__body">약을 오래 써도 재발이 잦거나 약 부작용이 있을 때. 단, 눈 증상이 활발하면 피합니다(다음 장 참고).</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">누구에게 · 03</div>
-          <div class="tile__title">수술을 고려</div>
-          <div class="tile__body">갑상선이 아주 크거나 눌림 증상, 결절·암 의심, 활동성 중증 눈병증이 함께 있을 때 유리합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 · ETA 2018 · 2025 KTA 방사성요오드 치료 가이드라인</span>
-      <span class="slide__page">06 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · ATD COURSE (timeline)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>DRUG COURSE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">항갑상선제 치료 · 추적 · 중단 일정</h2>
-      <p class="slide__subtitle">보통 12~18개월 복용 후 중단을 시도하며, 재발 위험이 높으면 저용량으로 오래 유지하기도 합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">시작 ~ 6주 · 용량 조절</div>
-          <div class="timeline-step__body">복용 시작 전 기본 혈액검사(백혈구·간기능)를 확인합니다. 4~6주마다 호르몬 수치를 보며 용량을 맞춥니다. 효과는 보통 4~6주 후부터 나타납니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">6주 ~ 12개월 · 유지</div>
-          <div class="timeline-step__body">2~3개월 간격으로 추적하며 정상 범위를 유지합니다. TRAb 항체도 함께 확인해 낮아지는 추세이면 관해 가능성을 봅니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">12 ~ 18개월 · 중단 평가</div>
-          <div class="timeline-step__body">항체가 음성이고 갑상선이 작으면 약을 끊어 봅니다. 항체가 여전히 높으면 저용량으로 더 오래 유지하거나 방사성요오드·수술을 상의합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">중단 후 · 재발 추적</div>
-          <div class="timeline-step__body">중단 후 첫 2년이 가장 위험합니다. 약 절반에서 재발하므로 정기 검사가 필수입니다. 재발하면 저용량 약을 오래 쓰거나 근본 치료로 넘어갑니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 장기 저용량 MMI: Karmisholt et al. Eur Thyroid J 2022 · 최소용량 전략: Miyamura et al. JCEM 2025</span>
-      <span class="slide__page">07 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · ADVERSE EFFECTS (density grid 2×2 + alert-strip)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>SAFETY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">약 부작용 · 이렇게 대응하세요</h2>
-      <p class="slide__subtitle">드물지만 중요한 부작용을 알아두고, 신호가 오면 스스로 판단해 약을 계속 먹지 말고 바로 검사받으세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--alert">
-          <div class="tile__index">부작용 · 01 · 드묾</div>
-          <div class="tile__title">무과립구증 (백혈구 급감)</div>
-          <div class="tile__body">감염을 막는 백혈구가 갑자기 줄어드는 부작용으로, 대부분 복용 첫 3개월에 생깁니다. 38℃ 이상 고열·심한 인후통·구내염이 신호 — 즉시 약을 끊고 혈액검사를 받으세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">부작용 · 02 · 드묾</div>
-          <div class="tile__title">간독성</div>
-          <div class="tile__body">피부·눈이 노래지는 황달, 짙은 소변, 심한 피로·식욕 저하가 신호입니다. 발견되면 약을 멈추고 간기능 검사를 시행합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">부작용 · 03 · 비교적 흔함</div>
-          <div class="tile__title">발진 · 가려움 · 관절통</div>
-          <div class="tile__body">가벼운 발진은 항히스타민제로 좋아집니다. 넓게 번지거나 관절이 아프면 약 종류를 바꾸기도 합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">부작용 · 04 · 관찰 시점</div>
-          <div class="tile__title">첫 6개월이 가장 중요</div>
-          <div class="tile__body">부작용의 대부분(약 4건 중 3건)이 복용 첫 6개월에 나타납니다. 이 시기에는 예정된 검사를 꼭 지켜 주세요.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">주의</span>
-        <span class="alert-strip__text">갑작스러운 <strong>38℃ 이상 고열 · 심한 인후통 · 구내염 · 황달</strong>이 새로 생기면 <strong>즉시 약을 끊고 혈액검사(백혈구·간기능)</strong>를 받으세요. 스스로 판단해 약을 계속 먹지 마세요.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 · Karmisholt et al. Eur Thyroid J 2022 (이상반응 75%가 첫 6개월)</span>
-      <span class="slide__page">08 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · RELAPSE & REMISSION (asymmetric split)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>RELAPSE & REMISSION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">재발과 관해 — 언제 약을 끊을 수 있나</h2>
-      <p class="slide__subtitle">항체(TRAb) 수치로 재발 가능성을 미리 가늠할 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">약을 끊으면 <em>약 절반</em>에서 다시 재발합니다. 그래서 '언제 끊을 수 있는지'를 <strong>검사로 예측</strong>하는 것이 중요합니다.</p>
-          <p class="pattern-split__supporting">
-            진단할 때 TRAb 항체가 높을수록 관해(약 없이 정상 유지) 가능성이 낮습니다. 한국인을 포함한 최근 연구에서 항체가 낮은 그룹은 약 60%가 관해에 도달했지만, 높은 그룹은 약 30%에 그쳤습니다. 25년 장기 추적에서는 약으로 시작한 환자 <strong>3명 중 1명만</strong> 약 없이 정상을 유지했고, 많은 분이 결국 방사성요오드나 수술을 받았습니다. 재발이 실패는 아니며, 다음 단계 치료로 안전하게 넘어가면 됩니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">관해 예측</div>
-            <div class="pattern-split__metric-value">TRAb 추적</div>
-            <div class="pattern-split__metric-detail">항체가 낮게 유지·음전되면 중단을 시도할 수 있습니다</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">중단 후 재발</div>
-            <div class="pattern-split__metric-value">약 50%</div>
-            <div class="pattern-split__metric-detail">첫 2년이 가장 위험 — 정기 추적이 반드시 필요합니다</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Chen et al. Endocrinol Metab 2025 (한국계 1,148명) · Törring et al. JCEM 2024 (25년 추적) · GREAT+ score</span>
-      <span class="slide__page">09 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · RAI vs SURGERY (comparison)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>DEFINITIVE Tx</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">근본 치료 — 방사성요오드 vs 수술</h2>
-      <p class="slide__subtitle">약으로 조절이 어렵거나 재발이 잦을 때 선택하는 두 가지 근본 치료법입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            방사성요오드 (RAI)
-          </div>
-          <ul class="compare-col__list">
-            <li>캡슐 한 번 복용, 입원 없이 외래로 진행</li>
-            <li>갑상선을 서서히 줄여 기능을 낮춤</li>
-            <li>2025 대한갑상선학회: 고정 용량 10~15 mCi 권고</li>
-            <li>대개 갑상선저하증으로 → 갑상선호르몬제 평생 복용</li>
-            <li>눈병증(안병증)을 3~6배 악화시킬 수 있음</li>
-            <li>활동성 중증 안병증 · 임신 · 수유는 금기</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">◆</span>
-            갑상선 절제술 (수술)
-          </div>
-          <ul class="compare-col__list">
-            <li>가장 빠르고 확실 — 6개월 관해율 약 99%</li>
-            <li>큰 갑상선종 · 눌림 증상 · 결절/암 의심에 적합</li>
-            <li>활동성 중증 안병증에도 안전하게 선택 가능</li>
-            <li>전신마취가 필요한 목 수술</li>
-            <li>부갑상선 · 성대 신경 손상 위험(드묾)</li>
-            <li>수술 후 갑상선호르몬제 평생 복용</li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/endocrine-graves-s10-comparison-rai-surgery-20260709.png" alt="왼쪽 방사성요오드 캡슐 복용 후 갑상선이 서서히 줄어드는 모습과 오른쪽 갑상선 절제 수술을 비교한 설명 이미지">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Engelbrecht-Wiggans et al. Surgery 2024 (176명) · 2025 KTA 방사성요오드 가이드라인</span>
-      <span class="slide__page">10 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · THYROID EYE DISEASE (density grid 2×2 + alert-strip)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>THYROID EYE DISEASE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">그레이브스 안병증 (눈 증상)</h2>
-      <p class="slide__subtitle">그레이브스병에서 눈이 붓고 튀어나올 수 있습니다 — 금연이 가장 중요한 관리입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">안병증 · 01</div>
-          <div class="tile__title">얼마나 흔한가</div>
-          <div class="tile__body">그레이브스 환자에서 가벼운 눈 증상은 비교적 흔합니다. 대부분은 경미하지만, 약 5명 중 1명은 중등도 이상이고 아주 드물게(1%) 시력을 위협합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">안병증 · 02 · 핵심</div>
-          <div class="tile__title">금연이 가장 중요</div>
-          <div class="tile__body">흡연은 눈병증을 악화시키는 가장 강력한 '바꿀 수 있는' 위험요인입니다. 반드시 금연해야 하며, 간접흡연도 피하세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">안병증 · 03 · 치료</div>
-          <div class="tile__title">활동성 평가 후 치료</div>
-          <div class="tile__body">충혈·부종·통증으로 '활동성'을 평가합니다. 활동성이 높고 중등도 이상이면 정맥 스테로이드가 1차 치료입니다. 인공눈물·선글라스도 도움이 됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">안병증 · 04 · 신약</div>
-          <div class="tile__title">표적 신약</div>
-          <div class="tile__body">안구 돌출을 줄이는 teprotumumab, 염증을 줄이는 tocilizumab 같은 표적 치료제가 나와 국내에도 도입되고 있습니다. 적용 여부는 안과와 상의합니다.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">주의</span>
-        <span class="alert-strip__text">갑자기 <strong>시력이 떨어지거나, 색이 흐리게 보이거나, 심한 통증·복시</strong>가 생기면 시신경 압박 신호일 수 있어 <strong>즉시 안과 진료</strong>가 필요합니다.</span>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/endocrine-graves-s11-anatomy-eye-20260709.png" alt="눈 뒤 바깥눈근육과 지방 조직이 부어 안구를 앞으로 밀어내는 갑상선 안병증의 눈확 단면 설명 이미지">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Lancet Diabetes Endocrinol 2025 · 생물학적 제제 메타분석 Eye(Nature) 2025 · 국내 도입·급여는 확인 필요</span>
-      <span class="slide__page">11 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · ACTION CHECKLIST (8 items)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">12</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 11 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">안전한 복용과 꾸준한 관리를 위한 환자 실천 항목입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">그레이브스병은 <strong>자가면역질환</strong> — 항체(TRAb)가 원인이며, 목표는 완치보다 <strong>안정적인 조절과 관해</strong>입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">38℃ 이상 고열·인후통·구내염은 <strong>무과립구증 신호</strong> — 즉시 약을 끊고 혈액검사를 받으세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">황달·짙은 소변·심한 피로는 <strong>간독성 신호</strong> — 즉시 간기능 검사를 받으세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">약은 임의로 끊지 말고 꾸준히 — <strong>효과는 보통 4~6주 후부터</strong> 나타납니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">담배는 반드시 끊으세요 — 흡연은 <strong>눈 증상(안병증)을 크게 악화</strong>시킵니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">재발이 잦거나 약이 맞지 않으면 <strong>방사성요오드·수술</strong>도 좋은 선택입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">임신 계획은 미리 상의 — <strong>1분기에는 PTU로 교체</strong>, 방사성요오드는 금기. 김·미역 등 요오드 과다 섭취도 주의</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">고열·의식 저하·심한 두근거림이 갑자기 겹치면 <strong>'갑상선 폭풍' 응급 상황</strong> — 즉시 응급실로</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — 안전한 복용 · 부작용 신호 인지 · 정기 추적</span>
-      <span class="slide__page">12 / 13</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 13 · CLOSING — contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">꾸준히 관리하면<br><em>안전하게 조절할 수 있습니다</em></h2>
-      <p class="slide__subtitle">치료 방법은 함께 고민하고 결정하겠습니다 — 궁금한 점은 언제든 문의해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 어떤 병인가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">그레이브스병이란</h2>
+  <p class="v2-sub">면역이 갑상선을 ‘켜진 상태’로 붙잡아 두는 자가면역질환입니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">70~80%<span></span></div><div class="q-stat__lab">항진증 원인 1위</div><div class="q-stat__cap">갑상선기능항진증 가운데 그레이브스병의 비율</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">약 5<span>배</span></div><div class="q-stat__lab">여성에게 더 흔함</div><div class="q-stat__cap">남성보다 여성에서 많이 생깁니다</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">20~50대<span></span></div><div class="q-stat__lab">주로 생기는 나이</div><div class="q-stat__cap">젊은 성인~중년에 많이 시작합니다</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.5843 10.0874L21.5782 10.0928C21.574 10.0194 21.5698 9.94163 21.5654 9.85905L21.557 9.70141C21.521 9.04058 21.4654 8.0406 21.0591 7.25051C20.8385 6.8214 20.4962 6.41208 19.9757 6.15329C19.4613 5.89747 18.8729 5.83854 18.245 5.925C17.6883 6.00166 17.1945 6.22589 16.8047 6.60348C16.4226 6.97362 16.1957 7.43726 16.0709 7.91064C15.8285 8.8293 15.9314 9.92695 16.1818 10.9837C16.6881 13.1199 17.9194 15.5841 19.3039 17.2603C19.8366 17.9052 20.0001 18.877 20.0001 19.2956L20.0001 21.5L22.0001 22V20.685C22.8827 20.357 23.4789 20.207 24.038 20.1955C24.5799 20.1844 25.1584 20.3035 26.0001 20.6513V22L28.0001 21.5L28.0001 19.2956C28.0001 18.877 28.1636 17.9052 28.6963 17.2603C30.0715 15.5953 31.3642 13.1422 31.9358 11.0123C32.2179 9.96102 32.3592 8.86383 32.1474 7.94184C32.0381 7.46562 31.8243 6.99328 31.4453 6.61447C31.0583 6.22759 30.5621 6.00178 30.0045 5.925C29.3767 5.83854 28.7883 5.89747 28.2738 6.15329C27.7534 6.41208 27.4111 6.8214 27.1904 7.25051C26.7842 8.0406 26.7286 9.04058 26.6926 9.70141L26.6841 9.85903C26.6798 9.94162 26.6756 10.0194 26.6714 10.0928L26.6653 10.0874C26.1879 9.66212 25.5561 9.51729 25.1302 9.45488C24.8041 9.4071 24.4873 9.39377 24.2495 9.39006V9.38864L24.2369 9.38864C24.2036 9.38863 24.1661 9.38863 24.1248 9.38883C24.0835 9.38863 24.0459 9.38863 24.0126 9.38864L24.0001 9.38864V9.39006C23.7623 9.39377 23.4454 9.4071 23.1193 9.45488C22.6935 9.51729 22.0617 9.66212 21.5843 10.0874ZM22.9147 11.5807C22.9153 11.5802 22.9236 11.5734 22.9436 11.5624C22.9579 11.5544 22.9766 11.5453 23 11.5355V16H25V11.462C25.0782 11.4785 25.1466 11.4974 25.2044 11.518C25.2502 11.5345 25.2834 11.5499 25.306 11.5624C25.326 11.5735 25.3344 11.5803 25.335 11.5809C25.7583 11.9579 26.188 12.2759 26.6192 12.4201C26.8509 12.4977 27.1459 12.5466 27.4634 12.4691C27.7982 12.3874 28.0479 12.1922 28.2164 11.9732C28.5014 11.6029 28.578 11.1307 28.6142 10.8471C28.6499 10.5673 28.6668 10.2448 28.6821 9.95223L28.6896 9.81013C28.7302 9.06395 28.7917 8.51011 28.9691 8.16501C29.0403 8.02653 29.1064 7.97291 29.1644 7.9441C29.2283 7.91232 29.3881 7.85899 29.7317 7.9063C29.9126 7.93121 29.99 7.98762 30.0314 8.02894C30.0808 8.07833 30.1501 8.18017 30.1982 8.38958C30.3014 8.83886 30.2551 9.55868 30.0042 10.4939C29.5096 12.3368 28.3539 14.5343 27.1543 15.9867C26.4846 16.7974 26.183 17.7918 26.0652 18.5403C25.3509 18.3021 24.6867 18.1818 23.9969 18.1959C23.3165 18.2099 22.6534 18.355 21.9421 18.586C21.8294 17.8326 21.5293 16.814 20.8459 15.9867C19.6556 14.5455 18.5632 12.3591 18.1279 10.5225C17.9076 9.59276 17.8853 8.87338 18.0047 8.42078C18.0607 8.20854 18.1364 8.09799 18.1963 8.03993C18.2486 7.98932 18.3361 7.93133 18.5179 7.9063C18.8614 7.85899 19.0213 7.91232 19.0852 7.9441C19.1432 7.97291 19.2093 8.02653 19.2805 8.16501C19.4579 8.51011 19.5193 9.06395 19.5599 9.81013L19.5675 9.95218C19.5828 10.2447 19.5997 10.5673 19.6354 10.8471C19.6715 11.1307 19.7482 11.6029 20.0331 11.9732C20.2017 12.1922 20.4514 12.3874 20.7862 12.4691C21.1037 12.5466 21.3987 12.4977 21.6304 12.4201C22.0616 12.2759 22.4914 11.9578 22.9147 11.5807Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M26.0001 35.3149C25.1174 35.643 24.5212 35.793 23.962 35.8045C23.4202 35.8156 22.8417 35.6965 22.0001 35.3488V33.6667L20.0001 35.8334L20.0001 38C20.0001 40.2091 21.7909 42 24 42C26.2091 42 27.9999 40.2092 28 38.0001L28.0001 35.8333L26.0001 33.6667L26.0001 35.3149ZM24 40C22.8955 40 22.0001 39.1046 22 38.0001L22.0001 37.4811C22.6897 37.7052 23.3344 37.8178 24.0031 37.8041C24.6651 37.7905 25.3106 37.6528 26.0001 37.4326V38C26.0001 39.1046 25.1046 40 24 40Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.3616 11.4564C13.3531 12.0825 14.1689 13.2191 14.7737 14.725C14.9275 15.1079 15.0778 15.5207 15.2352 15.9525C15.7537 17.3761 16.348 19.0077 17.3924 20.4676C18.6864 22.2764 20.6362 23.7381 24 23.7381C27.3638 23.7381 29.3136 22.2764 30.6076 20.4676C31.652 19.0077 32.2463 17.3761 32.7648 15.9526C32.9222 15.5207 33.0725 15.1079 33.2263 14.725C33.8311 13.2191 34.6469 12.0825 35.6384 11.4564C36.6834 10.7965 37.8663 10.7501 38.9189 11.3558C39.9103 11.9262 40.672 13.0052 41.1835 14.3775C41.7012 15.7664 42 17.5493 42 19.6819V29.8691C42 30.7182 41.8359 32.6845 40.883 34.4771C39.8932 36.3389 38.045 38.0002 34.8462 38.0002C33.251 38.0002 32.0601 37.5494 31.0936 36.849C30.2289 36.2225 29.5679 35.4071 28.9943 34.6994L28.878 34.5561C28.2484 33.7817 27.6901 33.1275 26.9608 32.6456C26.2611 32.1833 25.354 31.8504 24 31.8504C22.646 31.8504 21.7389 32.1833 21.0392 32.6456C20.3099 33.1275 19.7516 33.7817 19.122 34.5561L19.0057 34.6995C18.4321 35.4071 17.7711 36.2225 16.9064 36.849C15.9399 37.5494 14.749 38.0002 13.1538 38.0002C9.95499 38.0002 8.10675 36.3389 7.11703 34.4771C6.16409 32.6845 6 30.7182 6 29.8691V19.6819C6 17.5493 6.29877 15.7664 6.81647 14.3775C7.32798 13.0052 8.08973 11.9262 9.08109 11.3558C10.1337 10.7501 11.3166 10.7965 12.3616 11.4564ZM12 18C12 18.5523 11.5523 19 11 19C10.4477 19 10 18.5523 10 18C10 17.4477 10.4477 17 11 17C11.5523 17 12 17.4477 12 18ZM13 23C13.5523 23 14 22.5523 14 22C14 21.4477 13.5523 21 13 21C12.4477 21 12 21.4477 12 22C12 22.5523 12.4477 23 13 23ZM12 26C12 26.5523 11.5523 27 11 27C10.4477 27 10 26.5523 10 26C10 25.4477 10.4477 25 11 25C11.5523 25 12 25.4477 12 26ZM16 32C16.5523 32 17 31.5523 17 31C17 30.4477 16.5523 30 16 30C15.4477 30 15 30.4477 15 31C15 31.5523 15.4477 32 16 32ZM13 31C13 31.5523 12.5523 32 12 32C11.4477 32 11 31.5523 11 31C11 30.4477 11.4477 30 12 30C12.5523 30 13 30.4477 13 31ZM16 28C16.5523 28 17 27.5523 17 27C17 26.4477 16.5523 26 16 26C15.4477 26 15 26.4477 15 27C15 27.5523 15.4477 28 16 28ZM21 28C21 28.5523 20.5523 29 20 29C19.4477 29 19 28.5523 19 28C19 27.4477 19.4477 27 20 27C20.5523 27 21 27.4477 21 28ZM37 19C36.4477 19 36 18.5523 36 18C36 17.4477 36.4477 17 37 17C37.5523 17 38 17.4477 38 18C38 18.5523 37.5523 19 37 19ZM34 22C34 22.5523 34.4477 23 35 23C35.5523 23 36 22.5523 36 22C36 21.4477 35.5523 21 35 21C34.4477 21 34 21.4477 34 22ZM37 27C36.4477 27 36 26.5523 36 26C36 25.4477 36.4477 25 37 25C37.5523 25 38 25.4477 38 26C38 26.5523 37.5523 27 37 27ZM31 31C31 31.5523 31.4477 32 32 32C32.5523 32 33 31.5523 33 31C33 30.4477 32.5523 30 32 30C31.4477 30 31 30.4477 31 31ZM36 32C35.4477 32 35 31.5523 35 31C35 30.4477 35.4477 30 36 30C36.5523 30 37 30.4477 37 31C37 31.5523 36.5523 32 36 32ZM31 27C31 27.5523 31.4477 28 32 28C32.5523 28 33 27.5523 33 27C33 26.4477 32.5523 26 32 26C31.4477 26 31 26.4477 31 27ZM28 29C27.4477 29 27 28.5523 27 28C27 27.4477 27.4477 27 28 27C28.5523 27 29 27.4477 29 28C29 28.5523 28.5523 29 28 29ZM25 28C25 28.5523 24.5523 29 24 29C23.4477 29 23 28.5523 23 28C23 27.4477 23.4477 27 24 27C24.5523 27 25 27.4477 25 28Z" fill="currentColor"/>
+</svg></div><b>왜 생기나요?</b></div><div class="v2-body">몸의 면역이 잘못 만든 <b>자가항체(TRAb)</b>가 갑상선의 스위치를 계속 눌러 둡니다. 그래서 갑상선이 쉬지 않고 호르몬을 만들어 대사가 빨라집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24ZM26 13C26 11.8954 25.1046 11 24 11C22.8954 11 22 11.8954 22 13L22 27C22 28.1046 22.8954 29 24 29C25.1046 29 26 28.1046 26 27L26 13ZM24 33C25.1046 33 26 33.8954 26 35C26 36.1046 25.1046 37 24 37C22.8954 37 22 36.1046 22 35C22 33.8954 22.8954 33 24 33Z" fill="currentColor"/>
+</svg></div><b>옮는 병이 아닙니다</b></div><div class="v2-body">치료하면 대부분 잘 조절됩니다. 다만 그대로 두면 심방세동·심부전·골다공증으로 이어질 수 있어 꾸준한 관리가 중요합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 가족 중에 갑상선 질환이 있는 분이 많다면 진료 때 알려 주세요.</span><span class="v2-src">근거 · 미국갑상선학회(ATA) 2016 · 대한갑상선학회(KTA)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 원리</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">왜 갑상선이 쉬지 않고 일할까요</h2>
+  <p class="v2-sub">자가항체가 갑상선의 스위치를 계속 눌러 두는 것이 핵심입니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/endocrine-graves-s03-mechanism-trab-20260709.png" alt="Y자 모양 자가항체가 갑상선 세포 표면의 수용체에 붙어 호르몬 알갱이가 쏟아지는 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 자가항체(파란 Y자)가 수용체에 붙어 호르몬(노란 알갱이)을 계속 만들게 합니다(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>스위치가 눌린 채로</b></div><div class="v2-body">면역이 만든 자가항체가 갑상선의 ‘TSH 수용체(스위치)’에 붙어 계속 켜 둡니다. 그래서 몸에 필요 없어도 호르몬을 만들어 냅니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.69497 22.1883C8.57391 20.0613 11.4255 17.6246 15.086 15.9661C13.1678 18.0932 12 20.9102 12 24C12 27.0898 13.1678 29.9068 15.086 32.0339C11.4255 30.3754 8.57391 27.9387 6.69497 25.8117C5.76834 24.7628 5.76834 23.2372 6.69497 22.1883ZM5.19605 20.8642C8.60396 17.0063 15.0813 12.0927 23.8218 12.0013C23.8811 12.0004 23.9405 12 24 12L24.0291 12L24.0697 12C32.9356 12 39.5032 16.97 42.9433 20.8642C44.538 22.6695 44.538 25.3305 42.9433 27.1358C39.5032 31.03 32.9356 36 24.0697 36L24.0291 36L24 36C23.9405 36 23.8811 35.9996 23.8218 35.9987C15.0813 35.9073 8.60396 30.9937 5.19606 27.1358C3.60132 25.3305 3.60131 22.6695 5.19605 20.8642ZM24.0284 14C23.9677 14.0002 23.9071 14.0005 23.8466 14.0012C18.3945 14.0831 14 18.5284 14 24C14 29.4716 18.3945 33.9169 23.8466 33.9988C23.9071 33.9995 23.9677 33.9998 24.0284 34C29.5382 33.9847 34 29.5134 34 24C34 18.4866 29.5382 14.0153 24.0284 14ZM36 24C36 27.1409 34.7933 29.9999 32.8182 32.1388C36.5918 30.4794 39.5254 27.984 41.4443 25.8117C42.371 24.7628 42.371 23.2372 41.4443 22.1883C39.5254 20.016 36.5918 17.5206 32.8182 15.8612C34.7933 18.0001 36 20.8591 36 24ZM24.0696 30C27.3833 30 30.0696 27.3137 30.0696 24C30.0696 23.0737 29.8597 22.1965 29.4849 21.4132C29.1229 21.7757 28.6225 22 28.0697 22C26.9651 22 26.0697 21.1046 26.0697 20C26.0697 19.4472 26.294 18.9468 26.6565 18.5848C25.8732 18.2099 24.9959 18 24.0696 18C20.7559 18 18.0696 20.6863 18.0696 24C18.0696 27.3137 20.7559 30 24.0696 30Z" fill="currentColor"/>
+</svg></div><b>눈과 목에도 영향</b></div><div class="v2-body">같은 항체와 염증이 눈 뒤 조직을 자극하면 눈이 붓고 튀어나올 수 있습니다. 갑상선은 전체가 고르게 부어 목 앞이 도톰해집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 13C26.4853 13 28.5 10.9853 28.5 8.5C28.5 6.01472 26.4853 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13ZM37.9201 15.4404C38.2292 16.5008 37.6201 17.6111 36.5596 17.9201C34.1842 18.6124 32.0379 19.1337 30 19.4812V30.9944L30 31V42C30 43.0693 29.1589 43.9495 28.0906 43.998C27.0224 44.0464 26.105 43.246 26.0082 42.1811L25.0082 31.1811C25.0027 31.1206 25 31.0602 25 31H23C23 31.0602 22.9973 31.1206 22.9918 31.1811L21.9918 42.1811C21.895 43.246 20.9776 44.0464 19.9094 43.998C18.8412 43.9495 18 43.0693 18 42L18 19.4443C15.9674 19.0938 13.8288 18.583 11.4653 17.9272C10.4009 17.6319 9.7775 16.5296 10.0728 15.4653C10.3682 14.4009 11.4704 13.7775 12.5348 14.0728C17.1431 15.3515 20.6058 15.9845 24.0087 15.9997C27.4047 16.0149 30.8587 15.4152 35.4404 14.0799C36.5009 13.7708 37.6111 14.3799 37.9201 15.4404Z" fill="currentColor"/>
+</svg></div><b>온몸의 병</b></div><div class="v2-body">그래서 그레이브스병은 갑상선만의 병이 아니라 온몸에 영향을 주는 면역 반응으로&nbsp;봅니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 진찰할 때 목에 청진기를 대면 갑상선의 혈류 소리가 들리기도 합니다.</span><span class="v2-src">근거 · Lancet Diabetes Endocrinol 2025 안병증 종설 · 미국갑상선학회 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 증상</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">대사가 빨라지는 증상에 눈·목 변화가 더해집니다</h2>
+  <p class="v2-sub">눈과 목의 변화가 함께 오면 그레이브스병을 먼저 생각합니다</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M34.767 35.8353C31.9246 38.4227 28.1465 40 24 40C20.8342 40 17.8832 39.0806 15.3994 37.4942C15.0971 38.1029 14.6911 38.6479 14.2054 39.1044C17.0242 40.936 20.3879 42 24 42C29.0603 42 33.6328 39.9119 36.9031 36.5503C36.1321 36.4646 35.4089 36.2147 34.767 35.8353Z" fill="currentColor"/>
+<path d="M41.8146 26.5931C41.9368 25.7464 42 24.8806 42 24C42 14.0589 33.9411 6 24 6C14.0589 6 6 14.0589 6 24C6 25.8967 6.29336 27.7249 6.83719 29.4417C7.32113 28.6605 7.84761 27.9454 8.34656 27.3279C8.11946 26.2544 8 25.1411 8 24C8 15.1634 15.1634 8 24 8C32.7582 8 39.8728 15.0369 39.9983 23.7653C40.631 24.588 41.2816 25.5509 41.8146 26.5931Z" fill="currentColor"/>
+<path d="M13.7428 20.3502C13.6237 21.0879 14.1242 21.7954 14.8073 22.2328C15.521 22.69 16.5386 22.9399 17.737 22.763C18.983 22.5791 19.8685 21.8878 20.3905 21.0976C20.8948 20.3341 21.1024 19.4047 20.8707 18.7159C20.8163 18.5541 20.6831 18.4312 20.5174 18.39C20.3517 18.3489 20.1764 18.3951 20.0526 18.5127C18.2567 20.2174 16.2287 20.6362 14.4105 19.9611C14.2702 19.909 14.114 19.9225 13.9847 19.9979C13.8554 20.0732 13.7667 20.2025 13.7428 20.3502Z" fill="currentColor"/>
+<path d="M33.8187 20.3502C33.9377 21.0879 33.4373 21.7954 32.7542 22.2328C32.0404 22.69 31.0229 22.9399 29.8244 22.763C28.5785 22.5791 27.693 21.8878 27.171 21.0976C26.6666 20.3341 26.459 19.4047 26.6907 18.7159C26.7452 18.5541 26.8784 18.4312 27.0441 18.39C27.2098 18.3489 27.3851 18.3951 27.5089 18.5127C29.3048 20.2174 31.3327 20.6362 33.151 19.9611C33.2913 19.909 33.4475 19.9225 33.5768 19.9979C33.7061 20.0732 33.7948 20.2025 33.8187 20.3502Z" fill="currentColor"/>
+<path d="M41 30.7273C41 32.5348 39.433 34 37.5 34C35.567 34 34 32.5348 34 30.7273C34 27.8636 37.5 25 37.5 25C37.5 25 41 27.8636 41 30.7273Z" fill="currentColor"/>
+<path d="M10.5 38C12.433 38 14 36.5348 14 34.7273C14 31.8636 10.5 29 10.5 29C10.5 29 7 31.8636 7 34.7273C7 36.5348 8.567 38 10.5 38Z" fill="currentColor"/>
+<path d="M31.4065 33C30.0305 29.4383 27.2304 27 24 27C20.7695 27 17.9694 29.4383 16.5935 33C16.2061 34.0028 17.0133 35 18.0883 35L29.9116 35C30.9866 35 31.7939 34.0028 31.4065 33Z" fill="currentColor"/>
+</svg></div><b>더위 · 땀</b></div><div class="v2-body">땀이 많고 더위를 견디기 어렵습니다. 피부가 따뜻하고 촉촉합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.5416 11.149C26.6969 10.5038 27.2577 10.0373 27.9203 10.0021C28.583 9.96686 29.1901 10.3712 29.4129 10.9963L33.514 22.5C34.9753 22.4982 35.9022 22.2277 36.8838 21.492C37.1714 21.135 37.5191 20.8285 37.9116 20.5878C37.9409 20.5589 37.9703 20.5296 38 20.5V20.5351C38.5883 20.1948 39.2714 20 40 20C42.2091 20 44 21.7908 44 24C44 26.2091 42.2091 28 40 28C39.2714 28 38.5883 27.8052 38 27.4649V27.5C37.9702 27.4702 37.9406 27.4409 37.9112 27.412C37.5409 27.1848 37.2104 26.899 36.9326 26.5675C36.0227 25.9086 35.168 25.6826 33.9019 25.6463H32.5085C31.8742 25.6463 31.3086 25.2474 31.0956 24.65L28.2792 16.7501L23.4414 36.851C23.2857 37.4979 22.7224 37.965 22.0578 37.9981C21.3932 38.0313 20.7862 37.6227 20.5669 36.9944L14.9181 20.8157L13.3964 24.6942C13.171 25.2685 12.617 25.6463 12 25.6463H4V22.6463H10.9772L13.6036 15.9521C13.8328 15.3681 14.4012 14.9883 15.0285 15.0003C15.6558 15.0122 16.2094 15.4132 16.4162 16.0055L21.7181 31.1906L26.5416 11.149Z" fill="currentColor"/>
+</svg></div><b>두근거림 · 빠른 맥박</b></div><div class="v2-body">쉬어도 맥박이 분당 100회를 넘고, 불규칙한 맥박이 생길 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:848px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M40.2099 38.2219C40.0921 40.3416 38.339 42 36.2161 42L11.784 42C9.66102 42 7.90787 40.3415 7.79011 38.2219L6.23456 10.2219C6.10718 7.92907 7.93206 6 10.2284 6L37.7716 6C40.068 6 41.8928 7.92908 41.7655 10.2219L40.2099 38.2219ZM34.2442 17.7786C35.064 17.2385 35.2702 16.1677 34.5974 15.471C33.4729 14.3066 32.139 13.3305 30.6524 12.5895C28.6303 11.5817 26.3828 11.0377 24.0939 11.0019C21.805 10.9661 19.5395 11.4396 17.4828 12.3837C15.9707 13.0778 14.603 14.0117 13.4379 15.1403C12.7407 15.8156 12.9089 16.8922 13.7092 17.4577L18.0211 20.5042C18.8214 21.0696 19.9487 20.8868 20.7779 20.3594C20.9902 20.2244 21.2129 20.1032 21.4445 19.9969C22.1757 19.6612 22.9766 19.4829 23.7891 19.4741L27.1821 15.5729C27.5445 15.1562 28.1761 15.1122 28.5929 15.4746C29.0096 15.837 29.0536 16.4687 28.6912 16.8854L26.0608 19.9098C26.1835 19.9605 26.3044 20.0155 26.4232 20.0747C26.6509 20.1882 26.8692 20.3163 27.0766 20.4579C27.8867 21.0108 29.0068 21.2288 29.8267 20.6887L34.2442 17.7786Z" fill="currentColor"/>
+</svg></div><b>체중 감소 · 식욕 증가</b></div><div class="v2-body">더 먹는데도 살이 빠집니다. 짧은 기간에 5kg 넘게 빠지면 꼭 확인합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.5844 22.8706C30.7438 22.8706 31.8763 22.5549 32.8338 21.9648C33.806 22.5538 34.9534 22.8626 36.1242 22.8503L39.8433 21.6286C40.8913 20.8487 41.6107 19.7675 41.8813 18.5661C42.1518 17.3646 41.9569 16.1157 41.3293 15.0284C40.7017 13.9411 39.6794 13.0813 38.4336 12.5931C38.1491 11.4298 37.4326 10.3894 36.4029 9.64443L32.7725 8.49751H32.3638C31.5563 7.43391 30.344 6.67523 28.9574 6.36571L21.1741 5.9707C19.8803 6.06775 18.6603 6.55488 17.7105 7.35371C17.2617 7.25819 16.8023 7.20868 16.3412 7.20612C15.2247 7.20819 14.1327 7.50194 13.1971 8.05191C12.2615 8.60187 11.5222 9.38455 11.0685 10.3055L8.11115 12.1966C7.37528 13.0966 6.97913 14.1863 6.98108 15.305C6.9738 15.7727 7.04266 16.2389 7.18545 16.6886C6.40957 17.5975 5.99236 18.7143 6.00011 19.8617C5.99826 21.1925 6.56142 22.4733 7.57375 23.4407C7.65545 24.3934 8.02424 25.3079 8.64022 26.085C9.2562 26.8622 10.0959 27.4725 11.0685 27.8499C12.1891 28.4841 13.138 29.337 13.8453 30.3458C14.5527 31.3547 15.0005 32.4939 15.1559 33.6796H17.8743V25.9364L15.2325 23.5882L13.4451 25.3757C13.0545 25.7662 12.4214 25.7662 12.0308 25.3757C11.6403 24.9852 11.6403 24.352 12.0308 23.9615L14.1148 21.8775L13.4797 18.3848L10.6544 16.9721C10.1604 16.7251 9.96018 16.1244 10.2072 15.6304C10.4542 15.1365 11.0548 14.9362 11.5488 15.1832L14.3156 16.5666L17.7773 14.3638L16.7107 11.5197C16.5168 11.0026 16.7788 10.4262 17.2959 10.2322C17.813 10.0383 18.3895 10.3003 18.5834 10.8174L19.721 13.851H21.1199L21.7691 12.5526L20.8188 10.3352C20.6013 9.82758 20.8364 9.2397 21.344 9.02214C21.8517 8.80459 22.4396 9.03974 22.6571 9.54737L23.4829 11.4742L26.7826 12.0741C26.8011 12.0568 26.8204 12.0401 26.8405 12.0241L28.886 10.3877C29.3173 10.0427 29.9466 10.1126 30.2916 10.5439C30.6366 10.9751 30.5666 11.6044 30.1354 11.9494L28.6637 13.1268L30.3929 15.3499L31.0708 13.9941C31.2402 13.6553 31.5865 13.4413 31.9652 13.4413H34.4198C34.9721 13.4413 35.4198 13.889 35.4198 14.4413C35.4198 14.9936 34.9721 15.4413 34.4198 15.4413H32.5833L32.164 16.2799L34.2276 16.7384C34.3074 16.7562 34.3847 16.7836 34.4579 16.8202L36.0942 17.6384C36.5882 17.8854 36.7884 18.486 36.5415 18.98C36.2945 19.474 35.6938 19.6742 35.1998 19.4272L33.6736 18.6641L30.1119 17.8726C29.8848 17.8221 29.6823 17.694 29.5395 17.5104L26.9104 14.1301L23.6471 13.5368C23.5854 13.5943 23.5156 13.6446 23.4385 13.6859L22.7379 15.0871V15.8958H24.1925C24.3478 15.8958 24.5009 15.932 24.6397 16.0014L27.9125 17.6378C28.4064 17.8848 28.6067 18.4854 28.3597 18.9794C28.1127 19.4734 27.512 19.6736 27.018 19.4266L23.9564 17.8958H22.7379V19.7601C22.7379 20.3124 22.2902 20.7601 21.7379 20.7601C21.1856 20.7601 20.7379 20.3124 20.7379 19.7601V15.851H19.1655L15.4784 18.1973L16.1146 21.6964L19.5387 24.7399C19.7521 24.9297 19.8743 25.2017 19.8743 25.4873V33.6796H22.7915V28.145C22.7901 27.1624 23.0938 26.199 23.6682 25.3642C24.2425 24.5295 25.0645 23.8567 26.041 23.4222C26.5901 23.2326 26.7252 22.9773 26.8907 22.6645C27.001 22.456 27.1249 22.222 27.3937 21.9648C27.6273 22.1087 27.8082 22.2364 27.9652 22.347C28.4518 22.6901 28.7077 22.8706 29.5844 22.8706Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 38.0001H15V36.0001H23V38.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 42.0001H15V40.0001H23V42.0001Z" fill="currentColor"/>
+</svg></div><b>손 떨림 · 불안 · 불면</b></div><div class="v2-body">손이 가늘게 떨리고 예민해지며, 집중이 어렵고 잠들기 힘듭니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.69497 22.1883C8.57391 20.0613 11.4255 17.6246 15.086 15.9661C13.1678 18.0932 12 20.9102 12 24C12 27.0898 13.1678 29.9068 15.086 32.0339C11.4255 30.3754 8.57391 27.9387 6.69497 25.8117C5.76834 24.7628 5.76834 23.2372 6.69497 22.1883ZM5.19605 20.8642C8.60396 17.0063 15.0813 12.0927 23.8218 12.0013C23.8811 12.0004 23.9405 12 24 12L24.0291 12L24.0697 12C32.9356 12 39.5032 16.97 42.9433 20.8642C44.538 22.6695 44.538 25.3305 42.9433 27.1358C39.5032 31.03 32.9356 36 24.0697 36L24.0291 36L24 36C23.9405 36 23.8811 35.9996 23.8218 35.9987C15.0813 35.9073 8.60396 30.9937 5.19606 27.1358C3.60132 25.3305 3.60131 22.6695 5.19605 20.8642ZM24.0284 14C23.9677 14.0002 23.9071 14.0005 23.8466 14.0012C18.3945 14.0831 14 18.5284 14 24C14 29.4716 18.3945 33.9169 23.8466 33.9988C23.9071 33.9995 23.9677 33.9998 24.0284 34C29.5382 33.9847 34 29.5134 34 24C34 18.4866 29.5382 14.0153 24.0284 14ZM36 24C36 27.1409 34.7933 29.9999 32.8182 32.1388C36.5918 30.4794 39.5254 27.984 41.4443 25.8117C42.371 24.7628 42.371 23.2372 41.4443 22.1883C39.5254 20.016 36.5918 17.5206 32.8182 15.8612C34.7933 18.0001 36 20.8591 36 24ZM24.0696 30C27.3833 30 30.0696 27.3137 30.0696 24C30.0696 23.0737 29.8597 22.1965 29.4849 21.4132C29.1229 21.7757 28.6225 22 28.0697 22C26.9651 22 26.0697 21.1046 26.0697 20C26.0697 19.4472 26.294 18.9468 26.6565 18.5848C25.8732 18.2099 24.9959 18 24.0696 18C20.7559 18 18.0696 20.6863 18.0696 24C18.0696 27.3137 20.7559 30 24.0696 30Z" fill="currentColor"/>
+</svg></div><b>눈 변화 — 그레이브스 특징</b></div><div class="v2-body">눈이 튀어나오고 눈물·이물감이 늘거나 물체가 겹쳐 보입니다. 안과 진료가 필요합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:848px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.5843 10.0874L21.5782 10.0928C21.574 10.0194 21.5698 9.94163 21.5654 9.85905L21.557 9.70141C21.521 9.04058 21.4654 8.0406 21.0591 7.25051C20.8385 6.8214 20.4962 6.41208 19.9757 6.15329C19.4613 5.89747 18.8729 5.83854 18.245 5.925C17.6883 6.00166 17.1945 6.22589 16.8047 6.60348C16.4226 6.97362 16.1957 7.43726 16.0709 7.91064C15.8285 8.8293 15.9314 9.92695 16.1818 10.9837C16.6881 13.1199 17.9194 15.5841 19.3039 17.2603C19.8366 17.9052 20.0001 18.877 20.0001 19.2956L20.0001 21.5L22.0001 22V20.685C22.8827 20.357 23.4789 20.207 24.038 20.1955C24.5799 20.1844 25.1584 20.3035 26.0001 20.6513V22L28.0001 21.5L28.0001 19.2956C28.0001 18.877 28.1636 17.9052 28.6963 17.2603C30.0715 15.5953 31.3642 13.1422 31.9358 11.0123C32.2179 9.96102 32.3592 8.86383 32.1474 7.94184C32.0381 7.46562 31.8243 6.99328 31.4453 6.61447C31.0583 6.22759 30.5621 6.00178 30.0045 5.925C29.3767 5.83854 28.7883 5.89747 28.2738 6.15329C27.7534 6.41208 27.4111 6.8214 27.1904 7.25051C26.7842 8.0406 26.7286 9.04058 26.6926 9.70141L26.6841 9.85903C26.6798 9.94162 26.6756 10.0194 26.6714 10.0928L26.6653 10.0874C26.1879 9.66212 25.5561 9.51729 25.1302 9.45488C24.8041 9.4071 24.4873 9.39377 24.2495 9.39006V9.38864L24.2369 9.38864C24.2036 9.38863 24.1661 9.38863 24.1248 9.38883C24.0835 9.38863 24.0459 9.38863 24.0126 9.38864L24.0001 9.38864V9.39006C23.7623 9.39377 23.4454 9.4071 23.1193 9.45488C22.6935 9.51729 22.0617 9.66212 21.5843 10.0874ZM22.9147 11.5807C22.9153 11.5802 22.9236 11.5734 22.9436 11.5624C22.9579 11.5544 22.9766 11.5453 23 11.5355V16H25V11.462C25.0782 11.4785 25.1466 11.4974 25.2044 11.518C25.2502 11.5345 25.2834 11.5499 25.306 11.5624C25.326 11.5735 25.3344 11.5803 25.335 11.5809C25.7583 11.9579 26.188 12.2759 26.6192 12.4201C26.8509 12.4977 27.1459 12.5466 27.4634 12.4691C27.7982 12.3874 28.0479 12.1922 28.2164 11.9732C28.5014 11.6029 28.578 11.1307 28.6142 10.8471C28.6499 10.5673 28.6668 10.2448 28.6821 9.95223L28.6896 9.81013C28.7302 9.06395 28.7917 8.51011 28.9691 8.16501C29.0403 8.02653 29.1064 7.97291 29.1644 7.9441C29.2283 7.91232 29.3881 7.85899 29.7317 7.9063C29.9126 7.93121 29.99 7.98762 30.0314 8.02894C30.0808 8.07833 30.1501 8.18017 30.1982 8.38958C30.3014 8.83886 30.2551 9.55868 30.0042 10.4939C29.5096 12.3368 28.3539 14.5343 27.1543 15.9867C26.4846 16.7974 26.183 17.7918 26.0652 18.5403C25.3509 18.3021 24.6867 18.1818 23.9969 18.1959C23.3165 18.2099 22.6534 18.355 21.9421 18.586C21.8294 17.8326 21.5293 16.814 20.8459 15.9867C19.6556 14.5455 18.5632 12.3591 18.1279 10.5225C17.9076 9.59276 17.8853 8.87338 18.0047 8.42078C18.0607 8.20854 18.1364 8.09799 18.1963 8.03993C18.2486 7.98932 18.3361 7.93133 18.5179 7.9063C18.8614 7.85899 19.0213 7.91232 19.0852 7.9441C19.1432 7.97291 19.2093 8.02653 19.2805 8.16501C19.4579 8.51011 19.5193 9.06395 19.5599 9.81013L19.5675 9.95218C19.5828 10.2447 19.5997 10.5673 19.6354 10.8471C19.6715 11.1307 19.7482 11.6029 20.0331 11.9732C20.2017 12.1922 20.4514 12.3874 20.7862 12.4691C21.1037 12.5466 21.3987 12.4977 21.6304 12.4201C22.0616 12.2759 22.4914 11.9578 22.9147 11.5807Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M26.0001 35.3149C25.1174 35.643 24.5212 35.793 23.962 35.8045C23.4202 35.8156 22.8417 35.6965 22.0001 35.3488V33.6667L20.0001 35.8334L20.0001 38C20.0001 40.2091 21.7909 42 24 42C26.2091 42 27.9999 40.2092 28 38.0001L28.0001 35.8333L26.0001 33.6667L26.0001 35.3149ZM24 40C22.8955 40 22.0001 39.1046 22 38.0001L22.0001 37.4811C22.6897 37.7052 23.3344 37.8178 24.0031 37.8041C24.6651 37.7905 25.3106 37.6528 26.0001 37.4326V38C26.0001 39.1046 25.1046 40 24 40Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.3616 11.4564C13.3531 12.0825 14.1689 13.2191 14.7737 14.725C14.9275 15.1079 15.0778 15.5207 15.2352 15.9525C15.7537 17.3761 16.348 19.0077 17.3924 20.4676C18.6864 22.2764 20.6362 23.7381 24 23.7381C27.3638 23.7381 29.3136 22.2764 30.6076 20.4676C31.652 19.0077 32.2463 17.3761 32.7648 15.9526C32.9222 15.5207 33.0725 15.1079 33.2263 14.725C33.8311 13.2191 34.6469 12.0825 35.6384 11.4564C36.6834 10.7965 37.8663 10.7501 38.9189 11.3558C39.9103 11.9262 40.672 13.0052 41.1835 14.3775C41.7012 15.7664 42 17.5493 42 19.6819V29.8691C42 30.7182 41.8359 32.6845 40.883 34.4771C39.8932 36.3389 38.045 38.0002 34.8462 38.0002C33.251 38.0002 32.0601 37.5494 31.0936 36.849C30.2289 36.2225 29.5679 35.4071 28.9943 34.6994L28.878 34.5561C28.2484 33.7817 27.6901 33.1275 26.9608 32.6456C26.2611 32.1833 25.354 31.8504 24 31.8504C22.646 31.8504 21.7389 32.1833 21.0392 32.6456C20.3099 33.1275 19.7516 33.7817 19.122 34.5561L19.0057 34.6995C18.4321 35.4071 17.7711 36.2225 16.9064 36.849C15.9399 37.5494 14.749 38.0002 13.1538 38.0002C9.95499 38.0002 8.10675 36.3389 7.11703 34.4771C6.16409 32.6845 6 30.7182 6 29.8691V19.6819C6 17.5493 6.29877 15.7664 6.81647 14.3775C7.32798 13.0052 8.08973 11.9262 9.08109 11.3558C10.1337 10.7501 11.3166 10.7965 12.3616 11.4564ZM12 18C12 18.5523 11.5523 19 11 19C10.4477 19 10 18.5523 10 18C10 17.4477 10.4477 17 11 17C11.5523 17 12 17.4477 12 18ZM13 23C13.5523 23 14 22.5523 14 22C14 21.4477 13.5523 21 13 21C12.4477 21 12 21.4477 12 22C12 22.5523 12.4477 23 13 23ZM12 26C12 26.5523 11.5523 27 11 27C10.4477 27 10 26.5523 10 26C10 25.4477 10.4477 25 11 25C11.5523 25 12 25.4477 12 26ZM16 32C16.5523 32 17 31.5523 17 31C17 30.4477 16.5523 30 16 30C15.4477 30 15 30.4477 15 31C15 31.5523 15.4477 32 16 32ZM13 31C13 31.5523 12.5523 32 12 32C11.4477 32 11 31.5523 11 31C11 30.4477 11.4477 30 12 30C12.5523 30 13 30.4477 13 31ZM16 28C16.5523 28 17 27.5523 17 27C17 26.4477 16.5523 26 16 26C15.4477 26 15 26.4477 15 27C15 27.5523 15.4477 28 16 28ZM21 28C21 28.5523 20.5523 29 20 29C19.4477 29 19 28.5523 19 28C19 27.4477 19.4477 27 20 27C20.5523 27 21 27.4477 21 28ZM37 19C36.4477 19 36 18.5523 36 18C36 17.4477 36.4477 17 37 17C37.5523 17 38 17.4477 38 18C38 18.5523 37.5523 19 37 19ZM34 22C34 22.5523 34.4477 23 35 23C35.5523 23 36 22.5523 36 22C36 21.4477 35.5523 21 35 21C34.4477 21 34 21.4477 34 22ZM37 27C36.4477 27 36 26.5523 36 26C36 25.4477 36.4477 25 37 25C37.5523 25 38 25.4477 38 26C38 26.5523 37.5523 27 37 27ZM31 31C31 31.5523 31.4477 32 32 32C32.5523 32 33 31.5523 33 31C33 30.4477 32.5523 30 32 30C31.4477 30 31 30.4477 31 31ZM36 32C35.4477 32 35 31.5523 35 31C35 30.4477 35.4477 30 36 30C36.5523 30 37 30.4477 37 31C37 31.5523 36.5523 32 36 32ZM31 27C31 27.5523 31.4477 28 32 28C32.5523 28 33 27.5523 33 27C33 26.4477 32.5523 26 32 26C31.4477 26 31 26.4477 31 27ZM28 29C27.4477 29 27 28.5523 27 28C27 27.4477 27.4477 27 28 27C28.5523 27 29 27.4477 29 28C29 28.5523 28.5523 29 28 29ZM25 28C25 28.5523 24.5523 29 24 29C23.4477 29 23 28.5523 23 28C23 27.4477 23.4477 27 24 27C24.5523 27 25 27.4477 25 28Z" fill="currentColor"/>
+</svg></div><b>목 앞 붓기 — 그레이브스 특징</b></div><div class="v2-body">갑상선 전체가 부어 목 앞이 도톰해집니다. 배변이 잦고 허벅지 힘이 약해질 수 있습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 눈이 뻑뻑하거나 겹쳐 보이면 갑상선 치료와 별개로 안과 진료를 받으세요.</span><span class="v2-src">근거 · 미국갑상선학회(ATA) 2016 · 유럽갑상선학회(ETA) 2018</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 진단</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">피검사로 기능을 보고, 항체로 확진합니다</h2>
+  <p class="v2-sub">대부분 혈액검사만으로 진단하고 바로 치료를 시작할 수 있습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">TSH<span class="q-srow__tag">첫 선별</span></div><div class="v2-body">TSH가 크게 낮으면 갑상선이 과하게 일하는 신호입니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">갑상선 호르몬<span class="q-srow__tag">확인</span></div><div class="v2-body">유리 T4·T3가 실제로 높은지, 얼마나 심한지 봅니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">자가항체(TRAb)<span class="q-srow__tag">확진</span></div><div class="v2-body">한국에서는 이 검사를 먼저 합니다. 양성이면 영상 없이 치료를 시작할&nbsp;수&nbsp;있습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">초음파<span class="q-srow__tag">필요할 때</span></div><div class="v2-body">결절이 만져지거나 항체가 애매할 때 합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">5</span><div class="q-srow__c"><div class="q-srow__h">갑상선 스캔<span class="q-srow__tag">일부만</span></div><div class="v2-body">결절이나 갑상선염과 가리기 어려울 때만 합니다.</div></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/endocrine-graves-s05-anatomy-thyroid-20260709.png" alt="목 앞 기도 위에 나비 모양으로 자리한 갑상선을 그린 해부 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 갑상선은 목 앞 기도 위에 나비 모양으로 있습니다. 그레이브스병에서는 전체가 고르게 붓습니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 혈액검사는 공복이 아니어도 됩니다 — 진료 당일 안내에 따르세요.</span><span class="v2-src">근거 · 대한갑상선학회 합의(Endocrinol Metab 2013) · 미국갑상선학회 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 치료 방법</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">치료는 세 가지 — 상황에 맞게 함께 고릅니다</h2>
+  <p class="v2-sub">먹는 약 · 방사성요오드 · 수술 모두 가능한 치료입니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">먹는 약(항갑상선제)</div>
+    <div class="v2-body">호르몬을 덜 만들게 하는 약(메티마졸)을 먹습니다. 갑상선은 그대로 두고 기능만 정상으로 돌립니다. 처음 진단·가벼운 경우·임신 계획 등 대부분의 첫 선택입니다.</div>
+    <div class="q-card__k">관해(약 없이 정상 유지) 기대</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">방사성요오드</div>
+    <div class="v2-body">캡슐을 한 번 먹어 갑상선을 서서히 줄이는 외래 치료입니다. 약을 오래 써도 재발이 잦거나 부작용이 있을 때 고려합니다. 눈 증상이 활발하면 피합니다.</div>
+    <div class="q-card__k">입원 없이 외래로</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 20H20V23H16V20Z" fill="currentColor"/>
+<path d="M20 25H16V28H20V25Z" fill="currentColor"/>
+<path d="M16 30H20V33H16V30Z" fill="currentColor"/>
+<path d="M26 20H22V23H26V20Z" fill="currentColor"/>
+<path d="M22 25H26V28H22V25Z" fill="currentColor"/>
+<path d="M26 30H22V33H26V30Z" fill="currentColor"/>
+<path d="M28 20H32V23H28V20Z" fill="currentColor"/>
+<path d="M32 25H28V28H32V25Z" fill="currentColor"/>
+<path d="M28 30H32V33H28V30Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 6C31 4.89543 30.1046 4 29 4H19C17.8954 4 17 4.89543 17 6L10 6V8H12V42H9C8.44772 42 8 42.4477 8 43C8 43.5523 8.44772 44 9 44H39C39.5523 44 40 43.5523 40 43C40 42.4477 39.5523 42 39 42H36V8H38V6H31ZM29 18C30.1046 18 31 17.1046 31 16V11H34V42H31V38H32V36H16V38H17V42H14V11H17V16C17 17.1046 17.8954 18 19 18H29ZM23 42H25V38H23V42ZM34 8V9H31V8H34ZM14 9H17V8H14V9ZM20 10H23V7H25V10H28V12H25V15H23V12H20V10Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">수술(갑상선 절제)</div>
+    <div class="v2-body">갑상선을 떼어 내는 가장 빠르고 확실한 방법입니다. 갑상선이 아주 크거나, 눌림 증상·암 의심 결절·활동성 중증 눈 증상이 있을 때 유리합니다.</div>
+    <div class="q-card__k">전신마취 목 수술</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 어느 치료든 끝이 아니라 조절입니다 — 방사성요오드·수술 뒤에는 대개 갑상선호르몬제를 먹습니다.</span><span class="v2-src">근거 · 미국갑상선학회 2016 · 유럽갑상선학회 2018 · 대한갑상선학회 2025 방사성요오드 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 약 치료 일정</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">보통 12~18개월 먹은 뒤 끊어 봅니다</h2>
+  <p class="v2-sub">재발 위험이 높으면 적은 양으로 오래 유지하기도 합니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:267px;height:290px">
+    <div class="q-step__n">1</div><div class="q-step__h">용량 맞추기</div><div class="q-step__tag">시작~6주</div><div class="v2-body">시작 전 백혈구·간기능 검사를 합니다. 4~6주마다 호르몬을 재며 양을 맞춥니다. 효과는 보통 4~6주 뒤부터 납니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:359px;top:206px;width:267px;height:290px">
+    <div class="q-step__n">2</div><div class="q-step__h">유지</div><div class="q-step__tag">6주~12개월</div><div class="v2-body">2~3개월마다 확인합니다. 자가항체가 낮아지는 추세면 관해 가능성이 있습니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:654px;top:206px;width:267px;height:290px">
+    <div class="q-step__n">3</div><div class="q-step__h">끊을지 판단</div><div class="q-step__tag">12~18개월</div><div class="v2-body">항체 음성·갑상선이 작으면 끊어 봅니다. 항체가 높으면 적은 양을 오래 쓰거나 근본 치료를 상의합니다.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:949px;top:206px;width:267px;height:290px">
+    <div class="q-step__n">4</div><div class="q-step__h">재발 살피기</div><div class="q-step__tag">끊은 뒤</div><div class="v2-body">첫 2년이 가장 위험하고 약 절반에서 재발합니다. 정기 검사가 꼭 필요합니다.</div>
+  </div>
+  <div class="q-arrow" style="left:337px;top:242px"></div>
+  <div class="q-arrow" style="left:632px;top:242px"></div>
+  <div class="q-arrow" style="left:927px;top:242px"></div>
+  <div class="v2-panel q-band v2-panel--accent" style="left:64px;top:512px;width:1152px;height:94px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24ZM26 13C26 11.8954 25.1046 11 24 11C22.8954 11 22 11.8954 22 13L22 27C22 28.1046 22.8954 29 24 29C25.1046 29 26 28.1046 26 27L26 13ZM24 33C25.1046 33 26 33.8954 26 35C26 36.1046 25.1046 37 24 37C22.8954 37 22 36.1046 22 35C22 33.8954 22.8954 33 24 33Z" fill="currentColor"/>
+</svg></div><b>재발해도 괜찮습니다</b></div><div class="v2-body">재발하면 적은 양의 약을 오래 쓰거나 방사성요오드·수술 같은 근본 치료로 넘어가면 됩니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약 효과는 보통 4~6주 뒤부터 나타나니 정해진 검사 날짜를 지켜 주세요.</span><span class="v2-src">근거 · Eur Thyroid J 2022 장기 저용량 연구 · JCEM 2025 최소 용량 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 약 부작용</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">약 부작용 — 신호가 오면 약을 멈추고 검사합니다</h2>
+  <p class="v2-sub">드물지만 중요한 부작용입니다. 스스로 판단해 계속 먹지 마세요</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:1152px"><colgroup><col style="width:260px"><col style="width:150px"><col style="width:742px"></colgroup><thead><tr><th>부작용</th><th>얼마나</th><th>신호와 대처</th></tr></thead><tbody><tr><th style="height:88px">백혈구 급감(무과립구증)</th><td style="height:88px">드묾</td><td style="height:88px">대부분 복용 첫 3개월에 생깁니다. <b>38℃ 넘는 열·심한 목 통증·입안 헐음</b>이면 즉시 약을 끊고 혈액검사</td></tr><tr><th style="height:88px">간 손상</th><td style="height:88px">드묾</td><td style="height:88px">피부·눈이 노래짐, 짙은 소변, 심한 피로·식욕 저하가 신호 — 약을 멈추고 간기능 검사</td></tr><tr><th style="height:88px">발진 · 가려움 · 관절통</th><td style="height:88px">비교적 흔함</td><td style="height:88px">가벼운 발진은 항히스타민제로 좋아집니다. 넓게 번지거나 관절이 아프면 약을 바꾸기도 합니다</td></tr><tr><th style="height:88px"><b class="q-hl">언제 조심하나</b></th><td style="height:88px">첫 6개월</td><td style="height:88px">부작용의 약 4건 중 3건이 복용 첫 6개월에 나타납니다 — 이 시기 예정된 검사를 꼭 지키세요</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 갑자기 열·목 통증·입안 헐음·황달이 생기면 약을 끊고 백혈구·간기능 검사를 받으세요.</span><span class="v2-src">근거 · 미국갑상선학회 2016 · Eur Thyroid J 2022(이상반응 75%가 첫 6개월)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 재발과 관해</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">언제 약을 끊을 수 있을까요</h2>
+  <p class="v2-sub">진단 때 자가항체(TRAb) 수치로 재발 가능성을 미리 가늠합니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">약 60<span>%</span></div><div class="q-stat__lab">항체가 낮은 분</div><div class="q-stat__cap">약 없이 정상을 유지(관해)한 비율</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">약 30<span>%</span></div><div class="q-stat__lab">항체가 높은 분</div><div class="q-stat__cap">관해에 도달한 비율 — 항체가 높을수록 낮아집니다</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">약 50<span>%</span></div><div class="q-stat__lab">약을 끊은 뒤 재발</div><div class="q-stat__cap">첫 2년이 가장 위험 — 정기 추적이 필요합니다</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>오래 지켜보면</b></div><div class="v2-body">25년을 추적한 연구에서 약으로 시작한 분 3명 중 1명만 약 없이 정상을 유지했습니다. 많은 분이 결국 방사성요오드나 수술을 받았습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24ZM26 13C26 11.8954 25.1046 11 24 11C22.8954 11 22 11.8954 22 13L22 27C22 28.1046 22.8954 29 24 29C25.1046 29 26 28.1046 26 27L26 13ZM24 33C25.1046 33 26 33.8954 26 35C26 36.1046 25.1046 37 24 37C22.8954 37 22 36.1046 22 35C22 33.8954 22.8954 33 24 33Z" fill="currentColor"/>
+</svg></div><b>재발은 실패가 아닙니다</b></div><div class="v2-body">항체가 낮게 유지되거나 음성이 되면 끊어 봅니다. 재발하면 다음 단계 치료로 안전하게 넘어가면 됩니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 항체 검사 결과를 진료 때 함께 보며 끊을 시기를 정합니다.</span><span class="v2-src">근거 · Endocrinol Metab 2025(한국계 1,148명) · JCEM 2024(25년 추적)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 근본 치료</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">방사성요오드와 수술, 무엇이 다를까요</h2>
+  <p class="v2-sub">약으로 조절이 어렵거나 재발이 잦을 때 고르는 두 가지 방법입니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/endocrine-graves-s10-comparison-rai-surgery-20260709.png" alt="왼쪽 방사성요오드 캡슐로 갑상선이 줄어드는 모습과 오른쪽 갑상선 절제 수술을 비교한 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 왼쪽은 캡슐로 갑상선이 서서히 줄어드는 방사성요오드, 오른쪽은 떼어 내는 수술입니다(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>방사성요오드</b></div><div class="v2-body">캡슐 한 번, 입원 없이 외래로 합니다(2025 대한갑상선학회: 고정 용량 10~15 mCi). 대개 저하증이 되어 갑상선호르몬제를 평생 먹습니다. 눈 증상을 3~6배 악화시킬 수 있어 활동성 중증 눈 증상·임신·수유 중에는 하지 않습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 20H20V23H16V20Z" fill="currentColor"/>
+<path d="M20 25H16V28H20V25Z" fill="currentColor"/>
+<path d="M16 30H20V33H16V30Z" fill="currentColor"/>
+<path d="M26 20H22V23H26V20Z" fill="currentColor"/>
+<path d="M22 25H26V28H22V25Z" fill="currentColor"/>
+<path d="M26 30H22V33H26V30Z" fill="currentColor"/>
+<path d="M28 20H32V23H28V20Z" fill="currentColor"/>
+<path d="M32 25H28V28H32V25Z" fill="currentColor"/>
+<path d="M28 30H32V33H28V30Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 6C31 4.89543 30.1046 4 29 4H19C17.8954 4 17 4.89543 17 6L10 6V8H12V42H9C8.44772 42 8 42.4477 8 43C8 43.5523 8.44772 44 9 44H39C39.5523 44 40 43.5523 40 43C40 42.4477 39.5523 42 39 42H36V8H38V6H31ZM29 18C30.1046 18 31 17.1046 31 16V11H34V42H31V38H32V36H16V38H17V42H14V11H17V16C17 17.1046 17.8954 18 19 18H29ZM23 42H25V38H23V42ZM34 8V9H31V8H34ZM14 9H17V8H14V9ZM20 10H23V7H25V10H28V12H25V15H23V12H20V10Z" fill="currentColor"/>
+</svg></div><b>갑상선 수술</b></div><div class="v2-body">가장 빠르고 확실합니다(6개월 관해율 약 99%). 큰 갑상선·눌림 증상·암 의심 결절에 알맞고 활동성 중증 눈 증상에도 선택할 수 있습니다. 전신마취가 필요하고, 드물게 부갑상선·목소리 신경 손상이 생깁니다. 수술 뒤 호르몬제를 평생 먹습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 두 방법 모두 치료 뒤 호르몬제를 먹는 경우가 많습니다 — 약 한 알로 관리됩니다.</span><span class="v2-src">근거 · Surgery 2024(176명) · 대한갑상선학회 2025 방사성요오드 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 눈 증상</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">그레이브스 안병증 — 금연이 가장 중요합니다</h2>
+  <p class="v2-sub">눈 뒤 근육과 지방이 부어 눈이 튀어나올 수 있습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">얼마나 흔한가<span class="q-srow__tag">대부분 경미</span></div><div class="v2-body">가벼운 눈 증상은 흔합니다. 약 5명 중 1명은 중등도 이상이고, 아주 드물게(1%) 시력을 위협합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">금연<span class="q-srow__tag">핵심</span></div><div class="v2-body">흡연은 눈 증상을 악화시키는 가장 강력한 ‘바꿀 수 있는’ 원인입니다. 간접흡연도 피하세요.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">활동성 보고 치료<span class="q-srow__tag">치료</span></div><div class="v2-body">충혈·부기·통증으로 활동성을 봅니다. 활동성·중등도 이상이면 정맥 스테로이드가 첫 치료입니다. 인공눈물·선글라스도 도움이 됩니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">새로운 표적 치료제<span class="q-srow__tag">안과 상의</span></div><div class="v2-body">테프로투무맙·토실리주맙 같은 약이 국내에도 도입되고 있습니다(급여 여부는 확인 필요).</div></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/endocrine-graves-s11-anatomy-eye-20260709.png" alt="눈 뒤 근육과 지방 조직이 부어 안구를 앞으로 밀어내는 눈확 단면 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 눈 뒤 근육(붉은색)과 지방(노란색)이 부어 눈을 앞으로 밉니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 갑자기 시력이 떨어지거나 색이 흐리게 보이거나 심한 통증·겹쳐 보임이 생기면 즉시 안과로 가세요.</span><span class="v2-src">근거 · Lancet Diabetes Endocrinol 2025 · Eye 2025 생물학적 제제 종합분석</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 11 · 오늘 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 여덟 가지</h2>
+  <p class="v2-sub">안전한 복용과 꾸준한 관리를 위한 실천 항목입니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">자가면역질환 — 목표는 완치보다 안정된 조절과 관해</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">38℃ 넘는 열·목 통증·입안 헐음 — 약 끊고 혈액검사</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">황달·짙은 소변·심한 피로 — 바로 간기능 검사</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">약은 임의로 끊지 않기 — 효과는 4~6주 뒤부터</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">담배는 꼭 끊기 — 눈 증상을 크게 악화</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">재발이 잦으면 방사성요오드·수술도 좋은 선택</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">임신 계획은 미리 상의 — 첫 3개월은 PTU, 방사성요오드는 금기, 김·미역 과다 주의</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:518px;width:564px;height:88px"><span class="q-chk__n">08</span><span class="q-chk__t">고열·의식 저하·심한 두근거림이 겹치면 즉시 응급실</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 고열과 의식 저하, 심한 두근거림이 한꺼번에 오면 ‘갑상선 폭풍’일 수 있습니다.</span><span class="v2-src">근거 · 광교바른내과 그레이브스병 관리 계획</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">그레이브스병 진단을 받은 분과 가족을 위한 설명자료입니다. 치료 방법은 담당 의사와 함께 상의해&nbsp;정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">미국갑상선학회(ATA) 2016 · 유럽갑상선학회(ETA) 2018 · 대한갑상선학회(KTA) 합의·2025 방사성요오드 지침 · Lancet Diabetes Endocrinol 2025 · JCEM 2024·2025 · Endocrinol Metab 2025</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM13,3H14V4H13zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM23,3H24V4H23zM24,3H25V4H24zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM14,5H15V6H14zM19,5H20V6H19zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM14,6H15V7H14zM15,6H16V7H15zM20,6H21V7H20zM21,6H22V7H21zM23,6H24V7H23zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM13,7H14V8H13zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM20,7H21V8H20zM22,7H23V8H22zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM12,9H13V10H12zM16,9H17V10H16zM17,9H18V10H17zM18,9H19V10H18zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM13,10H14V11H13zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM24,10H25V11H24zM25,10H26V11H25zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM3,11H4V12H3zM5,11H6V12H5zM6,11H7V12H6zM11,11H12V12H11zM12,11H13V12H12zM15,11H16V12H15zM18,11H19V12H18zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM2,12H3V13H2zM4,12H5V13H4zM5,12H6V13H5zM8,12H9V13H8zM10,12H11V13H10zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM14,12H15V13H14zM15,12H16V13H15zM16,12H17V13H16zM17,12H18V13H17zM18,12H19V13H18zM22,12H23V13H22zM24,12H25V13H24zM26,12H27V13H26zM27,12H28V13H27zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM3,13H4V14H3zM5,13H6V14H5zM6,13H7V14H6zM7,13H8V14H7zM15,13H16V14H15zM18,13H19V14H18zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM2,14H3V15H2zM3,14H4V15H3zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM12,14H13V15H12zM16,14H17V15H16zM19,14H20V15H19zM21,14H22V15H21zM22,14H23V15H22zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM5,15H6V16H5zM6,15H7V16H6zM12,15H13V16H12zM14,15H15V16H14zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM25,15H26V16H25zM28,15H29V16H28zM33,15H34V16H33zM34,15H35V16H34zM4,16H5V17H4zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM12,16H13V17H12zM14,16H15V17H14zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM33,16H34V17H33zM2,17H3V18H2zM4,17H5V18H4zM7,17H8V18H7zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM13,17H14V18H13zM16,17H17V18H16zM20,17H21V18H20zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM27,17H28V18H27zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM2,18H3V19H2zM3,18H4V19H3zM4,18H5V19H4zM5,18H6V19H5zM6,18H7V19H6zM8,18H9V19H8zM10,18H11V19H10zM14,18H15V19H14zM16,18H17V19H16zM17,18H18V19H17zM19,18H20V19H19zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM34,18H35V19H34zM2,19H3V20H2zM3,19H4V20H3zM5,19H6V20H5zM6,19H7V20H6zM9,19H10V20H9zM10,19H11V20H10zM11,19H12V20H11zM15,19H16V20H15zM18,19H19V20H18zM19,19H20V20H19zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM25,19H26V20H25zM26,19H27V20H26zM28,19H29V20H28zM29,19H30V20H29zM31,19H32V20H31zM32,19H33V20H32zM34,19H35V20H34zM4,20H5V21H4zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM9,21H10V22H9zM13,21H14V22H13zM15,21H16V22H15zM16,21H17V22H16zM23,21H24V22H23zM24,21H25V22H24zM27,21H28V22H27zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM2,22H3V23H2zM4,22H5V23H4zM5,22H6V23H5zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM14,22H15V23H14zM16,22H17V23H16zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM21,22H22V23H21zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM2,23H3V24H2zM4,23H5V24H4zM5,23H6V24H5zM7,23H8V24H7zM9,23H10V24H9zM12,23H13V24H12zM18,23H19V24H18zM21,23H22V24H21zM22,23H23V24H22zM24,23H25V24H24zM25,23H26V24H25zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM2,24H3V25H2zM4,24H5V25H4zM6,24H7V25H6zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM15,24H16V25H15zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM24,24H25V25H24zM26,24H27V25H26zM27,24H28V25H27zM31,24H32V25H31zM33,24H34V25H33zM2,25H3V26H2zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM21,25H22V26H21zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM32,25H33V26H32zM33,25H34V26H33zM2,26H3V27H2zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM12,26H13V27H12zM14,26H15V27H14zM15,26H16V27H15zM16,26H17V27H16zM17,26H18V27H17zM19,26H20V27H19zM22,26H23V27H22zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM33,26H34V27H33zM34,26H35V27H34zM10,27H11V28H10zM12,27H13V28H12zM14,27H15V28H14zM18,27H19V28H18zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM32,27H33V28H32zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM17,28H18V29H17zM19,28H20V29H19zM20,28H21V29H20zM22,28H23V29H22zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM11,29H12V30H11zM12,29H13V30H12zM13,29H14V30H13zM15,29H16V30H15zM16,29H17V30H16zM18,29H19V30H18zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM10,30H11V31H10zM11,30H12V31H11zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM19,30H20V31H19zM22,30H23V31H22zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM12,31H13V32H12zM14,31H15V32H14zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM31,31H32V32H31zM33,31H34V32H33zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM15,32H16V33H15zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM22,32H23V33H22zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM18,33H19V34H18zM20,33H21V34H20zM23,33H24V34H23zM24,33H25V34H24zM25,33H26V34H25zM30,33H31V34H30zM31,33H32V34H31zM32,33H33V34H32zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM13,34H14V35H13zM17,34H18V35H17zM19,34H20V35H19zM20,34H21V35H20zM24,34H25V35H24zM25,34H26V35H25zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -812,96 +475,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">13 / 13</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
+</section>
 </body>
 </html>

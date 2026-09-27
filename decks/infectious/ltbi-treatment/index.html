@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>LTBI Treatment — Gwanggyo Barun Internal Medicine</title>
+  <title>잠복결핵감염(LTBI) 치료 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://edu.gwanggyobarun.com/decks/infectious/ltbi-treatment/">
   <meta property="og:title" content="잠복결핵감염(LTBI) 치료 — 광교바른내과">
-  <meta property="og:description" content="3HP·4R·9H 치료 요법 비교, 간독성 모니터링, 리팜핀 약물상호작용, 임신 시 고려사항까지 — 잠복결핵감염 치료 환자 가이드">
+  <meta property="og:description" content="4R·3HR·9H 치료 요법 비교, 간독성 모니터링, 리팜핀 약물상호작용, 임신 시 고려사항까지 — 잠복결핵감염 치료 환자 가이드">
   <meta property="og:image" content="https://edu.gwanggyobarun.com/output/decks/ltbi-treatment-preview.png">
   <meta property="og:site_name" content="광교바른내과">
   <meta name="theme-color" content="#003366">
@@ -18,1093 +18,403 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <!-- Local extensions for this deck (regimen comparison table + alert stack + monitoring schedule) -->
-  <style>
-    /* Three-stat row — used on slide 2 (hero stats) */
-    .pattern-stats3 {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-6);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .stats3-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-      align-items: center;
-      justify-items: center;
-    }
-    .stats3-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .stats3-cell__circle {
-      width: 168px;
-      height: 168px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-canvas);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-    }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__num {
-      font-size: 3rem;
-      font-weight: var(--weight-black);
-      line-height: 1;
-      letter-spacing: var(--tracking-mega);
-    }
-    .stats3-cell__unit {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      margin-top: var(--space-2);
-      opacity: 0.92;
-    }
-    .stats3-cell__label {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      text-align: center;
-      max-width: 240px;
-      line-height: var(--lh-snug);
-    }
-    .stats3-note {
-      padding: var(--space-5) var(--space-6);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-relaxed);
-    }
-
-    /* Regimen comparison table — 4 cols × N rows for 3HP/4R/9H */
-    .regimen-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      font-size: var(--text-body);
-      background: var(--color-canvas);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-    }
-    .regimen-table thead th {
-      background: var(--color-navy);
-      color: var(--color-canvas);
-      font-weight: var(--weight-bold);
-      padding: var(--space-3) var(--space-4);
-      text-align: left;
-      letter-spacing: var(--tracking-snug);
-      font-size: var(--text-body);
-      line-height: var(--lh-snug);
-    }
-    .regimen-table thead th .regimen-table__sub {
-      display: block;
-      font-size: var(--text-sm);
-      font-weight: var(--weight-450);
-      opacity: 0.85;
-      margin-top: 2px;
-    }
-    .regimen-table thead th:first-child { background: var(--color-steel); }
-    .regimen-table tbody td {
-      padding: var(--space-3) var(--space-4);
-      border-top: 1px solid var(--color-border-soft);
-      vertical-align: top;
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-    .regimen-table tbody tr td:first-child {
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      background: var(--color-canvas-warm);
-      width: 22%;
-      letter-spacing: var(--tracking-snug);
-    }
-    .regimen-table__primary {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: var(--radius-sm);
-      background: var(--color-steel);
-      color: var(--color-canvas);
-      font-size: var(--text-micro);
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
-    }
-    .regimen-table__alt {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: var(--radius-sm);
-      background: var(--color-canvas-warm);
-      color: var(--color-slate);
-      font-size: var(--text-micro);
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
-      border: 1px solid var(--color-border);
-    }
-
-    /* Vertical alert stack — single column emergency rows (slide 7 hepatotoxicity) */
-    .pattern-alert-stack {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: 1fr;
-      gap: var(--space-3);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .alert-row {
-      display: flex;
-      gap: var(--space-4);
-      align-items: flex-start;
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-danger-bg);
-      border: 1px solid var(--color-danger);
-      border-radius: var(--radius-lg);
-      min-height: 0;
-      overflow: hidden;
-    }
-    .alert-row__icon {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--color-canvas);
-      color: var(--color-danger);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--text-h3);
-      font-weight: var(--weight-bold);
-      border: 1px solid var(--color-danger);
-    }
-    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
-    .alert-row__title {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-bold);
-      color: var(--color-danger);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-tight);
-    }
-    .alert-row__text {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-    .slide--alert-stack .slide__title-block {
-      max-width: 1120px;
-      margin-bottom: var(--space-5);
-    }
-    .slide--alert-stack .slide__body--visual-focus {
-      grid-template-columns: minmax(0, 1.08fr) minmax(460px, 0.72fr);
-    }
-    .slide--alert-stack .pattern-alert-stack { gap: var(--space-2); }
-
-    .slide--readable-visual .slide__body--visual-focus {
-      grid-template-columns: minmax(0, 1fr) minmax(380px, 0.56fr);
-      gap: var(--space-4);
-    }
-    .slide--readable-visual .slide__body--visual-focus .pattern-grid { gap: var(--space-3); }
-    .slide--readable-visual .slide__body--visual-focus .tile {
-      padding: var(--space-4);
-      gap: var(--space-2);
-    }
-    .slide--readable-visual .slide__body--visual-focus .tile__title { font-size: var(--text-body-lg); }
-    .slide--readable-visual .slide__body--visual-focus .tile__body {
-      margin-top: var(--space-1);
-      font-size: var(--text-body);
-      line-height: 1.28;
-      color: var(--color-ink);
-    }
-    .slide--readable-visual .slide__body--visual-focus .tile__regimen {
-      margin-top: auto;
-      gap: var(--space-1);
-      padding-top: var(--space-2);
-    }
-    .slide--readable-visual .slide__body--visual-focus .tile__regimen li {
-      grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr);
-      gap: var(--space-2);
-      font-size: var(--text-body);
-      line-height: var(--lh-snug);
-    }
-    .slide--readable-visual .slide__body--visual-focus .tile__regimen-dose {
-      white-space: normal;
-    }
-
-    .slide--risk-profile .slide__body--visual-focus {
-      display: flex;
-      flex-direction: column;
-    }
-    .slide--risk-profile .slide__title-block {
-      margin-bottom: var(--space-5);
-    }
-    .slide--risk-profile .slide__body--visual-focus > .ai-visual--focus {
-      display: none;
-    }
-    .slide--risk-profile .slide__body--visual-focus .pattern-grid--risk-readable {
-      width: 100%;
-      height: 100%;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      gap: var(--space-3);
-    }
-    .slide--risk-profile .slide__body--visual-focus .tile {
-      padding: var(--space-5);
-    }
-    .slide--risk-profile .slide__body--visual-focus .tile__body {
-      line-height: 1.23;
-    }
-
-    /* Monitoring schedule — horizontal timeline of LFT checks */
-    .monitor-schedule {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: var(--space-3);
-      align-items: stretch;
-    }
-    .monitor-step {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      padding: var(--space-4);
-      background: var(--color-canvas);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      position: relative;
-    }
-    .monitor-step__week {
-      font-size: var(--text-micro);
-      font-weight: var(--weight-bold);
-      color: var(--color-steel);
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
-    }
-    .monitor-step__label {
-      font-size: var(--text-body);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-snug);
-    }
-    .monitor-step__body {
-      font-size: var(--text-sm);
-      color: var(--color-ink-soft);
-      line-height: var(--lh-snug);
-    }
-    .monitor-step--baseline { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-
-    .slide--monitoring .slide__body { gap: var(--space-4); }
-    .slide--monitoring .monitor-schedule { gap: var(--space-4); }
-    .slide--monitoring .monitor-step {
-      gap: var(--space-3);
-      padding: var(--space-5);
-    }
-    .slide--monitoring .monitor-step__label {
-      font-size: var(--text-body-lg);
-    }
-    .slide--monitoring .monitor-step__body {
-      font-size: var(--text-body);
-      line-height: 1.28;
-      color: var(--color-ink);
-    }
-    .slide--monitoring .alert-strip {
-      margin-top: 0;
-      padding: var(--space-5) var(--space-6);
-      font-size: var(--text-body-lg);
-    }
-
-    .slide--interactions .slide__title-block {
-      max-width: 1080px;
-      margin-bottom: var(--space-5);
-    }
-    .slide--interactions .slide__subtitle { max-width: 1020px; }
-    .slide--interactions .pattern-grid {
-      gap: var(--space-3);
-      grid-template-rows: repeat(2, minmax(0, 1fr));
-    }
-    .slide--interactions .tile {
-      padding: var(--space-4) var(--space-5);
-      gap: var(--space-2);
-    }
-    .slide--interactions .tile__body {
-      margin-top: 0;
-      line-height: 1.3;
-    }
-
-    .slide--pregnancy .slide__title-block { margin-bottom: var(--space-6); }
-    .slide--pregnancy .slide__body--visual-focus {
-      grid-template-columns: minmax(0, 1fr) minmax(450px, 0.66fr);
-    }
-    .slide--pregnancy .pattern-compare { gap: var(--space-4); }
-    .slide--pregnancy .compare-col__header {
-      padding: var(--space-4) var(--space-5);
-      font-size: var(--text-h3);
-      line-height: 1.18;
-    }
-    .slide--pregnancy .compare-col__list {
-      gap: var(--space-2);
-      padding: var(--space-4) var(--space-5) var(--space-5);
-    }
-    .slide--pregnancy .compare-col__list li {
-      padding-left: var(--space-5);
-      line-height: 1.2;
-    }
-
-    /* Checklist with 8 items */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(3) .pattern-split > div { display: flex; flex-direction: column; min-height: 100%; }
-    .slide:nth-of-type(3) .split__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .slide:nth-of-type(3) .split__note { margin-top: auto; }
-    .slide:nth-of-type(3) .regimen-table { height: 100%; }
-    .slide:nth-of-type(3) .regimen-table tbody tr { height: 54px; }
-    .slide:nth-of-type(5) .alert-strip { min-height: 270px; display: flex; align-items: center; }
-  </style>
-<!-- seo:geo2 --><meta name="description" content="3HP·4R·9H 치료 요법 비교, 간독성 모니터링, 리팜핀 약물상호작용, 임신 시 고려사항까지 — 잠복결핵감염 치료 환자 가이드">
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5C-redesign 2026-09-27 (원장님 49113) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-head{margin-bottom:4px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
+<!-- seo:geo2 --><meta name="description" content="4R·3HR·9H 치료 요법 비교, 간독성 모니터링, 리팜핀 약물상호작용, 임신 시 고려사항까지 — 잠복결핵감염 치료 환자 가이드">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/infectious/ltbi-treatment/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "LTBI Treatment — Gwanggyo Barun Internal Medicine", "description": "3HP·4R·9H 치료 요법 비교, 간독성 모니터링, 리팜핀 약물상호작용, 임신 시 고려사항까지 — 잠복결핵감염 치료 환자 가이드", "url": "https://edu.gwanggyobarun.com/decks/infectious/ltbi-treatment/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "잠복결핵감염(LTBI) 치료 — 광교바른내과", "description": "4R·3HR·9H 치료 요법 비교, 간독성 모니터링, 리팜핀 약물상호작용, 임신 시 고려사항까지 — 잠복결핵감염 치료 환자 가이드", "url": "https://edu.gwanggyobarun.com/decks/infectious/ltbi-treatment/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · INFECTIOUS DISEASE</div>
+      <div class="slide__chapter"><strong>환자 안내</strong> · 감염</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">잠복결핵감염 치료,<br><em>3~9개월의 정확한 복용</em></h1>
-      <p class="slide__subtitle">잠복결핵감염 (Latent Tuberculosis Infection, LTBI) 치료 요법·간독성·약물상호작용 가이드</p>
+      <p class="slide__subtitle">잠복결핵감염 치료 — 약의 종류, 간 부작용, 함께 먹는 약 주의</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">3HP · 4R · 9H Regimens · Hepatotoxicity · Drug Interactions</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__source">치료 요법 · 간 기능 검사 · 약물 상호작용</span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO STATS — 3 key numbers (efficacy / cost / regimens)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">짧은 치료로 평생 결핵을 예방합니다</h2>
-      <p class="slide__subtitle">잠복결핵감염 치료의 핵심 — 단기 복용으로 활동성 결핵 발병 위험을 크게 낮춥니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">60–90<span style="font-size:1.5rem">%</span></div>
-              <div class="stats3-cell__unit">예방 효과</div>
-            </div>
-            <div class="stats3-cell__label">치료 완주 시 결핵 발병 위험 감소</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">3</div>
-              <div class="stats3-cell__unit">권고 요법</div>
-            </div>
-            <div class="stats3-cell__label">3HP · 4R · 9H — 환자 상태에 맞춰 선택</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">0<span style="font-size:1.5rem">%</span></div>
-              <div class="stats3-cell__unit">본인부담</div>
-            </div>
-            <div class="stats3-cell__label">건강보험 산정특례 (V010) 적용</div>
-          </div>
-        </div>
-        <div class="stats3-note">
-          잠복결핵감염은 결핵균이 몸에 존재하지만 잠자는 상태로 — 증상도 전염력도 없습니다. 그러나 평생 5~10% 확률로 활동성 결핵 (Active TB) 으로 진행할 수 있어, 단기 약물 치료로 미리 균을 제거하는 것이 표준 진료입니다. 잠복결핵 자체에 대한 자세한 내용은 <em>LTBI 개요</em> 자료를 참고해 주세요.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 결핵 진료지침 5판 (2024) · WHO LTBI Guidelines 2020</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · COMPARISON TABLE — 3HP vs 4R vs 9H regimens
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>REGIMENS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">3가지 표준 치료 요법 한눈에 비교</h2>
-      <p class="slide__subtitle">3HP · 4R 은 1차 권고 / 9H 는 대안 — 간 기능, 동반 약물, 임신 여부에 따라 의료진이 결정</p>
-    </div>
-    <div class="slide__body">
-      <table class="regimen-table">
-        <thead>
-          <tr>
-            <th>구분</th>
-            <th>3HP<span class="regimen-table__sub">이소니아지드 (Isoniazid, INH) + 리파펜틴 (Rifapentine), 주 1회</span></th>
-            <th>4R<span class="regimen-table__sub">리팜핀 (Rifampin), 1일 1회</span></th>
-            <th>9H<span class="regimen-table__sub">이소니아지드 (Isoniazid) 단독, 1일 1회</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>복용 기간</td>
-            <td>3개월 (12회 / 주 1회)</td>
-            <td>4개월 (120일 / 매일)</td>
-            <td>9개월 (270일 / 매일)</td>
-          </tr>
-          <tr>
-            <td>한국 권고</td>
-            <td><span class="regimen-table__primary">1차 권고</span></td>
-            <td><span class="regimen-table__primary">1차 권고</span></td>
-            <td><span class="regimen-table__alt">대안</span></td>
-          </tr>
-          <tr>
-            <td>치료 완료율</td>
-            <td>약 87% (가장 높음)</td>
-            <td>78.8%</td>
-            <td>63.2% (가장 낮음)</td>
-          </tr>
-          <tr>
-            <td>심한 간독성</td>
-            <td>약 0.4% (낮음)</td>
-            <td>0.3% (가장 낮음)</td>
-            <td>약 2.0% (가장 높음)</td>
-          </tr>
-          <tr>
-            <td>약물상호작용</td>
-            <td>리파펜틴 — CYP3A4 강력 유도</td>
-            <td>리팜핀 — CYP3A4 강력 유도</td>
-            <td>적은 편 (CYP 영향 적음)</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Menzies D, NEJM 2018;379:440-453 · CDC LTBI Treatment 2020</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 3-up — Drug detail tiles (regimen tile pattern)
-       ======================================================================== -->
-  <section class="slide slide--drug-profile slide--readable-visual">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>DRUG PROFILE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">사용되는 핵심 약물 3가지</h2>
-      <p class="slide__subtitle">각 약물의 작용·복용법·대표 부작용을 미리 알아두면 안전한 치료에 큰 도움이 됩니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3 pattern-grid--drug-profile" style="grid-template-rows: 1fr;">
-        <div class="tile">
-          <div class="tile__index">DRUG · 01</div>
-          <div class="tile__title">이소니아지드 (Isoniazid, INH)</div>
-          <div class="tile__body">결핵균 세포벽 합성 차단. 1일 1회 공복 복용 (식전 1시간 또는 식후 2시간). 대표 부작용 — 간독성, 말초신경병증 (피리독신/B6 동시 복용으로 예방). 등푸른 생선·발효식품 섭취 후 홍조·두통이 생길 수 있습니다.</div>
-          <ul class="tile__regimen">
-            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">300 mg / 1일 1회</span></li>
-            <li><span class="tile__regimen-name">B6 (피리독신)</span><span class="tile__regimen-dose">25–50 mg 동시</span></li>
-          </ul>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 02</div>
-          <div class="tile__title">리팜핀 (Rifampin, RIF)</div>
-          <div class="tile__body">결핵균 RNA 중합효소 억제. 1일 1회 공복 복용. 체액(소변·눈물·땀·침)이 주황~붉은색으로 변하는 것은 정상 — 약을 끊으면 사라집니다. 콘택트렌즈는 영구 착색될 수 있으니 안경 또는 일회용 렌즈 권장.</div>
-          <ul class="tile__regimen">
-            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">600 mg / 1일 1회</span></li>
-            <li><span class="tile__regimen-name">제산제와 간격</span><span class="tile__regimen-dose">1시간 이상</span></li>
-          </ul>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 03</div>
-          <div class="tile__title">리파펜틴 (Rifapentine, RPT)</div>
-          <div class="tile__body">리팜핀 계열의 장시간 작용 약물 — 주 1회 복용이 가능한 이유입니다. 3HP 요법에서 이소니아지드와 함께 사용. 음식과 함께 복용 시 흡수 향상. 리팜핀과 동일하게 CYP3A4 강력 유도제로 약물상호작용 주의가 필요합니다.</div>
-          <ul class="tile__regimen">
-            <li><span class="tile__regimen-name">성인 용량</span><span class="tile__regimen-dose">900 mg / 주 1회</span></li>
-            <li><span class="tile__regimen-name">복용 시기</span><span class="tile__regimen-dose">식사와 함께</span></li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/infectious-ltbi-treatment-s04-risk-infectious-ed3b23b6-20260530-raster-v2-20260531.jpg" alt="사용되는 핵심 약물 3가지 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 결핵 진료지침 5판 (2024) · ATS/CDC/IDSA Drug Reference</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · TIMELINE — LFT monitoring schedule
-       ======================================================================== -->
-  <section class="slide slide--monitoring">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>LFT MONITORING</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">간 기능 검사 (LFT) 모니터링 일정</h2>
-      <p class="slide__subtitle">약 시작 전 기저 검사 후 정기 추적 — 무증상 간독성을 조기에 발견하기 위한 표준 일정</p>
-    </div>
-    <div class="slide__body">
-      <div class="monitor-schedule">
-        <div class="monitor-step monitor-step--baseline">
-          <div class="monitor-step__week">BASELINE</div>
-          <div class="monitor-step__label">치료 시작 전</div>
-          <div class="monitor-step__body">AST · ALT · 총빌리루빈 · CBC · 크레아티닌 · HBV/HCV 선별. 흉부 X선으로 활동성 결핵 배제.</div>
-        </div>
-        <div class="monitor-step">
-          <div class="monitor-step__week">WEEK 2–4</div>
-          <div class="monitor-step__label">초기 추적</div>
-          <div class="monitor-step__body">고위험군 (음주·간질환·고령·임신·HIV) 우선 재검. 증상 문진 + 부작용 점검.</div>
-        </div>
-        <div class="monitor-step">
-          <div class="monitor-step__week">MONTH 1–2</div>
-          <div class="monitor-step__label">월 1회 추적</div>
-          <div class="monitor-step__body">LFT 정상 + 무증상이면 일반 환자도 매월 1회 외래 진료로 부작용 점검.</div>
-        </div>
-        <div class="monitor-step">
-          <div class="monitor-step__week">MONTH 3+</div>
-          <div class="monitor-step__label">정기 추적</div>
-          <div class="monitor-step__body">간기능 안정 시 1~2개월 간격으로 LFT 재검. 증상 발생 시는 수시 검사.</div>
-        </div>
-        <div class="monitor-step">
-          <div class="monitor-step__week">END</div>
-          <div class="monitor-step__label">치료 종료 시</div>
-          <div class="monitor-step__body">최종 LFT 확인 후 산정특례 종료 처리. 완료 기록 발급 (사업장·학교 제출용).</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">중단 기준</span>
-        <span class="alert-strip__text">AST/ALT 가 정상 상한의 <strong>5배 이상 (무증상)</strong> 또는 <strong>3배 이상 (증상 동반)</strong>이면 약물 즉시 중단 — ATS 2006 기준.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · 결핵 진료지침 5판</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 3×2 — High-risk groups for hepatotoxicity
-       ======================================================================== -->
-  <section class="slide slide--risk-profile slide--readable-visual">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>HEPATOTOXICITY RISK</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">간독성 (Hepatotoxicity) 위험이 높은 분들</h2>
-      <p class="slide__subtitle">아래 항목 중 하나 이상 해당되면 더 자주 검사·더 면밀한 관찰이 필요합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3 pattern-grid--risk-readable">
-        <div class="tile">
-          <div class="tile__index">RISK · 01</div>
-          <div class="tile__title">고령 (65세 이상)</div>
-          <div class="tile__body">약물 대사·해독 능력 감소. 9H (이소니아지드 9개월) 요법에서 간독성 발생률 증가 → 가능하면 짧은 3HP 또는 4R 요법이 권고됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 02</div>
-          <div class="tile__title">만성 간질환 · B/C형 간염</div>
-          <div class="tile__body">기저 간질환 시 간독성 위험 2~3배 증가. 치료 전 HBsAg / anti-HCV 선별 검사. 간경변·활동성 간염은 전문의 상의 후 결정합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 03</div>
-          <div class="tile__title">매일 음주 · 알코올 사용</div>
-          <div class="tile__body">매일 음주 시 간독성 위험 약 4배 (USPHS), 가끔 음주도 약 2배. 치료 중 금주 원칙. 어려우면 알려주세요 — 더 자주 LFT 검사로 관리 가능합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 04</div>
-          <div class="tile__title">간독성 약물 병용</div>
-          <div class="tile__body">아세트아미노펜 고용량, 메토트렉세이트, 일부 항생제·항진균제 동시 복용 시 위험 가중. 모든 복용 약·건강기능식품·한약을 진료 시 알려주세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 05</div>
-          <div class="tile__title">임신 · 산후 3개월 이내</div>
-          <div class="tile__body">산후 3개월 이내 이소니아지드 간독성 위험 ↑. 가능하면 출산 후로 치료 조정 — 단, 고위험군은 임신 중에도 치료가 권고될 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 06</div>
-          <div class="tile__title">영양 불량 · 저체중</div>
-          <div class="tile__body">단백·비타민 결핍 시 약물 대사 저하, 간독성 발현이 빨라질 수 있음. 필요 시 영양 상담 병행. 이소니아지드 복용 시 비타민 B6 보충은 표준 권고사항입니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/infectious-ltbi-treatment-s06-risk-infectious-239dd485-20260530-raster-20260531.jpg" alt="간독성 (Hepatotoxicity) 위험이 높은 분들 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · USPHS Surveillance Study</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · ALERT STACK — STOP-AND-CALL hepatotoxicity warning signs
-       ======================================================================== -->
-  <section class="slide slide--alert-stack">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>STOP &amp; CALL</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">이런 증상이 나타나면 약을 즉시 멈추세요</h2>
-      <p class="slide__subtitle">간독성 (Drug-Induced Liver Injury) 의 경고 신호 — 한 가지라도 해당되면 약 중단 후 같은 날 진료</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-alert-stack">
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">황달 (Jaundice) · 진한 갈색 소변</div>
-            <div class="alert-row__text">피부·눈 흰자가 노랗게 변하거나 콜라색 소변이 나오면 즉시 약 중단. 리팜핀에 의한 정상적인 주황색 소변과 구별 — 갈색·콜라색은 간 손상 신호입니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">지속적 구역·구토 · 식욕 부진</div>
-            <div class="alert-row__text">하루 이상 음식이 안 받거나 구토가 반복되면 단순 위장 부작용이 아닌 간독성 가능성. 혈액검사로 간 효소 (AST/ALT) 확인이 필요합니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">우상복부 통증 · 극심한 피로감</div>
-            <div class="alert-row__text">오른쪽 윗배 불편감이나 평소와 다른 무력감·쇠약. 회백색 대변이 동반되면 담즙 정체 (Cholestasis) 도 의심 — 즉시 진료가 필요합니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">발진 · 발열 · 고열 동반 증상</div>
-            <div class="alert-row__text">전신 발진·고열·림프절 종대 등이 동반되면 약물 과민반응 (DRESS 등) 가능성. 즉시 약 중단하고 응급 진료 — 자가 복용 재개 절대 금지.</div>
-          </div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/infectious-ltbi-treatment-s07-risk-infectious-62c8ca5d-20260530-raster-20260531.jpg" alt="이런 증상이 나타나면 약을 즉시 멈추세요 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS Hepatotoxicity Statement 2006 · CDC LTBI Adverse Events</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · DENSITY GRID 3×2 — Rifampin/Rifapentine drug interactions (CYP3A4)
-       ======================================================================== -->
-  <section class="slide slide--interactions">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>DRUG INTERACTIONS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">리팜핀·리파펜틴의 약물상호작용 6가지</h2>
-      <p class="slide__subtitle">두 약은 간 효소 (CYP3A4) 를 강력하게 유도해 다른 약의 효과를 떨어뜨립니다 — 모든 복용 약을 알려주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">INTERACTION · 01</div>
-          <div class="tile__title">경구 피임약 (Oral Contraceptives)</div>
-          <div class="tile__body">에스트로겐·프로게스틴 효과 64~66% ↓ → 단독 사용 금지. 콘돔, 구리 IUD, 데포프로베라 주사가 대안. 치료 종료 후 4주간도 동일.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">INTERACTION · 02</div>
-          <div class="tile__title">와파린 (Warfarin) · 항응고제</div>
-          <div class="tile__body">와파린 대사 가속 → INR 감소, 출혈 위험 변동. 1~2주 간격 INR 측정 후 용량 조정. DOAC도 농도 저하 보고가 있어 주의.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">INTERACTION · 03</div>
-          <div class="tile__title">고혈압약 · 칼슘차단제</div>
-          <div class="tile__body">암로디핀·딜티아젬·베라파밀 등 효과 감소 → 혈압 조절 약화. 필요 시 ACE-I·ARB·이뇨제로 변경하거나 용량 조정.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">INTERACTION · 04</div>
-          <div class="tile__title">고지혈증약 (Statin)</div>
-          <div class="tile__body">심바스타틴·아토르바스타틴 효과 80~87% ↓. LTBI 치료 기간 동안 statin 일시 중단 또는 영향 적은 rosuvastatin 등으로 변경 검토.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">INTERACTION · 05</div>
-          <div class="tile__title">당뇨약 · 설포닐유레아</div>
-          <div class="tile__body">글리메피리드·글리피지드 등 효과 감소 → 혈당 상승 가능. 자가 혈당 측정 강화, 필요 시 메트포르민·DPP-4 억제제 등 보완.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">INTERACTION · 06</div>
-          <div class="tile__title">면역억제제 · 항진균제 — 병용 금기</div>
-          <div class="tile__body">타크로리무스·사이클로스포린·보리코나졸·일부 PI 계열 항HIV제는 농도 급감 → 병용 금기 또는 상급병원 의뢰. 이식·면역억제 환자는 사전 협진 필수.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Rifampin Drug-Drug Interaction Database (Lexicomp 2024)</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · COMPARISON — Pregnancy & special populations
-       ======================================================================== -->
-  <section class="slide slide--pregnancy">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>PREGNANCY &amp; SPECIAL CASES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">임신 · 모유 수유 · 특수 상황</h2>
-      <p class="slide__subtitle">치료 시기 조정과 약물 선택 — 위험과 이익을 종합해 의료진과 함께 결정합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            출산 후로 연기 가능 (Defer)
-          </div>
-          <ul class="compare-col__list">
-            <li>임신 중 새로 진단된 LTBI · <strong>저위험군</strong></li>
-            <li>최근 활동성 결핵 환자 접촉 없음</li>
-            <li>면역 저하 (HIV·면역억제제 등) 없음</li>
-            <li>대부분 출산 후 2~3개월까지 연기 가능</li>
-            <li>임신 중에는 LFT만 추적 관찰</li>
-            <li>모유 수유 중 INH/RIF 사용 가능 (B6 보충 필수)</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">!</span>
-            임신 중 치료 권고 (Treat Now)
-          </div>
-          <ul class="compare-col__list">
-            <li>최근 결핵 환자와 <strong>밀접 접촉</strong>한 경우</li>
-            <li>HIV 감염 · 면역억제제 복용 중</li>
-            <li>2년 이내 IGRA 양전 (Recent Conversion)</li>
-            <li>9H 또는 4R 요법이 우선 — 3HP 는 임신 중 자료 제한</li>
-            <li>이소니아지드 사용 시 <strong>비타민 B6 보충 필수</strong></li>
-            <li>산후 3개월 이내 간독성 위험 ↑ — 더 자주 LFT</li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/infectious-ltbi-treatment-s09-risk-infectious-5d0bb078-20260530-raster-20260531.jpg" alt="임신 · 모유 수유 · 특수 상황 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — CDC TB Pregnancy Recommendations · WHO LTBI 2020</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · DENSITY GRID 2×2 — When to refer (specialist / hospital)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>WHEN TO REFER</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">상급병원·전문의 의뢰가 필요한 경우</h2>
-      <p class="slide__subtitle">아래 4가지 상황은 일차의료기관 단독 치료가 어려워 전문의 협진이 권고됩니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">REFER · 01</div>
-          <div class="tile__title">간경변 · 활동성 간염 (HBV/HCV)</div>
-          <div class="tile__body">기저 간질환이 있는 경우 약물 선택과 모니터링 강화가 필요합니다. 간기능 검사 결과를 들고 소화기내과 또는 감염내과에 의뢰 — 4R (리팜핀 단독) 이 상대적으로 안전한 선택지일 수 있으나 개별 평가 필수.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">REFER · 02</div>
-          <div class="tile__title">HIV 감염 · 장기이식 후</div>
-          <div class="tile__body">항HIV제 (특히 PI·INSTI) 와 리팜핀의 상호작용이 복잡합니다. 장기이식 환자는 면역억제제 (타크로리무스 등) 와 병용 금기 영역. 모두 감염내과 협진 후 약물·일정 결정이 안전합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">REFER · 03</div>
-          <div class="tile__title">활동성 결핵 의심 소견</div>
-          <div class="tile__body">치료 중 새로운 기침·발열·체중감소·야간 발한이 발생하면 활동성 결핵 (Active TB) 재평가가 필요합니다. 흉부 X선 + 객담 검사. LTBI 약물만으로 활동성 결핵을 치료하면 다제내성 결핵 위험이 있어 즉시 의뢰.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">REFER · 04</div>
-          <div class="tile__title">치료 중단 · 약물 부작용 반복</div>
-          <div class="tile__body">간독성·발진 등으로 치료 중단했던 분, 2개월 이상 복용을 놓친 분, 다제내성 결핵 환자와의 접촉이 의심되는 경우는 결핵·감염내과 의뢰. 대안 요법 또는 추가 검사가 필요할 수 있습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 결핵 진료지침 5판 · WHO LTBI Programmatic Management 2020</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST 8 — Today's essentials
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">치료 성공의 핵심 — 끝까지 정확히 복용하면 평생의 건강을 지킬 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">치료는 <strong>3HP · 4R · 9H</strong> 중 의료진이 결정 — 끝까지 완주가 핵심</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">약은 <strong>1일 1회 공복</strong> 복용 (3HP는 주 1회, 식사와 함께)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text"><strong>황달·갈색 소변·극심한 피로</strong> 시 약 중단 후 같은 날 진료</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">치료 기간 동안 <strong>금주가 원칙</strong> — 매일 음주 시 간독성 4배</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">리팜핀은 <strong>피임약·혈압약·당뇨약·와파린</strong> 효과를 떨어뜨림</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">소변·눈물·땀이 <strong>주황색</strong>은 정상 (콘택트렌즈는 안경으로)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text"><strong>모든 복용 약·건강기능식품·한약</strong>은 진료 시 알려주세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">임신·간질환·HIV 등은 <strong>치료 전 반드시 상담</strong></div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — adherence · monitoring · interaction awareness</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">3~9개월의 정확한 복용이<br><em>평생의 건강을 지킵니다</em></h2>
-      <p class="slide__subtitle">잠복결핵감염 치료, 함께 끝까지 — 궁금한 점은 언제든 문의해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 한눈에</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">짧은 치료로 결핵 발병 위험을 크게 낮춥니다</h2>
+  <p class="v2-sub">잠복결핵은 균이 잠든 상태 — 증상도 전염력도 없지만, 평생 5~10%는 활동성 결핵으로 진행합니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.00006 11.0781V23.26C8.00006 29.2165 10.6733 37.3394 22.2326 41.68C23.3702 42.1067 24.6298 42.1067 25.7674 41.68C37.3218 37.3474 39.9999 29.1653 39.9999 23.26V11.0781C40.0033 10.6196 39.8706 10.17 39.6179 9.78339C39.3652 9.39677 39.0032 9.08963 38.5755 8.89898C33.9804 6.94352 29.0135 5.95615 24 6.00149C18.9865 5.95615 14.0196 6.94352 9.42447 8.89898C8.99682 9.08963 8.63483 9.39677 8.38211 9.78339C8.12939 10.17 7.99671 10.6196 8.00006 11.0781ZM18.1669 24.1429H17.0905C16.9449 24.6065 16.5117 24.9428 16 24.9428C15.3688 24.9428 14.8571 24.4312 14.8571 23.8V22.2C14.8571 21.5688 15.3688 21.0571 16 21.0571C16.5117 21.0571 16.9449 21.3935 17.0905 21.8571H18.1669C18.3212 21.0652 18.6327 20.3296 19.0676 19.6839L18.3999 19.0162C17.953 19.4544 17.2355 19.4517 16.7919 19.0081C16.3456 18.5618 16.3456 17.8382 16.7919 17.3919L18.3919 15.7919C18.8382 15.3455 19.5618 15.3455 20.0081 15.7919C20.4517 16.2355 20.4544 16.953 20.0162 17.4L20.6839 18.0676C21.3295 17.6327 22.0652 17.3212 22.8571 17.1669V16.0905C22.3935 15.9449 22.0572 15.5117 22.0572 15C22.0572 14.3688 22.5688 13.8571 23.2 13.8571H24.8C25.4312 13.8571 25.9429 14.3688 25.9429 15C25.9429 15.5117 25.6065 15.9449 25.1429 16.0905V17.1669C25.9348 17.3212 26.6705 17.6327 27.3162 18.0676L27.9838 17.4C27.5456 16.953 27.5482 16.2355 27.9919 15.7919C28.4382 15.3455 29.1618 15.3455 29.6081 15.7919L31.2081 17.3919C31.6544 17.8382 31.6544 18.5618 31.2081 19.0081C30.7645 19.4517 30.047 19.4544 29.6001 19.0162L28.9324 19.6839C29.3673 20.3295 29.6788 21.0652 29.8331 21.8571H30.9095C31.0551 21.3935 31.4883 21.0571 32 21.0571C32.6312 21.0571 33.1429 21.5688 33.1429 22.2V23.8C33.1429 24.4312 32.6312 24.9428 32 24.9428C31.4883 24.9428 31.0551 24.6065 30.9095 24.1429H29.8331C29.7172 24.7376 29.5127 25.3006 29.2338 25.8175L30.4001 26.9838C30.847 26.5456 31.5645 26.5483 32.0081 26.9919C32.4544 27.4382 32.4544 28.1619 32.0081 28.6082L30.4081 30.2082C29.9618 30.6545 29.2382 30.6545 28.7919 30.2082C28.3483 29.7646 28.3456 29.047 28.7838 28.6001L27.7744 27.5906C27.0279 28.205 26.129 28.641 25.1429 28.8331V29.9095C25.6065 30.0551 25.9429 30.4883 25.9429 31C25.9429 31.6312 25.4312 32.1429 24.8 32.1429H24.0112L24 32.1429L23.9888 32.1429H23.2C22.5688 32.1429 22.0572 31.6312 22.0572 31C22.0572 30.4883 22.3935 30.0551 22.8571 29.9095V28.833C22.0652 28.6788 21.3295 28.3673 20.6839 27.9323L20.0162 28.6C20.4544 29.047 20.4517 29.7646 20.0081 30.2082C19.5618 30.6545 18.8382 30.6545 18.3919 30.2082L16.7919 28.6082C16.3456 28.1619 16.3456 27.4382 16.7919 26.9919C17.2355 26.5483 17.953 26.5456 18.3999 26.9838L19.0676 26.3161C18.6327 25.6704 18.3212 24.9347 18.1669 24.1429Z" fill="currentColor"/>
+</svg></div><b>예방 효과 60~90%</b></div><div class="v2-body">치료를 끝까지 마치면 활동성 결핵이 생길 위험이 60~90% 줄어듭니다. 위험이 0이 되는 것은 아닙니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>3~9개월 복용</b></div><div class="v2-body">요법에 따라 3개월부터 9개월까지 매일 먹습니다. 몸 상태에 맞춰 의료진이&nbsp;고릅니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M37.9725 27.9747C39.2563 25.9594 40 23.5665 40 21C40 13.8203 34.1797 8 27 8C24.4335 8 22.0407 8.74375 20.0253 10.0275C18.6579 10.1048 17.3336 10.3437 16.0714 10.7254C18.8073 7.8165 22.6915 6 27 6C35.2843 6 42 12.7157 42 21C42 25.3085 40.1835 29.1927 37.2746 31.9286C37.6563 30.6664 37.8953 29.3422 37.9725 27.9747Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.9333 28.6028C39.2073 29.8352 38.3101 30.9547 37.2746 31.9286C37.6563 30.6664 37.8953 29.3422 37.9725 27.9747C37.9725 27.9749 37.9726 27.9745 37.9725 27.9747C39.256 25.9598 39.9997 23.5675 40 21.0015C40 21.001 40 21.0005 40 21C40 13.8203 34.1797 8 27 8C24.4335 8 22.0407 8.74375 20.0253 10.0275C20.0251 10.0275 20.0256 10.0275 20.0253 10.0275C18.6579 10.1048 17.3336 10.3437 16.0714 10.7254C17.0454 9.68988 18.1648 8.79277 19.3972 8.06676C21.6173 6.75886 24.2037 6.00629 26.9654 6.00004C26.9769 6.00001 26.9885 6 27 6C35.2843 6 42 12.7157 42 21C42 21.151 41.9978 21.3014 41.9934 21.4513C41.9164 24.0564 41.1752 26.4947 39.9333 28.6028Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36 27C36 35.2843 29.2843 42 21 42C12.7157 42 6 35.2843 6 27C6 18.7157 12.7157 12 21 12C29.2843 12 36 18.7157 36 27ZM20 22C18.8954 22 18 22.8954 18 24C18 25.1046 18.8954 26 20 26V22ZM22 20V19H20V20C17.7909 20 16 21.7909 16 24C16 26.2091 17.7909 28 20 28V32C19.1307 32 18.3886 31.4449 18.1135 30.6668C17.9295 30.146 17.3582 29.8731 16.8375 30.0572C16.3167 30.2412 16.0438 30.8125 16.2279 31.3332C16.7765 32.8855 18.2568 34 20 34V35H22V34C24.2091 34 26 32.2091 26 30C26 27.7909 24.2091 26 22 26V22C22.8693 22 23.6114 22.5551 23.8865 23.3332C24.0705 23.854 24.6418 24.1269 25.1625 23.9428C25.6833 23.7588 25.9562 23.1875 25.7721 22.6668C25.2235 21.1145 23.7432 20 22 20ZM22 28V32C23.1046 32 24 31.1046 24 30C24 28.8954 23.1046 28 22 28Z" fill="currentColor"/>
+</svg></div><b>본인부담 0%</b></div><div class="v2-body">건강보험 산정특례(V010)가 적용됩니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/infectious-ltbi-treatment-s04-risk-infectious-ed3b23b6-20260530-raster-v2-20260531.jpg" alt="잠든 결핵균이 약으로 줄어들어 폐가 방패로 보호되고, 의사와 환자가 상담하는 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 약으로 잠든 균을 줄여 폐를 지키고, 의사와 함께 치료를 정하는 모습을 그린 설명용&nbsp;그림입니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 잠복결핵 자체의 뜻과 검사는 ‘잠복결핵감염’ 개요 자료에서 설명합니다.</span><span class="v2-src">근거 · 결핵 진료지침 5판(2024) · 세계보건기구 잠복결핵 지침 2020</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 치료 요법</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">국내에서 쓰는 세 가지 치료 요법</h2>
+  <p class="v2-sub">표준 치료는 리팜핀이 들어간 짧은 요법(4R·3HR)이고, 9H는 선택적으로 씁니다</p>
+  <table class="v2-table q-table q-tight" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:232px"><col style="width:306px"><col style="width:306px"><col style="width:308px"></colgroup><thead><tr><th></th><th>4R</th><th>3HR</th><th>9H</th></tr></thead><tbody><tr><th style="height:40px">약</th><td style="height:40px">리팜핀</td><td style="height:40px">이소니아지드 + 리팜핀</td><td style="height:40px">이소니아지드</td></tr><tr><th style="height:40px">먹는 방법</th><td style="height:40px">매일 · <b>4개월</b>(120일)</td><td style="height:40px">매일 · <b>3개월</b></td><td style="height:40px">매일 · <b>9개월</b>(270일)</td></tr><tr><th style="height:40px">국내 권고</th><td style="height:40px"><b>표준 치료</b></td><td style="height:40px"><b>표준 치료</b></td><td style="height:40px">선택적으로 고려</td></tr><tr><th style="height:40px">끝까지 마친 비율</th><td style="height:40px">78.8%</td><td style="height:40px">—</td><td style="height:40px">63.2%</td></tr><tr><th style="height:40px">심한 간 부작용</th><td style="height:40px">0.3%</td><td style="height:40px">—</td><td style="height:40px">약 2.0%</td></tr><tr><th style="height:40px">다른 약과의 상호작용</th><td style="height:40px">많음 — 다른 약 효과를 떨어뜨림</td><td style="height:40px">많음 — 리팜핀이 들어 있음</td><td style="height:40px">적은 편</td></tr></tbody></table>
+  <div class="v2-panel q-inline-p v2-panel--accent" style="left:64px;top:552px;width:1152px;height:54px">
+    <div class="q-inline"><b>3HP는요?</b> 리파펜틴을 쓰는 주 1회 요법(3HP)은 해외 권고 요법이지만, 국내에는 약이 도입되지 않아 쓸 수 없습니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 이름의 숫자는 개월 수, 글자는 약입니다(H 이소니아지드 · R 리팜핀). ‘—’는 이 자료에 비교 수치가 없다는 뜻입니다.</span><span class="v2-src">근거 · 결핵 진료지침 5판(2024) · Menzies D, NEJM 2018(4R·9H 비교)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 쓰는 약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">치료에 쓰는 약 두 가지와 요법</h2>
+  <p class="v2-sub">작용·먹는 법·대표 부작용을 미리 알아 두면 안전하게 치료할 수 있습니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24ZM34.2071 14.2929C34.5976 14.6834 34.5976 15.3166 34.2071 15.7071L15.7071 34.2071C15.3166 34.5976 14.6834 34.5976 14.2929 34.2071C13.9024 33.8166 13.9024 33.1834 14.2929 32.7929L32.7929 14.2929C33.1834 13.9024 33.8166 13.9024 34.2071 14.2929Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">01</span></div>
+    <div class="q-card__h">이소니아지드</div>
+    <div class="v2-body">하루 1번 공복(식전 1시간·식후 2시간). 간 부작용과 손발 저림이 대표적이라 비타민 B6를 함께 먹습니다. 등푸른 생선·발효식품 뒤 얼굴이 붉어지고 두통이 날 수 있습니다.</div>
+    <div class="q-card__k">300mg · B6 25~50mg</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">02</span></div>
+    <div class="q-card__h">리팜핀</div>
+    <div class="v2-body">하루 1번 공복. 소변·눈물·땀·침이 주황~붉은색으로 변하는 것은 정상이며 약을 끊으면 사라집니다. 콘택트렌즈는 물들 수 있어 안경을&nbsp;권합니다.</div>
+    <div class="q-card__k">600mg · 제산제와 1시간 간격</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">03</span></div>
+    <div class="q-card__h">요법 = 약의 조합</div>
+    <div class="v2-body">4R은 리팜핀만 4개월, 3HR은 이소니아지드와 리팜핀을 함께 3개월, 9H는 이소니아지드만 9개월 먹습니다. 간 기능·함께 먹는 약·임신 여부를 보고 고릅니다.</div>
+    <div class="q-card__k">의료진과 함께 결정</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 용량은 성인 기준입니다 — 실제 용량은 처방에 따릅니다.</span><span class="v2-src">근거 · 결핵 진료지침 5판(2024) · 미국흉부학회·질병통제예방센터 약물 자료</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 간 기능 검사</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">간 기능 혈액검사 일정</h2>
+  <p class="v2-sub">시작 전 기본 검사 뒤 정기적으로 추적합니다 — 증상 없는 간 부작용을 일찍 찾기 위해서입니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">1</div><div class="q-step__h">치료 시작 전</div><div class="q-step__tag">기본 검사</div><div class="v2-body">간수치·혈구·콩팥 기능, B형·C형간염 검사. 흉부 X선으로 활동성 결핵이 없는지 확인합니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:300px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">2</div><div class="q-step__h">2~4주</div><div class="q-step__tag">초기 추적</div><div class="v2-body">음주·간질환·고령·임신·HIV가 있으면 먼저 다시 검사합니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:536px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">3</div><div class="q-step__h">1~2개월</div><div class="q-step__tag">월 1회</div><div class="v2-body">간수치가 정상이고 증상이 없어도 매달 부작용을 점검합니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:772px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">4</div><div class="q-step__h">3개월 이후</div><div class="q-step__tag">정기 추적</div><div class="v2-body">안정되면 1~2개월 간격으로 간수치를 봅니다. 증상이 있으면 수시로.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:1008px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">5</div><div class="q-step__h">치료 끝</div><div class="q-step__tag">마무리</div><div class="v2-body">마지막 간수치 확인 뒤 완료 기록을 발급합니다(직장·학교 제출용).</div>
+  </div>
+  <div class="q-arrow" style="left:278px;top:242px"></div>
+  <div class="q-arrow" style="left:514px;top:242px"></div>
+  <div class="q-arrow" style="left:750px;top:242px"></div>
+  <div class="q-arrow" style="left:986px;top:242px"></div>
+  <div class="v2-panel q-inline-p v2-panel--accent" style="left:64px;top:530px;width:1152px;height:76px">
+    <div class="q-inline"><b>약을 멈추는 기준</b> 간수치가 정상 상한의 5배 이상(증상 없음) 또는 3배 이상(증상 있음)이면 약을 바로 멈춥니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · ‘간수치’는 간세포가 다칠 때 올라가는 효소(AST·ALT) 수치입니다.</span><span class="v2-src">근거 · 미국흉부학회 간독성 성명 2006 · 결핵 진료지침 5판(2024)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 간 부작용 위험</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">간 부작용 위험이 높은 분들</h2>
+  <p class="v2-sub">하나라도 해당되면 더 자주 검사하고 더 꼼꼼히 살핍니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:680px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">65세 이상<span class="q-srow__tag">고령</span></div><div class="v2-body">9H에서 간 부작용이 늘어 가능하면 짧은 요법(4R·3HR)을 권합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">만성 간질환 · B/C형간염<span class="q-srow__tag">2~3배</span></div><div class="v2-body">치료 전 간염 검사를 하고, 간경변은 전문의와 상의합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">매일 음주<span class="q-srow__tag">약 4배</span></div><div class="v2-body">치료 중 금주가 원칙 — 어렵다면 알려 주세요.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">간에 부담 주는 약<span class="q-srow__tag">병용</span></div><div class="v2-body">고용량 해열진통제·메토트렉세이트 등 모든 약을 알려 주세요.</div></div></div><div class="q-srow"><span class="q-srow__n">5</span><div class="q-srow__c"><div class="q-srow__h">임신 · 출산 뒤 3개월<span class="q-srow__tag">주의</span></div><div class="v2-body">이 시기 이소니아지드 간 부작용이 늘어납니다.</div></div></div><div class="q-srow"><span class="q-srow__n">6</span><div class="q-srow__c"><div class="q-srow__h">영양 부족 · 저체중<span class="q-srow__tag">주의</span></div><div class="v2-body">필요하면 영양 상담을 함께 합니다.</div></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:776px;top:206px;width:440px;height:248px">
+    <img class="v2-fig__img q-fig__img" style="width:440px;height:248px" src="../../../shared/assets/generated/infectious-ltbi-treatment-s06-risk-infectious-239dd485-20260530-raster-20260531.jpg" alt="고민하는 노인 남성 옆에 술잔·약병·간·혈액검사 튜브가 둘러싼 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:776px;top:466px;width:440px;height:140px"><div class="q-figcap__t">그림 · 나이·음주·함께 먹는 약이 간 부담을 키우고, 혈액검사로 살핍니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 가끔 마시는 술도 위험을 약 2배로 높입니다 — 치료 기간엔 금주하세요.</span><span class="v2-src">근거 · 미국흉부학회 간독성 성명 2006 · 미국 공중보건국 감시 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 멈추고 연락</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이런 증상이 나타나면 약을 멈추세요</h2>
+  <p class="v2-sub">간 손상의 경고 신호 — 하나라도 있으면 약을 멈추고 같은 날 진료받으세요</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:480px;height:270px">
+    <img class="v2-fig__img q-fig__img" style="width:480px;height:270px" src="../../../shared/assets/generated/infectious-ltbi-treatment-s07-risk-infectious-62c8ca5d-20260530-raster-20260531.jpg" alt="눈이 노래진 남성, 피곤한 모습, 윗배 통증, 진한 소변 컵과 병원으로 이어지는 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:488px;width:480px;height:118px"><div class="q-figcap__t">그림 · 노란 눈 · 심한 피로 · 윗배 통증 · 진한 소변이 보이면 병원에 바로 연락합니다(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:576px;top:206px;width:640px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.69497 22.1883C8.57391 20.0613 11.4255 17.6246 15.086 15.9661C13.1678 18.0932 12 20.9102 12 24C12 27.0898 13.1678 29.9068 15.086 32.0339C11.4255 30.3754 8.57391 27.9387 6.69497 25.8117C5.76834 24.7628 5.76834 23.2372 6.69497 22.1883ZM5.19605 20.8642C8.60396 17.0063 15.0813 12.0927 23.8218 12.0013C23.8811 12.0004 23.9405 12 24 12L24.0291 12L24.0697 12C32.9356 12 39.5032 16.97 42.9433 20.8642C44.538 22.6695 44.538 25.3305 42.9433 27.1358C39.5032 31.03 32.9356 36 24.0697 36L24.0291 36L24 36C23.9405 36 23.8811 35.9996 23.8218 35.9987C15.0813 35.9073 8.60396 30.9937 5.19606 27.1358C3.60132 25.3305 3.60131 22.6695 5.19605 20.8642ZM24.0284 14C23.9677 14.0002 23.9071 14.0005 23.8466 14.0012C18.3945 14.0831 14 18.5284 14 24C14 29.4716 18.3945 33.9169 23.8466 33.9988C23.9071 33.9995 23.9677 33.9998 24.0284 34C29.5382 33.9847 34 29.5134 34 24C34 18.4866 29.5382 14.0153 24.0284 14ZM36 24C36 27.1409 34.7933 29.9999 32.8182 32.1388C36.5918 30.4794 39.5254 27.984 41.4443 25.8117C42.371 24.7628 42.371 23.2372 41.4443 22.1883C39.5254 20.016 36.5918 17.5206 32.8182 15.8612C34.7933 18.0001 36 20.8591 36 24ZM24.0696 30C27.3833 30 30.0696 27.3137 30.0696 24C30.0696 23.0737 29.8597 22.1965 29.4849 21.4132C29.1229 21.7757 28.6225 22 28.0697 22C26.9651 22 26.0697 21.1046 26.0697 20C26.0697 19.4472 26.294 18.9468 26.6565 18.5848C25.8732 18.2099 24.9959 18 24.0696 18C20.7559 18 18.0696 20.6863 18.0696 24C18.0696 27.3137 20.7559 30 24.0696 30Z" fill="currentColor"/>
+</svg></div><b>황달 · 콜라색 소변</b></div><div class="v2-body">피부·눈 흰자가 노래지거나 콜라색 소변이면 멈춥니다(리팜핀의 주황색 소변과 다름).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.2157 10.0607C22.5621 11.0012 22.112 11.962 21.8034 12.8418C21.446 13.8608 21.2754 14.777 21.1939 15.4417C21.153 15.7748 21.1342 16.047 21.1257 16.2402C21.1214 16.3368 21.1197 16.4139 21.1192 16.4692C21.1189 16.4969 21.1189 16.5191 21.1189 16.5356L21.1191 16.556L21.1192 16.563L21.1193 16.5656L21.1193 16.5667C21.1193 16.5667 21.1193 16.5677 22.1191 16.5479C23.1189 16.528 23.1189 16.5288 23.1189 16.5288L23.1189 16.5255L23.1189 16.5227L23.1191 16.4903C23.1194 16.4562 23.1205 16.4015 23.1238 16.3282C23.1302 16.1815 23.1451 15.9615 23.179 15.6853C23.247 15.1312 23.3904 14.3599 23.6907 13.5039C24.0603 12.4502 24.6632 11.2773 25.6539 10.2157C27.9787 10.4791 28.8525 11.0046 29.5758 11.4395C30.2149 11.8238 30.7364 12.1374 32.0374 12.1374C33.3805 12.1374 35.2609 11.7362 37.1413 11.335C39.9619 10.7332 42.7825 10.1315 43.7898 10.8837C45.4687 12.1374 40.432 21.3314 35.3952 21.3314C32.8027 21.3314 31.2481 23.1899 29.7392 24.9937C28.3166 26.6944 26.9347 28.3464 24.762 28.3464C22.6699 28.3464 21.311 29.0047 20 29.7061V23.0479C20 22.6526 20.195 22.2841 20.5335 21.9879C20.8909 21.6752 21.2902 21.5479 21.5 21.5479V19.5479C20.7098 19.5479 19.8591 19.9205 19.2165 20.4828C18.5727 21.0461 18.0298 21.8962 18.0012 22.9597H12.9072C10.5179 22.9597 7.65082 24.0112 10.5179 26.1135C12.5977 27.6385 16.186 26.4249 18 25.6433V30.707C17.0781 31.0885 16.0352 31.3613 14.6885 31.3613C12.8526 31.3613 12.2458 32.8297 11.6009 34.3903C10.8697 36.1599 10.0895 38.0479 7.41312 38.0479C2.37634 38.0479 3.61914 22.5479 6.61916 16.5479C9.61919 10.5479 13.7245 10.0479 22.1192 10.0479C22.5059 10.0479 22.8709 10.0523 23.2157 10.0607Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18 40.0479V30.707L20 29.7061V40.0479H18Z" fill="currentColor"/>
+</svg></div><b>구역·구토 · 윗배 통증 · 심한 피로</b></div><div class="v2-body">하루 넘게 음식이 안 받거나, 오른쪽 윗배가 아프고 평소와 다르게 기운이 없거나, 대변이 회색빛이면 간 부작용일 수 있습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>발진 · 고열 · 림프샘 부음</b></div><div class="v2-body">심한 약물 알레르기일 수 있어 약을 멈추고 응급 진료를 받습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 증상이 있을 때 스스로 판단해 약을 다시 시작하지 마세요.</span><span class="v2-src">근거 · 미국흉부학회 간독성 성명 2006 · 미국 질병통제예방센터 잠복결핵 부작용 자료</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 함께 먹는 약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">리팜핀과 함께 먹을 때 주의할 약</h2>
+  <p class="v2-sub">리팜핀은 간에서 다른 약을 빨리 없애 효과를 떨어뜨립니다 — 먹는 약을 모두 알려 주세요</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:1152px"><colgroup><col style="width:270px"><col style="width:470px"><col style="width:412px"></colgroup><thead><tr><th>약</th><th>무엇이 달라지나</th><th>어떻게 하나</th></tr></thead><tbody><tr><th style="height:52px">먹는 피임약</th><td style="height:52px">효과 64~66% 감소</td><td style="height:52px">콘돔·구리 자궁내장치 등으로 — 치료 끝난 뒤 4주까지</td></tr><tr><th style="height:52px">와파린 · 항응고제</th><td style="height:52px">피가 묽어지는 정도가 바뀜</td><td style="height:52px">1~2주 간격 혈액검사로 용량 조절</td></tr><tr><th style="height:52px">혈압약(칼슘차단제)</th><td style="height:52px">혈압 조절이 약해짐</td><td style="height:52px">다른 계열로 바꾸거나 용량 조절</td></tr><tr><th style="height:52px">고지혈증약(스타틴)</th><td style="height:52px">효과 80~87% 감소</td><td style="height:52px">잠시 멈추거나 영향이 적은 약으로</td></tr><tr><th style="height:52px">당뇨약(설포닐유레아)</th><td style="height:52px">혈당이 오를 수 있음</td><td style="height:52px">혈당을 더 자주 재고 필요하면 보완</td></tr><tr><th style="height:52px">면역억제제 · 일부 항진균제·HIV 약</th><td style="height:52px">약 농도가 크게 떨어짐</td><td style="height:52px"><b>함께 쓰지 않거나</b> 상급병원 의뢰</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 한약·건강기능식품도 빠짐없이 알려 주세요.</span><span class="v2-src">근거 · 리팜핀 약물상호작용 자료(Lexicomp 2024)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 임신 · 수유</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">임신·모유 수유 중에는 이렇게 정합니다</h2>
+  <p class="v2-sub">치료 시기와 약은 위험과 이익을 따져 의료진과 함께 정합니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:500px;height:281px">
+    <img class="v2-fig__img q-fig__img" style="width:500px;height:281px" src="../../../shared/assets/generated/infectious-ltbi-treatment-s09-risk-infectious-5d0bb078-20260530-raster-20260531.jpg" alt="임신부와 수유하는 엄마, 태아·간 그림, 상담하는 의사">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:499px;width:500px;height:107px"><div class="q-figcap__t">그림 · 임신·수유 중에도 의사와 상의해 치료 시기와 약을 함께 정하는 모습을 그린 설명용 그림입니다.</div></div>
+  <div class="v2-panel q-text" style="left:596px;top:206px;width:620px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>출산 뒤로 미룰 수 있는 경우</b></div><div class="v2-body">임신 중 새로 알게 된 저위험군 — 최근 결핵 환자 접촉이 없고 면역이 정상이면 대개 출산 뒤 2~3개월까지 미룹니다. 그동안 간수치만 추적합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>임신 중에도 치료하는 경우</b></div><div class="v2-body">최근 결핵 환자와 밀접 접촉, HIV·면역억제제 복용, 2년 안에 혈액 검사가 음성에서 양성으로 바뀐 경우. 9H나 4R을 우선합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M29 8C29 10.2091 27.2091 12 25 12C22.7909 12 21 10.2091 21 8C21 5.79086 22.7909 4 25 4C27.2091 4 29 5.79086 29 8Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.6514 27.4698C21.3613 27.4187 21.078 27.3024 20.8237 27.1175L15.3237 23.1175C14.4694 22.4961 14.2456 21.3175 14.8127 20.4262L16.5 21.5C14.8127 20.4262 14.8128 20.4261 14.813 20.4259L14.8133 20.4254L14.8142 20.424L14.8169 20.4197L14.8262 20.4052L14.8593 20.3536C14.8878 20.3095 14.9288 20.2464 14.981 20.1668C15.0852 20.0079 15.2345 19.783 15.4179 19.514C15.7831 18.9784 16.2916 18.2562 16.855 17.5271C17.4094 16.8096 18.0583 16.0313 18.7035 15.4141C19.0243 15.1072 19.3931 14.7926 19.7902 14.5431C20.1454 14.3198 20.7524 14 21.5 14H21.5088H21.5176H21.5263H21.535H21.5437H21.5524H21.561H21.5696H21.5782H21.5868H21.5953H21.6039H21.6124H21.6209H21.6293H21.6378H21.6462H21.6546H21.6629H21.6713H21.6796H21.6879H21.6962H21.7044H21.7127H21.7209H21.7291H21.7372H21.7454H21.7535H21.7616H21.7697H21.7778H21.7858H21.7938H21.8018H21.8098H21.8177H21.8256H21.8335H21.8414H21.8493H21.8571H21.8649H21.8727H21.8805H21.8882H21.896H21.9037H21.9113H21.919H21.9267H21.9343H21.9419H21.9494H21.957H21.9645H21.972H21.9795H21.987H21.9944H22.0019H22.0093H22.0166H22.024H22.0313H22.0387H22.046H22.0532H22.0605H22.0677H22.0749H22.0821H22.0893H22.0964H22.1035H22.1106H22.1177H22.1248H22.1318H22.1389H22.1458H22.1528H22.1598H22.1667H22.1736H22.1805H22.1874H22.1942H22.2011H22.2079H22.2147H22.2214H22.2282H22.2349H22.2416H22.2483H22.255H22.2616H22.2682H22.2748H22.2814H22.288H22.2945H22.301H22.3075H22.314H22.3205H22.3269H22.3333H22.3397H22.3461H22.3525H22.3588H22.3651H22.3714H22.3777H22.3839H22.3902H22.3964H22.4026H22.4087H22.4149H22.421H22.4271H22.4332H22.4393H22.4454H22.4514H22.4574H22.4634H22.4694H22.4753H22.4812H22.4872H22.4931H22.4989H22.5048H22.5106H22.5164H22.5222H22.528H22.5338H22.5395H22.5452H22.5509H22.5566H22.5622H22.5679H22.5735H22.5791H22.5847H22.5902H22.5958H22.6013H22.6068H22.6123H22.6177H22.6232H22.6286H22.634H22.6394H22.6447H22.6501H22.6554H22.6607H22.666H22.6713H22.6765H22.6817H22.687H22.6922H22.6973H22.7025H22.7076H22.7127H22.7178H22.7229H22.728H22.733H22.738H22.743H22.748H22.753H22.7579H22.7629H22.7678H22.7727H22.7775H22.7824H22.7872H22.792H22.7968H22.8016H22.8064H22.8111H22.8158H22.8205H22.8252H22.8299H22.8345H22.8392H22.8438H22.8484H22.853H22.8575H22.8621H22.8666H22.8711H22.8756H22.88H22.8845H22.8889H22.8933H22.8977H22.9021H22.9064H22.9108H22.9151H22.9194H22.9237H22.928H22.9322H22.9364H22.9407H22.9449H22.949H22.9532H22.9573H22.9615H22.9656H22.9697H22.9737H22.9778H22.9818H22.9858H22.9898H22.9938H22.9978H23.0017H23.0057H23.0096H23.0135H23.0174H23.0212H23.0251H23.0289H23.0327H23.0365H23.0403H23.044H23.0478H23.0515H23.0552H23.0589H23.0625H23.0662H23.0698H23.0735H23.0771H23.0806H23.0842H23.0878H23.0913H23.0948H23.0983H23.1018H23.1053H23.1087H23.1121H23.1156H23.119H23.1223H23.1257H23.129H23.1324H23.1357H23.139H23.1423H23.1455H23.1488H23.152H23.1552H23.1584H23.1616H23.1648H23.1679H23.1711H23.1742H23.1773H23.1804H23.1834H23.1865H23.1895H23.1925H23.1955H23.1985H23.2015H23.2044H23.2074H23.2103H23.2132H23.2161H23.219H23.2218H23.2247H23.2275H23.2303H23.2331H23.2359H23.2386H23.2414H23.2441H23.2468H23.2495H23.2522H23.2548H23.2575H23.2601H23.2627H23.2653H23.2679H23.2705H23.273H23.2756H23.2781H23.2806H23.2831H23.2856H23.288H23.2905H23.2929H23.2953H23.2977H23.3001H23.3025H23.3048H23.3072H23.3095H23.3118H23.3141H23.3164H23.3186H23.3209H23.3231H23.3253H23.3275H23.3297H23.3319H23.334H23.3362H23.3383H23.3404H23.3425H23.3446H23.3466H23.3487H23.3507H23.3528H23.3548H23.3567H23.3587H23.3607H23.3626H23.3646H23.3665H23.3684H23.3703H23.3721H23.374H23.3758H23.3777H23.3795H23.3813H23.3831H23.3848H23.3866H23.3883H23.3901H23.3918H23.3935H23.3952H23.3968H23.3985H23.4001H23.4017H23.4034H23.405H23.4065H23.4081H23.4097H23.4112H23.4127H23.4142H23.4157H23.4172H23.4187H23.4202H23.4216H23.423H23.4244H23.4258H23.4272H23.4286H23.43H23.4313H23.4326H23.434H23.4353H23.4366H23.4378H23.4391H23.4403H23.4416H23.4428H23.444H23.4452H23.4464H23.4476H23.4487H23.4499H23.451H23.4521H23.4532H23.4543H23.4554H23.4564H23.4575H23.4585H23.4595H23.4605H23.4615H23.4625H23.4635H23.4644H23.4654H23.4663H23.4672H23.4681H23.469H23.4699H23.4707H23.4716H23.4724H23.4732H23.474H23.4748H23.4756H23.4764H23.4772H23.4779H23.4786H23.4794H23.4801H23.4808H23.4814H23.4821H23.4828H23.4834H23.484H23.4847H23.4853H23.4859H23.4864H23.487H23.4876H23.4881H23.4886H23.4892H23.4897H23.4902H23.4906H23.4911H23.4916H23.492H23.4925H23.4929H23.4933H23.4937H23.4941H23.4944H23.4948H23.4951H23.4955H23.4958H23.4961H23.4964H23.4967H23.497H23.4972H23.4975H23.4977H23.4979H23.4982H23.4984H23.4986H23.4987H23.4989H23.4991H23.4992H23.4993H23.4995H23.4996H23.4997H23.4998H23.4998H23.4999H23.4999H23.5H23.5H23.5C23.9227 14 24.3345 14.1339 24.6764 14.3825L23.5 16C24.6764 14.3825 24.6767 14.3828 24.6771 14.3831L24.678 14.3837L24.6801 14.3852L24.6858 14.3894L24.7031 14.4021L24.7608 14.445C24.8092 14.4812 24.8772 14.5327 24.9626 14.5986C25.1333 14.7304 25.374 14.9206 25.6667 15.1631C26.2509 15.6471 27.0488 16.3454 27.9143 17.2108C29.6143 18.9108 31.7093 21.3881 32.857 24.2572C33.5217 25.9191 33.5383 27.4778 33.0047 28.8499C32.4918 30.1688 31.5527 31.1052 30.6764 31.7425C29.7956 32.383 28.8688 32.8021 28.1922 33.0581C27.9105 33.1647 27.6613 33.247 27.4622 33.3079L26 41V42C26 43.1046 25.1046 44 24 44C22.8955 44 22 43.1046 22 42V41C22 35.1449 21.997 31.3427 21.6514 27.4698ZM20.9932 22.2947C20.8447 21.3793 20.6743 20.4199 20.4788 19.3964C20.3274 19.5808 20.1738 19.7741 20.0201 19.9729C19.7445 20.3296 19.4807 20.6884 19.2428 21.0217L20.9932 22.2947Z" fill="currentColor"/>
+</svg></div><b>모유 수유</b></div><div class="v2-body">모유 수유 중에도 이소니아지드·리팜핀을 쓸 수 있습니다(비타민 B6 필수). 출산 뒤 3개월 안에는 간수치를 더 자주 봅니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 이소니아지드를 먹는 동안은 비타민 B6를 꼭 함께 먹습니다.</span><span class="v2-src">근거 · 미국 질병통제예방센터 임신 중 결핵 권고 · 세계보건기구 잠복결핵 지침 2020</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 전문의 협진</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">상급병원·전문의와 함께 봐야 하는 경우</h2>
+  <p class="v2-sub">아래 네 상황은 동네 의원 단독보다 전문의 협진을 권합니다</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.2157 10.0607C22.5621 11.0012 22.112 11.962 21.8034 12.8418C21.446 13.8608 21.2754 14.777 21.1939 15.4417C21.153 15.7748 21.1342 16.047 21.1257 16.2402C21.1214 16.3368 21.1197 16.4139 21.1192 16.4692C21.1189 16.4969 21.1189 16.5191 21.1189 16.5356L21.1191 16.556L21.1192 16.563L21.1193 16.5656L21.1193 16.5667C21.1193 16.5667 21.1193 16.5677 22.1191 16.5479C23.1189 16.528 23.1189 16.5288 23.1189 16.5288L23.1189 16.5255L23.1189 16.5227L23.1191 16.4903C23.1194 16.4562 23.1205 16.4015 23.1238 16.3282C23.1302 16.1815 23.1451 15.9615 23.179 15.6853C23.247 15.1312 23.3904 14.3599 23.6907 13.5039C24.0603 12.4502 24.6632 11.2773 25.6539 10.2157C27.9787 10.4791 28.8525 11.0046 29.5758 11.4395C30.2149 11.8238 30.7364 12.1374 32.0374 12.1374C33.3805 12.1374 35.2609 11.7362 37.1413 11.335C39.9619 10.7332 42.7825 10.1315 43.7898 10.8837C45.4687 12.1374 40.432 21.3314 35.3952 21.3314C32.8027 21.3314 31.2481 23.1899 29.7392 24.9937C28.3166 26.6944 26.9347 28.3464 24.762 28.3464C22.6699 28.3464 21.311 29.0047 20 29.7061V23.0479C20 22.6526 20.195 22.2841 20.5335 21.9879C20.8909 21.6752 21.2902 21.5479 21.5 21.5479V19.5479C20.7098 19.5479 19.8591 19.9205 19.2165 20.4828C18.5727 21.0461 18.0298 21.8962 18.0012 22.9597H12.9072C10.5179 22.9597 7.65082 24.0112 10.5179 26.1135C12.5977 27.6385 16.186 26.4249 18 25.6433V30.707C17.0781 31.0885 16.0352 31.3613 14.6885 31.3613C12.8526 31.3613 12.2458 32.8297 11.6009 34.3903C10.8697 36.1599 10.0895 38.0479 7.41312 38.0479C2.37634 38.0479 3.61914 22.5479 6.61916 16.5479C9.61919 10.5479 13.7245 10.0479 22.1192 10.0479C22.5059 10.0479 22.8709 10.0523 23.2157 10.0607Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18 40.0479V30.707L20 29.7061V40.0479H18Z" fill="currentColor"/>
+</svg></div><b>간경변 · 활동성 B·C형간염</b></div><div class="v2-body">약 선택과 검사를 더 촘촘히 해야 합니다. 소화기·감염내과와 상의하며, 4R이 상대적으로 안전할 수 있지만 개별 평가가 필요합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 6C11.8954 6 11 6.89543 11 8V9H6V28H28V9H23V8C23 6.89543 22.1046 6 21 6H13ZM21 18C22.1046 18 23 17.1046 23 16V15H26V26H21V20H13V26H8V15H11V16C11 17.1046 11.8954 18 13 18H21ZM8 11H11V13H8V11ZM26 13H23V11H26V13ZM19 22V26H15V22H19ZM16 8V11H13V13H16V16H18V13H21V11H18V8H16Z" fill="currentColor"/>
+<path d="M30 27C30 24.7902 31.7902 23 34 23C36.2098 23 38 24.7902 38 27C38 29.2098 36.2098 31 34 31C31.7902 31 30 29.2098 30 27Z" fill="currentColor"/>
+<path d="M34 33C31.33 33 26 34.4618 26 37.3636V40H17C16.2714 40 15.7984 39.7367 15.4974 39.3981C15.1801 39.0412 15 38.5369 15 38V34.4142L18.2929 37.7071L19.7071 36.2929L14 30.5858L8.29289 36.2929L9.70711 37.7071L13 34.4142V38C13 38.9631 13.3199 39.9588 14.0026 40.7269C14.7016 41.5133 15.7286 42 17 42H42V37.3636C42 34.4618 36.67 33 34 33Z" fill="currentColor"/>
+</svg></div><b>HIV 감염 · 장기이식 후</b></div><div class="v2-body">HIV 약·면역억제제와 리팜핀의 상호작용이 복잡합니다. 감염내과 협진 뒤 약과 일정을 정합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>활동성 결핵이 의심될 때</b></div><div class="v2-body">치료 중 새 기침·열·체중 감소·밤 식은땀이 생기면 X선·가래 검사로 다시 봅니다. 잠복결핵 약만으로 치료하면 내성 결핵 위험이 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>중단 · 부작용이 반복될 때</b></div><div class="v2-body">부작용으로 멈췄거나 2개월 넘게 복용을 놓친 경우, 내성 결핵 환자 접촉이 의심될&nbsp;때는 결핵·감염내과로 의뢰합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 해당되는지 애매하면 치료 시작 전에 먼저 상의하세요.</span><span class="v2-src">근거 · 결핵 진료지침 5판(2024) · 세계보건기구 잠복결핵 관리 2020</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 오늘 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 핵심 여덟 가지</h2>
+  <p class="v2-sub">끝까지 정확히 먹는 것이 치료 성공의 핵심입니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">요법은 의료진이 정합니다 — 끝까지 완주가 핵심</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">약은 매일 1번 공복에 복용</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">황달·콜라색 소변·심한 피로 → 약 멈추고 같은 날 진료</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">치료 중 금주 — 매일 마시면 간 부작용 약 4배</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">리팜핀은 피임약·혈압약·당뇨약·와파린 효과를 낮춤</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">소변·눈물·땀의 주황색은 정상(렌즈 대신 안경)</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">먹는 약·건강기능식품·한약은 모두 알려 주세요</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:518px;width:564px;height:88px"><span class="q-chk__n">08</span><span class="q-chk__t">임신·간질환·HIV는 치료 전에 꼭 상담</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 궁금한 점은 언제든 물어보세요 — 끝까지 마치는 것이 가장 중요합니다.</span><span class="v2-src">근거 · 결핵 진료지침 5판(2024)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">잠복결핵감염 치료를 시작하거나 권유받은 분을 위한 설명자료입니다. 요법과 기간은 담당 의사와 상의해&nbsp;정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">결핵 진료지침 5판(2024) · 세계보건기구 잠복결핵 지침 2020 · Menzies D, NEJM 2018 · 미국흉부학회 간독성 성명 2006</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM13,3H14V4H13zM14,3H15V4H14zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM23,3H24V4H23zM24,3H25V4H24zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM13,4H14V5H13zM14,4H15V5H14zM17,4H18V5H17zM18,4H19V5H18zM20,4H21V5H20zM21,4H22V5H21zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM15,5H16V6H15zM18,5H19V6H18zM19,5H20V6H19zM22,5H23V6H22zM24,5H25V6H24zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM13,6H14V7H13zM15,6H16V7H15zM18,6H19V7H18zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM24,6H25V7H24zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM20,7H21V8H20zM22,7H23V8H22zM24,7H25V8H24zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM13,9H14V10H13zM16,9H17V10H16zM18,9H19V10H18zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM25,10H26V11H25zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM2,11H3V12H2zM3,11H4V12H3zM4,11H5V12H4zM9,11H10V12H9zM13,11H14V12H13zM14,11H15V12H14zM15,11H16V12H15zM18,11H19V12H18zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM2,12H3V13H2zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM12,12H13V13H12zM15,12H16V13H15zM16,12H17V13H16zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM22,12H23V13H22zM26,12H27V13H26zM27,12H28V13H27zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM9,13H10V14H9zM10,13H11V14H10zM11,13H12V14H11zM14,13H15V14H14zM16,13H17V14H16zM18,13H19V14H18zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM3,14H4V15H3zM4,14H5V15H4zM6,14H7V15H6zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM19,14H20V15H19zM21,14H22V15H21zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM3,15H4V16H3zM5,15H6V16H5zM7,15H8V16H7zM9,15H10V16H9zM12,15H13V16H12zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM23,15H24V16H23zM25,15H26V16H25zM28,15H29V16H28zM33,15H34V16H33zM34,15H35V16H34zM3,16H4V17H3zM8,16H9V17H8zM10,16H11V17H10zM13,16H14V17H13zM14,16H15V17H14zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM33,16H34V17H33zM2,17H3V18H2zM4,17H5V18H4zM5,17H6V18H5zM6,17H7V18H6zM13,17H14V18H13zM14,17H15V18H14zM17,17H18V18H17zM18,17H19V18H18zM20,17H21V18H20zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM27,17H28V18H27zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM3,18H4V19H3zM5,18H6V19H5zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM13,18H14V19H13zM14,18H15V19H14zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM19,18H20V19H19zM21,18H22V19H21zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM34,18H35V19H34zM3,19H4V20H3zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM12,19H13V20H12zM13,19H14V20H13zM14,19H15V20H14zM15,19H16V20H15zM18,19H19V20H18zM21,19H22V20H21zM22,19H23V20H22zM25,19H26V20H25zM26,19H27V20H26zM28,19H29V20H28zM29,19H30V20H29zM31,19H32V20H31zM32,19H33V20H32zM34,19H35V20H34zM2,20H3V21H2zM3,20H4V21H3zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM14,20H15V21H14zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM22,20H23V21H22zM24,20H25V21H24zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM7,21H8V22H7zM9,21H10V22H9zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM16,21H17V22H16zM23,21H24V22H23zM24,21H25V22H24zM27,21H28V22H27zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM2,22H3V23H2zM3,22H4V23H3zM4,22H5V23H4zM5,22H6V23H5zM8,22H9V23H8zM10,22H11V23H10zM11,22H12V23H11zM14,22H15V23H14zM16,22H17V23H16zM17,22H18V23H17zM19,22H20V23H19zM21,22H22V23H21zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM2,23H3V24H2zM4,23H5V24H4zM7,23H8V24H7zM9,23H10V24H9zM11,23H12V24H11zM12,23H13V24H12zM13,23H14V24H13zM14,23H15V24H14zM16,23H17V24H16zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM12,24H13V25H12zM14,24H15V25H14zM15,24H16V25H15zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM24,24H25V25H24zM26,24H27V25H26zM27,24H28V25H27zM31,24H32V25H31zM33,24H34V25H33zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM11,25H12V26H11zM12,25H13V26H12zM17,25H18V26H17zM18,25H19V26H18zM21,25H22V26H21zM23,25H24V26H23zM27,25H28V26H27zM29,25H30V26H29zM30,25H31V26H30zM32,25H33V26H32zM34,25H35V26H34zM2,26H3V27H2zM5,26H6V27H5zM8,26H9V27H8zM10,26H11V27H10zM13,26H14V27H13zM14,26H15V27H14zM16,26H17V27H16zM19,26H20V27H19zM22,26H23V27H22zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM33,26H34V27H33zM34,26H35V27H34zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM14,27H15V28H14zM16,27H17V28H16zM18,27H19V28H18zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM32,27H33V28H32zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM15,28H16V29H15zM16,28H17V29H16zM17,28H18V29H17zM20,28H21V29H20zM22,28H23V29H22zM23,28H24V29H23zM24,28H25V29H24zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM11,29H12V30H11zM15,29H16V30H15zM18,29H19V30H18zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM10,30H11V31H10zM11,30H12V31H11zM19,30H20V31H19zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM14,31H15V32H14zM16,31H17V32H16zM18,31H19V32H18zM19,31H20V32H19zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM24,31H25V32H24zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM31,31H32V32H31zM33,31H34V32H33zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM13,32H14V33H13zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM19,32H20V33H19zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM18,33H19V34H18zM20,33H21V34H20zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM25,33H26V34H25zM30,33H31V34H30zM31,33H32V34H31zM32,33H33V34H32zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM13,34H14V35H13zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM17,34H18V35H17zM19,34H20V35H19zM20,34H21V35H20zM24,34H25V35H24zM25,34H26V35H25zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -1112,96 +422,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

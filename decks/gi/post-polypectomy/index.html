@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Post-Polypectomy Care — Gwanggyo Barun Internal Medicine</title>
+  <title>용종절제술 후 관리 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,722 +18,378 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <!-- Local extensions for this deck (alert-stack + checklist--8) -->
-  <style>
-    /* Vertical alert stack — single column, alert rows (used on slide 10 only) */
-    .pattern-alert-stack {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: 1fr;
-      gap: var(--space-3);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .alert-row {
-      display: flex;
-      gap: var(--space-4);
-      align-items: flex-start;
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-danger-bg);
-      border: 1px solid var(--color-danger);
-      border-radius: var(--radius-lg);
-      min-height: 0;
-      overflow: hidden;
-    }
-    .alert-row__icon {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--color-canvas);
-      color: var(--color-danger);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--text-h3);
-      font-weight: var(--weight-bold);
-      border: 1px solid var(--color-danger);
-    }
-    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
-    .alert-row__title {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-bold);
-      color: var(--color-danger);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-tight);
-    }
-    .alert-row__text {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-
-    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5B-redesign 2026-09-27 (원장님 49113) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(> .v2-block:nth-child(4)){padding-top:18px;padding-bottom:18px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+ .q-stages{position:absolute;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+ .q-stage{border-top:4px solid var(--v2-navy);background:var(--v2-chip-navy);border-radius:0 0 10px 10px;padding:8px 12px;text-align:center}
+ .q-stage--risk{border-top-color:var(--v2-accent);background:var(--v2-chip-accent)}
+ .q-stage__f{font-size:22px;font-weight:800;color:var(--v2-navy);line-height:1.1}
+ .q-stage__t{font-size:16px;font-weight:700;color:var(--v2-ink);margin-top:2px}
+ .q-stage__s{font-size:15px;color:var(--v2-body);min-height:20px}
+ .q-colhead{font-size:18px;font-weight:800;color:var(--v2-navy);padding-bottom:10px;border-bottom:2px solid var(--v2-line)}
+</style>
 <!-- seo:geo2 --><meta name="description" content="대장 용종 절제술 이후 식이·활동·출혈 모니터링·추적 검사까지 환자 안내">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/gi/post-polypectomy/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Post-Polypectomy Care — Gwanggyo Barun Internal Medicine", "description": "대장 용종 절제술 이후 식이·활동·출혈 모니터링·추적 검사까지 환자 안내", "url": "https://edu.gwanggyobarun.com/decks/gi/post-polypectomy/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "용종절제술 후 관리 — 광교바른내과", "description": "대장 용종 절제술 이후 식이·활동·출혈 모니터링·추적 검사까지 환자 안내", "url": "https://edu.gwanggyobarun.com/decks/gi/post-polypectomy/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">용종 절제술 후,<br><em>안전하게 회복하는 길</em></h1>
-      <p class="slide__subtitle">대장 용종 절제술 (Polypectomy) 이후 식이·활동·출혈 관찰·추적 검사 안내</p>
+      <p class="slide__subtitle">대장 용종을 떼어 낸 뒤 식사·활동·출혈 살피기·다음 검사 안내</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Post-Polypectomy Care · Diet · Activity · Bleeding Window · Surveillance</span>
-      <span class="slide__page">광교바른내과 소화기내과</span>
+      <span class="slide__source">용종 절제 후 · 식사 · 활동 · 출혈 살피기 · 다음 대장내시경</span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — Delayed bleeding window peaks at days 3–7
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>BLEEDING WINDOW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">지연성 출혈은 시술 당일이 아니라 3–7일에 집중됩니다</h2>
-      <p class="slide__subtitle">시술 후 최대 2주까지 자가 관찰 — 퇴원했다고 끝이 아닙니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>3 – 7</em>일</div>
-          <div class="pattern-hero-number__caption">대장 용종 절제술 후 지연성 출혈은 시술 당일이 아니라 보통 3–7일째에 가장 많이 발생합니다. 특히 우측 대장 또는 큰 병변(≥20mm) 절제 시 더 흔합니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why this matters</div>
-          <div class="pattern-hero-number__detail-text">
-            "퇴원하면 끝"이라는 생각은 위험합니다. 시술 후 약 2주까지는 가벼운 혈변·복통·어지럼증을 매일 점검하시고, 변화가 있으면 즉시 병원에 연락하셔야 합니다. 이 자료의 절반 이상은 이 모니터링을 위한 안내입니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ESGE 2024 / USMSTF 2020 · Cohort data on delayed post-polypectomy bleeding</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — What polypectomy is
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IS POLYPECTOMY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">용종 절제술 (Polypectomy) 이란</h2>
-      <p class="slide__subtitle">대장 내시경 중 용종을 잘라내는 표준 시술 — 회복은 보통 빠르지만 관찰 기간은 깁니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">대장 점막에서 자라난 용종(Polyp)을 <em>올가미·집게·열로</em> 잘라내어 대장암으로 진행하기 전에 제거하는 시술입니다.</p>
-          <p class="pattern-split__supporting">
-            대부분의 환자는 시술 직후 회복실에서 2–4시간 안정 후 식사를 시작할 수 있을 만큼 회복이 빠릅니다. 다만 절제 부위는 작은 상처로 남아 있어 점막이 완전히 아물기까지는 보통 1–2주가 걸립니다. 이 기간 동안 출혈·천공 같은 합병증이 늦게 나타날 수 있어 본 자료의 안내가 필요합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Mucosal healing</div>
-            <div class="pattern-split__metric-value">1 – 2주</div>
-            <div class="pattern-split__metric-detail">절제 부위 점막이 완전히 아물기까지 걸리는 평균 기간.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Delayed bleeding</div>
-            <div class="pattern-split__metric-value">약 1–6%</div>
-            <div class="pattern-split__metric-detail">병변 크기·위치·항혈전제 여부에 따라 달라집니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ESGE 2024 / KSGE Polypectomy Guideline</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · TIMELINE — Diet progression (4 stages)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>DIET PROGRESSION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">시술 후 식이는 단계적으로 진행하세요</h2>
-      <p class="slide__subtitle">최신 RCT 결과 — 무리한 3–5일 금식보다 조기 식이가 회복에 더 안전합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">회복실 2–4시간 · 금식</div>
-          <div class="timeline-step__body">시술 직후 마취·진정에서 깨고 의료진이 출혈·복통 여부를 확인할 때까지 금식.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">시술 당일 · 투명액 (Clear liquid)</div>
-          <div class="timeline-step__body">증상이 없으면 물·맑은 보리차·이온음료부터 천천히. 한 모금씩 시작해 양을 늘립니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">다음날 · 연식 (Soft diet)</div>
-          <div class="timeline-step__body">죽·미음·부드러운 흰살생선·계란찜 등 부드럽고 자극이 적은 음식으로 진행.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">2–3일 후 · 일반식</div>
-          <div class="timeline-step__body">증상이 없으면 균형 잡힌 일반식으로 복귀. 무기한 식이 제한은 오히려 영양·회복에 해롭습니다.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">주의</span>
-        <span class="alert-strip__text">식사 도중 또는 식후에 복통·혈변·어지럼증이 생기면 식이를 즉시 중단하고 병원에 연락하세요.</span>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/gi-post-polypectomy-s04-risk-gi-636d744a-20260530-raster-20260531.jpg" alt="시술 후 식이는 단계적으로 진행하세요 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Early Refeeding RCTs · ESGE 2024 (조기 식이 권고)</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 2×2 — Foods to be cautious / not strictly forbidden
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>FOOD GUIDE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">음식, 무엇을 주의하고 무엇은 괜찮은가</h2>
-      <p class="slide__subtitle">씨앗·견과·잡곡·해조류 1–2주 일괄 금지는 근거가 부족합니다 — 핵심은 "초기 자극 회피"</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">초기 24–48시간 · 회피</div>
-          <div class="tile__title">자극적·과한 음식</div>
-          <div class="tile__body">매운 음식, 카레·청양고추 등 자극성 양념, 과음, 진한 커피, 탄산음료, 과식. 장 점막을 자극해 통증·출혈 위험을 높일 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">2–3일 이후 · 점진적 OK</div>
-          <div class="tile__title">잡곡·견과·해조류</div>
-          <div class="tile__body">씨앗·견과·잡곡·해조류가 시술 부위에 물리적 손상을 일으킨다는 결정적 임상 근거는 부족합니다. 증상이 없으면 점진적으로 평소대로 드셔도 됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">처음부터 권장</div>
-          <div class="tile__title">충분한 수분 + 부드러운 섬유질</div>
-          <div class="tile__body">물·보리차·미음·죽·삶은 채소·바나나 등. 변비 예방이 곧 출혈 예방입니다 — 변비로 배에 힘을 많이 주면 절제 부위 출혈 위험이 오히려 올라갑니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">증상 발생 시 · 즉시 중단</div>
-          <div class="tile__title">먹다가 복통·혈변</div>
-          <div class="tile__body">식사 도중 복통이 새로 생기거나 혈변·검은 변을 보면 식이를 멈추고 병원에 연락하세요. 불안하면 다음 식사를 한 단계 뒤로 (일반식→연식, 연식→투명액) 조정.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Dietary Restriction Evidence Review · ESGE 2024</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · TIMELINE — Activity restriction (4 stages, 7 days)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>ACTIVITY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">활동 제한, 짧고 명확하게</h2>
-      <p class="slide__subtitle">"1–2주 일괄 제한"은 근거가 약합니다 — 핵심은 초기 48–72시간 격렬 활동 회피 (3–7일)</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">시술 당일 · 안정</div>
-          <div class="timeline-step__body">집에 도착해 충분히 쉬세요. 운전·기계 조작·중요한 결정은 진정제 영향으로 24시간 피합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">다음날 · 일상 활동</div>
-          <div class="timeline-step__body">가벼운 보행·집안일·사무 업무는 정상적으로 가능. 무리하지 않는 범위에서 일상 복귀.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">48–72시간 · 격렬 활동 회피</div>
-          <div class="timeline-step__body">무거운 물건 들기, 등산, 헬스, 골프 풀스윙, 마라톤 등은 3일간 회피. 복압 상승은 출혈 위험.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">3–7일 후 · 단계적 복귀</div>
-          <div class="timeline-step__body">증상이 없으면 운동·여행·비행기 탑승도 점진적으로 재개. 큰 병변이었다면 7일까지 신중.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">주의</span>
-        <span class="alert-strip__text">큰 병변(≥20mm)·우측 대장 절제 환자는 의료진의 별도 안내가 우선합니다 — 일괄 가이드보다 개별 지시를 따르세요.</span>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/gi-post-polypectomy-s06-anatomy-gi-d72cd2d6-20260530-raster-20260531.jpg" alt="활동 제한, 짧고 명확하게 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Expert Consensus on Post-Procedure Activity · ESGE 2024</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · DENSITY GRID 2×2 — Medication management
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>MEDICATIONS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">약은 임의로 끊지도, 임의로 다시 시작하지도 마세요</h2>
-      <p class="slide__subtitle">항혈전제·진통제는 의료진의 개별 지시에 따릅니다 — 무조건 1주 중단은 오히려 위험할 수 있습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">항혈전제 · 01</div>
-          <div class="tile__title">아스피린 단독 복용</div>
-          <div class="tile__body">대부분 중단 없이 그대로 유지하거나 시술 후 곧 재개합니다. 자의로 중단하면 심·뇌혈관 사건 위험이 더 큽니다. 반드시 처방의 지시 확인.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">항혈전제 · 02</div>
-          <div class="tile__title">DOAC · 와파린 · 항혈소판제</div>
-          <div class="tile__body">지혈이 확인되면 보통 24–48시간 내 재개를 고려합니다. 큰 병변·우측 대장 절제 시에는 더 신중. 재개 시점은 시술 의사가 알려준 일정에 맞추세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">진통제 · 03</div>
-          <div class="tile__title">통증 시 — 아세트아미노펜 우선</div>
-          <div class="tile__body">가벼운 복통·불편감은 타이레놀(아세트아미노펜)이 1차 권고. 비선택적 NSAIDs(이부프로펜·낙센 등)는 출혈 위험을 높일 수 있어 가급적 피합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">기존 만성질환약 · 04</div>
-          <div class="tile__title">고혈압·당뇨·갑상선 약</div>
-          <div class="tile__body">시술과 무관한 만성질환약은 평소대로 드세요. 시술 당일 아침 약 복용 여부는 사전 안내된 지침을 그대로 따릅니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/gi-post-polypectomy-s07-risk-gi-7105ffcf-20260530-raster-20260531.jpg" alt="약은 임의로 끊지도, 임의로 다시 시작하지도 마세요 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ESGE/AGA Antithrombotic Management Guideline 2024</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · COMPARISON — Mild vs severe bleeding (how to tell apart)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>BLEEDING TRIAGE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">경미한 출혈 vs 위험한 출혈, 구별 포인트</h2>
-      <p class="slide__subtitle">소량 핏기는 흔하지만, 아래 신호는 즉시 응급실 — 둘을 구분하는 법을 익혀두세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            경미한 출혈 (병원 연락 후 관찰)
-          </div>
-          <ul class="compare-col__list">
-            <li>변에 핏줄·핏기가 한두 줄 묻은 정도</li>
-            <li>한두 번 발생하고 더 이상 지속되지 않음</li>
-            <li>어지럼증·식은땀·복통이 동반되지 않음</li>
-            <li>혈압·맥박이 평소 범위로 안정적</li>
-            <li>색이 선홍색이지만 양이 매우 적음</li>
-            <li>휴지에만 살짝 묻고 변기 물은 맑은 정도</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">!</span>
-            위험한 출혈 (즉시 응급실)
-          </div>
-          <ul class="compare-col__list">
-            <li>변기 물이 새빨갛게 물드는 다량의 혈변</li>
-            <li>검은 자장면 같은 흑색변(상부 출혈 가능)</li>
-            <li>혈변이 반복되거나 양이 점점 늘어남</li>
-            <li>어지럼증·식은땀·실신·창백</li>
-            <li>맥박이 빨라짐(빈맥)·혈압 저하</li>
-            <li>새로 생긴 심한 복통·복부 팽만·딱딱함</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Post-Polypectomy Bleeding Triage · ESGE 2024</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · COMPARISON — DO vs DON'T self-care rules
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>DO &amp; DON'T</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">집에서의 자가 관리법</h2>
-      <p class="slide__subtitle">시술 후 1–2주, 회복과 출혈 예방을 위해 지킬 것과 피할 것</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            이렇게 하세요 (DO)
-          </div>
-          <ul class="compare-col__list">
-            <li>회복실에서 증상 없으면 물부터 천천히 시작</li>
-            <li>충분한 수분으로 변비를 막아 복압 상승 예방</li>
-            <li>매일 변 색깔·양·증상을 자가 점검 (최소 2주)</li>
-            <li>가벼운 보행·일상 활동은 다음날부터 정상화</li>
-            <li>처방받은 위장 보호제·항혈전제는 지시대로 복용</li>
-            <li>퇴원 시 받은 응급 연락처를 항상 가까이 보관</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">−</span>
-            이것은 피하세요 (DON'T)
-          </div>
-          <ul class="compare-col__list">
-            <li>48–72시간 내 격렬한 운동·등산·골프·헬스</li>
-            <li>무거운 물건 들기·복압 올리는 동작</li>
-            <li>매운 음식·과음·진한 커피 (초기 24–48시간)</li>
-            <li>임의로 항혈전제 중단 (혈전 위험 증가)</li>
-            <li>NSAIDs 진통제(이부프로펜·낙센 등) 자가 복용</li>
-            <li>"별일 아니겠지" 하며 혈변 신고 미루기</li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/gi-post-polypectomy-s09-risk-gi-c45d434b-20260530-raster-20260531.jpg" alt="집에서의 자가 관리법 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Patient Self-management Recommendations · ESGE 2024</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · ALERT STACK — Immediate ER indications (post-procedural complications only)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>CALL 119 NOW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">이럴 때는 즉시 응급실로</h2>
-      <p class="slide__subtitle">시술 후 합병증의 명확한 위험 신호 — 한 가지라도 해당되면 지체 없이 119</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-alert-stack">
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">변기를 새빨갛게 물들이는 다량의 혈변</div>
-            <div class="alert-row__text">시술 부위 지연성 출혈 — 특히 시술 후 3–7일째 가장 흔하며, 즉시 처치가 필요합니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">새로 생긴 심한 복통 · 배가 딱딱하고 부풂</div>
-            <div class="alert-row__text">천공(Perforation) 가능성 — 점막 절제 부위가 뚫리는 응급 상황으로 즉시 영상검사·처치 필요.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">어지럼증 · 식은땀 · 창백 · 실신</div>
-            <div class="alert-row__text">대량 출혈로 인한 저혈량 쇼크 징후 — 혈변이 안 보여도 내부 출혈 가능, 즉각 응급실.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">38℃ 이상 발열 · 오한이 지속됨</div>
-            <div class="alert-row__text">시술 부위 감염·복막염 가능 — 단순 감기로 넘기지 말고 시술 사실을 알리고 평가받으세요.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ESGE 2024 Emergency Triage · Post-Polypectomy Complication Signs</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · DENSITY GRID 2×2 — Surveillance interval by polyp risk
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>SURVEILLANCE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">조직 검사 결과에 따라 다음 대장 내시경 시기가 결정됩니다</h2>
-      <p class="slide__subtitle">광교바른내과 추적 기준 — 용종·선종 유무 및 위험도에 따른 추적 검사 간격</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">RISK · 01 · 정상</div>
-          <div class="tile__title">용종 없음 — 5년 후</div>
-          <div class="tile__body">대장내시경에서 용종이 발견되지 않은 경우, 다음 검사는 5년 후 권고. 가족력·증상 변화가 있으면 더 빨리 받을 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 02 · 저위험</div>
-          <div class="tile__title">용종 있으나 선종 없음 — 3–4년 후</div>
-          <div class="tile__body">과형성 용종(Hyperplastic polyp) 등 비종양성 용종만 발견된 경우 3–4년 후 추적. 조직 결과지에 명시된 일정을 따르세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 03 · 중등도</div>
-          <div class="tile__title">선종 있음 — 2–3년 후</div>
-          <div class="tile__body">관상 선종(Tubular adenoma) 등 양성 선종이 발견된 경우 2–3년 후 추적 대장내시경 권고. 조직 결과지에 명시된 일정을 따르세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RISK · 04 · 고위험</div>
-          <div class="tile__title">고위험 선종 또는 다수 — 1–2년 후</div>
-          <div class="tile__body">고도 이형성(High-grade dysplasia), 융모성 선종, 10mm 이상 큰 병변, 선종 다수(≥5개) 또는 분할 절제 시 1–2년 단기 추적.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 광교바른내과 추적 기준 (USMSTF 2020 / KSGE 2024 변형)</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">잘 회복하시는 길은<br><em>관찰과 기록입니다</em></h2>
-      <p class="slide__subtitle">혈변·복통·발열 등 변화가 있으면 언제든 연락 주세요 — 함께 안전하게 회복합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 늦은 출혈</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">늦은 출혈은 시술 당일보다 3~7일째에 많습니다</h2>
+  <p class="v2-sub">시술 뒤 2주까지는 스스로 살펴봐야 합니다 — 집에 왔다고 끝이 아닙니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">3~7<span>일</span></div><div class="q-stat__lab">출혈이 가장 많은 시기</div><div class="q-stat__cap">시술 당일이 아니라 며칠 뒤</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">2<span>주</span></div><div class="q-stat__lab">스스로 살펴볼 기간</div><div class="q-stat__cap">혈변·복통·어지럼을 매일 확인</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">1~6<span>%</span></div><div class="q-stat__lab">늦은 출혈이 생기는 비율</div><div class="q-stat__cap">용종 크기·위치·복용약에 따라 다름</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M27.2501 6C28.3415 6 29.3543 6.33661 30.1904 6.91167C29.9539 7.28228 29.7477 7.68802 29.5714 8.12871C29.3663 8.6415 29.6157 9.22347 30.1285 9.42857C30.6413 9.63368 31.2233 9.38425 31.4284 8.87146C31.8542 7.80688 32.4624 7.12162 33.2401 6.6842C33.9833 6.26621 34.9539 6.0341 36.211 6.00364C39.427 6.11479 42 8.75692 42 12C42 13.5367 41.4223 14.9385 40.4722 16C41.4223 17.0615 42 18.4633 42 20C42 21.9858 41.0353 23.7463 39.5489 24.8384C41.0206 25.7554 42 27.3884 42 29.2501C42 32.1189 39.6744 34.4446 36.8056 34.4446C35.0314 34.4446 33.4649 33.5551 32.5278 32.1977C32.1668 32.7207 31.7123 33.1742 31.1885 33.5342C30.4115 35.1254 30.0492 36.3993 30 38.1317V42H26V37.32C25.8819 35.7752 25.4006 34.5096 24.4522 32.7939C23.5859 31.8658 23.0557 30.6199 23.0557 29.2501C23.0557 26.3813 25.3813 24.0557 28.2501 24.0557C29.0247 24.0557 29.7598 24.2252 30.4201 24.5293C30.8926 24.7945 31.2397 25.0628 31.5101 25.3602C31.9689 25.8649 32.2894 26.5459 32.5194 27.6961C32.6277 28.2377 33.1545 28.5889 33.6961 28.4806C34.2377 28.3723 34.5889 27.8455 34.4806 27.3039C34.2106 25.9542 33.7811 24.8851 32.9899 24.0148C32.3349 23.2943 31.4916 22.7771 30.4656 22.3214C30.1657 21.6074 30 20.823 30 20C30 18.4633 30.5777 17.0615 31.5278 16C31.2507 15.6905 31.0054 15.352 30.7967 14.9897C29.8684 15.8576 28.6213 16.3889 27.2501 16.3889C25.4933 16.3889 23.9402 15.5167 23.0001 14.1818C22.06 15.5167 20.5069 16.3889 18.7501 16.3889C17.2616 16.3889 15.9193 15.7628 14.9723 14.7596C14.7216 15.0251 14.4433 15.2642 14.1419 15.4723C15.4994 16.4093 16.3889 17.9758 16.3889 19.7501C16.3889 20.8063 16.0737 21.7888 15.5323 22.6088C14.5043 21.8918 13.3565 21.5 12.0001 21.5C11.4478 21.5 11.0001 21.9477 11.0001 22.5C11.0001 23.0523 11.4478 23.5 12.0001 23.5C13.1662 23.5 14.1503 23.9091 15.1536 24.8872C15.924 25.7934 16.3889 26.9675 16.3889 28.2501C16.3889 30.0855 15.437 31.6985 14 32.6225V35.5C14 36.3284 13.3284 37 12.5 37C11.6716 37 11 36.3284 11 35.5V33.441C8.22129 33.3387 6.00003 31.0538 6.00003 28.2501C6.00003 26.4933 6.87217 24.9402 8.20712 24.0001C6.87217 23.06 6.00003 21.5069 6.00003 19.7501C6.00003 17.9758 6.88958 16.4094 8.24702 15.4723C6.88956 14.5352 6 12.9687 6 11.1944C6 8.32563 8.32563 6 11.1944 6C12.6829 6 14.0252 6.62609 14.9723 7.62928C15.9193 6.62609 17.2616 6 18.7501 6C20.5069 6 22.06 6.87215 23.0001 8.20709C23.9402 6.87215 25.4933 6 27.2501 6Z" fill="currentColor"/>
+</svg></div><b>특히 조심할 분</b></div><div class="v2-body"><b>오른쪽 대장</b>에서 떼었거나 <b>20mm 이상 큰 용종</b>을 뗀 경우 늦은 출혈이 더&nbsp;흔합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>매일 살펴보세요</b></div><div class="v2-body">혈변·복통·어지럼이 있는지 매일 보고, 달라지면 <b>바로 병원에 연락</b>하세요.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 퇴원할 때 받은 연락처를 2주 동안 가까이 두세요.</span><span class="v2-src">근거 · ESGE 2024 · USMSTF 2020 · 늦은 출혈 코호트 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 용종 절제란</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">용종 절제술 — 대장암이 되기 전에 떼어 내는 시술</h2>
+  <p class="v2-sub">대장내시경 중에 올가미·집게·열로 용종을 잘라 냅니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M27.2501 6C28.3415 6 29.3543 6.33661 30.1904 6.91167C29.9539 7.28228 29.7477 7.68802 29.5714 8.12871C29.3663 8.6415 29.6157 9.22347 30.1285 9.42857C30.6413 9.63368 31.2233 9.38425 31.4284 8.87146C31.8542 7.80688 32.4624 7.12162 33.2401 6.6842C33.9833 6.26621 34.9539 6.0341 36.211 6.00364C39.427 6.11479 42 8.75692 42 12C42 13.5367 41.4223 14.9385 40.4722 16C41.4223 17.0615 42 18.4633 42 20C42 21.9858 41.0353 23.7463 39.5489 24.8384C41.0206 25.7554 42 27.3884 42 29.2501C42 32.1189 39.6744 34.4446 36.8056 34.4446C35.0314 34.4446 33.4649 33.5551 32.5278 32.1977C32.1668 32.7207 31.7123 33.1742 31.1885 33.5342C30.4115 35.1254 30.0492 36.3993 30 38.1317V42H26V37.32C25.8819 35.7752 25.4006 34.5096 24.4522 32.7939C23.5859 31.8658 23.0557 30.6199 23.0557 29.2501C23.0557 26.3813 25.3813 24.0557 28.2501 24.0557C29.0247 24.0557 29.7598 24.2252 30.4201 24.5293C30.8926 24.7945 31.2397 25.0628 31.5101 25.3602C31.9689 25.8649 32.2894 26.5459 32.5194 27.6961C32.6277 28.2377 33.1545 28.5889 33.6961 28.4806C34.2377 28.3723 34.5889 27.8455 34.4806 27.3039C34.2106 25.9542 33.7811 24.8851 32.9899 24.0148C32.3349 23.2943 31.4916 22.7771 30.4656 22.3214C30.1657 21.6074 30 20.823 30 20C30 18.4633 30.5777 17.0615 31.5278 16C31.2507 15.6905 31.0054 15.352 30.7967 14.9897C29.8684 15.8576 28.6213 16.3889 27.2501 16.3889C25.4933 16.3889 23.9402 15.5167 23.0001 14.1818C22.06 15.5167 20.5069 16.3889 18.7501 16.3889C17.2616 16.3889 15.9193 15.7628 14.9723 14.7596C14.7216 15.0251 14.4433 15.2642 14.1419 15.4723C15.4994 16.4093 16.3889 17.9758 16.3889 19.7501C16.3889 20.8063 16.0737 21.7888 15.5323 22.6088C14.5043 21.8918 13.3565 21.5 12.0001 21.5C11.4478 21.5 11.0001 21.9477 11.0001 22.5C11.0001 23.0523 11.4478 23.5 12.0001 23.5C13.1662 23.5 14.1503 23.9091 15.1536 24.8872C15.924 25.7934 16.3889 26.9675 16.3889 28.2501C16.3889 30.0855 15.437 31.6985 14 32.6225V35.5C14 36.3284 13.3284 37 12.5 37C11.6716 37 11 36.3284 11 35.5V33.441C8.22129 33.3387 6.00003 31.0538 6.00003 28.2501C6.00003 26.4933 6.87217 24.9402 8.20712 24.0001C6.87217 23.06 6.00003 21.5069 6.00003 19.7501C6.00003 17.9758 6.88958 16.4094 8.24702 15.4723C6.88956 14.5352 6 12.9687 6 11.1944C6 8.32563 8.32563 6 11.1944 6C12.6829 6 14.0252 6.62609 14.9723 7.62928C15.9193 6.62609 17.2616 6 18.7501 6C20.5069 6 22.06 6.87215 23.0001 8.20709C23.9402 6.87215 25.4933 6 27.2501 6Z" fill="currentColor"/>
+</svg></div><b>왜 떼나요</b></div><div class="v2-body">대장 점막에 자란 용종을 <b>암으로 자라기 전에</b> 미리 떼어 냅니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 6V8C29 9.30622 29.8348 10.4175 31 10.8293V12H30C29.4477 12 29 12.4477 29 13V19C29 19.5523 29.4477 20 30 20H34C34.5523 20 35 19.5523 35 19V13C35 12.4477 34.5523 12 34 12H33V11H38V23.0664H20.11C20.0285 23.0664 19.9502 23.0337 19.8925 22.9756L19.5261 22.6068L19.8945 22.2387C21.3678 20.7667 21.3686 18.3793 19.8963 16.9063L18.0961 15.1052C16.624 13.6323 14.2364 13.6315 12.7632 15.1034L12.0591 15.8069C10.7199 15.4263 9.22155 15.7669 8.16703 16.8285C6.61099 18.3951 6.61099 20.9376 8.16703 22.5042L9 23.3428V34H6V36H9.05051C8.40223 36.6353 8 37.5207 8 38.5C8 40.433 9.567 42 11.5 42C13.433 42 15 40.433 15 38.5C15 37.5207 14.5978 36.6353 13.9495 36H34.0505C33.4022 36.6353 33 37.5207 33 38.5C33 40.433 34.567 42 36.5 42C38.433 42 40 40.433 40 38.5C40 37.5207 39.5978 36.6353 38.9495 36H42V34H38V30.9997H38.0662C40.2388 30.9997 42 29.2238 42 27.033C42 25.5511 41.194 24.2589 40 23.5779V11C40 9.89543 39.1046 9 38 9H32C31.4477 9 31 8.55228 31 8V6H29ZM13.8263 16.8684L18.1167 21.1878L18.4809 20.8239C19.1727 20.1327 19.1731 19.0118 18.4818 18.3202L16.6816 16.5191C15.9902 15.8273 14.8687 15.8269 14.1768 16.5182L13.8263 16.8684ZM36 34H11V25.3563L16.2752 30.6672C16.4867 30.8801 16.7733 30.9997 17.0722 30.9997H36V34Z" fill="currentColor"/>
+</svg></div><b>회복은 빠릅니다</b></div><div class="v2-body">대부분 회복실에서 <b>2~4시간</b> 쉬고 나면 식사를 시작할 수 있을 만큼 회복됩니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>상처가 아무는 데는 1~2주</b></div><div class="v2-body">뗀 자리는 작은 상처로 남아 점막이 다 아물 때까지 <b>1~2주</b>가 걸립니다. 이 기간에 출혈·천공(장에 구멍)이 늦게 생길 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/gi-post-polypectomy-s04-risk-gi-636d744a-20260530-raster-20260531.jpg" alt="대장 그림 옆에 튀어나온 용종이 떼어진 뒤 점막이 아물어 가는 세 단계와, 그 아래 물에서 죽을 거쳐 밥상으로 가는 식사 순서가 그려진 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 위는 용종을 뗀 자리가 아물어 가는 모습, 아래는 물 → 죽 → 밥상으로 늘려 가는 식사입니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 떼어 낸 용종은 모두 조직검사로 종류를 확인합니다.</span><span class="v2-src">근거 · ESGE 2024 · 대한소화기내시경학회 용종절제 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 식사</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">시술 뒤 식사는 한 단계씩 늘립니다</h2>
+  <p class="v2-sub">오래 굶는 것(3~5일 금식)보다 일찍 먹기 시작하는 것이 회복에 더 안전하다는 연구가 있습니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">1</div><div class="q-step__h">회복실</div><div class="q-step__tag">2~4시간 · 금식</div><div class="v2-body">진정에서 깨고 의료진이 출혈·복통을 확인할 때까지 먹지 않습니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:359px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">2</div><div class="q-step__h">시술 당일</div><div class="q-step__tag">맑은 물</div><div class="v2-body">증상이 없으면 물·보리차·이온음료를 한 모금씩 늘립니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:654px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">3</div><div class="q-step__h">다음 날</div><div class="q-step__tag">부드러운 음식</div><div class="v2-body">죽·미음·흰살 생선·계란찜처럼 부드럽고 자극이 적은 음식.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:949px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">4</div><div class="q-step__h">2~3일 뒤</div><div class="q-step__tag">평소 식사</div><div class="v2-body">증상이 없으면 골고루 먹는 평소 식사로. 오래 가리면 오히려 해롭습니다.</div>
+  </div>
+  <div class="q-arrow" style="left:337px;top:242px"></div>
+  <div class="q-arrow" style="left:632px;top:242px"></div>
+  <div class="q-arrow" style="left:927px;top:242px"></div>
+  <div class="v2-panel q-inline-p v2-panel--accent" style="left:64px;top:530px;width:1152px;height:76px">
+    <div class="q-inline"><b>먹다가 이상하면 멈추세요</b> 식사 중이나 식후에 복통·혈변·어지럼이 생기면 바로 멈추고 병원에 연락하세요.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 불안하면 한 단계 전 식사로 돌아가도 됩니다(평소 식사 → 죽, 죽 → 맑은 물).</span><span class="v2-src">근거 · 조기 식사 재개 무작위 연구 · ESGE 2024</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 음식</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">무엇을 주의하고, 무엇은 괜찮을까요</h2>
+  <p class="v2-sub">씨앗·견과·잡곡·해조류를 1~2주 모두 끊을 근거는 부족합니다 — 핵심은 ‘처음 며칠 자극 피하기’</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>처음 24~48시간 · 피하기</b></div><div class="v2-body">매운 음식·자극적인 양념(카레·청양고추), 과음, 진한 커피, 탄산음료, 과식은 통증·출혈 위험을 높일 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.9645 9.16263C21.8055 8.05919 20.1386 7.51048 17.9672 8.04371C17.5014 7.41474 16.8092 6.77117 15.8899 6.37651C14.5542 5.8031 12.8769 5.815 10.9856 6.90161C9.0077 7.82463 8.05482 9.18247 7.79227 10.6063C7.61382 11.5741 7.76893 12.4919 8.02385 13.2165C6.34565 14.6843 5.84115 16.36 6.08212 17.9391C6.29052 19.3048 7.03706 20.472 7.76902 21.2642C7.64293 21.8429 7.62641 22.4092 7.73113 22.9423C8.04139 22.7211 8.18808 22.6205 8.52484 22.4831C9.07459 22.2587 9.52484 22.2333 10.0248 22.2333C11.5998 22.2333 12.511 22.4158 14.0129 22.8327C14.8986 23.0786 15.6186 23.3808 16.2798 23.7481C16.335 23.7787 16.3898 23.8098 16.4442 23.8414L16.7282 23.7186C17.0853 23.5642 17.4796 23.5173 17.863 23.5834L21.3761 24.1897C21.3246 23.916 21.2818 23.6403 21.2475 23.3687C21.1866 22.8868 21.1523 22.4175 21.1433 21.9934C21.115 20.6556 21.3701 19.3269 21.892 18.0946C22.4139 16.8622 23.1908 15.7541 24.1717 14.8428C24.4339 14.5992 24.7092 14.3711 24.9959 14.1595C25.2316 13.9856 25.475 13.8227 25.7254 13.6715C25.8698 13.5842 26.0165 13.5008 26.1654 13.4214C25.7816 13.0105 25.2933 12.6855 24.7267 12.4487C24.4961 11.3958 23.966 10.1161 22.9645 9.16263ZM13.1391 10.2801C13.6341 10.0356 14.2339 10.2383 14.4787 10.7328L15.2704 12.3325L16.8829 10.6061C17.2597 10.2027 17.8925 10.1808 18.2963 10.5572C18.7001 10.9336 18.722 11.5657 18.3452 11.9691L16.2179 14.2467L17.0206 15.8684L18.352 14.6585C18.7605 14.2872 19.393 14.3171 19.7646 14.7252C20.1362 15.1333 20.1063 15.7651 19.6978 16.1364L17.9427 17.7314L18.9987 19.865C19.2435 20.3596 19.0406 20.9587 18.5455 21.2032C18.0505 21.4478 17.4507 21.2451 17.2059 20.7505L16.1106 18.5376L14.1466 18.9347C13.6053 19.0441 13.0777 18.6945 12.9681 18.1537C12.8586 17.613 13.2086 17.0859 13.7499 16.9765L15.1935 16.6846L14.3982 15.0778L11.359 15.5351C10.8128 15.6173 10.3034 15.2416 10.2212 14.696C10.1389 14.1505 10.515 13.6416 11.0611 13.5594L13.4674 13.1974L12.6859 11.6184C12.4411 11.1238 12.644 10.5246 13.1391 10.2801Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.1363 24.6951C23.9386 24.6562 23.7677 24.623 23.6285 24.5961C23.4483 24.1014 23.3154 23.5918 23.2338 23.0733L23.2187 23.0121C23.1167 22.5961 23.0488 22.2287 23.0429 21.9532C23.0202 20.883 23.2243 19.82 23.6418 18.8341C24.0594 17.8482 24.6809 16.9617 25.4656 16.2327C25.5272 16.1755 25.5897 16.1255 25.653 16.0818C27.6684 14.2827 30.4862 13.969 32.6678 15.7554C32.6426 13.3026 33.6388 10.907 36.0482 9.51735L36.8927 10.9786C34.852 12.1556 34.0931 14.3584 34.431 16.7135C39.086 15.1835 42.709 19.5865 41.3494 24.6555C40.9207 26.2537 40.0143 27.6088 38.8016 28.6326C38.6055 28.5638 38.402 28.4927 38.1925 28.42C36.3851 27.7926 34.1097 27.0345 32.2913 26.5327C30.5241 26.0452 28.2486 25.5404 26.4286 25.1598C25.5156 24.9689 24.7119 24.8082 24.1363 24.6951ZM37.5538 19.9861C38.096 19.8811 38.6207 20.2352 38.7258 20.7768C39.0901 22.6554 38.4106 24.5203 36.9228 25.7254C36.4938 26.0729 35.8641 26.0072 35.5162 25.5786C35.1684 25.1501 35.2342 24.521 35.6632 24.1735C36.5773 23.4331 36.9861 22.311 36.7623 21.1568C36.6572 20.6152 37.0116 20.091 37.5538 19.9861Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.2356 41.9984C13.2354 41.8312 15.0922 40.9782 16.2365 39.7291C16.6912 40.3391 17.4545 40.6927 18.2797 40.5629C19.1258 40.4298 20.1689 40.255 21.3779 40.0319V35.3473H23.6072V39.6011C26.4277 39.0317 29.8589 38.2479 33.6392 37.1948V34.2338H35.8685V36.5536C37.3921 36.1013 38.9612 35.6065 40.5601 35.0658C42.48 34.4166 42.48 31.8239 40.5601 31.1747C36.4875 29.7976 32.6087 28.7178 29.1805 27.8817V34.2338L26.9512 34.2338L26.9512 27.3568C23.2611 26.5188 20.241 25.9862 18.2797 25.6776C17.4544 25.5478 16.6911 25.9015 16.2365 26.5115C15.0922 25.2624 13.2353 24.4094 10.2356 24.2423C9.62092 24.208 9.11458 24.7124 9.12342 25.3273C9.14947 27.1402 9.25973 28.5801 9.63771 29.7034C8.41338 30.167 7.25745 31.1032 6.2022 32.512C5.9326 32.8719 5.9326 33.3687 6.2022 33.7286C7.24888 35.126 8.39461 36.0584 9.60789 36.5259C9.28585 37.6167 9.15814 39.0452 9.12544 40.9104C9.11467 41.5253 9.62092 42.0326 10.2356 41.9984ZM12.4346 31.0259L10.4279 31.7858C9.87237 31.9962 9.24764 32.4074 8.58864 33.1203C9.24067 33.8257 9.85918 34.2358 10.4101 34.448L12.3275 35.1868L11.7462 37.1558C11.5747 37.7367 11.4602 38.5299 11.3992 39.6442C13.5484 39.3131 14.4568 38.5174 14.9264 37.792C15.6014 36.7492 15.8044 35.2273 15.8044 33.1203C15.8044 31.0133 15.6014 29.4915 14.9264 28.4487C14.4563 27.7226 13.5467 26.926 11.393 26.5955C11.4498 27.6754 11.5623 28.4334 11.7508 28.9938L12.4346 31.0259Z" fill="currentColor"/>
+</svg></div><b>2~3일 뒤부터 · 조금씩 괜찮음</b></div><div class="v2-body">씨앗·견과·잡곡·해조류가 뗀 자리를 다치게 한다는 확실한 근거는 없습니다. 증상이 없으면 평소처럼 드셔도 됩니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 23L7 42H9L9 23H10V12H9L9 6H7L7 12H6V23H7Z" fill="currentColor"/>
+<path d="M25 7C25 7.55228 24.5523 8 24 8H19V11H25V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7Z" fill="currentColor"/>
+<path d="M30 11C35.5228 11 40 15.4772 40 21V24H42V30H28V24H30V23C30 21.8954 29.1046 21 28 21H27V11H30Z" fill="currentColor"/>
+<path d="M35.5 42C37.433 42 39 40.3719 39 38.3636C39 35.1818 35.5 32 35.5 32C35.5 32 32 35.1818 32 38.3636C32 40.3719 33.567 42 35.5 42Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6H7L7 12H6V23H7L7 42H9L9 23H10V12H9L9 6ZM35.5 34.9879C35.4543 35.0478 35.4085 35.109 35.3628 35.1714C34.5524 36.2765 34 37.4318 34 38.3636C34 39.3401 34.7429 40 35.5 40C36.2571 40 37 39.3401 37 38.3636C37 37.4318 36.4476 36.2765 35.6372 35.1714C35.5915 35.109 35.5457 35.0478 35.5 34.9879ZM29.7324 22C29.9026 22.2942 30 22.6357 30 23V24H28V30H42V24H40V21C40 15.4772 35.5228 11 30 11H27V21H28C28.7403 21 29.3866 21.4022 29.7324 22ZM29 19.126C30.7252 19.5701 32 21.1362 32 23V26H30V28H40V26H38V21C38 16.5817 34.4183 13 30 13H29V19.126ZM14 13V22H23V13H14ZM25 11V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7C25 7.55228 24.5523 8 24 8H19V11H25ZM39 38.3636C39 40.3719 37.433 42 35.5 42C33.567 42 32 40.3719 32 38.3636C32 35.1818 35.5 32 35.5 32C35.5 32 39 35.1818 39 38.3636Z" fill="currentColor"/>
+</svg></div><b>처음부터 권함 · 물과 부드러운 섬유질</b></div><div class="v2-body">물·보리차·미음·죽·삶은 채소·바나나. 변비로 힘을 주면 뗀 자리 출혈이 늘 수 있어 <b>변비 예방이 곧 출혈 예방</b>입니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 4L23.3098 4.66021L23.3061 4.6638L23.2973 4.67227L23.2648 4.70366C23.2367 4.73095 23.1956 4.7709 23.1426 4.82303C23.0366 4.92728 22.8826 5.08029 22.6874 5.27827C22.297 5.67417 21.7417 6.25029 21.0763 6.97632C19.7465 8.42723 17.9719 10.4826 16.1951 12.8995C12.6815 17.6788 9 24.0809 9 30.0801C9 37.845 15.796 44 24 44C32.204 44 39 37.845 39 30.0801C39 24.0809 35.3185 17.6788 31.8049 12.8995C30.0281 10.4826 28.2535 8.42723 26.9237 6.97632C26.2583 6.25029 25.703 5.67417 25.3126 5.27827C25.1174 5.08029 24.9634 4.92728 24.8574 4.82303C24.8044 4.7709 24.7634 4.73095 24.7352 4.70366L24.7027 4.67227L24.6939 4.6638L24.6902 4.66021L24 4ZM15.4649 31.3985C15.2943 30.8716 14.7301 30.5833 14.2049 30.7545C13.6796 30.9257 13.3922 31.4915 13.5628 32.0183C14.3133 34.3349 15.7757 36.3536 17.7404 37.7853C19.7052 39.217 22.0714 39.9882 24.5 39.9882C25.0523 39.9882 25.5 39.5391 25.5 38.9852C25.5 38.4313 25.0523 37.9822 24.5 37.9822C22.4938 37.9822 20.5391 37.3452 18.916 36.1625C17.293 34.9798 16.0849 33.3121 15.4649 31.3985Z" fill="currentColor"/>
+</svg></div><b>증상이 생기면 · 바로 멈추기</b></div><div class="v2-body">먹다가 복통이 새로 생기거나 피 섞인 변·검은 변을 보면 식사를 멈추고 병원에&nbsp;연락하세요.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 물을 충분히 마셔 변을 부드럽게 유지하세요.</span><span class="v2-src">근거 · ESGE 2024 · 광교바른내과 용종절제 후 안내문</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 활동</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">활동 제한은 짧고 분명하게</h2>
+  <p class="v2-sub">‘1~2주 모두 쉬기’는 근거가 약합니다 — 핵심은 처음 48~72시간 힘든 활동 피하기</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:460px;height:259px">
+    <img class="v2-fig__img q-fig__img" style="width:460px;height:259px" src="../../../shared/assets/generated/gi-post-polypectomy-s06-anatomy-gi-d72cd2d6-20260530-raster-20260531.jpg" alt="대장을 방패가 감싼 가운데 침대, 걷는 발, 상자를 드는 모습, 편안한 배가 둘러싼 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:477px;width:460px;height:129px"><div class="q-figcap__t">그림 · 쉬고, 가볍게 걷고, 무거운 물건은 잠시 들지 않습니다.</div></div>
+  <div class="v2-panel q-text" style="left:556px;top:206px;width:660px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">시술 당일<span class="q-srow__tag">쉬기</span></div><div class="v2-body">집에서 충분히 쉽니다. 운전·기계 조작·중요한 결정은 진정제 때문에 24시간 피합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">다음 날<span class="q-srow__tag">일상 활동</span></div><div class="v2-body">가볍게 걷기·집안일·사무 업무는 괜찮습니다. 무리하지 않는 선에서.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">48~72시간<span class="q-srow__tag">힘든 활동 피하기</span></div><div class="v2-body">무거운 물건 들기·등산·헬스·골프 풀스윙·마라톤은 3일 쉽니다. 배에 힘이 들어가면 출혈&nbsp;위험.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">3~7일 뒤<span class="q-srow__tag">천천히 복귀</span></div><div class="v2-body">증상이 없으면 운동·여행·비행기도 차츰 다시. 큰 용종이었다면 7일까지 조심.</div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 20mm 이상 큰 용종·오른쪽 대장을 뗀 분은 의료진의 개별 안내를 먼저 따르세요.</span><span class="v2-src">근거 · ESGE 2024 · 광교바른내과 용종절제 후 안내문</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">약은 스스로 끊지도, 스스로 다시 시작하지도 마세요</h2>
+  <p class="v2-sub">피를 묽게 하는 약과 진통제는 의료진의 개별 안내를 따릅니다 — 무조건 1주 중단은 오히려 위험할 수 있습니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:700px"><colgroup><col style="width:200px"><col style="width:500px"></colgroup><thead><tr><th>약</th><th>어떻게 하나요</th></tr></thead><tbody><tr><th style="height:86px">아스피린만 드시는 분</th><td style="height:86px">대부분 끊지 않고 그대로 드시거나 곧 다시 시작합니다. 스스로 끊으면 심장·뇌혈관 위험이 더 큽니다</td></tr><tr><th style="height:86px">와파린·먹는 항응고제·항혈소판제</th><td style="height:86px">피가 멎은 것을 확인하면 보통 <b>24~48시간 안에</b> 다시 시작을 고려합니다. 시작 날짜는 시술 의사의 안내대로</td></tr><tr><th style="height:86px">아플 때 먹는 진통제</th><td style="height:86px"><b>아세트아미노펜(타이레놀)</b>을 먼저. 이부프로펜·나프록센 같은 소염진통제는 출혈 위험이 있어 피합니다</td></tr><tr><th style="height:86px">혈압·당뇨·갑상선 약</th><td style="height:86px">시술과 상관없는 약은 평소대로. 시술 당일 아침 약은 미리 안내받은 대로</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:796px;top:206px;width:420px;height:236px">
+    <img class="v2-fig__img q-fig__img" style="width:420px;height:236px" src="../../../shared/assets/generated/gi-post-polypectomy-s07-risk-gi-7105ffcf-20260530-raster-20260531.jpg" alt="약병과 알약, 물 한 잔 옆에서 의사가 손을 내밀어 설명하고 뒤에 혈액 세포가 확대된 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:796px;top:454px;width:420px;height:152px"><div class="q-figcap__t">그림 · 먹는 약은 의사와 상의해 끊고 다시 시작합니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 큰 용종·오른쪽 대장을 뗀 경우 다시 시작하는 시점을 더 신중히 정합니다.</span><span class="v2-src">근거 · BSG/ESGE 항혈전제 지침 2021 · ACG-CAG 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 출혈 구별</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">가벼운 출혈과 위험한 출혈, 이렇게 구별합니다</h2>
+  <p class="v2-sub">적은 핏기는 흔하지만 오른쪽 신호는 바로 응급실입니다</p>
+  <table class="v2-table q-table q-tight" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:220px"><col style="width:466px"><col style="width:466px"></colgroup><thead><tr><th>살펴볼 것</th><th>가벼운 출혈 — 병원에 연락하고 지켜보기</th><th>위험한 출혈 — 바로 응급실</th></tr></thead><tbody><tr><th style="height:52px">피의 양</th><td style="height:52px">휴지에 살짝 묻거나 변에 핏줄이 한두 줄, 변기 물은 맑음</td><td style="height:52px">변기 물이 새빨갛게 물들 만큼 많음</td></tr><tr><th style="height:52px">횟수</th><td style="height:52px">한두 번으로 그치고 더 나오지 않음</td><td style="height:52px">반복되거나 양이 점점 늘어남</td></tr><tr><th style="height:52px">색</th><td style="height:52px">선홍색이지만 양이 아주 적음</td><td style="height:52px">짜장면 같은 검은 변(위쪽 출혈일 수 있음)</td></tr><tr><th style="height:52px">몸 상태</th><td style="height:52px">어지러움·식은땀·복통이 없음</td><td style="height:52px">어지러움·식은땀·쓰러질 것 같음·창백</td></tr><tr><th style="height:52px">맥박 · 혈압</th><td style="height:52px">평소 범위로 안정적</td><td style="height:52px">맥박이 빨라지고 혈압이 떨어짐</td></tr><tr><th style="height:52px">배</th><td style="height:52px">새로운 통증이 없음</td><td style="height:52px">새로 생긴 심한 복통·팽만·딱딱함</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 헷갈리면 가벼운 쪽으로 판단하지 말고 병원에 먼저 연락하세요.</span><span class="v2-src">근거 · ESGE 2024 · 광교바른내과 용종절제 후 안내문</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 집에서</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">집에서 지킬 것과 피할 것</h2>
+  <p class="v2-sub">시술 뒤 1~2주, 회복과 출혈 예방을 위해</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">이렇게 하세요</div><div class="v2-vs__lead">회복을 돕고 출혈을 막습니다.</div><ul class="v2-vs__list"><li>증상이 없으면 물부터 천천히 시작</li><li>물을 충분히 마셔 변비 막기</li><li>변 색깔·양·증상을 매일 확인(최소 2주)</li><li>처방받은 약은 안내대로 복용</li><li>응급 연락처를 늘 가까이</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">이것은 피하세요</div><div class="v2-vs__lead">출혈 위험을 높입니다.</div><ul class="v2-vs__list"><li>48~72시간 안의 격렬한 운동·등산·골프·헬스</li><li>무거운 물건 들기·배에 힘주는 동작</li><li>처음 24~48시간 매운 음식·과음·진한 커피</li><li>피를 묽게 하는 약을 스스로 끊기, 소염진통제 스스로 먹기</li><li>‘별일 아니겠지’ 하며 혈변 알리기 미루기</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 가벼운 걷기와 일상 활동은 다음 날부터 괜찮습니다.</span><span class="v2-src">근거 · ESGE 2024 · 광교바른내과 용종절제 후 안내문</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 바로 응급실</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이럴 때는 바로 응급실로 가세요</h2>
+  <p class="v2-sub">시술 뒤 합병증의 분명한 위험 신호입니다 — 한 가지라도 있으면 지체 없이 119</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:680px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 4L23.3098 4.66021L23.3061 4.6638L23.2973 4.67227L23.2648 4.70366C23.2367 4.73095 23.1956 4.7709 23.1426 4.82303C23.0366 4.92728 22.8826 5.08029 22.6874 5.27827C22.297 5.67417 21.7417 6.25029 21.0763 6.97632C19.7465 8.42723 17.9719 10.4826 16.1951 12.8995C12.6815 17.6788 9 24.0809 9 30.0801C9 37.845 15.796 44 24 44C32.204 44 39 37.845 39 30.0801C39 24.0809 35.3185 17.6788 31.8049 12.8995C30.0281 10.4826 28.2535 8.42723 26.9237 6.97632C26.2583 6.25029 25.703 5.67417 25.3126 5.27827C25.1174 5.08029 24.9634 4.92728 24.8574 4.82303C24.8044 4.7709 24.7634 4.73095 24.7352 4.70366L24.7027 4.67227L24.6939 4.6638L24.6902 4.66021L24 4ZM15.4649 31.3985C15.2943 30.8716 14.7301 30.5833 14.2049 30.7545C13.6796 30.9257 13.3922 31.4915 13.5628 32.0183C14.3133 34.3349 15.7757 36.3536 17.7404 37.7853C19.7052 39.217 22.0714 39.9882 24.5 39.9882C25.0523 39.9882 25.5 39.5391 25.5 38.9852C25.5 38.4313 25.0523 37.9822 24.5 37.9822C22.4938 37.9822 20.5391 37.3452 18.916 36.1625C17.293 34.9798 16.0849 33.3121 15.4649 31.3985Z" fill="currentColor"/>
+</svg></div><b>변기를 새빨갛게 물들이는 많은 혈변</b></div><div class="v2-body">뗀 자리의 늦은 출혈입니다. 특히 시술 뒤 3~7일째에 많고 바로 처치가 필요합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M41.8779 7.52115C42.1424 8.006 41.9637 8.61343 41.4789 8.8779L35.9789 11.8779C35.669 12.0469 35.293 12.0401 34.9895 11.8599C34.686 11.6797 34.5 11.3529 34.5 11V9.68454L30.4789 11.8779C29.994 12.1424 29.3866 11.9637 29.1221 11.4789C28.8576 10.994 29.0363 10.3866 29.5211 10.1221L35.0211 7.1221C35.331 6.9531 35.707 6.95994 36.0105 7.1401C36.314 7.32026 36.5 7.64706 36.5 8V9.31546L40.5211 7.1221C41.006 6.85764 41.6134 7.0363 41.8779 7.52115Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M30.0958 33.5728C30.3318 33.0735 30.9278 32.8599 31.4272 33.0958L36.7743 35.6222C37.0941 35.7733 37.3103 36.0821 37.3429 36.4343C37.3754 36.7864 37.2196 37.1296 36.9329 37.3368L35.6105 38.2926L39.4272 40.0958C39.9265 40.3318 40.1401 40.9278 39.9042 41.4272C39.6682 41.9265 39.0722 42.1401 38.5728 41.9042L33.2257 39.3778C32.9059 39.2267 32.6897 38.9179 32.6571 38.5657C32.6245 38.2136 32.7804 37.8704 33.0671 37.6632L34.3895 36.7074L30.5728 34.9042C30.0735 34.6682 29.8599 34.0722 30.0958 33.5728Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M37.5167 21.215C37.8116 21.4478 37.9512 21.8262 37.878 22.1948L37.4653 24.273L40.5823 22.84C41.0841 22.6093 41.6779 22.829 41.9086 23.3308C42.1393 23.8326 41.9195 24.4264 41.4177 24.6571L36.5206 26.9086C36.1791 27.0656 35.7785 27.0179 35.4835 26.7851C35.1884 26.5523 35.0488 26.1738 35.122 25.8052L35.5349 23.7262L32.4174 25.1581C31.9155 25.3886 31.3218 25.1686 31.0913 24.6667C30.8608 24.1648 31.0807 23.5711 31.5826 23.3406L36.4798 21.0913C36.8212 20.9344 37.2217 20.9822 37.5167 21.215Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.2 6V11.5385C22.2 13.1126 21.2549 14.1507 20.39 14.6691C19.6826 15.0931 18.9172 15.2585 18.4653 15.3422C17.9839 15.4314 17.4529 15.4928 17.0163 15.5433C16.9942 15.5459 16.9723 15.5484 16.9507 15.5509C16.4609 15.6076 16.0266 15.659 15.6062 15.731C14.7026 15.8857 14.2778 16.0758 14.1069 16.2069C14.0777 16.2293 14.0668 16.2422 14.0652 16.2441C14.0652 16.2441 14.0629 16.2468 14.0597 16.2535C14.0576 16.258 14.0386 16.2976 14.0227 16.3881C14.0626 16.4038 14.108 16.4206 14.1595 16.4383C15.0141 16.731 16.2315 16.8576 17.9883 17.0403C18.094 17.0513 18.2018 17.0625 18.3115 17.0739C19.9685 17.2469 22.2095 17.4888 24.0323 18.3001C25.0017 18.7315 26.0299 19.3952 26.8106 20.4511C27.6188 21.544 28 22.8391 28 24.2308C28 25.7204 27.5239 27.1081 26.4956 28.1991C25.538 29.2151 24.3304 29.729 23.2918 30.0132C21.3969 30.5317 19.0544 30.5276 17.2313 30.5244C17.152 30.5243 17.0737 30.5241 16.9964 30.524C14.8524 30.5215 13.3192 30.5449 12.3004 30.8269C12.1687 30.8634 12.0713 30.898 12.0011 30.9267C12.0108 31.262 12.0795 31.3759 12.0816 31.3793C12.0861 31.3872 12.0916 31.3955 12.1065 31.4097C12.1233 31.4257 12.162 31.4586 12.238 31.502C12.6355 31.7291 13.4229 31.9162 14.7543 31.9847C15.3581 32.0158 15.9707 32.0202 16.6222 32.0248L16.6775 32.0252C17.31 32.0297 18.0312 32.0348 18.6794 32.0845C19.2599 32.129 20.1598 32.229 20.9871 32.615C21.438 32.8253 22.0126 33.1861 22.4764 33.8062C22.972 34.4687 23.2 35.2397 23.2 36V42H17.2V38.0304C17.0261 38.028 16.8384 38.0265 16.635 38.025L16.5387 38.0243C15.9183 38.02 15.1861 38.0149 14.4457 37.9768C12.9771 37.9011 10.9645 37.6844 9.26203 36.712C8.35296 36.1927 7.49467 35.4383 6.8809 34.3715C6.26898 33.3079 6 32.1075 6 30.8462C6 29.3566 6.47273 27.9682 7.49646 26.8736C8.45161 25.8524 9.65831 25.3327 10.6996 25.0444C12.6057 24.5168 14.9613 24.5207 16.7899 24.5237C16.862 24.5238 16.9332 24.524 17.0036 24.524C19.1503 24.5266 20.6855 24.5058 21.7082 24.226C21.8333 24.1917 21.9275 24.1592 21.9969 24.1317C21.9927 24.0705 21.9851 24.0324 21.9791 24.0112C21.9506 23.983 21.8493 23.8959 21.5927 23.7817C20.7905 23.4247 19.5315 23.2339 17.6885 23.0415C17.5305 23.025 17.3663 23.0084 17.1968 22.9913C15.6848 22.8384 13.7612 22.644 12.2155 22.1146C11.3087 21.804 10.2434 21.2912 9.39215 20.3644C8.46931 19.3598 8 18.0882 8 16.6923C8 14.4332 8.90138 12.6377 10.4556 11.4458C11.8222 10.3978 13.4474 10.0133 14.5938 9.81706C15.1729 9.71791 15.7392 9.65117 16.2 9.59775V6H22.2ZM21.9704 23.9893C21.9704 23.9893 21.9736 23.9933 21.9772 24.0048C21.9718 23.9956 21.9704 23.9893 21.9704 23.9893Z" fill="currentColor"/>
+</svg></div><b>새로 생긴 심한 복통 · 배가 딱딱하고 부풂</b></div><div class="v2-body">뗀 자리에 구멍(천공)이 났을 수 있어 바로 영상 검사와 처치가 필요합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M27.2929 17.2929C27.6834 16.9024 28.3166 16.9024 28.7071 17.2929L30.5 19.0858L32.2929 17.2929C32.6834 16.9024 33.3166 16.9024 33.7071 17.2929C34.0976 17.6834 34.0976 18.3166 33.7071 18.7071L31.9142 20.5L33.7071 22.2929C34.0976 22.6834 34.0976 23.3166 33.7071 23.7071C33.3166 24.0976 32.6834 24.0976 32.2929 23.7071L30.5 21.9142L28.7071 23.7071C28.3166 24.0976 27.6834 24.0976 27.2929 23.7071C26.9024 23.3166 26.9024 22.6834 27.2929 22.2929L29.0858 20.5L27.2929 18.7071C27.2441 18.6583 27.2014 18.6057 27.1648 18.5502C26.9085 18.1621 26.9512 17.6346 27.2929 17.2929Z" fill="currentColor"/>
+<path d="M14.2929 17.2929C14.6834 16.9024 15.3166 16.9024 15.7071 17.2929L17.5 19.0858L19.2929 17.2929C19.6834 16.9024 20.3166 16.9024 20.7071 17.2929C21.0976 17.6834 21.0976 18.3166 20.7071 18.7071L18.9142 20.5L20.7071 22.2929C20.7559 22.3417 20.7986 22.3943 20.8352 22.4498C21.0915 22.8379 21.0488 23.3654 20.7071 23.7071C20.3166 24.0976 19.6834 24.0976 19.2929 23.7071L17.5 21.9142L15.7079 23.7063L15.7071 23.7071C15.3166 24.0976 14.6834 24.0976 14.2929 23.7071C13.9024 23.3166 13.9024 22.6834 14.2929 22.2929L16.0858 20.5L14.2929 18.7071C14.2441 18.6583 14.2014 18.6057 14.1648 18.5502C13.9085 18.1621 13.9512 17.6346 14.2929 17.2929Z" fill="currentColor"/>
+<path d="M31 32C31 35.3137 27.866 36 24 36C20.134 36 17 35.3137 17 32C17 28.6863 20.134 26 24 26C27.866 26 31 28.6863 31 32Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6C14.0589 6 6 14.0589 6 24C6 33.9411 14.0589 42 24 42ZM24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40Z" fill="currentColor"/>
+</svg></div><b>어지러움 · 식은땀 · 창백 · 쓰러짐</b></div><div class="v2-body">피를 많이 잃은 쇼크 신호일 수 있습니다. 피가 안 보여도 속에서 출혈일 수 있습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.9829 29.739L18.9814 27.9604L18.9763 21.7487L18.9662 9.3415C18.9638 6.38283 21.2004 3.98253 23.9618 3.98026C26.7232 3.978 28.9638 6.37464 28.9662 9.33331L28.9763 21.7405L28.9814 27.9527L28.9829 29.7308C30.813 31.1954 31.9859 33.4473 31.988 35.9737C31.9916 40.392 28.4128 43.9766 23.9945 43.9803C19.5763 43.9839 15.9916 40.4051 15.988 35.9868C15.9859 33.4604 17.1552 31.2066 18.9829 29.739ZM22.9584 21.4023C24.1541 21.7114 25.5195 22.0644 26.9766 22.0388L26.9749 19.9538L24.9749 19.9554C24.4226 19.9558 23.9745 19.5085 23.9741 18.9562C23.9736 18.4039 24.421 17.9558 24.9732 17.9554L26.9732 17.9538L26.9716 15.9538L24.9716 15.9554C24.4193 15.9558 23.9712 15.5085 23.9708 14.9562C23.9703 14.4039 24.4177 13.9558 24.97 13.9554L26.97 13.9538L26.9683 11.9538L24.9683 11.9554C24.416 11.9558 23.968 11.5085 23.9675 10.9562C23.9671 10.4039 24.4144 9.95585 24.9667 9.9554L26.9667 9.95376L26.9662 9.33495C26.9647 7.55975 25.6204 6.12176 23.9635 6.12312C22.3067 6.12448 20.9647 7.56466 20.9662 9.33986L20.9757 20.9813C21.5615 21.0412 22.2283 21.2136 22.9584 21.4023Z" fill="currentColor"/>
+</svg></div><b>38℃ 이상 열 · 오한이 계속됨</b></div><div class="v2-body">뗀 자리 감염·복막염일 수 있습니다. 감기로 넘기지 말고 시술 사실을 알리세요.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:776px;top:206px;width:440px;height:248px">
+    <img class="v2-fig__img q-fig__img" style="width:440px;height:248px" src="../../../shared/assets/generated/gi-post-polypectomy-s09-risk-gi-c45d434b-20260530-raster-20260531.jpg" alt="물 잔과 물병, 변기의 붉은 물, 핏방울, 배를 움켜쥔 모습, 병원 건물이 대장 그림을 둘러싼 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:776px;top:466px;width:440px;height:140px"><div class="q-figcap__t">그림 · 많은 혈변·심한 복통이 있으면 기다리지 말고 병원으로 갑니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 응급실에서는 ‘며칠 전 대장 용종을 뗐다’고 꼭 알리세요.</span><span class="v2-src">근거 · ESGE 2024 · 용종절제 후 합병증 신호</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 다음 검사</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">조직검사 결과에 따라 다음 대장내시경 시기가 정해집니다</h2>
+  <p class="v2-sub">광교바른내과 추적 기준 — 용종 종류·크기·개수·뗀 방식에 따라 달라집니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:1152px"><colgroup><col style="width:300px"><col style="width:200px"><col style="width:652px"></colgroup><thead><tr><th>이번 결과</th><th>다음 검사</th><th>설명</th></tr></thead><tbody><tr><th style="height:66px">용종 없음</th><td style="height:66px"><b>5년 뒤</b></td><td style="height:66px">가족력이 있거나 증상이 달라지면 더 일찍 받을 수 있습니다</td></tr><tr><th style="height:66px">용종은 있으나 선종 아님</th><td style="height:66px"><b>3~4년 뒤</b></td><td style="height:66px">과형성 용종처럼 암이 되지 않는 용종만 있었던 경우</td></tr><tr><th style="height:66px">선종 있음</th><td style="height:66px"><b>2~3년 뒤</b></td><td style="height:66px">관상 선종처럼 흔한 양성 선종이 있었던 경우</td></tr><tr><th style="height:66px">고위험 선종 · 여러 개</th><td style="height:66px"><b>1~2년 뒤</b></td><td style="height:66px">고도 이형성·융모 선종·10mm 이상 큰 병변·선종 5개 이상</td></tr><tr><th style="height:66px">2cm 이상을 나누어 뗀 경우</th><td style="height:66px"><b>6개월 뒤</b></td><td style="height:66px">남은 조직이 없는지 짧은 간격으로 먼저 확인합니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 나의 다음 검사 시기는 조직 결과를 보고 알려 드립니다(증상이 없다는 전제).</span><span class="v2-src">근거 · 원내 추적 기준(USMSTF 2020·대한소화기내시경학회 변형) · 대장용종 결과 안내문</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">2주 동안 살펴보면 안전하게 회복합니다</h2>
+  <p class="v2-sub">궁금한 점은 언제든 문의해 주세요 — QR로 휴대폰에서 다시 볼 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">대장 용종을 뗀 분과 가족을 위한 회복 안내자료입니다. 약 조절과 다음 검사 시기는 담당 의사와 상의해&nbsp;정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">ESGE 2024 · USMSTF 2020 · BSG/ESGE 항혈전제 지침 2021 · ACG-CAG 2022 항혈전제 지침 · 대한소화기내시경학회 · 광교바른내과 용종절제 후 안내문 · 광교바른내과 대장용종 결과 안내문</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM12,2H13V3H12zM15,2H16V3H15zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM12,3H13V4H12zM13,3H14V4H13zM15,3H16V4H15zM18,3H19V4H18zM20,3H21V4H20zM22,3H23V4H22zM25,3H26V4H25zM26,3H27V4H26zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM13,4H14V5H13zM20,4H21V5H20zM24,4H25V5H24zM25,4H26V5H25zM26,4H27V5H26zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM14,5H15V6H14zM16,5H17V6H16zM18,5H19V6H18zM19,5H20V6H19zM24,5H25V6H24zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM13,6H14V7H13zM15,6H16V7H15zM16,6H17V7H16zM19,6H20V7H19zM21,6H22V7H21zM26,6H27V7H26zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM12,7H13V8H12zM13,7H14V8H13zM16,7H17V8H16zM21,7H22V8H21zM23,7H24V8H23zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM19,9H20V10H19zM20,9H21V10H20zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM16,10H17V11H16zM18,10H19V11H18zM19,10H20V11H19zM20,10H21V11H20zM21,10H22V11H21zM23,10H24V11H23zM25,10H26V11H25zM28,10H29V11H28zM31,10H32V11H31zM33,10H34V11H33zM34,10H35V11H34zM2,11H3V12H2zM4,11H5V12H4zM6,11H7V12H6zM9,11H10V12H9zM10,11H11V12H10zM13,11H14V12H13zM14,11H15V12H14zM18,11H19V12H18zM19,11H20V12H19zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM5,12H6V13H5zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM14,12H15V13H14zM16,12H17V13H16zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM23,12H24V13H23zM24,12H25V13H24zM25,12H26V13H25zM27,12H28V13H27zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM33,12H34V13H33zM34,12H35V13H34zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM9,13H10V14H9zM11,13H12V14H11zM12,13H13V14H12zM13,13H14V14H13zM15,13H16V14H15zM16,13H17V14H16zM17,13H18V14H17zM20,13H21V14H20zM22,13H23V14H22zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM34,13H35V14H34zM2,14H3V15H2zM8,14H9V15H8zM10,14H11V15H10zM11,14H12V15H11zM14,14H15V15H14zM19,14H20V15H19zM21,14H22V15H21zM22,14H23V15H22zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM3,15H4V16H3zM4,15H5V16H4zM5,15H6V16H5zM6,15H7V16H6zM10,15H11V16H10zM13,15H14V16H13zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM21,15H22V16H21zM27,15H28V16H27zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM2,16H3V17H2zM8,16H9V17H8zM9,16H10V17H9zM12,16H13V17H12zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM21,16H22V17H21zM22,16H23V17H22zM24,16H25V17H24zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM32,16H33V17H32zM2,17H3V18H2zM4,17H5V18H4zM6,17H7V18H6zM9,17H10V18H9zM10,17H11V18H10zM12,17H13V18H12zM13,17H14V18H13zM14,17H15V18H14zM18,17H19V18H18zM20,17H21V18H20zM21,17H22V18H21zM23,17H24V18H23zM24,17H25V18H24zM27,17H28V18H27zM28,17H29V18H28zM29,17H30V18H29zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM2,18H3V19H2zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM25,18H26V19H25zM27,18H28V19H27zM28,18H29V19H28zM30,18H31V19H30zM32,18H33V19H32zM4,19H5V20H4zM5,19H6V20H5zM7,19H8V20H7zM9,19H10V20H9zM11,19H12V20H11zM13,19H14V20H13zM14,19H15V20H14zM17,19H18V20H17zM19,19H20V20H19zM20,19H21V20H20zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM30,19H31V20H30zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM3,20H4V21H3zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM23,20H24V21H23zM24,20H25V21H24zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM3,21H4V22H3zM5,21H6V22H5zM7,21H8V22H7zM9,21H10V22H9zM10,21H11V22H10zM11,21H12V22H11zM17,21H18V22H17zM19,21H20V22H19zM20,21H21V22H20zM22,21H23V22H22zM25,21H26V22H25zM26,21H27V22H26zM28,21H29V22H28zM30,21H31V22H30zM33,21H34V22H33zM34,21H35V22H34zM2,22H3V23H2zM3,22H4V23H3zM4,22H5V23H4zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM12,22H13V23H12zM13,22H14V23H13zM16,22H17V23H16zM19,22H20V23H19zM23,22H24V23H23zM26,22H27V23H26zM31,22H32V23H31zM32,22H33V23H32zM2,23H3V24H2zM5,23H6V24H5zM6,23H7V24H6zM9,23H10V24H9zM10,23H11V24H10zM13,23H14V24H13zM17,23H18V24H17zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM24,23H25V24H24zM25,23H26V24H25zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM8,24H9V25H8zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM18,24H19V25H18zM19,24H20V25H19zM20,24H21V25H20zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM3,25H4V26H3zM6,25H7V26H6zM12,25H13V26H12zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM18,25H19V26H18zM20,25H21V26H20zM21,25H22V26H21zM22,25H23V26H22zM24,25H25V26H24zM25,25H26V26H25zM29,25H30V26H29zM30,25H31V26H30zM33,25H34V26H33zM2,26H3V27H2zM5,26H6V27H5zM8,26H9V27H8zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM15,26H16V27H15zM17,26H18V27H17zM19,26H20V27H19zM22,26H23V27H22zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM34,26H35V27H34zM10,27H11V28H10zM11,27H12V28H11zM12,27H13V28H12zM17,27H18V28H17zM18,27H19V28H18zM21,27H22V28H21zM23,27H24V28H23zM26,27H27V28H26zM30,27H31V28H30zM31,27H32V28H31zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM15,28H16V29H15zM16,28H17V29H16zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM24,28H25V29H24zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM13,29H14V30H13zM14,29H15V30H14zM18,29H19V30H18zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM16,31H17V32H16zM19,31H20V32H19zM22,31H23V32H22zM29,31H30V32H29zM31,31H32V32H31zM32,31H33V32H32zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM12,32H13V33H12zM13,32H14V33H13zM19,32H20V33H19zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM22,33H23V34H22zM24,33H25V34H24zM26,33H27V34H26zM27,33H28V34H27zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM13,34H14V35H13zM15,34H16V35H15zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM21,34H22V35H21zM23,34H24V35H23zM25,34H26V35H25zM28,34H29V35H28zM30,34H31V35H30zM32,34H33V35H32z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -741,96 +397,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

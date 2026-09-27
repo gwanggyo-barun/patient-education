@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>당뇨 첫 외래 안내 — Gwanggyo Barun Internal Medicine</title>
+  <title>당뇨, 오늘부터 함께 관리합니다 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -21,229 +21,110 @@
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <style>
-    /* Hide decorative bg number — validator-friendly */
-    .slide__bg-num { display: none !important; }
-
-    /* ── Healthicons badge (data-asset SVGs are black → white-on-steel) ──
-       First deck to use the vendored icon library. Steel-blue rounded
-       badge + white glyph keeps icons on-brand regardless of the source
-       SVG's native color. If this reads well, promote to clinic-slides.css. */
-    /* Absolute top-right badge → zero layout height (tiles already fit) */
-    .tile__icon {
-      position: absolute; top: 14px; right: 14px;
-      width: 34px; height: 34px;
-      border-radius: 10px;
-      background: var(--color-steel);
-      display: inline-flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 6px rgba(91,155,213,0.30);
-    }
-    .tile__icon img { width: 21px; height: 21px; filter: brightness(0) invert(1); }
-    /* keep the index label clear of the corner badge */
-    .tile .tile__index { padding-right: 42px; }
-
-    /* Smaller variant for split-statement / compare heads */
-    .icon-badge {
-      width: 40px; height: 40px;
-      border-radius: 11px;
-      background: var(--color-steel);
-      display: inline-flex; align-items: center; justify-content: center;
-      flex: 0 0 auto;
-      box-shadow: 0 2px 6px rgba(91,155,213,0.30);
-    }
-    .icon-badge img { width: 24px; height: 24px; filter: brightness(0) invert(1); }
-    .icon-badge--navy { background: var(--color-navy); box-shadow: 0 2px 6px rgba(0,51,102,0.25); }
-
-    /* alert tiles get a warm-tinted badge instead of steel */
-    .tile--alert .tile__icon { background: #C2410C; box-shadow: 0 2px 6px rgba(194,65,12,0.30); }
-
-    /* statement row with a leading badge */
-    .split-statement-row { display: flex; align-items: flex-start; gap: 14px; }
-    .split-statement-row .icon-badge { margin-top: 2px; }
-
-    /* compare head with a leading badge */
-    .pattern-compare__head { display: flex; align-items: center; gap: 12px; }
-    .pattern-compare__head .icon-badge--white {
-      background: rgba(255,255,255,0.18); box-shadow: none;
-    }
-
-    .tile--visual {
-      padding: 16px;
-      gap: 8px;
-    }
-    .tile--visual .tile__title {
-      font-size: 21px;
-      padding-right: 44px;
-    }
-    .tile--visual .tile__body {
-      font-size: 14px;
-      line-height: 1.36;
-      margin-top: 0;
-    }
-    .tile__visual {
-      height: 66px;
-      border: 1px solid var(--color-border-soft);
-      border-radius: 8px;
-      background: var(--color-canvas-warm);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .tile__visual img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-    .tile__visual--contain img {
-      object-fit: contain;
-      padding: 4px;
-    }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5E-redesign 2026-09-27 (원장님 49113 — HQ3F 방식) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{white-space:nowrap;font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-pillar{justify-content:center}
+ .q-pillar .v2-body{font-size:17px}
+ .q-band{display:flex;flex-direction:column;justify-content:center;padding:8px 26px}
+ .q-band .v2-head{margin-bottom:4px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="당뇨병 신환 첫 외래 안내 — 진단의 의미, 오늘 하는 검사, 함께 관리할 4가지 축, 첫 목표치, 경고 신호까지 (KDA 2023 · ADA 2025)">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/diabetes-first-visit/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "당뇨 첫 외래 안내 — Gwanggyo Barun Internal Medicine", "description": "당뇨병 신환 첫 외래 안내 — 진단의 의미, 오늘 하는 검사, 함께 관리할 4가지 축, 첫 목표치, 경고 신호까지 (KDA 2023 · ADA 2025)", "url": "https://edu.gwanggyobarun.com/decks/endocrine/diabetes-first-visit/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "당뇨, 오늘부터 함께 관리합니다 — 광교바른내과", "description": "당뇨병 신환 첫 외래 안내 — 진단의 의미, 오늘 하는 검사, 함께 관리할 4가지 축, 첫 목표치, 경고 신호까지 (KDA 2023 · ADA 2025)", "url": "https://edu.gwanggyobarun.com/decks/endocrine/diabetes-first-visit/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
@@ -253,602 +134,331 @@
       <p class="slide__subtitle">당뇨병 첫 외래 안내 — 진단의 의미부터 오늘 하는 검사, 우리가 함께 할 일까지</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">First Visit · Diagnosis · Workup · 4 Pillars · Targets · Red Flags</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__source">첫 외래 · 진단의 의미 · 오늘 검사 · 관리 4가지 · 목표치 · 위험 신호</span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — early control matters most
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHY NOW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진단 직후가 가장 중요합니다 — 지금 시작하면 평생이 달라집니다</h2>
-      <p class="slide__subtitle">당화혈색소(HbA1c, 지난 2~3개월 평균 혈당)를 1%만 낮춰도 눈·신장·신경 합병증이 크게 줄어듭니다 — 첫 1~2년 관리가 평생을 좌우</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>37</em>%</div>
-          <div class="pattern-hero-number__caption">HbA1c 1% 감소 시 미세혈관 합병증(눈·신장·신경) 위험 감소 — 진단 초기의 좋은 조절은 시간이 지나도 효과가 남는다는 연구 결과가 있습니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">오늘의 메시지</div>
-          <div class="pattern-hero-number__detail-text">
-            당뇨병은 그 자체보다 합병증이 두려운 병입니다. 그러나 합병증은 <strong>예방 가능</strong>합니다. 진단은 끝이 아니라 관리의 시작점이며, 가장 효과가 큰 시점이 바로 지금입니다. 약·식사·운동·검사 네 가지를 함께 맞춰가면 합병증 없이 평생 지낼 수 있습니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — UKPDS 35 (BMJ 2000) · UKPDS 80 legacy effect (NEJM 2008)</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — what the diagnosis means
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>WHAT IT MEANS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">당뇨병 진단이 의미하는 것</h2>
-      <p class="slide__subtitle">혈당을 낮추는 인슐린이 잘 듣지 않고(저항성), 만드는 양도 줄어든 상태 — 둘 다 관리할 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <div class="split-statement-row">
-            <div class="icon-badge"><img data-asset="hi-filled-pancreas" src="../../../shared/assets/healthicons/filled/body/pancreas.svg" alt="췌장"></div>
-            <p class="pattern-split__statement">혈당이 만성적으로 높아진 상태 — 핵심은 <em>인슐린 저항성</em>과 <em>인슐린 분비 감소</em>가 함께 일어난다는 점입니다.</p>
-          </div>
-          <p class="pattern-split__supporting">
-            내장지방이 늘면 간·근육·지방이 인슐린에 둔감해집니다(저항성). 췌장은 이를 메우려 인슐린을 더 짜내다 점차 지칩니다. 그래서 당뇨병은 "의지가 약해서" 생기는 병이 아니라 <strong>체질·유전·생활이 겹친 대사질환</strong>입니다. 다행히 두 기전 모두 약과 생활습관으로 되돌리거나 늦출 수 있습니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">인슐린 저항성</div>
-            <div class="pattern-split__metric-value">간·근육·지방</div>
-            <div class="pattern-split__metric-detail">체중 감소·운동으로 가장 잘 개선되는 부분입니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">베타세포 기능</div>
-            <div class="pattern-split__metric-value">진단 시 ≈ 50%</div>
-            <div class="pattern-split__metric-detail">조기에 부담을 덜어주면 남은 기능을 오래 지킬 수 있습니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — DeFronzo Ominous Octet (Diabetes 2009) · 대한당뇨병학회 진료지침 2023</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 2×2 — first-visit baseline workup
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>TODAY'S WORKUP</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 첫 외래에서 하는 검사 — 출발점을 확인합니다</h2>
-      <p class="slide__subtitle">지금의 혈당 수준과 이미 시작된 합병증이 있는지 한 번에 점검합니다 (일부는 채혈·예약으로 진행)</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-blood-drop" src="../../../shared/assets/healthicons/filled/body/blood-drop.svg" alt="혈액 한 방울"></div>
-          <div class="tile__index">검사 · 01</div>
-          <div class="tile__title">혈당 · 당화혈색소(HbA1c)</div>
-          <div class="tile__body">공복혈당 + 최근 2~3개월 평균인 HbA1c로 현재 조절 수준과 첫 목표치를 정합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-heart-organ" src="../../../shared/assets/healthicons/filled/body/heart-organ.svg" alt="심장"></div>
-          <div class="tile__index">검사 · 02</div>
-          <div class="tile__title">혈압 · 지질(콜레스테롤)</div>
-          <div class="tile__body">당뇨는 혈관병입니다. 혈압·나쁜 콜레스테롤(LDL)을 함께 관리해야 심근경색·뇌졸중을 막습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" alt="콩팥"></div>
-          <div class="tile__index">검사 · 03</div>
-          <div class="tile__title">신장 — 소변알부민 · eGFR</div>
-          <div class="tile__body">콩팥 합병증은 초기에 증상이 없습니다. 소변검사(uACR, 소변 속 단백)와 혈액검사(eGFR, 콩팥 거르는 기능)로 가장 먼저 신호를 잡습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-eye" src="../../../shared/assets/healthicons/filled/body/eye.svg" alt="눈 — 안저검사"></div>
-          <div class="tile__index">검사 · 04</div>
-          <div class="tile__title">눈(안저) · 발 검진</div>
-          <div class="tile__body">진단 시 안저검사 1회 + 발 감각·맥박 확인. 망막·신경 합병증 조기 발견용입니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KDA 2023 초기 평가 권고 · ADA Standards of Care 2025 §3·§4</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 2×2 — the 4 pillars we manage together
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>4 PILLARS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">함께 관리할 4가지 축 — 혼자 하지 않습니다</h2>
-      <p class="slide__subtitle">네 가지가 서로 맞물려야 혈당이 안정됩니다. 한 번에 다 바꾸지 않고 하나씩 같이 만들어갑니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--visual">
-          <div class="tile__icon"><img data-asset="hi-filled-nutrition" src="../../../shared/assets/healthicons/filled/nutrition/nutrition.svg" alt="영양"></div>
-          <div class="tile__index">PILLAR · 01</div>
-          <div class="tile__title">식사 — 접시법</div>
-          <figure class="ai-visual tile__visual">
-            <img src="../../../shared/assets/generated/diabetes-first-visit-plate-method-20260529.jpg" alt="당뇨 접시법을 설명하는 균형 식판 이미지">
-          </figure>
-          <div class="tile__body">½ 채소, ¼ 단백질, ¼ 통곡물. 굶지 않고 균형을 맞추는 것이 핵심입니다.</div>
-        </div>
-        <div class="tile tile--visual">
-          <div class="tile__icon"><img data-asset="hi-filled-exercise" src="../../../shared/assets/healthicons/filled/exercise/exercise.svg" alt="운동"></div>
-          <div class="tile__index">PILLAR · 02</div>
-          <div class="tile__title">운동 — 주 150분</div>
-          <figure class="ai-visual tile__visual">
-            <img src="../../../shared/assets/generated/diabetes-first-visit-after-meal-walk-20260529.jpg" alt="식후 걷기 운동을 설명하는 이미지">
-          </figure>
-          <div class="tile__body">빠르게 걷기 등 중강도 유산소 + 주 2회 근력. 식후 10분 걷기부터 시작합니다.</div>
-        </div>
-        <div class="tile tile--visual">
-          <div class="tile__icon"><img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" alt="약"></div>
-          <div class="tile__index">PILLAR · 03</div>
-          <div class="tile__title">약물 — 부담 없이 시작</div>
-          <figure class="ai-visual tile__visual">
-            <img src="../../../shared/assets/generated/diabetes-first-visit-medication-20260529.jpg" alt="당뇨 약물 치료를 설명하는 알약 이미지">
-          </figure>
-          <div class="tile__body">대부분 메트포민으로 시작합니다. 동반질환이 있으면 장기 보호 약도 함께 정합니다.</div>
-        </div>
-        <div class="tile tile--visual">
-          <div class="tile__icon"><img data-asset="hi-filled-diabetes-measure" src="../../../shared/assets/healthicons/filled/devices/diabetes-measure.svg" alt="혈당 측정"></div>
-          <div class="tile__index">PILLAR · 04</div>
-          <div class="tile__title">자가측정 — 내 패턴 알기</div>
-          <figure class="ai-visual tile__visual">
-            <img src="../../../shared/assets/generated/diabetes-first-visit-glucose-pattern-20260529.jpg" alt="혈당 패턴을 함께 확인하는 상담 이미지">
-          </figure>
-          <div class="tile__body">음식·운동·약의 효과를 기록으로 확인합니다. 다음 진료 때 흐름을 함께 봅니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KDA 2023 · ADA/EASD Consensus 2022 (생활습관 + 약물 병행)</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · ASYMMETRIC SPLIT — starting medication (metformin)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>MEDICATION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">약물의 시작 — 메트포민, 걱정보다 안전합니다</h2>
-      <p class="slide__subtitle">40년 이상 검증된 1차 약. 저혈당·체중 증가가 거의 없고, 서서히 늘려 부작용을 줄입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <div class="split-statement-row">
-            <div class="icon-badge"><img data-asset="hi-filled-pill-1" src="../../../shared/assets/healthicons/filled/medications/pill-1.svg" alt="알약"></div>
-            <p class="pattern-split__statement">메트포민(Metformin)은 간에서 당이 과하게 만들어지는 것을 줄이고 인슐린 감수성을 높이는 <em>모든 환자의 1차 약물</em>입니다.</p>
-          </div>
-          <p class="pattern-split__supporting">
-            500mg 1회로 시작해 1~2주마다 천천히 늘립니다. 속이 불편할 수 있어 <strong>식사와 함께</strong> 복용하고 서서히 증량하면 대부분 적응합니다. 임의로 끊지 말고, 속쓰림·설사가 심하면 줄이거나 천천히 녹는 형태(서방형)로 바꿀 수 있으니 알려주세요. 콩팥 기능이 많이 떨어졌거나(eGFR 30 미만) 조영제 검사 전후에는 잠시 중단합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">HbA1c 감소</div>
-            <div class="pattern-split__metric-value">1.0 ~ 1.5 %</div>
-            <div class="pattern-split__metric-detail">체중 중립 · 저혈당 거의 없음.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">동반질환 시</div>
-            <div class="pattern-split__metric-value">심장·콩팥 보호약</div>
-            <div class="pattern-split__metric-detail">심장·콩팥을 함께 보호하는 비교적 새로운 당뇨약(SGLT2 억제제·GLP-1 계열)을 처음부터 같이 쓰기도 합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — UKPDS 34 (Lancet 1998) · KDA 2023 · ADA/EASD 2022</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · COMPARISON — diet DO vs DON'T
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>EVERYDAY DIET</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">식사 — 무엇을 더하고 무엇을 줄일까</h2>
-      <p class="slide__subtitle">완벽한 식단이 아니라 매 끼의 작은 선택이 쌓입니다 — 진단 직후부터 시작하면 가장 효과적</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            <img data-asset="hi-filled-vegetables" src="../../../shared/assets/healthicons/filled/nutrition/vegetables.svg" style="width:22px;height:22px;filter:brightness(0) invert(1)" alt="채소">
-            늘리기 — 혈당을 안정시키는 선택
-          </div>
-          <ul class="compare-col__list">
-            <li><strong>접시법</strong> — ½ 채소, ¼ 단백질, ¼ 통곡물</li>
-            <li><strong>채소 먼저</strong> 먹기 — 식후 혈당 상승 완화</li>
-            <li><strong>식이섬유 25g/일</strong> — 채소·통곡물·콩</li>
-            <li><strong>물·무가당 음료</strong>로 갈증 해결</li>
-            <li><strong>일정한 식사 시간</strong> — 거르지 않기</li>
-            <li><strong>식후 10분 걷기</strong> — 가장 쉬운 혈당 관리</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">—</span>
-            <img data-asset="hi-filled-unhealthy-food" src="../../../shared/assets/healthicons/filled/nutrition/unhealthy-food.svg" style="width:22px;height:22px;filter:brightness(0) invert(1)" alt="고열량·고지방 식품">
-            줄이기 — 혈당을 급등시키는 선택
-          </div>
-          <ul class="compare-col__list">
-            <li><strong>정제 탄수화물</strong> — 흰밥·흰빵·국수 과다</li>
-            <li><strong>가당 음료·주스</strong> — 콜라·믹스커피</li>
-            <li><strong>야식·폭식</strong> — 식후 혈당 급등</li>
-            <li><strong>국물·젓갈 과다</strong> — 혈압까지 악화</li>
-            <li><strong>과음</strong> — 저혈당·간 부담</li>
-            <li><strong>과일주스·말린 과일</strong> — 농축된 당 주의</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KDA 2023 영양요법 · ADA Nutrition Consensus 2019</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · DENSITY GRID 2×2 — my first targets
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>MY TARGETS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">나의 첫 목표치 — 숫자로 함께 확인합니다</h2>
-      <p class="slide__subtitle">목표는 사람마다 다릅니다. 나이·동반질환·저혈당 위험을 고려해 함께 조정합니다 (일반 성인 기준)</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--accent">
-          <div class="tile__icon"><img data-asset="hi-filled-blood-cells" src="../../../shared/assets/healthicons/filled/body/blood-cells.svg" alt="혈구"></div>
-          <div class="tile__index">TARGET · 01</div>
-          <div class="tile__title">당화혈색소 HbA1c — 대부분 6.5% 이하</div>
-          <div class="tile__body">나이가 많거나 저혈당 위험이 크면 7~8%로 함께 조정합니다. 내 목표치는 진료 때 정합니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__icon"><img data-asset="hi-filled-blood-drop" src="../../../shared/assets/healthicons/filled/body/blood-drop.svg" alt="혈액 한 방울"></div>
-          <div class="tile__index">TARGET · 02</div>
-          <div class="tile__title">공복혈당 80 ~ 130 · 식후 &lt; 180</div>
-          <div class="tile__body">매 끼니가 아니라 평균과 패턴이 중요합니다. 자가측정으로 흐름을 봅니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-blood-pressure_monitor" src="../../../shared/assets/healthicons/filled/devices/blood-pressure_monitor.svg" alt="혈압계"></div>
-          <div class="tile__index">TARGET · 03</div>
-          <div class="tile__title">혈압 &lt; 130/80 mmHg</div>
-          <div class="tile__body">당뇨 환자는 대부분 130/80 미만이 목표입니다(위험인자 없으면 다소 완화). 가정혈압을 같은 시간에 재 보세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-heart-organ" src="../../../shared/assets/healthicons/filled/body/heart-organ.svg" alt="LDL 콜레스테롤 목표"></div>
-          <div class="tile__index">TARGET · 04</div>
-          <div class="tile__title">LDL 콜레스테롤 &lt; 100 (고위험 &lt; 70)</div>
-          <div class="tile__body">혈관 보호를 위해 스타틴을 함께 쓰는 경우가 많습니다. 목표는 위험도에 따라 정합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KDA 2023 목표치 · ADA Standards of Care 2025 §6·§10</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · DENSITY GRID 2×2 — self-monitoring & lifestyle start
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>FOLLOW-UP</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">앞으로의 일정 — 함께 가는 길</h2>
-      <p class="slide__subtitle">오늘이 끝이 아닙니다. 아래 흐름으로 함께 점검하며 약과 목표치를 맞춰갑니다 (개인별로 조정)</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-calendar" src="../../../shared/assets/healthicons/filled/objects/calendar.svg" alt="달력"></div>
-          <div class="tile__index">STEP · 01 · 오늘</div>
-          <div class="tile__title">첫 평가 · 약 시작</div>
-          <div class="tile__body">기본 검사로 출발점 확인 + 메트포민 시작 + 자가측정 방법 안내. 궁금증은 무엇이든 물어보세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-pill-1" src="../../../shared/assets/healthicons/filled/medications/pill-1.svg" alt="알약"></div>
-          <div class="tile__index">STEP · 02 · 1~2주 후</div>
-          <div class="tile__title">약 적응 · 증량 점검</div>
-          <div class="tile__body">속이 불편하지 않은지 확인하고 필요하면 용량을 올립니다. 자가측정 기록을 함께 봅니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-diabetes-measure" src="../../../shared/assets/healthicons/filled/devices/diabetes-measure.svg" alt="혈당 측정"></div>
-          <div class="tile__index">STEP · 03 · 약 3개월 후</div>
-          <div class="tile__title">HbA1c 재검 · 목표 확인</div>
-          <div class="tile__body">첫 목표 달성 여부를 확인하고 약·생활을 조정합니다. 안정되면 6개월 간격으로 늘립니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-eye" src="../../../shared/assets/healthicons/filled/body/eye.svg" alt="정기 합병증 검진"></div>
-          <div class="tile__index">STEP · 04 · 이후 정기</div>
-          <div class="tile__title">합병증 정기 검진</div>
-          <div class="tile__body">연 1회 안저·신장(소변·혈액)·발 검진으로 합병증을 조기에 잡습니다. 예방접종도 함께 챙깁니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KDA 2023 추적 관찰·합병증 선별 권고 · ADA SoC 2025 §4·§6</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · DENSITY GRID 3×2 — red flags
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>RED FLAGS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">이럴 땐 바로 연락 또는 내원하세요</h2>
-      <p class="slide__subtitle">초기에는 드물지만, 아래 신호는 급성 합병증의 경고입니다 — 망설이지 말고 알려주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--alert">
-          <div class="tile__icon"><img data-asset="hi-filled-alert" src="../../../shared/assets/healthicons/filled/symbols/alert.svg" alt="저혈당 경고"></div>
-          <div class="tile__index">URGENT · 01</div>
-          <div class="tile__title">저혈당 (혈당 &lt; 70)</div>
-          <div class="tile__body">식은땀·떨림·어지러움이 오면 바로 당분 섭취 — 주스 반 컵·사탕 3~4개·설탕 1큰술(약 15g). 15분 뒤 다시 측정. 의식이 흐리면 먹이지 말고 119.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__icon"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" alt="고혈당 응급 경고"></div>
-          <div class="tile__index">URGENT · 02</div>
-          <div class="tile__title">심한 고혈당 · 의식 변화</div>
-          <div class="tile__body">구토·복통·가쁜 숨·의식 변화가 있으면 혈당과 관계없이 즉시 응급실. 증상 없이 혈당만 높게(300 이상) 지속돼도 빨리 연락하세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-eye" src="../../../shared/assets/healthicons/filled/body/eye.svg" alt="시력 변화 관찰"></div>
-          <div class="tile__index">WATCH · 03</div>
-          <div class="tile__title">갑작스러운 시력 변화</div>
-          <div class="tile__body">물체가 일그러지거나 검은 점·시야 가림 — 눈 속 출혈이 의심되니 빠른 안과 평가가 필요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-foot" src="../../../shared/assets/healthicons/filled/body/foot.svg" alt="발 상처 관찰"></div>
-          <div class="tile__index">WATCH · 04</div>
-          <div class="tile__title">발 상처가 안 나음</div>
-          <div class="tile__body">상처가 2주 이상 지속되거나 붓고 열나고 냄새 — 당뇨발 진행, 빨리 보여 주세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-heart-organ" src="../../../shared/assets/healthicons/filled/body/heart-organ.svg" alt="흉통 관찰"></div>
-          <div class="tile__index">WATCH · 05</div>
-          <div class="tile__title">가슴 답답함 · 호흡곤란</div>
-          <div class="tile__body">활동 시 가슴 압박감·식은땀 — 당뇨는 무증상 심근경색이 흔해 늦지 않게 평가합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__icon"><img data-asset="hi-filled-kidneys" src="../../../shared/assets/healthicons/filled/body/kidneys.svg" alt="콩팥"></div>
-          <div class="tile__index">WATCH · 06</div>
-          <div class="tile__title">부종 · 거품뇨 · 소변량 감소</div>
-          <div class="tile__body">다리 부종·거품뇨 — 콩팥 합병증 신호. uACR·eGFR를 다시 확인합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KDA 2023 급성 합병증 · ADA SoC 2025 · JBDS-IP DKA 2023</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — after the first visit
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION CHECKLIST</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">첫 외래 후 실천 7가지</h2>
-      <p class="slide__subtitle">오늘 집에 가서 시작할 일입니다. 완벽하지 않아도 됩니다 — 꾸준함이 곧 치료입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="checklist-item">
-          <div class="checklist-item__num">01</div>
-          <div class="checklist-item__text"><strong>약 매일 같은 시간</strong> — 메트포민은 식사와 함께. 임의 중단 금지, 불편하면 알려주기.</div>
-        </div>
-        <div class="checklist-item">
-          <div class="checklist-item__num">02</div>
-          <div class="checklist-item__text"><strong>혈당 자가측정 + 기록</strong> — 공복·식후 2시간 번갈아, 진료 때 함께 검토.</div>
-        </div>
-        <div class="checklist-item">
-          <div class="checklist-item__num">03</div>
-          <div class="checklist-item__text"><strong>접시법 + 식후 10분 걷기</strong> — 가장 쉬운 두 가지부터 습관으로.</div>
-        </div>
-        <div class="checklist-item">
-          <div class="checklist-item__num">04</div>
-          <div class="checklist-item__text"><strong>매일 발 살피기</strong> — 상처·물집·색 변화 확인. 맨발·뜨거운 물 주의.</div>
-        </div>
-        <div class="checklist-item">
-          <div class="checklist-item__num">05</div>
-          <div class="checklist-item__text"><strong>HbA1c 3개월 뒤 재검</strong> — 첫 목표 달성 여부를 함께 확인하고 조정.</div>
-        </div>
-        <div class="checklist-item">
-          <div class="checklist-item__num">06</div>
-          <div class="checklist-item__text"><strong>금연·절주 + 예방접종</strong> — 합병증을 줄이는 가장 확실한 투자.</div>
-        </div>
-        <div class="checklist-item">
-          <div class="checklist-item__num">07</div>
-          <div class="checklist-item__text"><strong>다음 예약 지키기</strong> — 궁금증·부작용은 메모해 오면 진료가 빨라집니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KDA 2023 · ADA Living Standards 2025</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — contact + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter"><strong>광교바른내과</strong> · 일반내과 · 5대암 검진</div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진단은 끝이 아니라 시작입니다 — 함께 가면 됩니다</h2>
-      <p class="slide__subtitle">궁금한 점은 언제든 물어보세요. 첫 1~2년의 관리가 평생 합병증 위험을 결정합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__label">광교바른내과 진료 안내</div>
-          <div class="contact-card__main">평일 08:30~18:30 · 토 08:30~13:30</div>
-          <div class="contact-card__addr">경기 용인 수지구 광교중앙로 298, 4층</div>
-          <div class="contact-card__phone">☏ 031-893-4560</div>
-          <div class="contact-card__meta">소화기내과 · 일반내과 · 5대암 검진</div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 왜 지금인가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진단 직후가 가장 중요합니다</h2>
+  <p class="v2-sub">당화혈색소(지난 2~3개월 평균 혈당)를 1%만 낮춰도 눈·콩팥·신경 합병증이 크게 줄어듭니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:1152px;height:160px">
+    <div class="q-stat__num">37<span>%</span></div><div class="q-stat__lab">합병증 위험 감소</div><div class="q-stat__cap">당화혈색소를 1% 낮췄을 때 눈·콩팥·신경 합병증(미세혈관 합병증) 위험이 줄어든 정도</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24ZM26 13C26 11.8954 25.1046 11 24 11C22.8954 11 22 11.8954 22 13L22 27C22 28.1046 22.8954 29 24 29C25.1046 29 26 28.1046 26 27L26 13ZM24 33C25.1046 33 26 33.8954 26 35C26 36.1046 25.1046 37 24 37C22.8954 37 22 36.1046 22 35C22 33.8954 22.8954 33 24 33Z" fill="currentColor"/>
+</svg></div><b>오늘의 메시지</b></div><div class="v2-body">당뇨병은 합병증이 무서운 병이지만, 합병증은 <b>예방할 수 있습니다</b>. 진단은 끝이 아니라 관리의 시작입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>처음 1~2년이 오래 갑니다</b></div><div class="v2-body">진단 초기에 잘 조절하면 그 효과가 오래 남는다는 연구 결과가 있습니다. 약·식사·운동·검사 네 가지를 함께 맞추면 합병증 위험을 크게 줄일&nbsp;수&nbsp;있습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 당화혈색소는 검사 결과지에 ‘HbA1c’로 적혀 있습니다.</span><span class="v2-src">근거 · 영국 UKPDS 35(BMJ 2000) · UKPDS 80 장기 추적(NEJM 2008)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 진단의 의미</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">당뇨병 진단이 뜻하는 것</h2>
+  <p class="v2-sub">인슐린이 잘 듣지 않고(저항성), 만드는 양도 줄어든 상태 — 둘 다 관리할 수 있습니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">인슐린 저항성</div><div class="v2-vs__lead">간·근육·지방이 인슐린에 둔감해집니다.</div><ul class="v2-vs__list"><li>내장지방이 늘면 인슐린이 잘 듣지 않습니다</li><li>췌장은 이를 메우려 인슐린을 더 짜냅니다</li><li>체중 감소·운동으로 가장 잘 좋아지는 부분입니다</li><li>의지가 약해서 생기는 병이 아닙니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">인슐린 분비 감소</div><div class="v2-vs__lead">진단 때 췌장 세포 기능이 약 50% 줄어 있는 경우가 많습니다.</div><ul class="v2-vs__list"><li>인슐린을 만드는 세포가 점점 지칩니다</li><li>유전적 소인과 생활습관이 겹쳐 생기는 대사질환입니다</li><li>일찍 부담을 덜어 주면 남은 기능을 오래 지킬 수 있습니다</li><li>두 문제 모두 약과 생활습관으로 늦추거나 되돌릴 수 있습니다</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 가족 중 당뇨병이 있다면 진료 때 알려 주세요 — 관리 계획에 도움이 됩니다.</span><span class="v2-src">근거 · Diabetes 2009 · 대한당뇨병학회 진료지침 2023</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 오늘 하는 검사</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">첫 외래에서 출발점을 확인합니다</h2>
+  <p class="v2-sub">지금의 혈당 수준과 이미 시작된 합병증이 있는지 한 번에 점검합니다(일부는 채혈·예약으로 진행)</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M23.9672 22.147C26.2072 22.1452 27.9659 20.4676 27.9641 18.3342C27.9625 16.3533 23.9585 11.4804 23.9585 11.4804C23.9585 11.4804 19.9624 16.2075 19.9641 18.3408C19.9659 20.4741 21.7272 22.1489 23.9672 22.147Z" fill="currentColor"/>
+<path d="M23.982 40.0825C25.0866 40.0816 25.9813 39.1854 25.9804 38.0808C25.9795 36.9763 25.0833 36.0816 23.9788 36.0825C22.8742 36.0834 21.9795 36.9795 21.9804 38.0841C21.9813 39.1887 22.8775 40.0834 23.982 40.0825Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.9524 4.09151C11.2955 4.09286 9.95348 5.43711 9.95484 7.09396L9.97531 32.094C9.97667 33.7508 11.3209 35.0929 12.9778 35.0915L17.7278 35.0876C17.8033 35.0875 17.8772 35.0808 17.949 35.0679C17.9587 35.0662 17.9683 35.0643 17.9779 35.0624L17.9853 44.0874L29.9853 44.0776L29.9779 35.0526C30.0586 35.0689 30.1422 35.0774 30.2278 35.0774L34.9778 35.0735C36.6346 35.0721 37.9767 33.7279 37.9753 32.071L37.9548 7.07103C37.9535 5.41418 36.6092 4.07213 34.9524 4.07349L12.9524 4.09151ZM32.9556 8.0751L14.9556 8.08984L14.9704 26.0898L32.9704 26.0751L32.9556 8.0751ZM15.9734 29.589C15.9729 29.0367 16.4203 28.5886 16.9726 28.5882L20.9724 28.5849C21.5247 28.5845 21.9728 29.0318 21.9732 29.5841C21.9737 30.1364 21.5264 30.5845 20.9741 30.5849L16.9742 30.5882C16.4219 30.5886 15.9738 30.1413 15.9734 29.589ZM26.9726 28.58C26.4203 28.5805 25.9729 29.0285 25.9734 29.5808C25.9738 30.1331 26.4219 30.5805 26.9742 30.58L30.9741 30.5767C31.5264 30.5763 31.9737 30.1282 31.9732 29.5759C31.9728 29.0236 31.5247 28.5763 30.9724 28.5767L26.9726 28.58ZM27.9762 33.0792L19.9762 33.0858L19.9836 42.0858L27.9836 42.0792L27.9762 33.0792Z" fill="currentColor"/>
+</svg></div><b>혈당 · 당화혈색소</b></div><div class="v2-body">공복혈당과 최근 2~3개월 평균인 당화혈색소로 지금 조절 수준과 첫 목표치를&nbsp;정합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18.7241C6 12.6409 10.0359 7 15.5625 7C19.3976 7 22.2434 9.53088 24 13.1211C25.7565 9.53111 28.6022 7 32.4375 7C37.9647 7 42 12.6419 42 18.7241C42 19.8027 41.8765 20.8554 41.6499 21.8791C39.7247 19.5122 36.7889 18 33.5 18C27.701 18 23 22.701 23 28.5C23 32.6537 25.4118 36.244 28.9115 37.947C26.1234 39.9082 24 41 24 41C24 41 6 32.3045 6 18.7241Z" fill="currentColor"/>
+<path d="M36 29C36 30.1046 35.1046 31 34 31C32.8954 31 32 30.1046 32 29C32 28.8812 32.0104 28.7649 32.0302 28.6518L29.6108 26.2324L31.0251 24.8182L33.324 27.1171C33.5351 27.0413 33.7627 27 34 27C35.1046 27 36 27.8954 36 29Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 28.5C42 33.1944 38.1944 37 33.5 37C28.8056 37 25 33.1944 25 28.5C25 23.8056 28.8056 20 33.5 20C38.1944 20 42 23.8056 42 28.5ZM40 28.5C40 32.0899 37.0899 35 33.5 35C29.9101 35 27 32.0899 27 28.5C27 24.9101 29.9101 22 33.5 22C37.0899 22 40 24.9101 40 28.5Z" fill="currentColor"/>
+</svg></div><b>혈압 · 콜레스테롤</b></div><div class="v2-body">당뇨는 혈관병입니다. 혈압과 나쁜 콜레스테롤(LDL)을 함께 관리해야 심근경색·뇌졸중을 막습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.548 30.7532C1.68377 26.171 5.97137 10.7042 13.513 8.14865C16.6416 7.08852 20.0938 10.6056 20.0717 12.7893C20.0621 13.7335 19.5749 14.6541 19.0673 15.6132C18.4009 16.8725 17.6993 18.1982 17.9972 19.7308C18.5221 22.4309 19.11 26.9868 17.5952 29.1494C16.0803 31.312 14.5569 31.6005 12.548 30.7532Z" fill="currentColor"/>
+<path d="M34.3473 8.14865C41.889 10.7042 46.1766 26.171 35.3124 30.7532C33.3034 31.6005 31.78 31.312 30.2652 29.1494C28.7504 26.9868 29.3383 22.4309 29.8631 19.7308C30.161 18.1982 29.4595 16.8725 28.793 15.6132C28.2854 14.6541 27.7982 13.7335 27.7887 12.7893C27.7666 10.6056 31.2188 7.08852 34.3473 8.14865Z" fill="currentColor"/>
+<path d="M28.6181 22.7796C28.6867 23.7773 28.6873 23.7772 28.6879 23.7772L28.6891 23.7771L28.6913 23.7769L28.6952 23.7766L28.7007 23.7762L28.7036 23.7759C28.7019 23.7761 28.6934 23.7771 28.6791 23.7794C28.6504 23.784 28.6001 23.7936 28.5357 23.8118C28.4046 23.849 28.2318 23.917 28.0626 24.0376C27.7729 24.2439 27.3469 24.7021 27.3469 25.8583V40.3244C27.3469 40.3245 27.3469 40.3245 26.3469 40.3245C25.3469 40.3245 25.3469 40.3241 25.3469 40.324V25.8583C25.3469 24.0919 26.0565 23.0108 26.9024 22.4084C27.301 22.1246 27.696 21.971 27.9907 21.8875C28.1393 21.8454 28.2665 21.82 28.3619 21.8047C28.4097 21.797 28.4501 21.7918 28.4816 21.7883C28.4974 21.7865 28.5111 21.7851 28.5224 21.7841L28.5377 21.7828L28.5441 21.7824L28.5469 21.7822L28.5482 21.7821C28.5489 21.782 28.5495 21.782 28.6181 22.7796Z" fill="currentColor"/>
+<path d="M19.2423 22.7796C19.1737 23.7773 19.173 23.7772 19.1724 23.7772L19.1713 23.7771L19.169 23.7769L19.1652 23.7766L19.1596 23.7762C19.1577 23.776 19.1567 23.7759 19.1565 23.7759C19.1582 23.7761 19.167 23.7771 19.1812 23.7794C19.21 23.784 19.2603 23.7936 19.3246 23.8118C19.4557 23.849 19.6285 23.917 19.7978 24.0376C20.0875 24.2439 20.5135 24.7021 20.5135 25.8583V40.3244C20.5135 40.3245 20.5135 40.3245 21.5135 40.3245C22.5135 40.3245 22.5135 40.3241 22.5135 40.324V25.8583C22.5135 24.0919 21.8038 23.0108 20.9579 22.4084C20.5594 22.1246 20.1644 21.971 19.8696 21.8875C19.7211 21.8454 19.5939 21.82 19.4985 21.8047C19.4506 21.797 19.4103 21.7918 19.3787 21.7883C19.3629 21.7865 19.3493 21.7851 19.3379 21.7841L19.3226 21.7828L19.3163 21.7824L19.3135 21.7822L19.3121 21.7821C19.3115 21.782 19.3108 21.782 19.2423 22.7796Z" fill="currentColor"/>
+</svg></div><b>콩팥 — 소변·혈액검사</b></div><div class="v2-body">콩팥 합병증은 초기에 증상이 없습니다. 소변 속 단백(알부민)과 콩팥 거르는 기능을 재서 가장 먼저 신호를 잡습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.69497 22.1883C8.57391 20.0613 11.4255 17.6246 15.086 15.9661C13.1678 18.0932 12 20.9102 12 24C12 27.0898 13.1678 29.9068 15.086 32.0339C11.4255 30.3754 8.57391 27.9387 6.69497 25.8117C5.76834 24.7628 5.76834 23.2372 6.69497 22.1883ZM5.19605 20.8642C8.60396 17.0063 15.0813 12.0927 23.8218 12.0013C23.8811 12.0004 23.9405 12 24 12L24.0291 12L24.0697 12C32.9356 12 39.5032 16.97 42.9433 20.8642C44.538 22.6695 44.538 25.3305 42.9433 27.1358C39.5032 31.03 32.9356 36 24.0697 36L24.0291 36L24 36C23.9405 36 23.8811 35.9996 23.8218 35.9987C15.0813 35.9073 8.60396 30.9937 5.19606 27.1358C3.60132 25.3305 3.60131 22.6695 5.19605 20.8642ZM24.0284 14C23.9677 14.0002 23.9071 14.0005 23.8466 14.0012C18.3945 14.0831 14 18.5284 14 24C14 29.4716 18.3945 33.9169 23.8466 33.9988C23.9071 33.9995 23.9677 33.9998 24.0284 34C29.5382 33.9847 34 29.5134 34 24C34 18.4866 29.5382 14.0153 24.0284 14ZM36 24C36 27.1409 34.7933 29.9999 32.8182 32.1388C36.5918 30.4794 39.5254 27.984 41.4443 25.8117C42.371 24.7628 42.371 23.2372 41.4443 22.1883C39.5254 20.016 36.5918 17.5206 32.8182 15.8612C34.7933 18.0001 36 20.8591 36 24ZM24.0696 30C27.3833 30 30.0696 27.3137 30.0696 24C30.0696 23.0737 29.8597 22.1965 29.4849 21.4132C29.1229 21.7757 28.6225 22 28.0697 22C26.9651 22 26.0697 21.1046 26.0697 20C26.0697 19.4472 26.294 18.9468 26.6565 18.5848C25.8732 18.2099 24.9959 18 24.0696 18C20.7559 18 18.0696 20.6863 18.0696 24C18.0696 27.3137 20.7559 30 24.0696 30Z" fill="currentColor"/>
+</svg></div><b>눈 · 발 검진</b></div><div class="v2-body">진단 때 눈 속(안저) 검사를 한 번 하고, 발 감각·맥박을 확인합니다. 망막·신경 합병증을 일찍 찾습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 검사 결과는 다음 진료 때 함께 보며 나의 목표치를 정합니다.</span><span class="v2-src">근거 · 대한당뇨병학회 2023 초기 평가 권고 · 미국당뇨병학회(ADA) 진료 표준 2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 관리의 네 축</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">함께 관리할 네 가지 — 혼자 하지 않습니다</h2>
+  <p class="v2-sub">네 가지가 맞물려야 혈당이 안정됩니다. 한 번에 다 바꾸지 않고 하나씩 같이 만들어 갑니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:270px;height:108px">
+    <img class="v2-fig__img q-fig__img" style="width:270px;height:108px" src="../../../shared/assets/generated/diabetes-first-visit-plate-method-20260529.jpg" alt="채소·단백질·통곡물을 나눠 담은 접시">
+  </div>
+  <div class="v2-panel q-grid q-pillar" style="left:64px;top:326px;width:270px;height:280px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.9645 9.16263C21.8055 8.05919 20.1386 7.51048 17.9672 8.04371C17.5014 7.41474 16.8092 6.77117 15.8899 6.37651C14.5542 5.8031 12.8769 5.815 10.9856 6.90161C9.0077 7.82463 8.05482 9.18247 7.79227 10.6063C7.61382 11.5741 7.76893 12.4919 8.02385 13.2165C6.34565 14.6843 5.84115 16.36 6.08212 17.9391C6.29052 19.3048 7.03706 20.472 7.76902 21.2642C7.64293 21.8429 7.62641 22.4092 7.73113 22.9423C8.04139 22.7211 8.18808 22.6205 8.52484 22.4831C9.07459 22.2587 9.52484 22.2333 10.0248 22.2333C11.5998 22.2333 12.511 22.4158 14.0129 22.8327C14.8986 23.0786 15.6186 23.3808 16.2798 23.7481C16.335 23.7787 16.3898 23.8098 16.4442 23.8414L16.7282 23.7186C17.0853 23.5642 17.4796 23.5173 17.863 23.5834L21.3761 24.1897C21.3246 23.916 21.2818 23.6403 21.2475 23.3687C21.1866 22.8868 21.1523 22.4175 21.1433 21.9934C21.115 20.6556 21.3701 19.3269 21.892 18.0946C22.4139 16.8622 23.1908 15.7541 24.1717 14.8428C24.4339 14.5992 24.7092 14.3711 24.9959 14.1595C25.2316 13.9856 25.475 13.8227 25.7254 13.6715C25.8698 13.5842 26.0165 13.5008 26.1654 13.4214C25.7816 13.0105 25.2933 12.6855 24.7267 12.4487C24.4961 11.3958 23.966 10.1161 22.9645 9.16263ZM13.1391 10.2801C13.6341 10.0356 14.2339 10.2383 14.4787 10.7328L15.2704 12.3325L16.8829 10.6061C17.2597 10.2027 17.8925 10.1808 18.2963 10.5572C18.7001 10.9336 18.722 11.5657 18.3452 11.9691L16.2179 14.2467L17.0206 15.8684L18.352 14.6585C18.7605 14.2872 19.393 14.3171 19.7646 14.7252C20.1362 15.1333 20.1063 15.7651 19.6978 16.1364L17.9427 17.7314L18.9987 19.865C19.2435 20.3596 19.0406 20.9587 18.5455 21.2032C18.0505 21.4478 17.4507 21.2451 17.2059 20.7505L16.1106 18.5376L14.1466 18.9347C13.6053 19.0441 13.0777 18.6945 12.9681 18.1537C12.8586 17.613 13.2086 17.0859 13.7499 16.9765L15.1935 16.6846L14.3982 15.0778L11.359 15.5351C10.8128 15.6173 10.3034 15.2416 10.2212 14.696C10.1389 14.1505 10.515 13.6416 11.0611 13.5594L13.4674 13.1974L12.6859 11.6184C12.4411 11.1238 12.644 10.5246 13.1391 10.2801Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.1363 24.6951C23.9386 24.6562 23.7677 24.623 23.6285 24.5961C23.4483 24.1014 23.3154 23.5918 23.2338 23.0733L23.2187 23.0121C23.1167 22.5961 23.0488 22.2287 23.0429 21.9532C23.0202 20.883 23.2243 19.82 23.6418 18.8341C24.0594 17.8482 24.6809 16.9617 25.4656 16.2327C25.5272 16.1755 25.5897 16.1255 25.653 16.0818C27.6684 14.2827 30.4862 13.969 32.6678 15.7554C32.6426 13.3026 33.6388 10.907 36.0482 9.51735L36.8927 10.9786C34.852 12.1556 34.0931 14.3584 34.431 16.7135C39.086 15.1835 42.709 19.5865 41.3494 24.6555C40.9207 26.2537 40.0143 27.6088 38.8016 28.6326C38.6055 28.5638 38.402 28.4927 38.1925 28.42C36.3851 27.7926 34.1097 27.0345 32.2913 26.5327C30.5241 26.0452 28.2486 25.5404 26.4286 25.1598C25.5156 24.9689 24.7119 24.8082 24.1363 24.6951ZM37.5538 19.9861C38.096 19.8811 38.6207 20.2352 38.7258 20.7768C39.0901 22.6554 38.4106 24.5203 36.9228 25.7254C36.4938 26.0729 35.8641 26.0072 35.5162 25.5786C35.1684 25.1501 35.2342 24.521 35.6632 24.1735C36.5773 23.4331 36.9861 22.311 36.7623 21.1568C36.6572 20.6152 37.0116 20.091 37.5538 19.9861Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.2356 41.9984C13.2354 41.8312 15.0922 40.9782 16.2365 39.7291C16.6912 40.3391 17.4545 40.6927 18.2797 40.5629C19.1258 40.4298 20.1689 40.255 21.3779 40.0319V35.3473H23.6072V39.6011C26.4277 39.0317 29.8589 38.2479 33.6392 37.1948V34.2338H35.8685V36.5536C37.3921 36.1013 38.9612 35.6065 40.5601 35.0658C42.48 34.4166 42.48 31.8239 40.5601 31.1747C36.4875 29.7976 32.6087 28.7178 29.1805 27.8817V34.2338L26.9512 34.2338L26.9512 27.3568C23.2611 26.5188 20.241 25.9862 18.2797 25.6776C17.4544 25.5478 16.6911 25.9015 16.2365 26.5115C15.0922 25.2624 13.2353 24.4094 10.2356 24.2423C9.62092 24.208 9.11458 24.7124 9.12342 25.3273C9.14947 27.1402 9.25973 28.5801 9.63771 29.7034C8.41338 30.167 7.25745 31.1032 6.2022 32.512C5.9326 32.8719 5.9326 33.3687 6.2022 33.7286C7.24888 35.126 8.39461 36.0584 9.60789 36.5259C9.28585 37.6167 9.15814 39.0452 9.12544 40.9104C9.11467 41.5253 9.62092 42.0326 10.2356 41.9984ZM12.4346 31.0259L10.4279 31.7858C9.87237 31.9962 9.24764 32.4074 8.58864 33.1203C9.24067 33.8257 9.85918 34.2358 10.4101 34.448L12.3275 35.1868L11.7462 37.1558C11.5747 37.7367 11.4602 38.5299 11.3992 39.6442C13.5484 39.3131 14.4568 38.5174 14.9264 37.792C15.6014 36.7492 15.8044 35.2273 15.8044 33.1203C15.8044 31.0133 15.6014 29.4915 14.9264 28.4487C14.4563 27.7226 13.5467 26.926 11.393 26.5955C11.4498 27.6754 11.5623 28.4334 11.7508 28.9938L12.4346 31.0259Z" fill="currentColor"/>
+</svg></div><b>식사 — 접시법</b></div><div class="v2-body">½ 채소, ¼ 단백질, ¼ 통곡물. 굶지 않고 균형을 맞추는 것이 핵심입니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:358px;top:206px;width:270px;height:108px">
+    <img class="v2-fig__img q-fig__img" style="width:270px;height:108px" src="../../../shared/assets/generated/diabetes-first-visit-after-meal-walk-20260529.jpg" alt="식사 뒤 공원을 걷는 사람">
+  </div>
+  <div class="v2-panel q-grid q-pillar" style="left:358px;top:326px;width:270px;height:280px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M31.2502 8C31.2502 10.2091 29.4594 12 27.2502 12C25.0411 12 23.2502 10.2091 23.2502 8C23.2502 5.79086 25.0411 4 27.2502 4C29.4594 4 31.2502 5.79086 31.2502 8Z" fill="currentColor"/>
+<path d="M25.6928 28.3968L30.8857 33.5207C31.0849 33.7172 31.2405 33.9533 31.3427 34.2137L34.112 41.2693C34.5155 42.2975 34.0091 43.4582 32.9809 43.8617C31.9527 44.2653 30.7921 43.7589 30.3885 42.7307L27.7743 36.07L18.8455 27.2598C18.4087 26.8288 18.1939 26.2211 18.2629 25.6113L18.9781 19.2919C17.2542 21.0046 15.9244 23.4143 14.9053 26.607C14.5695 27.6592 13.4442 28.24 12.3919 27.9041C11.3396 27.5682 10.7589 26.4429 11.0948 25.3907C12.965 19.5312 16.0701 15.1454 21.2797 13.1341L21.3034 13.1251C22.6301 12.6321 24.0105 12.6718 25.2398 13.3074C26.4214 13.9182 27.2624 14.9731 27.8131 16.1554C28.0449 16.6532 28.2594 17.1184 28.4607 17.5551C28.9485 18.6129 29.3594 19.5041 29.7535 20.2873C30.3073 21.3877 30.7523 22.1161 31.1921 22.6285C31.5998 23.1034 32.0055 23.3952 32.5225 23.597C33.0782 23.8141 33.8572 23.9636 35.06 23.9997C36.1641 24.0328 37.0323 24.9547 36.9992 26.0588C36.966 27.1628 36.0442 28.031 34.9401 27.9979C33.4952 27.9546 32.2121 27.77 31.0673 27.323C29.8838 26.8608 28.9506 26.1584 28.157 25.2339C27.6565 24.6508 27.2176 23.9859 26.8062 23.2621L25.6928 28.3968Z" fill="currentColor"/>
+<path d="M18.2627 30.2198L21.5778 33.3994L20.0524 38.547C19.9343 38.9453 19.6952 39.297 19.3681 39.5531L14.2335 43.5755C13.364 44.2566 12.1069 44.1039 11.4257 43.2344C10.7445 42.3649 10.8972 41.1078 11.7668 40.4266L16.3987 36.7981L17.7944 32.0881L18.2627 30.2198Z" fill="currentColor"/>
+</svg></div><b>운동 — 주 150분</b></div><div class="v2-body">빠르게 걷기 같은 중강도 운동 + 주 2회 근력 운동. 식후 10분 걷기부터 시작합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:652px;top:206px;width:270px;height:108px">
+    <img class="v2-fig__img q-fig__img" style="width:270px;height:108px" src="../../../shared/assets/generated/diabetes-first-visit-medication-20260529.jpg" alt="알약과 약병, 심장·콩팥을 옅게 그린 그림">
+  </div>
+  <div class="v2-panel q-grid q-pillar" style="left:652px;top:326px;width:270px;height:280px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>약 — 부담 없이 시작</b></div><div class="v2-body">대부분 메트포민으로 시작합니다. 다른 질환이 있으면 오래 지켜 주는 약도 함께 정합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:946px;top:206px;width:270px;height:108px">
+    <img class="v2-fig__img q-fig__img" style="width:270px;height:108px" src="../../../shared/assets/generated/diabetes-first-visit-glucose-pattern-20260529.jpg" alt="태블릿의 혈당 곡선을 함께 짚어 보는 손">
+  </div>
+  <div class="v2-panel q-grid q-pillar v2-panel--accent" style="left:946px;top:326px;width:270px;height:280px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M23.9672 22.147C26.2072 22.1452 27.9659 20.4676 27.9641 18.3342C27.9625 16.3533 23.9585 11.4804 23.9585 11.4804C23.9585 11.4804 19.9624 16.2075 19.9641 18.3408C19.9659 20.4741 21.7272 22.1489 23.9672 22.147Z" fill="currentColor"/>
+<path d="M23.982 40.0825C25.0866 40.0816 25.9813 39.1854 25.9804 38.0808C25.9795 36.9763 25.0833 36.0816 23.9788 36.0825C22.8742 36.0834 21.9795 36.9795 21.9804 38.0841C21.9813 39.1887 22.8775 40.0834 23.982 40.0825Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.9524 4.09151C11.2955 4.09286 9.95348 5.43711 9.95484 7.09396L9.97531 32.094C9.97667 33.7508 11.3209 35.0929 12.9778 35.0915L17.7278 35.0876C17.8033 35.0875 17.8772 35.0808 17.949 35.0679C17.9587 35.0662 17.9683 35.0643 17.9779 35.0624L17.9853 44.0874L29.9853 44.0776L29.9779 35.0526C30.0586 35.0689 30.1422 35.0774 30.2278 35.0774L34.9778 35.0735C36.6346 35.0721 37.9767 33.7279 37.9753 32.071L37.9548 7.07103C37.9535 5.41418 36.6092 4.07213 34.9524 4.07349L12.9524 4.09151ZM32.9556 8.0751L14.9556 8.08984L14.9704 26.0898L32.9704 26.0751L32.9556 8.0751ZM15.9734 29.589C15.9729 29.0367 16.4203 28.5886 16.9726 28.5882L20.9724 28.5849C21.5247 28.5845 21.9728 29.0318 21.9732 29.5841C21.9737 30.1364 21.5264 30.5845 20.9741 30.5849L16.9742 30.5882C16.4219 30.5886 15.9738 30.1413 15.9734 29.589ZM26.9726 28.58C26.4203 28.5805 25.9729 29.0285 25.9734 29.5808C25.9738 30.1331 26.4219 30.5805 26.9742 30.58L30.9741 30.5767C31.5264 30.5763 31.9737 30.1282 31.9732 29.5759C31.9728 29.0236 31.5247 28.5763 30.9724 28.5767L26.9726 28.58ZM27.9762 33.0792L19.9762 33.0858L19.9836 42.0858L27.9836 42.0792L27.9762 33.0792Z" fill="currentColor"/>
+</svg></div><b>혈당 재기 — 내 흐름&nbsp;알기</b></div><div class="v2-body">음식·운동·약의 효과를 기록으로 확인하고 다음 진료 때 함께 봅니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 네 가지 중 가장 쉬운 것 하나부터 이번 주에 시작해 보세요.</span><span class="v2-src">근거 · 대한당뇨병학회 2023 · 미국·유럽당뇨병학회 합의 2022(생활습관 + 약 병행)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 첫 약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">첫 약 메트포민 — 걱정보다 안전합니다</h2>
+  <p class="v2-sub">40년 넘게 검증된 첫 약입니다. 저혈당·체중 증가가 거의 없고, 천천히 늘려 불편을 줄입니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">어떤 약인가요</div>
+    <div class="v2-body">간에서 당이 과하게 만들어지는 것을 줄이고 인슐린이 잘 듣게 합니다. 당화혈색소를 약&nbsp;1.0~1.5% 낮춥니다.</div>
+    <div class="q-card__k">체중 중립 · 저혈당 거의 없음</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">어떻게 먹나요</div>
+    <div class="v2-body">500mg 한 번으로 시작해 1~2주마다 천천히 늘립니다. 속이 불편할 수 있어 식사와 함께 먹습니다. 설사·속쓰림이 심하면 천천히 녹는 약(서방형)으로 바꿀 수 있습니다.</div>
+    <div class="q-card__k">스스로 끊지 말고 알려 주세요</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">심장·콩팥이 걱정되면</div>
+    <div class="v2-body">심장·콩팥을 함께 지키는 비교적 새로운 당뇨약(SGLT2 억제제·GLP-1 계열)을 처음부터 같이 쓰기도 합니다. 콩팥 기능이 많이 떨어졌거나 조영제 검사 전후에는 메트포민을 잠시 멈춥니다.</div>
+    <div class="q-card__k">다른 질환에 맞춰 함께 정함</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약을 먹고 속이 불편하면 참지 말고 다음 진료 전에라도 연락 주세요.</span><span class="v2-src">근거 · 영국 UKPDS 34(Lancet 1998) · 대한당뇨병학회 2023 · 미국·유럽당뇨병학회 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 매일의 식사</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">무엇을 더하고 무엇을 줄일까요</h2>
+  <p class="v2-sub">완벽한 식단이 아니라 매 끼니의 작은 선택이 쌓입니다 — 진단 직후부터 시작하면 가장 효과적</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">늘리기</div><div class="v2-vs__lead">혈당을 안정시키는 선택</div><ul class="v2-vs__list"><li>접시법 — ½ 채소, ¼ 단백질, ¼ 통곡물</li><li>채소 먼저 먹기 — 식후 혈당이 덜 오름</li><li>식이섬유 하루 25g — 채소·통곡물·콩</li><li>물·무가당 음료로 갈증 해결</li><li>식사 시간 일정하게 · 식후 10분 걷기</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">줄이기</div><div class="v2-vs__lead">혈당을 급하게 올리는 선택</div><ul class="v2-vs__list"><li>흰밥·흰빵·국수를 많이 먹는 것</li><li>콜라·믹스커피 같은 단 음료 · 과일주스·말린 과일</li><li>야식·폭식 — 식후 혈당 급등</li><li>국물·젓갈 과다 — 혈압까지 나빠짐</li><li>과음 — 저혈당·간 부담</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 끼니를 거르면 다음 끼니에 혈당이 더 크게 오릅니다 — 거르지 마세요.</span><span class="v2-src">근거 · 대한당뇨병학회 2023 영양요법 · 미국당뇨병학회 영양 합의 2019</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 나의 첫 목표치</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">숫자로 함께 확인하는 첫 목표치</h2>
+  <p class="v2-sub">목표는 사람마다 다릅니다 — 나이·다른 질환·저혈당 위험을 보고 함께 조정합니다(일반 성인 기준)</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:1152px"><colgroup><col style="width:300px"><col style="width:330px"><col style="width:522px"></colgroup><thead><tr><th>항목</th><th>목표</th><th>이렇게 봅니다</th></tr></thead><tbody><tr><th style="height:84px">당화혈색소</th><td style="height:84px">대부분 6.5% 이하</td><td style="height:84px">나이가 많거나 저혈당 위험이 크면 7~8%로 조정합니다. 내 목표는 진료 때&nbsp;정합니다</td></tr><tr><th style="height:84px">혈당</th><td style="height:84px">공복 80~130 · 식후 180 미만</td><td style="height:84px">한 끼보다 평균과 흐름이 중요합니다. 혈당 기록으로 봅니다</td></tr><tr><th style="height:84px">혈압</th><td style="height:84px">130/80 mmHg 미만</td><td style="height:84px">위험 요인이 없으면 다소 완화합니다. 가정혈압을 같은 시간에 재 보세요</td></tr><tr><th style="height:84px">LDL 콜레스테롤</th><td style="height:84px">100 미만 · 고위험 70 미만 · 심근경색·뇌졸중을 겪었으면 55 미만</td><td style="height:84px">혈관을 지키려 콜레스테롤약(스타틴)을 함께 쓰는 경우가 많습니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 목표치를 휴대폰 메모에 적어 두고 검사 결과와 비교해 보세요.</span><span class="v2-src">근거 · 대한당뇨병학회 2023 목표치 · 한국지질·동맥경화학회 2025 · 미국당뇨병학회 2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 앞으로의 일정</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘이 끝이 아닙니다 — 함께 가는 길</h2>
+  <p class="v2-sub">아래 흐름으로 함께 점검하며 약과 목표치를 맞춰 갑니다(개인별로 조정)</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:267px;height:290px">
+    <div class="q-step__n">1</div><div class="q-step__h">첫 평가 · 약 시작</div><div class="q-step__tag">오늘</div><div class="v2-body">기본 검사로 출발점을 확인하고 메트포민을 시작합니다. 혈당 재는 법을 안내합니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:359px;top:206px;width:267px;height:290px">
+    <div class="q-step__n">2</div><div class="q-step__h">약 적응 점검</div><div class="q-step__tag">1~2주 뒤</div><div class="v2-body">속이 불편하지 않은지 보고 필요하면 양을 늘립니다. 혈당 기록을 함께 봅니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:654px;top:206px;width:267px;height:290px">
+    <div class="q-step__n">3</div><div class="q-step__h">당화혈색소 재검</div><div class="q-step__tag">약 3개월 뒤</div><div class="v2-body">첫 목표를 이뤘는지 보고 약·생활을 조정합니다. 안정되면 6개월 간격으로 늘립니다.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:949px;top:206px;width:267px;height:290px">
+    <div class="q-step__n">4</div><div class="q-step__h">합병증 정기 검진</div><div class="q-step__tag">이후 해마다</div><div class="v2-body">눈 속·콩팥(소변·혈액)·발 검진으로 합병증을 일찍 잡고, 예방접종도 챙깁니다.</div>
+  </div>
+  <div class="q-arrow" style="left:337px;top:242px"></div>
+  <div class="q-arrow" style="left:632px;top:242px"></div>
+  <div class="q-arrow" style="left:927px;top:242px"></div>
+  <div class="v2-panel q-band v2-panel--accent" style="left:64px;top:512px;width:1152px;height:94px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>혼자 하지 않습니다</b></div><div class="v2-body">혈당 기록과 검사 결과를 진료 때 함께 보며 약과 목표치를 맞춰 갑니다. 궁금한 점은 무엇이든 물어보세요.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 궁금한 점이 생기면 메모해 두었다가 다음 진료 때 가져오세요.</span><span class="v2-src">근거 · 대한당뇨병학회 2023 추적·합병증 선별 권고 · 미국당뇨병학회 2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 위험 신호</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이럴 땐 바로 연락하거나 오세요</h2>
+  <p class="v2-sub">처음에는 드물지만 급성 합병증의 경고입니다 — 망설이지 말고 알려 주세요</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>저혈당(70 미만)</b></div><div class="v2-body">식은땀·떨림이면 바로 당분 약 15g(주스 반 컵·사탕 3~4개·설탕 1큰술), 15분 뒤 다시 잽니다. 의식이 흐리면 먹이지 말고 119.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M32 12.5C32 13.0523 32.4477 13.5 33 13.5C33.5523 13.5 34 13.0523 34 12.5V11C34 10.4477 33.5523 10 33 10C32.4477 10 32 10.4477 32 11V12.5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 16C4 14.8954 4.89543 14 6 14H28C28.7403 14 29.3866 14.4022 29.7324 15H30V19H31V18H32V17C32 16.4477 32.4477 16 33 16C33.5523 16 34 16.4477 34 17V18H35V19H35.718C36.4722 19 37.1987 19.2841 37.7529 19.7956L43.0348 24.6713C43.6501 25.2392 44 26.0384 44 26.8757V35H38.874C38.4299 36.7252 36.8638 38 35 38C33.1362 38 31.5701 36.7252 31.126 35H15.874C15.4299 36.7252 13.8638 38 12 38C10.1362 38 8.57006 36.7252 8.12602 35H4V16ZM42 28L30 28V33H31.126C31.5701 31.2748 33.1362 30 35 30C36.8638 30 38.4299 31.2748 38.874 33H42V28ZM30 26L41.5257 26L36.3963 21.2652C36.2116 21.0947 35.9694 21 35.718 21H30V26ZM12 36C13.1046 36 14 35.1046 14 34C14 32.8954 13.1046 32 12 32C10.8954 32 10 32.8954 10 34C10 35.1046 10.8954 36 12 36ZM37 34C37 35.1046 36.1046 36 35 36C33.8954 36 33 35.1046 33 34C33 32.8954 33.8954 32 35 32C36.1046 32 37 32.8954 37 34ZM13 22H16V19H18V22H21V24H18V27H16V24H13V22Z" fill="currentColor"/>
+<path d="M36.5 17C36.5 16.4477 36.9477 16 37.5 16H39C39.5523 16 40 16.4477 40 17C40 17.5523 39.5523 18 39 18H37.5C36.9477 18 36.5 17.5523 36.5 17Z" fill="currentColor"/>
+<path d="M35.8285 12.759C35.4193 13.1298 35.3881 13.7622 35.759 14.1715C36.1298 14.5807 36.7622 14.6119 37.1715 14.241L38.0857 13.4126C38.4949 13.0417 38.5261 12.4093 38.1552 12.0001C37.7844 11.5908 37.152 11.5597 36.7427 11.9306L35.8285 12.759Z" fill="currentColor"/>
+</svg></div><b>심한 고혈당 · 의식 변화</b></div><div class="v2-body">구토·복통·가쁜 숨·의식 변화는 혈당과 관계없이 즉시 응급실. 증상 없이 300 이상이 계속돼도&nbsp;연락하세요.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:848px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.69497 22.1883C8.57391 20.0613 11.4255 17.6246 15.086 15.9661C13.1678 18.0932 12 20.9102 12 24C12 27.0898 13.1678 29.9068 15.086 32.0339C11.4255 30.3754 8.57391 27.9387 6.69497 25.8117C5.76834 24.7628 5.76834 23.2372 6.69497 22.1883ZM5.19605 20.8642C8.60396 17.0063 15.0813 12.0927 23.8218 12.0013C23.8811 12.0004 23.9405 12 24 12L24.0291 12L24.0697 12C32.9356 12 39.5032 16.97 42.9433 20.8642C44.538 22.6695 44.538 25.3305 42.9433 27.1358C39.5032 31.03 32.9356 36 24.0697 36L24.0291 36L24 36C23.9405 36 23.8811 35.9996 23.8218 35.9987C15.0813 35.9073 8.60396 30.9937 5.19606 27.1358C3.60132 25.3305 3.60131 22.6695 5.19605 20.8642ZM24.0284 14C23.9677 14.0002 23.9071 14.0005 23.8466 14.0012C18.3945 14.0831 14 18.5284 14 24C14 29.4716 18.3945 33.9169 23.8466 33.9988C23.9071 33.9995 23.9677 33.9998 24.0284 34C29.5382 33.9847 34 29.5134 34 24C34 18.4866 29.5382 14.0153 24.0284 14ZM36 24C36 27.1409 34.7933 29.9999 32.8182 32.1388C36.5918 30.4794 39.5254 27.984 41.4443 25.8117C42.371 24.7628 42.371 23.2372 41.4443 22.1883C39.5254 20.016 36.5918 17.5206 32.8182 15.8612C34.7933 18.0001 36 20.8591 36 24ZM24.0696 30C27.3833 30 30.0696 27.3137 30.0696 24C30.0696 23.0737 29.8597 22.1965 29.4849 21.4132C29.1229 21.7757 28.6225 22 28.0697 22C26.9651 22 26.0697 21.1046 26.0697 20C26.0697 19.4472 26.294 18.9468 26.6565 18.5848C25.8732 18.2099 24.9959 18 24.0696 18C20.7559 18 18.0696 20.6863 18.0696 24C18.0696 27.3137 20.7559 30 24.0696 30Z" fill="currentColor"/>
+</svg></div><b>갑작스러운 시력 변화</b></div><div class="v2-body">물체가 일그러지거나 검은 점·시야 가림이 생기면 눈 속 출혈이 의심돼 빨리 안과 평가가 필요합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M40.451 10C40.451 9.44772 40.0033 9 39.451 9H28.2354C27.6831 9 27.2354 9.44772 27.2354 10V12.0274L26.2378 22.6806C25.3206 24.4368 23.619 25.9762 21.6285 27.2595C19.5934 28.5717 17.3493 29.5567 15.5822 30.1985C14.2292 30.6898 12.895 31.3559 11.7265 32.3067L11.0565 32.8519H7.3336C6.91473 32.8519 6.54024 33.1129 6.39534 33.5059C6.10757 34.2864 5.83523 35.546 6.12145 36.6876C6.27116 37.2848 6.58568 37.8903 7.16803 38.3387C7.74925 38.7861 8.49724 39 9.37277 39C11.9363 39 13.3002 38.8299 14.1364 38.5641C14.5712 38.4259 14.8613 38.2632 15.0935 38.1003C15.1388 38.1264 15.1786 38.152 15.2164 38.1771C15.2357 38.1899 15.2588 38.2059 15.2855 38.2244C15.4201 38.3175 15.6451 38.4731 15.9192 38.5926C16.5814 38.8813 17.5467 39 19.5687 39C21.5337 39 22.8251 38.7627 23.7961 38.3882C24.1043 38.2694 24.3916 38.1518 24.6644 38.0401C25.6091 37.6533 26.3804 37.3376 27.2481 37.2861C28.0377 37.2392 28.9399 37.204 29.7461 37.2166C30.5945 37.2298 31.2015 37.2961 31.4829 37.3915C31.7869 37.4946 32.0545 37.6261 32.3416 37.7833C32.4217 37.8272 32.5108 37.8775 32.6058 37.9311C32.8217 38.053 33.0683 38.1922 33.3078 38.3116C34.0819 38.6976 34.9985 39 36.3922 39C37.548 39 39.1634 38.7119 40.522 37.7906C41.9354 36.8323 43 35.2301 43 32.8148C43 31.0926 42.4725 29.3501 41.8731 27.9395C41.0777 26.0676 40.451 24.2388 40.451 22.3949V10ZM36.5 25C36.5 24.4477 36.0523 24 35.5 24C34.9493 24 34.5025 24.4452 34.5 24.9954L34.4998 25.0067C34.4994 25.0196 34.4986 25.0425 34.4968 25.0745C34.4931 25.1385 34.4853 25.2382 34.4691 25.365C34.4364 25.6202 34.3704 25.9767 34.2388 26.3713C33.9749 27.1632 33.468 28.053 32.4855 28.6425C32.012 28.9267 31.8584 29.5409 32.1425 30.0145C32.4267 30.4881 33.0409 30.6416 33.5145 30.3575C35.0321 29.447 35.7752 28.0868 36.1362 27.0037C36.3172 26.4608 36.4074 25.9735 36.4528 25.6194C36.4756 25.4415 36.4874 25.295 36.4935 25.1892C36.4965 25.1362 36.4982 25.0932 36.499 25.0614C36.4995 25.0454 36.4997 25.0323 36.4999 25.022L36.5 25.0088L36.5 25.0038L36.5 25C36.5 24.9996 36.5 25 35.5 25H36.5Z" fill="currentColor"/>
+</svg></div><b>낫지 않는 발 상처</b></div><div class="v2-body">2주 넘게 안 낫거나 붓고 열나고 냄새가 나면 당뇨발 진행 — 빨리 보여 주세요.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><b>가슴 답답함 · 숨참</b></div><div class="v2-body">활동할 때 가슴 압박감·식은땀 — 당뇨는 증상이 약한 심근경색이 흔해 늦지 않게 평가합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:848px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.548 30.7532C1.68377 26.171 5.97137 10.7042 13.513 8.14865C16.6416 7.08852 20.0938 10.6056 20.0717 12.7893C20.0621 13.7335 19.5749 14.6541 19.0673 15.6132C18.4009 16.8725 17.6993 18.1982 17.9972 19.7308C18.5221 22.4309 19.11 26.9868 17.5952 29.1494C16.0803 31.312 14.5569 31.6005 12.548 30.7532Z" fill="currentColor"/>
+<path d="M34.3473 8.14865C41.889 10.7042 46.1766 26.171 35.3124 30.7532C33.3034 31.6005 31.78 31.312 30.2652 29.1494C28.7504 26.9868 29.3383 22.4309 29.8631 19.7308C30.161 18.1982 29.4595 16.8725 28.793 15.6132C28.2854 14.6541 27.7982 13.7335 27.7887 12.7893C27.7666 10.6056 31.2188 7.08852 34.3473 8.14865Z" fill="currentColor"/>
+<path d="M28.6181 22.7796C28.6867 23.7773 28.6873 23.7772 28.6879 23.7772L28.6891 23.7771L28.6913 23.7769L28.6952 23.7766L28.7007 23.7762L28.7036 23.7759C28.7019 23.7761 28.6934 23.7771 28.6791 23.7794C28.6504 23.784 28.6001 23.7936 28.5357 23.8118C28.4046 23.849 28.2318 23.917 28.0626 24.0376C27.7729 24.2439 27.3469 24.7021 27.3469 25.8583V40.3244C27.3469 40.3245 27.3469 40.3245 26.3469 40.3245C25.3469 40.3245 25.3469 40.3241 25.3469 40.324V25.8583C25.3469 24.0919 26.0565 23.0108 26.9024 22.4084C27.301 22.1246 27.696 21.971 27.9907 21.8875C28.1393 21.8454 28.2665 21.82 28.3619 21.8047C28.4097 21.797 28.4501 21.7918 28.4816 21.7883C28.4974 21.7865 28.5111 21.7851 28.5224 21.7841L28.5377 21.7828L28.5441 21.7824L28.5469 21.7822L28.5482 21.7821C28.5489 21.782 28.5495 21.782 28.6181 22.7796Z" fill="currentColor"/>
+<path d="M19.2423 22.7796C19.1737 23.7773 19.173 23.7772 19.1724 23.7772L19.1713 23.7771L19.169 23.7769L19.1652 23.7766L19.1596 23.7762C19.1577 23.776 19.1567 23.7759 19.1565 23.7759C19.1582 23.7761 19.167 23.7771 19.1812 23.7794C19.21 23.784 19.2603 23.7936 19.3246 23.8118C19.4557 23.849 19.6285 23.917 19.7978 24.0376C20.0875 24.2439 20.5135 24.7021 20.5135 25.8583V40.3244C20.5135 40.3245 20.5135 40.3245 21.5135 40.3245C22.5135 40.3245 22.5135 40.3241 22.5135 40.324V25.8583C22.5135 24.0919 21.8038 23.0108 20.9579 22.4084C20.5594 22.1246 20.1644 21.971 19.8696 21.8875C19.7211 21.8454 19.5939 21.82 19.4985 21.8047C19.4506 21.797 19.4103 21.7918 19.3787 21.7883C19.3629 21.7865 19.3493 21.7851 19.3379 21.7841L19.3226 21.7828L19.3163 21.7824L19.3135 21.7822L19.3121 21.7821C19.3115 21.782 19.3108 21.782 19.2423 22.7796Z" fill="currentColor"/>
+</svg></div><b>붓기 · 거품뇨 · 소변 감소</b></div><div class="v2-body">다리 붓기·거품 소변은 콩팥 합병증 신호입니다. 소변·혈액검사로 다시 확인합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 저혈당에 대비해 사탕이나 주스를 가방에 챙겨 다니세요.</span><span class="v2-src">근거 · 대한당뇨병학회 2023 급성 합병증 · 미국당뇨병학회 2025 · 영국 JBDS-IP 2023</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 집에 가서</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">첫 외래 뒤 실천할 일곱 가지</h2>
+  <p class="v2-sub">완벽하지 않아도 됩니다 — 꾸준함이 곧 치료입니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">약은 매일 같은 시간에 — 메트포민은 식사와 함께, 불편하면 알려 주기</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">혈당 재고 기록 — 공복·식후 2시간을 번갈아</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">접시법 + 식후 10분 걷기부터 습관으로</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">매일 발 살피기 — 맨발·뜨거운 물 주의</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">3개월 뒤 당화혈색소 재검으로 첫 목표 확인</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">금연·절주 + 예방접종 챙기기</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">다음 예약 지키기 — 궁금증·부작용은 메모해 오기</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 오늘 한 가지만 골라 시작해도 충분합니다.</span><span class="v2-src">근거 · 대한당뇨병학회 2023 · 미국당뇨병학회(ADA) 진료 표준 2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진단은 끝이 아니라 시작입니다</h2>
+  <p class="v2-sub">궁금한 점은 언제든 물어보세요 — QR을 스캔하면 같은 자료를 휴대폰에서 다시 볼 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">당뇨병을 처음 진단받은 분과 가족을 위한 첫 외래 안내자료입니다. 목표치와 약은 담당 의사와 상의해&nbsp;정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">대한당뇨병학회(KDA) 진료지침 2023 · 미국당뇨병학회(ADA) 진료 표준 2025 · 미국·유럽당뇨병학회 합의 2022 · 영국 UKPDS · 한국지질·동맥경화학회 2025</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM13,2H14V3H13zM15,2H16V3H15zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM22,2H23V3H22zM26,2H27V3H26zM27,2H28V3H27zM28,2H29V3H28zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM21,3H22V4H21zM22,3H23V4H22zM23,3H24V4H23zM24,3H25V4H24zM25,3H26V4H25zM26,3H27V4H26zM27,3H28V4H27zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM17,4H18V5H17zM20,4H21V5H20zM22,4H23V5H22zM24,4H25V5H24zM25,4H26V5H25zM26,4H27V5H26zM27,4H28V5H27zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM13,5H14V6H13zM14,5H15V6H14zM16,5H17V6H16zM17,5H18V6H17zM19,5H20V6H19zM21,5H22V6H21zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM12,6H13V7H12zM13,6H14V7H13zM16,6H17V7H16zM17,6H18V7H17zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM23,6H24V7H23zM26,6H27V7H26zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM14,7H15V8H14zM15,7H16V8H15zM18,7H19V8H18zM21,7H22V8H21zM22,7H23V8H22zM23,7H24V8H23zM26,7H27V8H26zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM14,9H15V10H14zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM25,9H26V10H25zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM14,10H15V11H14zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM21,10H22V11H21zM22,10H23V11H22zM28,10H29V11H28zM32,10H33V11H32zM35,10H36V11H35zM37,10H38V11H37zM38,10H39V11H38zM2,11H3V12H2zM4,11H5V12H4zM6,11H7V12H6zM7,11H8V12H7zM9,11H10V12H9zM11,11H12V12H11zM14,11H15V12H14zM17,11H18V12H17zM18,11H19V12H18zM25,11H26V12H25zM26,11H27V12H26zM28,11H29V12H28zM30,11H31V12H30zM31,11H32V12H31zM33,11H34V12H33zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM8,12H9V13H8zM12,12H13V13H12zM13,12H14V13H13zM14,12H15V13H14zM15,12H16V13H15zM16,12H17V13H16zM17,12H18V13H17zM23,12H24V13H23zM24,12H25V13H24zM25,12H26V13H25zM27,12H28V13H27zM30,12H31V13H30zM33,12H34V13H33zM34,12H35V13H34zM35,12H36V13H35zM3,13H4V14H3zM4,13H5V14H4zM6,13H7V14H6zM9,13H10V14H9zM11,13H12V14H11zM13,13H14V14H13zM15,13H16V14H15zM17,13H18V14H17zM20,13H21V14H20zM21,13H22V14H21zM24,13H25V14H24zM26,13H27V14H26zM27,13H28V14H27zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM36,13H37V14H36zM3,14H4V15H3zM5,14H6V15H5zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM13,14H14V15H13zM15,14H16V15H15zM16,14H17V15H16zM18,14H19V15H18zM19,14H20V15H19zM20,14H21V15H20zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM4,15H5V16H4zM5,15H6V16H5zM7,15H8V16H7zM10,15H11V16H10zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM17,15H18V16H17zM18,15H19V16H18zM21,15H22V16H21zM26,15H27V16H26zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM38,15H39V16H38zM3,16H4V17H3zM5,16H6V17H5zM7,16H8V17H7zM8,16H9V17H8zM12,16H13V17H12zM15,16H16V17H15zM16,16H17V17H16zM19,16H20V17H19zM20,16H21V17H20zM21,16H22V17H21zM22,16H23V17H22zM24,16H25V17H24zM27,16H28V17H27zM28,16H29V17H28zM31,16H32V17H31zM34,16H35V17H34zM36,16H37V17H36zM37,16H38V17H37zM2,17H3V18H2zM3,17H4V18H3zM4,17H5V18H4zM5,17H6V18H5zM10,17H11V18H10zM11,17H12V18H11zM13,17H14V18H13zM19,17H20V18H19zM20,17H21V18H20zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM26,17H27V18H26zM30,17H31V18H30zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM3,18H4V19H3zM5,18H6V19H5zM6,18H7V19H6zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM14,18H15V19H14zM15,18H16V19H15zM18,18H19V19H18zM19,18H20V19H19zM20,18H21V19H20zM22,18H23V19H22zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM35,18H36V19H35zM36,18H37V19H36zM38,18H39V19H38zM2,19H3V20H2zM3,19H4V20H3zM5,19H6V20H5zM7,19H8V20H7zM9,19H10V20H9zM11,19H12V20H11zM12,19H13V20H12zM15,19H16V20H15zM18,19H19V20H18zM19,19H20V20H19zM21,19H22V20H21zM22,19H23V20H22zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM32,19H33V20H32zM35,19H36V20H35zM37,19H38V20H37zM38,19H39V20H38zM3,20H4V21H3zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM19,20H20V21H19zM21,20H22V21H21zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM36,20H37V21H36zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM4,21H5V22H4zM6,21H7V22H6zM10,21H11V22H10zM11,21H12V22H11zM13,21H14V22H13zM14,21H15V22H14zM15,21H16V22H15zM16,21H17V22H16zM19,21H20V22H19zM20,21H21V22H20zM21,21H22V22H21zM24,21H25V22H24zM25,21H26V22H25zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM34,21H35V22H34zM35,21H36V22H35zM37,21H38V22H37zM2,22H3V23H2zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM16,22H17V23H16zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM23,22H24V23H23zM25,22H26V23H25zM26,22H27V23H26zM28,22H29V23H28zM31,22H32V23H31zM33,22H34V23H33zM34,22H35V23H34zM38,22H39V23H38zM3,23H4V24H3zM4,23H5V24H4zM5,23H6V24H5zM7,23H8V24H7zM13,23H14V24H13zM14,23H15V24H14zM16,23H17V24H16zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM2,24H3V25H2zM4,24H5V25H4zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM13,24H14V25H13zM15,24H16V25H15zM18,24H19V25H18zM19,24H20V25H19zM22,24H23V25H22zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM30,24H31V25H30zM33,24H34V25H33zM2,25H3V26H2zM3,25H4V26H3zM4,25H5V26H4zM5,25H6V26H5zM6,25H7V26H6zM7,25H8V26H7zM10,25H11V26H10zM12,25H13V26H12zM17,25H18V26H17zM20,25H21V26H20zM21,25H22V26H21zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM27,25H28V26H27zM28,25H29V26H28zM29,25H30V26H29zM31,25H32V26H31zM34,25H35V26H34zM35,25H36V26H35zM36,25H37V26H36zM37,25H38V26H37zM2,26H3V27H2zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM12,26H13V27H12zM13,26H14V27H13zM16,26H17V27H16zM20,26H21V27H20zM22,26H23V27H22zM23,26H24V27H23zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM3,27H4V28H3zM5,27H6V28H5zM7,27H8V28H7zM11,27H12V28H11zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM18,27H19V28H18zM19,27H20V28H19zM20,27H21V28H20zM22,27H23V28H22zM23,27H24V28H23zM26,27H27V28H26zM27,27H28V28H27zM29,27H30V28H29zM30,27H31V28H30zM32,27H33V28H32zM33,27H34V28H33zM34,27H35V28H34zM35,27H36V28H35zM37,27H38V28H37zM38,27H39V28H38zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM8,28H9V29H8zM9,28H10V29H9zM11,28H12V29H11zM13,28H14V29H13zM14,28H15V29H14zM15,28H16V29H15zM17,28H18V29H17zM18,28H19V29H18zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM23,28H24V29H23zM26,28H27V29H26zM27,28H28V29H27zM31,28H32V29H31zM36,28H37V29H36zM37,28H38V29H37zM2,29H3V30H2zM5,29H6V30H5zM6,29H7V30H6zM9,29H10V30H9zM10,29H11V30H10zM11,29H12V30H11zM12,29H13V30H12zM16,29H17V30H16zM18,29H19V30H18zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM28,29H29V30H28zM29,29H30V30H29zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM37,29H38V30H37zM4,30H5V31H4zM5,30H6V31H5zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM11,30H12V31H11zM12,30H13V31H12zM13,30H14V31H13zM14,30H15V31H14zM16,30H17V31H16zM17,30H18V31H17zM20,30H21V31H20zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM27,30H28V31H27zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM17,31H18V32H17zM19,31H20V32H19zM22,31H23V32H22zM24,31H25V32H24zM25,31H26V32H25zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM34,31H35V32H34zM36,31H37V32H36zM38,31H39V32H38zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM13,32H14V33H13zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM19,32H20V33H19zM22,32H23V33H22zM23,32H24V33H23zM26,32H27V33H26zM27,32H28V33H27zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM18,33H19V34H18zM21,33H22V34H21zM24,33H25V34H24zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM12,34H13V35H12zM13,34H14V35H13zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM20,34H21V35H20zM24,34H25V35H24zM26,34H27V35H26zM28,34H29V35H28zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM14,35H15V36H14zM17,35H18V36H17zM19,35H20V36H19zM20,35H21V36H20zM22,35H23V36H22zM24,35H25V36H24zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM36,35H37V36H36zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM13,36H14V37H13zM14,36H15V37H14zM15,36H16V37H15zM18,36H19V37H18zM20,36H21V37H20zM21,36H22V37H21zM22,36H23V37H22zM24,36H25V37H24zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM29,36H30V37H29zM30,36H31V37H30zM31,36H32V37H31zM32,36H33V37H32zM34,36H35V37H34zM35,36H36V37H35zM2,37H3V38H2zM8,37H9V38H8zM12,37H13V38H12zM13,37H14V38H13zM16,37H17V38H16zM18,37H19V38H18zM22,37H23V38H22zM27,37H28V38H27zM28,37H29V38H28zM33,37H34V38H33zM34,37H35V38H34zM35,37H36V38H35zM36,37H37V38H36zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM13,38H14V39H13zM14,38H15V39H14zM15,38H16V39H15zM16,38H17V39H16zM17,38H18V39H17zM19,38H20V39H19zM21,38H22V39H21zM25,38H26V39H25zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM29,38H30V39H29zM31,38H32V39H31zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__label">다시 보기 · 카톡 공유</div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">© 2026 광교바른내과 · 본 자료는 일반 정보 제공 목적이며 개별 진료를 대체하지 않습니다</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

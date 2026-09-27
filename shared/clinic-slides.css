@@ -1562,3 +1562,79 @@ body.presenting .slide.is-active {
 /* Mobile fit-to-width is handled via <meta name="viewport" content="width=1280">
    in each HTML head. Mobile browsers auto-zoom out, pinch-zoom remains active.
    No CSS zoom hack — kept simple and standards-compliant. */
+
+/* ==========================================================================
+   MOBILE FIT — 휴대폰에서도 16:9 슬라이드를 통째로 축소 (MV1 · 2026-09-27 원장님 49200)
+   --------------------------------------------------------------------------
+   viewport 메타(width=1280)를 따르는 브라우저는 이미 통째로 축소한다. 메타를
+   무시하는 인앱 브라우저(안드로이드 WebView 계열)는 360px 폭에 1280px 슬라이드를
+   그대로 놓아 가로로 잘렸다. **터치 기기의 좁은 화면**에서만 덱 전체를 화면 폭에
+   맞게 축소한다(비율 유지 · 핀치 확대 허용 · 발표 모드 제외).
+   · 사다리 20px 단위 — 각 칸 배율 = 칸 하한 폭 ÷ 1280 이라 넘치지 않는다.
+   · PRINT·PDF 무영향: 전부 @media screen 안이다. 빌드 렌더(1320×800, 비터치)도
+     조건에 안 걸린다.
+   ========================================================================== */
+@media screen and (pointer: coarse) and (max-width: 1290px) {
+  html, body { margin: 0; }
+  /* 덱 모양이 둘이다 — v1 은 body > .deck > .slide, v2 는 body > .slide.
+     그래서 body 째로 축소한다. */
+  body:not(.presenting) {
+    zoom: var(--deck-fit, 1);
+    overflow-x: hidden;
+  }
+  body:not(.presenting) .deck {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@media screen and (pointer: coarse) and (max-width: 1290px) { :root { --deck-fit: 0.9922; } }
+@media screen and (pointer: coarse) and (max-width: 1270px) { :root { --deck-fit: 0.9766; } }
+@media screen and (pointer: coarse) and (max-width: 1250px) { :root { --deck-fit: 0.9609; } }
+@media screen and (pointer: coarse) and (max-width: 1230px) { :root { --deck-fit: 0.9453; } }
+@media screen and (pointer: coarse) and (max-width: 1210px) { :root { --deck-fit: 0.9297; } }
+@media screen and (pointer: coarse) and (max-width: 1190px) { :root { --deck-fit: 0.9141; } }
+@media screen and (pointer: coarse) and (max-width: 1170px) { :root { --deck-fit: 0.8984; } }
+@media screen and (pointer: coarse) and (max-width: 1150px) { :root { --deck-fit: 0.8828; } }
+@media screen and (pointer: coarse) and (max-width: 1130px) { :root { --deck-fit: 0.8672; } }
+@media screen and (pointer: coarse) and (max-width: 1110px) { :root { --deck-fit: 0.8516; } }
+@media screen and (pointer: coarse) and (max-width: 1090px) { :root { --deck-fit: 0.8359; } }
+@media screen and (pointer: coarse) and (max-width: 1070px) { :root { --deck-fit: 0.8203; } }
+@media screen and (pointer: coarse) and (max-width: 1050px) { :root { --deck-fit: 0.8047; } }
+@media screen and (pointer: coarse) and (max-width: 1030px) { :root { --deck-fit: 0.7891; } }
+@media screen and (pointer: coarse) and (max-width: 1010px) { :root { --deck-fit: 0.7734; } }
+@media screen and (pointer: coarse) and (max-width: 990px) { :root { --deck-fit: 0.7578; } }
+@media screen and (pointer: coarse) and (max-width: 970px) { :root { --deck-fit: 0.7422; } }
+@media screen and (pointer: coarse) and (max-width: 950px) { :root { --deck-fit: 0.7266; } }
+@media screen and (pointer: coarse) and (max-width: 930px) { :root { --deck-fit: 0.7109; } }
+@media screen and (pointer: coarse) and (max-width: 910px) { :root { --deck-fit: 0.6953; } }
+@media screen and (pointer: coarse) and (max-width: 890px) { :root { --deck-fit: 0.6797; } }
+@media screen and (pointer: coarse) and (max-width: 870px) { :root { --deck-fit: 0.6641; } }
+@media screen and (pointer: coarse) and (max-width: 850px) { :root { --deck-fit: 0.6484; } }
+@media screen and (pointer: coarse) and (max-width: 830px) { :root { --deck-fit: 0.6328; } }
+@media screen and (pointer: coarse) and (max-width: 810px) { :root { --deck-fit: 0.6172; } }
+@media screen and (pointer: coarse) and (max-width: 790px) { :root { --deck-fit: 0.6016; } }
+@media screen and (pointer: coarse) and (max-width: 770px) { :root { --deck-fit: 0.5859; } }
+@media screen and (pointer: coarse) and (max-width: 750px) { :root { --deck-fit: 0.5703; } }
+@media screen and (pointer: coarse) and (max-width: 730px) { :root { --deck-fit: 0.5547; } }
+@media screen and (pointer: coarse) and (max-width: 710px) { :root { --deck-fit: 0.5391; } }
+@media screen and (pointer: coarse) and (max-width: 690px) { :root { --deck-fit: 0.5234; } }
+@media screen and (pointer: coarse) and (max-width: 670px) { :root { --deck-fit: 0.5078; } }
+@media screen and (pointer: coarse) and (max-width: 650px) { :root { --deck-fit: 0.4922; } }
+@media screen and (pointer: coarse) and (max-width: 630px) { :root { --deck-fit: 0.4766; } }
+@media screen and (pointer: coarse) and (max-width: 610px) { :root { --deck-fit: 0.4609; } }
+@media screen and (pointer: coarse) and (max-width: 590px) { :root { --deck-fit: 0.4453; } }
+@media screen and (pointer: coarse) and (max-width: 570px) { :root { --deck-fit: 0.4297; } }
+@media screen and (pointer: coarse) and (max-width: 550px) { :root { --deck-fit: 0.4141; } }
+@media screen and (pointer: coarse) and (max-width: 530px) { :root { --deck-fit: 0.3984; } }
+@media screen and (pointer: coarse) and (max-width: 510px) { :root { --deck-fit: 0.3828; } }
+@media screen and (pointer: coarse) and (max-width: 490px) { :root { --deck-fit: 0.3672; } }
+@media screen and (pointer: coarse) and (max-width: 470px) { :root { --deck-fit: 0.3516; } }
+@media screen and (pointer: coarse) and (max-width: 450px) { :root { --deck-fit: 0.3359; } }
+@media screen and (pointer: coarse) and (max-width: 430px) { :root { --deck-fit: 0.3203; } }
+@media screen and (pointer: coarse) and (max-width: 410px) { :root { --deck-fit: 0.3047; } }
+@media screen and (pointer: coarse) and (max-width: 390px) { :root { --deck-fit: 0.2891; } }
+@media screen and (pointer: coarse) and (max-width: 370px) { :root { --deck-fit: 0.2734; } }
+@media screen and (pointer: coarse) and (max-width: 350px) { :root { --deck-fit: 0.2578; } }
+@media screen and (pointer: coarse) and (max-width: 330px) { :root { --deck-fit: 0.2422; } }
+@media screen and (pointer: coarse) and (max-width: 310px) { :root { --deck-fit: 0.2266; } }
+@media screen and (pointer: coarse) and (max-width: 290px) { :root { --deck-fit: 0.2109; } }

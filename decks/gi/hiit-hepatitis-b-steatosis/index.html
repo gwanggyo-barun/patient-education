@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Exercise, Chronic Hepatitis B & Fatty Liver — Gwanggyo Barun Internal Medicine</title>
+  <title>운동, 만성 B형간염, 그리고 지방간 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,480 +18,288 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-  <style>
-    /* ====================================================================
-       HIIT · 만성B형간염+지방간 deck — deck-local layout overrides only.
-       Follows §19 (type scale + golden proportion) and §20/§21:
-       박스 안 "제목+설명"은 하나의 묶음 → 가운데로 모으고, 늘어난
-       공간은 빈 띠가 아니라 폰트로 채운다. shared 기본값은 건드리지 않음.
-       (deck #1 lp-a-cv-risk 와 동일한 오버라이드 세트 — 스타일 락인)
-       ==================================================================== */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-
-    /* hero number (s4) — 값+캡션 한 묶음 가운데, 숫자 키워 여백 흡수 */
-    .pattern-hero-number { align-items: stretch; gap: 30px; }
-    .pattern-hero-number__numeric { justify-content: center; gap: 22px; }
-    .pattern-hero-number__value { font-size: 9rem; line-height: 1.0; }
-    .pattern-hero-number__caption { max-width: 100%; font-size: 1.24rem; line-height: 1.48; }
-    .pattern-hero-number__detail { justify-content: center; gap: 14px; }
-    .pattern-hero-number__detail-text { font-size: 1.08rem; line-height: 1.56; }
-
-    /* split metrics (s2 안내 카드) — 두 박스 등높이로 컬럼 채움, 안은 가운데 */
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 1.78rem; line-height: 1.16; }
-    .pattern-split__supporting { font-size: 1.0rem; line-height: 1.5; }
-    .pattern-split__detail { justify-content: stretch; gap: 18px; min-height: 0; }
-    .pattern-split__metric { flex: 1 1 0; justify-content: center; padding: 20px 22px; }
-    .pattern-split__metric-value { font-size: 1.7rem; line-height: 1.08; }
-    .pattern-split__metric-detail { font-size: 0.97rem; line-height: 1.4; }
-
-    /* tiles (s3 위험 3카드) — 제목+본문 가운데 묶음, 제목 확대 */
-    .tile { padding: 16px 18px; gap: 10px; justify-content: center; }
-    .tile__body { margin-top: 0; }
-    .pattern-grid--3 .tile__title { font-size: 1.12rem; line-height: 1.24; }
-    .pattern-grid--3 .tile__body { font-size: 0.97rem; line-height: 1.42; }
-    .pattern-grid--2 .tile__title { font-size: 1.18rem; line-height: 1.24; }
-    .pattern-grid--2 .tile__body { font-size: 1.0rem; line-height: 1.46; }
-
-    /* visual-focus gutter (s2 · s3 · s5) */
-    .slide__body--visual-focus { gap: 32px; }
-
-    /* alert strip (s6 한계 경고) */
-    .alert-strip { padding: 16px 20px; min-height: 0; display: flex; align-items: center; }
-    .alert-strip__text { font-size: 1.02rem; line-height: 1.42; }
-
-    /* checklist (s7) — 항목 폰트 키워 채움 */
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .check-item__text { font-size: 1.08rem; line-height: 1.4; }
-
-    /* footer-safe compact frame */
-    .slide { --slide-pad-y: 46px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-
-    /* closing — body present (avoid dead band under title, per §7.2) */
-    .slide--closing { grid-template-rows: auto auto 1fr auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { padding: 12px 14px; gap: 8px; }
-    .qr-block__code { width: 96px; height: 96px; }
-
-    /* image figure surface — §0/§2 of proportions: transparent media surface,
-       radius+shadow on <img>, contain for diagrams (no-crop, §15) */
-    .ai-visual { background: transparent; border: none; box-shadow: none; }
-    .ai-visual img { border-radius: 12px; box-shadow: 0 3px 9px rgba(0,0,0,0.08); }
-    .ai-visual--diagram img { object-fit: contain; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5C-redesign 2026-09-27 (원장님 49113) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-head{margin-bottom:4px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="만성 B형간염에 지방간이 겹친 분들에게 12주 고강도 인터벌 운동(HIIT)이 무엇을 바꾸고, 무엇은 아직 확실하지 않은지 정리한 안내">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/gi/hiit-hepatitis-b-steatosis/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Exercise, Chronic Hepatitis B & Fatty Liver — Gwanggyo Barun Internal Medicine", "description": "만성 B형간염에 지방간이 겹친 분들에게 12주 고강도 인터벌 운동(HIIT)이 무엇을 바꾸고, 무엇은 아직 확실하지 않은지 정리한 안내", "url": "https://edu.gwanggyobarun.com/decks/gi/hiit-hepatitis-b-steatosis/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "운동, 만성 B형간염, 그리고 지방간 — 광교바른내과", "description": "만성 B형간염에 지방간이 겹친 분들에게 12주 고강도 인터벌 운동(HIIT)이 무엇을 바꾸고, 무엇은 아직 확실하지 않은지 정리한 안내", "url": "https://edu.gwanggyobarun.com/decks/gi/hiit-hepatitis-b-steatosis/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY / HEPATOLOGY</div>
+      <div class="slide__chapter"><strong>환자 안내</strong> · 소화기 · 간</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">간 건강을 위해<br><em>운동, 정말 도움이 될까요?</em></h1>
-      <p class="slide__subtitle">만성 B형간염에 지방간이 겹친 분들에게 12주 고강도 인터벌 운동(HIIT)을 시험해 본 연구 이야기</p>
+      <p class="slide__subtitle">만성 B형간염에 지방간이 겹친 분들에게 12주 고강도 인터벌 운동(HIIT)을 시험해 본 연구&nbsp;이야기</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">HIIT · Chronic Hepatitis B · Hepatic Steatosis · 무작위 대조 연구(PLoS One 2026)</span>
-      <span class="slide__page">광교바른내과 소화기·일반내과</span>
+      <span class="slide__source">고강도 인터벌 운동 · 만성 B형간염 · 지방간 · 무작위 대조 연구(PLoS One 2026)</span>
+      <span class="slide__page">01 / 08</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · WHY IT MATTERS — split + image (Process: 정상간→지방간→염증/섬유화)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHY IT MATTERS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">왜 중요한 이야기일까요</h2>
-      <p class="slide__subtitle">만성 B형간염에 지방간이 겹치면, 간이 굳고 간암으로 가는 위험이 더 커집니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">만성 B형간염을 앓는 간에 <em>지방까지 끼면</em>, 간세포가 더 쉽게 손상되고 염증·섬유화(굳음)가 빨라질 수 있습니다.</p>
-          <p class="pattern-split__supporting">
-            B형간염 바이러스는 오랜 세월에 걸쳐 간에 염증을 일으키고, 여기에 <strong>지방간</strong>이 더해지면 간경변·간암으로 이어질 위험이 한층 높아집니다.
-            바이러스는 항바이러스제로 억제할 수 있지만, <strong>지방간 자체를 줄이는 안전하고 확실한 약은 아직 부족</strong>합니다.
-            그래서 식사·운동 같은 <strong>생활습관 치료</strong>가 더욱 주목받고 있고, "운동이 정말 간 지방을 줄여줄까?"가 이 연구의 질문이었습니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">두 가지가 겹칠 때</div>
-            <div class="pattern-split__metric-value">위험 가중</div>
-            <div class="pattern-split__metric-detail">바이러스 염증 + 지방간 → 섬유화·간암 위험이 더 커집니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">지방간 전용 약은</div>
-            <div class="pattern-split__metric-value">아직 부족</div>
-            <div class="pattern-split__metric-detail">그래서 운동·식사 같은 생활습관 치료가 중요해집니다.</div>
-          </div>
-        </div>
-      </div>
-      <!-- IMAGE SLOT · SLIDE 02 · Process (normal liver → fatty liver → inflammation/fibrosis) — DO NOT GENERATE YET
-        $imagegen spec:
-          subject: A 3-stage PROCESS illustration of how a chronic-hepatitis-B liver worsens when fat
-            is added. STAGE 1 = a healthy liver cross-section (smooth, evenly textured tissue, clear
-            small blood vessels). STAGE 2 = the SAME liver with fatty change — many round fat
-            droplets accumulating inside the liver cells (hepatic steatosis), tissue looking pale and
-            swollen. STAGE 3 = inflammation + early fibrosis — the fatty, virus-affected liver now
-            with inflamed patches and pale fibrous strands/scar bands beginning to stiffen the tissue.
-            Include clear directional arrows showing the worsening progression between the three
-            stages. (Optional small navy/steel virus particles dotted in the tissue to signal the
-            chronic-B-virus context — NOT red.)
-          visual_type: Process / mechanism medical illustration, clean educational cross-section style.
-          palette: §20 ANATOMICAL COLOR RULE — liver TISSUE and BLOOD/vessels are rendered in
-            realistic warm red / red-brown (this is organ tissue, blood is red). The accumulating FAT
-            droplets are a pale warm yellow/cream. Brand Navy #003366 + Steel Blue #5B9BD5 are
-            reserved for the soft var(--color-canvas-warm) background, outlines, directional arrows, and any
-            virus-particle accents only. Do NOT tint the liver tissue navy/steel.
-          composition: 3 stages, evenly distributed, all roughly equal size, centered, filling the
-            canvas. Arrow tips and all three liver panels MUST NOT be clipped at the edges
-            (diagram = object-fit:contain, §15). If a portrait slot reads better, stack the 3 stages
-            top-to-bottom with downward arrows — still zero edge clipping.
-          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left text column
-            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
-            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
-          constraints: ABSOLUTELY NO TEXT — no letters, numbers, words, labels, or captions in any
-            language anywhere on the canvas. Korean stage labels ("정상 간", "지방간", "염증·섬유화")
-            are overlaid via HTML Pretendard separately (§14). No empty side panels — illustration
-            spans the entire canvas evenly.
-      -->
-      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Process">
-        <img src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s02-process-liver-progression-20260624.png" alt="정상 간에서 지방이 끼고, 다시 염증·섬유화로 진행하는 3단계 과정">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">배경 — 만성 B형간염 + 지방간 동반 시 섬유화·간암 위험 증가 · 지방간 전용 약물 한계</span>
-      <span class="slide__page">02 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · METHOD — split + image (Process: 무작위 배정 + 조기종료)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>HOW IT WAS STUDIED</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">어떻게 알아봤나요</h2>
-      <p class="slide__subtitle">참가자를 운동군과 비운동군으로 무작위 배정해 12주간 비교했습니다 — 단, 아주 작은 연구였습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">만성 B형간염 + 지방간 환자를 <em>운동군과 대조군으로 무작위 배정</em>해, 12주간 고강도 인터벌 운동(HIIT)을 했습니다.</p>
-          <p class="pattern-split__supporting">
-            1차로 보려던 것은 <strong>MRI로 측정한 간 지방의 변화</strong>였습니다.
-            그런데 참가자 모집이 예상보다 너무 더뎌 <strong>연구가 계획보다 일찍 종료</strong>되었습니다.
-            그 결과 최종적으로 <strong>14명(군당 약 7명)만 끝까지</strong> 마쳤습니다.
-            사람 수가 이렇게 적으면 "효과가 있어도 통계로 잡아내기 어렵다(검정력 부족)"는 점을 먼저 알아두는 것이 중요합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">설계</div>
-            <div class="pattern-split__metric-value">12주 비교</div>
-            <div class="pattern-split__metric-detail">운동군(HIIT) vs 비운동군 무작위 배정, MRI 간 지방 측정.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">규모 · 조기종료</div>
-            <div class="pattern-split__metric-value">14명 완료</div>
-            <div class="pattern-split__metric-detail">모집 지연으로 조기 종료 — 군당 약 7명, 초소규모 탐색 연구.</div>
-          </div>
-        </div>
-      </div>
-      <!-- IMAGE SLOT · SLIDE 03 · Process (randomized allocation → 2 arms → early termination) — DO NOT GENERATE YET
-        $imagegen spec:
-          subject: A clean PROCESS / flow illustration of a small randomized trial that ended early.
-            TOP = one small group of patient figures (a handful of simple human silhouettes) being
-            split by a randomization step into TWO arms. LEFT ARM = an EXERCISE group (figures shown
-            actively moving / exercising, e.g. on a stationary-cycle or running motion). RIGHT ARM =
-            a CONTROL group (figures at rest / standing, no exercise). At the BOTTOM, a clear visual
-            signal of EARLY TERMINATION / small numbers: the recruitment funnel is visibly cut short
-            (e.g. a funnel or pipeline that stops early / a small dwindling number of figures), and
-            only a few figures reach the end on each side. The whole feel = "randomized but very few
-            people, stopped early."
-          visual_type: Process / flow medical-research diagram, clean educational infographic style
-            using simple human silhouettes, arrows, and a split/funnel.
-          palette: brand Navy #003366 + Steel Blue #5B9BD5 for figures, arrows, split node, and the
-            funnel; soft var(--color-canvas-warm) neutral background. (§20: NO red anywhere — this is a study-flow
-            diagram with no blood/bleeding; red is reserved strictly for blood.)
-          composition: balanced top-to-bottom flow that fills the canvas evenly; the randomization
-            split, both arms, and the early-stop / small-final-number cue must all be fully visible
-            and NOT clipped at the edges (diagram = object-fit:contain, §15).
-          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left text column
-            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
-            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
-          constraints: ABSOLUTELY NO TEXT — no letters, numbers, words, labels, or captions in any
-            language anywhere on the canvas. Korean labels ("무작위 배정", "운동군", "비운동군",
-            "조기 종료 · 소수만 완료") are overlaid via HTML Pretendard separately (§14). No empty side
-            panels — illustration spans the entire canvas evenly.
-      -->
-      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Process">
-        <img src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s03-process-randomized-early-stop-20260624.png" alt="참가자를 운동군과 비운동군으로 무작위 배정하고, 모집 지연으로 소수만 완료한 채 조기 종료된 연구 흐름">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">설계 — 무작위 대조 연구(1:1) · 12주 HIIT vs 무중재 · 1차 결과 = MRI 간 지방분율 · 모집 지연으로 조기 종료(14명 완료)</span>
-      <span class="slide__page">03 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · RESULT ① 간 지방 — hero number (p=0.22, 비유의)
-       NOTE: primary outcome was NEGATIVE / non-significant. Do NOT imply 운동이 간 지방을 줄인다.
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>RESULT ① · LIVER FAT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">결과 ① — 간 지방은 어땠나요</h2>
-      <p class="slide__subtitle">가장 알고 싶었던 1차 결과(간 지방)에서는 운동군과 대조군의 차이가 분명하지 않았습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>p</em>=0.22</div>
-          <div class="pattern-hero-number__caption">두 그룹의 간 지방 변화 차이는 <strong>통계적으로 유의하지 않았습니다</strong> — 즉 운동이 간 지방을 줄였다고 말할 수 없습니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">What it means</div>
-          <div class="pattern-hero-number__detail-text">
-            운동군의 간 지방이 대조군보다 약 <strong>2.03%p</strong> 더 낮은 쪽으로 보였지만,
-            오차범위가 <strong>−5.5%p ~ +1.4%p</strong>로 넓어 0(차이 없음)을 포함했습니다 (p=0.22).
-            다만 사람 수가 워낙 적어, 이 결과는 "운동이 효과가 <em>없다</em>"는 증명이 아니라 "이 작은 연구로는 <strong>아직 확인하지 못했다</strong>"로 읽는 것이 정확합니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">1차 결과 — MRI 간 지방분율: 군간차 약 −2.03%p (95% CI −5.5 ~ +1.4; p=0.22, 비유의) · 검정력 부족</span>
-      <span class="slide__page">04 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · RESULT ② 체력·기분 — 2-card grid + image (Comparison)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>RESULT ② · FITNESS & MOOD</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">결과 ② — 체력과 기분은 좋아졌습니다</h2>
-      <p class="slide__subtitle">간 지방은 미확정이었지만, 심폐 체력과 정서적 안녕감은 운동군에서 분명히 개선됐습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--accent">
-          <div class="tile__index">심폐 체력 (VO₂max)</div>
-          <div class="tile__title">최대 산소섭취량 향상</div>
-          <div class="tile__body">운동군에서 심폐 체력(VO₂max)이 <strong>약 +5.6 mL/kg/min</strong> 좋아졌습니다. 이는 통계적으로 의미 있는 개선으로, 일상 활동이 덜 숨차고 편해질 수 있습니다. <strong>(p&lt;0.05)</strong></div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">정서적 안녕감</div>
-          <div class="tile__title">기분·삶의 질 점수 상승</div>
-          <div class="tile__body">정서적 안녕감 점수가 <strong>약 +18점</strong> 올랐습니다. 운동이 기분과 삶의 질에 도움이 됐다는 뜻으로, 역시 의미 있는 변화였습니다. <strong>(p&lt;0.05)</strong></div>
-        </div>
-      </div>
-      <!-- IMAGE SLOT · SLIDE 05 · Comparison (significant fitness/mood vs non-significant liver fat) — DO NOT GENERATE YET
-        $imagegen spec:
-          subject: A simple comparison bar chart contrasting THREE outcomes by how clear the effect
-            was. BAR 1 = cardiorespiratory FITNESS (improved): a tall, solid, confident bar reaching
-            high. BAR 2 = emotional WELL-BEING / MOOD (improved): another tall, solid, confident bar
-            reaching high. BAR 3 = LIVER FAT (uncertain / non-significant): a short, faint/hollow or
-            dashed-outline bar that is clearly weak/inconclusive (e.g. translucent fill with a small
-            uncertainty whisker), visually reading as "not established." The contrast is the message:
-            two strong solid bars vs one weak/uncertain bar. Do NOT make the liver-fat bar a
-            confident downward result — it must read as inconclusive, not as a clear benefit.
-          visual_type: Comparison / clean infographic bar chart, flat educational style.
-          palette: brand Navy #003366 and Steel Blue #5B9BD5 for the two strong (fitness, mood) solid
-            bars; the uncertain liver-fat bar is a faint/translucent steel outline (low opacity) so it
-            reads as weak/undetermined. Soft var(--color-canvas-warm) background; faint steel reference frames. (§20:
-            NO red — this is an outcome chart with no blood; red is reserved strictly for blood.)
-          composition: three bars (two tall + one short/faint), centered, evenly filling the canvas;
-            bar tops and any whisker NOT clipped (diagram = object-fit:contain, §15).
-          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left 2-card column
-            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
-            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
-          constraints: ABSOLUTELY NO TEXT, NUMBERS, AXIS LABELS, OR PERCENT/UNIT SIGNS anywhere on
-            the canvas — no characters in any language. The labels ("체력 ↑", "기분 ↑", "간 지방 ?")
-            and values are overlaid via HTML Pretendard separately (§14). Bars span the canvas evenly
-            — no empty side panels.
-      -->
-      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s05-comparison-fitness-mood-vs-liverfat-20260624.png" alt="체력과 기분은 뚜렷이 개선(높은 막대 두 개), 간 지방은 불확실(낮고 흐린 막대)임을 나타낸 비교 막대">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">2차 결과 — VO₂max 약 +5.6 mL/kg/min (p&lt;0.05) · 정서적 안녕감 약 +18점 (p&lt;0.05) · 체지방·당대사·지질·혈압은 차이 없음</span>
-      <span class="slide__page">05 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · INTERPRETATION — split + caution (간 지방 미확정 / 운동 이점은 분명)
-       NOTE: do NOT overclaim. negative primary outcome + tiny terminated study.
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>INTERPRETATION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">그래서 어떻게 받아들이면 될까요</h2>
-      <p class="slide__subtitle">"운동이 간 지방을 줄인다"고는 아직 말할 수 없지만, 운동을 해야 할 이유는 충분합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">간 지방에 대한 효과는 <em>아직 미확정</em>입니다. 하지만 <em>체력과 기분이 좋아진다는 이점은 분명</em>했습니다.</p>
-          <p class="pattern-split__supporting">
-            이 연구는 <strong>14명만 끝까지 마친 초소규모 + 조기 종료</strong> 연구라, 저자들도 결과를 "탐색적"이라고 밝혔습니다.
-            그래서 간 지방의 음성 결과를 "운동은 소용없다"로 단정해서는 <strong>안 됩니다</strong> — 단지 이 작은 연구로는 확인하지 못했을 뿐입니다.
-            반대로 심폐 체력·정서 안녕감 개선은 분명했고, 이는 만성 B형간염 환자에게도 <strong>운동을 권할 충분한 이유</strong>가 됩니다.
-            더 큰 연구로 간 지방 효과는 추가로 확인이 필요합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">간 지방 효과</div>
-            <div class="pattern-split__metric-value">미확정</div>
-            <div class="pattern-split__metric-detail">소규모·조기종료 → 검정력 부족. "효과 없음"이 아니라 "미확인".</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">체력·기분 이점</div>
-            <div class="pattern-split__metric-value">분명함</div>
-            <div class="pattern-split__metric-detail">VO₂max·정서 안녕감 모두 의미 있게 개선 — 운동을 권할 이유.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">한계 — 초소규모(14명 완료) + 조기 종료 = 검정력 부족, 저자 "탐색적" · 음성 1차 결과를 "효과 없음"으로 단정 금지</span>
-      <span class="slide__page">06 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · KEY TAKEAWAYS — checklist
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>KEY TAKEAWAYS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 점</h2>
-      <p class="slide__subtitle">간 지방 효과는 아직 미확정 — 그래도 운동은 충분히 권할 만합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">만성 B형간염에 <strong>지방간이 겹치면</strong> 간이 굳고 간암으로 갈 위험이 더 커집니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">12주 운동(HIIT)의 <strong>간 지방 감소 효과는 통계적으로 확인되지 않았습니다</strong> (p=0.22)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">단, 14명만 완료한 <strong>초소규모·조기종료 연구</strong> — "효과 없음"이 아니라 "아직 미확인"입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">반면 <strong>심폐 체력(VO₂max)과 기분·삶의 질은 분명히 좋아졌습니다</strong> (모두 의미 있는 개선)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">즉 <strong>운동의 체력·기분 이점은 분명, 간 지방 효과는 미확정</strong> — 더 큰 연구가 필요합니다</div>
-        </div>
-        <div class="check-item" style="border-bottom: none;">
-          <div class="check-item__num" style="color: var(--color-navy);">→</div>
-          <div class="check-item__text" style="color: var(--color-slate);">운동은 권장하되, <strong>처방받은 항바이러스제·정기 간 검사</strong>를 함께 꾸준히 이어가세요</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">운동의 체력·기분 이점은 분명 · 간 지방 효과는 미확정 · 항바이러스제와 정기 추적이 우선</span>
-      <span class="slide__page">07 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · CLOSING — contact card + QR (live render from og:url)
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">간 건강을 지키는<br><em>한 걸음 더</em></h2>
-      <p class="slide__subtitle">운동·식사 같은 생활습관과 B형간염 관리에 대해 궁금한 점이 있으시면 언제든 문의해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Specialty</div>
-            <div class="contact-card__value">소화기내과 · 일반내과<br>5대암 검진</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 왜 중요한가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">왜 중요한 이야기일까요</h2>
+  <p class="v2-sub">만성 B형간염에 지방간이 겹치면, 간이 굳고 간암으로 가는 위험이 더 커집니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:800px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.8323 13.4187C17.0529 11.4931 19.8857 10.2549 22.9997 10.0352V12C22.9997 12.5523 23.4475 13 23.9997 13C24.552 13 24.9997 12.5523 24.9997 12V10.0352C28.1136 10.2549 30.9463 11.493 33.1669 13.4184L31.7779 14.8074C31.3874 15.1979 31.3874 15.8311 31.7779 16.2216C32.1685 16.6121 32.8016 16.6121 33.1921 16.2216L34.5811 14.8326C36.5067 17.0532 37.7448 19.886 37.9646 23H35.9997C35.4475 23 34.9997 23.4477 34.9997 24C34.9997 24.5523 35.4475 25 35.9997 25H37.9646C37.7448 28.1139 36.5067 30.9466 34.5813 33.1672L33.1921 31.7781C32.8016 31.3876 32.1685 31.3876 31.7779 31.7781C31.3874 32.1686 31.3874 32.8018 31.7779 33.1923L33.167 34.5814C30.9465 36.5069 28.1137 37.7451 24.9997 37.9648V36C24.9997 35.4477 24.552 35 23.9997 35C23.4475 35 22.9997 35.4477 22.9997 36V37.9648C19.8859 37.7451 17.0532 36.507 14.8327 34.5816L16.2216 33.1927C16.6121 32.8022 16.6121 32.1691 16.2216 31.7785C15.8311 31.388 15.1979 31.388 14.8074 31.7785L13.4184 33.1674C11.4929 30.9468 10.2547 28.114 10.0349 25H11.9997C12.552 25 12.9997 24.5523 12.9997 24C12.9997 23.4477 12.552 23 11.9997 23H10.0349C10.2547 19.8861 11.4927 17.0535 13.4181 14.8329L14.8074 16.2221C15.1979 16.6126 15.831 16.6126 16.2216 16.2221C16.6121 15.8316 16.6121 15.1984 16.2216 14.8079L14.8323 13.4187ZM19.9998 25C21.1043 25 21.9998 25.8954 21.9998 27C21.9998 28.1046 21.1043 29 19.9998 29C18.8952 29 17.9998 28.1046 17.9998 27C17.9998 25.8954 18.8952 25 19.9998 25ZM24.9998 19C24.9998 17.8954 24.1043 17 22.9998 17C21.8952 17 20.9998 17.8954 20.9998 19C20.9998 20.1046 21.8952 21 22.9998 21C24.1043 21 24.9998 20.1046 24.9998 19ZM28.9998 24C30.1043 24 30.9998 24.8954 30.9998 26C30.9998 27.1046 30.1043 28 28.9998 28C27.8952 28 26.9998 27.1046 26.9998 26C26.9998 24.8954 27.8952 24 28.9998 24Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9998 5C20.9998 4.44772 21.4475 4 21.9998 4H25.9998C26.552 4 26.9998 4.44772 26.9998 5C26.9998 5.55228 26.552 6 25.9998 6H24.9998V8C24.9998 8.55228 24.552 9 23.9998 9C23.4475 9 22.9998 8.55228 22.9998 8V6H21.9998C21.4475 6 20.9998 5.55228 20.9998 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.9998 39C24.552 39 24.9998 39.4477 24.9998 40V42H25.9998C26.552 42 26.9998 42.4477 26.9998 43C26.9998 43.5523 26.552 44 25.9998 44H21.9998C21.4475 44 20.9998 43.5523 20.9998 43C20.9998 42.4477 21.4475 42 21.9998 42H22.9998V40C22.9998 39.4477 23.4475 39 23.9998 39Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.6861 39.5567C12.2956 39.9472 11.6624 39.9472 11.2719 39.5567L8.44347 36.7283C8.05295 36.3378 8.05295 35.7046 8.44347 35.3141C8.83399 34.9236 9.46716 34.9236 9.85768 35.3141L10.5648 36.0212L11.979 34.607C12.3695 34.2164 13.0027 34.2164 13.3932 34.607C13.7837 34.9975 13.7837 35.6307 13.3932 36.0212L11.979 37.4354L12.6861 38.1425C13.0766 38.533 13.0766 39.1662 12.6861 39.5567Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34.6064 13.3938C34.2159 13.0032 34.2159 12.3701 34.6064 11.9796L36.0206 10.5653L35.3135 9.85823C34.923 9.46771 34.923 8.83454 35.3135 8.44402C35.7041 8.0535 36.3372 8.0535 36.7277 8.44402L39.5562 11.2724C39.9467 11.663 39.9467 12.2961 39.5562 12.6867C39.1656 13.0772 38.5325 13.0772 38.142 12.6867L37.4348 11.9796L36.0206 13.3938C35.6301 13.7843 34.9969 13.7843 34.6064 13.3938Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.99976 27C4.44747 27 3.99976 26.5523 3.99976 26V22C3.99976 21.4477 4.44747 21 4.99976 21C5.55204 21 5.99976 21.4477 5.99976 22V23H7.99976C8.55204 23 8.99976 23.4477 8.99976 24C8.99976 24.5523 8.55204 25 7.99976 25H5.99976V26C5.99976 26.5523 5.55204 27 4.99976 27Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M38.9998 24C38.9998 23.4477 39.4475 23 39.9998 23H41.9998V22C41.9998 21.4477 42.4475 21 42.9998 21C43.552 21 43.9998 21.4477 43.9998 22V26C43.9998 26.5523 43.552 27 42.9998 27C42.4475 27 41.9998 26.5523 41.9998 26V25H39.9998C39.4475 25 38.9998 24.5523 38.9998 24Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.44341 12.6866C8.05288 12.2961 8.05288 11.6629 8.44341 11.2724L11.2718 8.44396C11.6624 8.05343 12.2955 8.05343 12.686 8.44396C13.0766 8.83448 13.0766 9.46765 12.686 9.85817L11.9789 10.5653L13.3932 11.9795C13.7837 12.37 13.7837 13.0032 13.3932 13.3937C13.0026 13.7842 12.3695 13.7842 11.9789 13.3937L10.5647 11.9795L9.85762 12.6866C9.46709 13.0771 8.83393 13.0771 8.44341 12.6866Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34.6064 34.6069C34.9969 34.2164 35.63 34.2164 36.0206 34.6069L37.4348 36.0211L38.1419 35.314C38.5324 34.9235 39.1656 34.9235 39.5561 35.314C39.9466 35.7045 39.9466 36.3377 39.5561 36.7282L36.7277 39.5567C36.3371 39.9472 35.704 39.9472 35.3135 39.5567C34.9229 39.1661 34.9229 38.533 35.3135 38.1424L36.0206 37.4353L34.6064 36.0211C34.2158 35.6306 34.2158 34.9974 34.6064 34.6069Z" fill="currentColor"/>
+</svg></div><b>두 가지가 겹치면 위험이 커집니다</b></div><div class="v2-body">B형간염 바이러스가 오랜 세월 간에 염증을 일으키는데, 지방까지 끼면 간세포가 더 쉽게 다치고 섬유화(굳음)가 빨라질&nbsp;수&nbsp;있습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>지방간 전용 약은 아직 부족합니다</b></div><div class="v2-body">바이러스는 항바이러스제로 누를 수 있지만, 지방간 자체를 줄이는 안전하고 확실한 약은 아직 부족합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M37.5 16.8449C37.5 12.8705 35.9682 9.75541 33.4947 7.64469C31.0848 5.58823 27.9616 4.63223 24.923 4.51312C19.1007 4.28488 12.0377 7.23751 10.5604 13.8405C10.2589 15.1879 11.1068 16.5246 12.4542 16.8261C13.8016 17.1275 15.1383 16.2796 15.4397 14.9322C16.1624 11.7019 20.0994 9.32786 24.7271 9.50928C26.9135 9.59499 28.8778 10.2779 30.2491 11.4481C31.5569 12.5641 32.5 14.2635 32.5 16.8449C32.5 19.394 31.228 21.0713 29.3719 22.2558C27.4261 23.4975 24.9842 24.0682 23.3259 24.184C22.0159 24.2755 21.0001 25.3648 21.0001 26.678V31C21.0001 32.3807 22.1193 33.5 23.5001 33.5C24.8808 33.5 26.0001 32.3807 26.0001 31V28.8489C27.9106 28.4606 30.1018 27.7213 32.0616 26.4707C34.9776 24.6099 37.5 21.5072 37.5 16.8449Z" fill="currentColor"/>
+<path d="M24 36C21.7909 36 20 37.7909 20 40C20 42.2091 21.7909 44 24 44C26.2092 44 28 42.2091 28 40C28 37.7909 26.2092 36 24 36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.0001 28.8489C24.0001 27.8978 24.6698 27.0783 25.6018 26.8889C27.3366 26.5364 29.2825 25.8716 30.9857 24.7848C33.4812 23.1923 35.5 20.6587 35.5 16.8449C35.5 13.4272 34.2034 10.8786 32.1965 9.16606C30.2025 7.46449 27.5431 6.61736 24.8446 6.51158C22.271 6.41069 19.4279 7.01999 17.1068 8.3503C14.8123 9.66542 13.1043 11.6303 12.5121 14.2772C12.4518 14.5467 12.6214 14.814 12.8909 14.8743C13.1604 14.9346 13.4277 14.765 13.488 14.4955C14.5077 9.93772 19.6698 7.30949 24.8055 7.51081C27.3339 7.60993 29.7613 8.40265 31.5474 9.92675C33.3208 11.4401 34.5 13.7055 34.5 16.8449C34.5 20.2334 32.7339 22.4829 30.4477 23.9418C28.1499 25.4082 25.3616 26.0467 23.4652 26.1792C23.2032 26.1975 23.0001 26.4153 23.0001 26.678V31C23.0001 31.2761 23.2239 31.5 23.5001 31.5C23.7762 31.5 24.0001 31.2761 24.0001 31V28.8489ZM24 38C22.8955 38 22 38.8954 22 40C22 41.1046 22.8955 42 24 42C25.1046 42 26 41.1046 26 40C26 38.8954 25.1046 38 24 38ZM33.4947 7.64469C35.9682 9.75541 37.5 12.8705 37.5 16.8449C37.5 21.5072 34.9776 24.6099 32.0616 26.4707C30.1018 27.7213 27.9106 28.4606 26.0001 28.8489V31C26.0001 32.3807 24.8808 33.5 23.5001 33.5C22.1193 33.5 21.0001 32.3807 21.0001 31V26.678C21.0001 25.3648 22.0159 24.2755 23.3259 24.184C24.9842 24.0682 27.4261 23.4975 29.3719 22.2558C31.228 21.0713 32.5 19.394 32.5 16.8449C32.5 14.2635 31.5569 12.5641 30.2491 11.4481C28.8778 10.2779 26.9135 9.59499 24.7271 9.50928C20.0994 9.32786 16.1624 11.7019 15.4397 14.9322C15.1383 16.2796 13.8016 17.1275 12.4542 16.8261C11.1068 16.5246 10.2589 15.1879 10.5604 13.8405C12.0377 7.23751 19.1007 4.28488 24.923 4.51312C27.9616 4.63223 31.0848 5.58823 33.4947 7.64469ZM20 40C20 37.7909 21.7909 36 24 36C26.2092 36 28 37.7909 28 40C28 42.2091 26.2092 44 24 44C21.7909 44 20 42.2091 20 40Z" fill="currentColor"/>
+</svg></div><b>그래서 이 연구의 질문</b></div><div class="v2-body">“운동이 정말 간 지방을 줄여 줄까?” — 식사·운동 같은 생활습관 치료가 주목받는 이유입니다.</div></div><div class="q-figcap__t">오른쪽 그림 · 정상 간 → 지방간 → 염증·섬유화가 생긴 간으로 바뀌는 모습(설명용 그림)</div>
+  </div>
+  <div class="v2-panel q-fig" style="left:896px;top:206px;width:320px;height:400px">
+    <img class="v2-fig__img q-fig__img" style="width:320px;height:400px" src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s02-process-liver-progression-20260624.png" alt="위에서 아래로 정상 간, 지방이 낀 간, 염증과 섬유화가 생긴 간으로 바뀌는 그림">
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 지방간이 함께 있다면 B형간염 약과 별개로 생활습관 관리가 중요합니다.</span><span class="v2-src">근거 · 연구 배경 · PLoS One 2026 무작위 대조 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 어떻게 알아봤나</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">어떻게 알아봤나요</h2>
+  <p class="v2-sub">참가자를 운동군과 비운동군으로 무작위로 나눠 12주간 비교했습니다 — 단, 아주 작은 연구였습니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:320px;height:400px">
+    <img class="v2-fig__img q-fig__img" style="width:320px;height:400px" src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s03-process-randomized-early-stop-20260624.png" alt="사람들을 두 군으로 나눠 한쪽은 운동하고 한쪽은 운동하지 않으며, 깔때기를 지나 적은 인원만 남는 흐름 그림">
+  </div>
+  <div class="v2-panel q-text" style="left:416px;top:206px;width:800px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">무작위로 두 군 배정<span class="q-srow__tag">제비뽑기</span></div><div class="v2-body">만성 B형간염 + 지방간 환자를 운동군과 비운동군으로 나눴습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">12주 고강도 인터벌 운동<span class="q-srow__tag">운동군</span></div><div class="v2-body">짧게 힘껏 운동하고 쉬기를 반복하는 운동을 12주간 했습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">MRI로 간 지방 측정<span class="q-srow__tag">가장 보려던 것</span></div><div class="v2-body">12주 뒤 간 지방이 얼마나 변했는지 비교했습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">모집이 더뎌 일찍 종료<span class="q-srow__tag">14명 완료</span></div><div class="v2-body">끝까지 마친 사람은 14명(한 군에 약 7명)뿐이었습니다.</div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 사람 수가 적으면 효과가 있어도 숫자로 확인하기 어렵습니다(왼쪽 설명용 그림).</span><span class="v2-src">근거 · 모집 지연으로 조기 종료 · PLoS One 2026 무작위 대조 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 결과 ① 간 지방</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">결과 ① — 간 지방은 어땠나요</h2>
+  <p class="v2-sub">가장 알고 싶었던 간 지방에서는 두 군의 차이가 분명하지 않았습니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">2.03<span>%p</span></div><div class="q-stat__lab">운동군 간 지방이 더 낮은 쪽</div><div class="q-stat__cap">비운동군보다 약간 더 줄어든 쪽으로 보였습니다</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">14<span>명</span></div><div class="q-stat__lab">끝까지 참여한 사람</div><div class="q-stat__cap">한 군에 약 7명 — 결과가 흔들리기 쉽습니다</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">12<span>주</span></div><div class="q-stat__lab">운동 기간</div><div class="q-stat__cap">짧게 힘껏 운동하고 쉬기를 반복</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7479 12.8156C17.0072 12.8833 15.4353 13.5043 14.5944 14.3454C14.2039 14.736 13.5707 14.736 13.1802 14.3455C12.7896 13.9551 12.7895 13.3219 13.18 12.9313C14.4774 11.6337 16.5888 10.8981 18.6701 10.8171C20.765 10.7356 23.0521 11.3092 24.6538 12.9112C25.0442 13.3017 25.0442 13.9349 24.6536 14.3254C24.2631 14.7159 23.6299 14.7158 23.2394 14.3253C22.1484 13.234 20.4749 12.7484 18.7479 12.8156Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.9355 27.3841C30.8475 25.1207 32 22.1949 32 19C32 11.8203 26.1797 6 19 6C11.8203 6 6 11.8203 6 19C6 26.1797 11.8203 32 19 32C22.1949 32 25.1207 30.8475 27.3841 28.9355L27 31.1442L34.5137 38.6579L38.6579 34.5137L31.1442 27L28.9355 27.3841ZM19 29C24.5228 29 29 24.5228 29 19C29 13.4772 24.5228 9 19 9C13.4772 9 9 13.4772 9 19C9 24.5228 13.4772 29 19 29Z" fill="currentColor"/>
+<path d="M35.9279 40.0721L40.0721 35.9279L41.4278 37.2837C42.1907 38.0466 42.1907 39.2835 41.4278 40.0464L40.0464 41.4278C39.2835 42.1907 38.0466 42.1907 37.2837 41.4278L35.9279 40.0721Z" fill="currentColor"/>
+</svg></div><b>무엇을 뜻하나요</b></div><div class="v2-body">운동이 간 지방을 줄였다고 <b>말할 수 없습니다</b>. 결과가 흔들릴 수 있는 범위(−5.5%p~+1.4%p)가 넓어 ‘차이 없음’까지 들어 있었습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M37.5 16.8449C37.5 12.8705 35.9682 9.75541 33.4947 7.64469C31.0848 5.58823 27.9616 4.63223 24.923 4.51312C19.1007 4.28488 12.0377 7.23751 10.5604 13.8405C10.2589 15.1879 11.1068 16.5246 12.4542 16.8261C13.8016 17.1275 15.1383 16.2796 15.4397 14.9322C16.1624 11.7019 20.0994 9.32786 24.7271 9.50928C26.9135 9.59499 28.8778 10.2779 30.2491 11.4481C31.5569 12.5641 32.5 14.2635 32.5 16.8449C32.5 19.394 31.228 21.0713 29.3719 22.2558C27.4261 23.4975 24.9842 24.0682 23.3259 24.184C22.0159 24.2755 21.0001 25.3648 21.0001 26.678V31C21.0001 32.3807 22.1193 33.5 23.5001 33.5C24.8808 33.5 26.0001 32.3807 26.0001 31V28.8489C27.9106 28.4606 30.1018 27.7213 32.0616 26.4707C34.9776 24.6099 37.5 21.5072 37.5 16.8449Z" fill="currentColor"/>
+<path d="M24 36C21.7909 36 20 37.7909 20 40C20 42.2091 21.7909 44 24 44C26.2092 44 28 42.2091 28 40C28 37.7909 26.2092 36 24 36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.0001 28.8489C24.0001 27.8978 24.6698 27.0783 25.6018 26.8889C27.3366 26.5364 29.2825 25.8716 30.9857 24.7848C33.4812 23.1923 35.5 20.6587 35.5 16.8449C35.5 13.4272 34.2034 10.8786 32.1965 9.16606C30.2025 7.46449 27.5431 6.61736 24.8446 6.51158C22.271 6.41069 19.4279 7.01999 17.1068 8.3503C14.8123 9.66542 13.1043 11.6303 12.5121 14.2772C12.4518 14.5467 12.6214 14.814 12.8909 14.8743C13.1604 14.9346 13.4277 14.765 13.488 14.4955C14.5077 9.93772 19.6698 7.30949 24.8055 7.51081C27.3339 7.60993 29.7613 8.40265 31.5474 9.92675C33.3208 11.4401 34.5 13.7055 34.5 16.8449C34.5 20.2334 32.7339 22.4829 30.4477 23.9418C28.1499 25.4082 25.3616 26.0467 23.4652 26.1792C23.2032 26.1975 23.0001 26.4153 23.0001 26.678V31C23.0001 31.2761 23.2239 31.5 23.5001 31.5C23.7762 31.5 24.0001 31.2761 24.0001 31V28.8489ZM24 38C22.8955 38 22 38.8954 22 40C22 41.1046 22.8955 42 24 42C25.1046 42 26 41.1046 26 40C26 38.8954 25.1046 38 24 38ZM33.4947 7.64469C35.9682 9.75541 37.5 12.8705 37.5 16.8449C37.5 21.5072 34.9776 24.6099 32.0616 26.4707C30.1018 27.7213 27.9106 28.4606 26.0001 28.8489V31C26.0001 32.3807 24.8808 33.5 23.5001 33.5C22.1193 33.5 21.0001 32.3807 21.0001 31V26.678C21.0001 25.3648 22.0159 24.2755 23.3259 24.184C24.9842 24.0682 27.4261 23.4975 29.3719 22.2558C31.228 21.0713 32.5 19.394 32.5 16.8449C32.5 14.2635 31.5569 12.5641 30.2491 11.4481C28.8778 10.2779 26.9135 9.59499 24.7271 9.50928C20.0994 9.32786 16.1624 11.7019 15.4397 14.9322C15.1383 16.2796 13.8016 17.1275 12.4542 16.8261C11.1068 16.5246 10.2589 15.1879 10.5604 13.8405C12.0377 7.23751 19.1007 4.28488 24.923 4.51312C27.9616 4.63223 31.0848 5.58823 33.4947 7.64469ZM20 40C20 37.7909 21.7909 36 24 36C26.2092 36 28 37.7909 28 40C28 42.2091 26.2092 44 24 44C21.7909 44 20 42.2091 20 40Z" fill="currentColor"/>
+</svg></div><b>‘효과 없음’이 아닙니다</b></div><div class="v2-body">사람 수가 워낙 적어 “이 작은 연구로는 <b>아직 확인하지 못했다</b>”로 읽는&nbsp;것이&nbsp;정확합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · ‘%p’는 간 지방 비율(퍼센트)끼리의 차이를 뜻합니다.</span><span class="v2-src">근거 · 1차 결과 p=0.22(의미 없음) · PLoS One 2026 무작위 대조 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 결과 ② 체력·기분</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">결과 ② — 체력과 기분은 좋아졌습니다</h2>
+  <p class="v2-sub">간 지방은 확인하지 못했지만, 심폐 체력과 기분은 운동군에서 분명히 좋아졌습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:800px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.5416 11.149C26.6969 10.5038 27.2577 10.0373 27.9203 10.0021C28.583 9.96686 29.1901 10.3712 29.4129 10.9963L33.514 22.5C34.9753 22.4982 35.9022 22.2277 36.8838 21.492C37.1714 21.135 37.5191 20.8285 37.9116 20.5878C37.9409 20.5589 37.9703 20.5296 38 20.5V20.5351C38.5883 20.1948 39.2714 20 40 20C42.2091 20 44 21.7908 44 24C44 26.2091 42.2091 28 40 28C39.2714 28 38.5883 27.8052 38 27.4649V27.5C37.9702 27.4702 37.9406 27.4409 37.9112 27.412C37.5409 27.1848 37.2104 26.899 36.9326 26.5675C36.0227 25.9086 35.168 25.6826 33.9019 25.6463H32.5085C31.8742 25.6463 31.3086 25.2474 31.0956 24.65L28.2792 16.7501L23.4414 36.851C23.2857 37.4979 22.7224 37.965 22.0578 37.9981C21.3932 38.0313 20.7862 37.6227 20.5669 36.9944L14.9181 20.8157L13.3964 24.6942C13.171 25.2685 12.617 25.6463 12 25.6463H4V22.6463H10.9772L13.6036 15.9521C13.8328 15.3681 14.4012 14.9883 15.0285 15.0003C15.6558 15.0122 16.2094 15.4132 16.4162 16.0055L21.7181 31.1906L26.5416 11.149Z" fill="currentColor"/>
+</svg></div><b>심폐 체력 — 약 +5.6</b></div><div class="v2-body">몸이 쓸 수 있는 산소의 최대량(최대 산소섭취량)이 체중 1kg·1분당 약 5.6mL 늘었습니다. 일상 활동이 덜 숨차고 편해질&nbsp;수&nbsp;있습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 40C32.8366 40 40 32.8366 40 24C40 15.1634 32.8366 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40ZM24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6C14.0589 6 6 14.0589 6 24C6 33.9411 14.0589 42 24 42Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.2857 21.2489C21.3934 21.6474 21.4323 22.0844 21.3023 22.4421C21.2512 22.5827 21.1398 22.6931 20.9987 22.7429C20.8576 22.7926 20.7016 22.7766 20.5736 22.6991C20.3119 22.5409 20.0523 22.3386 19.8085 22.1417C19.7422 22.0882 19.6772 22.0351 19.6129 21.9827C19.4326 21.8355 19.2585 21.6935 19.0791 21.5592C18.5774 21.1839 18.1791 20.9863 17.8345 21.0032C17.4717 21.0209 17.0342 21.274 16.4719 21.7181C16.3135 21.8432 16.1434 21.9853 15.9668 22.133C15.579 22.4572 15.1593 22.8081 14.7599 23.0645C14.6163 23.1567 14.4355 23.1693 14.2804 23.0978C14.1254 23.0264 14.0175 22.8807 13.9944 22.7115C13.9445 22.3469 14.0202 21.8907 14.1629 21.4451C14.3095 20.987 14.5433 20.4891 14.8578 20.0288C15.4778 19.1216 16.4842 18.2669 17.831 18.3234C19.1318 18.3781 20.0947 19.1404 20.6753 19.9696C20.9666 20.3855 21.1734 20.8333 21.2857 21.2489Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M26.6298 21.2489C26.5221 21.6474 26.4832 22.0844 26.6132 22.4421C26.6644 22.5827 26.7758 22.6931 26.9169 22.7429C27.058 22.7926 27.2139 22.7766 27.342 22.6991C27.6036 22.5409 27.8632 22.3386 28.107 22.1417C28.1733 22.0882 28.2384 22.0351 28.3026 21.9827C28.483 21.8355 28.6571 21.6935 28.8365 21.5592C29.3381 21.1839 29.7365 20.9863 30.081 21.0032C30.4438 21.0209 30.8813 21.274 31.4436 21.7181C31.602 21.8432 31.7721 21.9853 31.9487 22.133C32.3365 22.4572 32.7563 22.8081 33.1556 23.0645C33.2993 23.1567 33.4801 23.1693 33.6351 23.0978C33.7901 23.0264 33.898 22.8807 33.9211 22.7115C33.971 22.3469 33.8954 21.8907 33.7527 21.4451C33.606 20.987 33.3723 20.4891 33.0577 20.0288C32.4377 19.1216 31.4313 18.2669 30.0845 18.3234C28.7838 18.3781 27.8208 19.1404 27.2402 19.9696C26.9489 20.3855 26.7421 20.8333 26.6298 21.2489Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 37C19.9619 37 16.4618 33.9521 14.7419 29.5C14.7254 29.4572 14.709 29.4143 14.6928 29.3713C14.2445 28.18 15.1998 27 16.4727 27H31.5273C32.8002 27 33.7555 28.18 33.3072 29.3713C33.291 29.4143 33.2746 29.4572 33.2581 29.5C31.5382 33.9521 28.0381 37 24 37ZM31.2759 29.0715C30.9754 29.8003 30.6273 30.4681 30.2407 31.0715H17.7594C17.4238 30.5478 17.1173 29.9756 16.8457 29.3571V29.0715H31.2759Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.2723 33.0715C31.4992 32.7772 31.7159 32.4693 31.9218 32.1488C32.3795 31.436 32.7833 30.6606 33.1248 29.8338C33.1703 29.7234 33.2148 29.6122 33.2581 29.5C33.2746 29.4572 33.291 29.4143 33.3072 29.3713C33.6902 28.3535 33.0487 27.3439 32.0599 27.0715C31.8914 27.025 31.7127 27 31.5273 27H16.4727C16.2873 27 16.1086 27.025 15.9401 27.0715C15.475 27.1996 15.0867 27.4909 14.8457 27.8694C14.5745 28.2955 14.4899 28.8322 14.6928 29.3713C14.709 29.4143 14.7254 29.4572 14.7419 29.5C14.7758 29.5878 14.8104 29.6751 14.8457 29.7618C14.9005 29.8962 14.9568 30.0293 15.0148 30.161C15.3251 30.8658 15.6814 31.5308 16.0782 32.1488C16.2841 32.4693 16.5008 32.7772 16.7277 33.0715C18.6019 35.5016 21.1687 37 24 37C26.8313 37 29.3981 35.5016 31.2723 33.0715ZM31.2759 29.0715C31.0111 29.7136 30.7094 30.3084 30.377 30.8535C30.3321 30.927 30.2867 30.9997 30.2407 31.0715H17.7594C17.4238 30.5478 17.1173 29.9756 16.8457 29.3571V29.0715H31.2759Z" fill="currentColor"/>
+</svg></div><b>기분·삶의 질 — 약 +18점</b></div><div class="v2-body">정서적 안녕감 점수가 약 18점 올랐습니다. 운동이 기분과 삶의 질에 도움이 됐다는 뜻입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>차이가 없던 것</b></div><div class="v2-body">체지방·혈당 대사·혈중 지질·혈압은 두 군 사이에 차이가 없었습니다.</div></div><div class="q-figcap__t">오른쪽 그림 · 진한 막대 둘(체력·기분)은 뚜렷, 옅은 막대(간 지방)는 불확실(설명용 그림 · 실제 수치 아님)</div>
+  </div>
+  <div class="v2-panel q-fig" style="left:896px;top:206px;width:320px;height:400px">
+    <img class="v2-fig__img q-fig__img" style="width:320px;height:400px" src="../../../shared/assets/generated/gi-hiit-hepatitis-b-steatosis-s05-comparison-fitness-mood-vs-liverfat-20260624.png" alt="높고 진한 막대 두 개와 낮고 옅은 막대 하나를 비교한 막대그림">
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 체력과 기분의 좋아짐은 통계적으로도 의미 있는 변화였습니다.</span><span class="v2-src">근거 · 2차 결과(모두 의미 있음) · PLoS One 2026 무작위 대조 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 어떻게 받아들일까</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">그래서 어떻게 받아들이면 될까요</h2>
+  <p class="v2-sub">“운동이 간 지방을 줄인다”고는 아직 말할 수 없지만, 운동할 이유는 충분합니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:300px">
+    <div class="v2-vs__col"><div class="v2-vs__head">간 지방 효과</div><div class="v2-vs__lead">아직 미확정 — ‘효과 없음’이 아니라 ‘미확인’</div><ul class="v2-vs__list"><li>14명만 마친 아주 작은 연구 + 일찍 종료</li><li>저자들도 결과를 ‘탐색적’이라고 밝혔습니다</li><li>“운동은 소용없다”로 단정하면 안 됩니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">체력·기분 이점</div><div class="v2-vs__lead">분명함 — 운동을 권할 이유</div><ul class="v2-vs__list"><li>심폐 체력이 의미 있게 좋아졌습니다</li><li>기분·삶의 질 점수도 의미 있게 올랐습니다</li><li>만성 B형간염 환자에게도 운동을 권할 이유가 됩니다</li></ul></div>
+  </div>
+  <div class="v2-panel q-inline-p v2-panel--accent" style="left:64px;top:530px;width:1152px;height:76px">
+    <div class="q-inline"><b>앞으로</b> 간 지방에 대한 효과는 더 큰 연구로 다시 확인해야 합니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 새 운동을 시작하기 전, 몸 상태에 맞는 강도를 진료 때 함께 정하세요.</span><span class="v2-src">근거 · 연구 한계(저자 ‘탐색적’) · PLoS One 2026 무작위 대조 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 오늘 기억할 점</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 점</h2>
+  <p class="v2-sub">간 지방 효과는 아직 미확정 — 그래도 운동은 충분히 권할 만합니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:122px"><span class="q-chk__n">01</span><span class="q-chk__t">B형간염에 지방간이 겹치면 간이 굳고 간암으로 갈 위험이 더 커집니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:344px;width:564px;height:122px"><span class="q-chk__n">02</span><span class="q-chk__t">12주 운동의 간 지방 감소 효과는 이 연구에서 확인되지 않았습니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:482px;width:564px;height:122px"><span class="q-chk__n">03</span><span class="q-chk__t">14명만 마친 아주 작은 연구 — ‘효과 없음’이 아니라 ‘아직 미확인’</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:122px"><span class="q-chk__n">04</span><span class="q-chk__t">심폐 체력과 기분·삶의 질은 분명히 좋아졌습니다</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:344px;width:564px;height:122px"><span class="q-chk__n">05</span><span class="q-chk__t">운동의 체력·기분 이점은 분명 — 간 지방은 더 큰 연구가 필요</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:482px;width:564px;height:122px"><span class="q-chk__n">06</span><span class="q-chk__t">운동과 함께 항바이러스제·정기 간 검사를 꾸준히 이어가세요</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 운동은 권장하되, 처방받은 약과 정기 검사가 우선입니다.</span><span class="v2-src">근거 · PLoS One 2026 무작위 대조 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">만성 B형간염과 지방간이 함께 있는 분을 위한 연구 소개 자료입니다. 운동 강도와 치료는 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">PLoS One 2026 — 만성 B형간염 + 지방간 환자 12주 고강도 인터벌 운동 무작위 대조 연구</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM16,2H17V3H16zM17,2H18V3H17zM18,2H19V3H18zM19,2H20V3H19zM27,2H28V3H27zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM13,3H14V4H13zM16,3H17V4H16zM17,3H18V4H17zM19,3H20V4H19zM20,3H21V4H20zM22,3H23V4H22zM24,3H25V4H24zM25,3H26V4H25zM26,3H27V4H26zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM23,4H24V5H23zM25,4H26V5H25zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM15,5H16V6H15zM18,5H19V6H18zM19,5H20V6H19zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM14,6H15V7H14zM16,6H17V7H16zM17,6H18V7H17zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM19,7H20V8H19zM22,7H23V8H22zM23,7H24V8H23zM28,7H29V8H28zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM13,9H14V10H13zM15,9H16V10H15zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM28,9H29V10H28zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM13,10H14V11H13zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM23,10H24V11H23zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM2,11H3V12H2zM4,11H5V12H4zM6,11H7V12H6zM7,11H8V12H7zM11,11H12V12H11zM13,11H14V12H13zM14,11H15V12H14zM15,11H16V12H15zM16,11H17V12H16zM17,11H18V12H17zM20,11H21V12H20zM22,11H23V12H22zM24,11H25V12H24zM26,11H27V12H26zM30,11H31V12H30zM33,11H34V12H33zM35,11H36V12H35zM36,11H37V12H36zM37,11H38V12H37zM3,12H4V13H3zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM14,12H15V13H14zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM21,12H22V13H21zM24,12H25V13H24zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM35,12H36V13H35zM37,12H38V13H37zM38,12H39V13H38zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM7,13H8V14H7zM9,13H10V14H9zM12,13H13V14H12zM15,13H16V14H15zM17,13H18V14H17zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM25,13H26V14H25zM28,13H29V14H28zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM38,13H39V14H38zM2,14H3V15H2zM4,14H5V15H4zM6,14H7V15H6zM8,14H9V15H8zM9,14H10V15H9zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM17,14H18V15H17zM19,14H20V15H19zM20,14H21V15H20zM21,14H22V15H21zM24,14H25V15H24zM25,14H26V15H25zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM5,15H6V16H5zM10,15H11V16H10zM11,15H12V16H11zM16,15H17V16H16zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM25,15H26V16H25zM30,15H31V16H30zM33,15H34V16H33zM2,16H3V17H2zM3,16H4V17H3zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM11,16H12V17H11zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM26,16H27V17H26zM29,16H30V17H29zM30,16H31V17H30zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM3,17H4V18H3zM7,17H8V18H7zM12,17H13V18H12zM15,17H16V18H15zM16,17H17V18H16zM17,17H18V18H17zM22,17H23V18H22zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM38,17H39V18H38zM3,18H4V19H3zM4,18H5V19H4zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM10,18H11V19H10zM12,18H13V19H12zM13,18H14V19H13zM15,18H16V19H15zM16,18H17V19H16zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM32,18H33V19H32zM33,18H34V19H33zM34,18H35V19H34zM36,18H37V19H36zM37,18H38V19H37zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM9,19H10V20H9zM10,19H11V20H10zM12,19H13V20H12zM17,19H18V20H17zM18,19H19V20H18zM19,19H20V20H19zM23,19H24V20H23zM25,19H26V20H25zM26,19H27V20H26zM28,19H29V20H28zM30,19H31V20H30zM31,19H32V20H31zM33,19H34V20H33zM37,19H38V20H37zM2,20H3V21H2zM3,20H4V21H3zM5,20H6V21H5zM7,20H8V21H7zM8,20H9V21H8zM11,20H12V21H11zM15,20H16V21H15zM19,20H20V21H19zM22,20H23V21H22zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM37,20H38V21H37zM38,20H39V21H38zM4,21H5V22H4zM5,21H6V22H5zM7,21H8V22H7zM11,21H12V22H11zM13,21H14V22H13zM15,21H16V22H15zM18,21H19V22H18zM23,21H24V22H23zM24,21H25V22H24zM25,21H26V22H25zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM32,21H33V22H32zM34,21H35V22H34zM38,21H39V22H38zM2,22H3V23H2zM3,22H4V23H3zM4,22H5V23H4zM8,22H9V23H8zM9,22H10V23H9zM12,22H13V23H12zM13,22H14V23H13zM14,22H15V23H14zM15,22H16V23H15zM19,22H20V23H19zM24,22H25V23H24zM27,22H28V23H27zM28,22H29V23H28zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM36,22H37V23H36zM2,23H3V24H2zM4,23H5V24H4zM7,23H8V24H7zM9,23H10V24H9zM13,23H14V24H13zM18,23H19V24H18zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM2,24H3V25H2zM3,24H4V25H3zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM13,24H14V25H13zM15,24H16V25H15zM17,24H18V25H17zM19,24H20V25H19zM23,24H24V25H23zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM38,24H39V25H38zM3,25H4V26H3zM7,25H8V26H7zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM13,25H14V26H13zM14,25H15V26H14zM15,25H16V26H15zM17,25H18V26H17zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM26,25H27V26H26zM30,25H31V26H30zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM38,25H39V26H38zM3,26H4V27H3zM4,26H5V27H4zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM15,26H16V27H15zM18,26H19V27H18zM23,26H24V27H23zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM2,27H3V28H2zM3,27H4V28H3zM5,27H6V28H5zM6,27H7V28H6zM9,27H10V28H9zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM16,27H17V28H16zM17,27H18V28H17zM20,27H21V28H20zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM33,27H34V28H33zM35,27H36V28H35zM2,28H3V29H2zM6,28H7V29H6zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM13,28H14V29H13zM15,28H16V29H15zM17,28H18V29H17zM18,28H19V29H18zM19,28H20V29H19zM21,28H22V29H21zM24,28H25V29H24zM29,28H30V29H29zM31,28H32V29H31zM32,28H33V29H32zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM4,29H5V30H4zM5,29H6V30H5zM6,29H7V30H6zM13,29H14V30H13zM17,29H18V30H17zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM2,30H3V31H2zM5,30H6V31H5zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM15,30H16V31H15zM16,30H17V31H16zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM18,31H19V32H18zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM37,31H38V32H37zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM12,32H13V33H12zM14,32H15V33H14zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM24,32H25V33H24zM26,32H27V33H26zM27,32H28V33H27zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM12,33H13V34H12zM14,33H15V34H14zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM25,33H26V34H25zM26,33H27V34H26zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM13,34H14V35H13zM15,34H16V35H15zM16,34H17V35H16zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM17,35H18V36H17zM18,35H19V36H18zM19,35H20V36H19zM25,35H26V36H25zM27,35H28V36H27zM28,35H29V36H28zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM35,35H36V36H35zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM15,36H16V37H15zM16,36H17V37H16zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM14,37H15V38H14zM15,37H16V38H15zM16,37H17V38H16zM18,37H19V38H18zM23,37H24V38H23zM24,37H25V38H24zM25,37H26V38H25zM26,37H27V38H26zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM31,37H32V38H31zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM12,38H13V39H12zM15,38H16V39H15zM16,38H17V39H16zM19,38H20V39H19zM20,38H21V39H20zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM32,38H33V39H32zM34,38H35V39H34zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -499,96 +307,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">08 / 08</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 08</div>
+</section>
 </body>
 </html>

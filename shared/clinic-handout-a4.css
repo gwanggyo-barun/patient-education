@@ -870,3 +870,83 @@ body {
   }
 }
 }
+
+/* ==========================================================================
+   MOBILE FIT — 휴대폰에서도 컴퓨터와 같은 A4 모양 (MV1 · 2026-09-27 원장님 49200)
+   --------------------------------------------------------------------------
+   문제: 좁은 화면에서 위 화면 셸이 A4 를 331px 짜리 한 칼럼으로 다시 흘려
+   (zoom 2.4 × 좁은 폭) 표가 종이 밖으로 삐져나오고(IPSS 1032px), viewport
+   메타(width=794)를 무시하는 인앱 브라우저(안드로이드 WebView 계열)에서는
+   360px 폭에 글자가 거대하게 줄바꿈됐다.
+   처방: **터치 기기(pointer: coarse)의 좁은 화면**에서만 A4 논리 폭 794px 를
+   그대로 두고 문서 전체를 화면 폭에 맞게 통째로 축소한다 — 병원 큰 모니터
+   (clinic-primary, 접기 없음)와 같은 모양이다. 핀치 확대는 막지 않는다.
+   · 배율은 사다리(10px 단위)로 준다 — calc(100vw / 794px) 같은 단위 나눗셈은
+     구형 WebView 가 못 읽는다. 각 칸은 그 칸 하한 폭 ÷ 794 라 넘치지 않는다.
+   · 마우스 기기(노션 임베드·좁은 데스크톱 창)는 pointer: fine 이라 무영향.
+   · PRINT·PDF 무영향: 전부 @media screen 안이다. 빌드 렌더(820×1160, 비터치)도
+     조건에 안 걸린다.
+   ========================================================================== */
+@media screen and (pointer: coarse) and (max-width: 810px) {
+  :root {
+    --ccs-fold-k: 0px;   /* 접기 해제 — 큰 모니터와 같은 배치 */
+    --ccs-wide-k: 0px;
+  }
+  html, body { margin: 0; }
+  body { overflow-x: hidden; }
+  .page { margin: 0 auto; }
+}
+@media screen and (pointer: coarse) and (max-width: 810px) { :root { --screen-zoom: 1.0000; } }
+@media screen and (pointer: coarse) and (max-width: 800px) { :root { --screen-zoom: 0.9950; } }
+@media screen and (pointer: coarse) and (max-width: 790px) { :root { --screen-zoom: 0.9824; } }
+@media screen and (pointer: coarse) and (max-width: 780px) { :root { --screen-zoom: 0.9698; } }
+@media screen and (pointer: coarse) and (max-width: 770px) { :root { --screen-zoom: 0.9572; } }
+@media screen and (pointer: coarse) and (max-width: 760px) { :root { --screen-zoom: 0.9446; } }
+@media screen and (pointer: coarse) and (max-width: 750px) { :root { --screen-zoom: 0.9320; } }
+@media screen and (pointer: coarse) and (max-width: 740px) { :root { --screen-zoom: 0.9194; } }
+@media screen and (pointer: coarse) and (max-width: 730px) { :root { --screen-zoom: 0.9068; } }
+@media screen and (pointer: coarse) and (max-width: 720px) { :root { --screen-zoom: 0.8942; } }
+@media screen and (pointer: coarse) and (max-width: 710px) { :root { --screen-zoom: 0.8816; } }
+@media screen and (pointer: coarse) and (max-width: 700px) { :root { --screen-zoom: 0.8690; } }
+@media screen and (pointer: coarse) and (max-width: 690px) { :root { --screen-zoom: 0.8564; } }
+@media screen and (pointer: coarse) and (max-width: 680px) { :root { --screen-zoom: 0.8438; } }
+@media screen and (pointer: coarse) and (max-width: 670px) { :root { --screen-zoom: 0.8312; } }
+@media screen and (pointer: coarse) and (max-width: 660px) { :root { --screen-zoom: 0.8186; } }
+@media screen and (pointer: coarse) and (max-width: 650px) { :root { --screen-zoom: 0.8060; } }
+@media screen and (pointer: coarse) and (max-width: 640px) { :root { --screen-zoom: 0.7935; } }
+@media screen and (pointer: coarse) and (max-width: 630px) { :root { --screen-zoom: 0.7809; } }
+@media screen and (pointer: coarse) and (max-width: 620px) { :root { --screen-zoom: 0.7683; } }
+@media screen and (pointer: coarse) and (max-width: 610px) { :root { --screen-zoom: 0.7557; } }
+@media screen and (pointer: coarse) and (max-width: 600px) { :root { --screen-zoom: 0.7431; } }
+@media screen and (pointer: coarse) and (max-width: 590px) { :root { --screen-zoom: 0.7305; } }
+@media screen and (pointer: coarse) and (max-width: 580px) { :root { --screen-zoom: 0.7179; } }
+@media screen and (pointer: coarse) and (max-width: 570px) { :root { --screen-zoom: 0.7053; } }
+@media screen and (pointer: coarse) and (max-width: 560px) { :root { --screen-zoom: 0.6927; } }
+@media screen and (pointer: coarse) and (max-width: 550px) { :root { --screen-zoom: 0.6801; } }
+@media screen and (pointer: coarse) and (max-width: 540px) { :root { --screen-zoom: 0.6675; } }
+@media screen and (pointer: coarse) and (max-width: 530px) { :root { --screen-zoom: 0.6549; } }
+@media screen and (pointer: coarse) and (max-width: 520px) { :root { --screen-zoom: 0.6423; } }
+@media screen and (pointer: coarse) and (max-width: 510px) { :root { --screen-zoom: 0.6297; } }
+@media screen and (pointer: coarse) and (max-width: 500px) { :root { --screen-zoom: 0.6171; } }
+@media screen and (pointer: coarse) and (max-width: 490px) { :root { --screen-zoom: 0.6045; } }
+@media screen and (pointer: coarse) and (max-width: 480px) { :root { --screen-zoom: 0.5919; } }
+@media screen and (pointer: coarse) and (max-width: 470px) { :root { --screen-zoom: 0.5793; } }
+@media screen and (pointer: coarse) and (max-width: 460px) { :root { --screen-zoom: 0.5668; } }
+@media screen and (pointer: coarse) and (max-width: 450px) { :root { --screen-zoom: 0.5542; } }
+@media screen and (pointer: coarse) and (max-width: 440px) { :root { --screen-zoom: 0.5416; } }
+@media screen and (pointer: coarse) and (max-width: 430px) { :root { --screen-zoom: 0.5290; } }
+@media screen and (pointer: coarse) and (max-width: 420px) { :root { --screen-zoom: 0.5164; } }
+@media screen and (pointer: coarse) and (max-width: 410px) { :root { --screen-zoom: 0.5038; } }
+@media screen and (pointer: coarse) and (max-width: 400px) { :root { --screen-zoom: 0.4912; } }
+@media screen and (pointer: coarse) and (max-width: 390px) { :root { --screen-zoom: 0.4786; } }
+@media screen and (pointer: coarse) and (max-width: 380px) { :root { --screen-zoom: 0.4660; } }
+@media screen and (pointer: coarse) and (max-width: 370px) { :root { --screen-zoom: 0.4534; } }
+@media screen and (pointer: coarse) and (max-width: 360px) { :root { --screen-zoom: 0.4408; } }
+@media screen and (pointer: coarse) and (max-width: 350px) { :root { --screen-zoom: 0.4282; } }
+@media screen and (pointer: coarse) and (max-width: 340px) { :root { --screen-zoom: 0.4156; } }
+@media screen and (pointer: coarse) and (max-width: 330px) { :root { --screen-zoom: 0.4030; } }
+@media screen and (pointer: coarse) and (max-width: 320px) { :root { --screen-zoom: 0.3904; } }
+@media screen and (pointer: coarse) and (max-width: 310px) { :root { --screen-zoom: 0.3778; } }
+@media screen and (pointer: coarse) and (max-width: 300px) { :root { --screen-zoom: 0.3652; } }
+@media screen and (pointer: coarse) and (max-width: 290px) { :root { --screen-zoom: 0.3526; } }
+@media screen and (pointer: coarse) and (max-width: 280px) { :root { --screen-zoom: 0.3401; } }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Herpes Zoster — Gwanggyo Barun Internal Medicine</title>
+  <title>대상포진 환자 교육 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,811 +18,400 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <!-- Local extensions for this deck (3-stat row + alert-stack + checklist 8) -->
-  <style>
-    /* Three-stat row — single row of 3 large circular stats + supporting card */
-    .pattern-stats3 {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-6);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .stats3-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-      align-items: center;
-      justify-items: center;
-    }
-    .stats3-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .stats3-cell__circle {
-      width: 168px;
-      height: 168px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-canvas);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-    }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__num {
-      font-size: 3rem;
-      font-weight: var(--weight-black);
-      line-height: 1;
-      letter-spacing: var(--tracking-mega);
-    }
-    .stats3-cell__unit {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      margin-top: var(--space-2);
-      opacity: 0.92;
-    }
-    .stats3-cell__label {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      text-align: center;
-      max-width: 240px;
-      line-height: var(--lh-snug);
-    }
-    .stats3-note {
-      padding: var(--space-5) var(--space-6);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-relaxed);
-    }
-
-    /* Vertical alert stack — single column, alert rows */
-    .pattern-alert-stack {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: 1fr;
-      gap: var(--space-3);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .alert-row {
-      display: flex;
-      gap: var(--space-4);
-      align-items: flex-start;
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-danger-bg);
-      border: 1px solid var(--color-danger);
-      border-radius: var(--radius-lg);
-      min-height: 0;
-      overflow: hidden;
-    }
-    .alert-row__icon {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--color-canvas);
-      color: var(--color-danger);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--text-h3);
-      font-weight: var(--weight-bold);
-      border: 1px solid var(--color-danger);
-    }
-    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
-    .alert-row__title {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-bold);
-      color: var(--color-danger);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-tight);
-    }
-    .alert-row__text {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-
-    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5C-redesign 2026-09-27 (원장님 49113) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-head{margin-bottom:4px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="대상포진(Herpes Zoster) 원인부터 진단·치료·합병증·Shingrix 백신까지 환자가 알아야 할 모든 것">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/infectious/herpes-zoster/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Herpes Zoster — Gwanggyo Barun Internal Medicine", "description": "대상포진(Herpes Zoster) 원인부터 진단·치료·합병증·Shingrix 백신까지 환자가 알아야 할 모든 것", "url": "https://edu.gwanggyobarun.com/decks/infectious/herpes-zoster/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "대상포진 환자 교육 — 광교바른내과", "description": "대상포진(Herpes Zoster) 원인부터 진단·치료·합병증·Shingrix 백신까지 환자가 알아야 할 모든 것", "url": "https://edu.gwanggyobarun.com/decks/infectious/herpes-zoster/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · INFECTIOUS DISEASE</div>
+      <div class="slide__chapter"><strong>환자 안내</strong> · 감염</div>
     </header>
     <div class="slide__title-block">
-      <h1 class="slide__title">대상포진 (Herpes Zoster),<br><em>원인부터 예방까지</em></h1>
-      <p class="slide__subtitle">수두 바이러스 재활성화로 생기는 피부절 통증과 수포 — 72시간 골든타임과 Shingrix 백신을 알아봅니다</p>
+      <h1 class="slide__title">대상포진,<br><em>원인부터 예방까지</em></h1>
+      <p class="slide__subtitle">잠든 수두 바이러스가 깨어나 생기는 띠 모양 통증과 물집 — 72시간 골든타임과 예방 백신</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Herpes Zoster · Postherpetic Neuralgia · Shingrix Vaccine</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__source">대상포진 · 포진후신경통 · 예방 백신</span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — 75만 명 / year, 50세 이후 급증
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한국에서 매년 75만 명이 대상포진을 경험합니다</h2>
-      <p class="slide__subtitle">한국 발생률은 서구의 2배 이상 — 1,000명당 10.4명, 특히 50세 이후 급증합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>75</em>만</div>
-          <div class="pattern-hero-number__caption">한국 연간 대상포진 환자 수 — 1,000명당 10.4명 (서구 3~5명/1,000명의 2배 이상). 수두를 앓은 사람은 누구나 걸릴 수 있습니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why this matters</div>
-          <div class="pattern-hero-number__detail-text">
-            어린 시절 수두(chickenpox)를 일으킨 varicella-zoster virus (VZV)가 신경절(dorsal root ganglion)에 잠복해 있다가, 면역력이 떨어지면 다시 활성화됩니다. 50세 이후 면역력 저하와 함께 위험이 급격히 증가하므로, 조기 진단과 백신 예방이 모두 중요합니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Korean HZ Epidemiology · 대한감염학회 2023</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — Definition & Dermatome anatomy
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">대상포진 (Herpes Zoster) 이란</h2>
-      <p class="slide__subtitle">한쪽 피부절(dermatome)을 따라 띠처럼 나타나는 통증과 수포성 발진</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">VZV가 신경절에서 재활성화되어, 특정 신경이 지배하는 <em>피부절(dermatome)을 따라 한쪽으로만</em> 통증과 수포가 나타나는 질환입니다.</p>
-          <p class="pattern-split__supporting">
-            'Zoster'는 그리스어로 '허리띠'를 뜻합니다. 흉추(T3-L2)에서 가장 흔하며 (55%), 등에서 시작해 옆구리를 거쳐 가슴·배까지 띠처럼 감쌉니다. 등에 발진이 있는데 가슴이 아픈 것은 같은 신경이 연결된 정상 경과이며, 발진 1~5일 전 통증만 먼저 나타나 협심증·담석증·충수돌기염으로 오인되기도 합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Most common site</div>
-            <div class="pattern-split__metric-value">흉추 55%</div>
-            <div class="pattern-split__metric-detail">T3–L2 피부절. 경추 20%, 삼차신경 V1 15%, 요천추 11% 순.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Onset age</div>
-            <div class="pattern-split__metric-value">50세 이후</div>
-            <div class="pattern-split__metric-detail">면역력 저하와 함께 발생 위험이 급격히 증가합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Anatomy of Dermatomal Reactivation · Cohen 2013</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · TIMELINE — 4-phase clinical course
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>CLINICAL COURSE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">증상의 시간 경과 — 전구기에서 회복기까지</h2>
-      <p class="slide__subtitle">발진 출현 후 72시간 이내 항바이러스제 시작이 가장 중요합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">전구기 · 1~5일 전</div>
-          <div class="timeline-step__body">발진 전 해당 부위에 작열감·찌르는 통증, 전신 피로·근육통. 이 시기 통증만으로 다른 질환으로 오인되기 쉽습니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">급성 발진기 · ~15일</div>
-          <div class="timeline-step__body">홍반 위에 군집성 수포 발생, 3~5일간 새 수포 형성, 7~10일 후 가피(딱지) 형성. 항바이러스제 효과가 가장 큰 시기.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">치유기 · 2~4주</div>
-          <div class="timeline-step__body">가피 탈락과 피부 회복, 색소 침착 가능. 대부분 완전히 회복되지만 흉터·반흔이 남을 수 있습니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">PHN (발생 시) · 90일 이상</div>
-          <div class="timeline-step__body">발진 후 90일 이상 지속되는 작열통·이질통(allodynia). 삶의 질이 저하되며 고령자에서 호발합니다.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">72h 골든타임</span>
-        <span class="alert-strip__text">발진이 나타난 후 72시간 이내 항바이러스제(Valacyclovir/Famciclovir/Acyclovir) 시작 시 통증 기간 단축 효과가 가장 큽니다. 새 수포가 형성 중이거나 면역저하·고령·V1 침범이면 72시간 경과 후에도 투여합니다.</span>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/infectious-herpes-zoster-s04-anatomy-infectious-7c52b185-20260530-raster-20260531.jpg" alt="증상의 시간 경과 — 전구기에서 회복기까지 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Cochrane Review · IDSA Guidelines 2022</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 3×2 — Antiviral & pain medications
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>TREATMENT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">항바이러스제와 통증 조절 약물</h2>
-      <p class="slide__subtitle">72시간 이내 항바이러스제 + 단계적 통증 관리 — 빠른 시작이 핵심</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">ANTIVIRAL · 01 · 1차</div>
-          <div class="tile__title">Valacyclovir (발라시클로버)</div>
-          <div class="tile__body">1,000 mg을 하루 3회, 7일간 복용. 흡수율이 우수하고 복약이 편리합니다. RCT에서 통증 소실 중앙값을 51일에서 38일로 13일 단축시켰습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ANTIVIRAL · 02</div>
-          <div class="tile__title">Famciclovir (팜시클로버)</div>
-          <div class="tile__body">500 mg을 하루 3회, 7일간 복용. 발라시클로버와 동등한 효능을 보입니다. 신기능에 따라 용량 조절이 필요한 대안 약물입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ANTIVIRAL · 03</div>
-          <div class="tile__title">Acyclovir (아시클로버)</div>
-          <div class="tile__body">800 mg을 하루 5회, 7일간 복용. 흡수율이 낮고 복약 빈도가 높지만 가격이 저렴해 사용됩니다. 신부전 시 용량 조절 필수.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">PAIN · 04 · 1단계</div>
-          <div class="tile__title">Acetaminophen / NSAIDs</div>
-          <div class="tile__body">경증 통증의 1차 약물. 아세트아미노펜 또는 비스테로이드성 소염제로 시작하며, 위장장애·신기능에 주의해 단기간 사용합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">PAIN · 05 · 2단계</div>
-          <div class="tile__title">Gabapentin / Pregabalin</div>
-          <div class="tile__body">중등도 통증과 신경병증성 통증에 추가합니다. 가바펜틴 1,800~3,600 mg/일, 프레가발린 150~600 mg/일. 졸음·어지러움·부종이 흔합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">PAIN · 06 · 3단계</div>
-          <div class="tile__title">Tramadol / 단기 Opioids</div>
-          <div class="tile__body">심한 급성기 통증(NNT 4~5)에 한해 단기간만 사용. Lidocaine 5% 패치는 전신 부작용이 적어 노인·취약 환자에 유용합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Valacyclovir vs Acyclovir RCT (n=1,141) · IDSA 2022</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 3×2 — PHN risk factors
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>PHN RISK FACTORS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">포진후신경통 (Postherpetic Neuralgia) 위험 인자</h2>
-      <p class="slide__subtitle">발진 후 90일 이상 지속되는 통증 — 80세 이상에서 32%, 50세 미만에서는 3%</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">FACTOR · 01 · 가장 강력</div>
-          <div class="tile__title">고령 (Age)</div>
-          <div class="tile__body">10세 증가당 PHN 위험이 1.2~3배 증가. 60~65세 20%, 80세 이상 32%. 가장 강력한 단일 위험 인자이며 백신 예방이 가장 중요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 02</div>
-          <div class="tile__title">급성기 심한 통증</div>
-          <div class="tile__body">발진 시기에 통증 강도가 높을수록 PHN 위험이 약 2.2배 증가. 초기 통증을 적극적으로 조절하면 PHN 발생을 줄일 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 03</div>
-          <div class="tile__title">광범위 발진</div>
-          <div class="tile__body">한 피부절을 넘어 광범위하게 분포하는 발진은 위험을 약 2.6배 높입니다. 면역저하자에서 더 흔하므로 별도 평가가 필요합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 04</div>
-          <div class="tile__title">전구 통증 존재</div>
-          <div class="tile__body">발진 출현 1~5일 전 작열통·찌르는 통증이 선행한 경우 PHN 위험이 약 2.3배 증가. 전구기 호소가 있다면 적극 치료 시작 신호.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACTOR · 05</div>
-          <div class="tile__title">안신경 (V1) 침범</div>
-          <div class="tile__body">눈 주위 V1 피부절 침범은 PHN 위험을 약 2.5배 높이며 안구 합병증도 동반. 즉시 안과 협진과 항바이러스제 시작이 필요합니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">PROGNOSIS · 06</div>
-          <div class="tile__title">대부분 6개월 내 호전</div>
-          <div class="tile__body">PHN의 대부분은 3~6개월 내 자연 소실되지만, 약 2%는 5년 이상 통증이 지속됩니다. 조기 항바이러스제와 Shingrix가 가장 강력한 예방법입니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/infectious-herpes-zoster-s06-risk-infectious-159f61db-20260530-raster-20260531.jpg" alt="포진후신경통 (Postherpetic Neuralgia) 위험 인자 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — PHN Risk Stratification · Drolet 2010 · CDC 2024</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · COMPARISON — Zostavax vs Shingrix
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>VACCINE COMPARISON</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">백신 비교 — Zostavax vs Shingrix</h2>
-      <p class="slide__subtitle">Shingrix(재조합 백신)의 효능 97%는 Zostavax(생백신) 51%의 약 2배입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">−</span>
-            Zostavax (생백신, 단종)
-          </div>
-          <ul class="compare-col__list">
-            <li>피하 1회 접종</li>
-            <li>50~69세 효능 약 70%</li>
-            <li>70대 41%, 80대 18%로 급격히 감소</li>
-            <li>PHN 예방 효과 66.5%</li>
-            <li>10년 후 효능 15%까지 감소</li>
-            <li>면역저하자 사용 금기 — 한국 2024년 5월 공급 중단</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            Shingrix (재조합 백신, 권장)
-          </div>
-          <ul class="compare-col__list">
-            <li>근육 2회 접종 (0개월, 2~6개월)</li>
-            <li>50~69세 효능 97.2%</li>
-            <li>70세 이상에서도 91.3% 유지</li>
-            <li>PHN 예방 효과 89~91%</li>
-            <li>11년 후에도 약 80% 효능 유지</li>
-            <li>면역저하자도 사용 가능 — 대한감염학회 2023 권고</li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/infectious-herpes-zoster-s07-comparison-infectious-4503e928-20260530-raster-20260531.jpg" alt="백신 비교 — Zostavax vs Shingrix 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ZOE-50/ZOE-70 RCT · 대한감염학회 2023 권고</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · DENSITY GRID 2×2 — Shingrix practical guide
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>SHINGRIX IN PRACTICE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Shingrix 실전 가이드 — 부작용·비용·접종 시점</h2>
-      <p class="slide__subtitle">대상포진을 앓았더라도 접종이 권고됩니다 — 회복 후 재발률 10년 누적 10% 이상</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">FACT · 01 · 부작용</div>
-          <div class="tile__title">국소·전신 반응</div>
-          <div class="tile__body">주사부위 통증 78%, 근육통·피로 45%, 두통 38%, 오한 27%, 발열 21%. 대부분 2~3일 내 자연 소실되며, 심각한 이상반응은 위약과 동일(2.3% vs 2.2%)합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACT · 02 · 비용</div>
-          <div class="tile__title">한국 내 가격 (2026)</div>
-          <div class="tile__body">Shingrix(GSK) 약 25만원/회, 총 40~50만원(2회). SkyZoster(SK바이오) 약 14.6만원/1회 생백신. 모든 대상포진 백신은 건강보험 비급여(전액 자비) 입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACT · 03 · 보조 접종</div>
-          <div class="tile__title">지자체 무료·보조 사업</div>
-          <div class="tile__body">서울 강남구(70세↑ 생/재조합 모두), 도봉구, 김포시, 가평군 등 일부 지자체에서 65세 이상 무료 또는 보조 접종 시행. 거주지 보건소에 확인 필요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FACT · 04 · 접종 시점</div>
-          <div class="tile__title">대상포진 회복 후 접종</div>
-          <div class="tile__body">CDC/ACIP는 급성 에피소드 해소 후 즉시 가능, 호주 ATAGI는 면역정상인 12개월·면역저하자 3개월 대기. 대한감염학회는 기왕력자에게도 Shingrix 접종을 권고합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Shingrix Korea Pricing 2026 · CDC ACIP · ATAGI 2024</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · ALERT STACK — Emergency presentations (4 alerts; cap 2/slide -> exception: this is the dedicated emergency slide per SKILL.md)
-       NOTE: per SKILL.md "alert-stack pattern is for explicit emergency slides, 3-4 alerts max"
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>EMERGENCY SIGNS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">즉시 의료기관 방문이 필요한 경우</h2>
-      <p class="slide__subtitle">실명·청력손실·전신 감염을 막기 위해 지체 없이 응급 진료가 필요한 4가지 신호</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-alert-stack">
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">눈 대상포진 (Herpes Zoster Ophthalmicus, HZO)</div>
-            <div class="alert-row__text">이마·코끝(Hutchinson's sign)·눈꺼풀에 수포가 생기면 V1 침범으로 안구 합병증 위험 6.5배 증가, 50~70%에서 각막염·포도막염·망막괴사·실명 위험. 시기 불문 즉시 안과 진료와 항바이러스제 시작 필수.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">람세이 헌트 증후군 (Ramsay Hunt Syndrome)</div>
-            <div class="alert-row__text">귀 주위 수포 + 같은 쪽 안면마비 + 청력 저하·어지럼증. 즉시 항바이러스제와 스테로이드 병용 치료, 이비인후과 협진이 필요합니다. 늦으면 영구적 안면마비·청력 손실 위험.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">면역저하자의 파종성 대상포진</div>
-            <div class="alert-row__text">항암치료·장기이식·HIV·고용량 스테로이드 환자에서 원래 부위 밖 20개 이상 병변, 다수 피부절 침범. 폐렴·뇌염·간염 등 장기 합병증과 사망 위험. 즉시 입원과 정맥 항바이러스제 필요.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">중추신경계 침범 의심</div>
-            <div class="alert-row__text">심한 두통, 목 뻣뻣함, 의식 변화, 경련 → 수막염·뇌염·VZV 혈관병증 가능성. 광범위 이차 세균 감염(고열·발적·농성 삼출물)도 즉시 의료기관 평가 대상입니다.</div>
-          </div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/infectious-herpes-zoster-s09-risk-infectious-99df208f-20260530-raster-20260531.jpg" alt="즉시 의료기관 방문이 필요한 경우 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — HZO Hutchinson's Sign · IDSA 2022 · CDC Disseminated Zoster</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · DENSITY GRID 2×2 — Daily life & contagion FAQ
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>DAILY LIFE FAQ</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">일상 생활과 자주 묻는 질문</h2>
-      <p class="slide__subtitle">전염성·재발·복귀·위생 — 환자분들이 가장 궁금해하는 4가지</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">FAQ · 01 · 전염</div>
-          <div class="tile__title">다른 사람에게 옮기나요?</div>
-          <div class="tile__body">대상포진 자체는 전염되지 않지만, 수포액 직접 접촉 시 수두 면역이 없는 사람은 수두에 걸릴 수 있습니다. 모든 수포가 가피화될 때까지 임산부·신생아·면역저하자와 접촉을 피하세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FAQ · 02 · 재발</div>
-          <div class="tile__title">또 걸릴 수 있나요?</div>
-          <div class="tile__body">네. 한국 연구에서 10년 누적 재발률 10% 이상, 평균 약 3년 후 재발. 50세 이상, 여성, 면역저하, 당뇨가 위험 인자이며 경험자도 반드시 Shingrix 백신 접종이 권장됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FAQ · 03 · 복귀</div>
-          <div class="tile__title">언제 직장에 복귀하나요?</div>
-          <div class="tile__body">모든 수포가 딱지로 변하고 통증이 관리 가능하면 복귀 가능합니다(보통 2~4주). 면역저하자나 임산부와 함께 일하는 경우 완전 가피화 확인 후 복귀하세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FAQ · 04 · 위생</div>
-          <div class="tile__title">샤워와 상처 관리</div>
-          <div class="tile__body">미온수로 짧게 샤워 가능. 수포를 터뜨리지 말고 부드럽게 씻으며, 수건은 절대 공유하지 마세요. 깨끗이 유지하면 이차 세균 감염을 예방할 수 있습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — CDC Shingles FAQ · 대한감염학회 환자 안내</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — 8 essential takeaways
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">대상포진은 빨리 치료하고 미리 예방할수록 합병증을 줄일 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">편측 피부절 통증 + 군집성 수포 = 대상포진, <strong>추가 검사 없이 즉시 치료</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">발진 후 <strong>72시간 이내 항바이러스제(발라시클로버)</strong> 시작이 핵심</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">등에 발진, 가슴에 통증은 <strong>같은 신경이 연결된 정상 경과</strong>입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">50세 이상 모든 성인에게 <strong>Shingrix 2회 접종</strong> (97% 예방 효과)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">대상포진 경험자도 회복 후 <strong>반드시 백신 접종</strong>이 필요합니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">눈 주위·코끝·이마 수포는 응급 — <strong>즉시 안과 진료</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">PHN(신경통)은 <strong>조기 치료 + 백신</strong>으로 예방 가능합니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">수포 가피화까지 <strong>임산부·신생아·면역저하자 접촉 금지</strong></div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — early antiviral, vaccinate, avoid contact</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">대상포진은 빨리 치료하고<br><em>미리 예방할 수 있습니다</em></h2>
-      <p class="slide__subtitle">72시간 골든타임을 지키고 Shingrix로 예방하세요 — 궁금한 점은 언제든 문의해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 얼마나 흔한가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">한국에서 매년 75만 명이 대상포진을 겪습니다</h2>
+  <p class="v2-sub">한국은 서양보다 2배 이상 흔하고, 특히 50세 이후 크게 늘어납니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">75<span>만 명</span></div><div class="q-stat__lab">한국 연간 환자 수</div><div class="q-stat__cap">수두를 앓은 사람은 누구나 걸릴 수 있습니다</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">10.4<span>명</span></div><div class="q-stat__lab">1,000명당 한 해 발생</div><div class="q-stat__cap">서양(1,000명당 3~5명)의 2배 이상</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">50<span>세 이후</span></div><div class="q-stat__lab">위험이 크게 늘어남</div><div class="q-stat__cap">면역력이 떨어지면서 늘어납니다</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.8323 13.4187C17.0529 11.4931 19.8857 10.2549 22.9997 10.0352V12C22.9997 12.5523 23.4475 13 23.9997 13C24.552 13 24.9997 12.5523 24.9997 12V10.0352C28.1136 10.2549 30.9463 11.493 33.1669 13.4184L31.7779 14.8074C31.3874 15.1979 31.3874 15.8311 31.7779 16.2216C32.1685 16.6121 32.8016 16.6121 33.1921 16.2216L34.5811 14.8326C36.5067 17.0532 37.7448 19.886 37.9646 23H35.9997C35.4475 23 34.9997 23.4477 34.9997 24C34.9997 24.5523 35.4475 25 35.9997 25H37.9646C37.7448 28.1139 36.5067 30.9466 34.5813 33.1672L33.1921 31.7781C32.8016 31.3876 32.1685 31.3876 31.7779 31.7781C31.3874 32.1686 31.3874 32.8018 31.7779 33.1923L33.167 34.5814C30.9465 36.5069 28.1137 37.7451 24.9997 37.9648V36C24.9997 35.4477 24.552 35 23.9997 35C23.4475 35 22.9997 35.4477 22.9997 36V37.9648C19.8859 37.7451 17.0532 36.507 14.8327 34.5816L16.2216 33.1927C16.6121 32.8022 16.6121 32.1691 16.2216 31.7785C15.8311 31.388 15.1979 31.388 14.8074 31.7785L13.4184 33.1674C11.4929 30.9468 10.2547 28.114 10.0349 25H11.9997C12.552 25 12.9997 24.5523 12.9997 24C12.9997 23.4477 12.552 23 11.9997 23H10.0349C10.2547 19.8861 11.4927 17.0535 13.4181 14.8329L14.8074 16.2221C15.1979 16.6126 15.831 16.6126 16.2216 16.2221C16.6121 15.8316 16.6121 15.1984 16.2216 14.8079L14.8323 13.4187ZM19.9998 25C21.1043 25 21.9998 25.8954 21.9998 27C21.9998 28.1046 21.1043 29 19.9998 29C18.8952 29 17.9998 28.1046 17.9998 27C17.9998 25.8954 18.8952 25 19.9998 25ZM24.9998 19C24.9998 17.8954 24.1043 17 22.9998 17C21.8952 17 20.9998 17.8954 20.9998 19C20.9998 20.1046 21.8952 21 22.9998 21C24.1043 21 24.9998 20.1046 24.9998 19ZM28.9998 24C30.1043 24 30.9998 24.8954 30.9998 26C30.9998 27.1046 30.1043 28 28.9998 28C27.8952 28 26.9998 27.1046 26.9998 26C26.9998 24.8954 27.8952 24 28.9998 24Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9998 5C20.9998 4.44772 21.4475 4 21.9998 4H25.9998C26.552 4 26.9998 4.44772 26.9998 5C26.9998 5.55228 26.552 6 25.9998 6H24.9998V8C24.9998 8.55228 24.552 9 23.9998 9C23.4475 9 22.9998 8.55228 22.9998 8V6H21.9998C21.4475 6 20.9998 5.55228 20.9998 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.9998 39C24.552 39 24.9998 39.4477 24.9998 40V42H25.9998C26.552 42 26.9998 42.4477 26.9998 43C26.9998 43.5523 26.552 44 25.9998 44H21.9998C21.4475 44 20.9998 43.5523 20.9998 43C20.9998 42.4477 21.4475 42 21.9998 42H22.9998V40C22.9998 39.4477 23.4475 39 23.9998 39Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.6861 39.5567C12.2956 39.9472 11.6624 39.9472 11.2719 39.5567L8.44347 36.7283C8.05295 36.3378 8.05295 35.7046 8.44347 35.3141C8.83399 34.9236 9.46716 34.9236 9.85768 35.3141L10.5648 36.0212L11.979 34.607C12.3695 34.2164 13.0027 34.2164 13.3932 34.607C13.7837 34.9975 13.7837 35.6307 13.3932 36.0212L11.979 37.4354L12.6861 38.1425C13.0766 38.533 13.0766 39.1662 12.6861 39.5567Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34.6064 13.3938C34.2159 13.0032 34.2159 12.3701 34.6064 11.9796L36.0206 10.5653L35.3135 9.85823C34.923 9.46771 34.923 8.83454 35.3135 8.44402C35.7041 8.0535 36.3372 8.0535 36.7277 8.44402L39.5562 11.2724C39.9467 11.663 39.9467 12.2961 39.5562 12.6867C39.1656 13.0772 38.5325 13.0772 38.142 12.6867L37.4348 11.9796L36.0206 13.3938C35.6301 13.7843 34.9969 13.7843 34.6064 13.3938Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.99976 27C4.44747 27 3.99976 26.5523 3.99976 26V22C3.99976 21.4477 4.44747 21 4.99976 21C5.55204 21 5.99976 21.4477 5.99976 22V23H7.99976C8.55204 23 8.99976 23.4477 8.99976 24C8.99976 24.5523 8.55204 25 7.99976 25H5.99976V26C5.99976 26.5523 5.55204 27 4.99976 27Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M38.9998 24C38.9998 23.4477 39.4475 23 39.9998 23H41.9998V22C41.9998 21.4477 42.4475 21 42.9998 21C43.552 21 43.9998 21.4477 43.9998 22V26C43.9998 26.5523 43.552 27 42.9998 27C42.4475 27 41.9998 26.5523 41.9998 26V25H39.9998C39.4475 25 38.9998 24.5523 38.9998 24Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.44341 12.6866C8.05288 12.2961 8.05288 11.6629 8.44341 11.2724L11.2718 8.44396C11.6624 8.05343 12.2955 8.05343 12.686 8.44396C13.0766 8.83448 13.0766 9.46765 12.686 9.85817L11.9789 10.5653L13.3932 11.9795C13.7837 12.37 13.7837 13.0032 13.3932 13.3937C13.0026 13.7842 12.3695 13.7842 11.9789 13.3937L10.5647 11.9795L9.85762 12.6866C9.46709 13.0771 8.83393 13.0771 8.44341 12.6866Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34.6064 34.6069C34.9969 34.2164 35.63 34.2164 36.0206 34.6069L37.4348 36.0211L38.1419 35.314C38.5324 34.9235 39.1656 34.9235 39.5561 35.314C39.9466 35.7045 39.9466 36.3377 39.5561 36.7282L36.7277 39.5567C36.3371 39.9472 35.704 39.9472 35.3135 39.5567C34.9229 39.1661 34.9229 38.533 35.3135 38.1424L36.0206 37.4353L34.6064 36.0211C34.2158 35.6306 34.2158 34.9974 34.6064 34.6069Z" fill="currentColor"/>
+</svg></div><b>왜 생기나요</b></div><div class="v2-body">어릴 때 수두를 일으킨 바이러스가 척수 옆 신경 마디(신경절)에 숨어 있다가, 면역력이 떨어지면 다시 깨어납니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.00006 11.0781V23.26C8.00006 29.2165 10.6733 37.3394 22.2326 41.68C23.3702 42.1067 24.6298 42.1067 25.7674 41.68C37.3218 37.3474 39.9999 29.1653 39.9999 23.26V11.0781C40.0033 10.6196 39.8706 10.17 39.6179 9.78339C39.3652 9.39677 39.0032 9.08963 38.5755 8.89898C33.9804 6.94352 29.0135 5.95615 24 6.00149C18.9865 5.95615 14.0196 6.94352 9.42447 8.89898C8.99682 9.08963 8.63483 9.39677 8.38211 9.78339C8.12939 10.17 7.99671 10.6196 8.00006 11.0781ZM18.1669 24.1429H17.0905C16.9449 24.6065 16.5117 24.9428 16 24.9428C15.3688 24.9428 14.8571 24.4312 14.8571 23.8V22.2C14.8571 21.5688 15.3688 21.0571 16 21.0571C16.5117 21.0571 16.9449 21.3935 17.0905 21.8571H18.1669C18.3212 21.0652 18.6327 20.3296 19.0676 19.6839L18.3999 19.0162C17.953 19.4544 17.2355 19.4517 16.7919 19.0081C16.3456 18.5618 16.3456 17.8382 16.7919 17.3919L18.3919 15.7919C18.8382 15.3455 19.5618 15.3455 20.0081 15.7919C20.4517 16.2355 20.4544 16.953 20.0162 17.4L20.6839 18.0676C21.3295 17.6327 22.0652 17.3212 22.8571 17.1669V16.0905C22.3935 15.9449 22.0572 15.5117 22.0572 15C22.0572 14.3688 22.5688 13.8571 23.2 13.8571H24.8C25.4312 13.8571 25.9429 14.3688 25.9429 15C25.9429 15.5117 25.6065 15.9449 25.1429 16.0905V17.1669C25.9348 17.3212 26.6705 17.6327 27.3162 18.0676L27.9838 17.4C27.5456 16.953 27.5482 16.2355 27.9919 15.7919C28.4382 15.3455 29.1618 15.3455 29.6081 15.7919L31.2081 17.3919C31.6544 17.8382 31.6544 18.5618 31.2081 19.0081C30.7645 19.4517 30.047 19.4544 29.6001 19.0162L28.9324 19.6839C29.3673 20.3295 29.6788 21.0652 29.8331 21.8571H30.9095C31.0551 21.3935 31.4883 21.0571 32 21.0571C32.6312 21.0571 33.1429 21.5688 33.1429 22.2V23.8C33.1429 24.4312 32.6312 24.9428 32 24.9428C31.4883 24.9428 31.0551 24.6065 30.9095 24.1429H29.8331C29.7172 24.7376 29.5127 25.3006 29.2338 25.8175L30.4001 26.9838C30.847 26.5456 31.5645 26.5483 32.0081 26.9919C32.4544 27.4382 32.4544 28.1619 32.0081 28.6082L30.4081 30.2082C29.9618 30.6545 29.2382 30.6545 28.7919 30.2082C28.3483 29.7646 28.3456 29.047 28.7838 28.6001L27.7744 27.5906C27.0279 28.205 26.129 28.641 25.1429 28.8331V29.9095C25.6065 30.0551 25.9429 30.4883 25.9429 31C25.9429 31.6312 25.4312 32.1429 24.8 32.1429H24.0112L24 32.1429L23.9888 32.1429H23.2C22.5688 32.1429 22.0572 31.6312 22.0572 31C22.0572 30.4883 22.3935 30.0551 22.8571 29.9095V28.833C22.0652 28.6788 21.3295 28.3673 20.6839 27.9323L20.0162 28.6C20.4544 29.047 20.4517 29.7646 20.0081 30.2082C19.5618 30.6545 18.8382 30.6545 18.3919 30.2082L16.7919 28.6082C16.3456 28.1619 16.3456 27.4382 16.7919 26.9919C17.2355 26.5483 17.953 26.5456 18.3999 26.9838L19.0676 26.3161C18.6327 25.6704 18.3212 24.9347 18.1669 24.1429Z" fill="currentColor"/>
+</svg></div><b>그래서 두 가지가 중요합니다</b></div><div class="v2-body">빨리 알아채 치료하는 것, 그리고 백신으로 미리 대비하는 것입니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 수두를 앓은 기억이 없어도 어릴 때 가볍게 지나갔을 수 있습니다.</span><span class="v2-src">근거 · 국내 대상포진 역학 · 대한감염학회 2023</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 무엇인가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">몸 한쪽에 띠처럼 생기는 통증과 물집</h2>
+  <p class="v2-sub">한 신경이 맡은 피부 구역(피부절)을 따라 한쪽에만 나타납니다 — 영어 이름도 ‘허리띠’라는 뜻</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:270px;height:160px">
+    <div class="q-stat__num">55<span>%</span></div><div class="q-stat__lab">가슴·등</div><div class="q-stat__cap">등에서 옆구리를 거쳐 가슴·배까지</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:358px;top:206px;width:270px;height:160px">
+    <div class="q-stat__num">20<span>%</span></div><div class="q-stat__lab">목</div><div class="q-stat__cap">목과 어깨·팔 쪽</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:652px;top:206px;width:270px;height:160px">
+    <div class="q-stat__num">15<span>%</span></div><div class="q-stat__lab">눈 주변</div><div class="q-stat__cap">이마·눈꺼풀·코끝</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:946px;top:206px;width:270px;height:160px">
+    <div class="q-stat__num">11<span>%</span></div><div class="q-stat__lab">허리·엉치</div><div class="q-stat__cap">허리 아래와 다리 쪽</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.4376 8.12324C25.6644 8.6268 25.4401 9.21889 24.9365 9.44571C23.2008 10.2275 21.9943 11.9686 21.9875 13.9902L21.9875 14.0073L21.9875 14.0245C21.9967 16.7781 24.2317 19.0074 26.9874 19.0074C29.5665 19.0074 31.6906 17.0539 31.9588 14.5465C32.0175 13.9973 32.5103 13.5998 33.0595 13.6585C33.6086 13.7173 34.0062 14.2101 33.9474 14.7592C33.7892 16.2386 33.1705 17.5801 32.2374 18.6375C33.7386 18.9749 35.0575 19.7946 36.0215 20.9234C36.3801 21.3434 36.3304 21.9746 35.9104 22.3333C35.4904 22.6919 34.8592 22.6422 34.5006 22.2222C33.582 21.1465 32.2191 20.4672 30.6964 20.4672C27.935 20.4672 25.6964 22.7057 25.6964 25.4672C25.6964 26.5014 26.0094 27.4597 26.5457 28.256L26.5527 28.2651C26.6183 28.351 26.6679 28.4442 26.7019 28.541C26.7271 28.6109 26.7441 28.6826 26.7531 28.7549C27.0857 28.7973 27.4045 28.9577 27.6413 29.2311C27.8694 29.4946 28.0758 29.7642 28.263 30.0377C28.6256 30.5672 28.5785 31.2561 28.1918 31.729C28.7896 31.7163 29.3529 32.0872 29.5573 32.683C29.7676 33.296 29.9285 33.8952 30.0675 34.4387C30.2044 34.9739 30.0156 35.5159 29.6254 35.8552C30.0978 35.9225 30.5247 36.2277 30.726 36.6986C30.9114 37.1323 31.0877 37.3427 31.2518 37.4586C31.5155 37.6448 31.696 37.905 31.7851 38.1911C32.0084 37.8969 32.3461 37.6901 32.7418 37.6426C32.9557 37.6169 33.1945 37.5766 33.461 37.5186C33.8669 37.4302 34.2699 37.526 34.5831 37.75C34.6887 37.5988 34.8373 37.4751 35.0203 37.3994C35.112 37.3614 35.2033 37.3233 35.2942 37.2853C35.8112 37.031 36.1899 36.6107 36.3669 36.0756C36.566 35.4742 36.5486 34.6047 35.9748 33.4919C35.7217 33.001 35.9144 32.3979 36.4053 32.1448C36.8961 31.8917 37.4993 32.0844 37.7524 32.5753C38.1597 33.3653 38.3932 34.1406 38.4613 34.8769C39.0705 34.1531 39.7137 33.1747 40.2394 31.8849C40.4478 31.3734 41.0314 31.1278 41.5429 31.3362C42.0543 31.5447 42.2999 32.1283 42.0915 32.6397C41.4657 34.1753 40.6884 35.3492 39.9392 36.2265C40.4264 36.2843 40.9386 36.4044 41.4933 36.5968C42.015 36.7779 42.2912 37.3476 42.1102 37.8694C41.9291 38.3912 41.3594 38.6674 40.8376 38.4863C39.8433 38.1413 39.1357 38.1279 38.4468 38.2706C37.805 38.4036 37.1737 38.6675 36.2927 39.0359L36.1058 39.114C36.0101 39.1591 35.9126 39.2007 35.8134 39.2389C35.7934 39.2466 35.7733 39.2536 35.7531 39.26C35.5429 39.3388 35.3218 39.3422 35.1204 39.2829C34.9827 39.768 34.5889 40.1634 34.0617 40.2782C33.7196 40.3527 33.3921 40.4091 33.0784 40.4468C32.3913 40.5292 31.7604 40.1037 31.5619 39.4658C31.104 40.0698 30.2462 40.2061 29.6224 39.7655C28.8752 39.2377 28.429 38.5106 28.129 37.8087C27.8818 37.2302 28.0505 36.5785 28.5013 36.1872C27.952 36.1091 27.4773 35.7094 27.3313 35.1385C27.197 34.6136 27.0585 34.1026 26.8859 33.5995C26.7215 33.1202 26.8297 32.6132 27.1281 32.2475C26.6679 32.2569 26.2121 32.0414 25.9327 31.6333C25.8031 31.4441 25.6617 31.2594 25.5063 31.08C25.1723 30.6944 25.0842 30.1794 25.2282 29.7264C25.1172 29.6567 25.0181 29.5638 24.9387 29.4492L24.9271 29.4324C24.0103 28.2613 22.5866 27.5116 20.9874 27.5116C19.3879 27.5116 17.9638 28.2627 17.0485 29.4315C16.9805 29.5303 16.9099 29.6274 16.837 29.7225C16.3005 30.5193 15.9874 31.4789 15.9874 32.5116C15.9874 33.4647 16.2531 34.3527 16.714 35.109C17.0014 35.5806 16.852 36.1959 16.3804 36.4833C15.9088 36.7707 15.2935 36.6213 15.0061 36.1497C14.3596 35.0888 13.9874 33.8421 13.9874 32.5116C13.9874 32.31 13.996 32.1104 14.0127 31.9131C13.1727 32.2698 12.2486 32.4672 11.2785 32.4672C10.793 32.4672 10.318 32.4176 9.85863 32.3229C9.31772 32.2114 8.96964 31.6824 9.08116 31.1415C9.19269 30.6006 9.72159 30.2526 10.2625 30.3641C10.5897 30.4315 10.9294 30.4672 11.2785 30.4672C12.878 30.4672 14.3021 29.7161 15.2174 28.5473C15.2855 28.4484 15.356 28.3513 15.429 28.2561C15.9654 27.4594 16.2785 26.4999 16.2785 25.4672C16.2785 22.7057 14.0399 20.4672 11.2785 20.4672C9.81032 20.4672 8.49106 21.0987 7.57494 22.108C7.20375 22.5169 6.57133 22.5475 6.16238 22.1763C5.75344 21.8051 5.72283 21.1727 6.09402 20.7638C7.0438 19.7174 8.30805 18.9588 9.73754 18.6375C8.83287 17.6123 8.22371 16.32 8.0432 14.8939C7.97385 14.346 8.3618 13.8456 8.90972 13.7762C9.45763 13.7069 9.95802 14.0948 10.0274 14.6428C10.3389 17.1037 12.4416 19.0073 14.9875 19.0073C17.7431 19.0073 19.9781 16.7781 19.9875 14.0247L19.9874 14.0074L19.9875 13.99C19.9807 12.0017 18.8134 10.2847 17.1232 9.48483C16.6239 9.24859 16.4108 8.65239 16.647 8.15318C16.8832 7.65398 17.4794 7.4408 17.9787 7.67704C19.2292 8.26882 20.277 9.22097 20.9875 10.3999C21.7203 9.18387 22.8121 8.20911 24.1152 7.62216C24.6187 7.39534 25.2108 7.61969 25.4376 8.12324ZM20.9875 24.0102C21.8155 24.0102 22.4868 23.3389 22.4868 22.5109C22.4868 21.6828 21.8155 21.0116 20.9875 21.0116C20.1595 21.0116 19.4882 21.6828 19.4882 22.5109C19.4882 23.3389 20.1595 24.0102 20.9875 24.0102Z" fill="currentColor"/>
+</svg></div><b>등에 물집, 가슴이 아파도 정상 경과</b></div><div class="v2-body">같은 신경이 이어져 있어서입니다. 한쪽만 생기고 몸 가운데를 넘지 않는&nbsp;것이&nbsp;특징입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>물집 전 통증만 먼저 올 수 있습니다</b></div><div class="v2-body">물집이 생기기 1~5일 전 통증만 있어 협심증·담석증·맹장염으로 오해하기도 합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 한쪽에만 띠 모양으로 아프고 따끔거리면 대상포진을 떠올리세요.</span><span class="v2-src">근거 · Cohen, NEJM 2013 · 피부절 재활성화 해부</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 어떻게 지나가나</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">증상의 흐름 — 전조부터 회복까지</h2>
+  <p class="v2-sub">물집이 생기고 72시간 안에 항바이러스제를 시작하는 것이 가장 중요합니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:520px;height:292px">
+    <img class="v2-fig__img q-fig__img" style="width:520px;height:292px" src="../../../shared/assets/generated/infectious-herpes-zoster-s04-anatomy-infectious-7c52b185-20260530-raster-20260531.jpg" alt="등에서 옆구리로 신경을 따라 물집이 생긴 몸과, 물집이 생겼다가 딱지가 앉아 낫는 단계 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:510px;width:520px;height:96px"><div class="q-figcap__t">그림 · 신경을 따라 한쪽에 생긴 물집과, 물집 → 딱지 → 회복으로 가는 단계를 그린 설명용 그림입니다.</div></div>
+  <div class="v2-panel q-text" style="left:616px;top:206px;width:600px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">전조기<span class="q-srow__tag">1~5일 전</span></div><div class="v2-body">화끈거리고 찌르는 통증, 피로·근육통. 다른 병으로 오해하기 쉽습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">물집기<span class="q-srow__tag">~15일</span></div><div class="v2-body">붉은 바탕에 물집이 모여 생기고 3~5일간 새로 생긴 뒤, 7~10일에 딱지가&nbsp;앉습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">회복기<span class="q-srow__tag">2~4주</span></div><div class="v2-body">딱지가 떨어지며 회복합니다. 색소나 흉터가 남을 수 있습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">포진후신경통<span class="q-srow__tag">90일 이상</span></div><div class="v2-body">물집이 나은 뒤에도 화끈거림, 옷만 스쳐도 아픈 통증이 남습니다. 고령에서&nbsp;흔합니다.</div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 72시간 골든타임 — 새 물집이 계속 생기거나 고령·면역저하·눈 주변이면 72시간이 지나도 약을 씁니다.</span><span class="v2-src">근거 · 코크란 리뷰 · 미국감염학회 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 치료</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">항바이러스제와 통증 약</h2>
+  <p class="v2-sub">72시간 안에 항바이러스제 + 통증 정도에 맞춘 단계적 진통 — 빠른 시작이 핵심</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:1152px"><colgroup><col style="width:230px"><col style="width:330px"><col style="width:592px"></colgroup><thead><tr><th>약</th><th>먹는 법</th><th>특징</th></tr></thead><tbody><tr><th style="height:56px">발라시클로버<br>(1차)</th><td style="height:56px">1,000mg · 하루 3번 · 7일</td><td style="height:56px">흡수가 잘되고 먹기 편함 — 통증 기간을 51일→38일로 줄였습니다</td></tr><tr><th style="height:56px">팜시클로버</th><td style="height:56px">500mg · 하루 3번 · 7일</td><td style="height:56px">발라시클로버와 효과 비슷 · 콩팥 기능에 따라 용량 조절</td></tr><tr><th style="height:56px">아시클로버</th><td style="height:56px">800mg · 하루 5번 · 7일</td><td style="height:56px">먹는 횟수가 많지만 저렴 · 콩팥이 나쁘면 용량 조절</td></tr><tr><th style="height:56px">진통 1단계</th><td style="height:56px">아세트아미노펜 · 소염진통제</td><td style="height:56px">가벼운 통증 — 위장·콩팥에 주의해 짧게</td></tr><tr><th style="height:56px">진통 2단계</th><td style="height:56px">가바펜틴 · 프레가발린</td><td style="height:56px">신경통에 추가 — 졸림·어지러움·부종이 흔함</td></tr><tr><th style="height:56px">진통 3단계</th><td style="height:56px">트라마돌 · 단기 마약성 진통제</td><td style="height:56px">심한 급성기 통증에만 짧게 · 리도카인 5% 패치는 어르신께 유용</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 진통제 용량은 통증과 몸 상태에 맞춰 진료 때 정합니다.</span><span class="v2-src">근거 · 발라시클로버 vs 아시클로버 무작위 시험(1,141명) · 미국감염학회 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 포진후신경통</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">포진후신경통 — 누가 더 잘 생기나</h2>
+  <p class="v2-sub">물집이 나은 뒤 90일 넘게 남는 통증 — 80세 이상 32%, 50세 미만 3%</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:680px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">나이<span class="q-srow__tag">가장 강력</span></div><div class="v2-body">60~65세 20%, 80세 이상 32% — 백신이 가장 중요합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">처음부터 심한 통증<span class="q-srow__tag">약 2.2배</span></div><div class="v2-body">초기 통증을 잘 조절하면 줄일 수 있습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">넓게 퍼진 물집<span class="q-srow__tag">약 2.6배</span></div><div class="v2-body">한 구역을 넘으면 따로 평가합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">물집 전 통증이 있었음<span class="q-srow__tag">약 2.3배</span></div><div class="v2-body">전조 통증이 있었다면 빨리 치료를 시작합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">5</span><div class="q-srow__c"><div class="q-srow__h">눈 주변 침범<span class="q-srow__tag">약 2.5배</span></div><div class="v2-body">눈 합병증도 있어 바로 안과 진료.</div></div></div><div class="q-srow"><span class="q-srow__n">6</span><div class="q-srow__c"><div class="q-srow__h">대부분 6개월 안에 좋아짐<span class="q-srow__tag">경과</span></div><div class="v2-body">약 2%는 5년 넘게 통증이 남습니다.</div></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:776px;top:206px;width:440px;height:248px">
+    <img class="v2-fig__img q-fig__img" style="width:440px;height:248px" src="../../../shared/assets/generated/infectious-herpes-zoster-s06-risk-infectious-159f61db-20260530-raster-20260531.jpg" alt="척추 옆 신경이 붉게 빛나는 몸과 어깨를 감싸고 아파하는 노인">
+  </div>
+  <div class="v2-panel q-figcap" style="left:776px;top:466px;width:440px;height:140px"><div class="q-figcap__t">그림 · 신경이 다쳐 물집이 나은 뒤에도 통증이 남는 모습을 그린 설명용 그림입니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 빠른 항바이러스제와 백신이 포진후신경통 위험을 줄이는 데 도움이 됩니다.</span><span class="v2-src">근거 · Drolet 2010 · 미국 질병통제예방센터 2024</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 백신 비교</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">두 가지 백신 — 생백신과 재조합 백신</h2>
+  <p class="v2-sub">재조합 백신(싱그릭스)이 효과가 더 높고 오래 갑니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:560px"><colgroup><col style="width:150px"><col style="width:200px"><col style="width:210px"></colgroup><thead><tr><th></th><th>생백신<br>(조스타박스·단종)</th><th>재조합 백신<br>(싱그릭스·권장)</th></tr></thead><tbody><tr><th style="height:56px">접종</th><td style="height:56px">피하 1회</td><td style="height:56px">근육 2회(0, 2~6개월)</td></tr><tr><th style="height:56px">50~69세 효과</th><td style="height:56px">약 70%</td><td style="height:56px"><b>97.2%</b></td></tr><tr><th style="height:56px">70세 이상</th><td style="height:56px">70대 41%, 80대 18%</td><td style="height:56px"><b>91.3%</b></td></tr><tr><th style="height:56px">신경통 예방</th><td style="height:56px">66.5%</td><td style="height:56px">89~91%</td></tr><tr><th style="height:56px">오래 가나</th><td style="height:56px">10년 뒤 15%</td><td style="height:56px">11년 뒤 약 80%</td></tr><tr><th style="height:56px">면역저하자</th><td style="height:56px">금기</td><td style="height:56px">사용 가능</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/infectious-herpes-zoster-s07-comparison-infectious-4503e928-20260530-raster-20260531.jpg" alt="왼쪽은 옅은 방패와 주사, 오른쪽은 항체가 둘러싼 진한 방패와 주사">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 왼쪽 옅은 방패는 생백신, 오른쪽 진한 방패는 재조합 백신의 보호를 뜻하는 설명용&nbsp;그림입니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 생백신 조스타박스는 한국에서 2024년 5월 공급이 끝났습니다.</span><span class="v2-src">근거 · ZOE-50·ZOE-70 무작위 시험 · 대한감염학회 2023 권고</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 백신 실전</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">싱그릭스 — 부작용·비용·지원·접종 시기</h2>
+  <p class="v2-sub">대상포진을 앓았더라도 접종을 권합니다 — 10년 안에 다시 걸리는 비율이 10% 이상</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81818 12.8638C6.36631 13.3156 6.36631 14.0483 6.81818 14.5001C7.27005 14.952 8.00267 14.952 8.45454 14.5001L9.27324 13.6814L13.3636 17.7719L10.0909 21.0447C9.63902 21.4966 9.63902 22.2292 10.0909 22.6811C10.5428 23.133 11.2754 23.133 11.7272 22.6811L13.3632 21.0451L16.3181 24H8.37441C7.74469 24 7.14076 24.2528 6.69547 24.7028C6.25019 25.1528 6.00003 25.7632 6.00003 26.3996V29.9983C5.99395 32.7931 6.93225 35.5063 8.65965 37.6887C10.3871 39.8712 12.8 41.3922 15.4992 42C18.1987 41.3925 20.612 39.8717 22.3397 37.6892C23.5568 36.1518 24.3822 34.351 24.7617 32.4438L27.2727 34.9549C28.9502 36.6325 31.4016 37.0645 33.4777 36.2509L34.6362 37.4095C35.242 38.0153 36.1002 38.215 36.8724 38.0086L39.5455 40.6818C39.9974 41.1337 40.73 41.1337 41.1818 40.6818C41.6337 40.2299 41.6337 39.4973 41.1818 39.0454L38.5083 36.3718C38.7142 35.5999 38.5144 34.7422 37.9089 34.1367L36.7504 32.9782C36.9538 32.4591 37.0794 31.9166 37.1271 31.3686C37.163 30.9555 37.1548 30.5392 37.1022 30.1275C36.9457 28.9009 36.3965 27.7148 35.4545 26.7728L21.545 12.863L23.1818 11.2263C23.6336 10.7744 23.6336 10.0418 23.1818 9.58989C22.7299 9.13801 21.9973 9.13801 21.5454 9.58989L18.2727 12.8627L14.1823 8.77223L15 7.95456C15.4518 7.50268 15.4518 6.77004 15 6.31816C14.5481 5.86628 13.8155 5.86628 13.3636 6.31816L6.81818 12.8638ZM26.5467 31.4003L31.9 26.0468L20.1308 14.2773L14.7774 19.6308L19.1465 24H22.6256C23.2553 24 23.8592 24.2528 24.3045 24.7028C24.7498 25.1528 25 25.7632 25 26.3996V29.8536L26.5467 31.4003ZM16.8585 14.2769L12.7681 10.1865L10.6874 12.2672L14.7778 16.3576L16.8585 14.2769ZM35.6707 34.7269C35.6011 34.8043 35.529 34.8804 35.4545 34.9549C35.3799 35.0295 35.3039 35.1016 35.2264 35.1712L36.0504 35.9952C36.1731 36.1179 36.372 36.1179 36.4947 35.9952C36.6174 35.8725 36.6174 35.6736 36.4947 35.5509L35.6707 34.7269ZM33.5364 27.6832L34.0403 28.1872C34.6458 28.7927 35.0033 29.5523 35.1128 30.3398C35.1522 30.6234 35.1595 30.9105 35.1346 31.1954C35.1032 31.5541 35.0209 31.9092 34.8876 32.2489L32.7486 34.3879C31.3898 34.9211 29.785 34.6387 28.6869 33.5406L28.183 33.0367L33.5364 27.6832ZM17 29C17 28.4477 16.5523 28 16 28C15.4477 28 15 28.4477 15 29V31H13C12.4477 31 12 31.4477 12 32C12 32.5522 12.4477 33 13 33H15V35C15 35.5522 15.4477 36 16 36C16.5523 36 17 35.5522 17 35V33H19C19.5523 33 20 32.5522 20 32C20 31.4477 19.5523 31 19 31H17V29Z" fill="currentColor"/>
+</svg></div><b>부작용 — 대부분 2~3일</b></div><div class="v2-body">주사 부위 통증 78%, 근육통·피로 45%, 두통 38%, 오한 27%, 열 21%. 심각한 이상반응은 가짜약과 같았습니다(2.3% vs 2.2%).</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M37.9725 27.9747C39.2563 25.9594 40 23.5665 40 21C40 13.8203 34.1797 8 27 8C24.4335 8 22.0407 8.74375 20.0253 10.0275C18.6579 10.1048 17.3336 10.3437 16.0714 10.7254C18.8073 7.8165 22.6915 6 27 6C35.2843 6 42 12.7157 42 21C42 25.3085 40.1835 29.1927 37.2746 31.9286C37.6563 30.6664 37.8953 29.3422 37.9725 27.9747Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.9333 28.6028C39.2073 29.8352 38.3101 30.9547 37.2746 31.9286C37.6563 30.6664 37.8953 29.3422 37.9725 27.9747C37.9725 27.9749 37.9726 27.9745 37.9725 27.9747C39.256 25.9598 39.9997 23.5675 40 21.0015C40 21.001 40 21.0005 40 21C40 13.8203 34.1797 8 27 8C24.4335 8 22.0407 8.74375 20.0253 10.0275C20.0251 10.0275 20.0256 10.0275 20.0253 10.0275C18.6579 10.1048 17.3336 10.3437 16.0714 10.7254C17.0454 9.68988 18.1648 8.79277 19.3972 8.06676C21.6173 6.75886 24.2037 6.00629 26.9654 6.00004C26.9769 6.00001 26.9885 6 27 6C35.2843 6 42 12.7157 42 21C42 21.151 41.9978 21.3014 41.9934 21.4513C41.9164 24.0564 41.1752 26.4947 39.9333 28.6028Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36 27C36 35.2843 29.2843 42 21 42C12.7157 42 6 35.2843 6 27C6 18.7157 12.7157 12 21 12C29.2843 12 36 18.7157 36 27ZM20 22C18.8954 22 18 22.8954 18 24C18 25.1046 18.8954 26 20 26V22ZM22 20V19H20V20C17.7909 20 16 21.7909 16 24C16 26.2091 17.7909 28 20 28V32C19.1307 32 18.3886 31.4449 18.1135 30.6668C17.9295 30.146 17.3582 29.8731 16.8375 30.0572C16.3167 30.2412 16.0438 30.8125 16.2279 31.3332C16.7765 32.8855 18.2568 34 20 34V35H22V34C24.2091 34 26 32.2091 26 30C26 27.7909 24.2091 26 22 26V22C22.8693 22 23.6114 22.5551 23.8865 23.3332C24.0705 23.854 24.6418 24.1269 25.1625 23.9428C25.6833 23.7588 25.9562 23.1875 25.7721 22.6668C25.2235 21.1145 23.7432 20 22 20ZM22 28V32C23.1046 32 24 31.1046 24 30C24 28.8954 23.1046 28 22 28Z" fill="currentColor"/>
+</svg></div><b>비용(2026) — 전액 본인 부담</b></div><div class="v2-body">싱그릭스 약 25만원/회, 2회 총 40~50만원. 스카이조스터(생백신) 약&nbsp;14.6만원/1회. 대상포진 백신은 모두 비급여입니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.9639 3.98039C12.9182 3.98943 3.9712 12.9511 3.98025 23.9968C3.98929 35.0425 12.9509 43.9894 23.9966 43.9804C35.0423 43.9713 43.9893 35.0097 43.9802 23.964C43.9712 12.9183 35.0096 3.97134 23.9639 3.98039ZM19.9913 33.0475L19.9913 26.0475L27.9913 26.0475L27.9913 33.0475L31.9913 33.0475L31.9913 15.0475L27.9913 15.0475L27.9913 22.0475L19.9913 22.0475L19.9913 15.0475L15.9913 15.0475L15.9913 33.0475L19.9913 33.0475Z" fill="currentColor"/>
+</svg></div><b>지자체 지원 — 해마다 바뀝니다</b></div><div class="v2-body">예시: 서울 강남구(70세 이상)·도봉구, 김포시, 가평군 등 일부 지자체가 65세 이상 무료·보조 접종. 사는 곳 보건소에 꼭 확인하세요.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>앓은 뒤 언제 맞나</b></div><div class="v2-body">미국은 급성기가 끝나면 바로, 호주는 면역 정상 12개월·면역저하 3개월 뒤를 권합니다. 대한감염학회도 앓은 분께 접종을 권합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 접종 시기는 진료 때 몸 상태에 맞춰 정합니다.</span><span class="v2-src">근거 · 국내 가격 2026 · 미국 예방접종자문위원회 · 호주 예방접종자문단 2024</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 응급 신호</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">바로 응급 진료가 필요한 경우</h2>
+  <p class="v2-sub">시력·청력 손실과 온몸 감염을 막기 위해 지체 없이 응급 진료가 필요한 네 가지 신호</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:480px;height:270px">
+    <img class="v2-fig__img q-fig__img" style="width:480px;height:270px" src="../../../shared/assets/generated/infectious-herpes-zoster-s09-risk-infectious-99df208f-20260530-raster-20260531.jpg" alt="충혈된 눈, 넓게 퍼진 물집, 등을 진찰하는 의사와 뇌 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:488px;width:480px;height:118px"><div class="q-figcap__t">그림 · 눈 주변 침범, 넓게 퍼진 물집, 뇌 증상이 응급 신호임을 나타낸 설명용&nbsp;그림입니다.</div></div>
+  <div class="v2-panel q-text" style="left:576px;top:206px;width:640px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">눈 주변 대상포진<span class="q-srow__tag">안과 즉시</span></div><div class="v2-body">이마·눈꺼풀·코끝에 물집 — 눈 합병증 위험 6.5배, 각막염·실명 위험이 있습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">귀 주변 물집 + 얼굴 마비<span class="q-srow__tag">람세이 헌트</span></div><div class="v2-body">같은 쪽 얼굴 마비·청력 저하·어지럼 — 늦으면 영구 마비·청력 손실.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">면역저하자의 온몸 퍼짐<span class="q-srow__tag">입원</span></div><div class="v2-body">항암·이식·고용량 스테로이드 중 물집이 여러 구역으로 퍼지면 입원 치료.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">심한 두통 · 목 뻣뻣 · 의식 변화<span class="q-srow__tag">뇌·수막</span></div><div class="v2-body">경련이 있거나 고열·고름이 퍼지면 바로 응급 진료를 받으세요.</div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 코끝에 물집이 생기면 눈까지 번질 수 있다는 신호입니다(허친슨 징후).</span><span class="v2-src">근거 · 미국감염학회 2022 · 미국 질병통제예방센터 파종성 대상포진</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 자주 묻는 질문</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">일상생활, 이렇게 하세요</h2>
+  <p class="v2-sub">옮기나요 · 또 걸리나요 · 언제 출근하나요 · 씻어도 되나요</p>
+  <div class="v2-panel q-card q-card--accent" style="left:64px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 24C20.8675 24 24 20.8675 24 17C24 13.1325 20.8675 10 17 10C13.1325 10 10 13.1325 10 17C10 20.8675 13.1325 24 17 24Z" fill="currentColor"/>
+<path d="M39 20.5C39 23.5387 36.5387 26 33.5 26C30.4613 26 28 23.5387 28 20.5C28 17.4612 30.4613 15 33.5 15C36.5387 15 39 17.4612 39 20.5Z" fill="currentColor"/>
+<path d="M17 26C19.7336 26 24.183 26.8511 27.1011 28.5452C28.293 29.7585 29 31.0814 29 32.4V38H4V32.4C4 28.144 12.6612 26 17 26Z" fill="currentColor"/>
+<path d="M44 38H31V32.4C31 30.9837 30.4886 29.6801 29.6764 28.5166C31.2173 28.1725 32.7343 28 33.8927 28C37.6211 28 44 29.7867 44 33.3333V38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">01</span></div>
+    <div class="q-card__h">다른 사람에게 옮기나요?</div>
+    <div class="v2-body">대상포진 자체는 옮지 않지만, 물집 진물에 닿으면 수두 면역이 없는 사람은 수두에 걸릴&nbsp;수&nbsp;있습니다.</div>
+    <div class="q-card__k">딱지 앉을 때까지 조심</div>
+  </div>
+  <div class="v2-panel q-card" style="left:358px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M37.5 16.8449C37.5 12.8705 35.9682 9.75541 33.4947 7.64469C31.0848 5.58823 27.9616 4.63223 24.923 4.51312C19.1007 4.28488 12.0377 7.23751 10.5604 13.8405C10.2589 15.1879 11.1068 16.5246 12.4542 16.8261C13.8016 17.1275 15.1383 16.2796 15.4397 14.9322C16.1624 11.7019 20.0994 9.32786 24.7271 9.50928C26.9135 9.59499 28.8778 10.2779 30.2491 11.4481C31.5569 12.5641 32.5 14.2635 32.5 16.8449C32.5 19.394 31.228 21.0713 29.3719 22.2558C27.4261 23.4975 24.9842 24.0682 23.3259 24.184C22.0159 24.2755 21.0001 25.3648 21.0001 26.678V31C21.0001 32.3807 22.1193 33.5 23.5001 33.5C24.8808 33.5 26.0001 32.3807 26.0001 31V28.8489C27.9106 28.4606 30.1018 27.7213 32.0616 26.4707C34.9776 24.6099 37.5 21.5072 37.5 16.8449Z" fill="currentColor"/>
+<path d="M24 36C21.7909 36 20 37.7909 20 40C20 42.2091 21.7909 44 24 44C26.2092 44 28 42.2091 28 40C28 37.7909 26.2092 36 24 36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.0001 28.8489C24.0001 27.8978 24.6698 27.0783 25.6018 26.8889C27.3366 26.5364 29.2825 25.8716 30.9857 24.7848C33.4812 23.1923 35.5 20.6587 35.5 16.8449C35.5 13.4272 34.2034 10.8786 32.1965 9.16606C30.2025 7.46449 27.5431 6.61736 24.8446 6.51158C22.271 6.41069 19.4279 7.01999 17.1068 8.3503C14.8123 9.66542 13.1043 11.6303 12.5121 14.2772C12.4518 14.5467 12.6214 14.814 12.8909 14.8743C13.1604 14.9346 13.4277 14.765 13.488 14.4955C14.5077 9.93772 19.6698 7.30949 24.8055 7.51081C27.3339 7.60993 29.7613 8.40265 31.5474 9.92675C33.3208 11.4401 34.5 13.7055 34.5 16.8449C34.5 20.2334 32.7339 22.4829 30.4477 23.9418C28.1499 25.4082 25.3616 26.0467 23.4652 26.1792C23.2032 26.1975 23.0001 26.4153 23.0001 26.678V31C23.0001 31.2761 23.2239 31.5 23.5001 31.5C23.7762 31.5 24.0001 31.2761 24.0001 31V28.8489ZM24 38C22.8955 38 22 38.8954 22 40C22 41.1046 22.8955 42 24 42C25.1046 42 26 41.1046 26 40C26 38.8954 25.1046 38 24 38ZM33.4947 7.64469C35.9682 9.75541 37.5 12.8705 37.5 16.8449C37.5 21.5072 34.9776 24.6099 32.0616 26.4707C30.1018 27.7213 27.9106 28.4606 26.0001 28.8489V31C26.0001 32.3807 24.8808 33.5 23.5001 33.5C22.1193 33.5 21.0001 32.3807 21.0001 31V26.678C21.0001 25.3648 22.0159 24.2755 23.3259 24.184C24.9842 24.0682 27.4261 23.4975 29.3719 22.2558C31.228 21.0713 32.5 19.394 32.5 16.8449C32.5 14.2635 31.5569 12.5641 30.2491 11.4481C28.8778 10.2779 26.9135 9.59499 24.7271 9.50928C20.0994 9.32786 16.1624 11.7019 15.4397 14.9322C15.1383 16.2796 13.8016 17.1275 12.4542 16.8261C11.1068 16.5246 10.2589 15.1879 10.5604 13.8405C12.0377 7.23751 19.1007 4.28488 24.923 4.51312C27.9616 4.63223 31.0848 5.58823 33.4947 7.64469ZM20 40C20 37.7909 21.7909 36 24 36C26.2092 36 28 37.7909 28 40C28 42.2091 26.2092 44 24 44C21.7909 44 20 42.2091 20 40Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">02</span></div>
+    <div class="q-card__h">또 걸릴 수 있나요?</div>
+    <div class="v2-body">네. 한국 연구에서 10년 안에 10% 이상, 평균 약 3년 뒤 다시 생겼습니다. 앓은 분도 백신을 권합니다.</div>
+    <div class="q-card__k">앓았어도 백신</div>
+  </div>
+  <div class="v2-panel q-card" style="left:652px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34 16C34 21.5228 29.5228 26 24 26C18.4772 26 14 21.5228 14 16C14 10.4772 18.4772 6 24 6C29.5228 6 34 10.4772 34 16ZM32 16C32 20.4183 28.4183 24 24 24C19.5817 24 16 20.4183 16 16C16 11.5817 19.5817 8 24 8C28.4183 8 32 11.5817 32 16Z" fill="currentColor"/>
+<path d="M30.5 28C30.2884 27.9484 30.0619 28.0523 29.9591 28.2615L26 39.5716V36L25.4255 31.9786C25.7941 31.901 26.0952 31.6194 26.1894 31.2425L26.6894 29.2425C26.8472 28.6114 26.3698 28 25.7192 28H22.2808C21.6302 28 21.1528 28.6114 21.3106 29.2425L21.8106 31.2425C21.9048 31.6194 22.2059 31.901 22.5745 31.9786L22 36V38.6963L18.0409 28.2615C17.9381 28.0523 17.7116 27.9484 17.5 28C17.1413 28.0875 16.7551 28.1779 16.3521 28.2722C14.09 28.8015 11.2944 29.4557 9.808 30.4317C8.04534 31.5891 7 32.9535 7 34.5V41H41V34.5C41 32.9535 39.9547 31.5891 38.192 30.4317C36.7056 29.4557 33.9099 28.8015 31.6478 28.2721C31.2448 28.1778 30.8587 28.0875 30.5 28Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">03</span></div>
+    <div class="q-card__h">언제 출근하나요?</div>
+    <div class="v2-body">물집이 모두 딱지가 되고 통증이 견딜 만하면 가능합니다(보통 2~4주).</div>
+    <div class="q-card__k">보통 2~4주</div>
+  </div>
+  <div class="v2-panel q-card" style="left:946px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 30.0007C6 29.4485 6.44772 29.0007 7 29.0007H10C10.5523 29.0007 11 29.4484 11 30.0007V40.9961C11 41.5484 10.5523 41.9961 10 41.9961H7C6.44772 41.9961 6 41.5484 6 40.9961V30.0007Z" fill="currentColor"/>
+<path d="M20.9148 29.1888C20.9148 29.1888 18.6371 28.764 17.7052 29.1888C17.0113 29.5051 14.3259 30.4693 13 30.941L13 39.8015C13.7674 39.7566 15.2933 39.6759 15.9451 39.7022C19.701 39.8535 21.6183 41.4359 25.3668 41.7199C27.4636 41.8788 29.3011 42.2509 30.7506 41.7199C32.2001 41.1889 40.4829 37.1535 41.5183 36.0915C42.5536 35.0296 42.0359 32.1623 38.8264 32.6933C35.6168 33.2242 31.3718 35.773 29.6117 35.6668C27.8517 35.5606 23.1926 34.711 23.1926 34.711L28.542 34.7757C28.542 34.7757 29.2977 34.8159 30.3365 34.0738C31.3753 33.3318 32.3037 31.2065 30.7506 31.2065C29.1976 31.2065 27.5411 30.6755 27.5411 30.6755L20.9148 29.1888Z" fill="currentColor"/>
+<path d="M26 20.4286C26 22.4286 24.46 24 22.5 24C20.54 24 19 22.4286 19 20.4286C19 18.4286 22.5 14 22.5 14C22.5 14 26 18.5714 26 20.4286Z" fill="currentColor"/>
+<path d="M41 16.1322C41 18.8365 38.7778 21 36 21C33.2222 21 31 18.8365 31 16.1322C31 13.4279 36 6 36 6C36 6 41 13.4279 41 16.1322Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">04</span></div>
+    <div class="q-card__h">씻어도 되나요?</div>
+    <div class="v2-body">미지근한 물로 짧게 샤워해도 됩니다. 물집을 터뜨리지 말고 수건은 따로 쓰세요.</div>
+    <div class="q-card__k">수건 따로</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 임신부·신생아·면역이 약한 분과는 딱지가 앉을 때까지 접촉을 피하세요.</span><span class="v2-src">근거 · 미국 질병통제예방센터 대상포진 안내 · 대한감염학회 환자 안내</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 오늘 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 핵심 여덟 가지</h2>
+  <p class="v2-sub">빨리 치료하고 미리 대비할수록 합병증을 줄일 수 있습니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">한쪽 띠 모양 통증 + 모인 물집 = 대상포진, 대개 진찰로 바로 치료</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">물집이 생기고 72시간 안에 항바이러스제 시작이 핵심</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">등에 물집, 가슴 통증은 같은 신경이라 생기는 정상 경과</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">50세 이상은 싱그릭스 2회 접종 권장(50~69세 효과 97%)</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">앓았던 분도 회복 뒤 백신을 권합니다</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">눈 주변·코끝·이마 물집은 응급 — 바로 안과 진료</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">빠른 치료와 백신이 포진후신경통 위험을 줄입니다</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:518px;width:564px;height:88px"><span class="q-chk__n">08</span><span class="q-chk__t">딱지 앉을 때까지 임신부·신생아·면역저하자 접촉 피하기</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 궁금한 점은 언제든 물어보세요.</span><span class="v2-src">근거 · 대한감염학회 2023 · 미국감염학회 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">대상포진을 앓고 있거나 예방접종을 고민하는 분을 위한 설명자료입니다. 치료와 접종은 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">대한감염학회 2023 권고 · 미국감염학회 2022 · Cohen, NEJM 2013 · ZOE-50·ZOE-70 · Drolet 2010 · 미국 질병통제예방센터 2024</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM15,3H16V4H15zM18,3H19V4H18zM22,3H23V4H22zM24,3H25V4H24zM25,3H26V4H25zM26,3H27V4H26zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM13,4H14V5H13zM15,4H16V5H15zM16,4H17V5H16zM20,4H21V5H20zM25,4H26V5H25zM26,4H27V5H26zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM19,5H20V6H19zM20,5H21V6H20zM22,5H23V6H22zM24,5H25V6H24zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM15,6H16V7H15zM16,6H17V7H16zM17,6H18V7H17zM19,6H20V7H19zM21,6H22V7H21zM24,6H25V7H24zM26,6H27V7H26zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM14,7H15V8H14zM16,7H17V8H16zM18,7H19V8H18zM21,7H22V8H21zM22,7H23V8H22zM23,7H24V8H23zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM11,9H12V10H11zM12,9H13V10H12zM13,9H14V10H13zM14,9H15V10H14zM17,9H18V10H17zM19,9H20V10H19zM20,9H21V10H20zM24,9H25V10H24zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM12,10H13V11H12zM16,10H17V11H16zM18,10H19V11H18zM19,10H20V11H19zM20,10H21V11H20zM21,10H22V11H21zM23,10H24V11H23zM25,10H26V11H25zM28,10H29V11H28zM31,10H32V11H31zM33,10H34V11H33zM34,10H35V11H34zM2,11H3V12H2zM3,11H4V12H3zM5,11H6V12H5zM6,11H7V12H6zM11,11H12V12H11zM12,11H13V12H12zM15,11H16V12H15zM18,11H19V12H18zM19,11H20V12H19zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM11,12H12V13H11zM12,12H13V13H12zM15,12H16V13H15zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM23,12H24V13H23zM25,12H26V13H25zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM33,12H34V13H33zM34,12H35V13H34zM2,13H3V14H2zM6,13H7V14H6zM7,13H8V14H7zM9,13H10V14H9zM14,13H15V14H14zM17,13H18V14H17zM20,13H21V14H20zM22,13H23V14H22zM25,13H26V14H25zM26,13H27V14H26zM27,13H28V14H27zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM34,13H35V14H34zM2,14H3V15H2zM6,14H7V15H6zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM14,14H15V15H14zM16,14H17V15H16zM18,14H19V15H18zM19,14H20V15H19zM21,14H22V15H21zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM2,15H3V16H2zM4,15H5V16H4zM6,15H7V16H6zM10,15H11V16H10zM11,15H12V16H11zM14,15H15V16H14zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM21,15H22V16H21zM26,15H27V16H26zM29,15H30V16H29zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM2,16H3V17H2zM3,16H4V17H3zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM16,16H17V17H16zM19,16H20V17H19zM21,16H22V17H21zM24,16H25V17H24zM26,16H27V17H26zM28,16H29V17H28zM31,16H32V17H31zM32,16H33V17H32zM2,17H3V18H2zM4,17H5V18H4zM5,17H6V18H5zM7,17H8V18H7zM11,17H12V18H11zM12,17H13V18H12zM13,17H14V18H13zM14,17H15V18H14zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM20,17H21V18H20zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM27,17H28V18H27zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM3,18H4V19H3zM4,18H5V19H4zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM11,18H12V19H11zM13,18H14V19H13zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM27,18H28V19H27zM28,18H29V19H28zM30,18H31V19H30zM32,18H33V19H32zM2,19H3V20H2zM10,19H11V20H10zM11,19H12V20H11zM12,19H13V20H12zM14,19H15V20H14zM15,19H16V20H15zM17,19H18V20H17zM19,19H20V20H19zM20,19H21V20H20zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM30,19H31V20H30zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM2,20H3V21H2zM4,20H5V21H4zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM19,20H20V21H19zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM27,20H28V21H27zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM3,21H4V22H3zM4,21H5V22H4zM5,21H6V22H5zM7,21H8V22H7zM9,21H10V22H9zM10,21H11V22H10zM12,21H13V22H12zM14,21H15V22H14zM17,21H18V22H17zM19,21H20V22H19zM22,21H23V22H22zM24,21H25V22H24zM25,21H26V22H25zM26,21H27V22H26zM27,21H28V22H27zM28,21H29V22H28zM30,21H31V22H30zM33,21H34V22H33zM34,21H35V22H34zM2,22H3V23H2zM4,22H5V23H4zM8,22H9V23H8zM12,22H13V23H12zM14,22H15V23H14zM15,22H16V23H15zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM22,22H23V23H22zM23,22H24V23H23zM31,22H32V23H31zM32,22H33V23H32zM2,23H3V24H2zM5,23H6V24H5zM9,23H10V24H9zM10,23H11V24H10zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM11,24H12V25H11zM14,24H15V25H14zM15,24H16V25H15zM19,24H20V25H19zM20,24H21V25H20zM22,24H23V25H22zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM27,24H28V25H27zM28,24H29V25H28zM29,24H30V25H29zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM3,25H4V26H3zM5,25H6V26H5zM6,25H7V26H6zM9,25H10V26H9zM10,25H11V26H10zM13,25H14V26H13zM14,25H15V26H14zM16,25H17V26H16zM20,25H21V26H20zM24,25H25V26H24zM26,25H27V26H26zM2,26H3V27H2zM5,26H6V27H5zM8,26H9V27H8zM10,26H11V27H10zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM16,26H17V27H16zM17,26H18V27H17zM19,26H20V27H19zM22,26H23V27H22zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM33,26H34V27H33zM34,26H35V27H34zM10,27H11V28H10zM11,27H12V28H11zM12,27H13V28H12zM13,27H14V28H13zM15,27H16V28H15zM16,27H17V28H16zM17,27H18V28H17zM18,27H19V28H18zM21,27H22V28H21zM23,27H24V28H23zM26,27H27V28H26zM30,27H31V28H30zM31,27H32V28H31zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM12,28H13V29H12zM13,28H14V29H13zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM24,28H25V29H24zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM11,29H12V30H11zM12,29H13V30H12zM13,29H14V30H13zM15,29H16V30H15zM16,29H17V30H16zM18,29H19V30H18zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM12,30H13V31H12zM17,30H18V31H17zM18,30H19V31H18zM20,30H21V31H20zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM14,31H15V32H14zM15,31H16V32H15zM17,31H18V32H17zM19,31H20V32H19zM20,31H21V32H20zM22,31H23V32H22zM24,31H25V32H24zM29,31H30V32H29zM31,31H32V32H31zM32,31H33V32H32zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM15,32H16V33H15zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM22,32H23V33H22zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM15,33H16V34H15zM17,33H18V34H17zM19,33H20V34H19zM24,33H25V34H24zM26,33H27V34H26zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM14,34H15V35H14zM15,34H16V35H15zM18,34H19V35H18zM19,34H20V35H19zM21,34H22V35H21zM23,34H24V35H23zM25,34H26V35H25zM28,34H29V35H28zM30,34H31V35H30zM32,34H33V35H32z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -830,96 +419,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

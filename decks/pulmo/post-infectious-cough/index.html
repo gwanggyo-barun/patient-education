@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Post-infectious Cough — Gwanggyo Barun Internal Medicine</title>
+  <title>감염후기침 환자 교육 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,210 +18,110 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <!-- Local extensions for this deck (alert-stack reused from chest-pain) -->
-  <style>
-    /* Vertical alert stack — single column, alert rows */
-    .pattern-alert-stack {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: 1fr;
-      gap: var(--space-3);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .alert-row {
-      display: flex;
-      gap: var(--space-4);
-      align-items: flex-start;
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-danger-bg);
-      border: 1px solid var(--color-danger);
-      border-radius: var(--radius-lg);
-      min-height: 0;
-      overflow: hidden;
-    }
-    .alert-row__icon {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--color-canvas);
-      color: var(--color-danger);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--text-h3);
-      font-weight: var(--weight-bold);
-      border: 1px solid var(--color-danger);
-    }
-    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
-    .alert-row__title {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-bold);
-      color: var(--color-danger);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-tight);
-    }
-    .alert-row__text {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-
-    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5D-redesign 2026-09-27 (원장님 49113) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{white-space:nowrap;font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)){padding-top:18px;padding-bottom:18px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="감기 후 3~8주간 지속되는 기침, 왜 생기고 어떻게 관리할까요?">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/pulmo/post-infectious-cough/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Post-infectious Cough — Gwanggyo Barun Internal Medicine", "description": "감기 후 3~8주간 지속되는 기침, 왜 생기고 어떻게 관리할까요?", "url": "https://edu.gwanggyobarun.com/decks/pulmo/post-infectious-cough/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "감염후기침 환자 교육 — 광교바른내과", "description": "감기 후 3~8주간 지속되는 기침, 왜 생기고 어떻게 관리할까요?", "url": "https://edu.gwanggyobarun.com/decks/pulmo/post-infectious-cough/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · PULMONOLOGY</div>
@@ -231,529 +131,353 @@
       <p class="slide__subtitle">감기 후 3~8주간 지속되는 기침 — 왜 생기고 어떻게 관리하면 좋은지 알아봅니다</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Post-infectious Cough · Bronchial Hyperreactivity · Vicious Cycle</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__source">감염후기침 · 예민해진 기관지 · 기침의 악순환</span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — 50%+ self-resolves without medication
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">감기 후 기침, 약 없이도 절반 이상은 좋아집니다</h2>
-      <p class="slide__subtitle">감염후기침 (Post-infectious Cough)은 평균 3~8주 내 자연 소실됩니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>50</em>%+</div>
-          <div class="pattern-hero-number__caption">감염후기침 환자의 절반 이상은 약물 치료 없이도 시간이 지나면서 자연 호전됩니다 — 손상된 기도 점막과 신경이 회복되는 과정이 필요할 뿐입니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why patience matters</div>
-          <div class="pattern-hero-number__detail-text">
-            그러나 감염후기침은 아급성 기침(3~8주)의 가장 흔한 원인이며, 8주를 초과해 만성화될 경우 다른 원인 평가가 필요합니다. 자연 경과를 이해하고 잘못된 헛기침 습관만 피해도 회복이 빨라집니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACCP 2018 Cough Guideline · ERS 2020 Chronic Cough</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — Definition of post-infectious cough
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">감염후기침 (Post-infectious Cough) 이란</h2>
-      <p class="slide__subtitle">감기·독감·코로나19 후에도 기침만 3주 이상 지속되는 상태</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">급성 상기도 감염 후 콧물·발열 등은 사라졌지만 <em>기침만 3주 이상 지속</em>되는 상태로, 흉부 X-ray가 정상이고 다른 원인이 배제된 경우 진단합니다.</p>
-          <p class="pattern-split__supporting">
-            바이러스가 기도 점막을 손상시키고 신경 수용체(TRPV1, TRPA1)를 과민하게 만들면, 작은 자극에도 기침 반사가 쉽게 유발됩니다. 이를 기침 과민 증후군(Cough Hypersensitivity Syndrome, CHS)이라 부르며, 감염후기침은 그 대표 사례입니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Duration</div>
-            <div class="pattern-split__metric-value">3 – 8주</div>
-            <div class="pattern-split__metric-detail">평균 지속 기간 — 아급성 기침의 가장 흔한 원인입니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Persistence after URI</div>
-            <div class="pattern-split__metric-value">약 25%</div>
-            <div class="pattern-split__metric-detail">감기 후 2주 이상 기침이 남아있는 환자 비율.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACCP 2018 · Subacute Cough Definition</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 2×2 — 4 common causes of subacute cough
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>COMMON CAUSES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">아급성 기침의 4가지 흔한 원인</h2>
-      <p class="slide__subtitle">감기 후 3주 이상 기침이 남는다면 — 대부분 이 네 가지에서 출발합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">CAUSE · 01</div>
-          <div class="tile__title">감염 후 기관지 과민성 (Post-viral BHR)</div>
-          <div class="tile__body">바이러스 감염으로 기도 점막이 손상되고 신경 수용체가 과민해진 상태. 찬 공기·먼지·웃음 등 작은 자극에도 기침이 유발됩니다. 보통 6~10주 내에 정상화됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CAUSE · 02</div>
-          <div class="tile__title">상기도 기침 증후군 (UACS)</div>
-          <div class="tile__body">코·부비동에서 분비물이 목 뒤로 흘러내리며 (후비루) 기침을 유발하는 가장 흔한 만성 기침 원인. 코막힘·재채기·"목에 뭔가 걸린 느낌"·잦은 헛기침이 함께 나타납니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CAUSE · 03</div>
-          <div class="tile__title">기침 변이형 천식 (Cough-Variant Asthma)</div>
-          <div class="tile__body">천명음·호흡곤란 없이 만성 기침만 나타나는 천식. 야간·새벽 기침, 운동·찬 공기 노출 후 악화가 특징. 폐기능 검사·기관지유발검사로 확인합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CAUSE · 04</div>
-          <div class="tile__title">위식도역류병 (GERD)</div>
-          <div class="tile__body">위산이 식도·후두를 자극해 기침을 유발. 식후·눕고 난 뒤 악화, 속쓰림·신물·목 이물감 동반. 위산억제제(PPI) 시도로 진단·치료를 동시에 합니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
-        <img src="../../../shared/assets/generated/pulmo-post-infectious-cough-s04-mechanism-pulmonary-0decca94-20260530-raster-20260531.jpg" alt="아급성 기침의 4가지 흔한 원인 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACCP 2018 Subacute Cough · KAAACI 2024</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 3×2 — Vicious cycle of cough
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>VICIOUS CYCLE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">기침이 기침을 부른다 — Cough Begets Cough</h2>
-      <p class="slide__subtitle">조기에 기침을 억제하면 신경 감작의 악순환을 차단할 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">STEP · 01</div>
-          <div class="tile__title">바이러스 감염</div>
-          <div class="tile__body">감기·독감·코로나 등 바이러스가 기도 상피세포에 침투해 점막을 손상시킵니다. 이때부터 기침 신경이 자극에 노출됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEP · 02</div>
-          <div class="tile__title">기도 점막 손상 + 신경 감작</div>
-          <div class="tile__body">손상된 점막에서 염증 매개체가 분비되고, 기침 반사를 담당하는 미주신경 분지(TRPV1, TRPA1)가 과민화됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEP · 03</div>
-          <div class="tile__title">기침 역치 감소</div>
-          <div class="tile__body">평소엔 무시될 작은 자극(찬 공기, 먼지, 향수, 웃음)에도 기침이 유발됩니다. 환자는 "사소한 것에도 기침이 나온다"고 느낍니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEP · 04</div>
-          <div class="tile__title">반복적 기침 → 추가 점막 손상</div>
-          <div class="tile__body">고압의 기침이 반복되면 성대·기관 점막에 미세외상이 누적되며, 염증과 점액 분비가 다시 증가해 자극원이 됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEP · 05</div>
-          <div class="tile__title">기침 지속 · 만성화</div>
-          <div class="tile__body">자극→기침→손상→자극의 고리가 닫히면서 기침이 만성화됩니다. 8주를 넘기면 만성 기침으로 분류됩니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">KEY · 06</div>
-          <div class="tile__title">고리를 끊는 핵심 원리</div>
-          <div class="tile__body">의식적 기침 억제 (BCST), 충분한 수분 섭취, 자극원 회피로 신경 감작 단계에서 차단하면 만성화를 예방할 수 있습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Cough Hypersensitivity Syndrome · ERS Task Force 2014</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 3×2 — Behavioral cough suppression (BCST)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>SUPPRESSION TECHNIQUES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">기침 충동이 올 때 이렇게 해보세요</h2>
-      <p class="slide__subtitle">행동적 기침 억제 치료 (BCST) — 기침 빈도를 최대 65% 감소시킵니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">METHOD · 01</div>
-          <div class="tile__title">물 한 모금 천천히 삼키기</div>
-          <div class="tile__body">기침 충동이 오는 순간 물 한 모금을 천천히 삼킵니다. 가장 쉽고 효과적인 방법으로, 후두를 적시고 삼킴 반사가 기침 반사를 억제합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METHOD · 02</div>
-          <div class="tile__title">무설탕 사탕 빨기</div>
-          <div class="tile__body">사탕을 입에 물고 있으면 침 분비가 늘어 목을 촉촉하게 유지합니다. 외출·회의 등 물을 마시기 어려운 상황에서 유용합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METHOD · 03</div>
-          <div class="tile__title">코로 천천히 깊게 호흡</div>
-          <div class="tile__body">입을 다물고 코로 4초 들이쉬고 6초 내쉬기를 반복합니다. 입으로 차고 건조한 공기가 직접 들어오는 것을 막아 기도 자극을 줄입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METHOD · 04</div>
-          <div class="tile__title">입술 오므려 내쉬기 (Pursed-lip)</div>
-          <div class="tile__body">입술을 오므려 천천히 내쉽니다. 기도 압력을 일정하게 유지해 기관지 허탈을 막고, 기침 충동을 완화합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METHOD · 05</div>
-          <div class="tile__title">강한 삼키기 (Hard Swallow)</div>
-          <div class="tile__body">기침 충동이 올 때 의식적으로 힘을 주어 침을 삼킵니다. 삼킴 반사가 기침 반사를 직접 억제하는 효과가 임상 연구로 확인되었습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">EVIDENCE · 06</div>
-          <div class="tile__title">근거 수준 — 환자 87% 호전</div>
-          <div class="tile__body">Vertigan 2006 RCT: 행동적 기침 억제 치료를 4회 시행 후 기침 빈도 최대 65% ↓, 환자의 87%가 호전을 보고했습니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../shared/assets/generated/pulmo-post-infectious-cough-s06-action-pulmonary-a89029d9-20260530-raster-20260531.jpg" alt="기침 충동이 올 때 이렇게 해보세요 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Vertigan AE et al. Thorax 2006 · BCST RCT</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · COMPARISON — DO vs DON'T daily management
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>DO &amp; DON'T</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">생활 속 기침 관리</h2>
-      <p class="slide__subtitle">헛기침은 모기 물린 곳을 긁는 것과 같습니다 — 일시적 시원함 대신 악순환을 부릅니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            이렇게 하세요 (DO)
-          </div>
-          <ul class="compare-col__list">
-            <li>충분한 수분 섭취 — 하루 1.5~2L</li>
-            <li>실내 습도 40~60% 유지 (가습기 활용)</li>
-            <li>기침 충동 시 물 삼키기·사탕 빨기</li>
-            <li>코로 천천히 깊게 호흡하기</li>
-            <li>헛기침 대신 부드럽게 침 삼키기</li>
-            <li>충분한 수면과 가벼운 규칙 운동</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">−</span>
-            이건 피하세요 (DON'T)
-          </div>
-          <ul class="compare-col__list">
-            <li>습관적 헛기침 — "에헴!" 절대 금지</li>
-            <li>흡연·간접흡연·연기 노출</li>
-            <li>건조한 환경에 오래 머무르기</li>
-            <li>찬 공기에 갑자기 노출되기</li>
-            <li>큰 소리로 말하기·고함치기</li>
-            <li>카페인·알코올 과다 섭취</li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../shared/assets/generated/pulmo-post-infectious-cough-s07-action-pulmonary-fb5667fe-20260530-raster-20260531.jpg" alt="생활 속 기침 관리 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Lifestyle Modification for Subacute Cough · KAAACI</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · TIMELINE — Natural recovery course (4 stages)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>NATURAL COURSE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">시간이 약입니다 — 회복 타임라인</h2>
-      <p class="slide__subtitle">감염후기침은 단계적으로 약해집니다 — 8주를 넘기면 추가 평가가 필요합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">감염 후 1~2주 · 급성기 종료</div>
-          <div class="timeline-step__body">콧물·발열 등 급성 증상은 소실되고, 기침만 남기 시작합니다. 이 시점부터 BCST 시작 권장.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">3~4주 · 절반은 자연 호전</div>
-          <div class="timeline-step__body">약물 없이도 50% 이상 환자에서 기침 강도가 약 30~40% 수준으로 감소합니다. 인내가 필요한 시기.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">6~8주 · 대부분 자연 소실</div>
-          <div class="timeline-step__body">기관지 과민성(BHR)이 정상화되며 기침이 거의 사라집니다. 아토피 체질에서는 더 오래 지속될 수 있음.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">8주 초과 · 만성 기침 평가</div>
-          <div class="timeline-step__body">8주가 넘으면 만성 기침으로 분류됩니다. 폐기능 검사·흉부 CT·후두경 등 체계적 검사 알고리즘 적용.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">참고</span>
-        <span class="alert-strip__text">코로나19 후 기침은 4~12주 시점 18~25%, 12주 이후 2.5~10%에서 지속되며, 약 43.7%에서 기도 과민성 양성이 확인됩니다.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Natural History of Post-viral Cough · COVID Cough Cohort Studies</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · DENSITY GRID 2×2 — Treatment options (non-drug + drug)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>TREATMENT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">치료 옵션 — 비약물이 1차, 약물은 의사 처방</h2>
-      <p class="slide__subtitle">증상이 심하거나 4주 이상 지속될 때 단계적으로 약물을 추가합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">NON-DRUG · 01</div>
-          <div class="tile__title">행동적 기침 억제 (BCST) + 꿀</div>
-          <div class="tile__body">물 삼키기·호흡법·사탕 빨기가 1차 권장 — 가장 효과적이며 부작용이 없습니다. 꿀(Honey)은 기침 빈도와 중증도를 개선합니다 — 단, 12개월 미만 영아 금기.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">NON-DRUG · 02</div>
-          <div class="tile__title">수분 섭취 + 자극물 회피</div>
-          <div class="tile__body">충분한 수분 섭취는 점액을 묽게 하고 점액섬모 청소를 촉진합니다. 연기·먼지·찬 공기 회피는 기도 자극을 줄여 기침 역치를 회복시킵니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 03</div>
-          <div class="tile__title">흡입 스테로이드 (ICS) ± 이프라트로피움</div>
-          <div class="tile__body">기도 염증·과민성이 의심되면 ICS를 2~4주 시도 (ERS/KAAACI 조건부 권고). 이프라트로피움은 기도 분비를 억제 — 치료 필요 수(NNT)=3.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 04</div>
-          <div class="tile__title">진해제 + 신경조절제 (불응성)</div>
-          <div class="tile__body">레보드로프로피진은 비마약성 진해제로 CNS 억제가 없습니다. 8주 이상 지속되는 불응성 기침에는 가바펜틴 등 신경조절제를 고려 (RCT 확인).</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/pulmo-post-infectious-cough-s09-risk-pulmonary-5cf7fd1c-20260530-raster-20260531.jpg" alt="치료 옵션 — 비약물이 1차, 약물은 의사 처방 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ERS 2020 Chronic Cough · KAAACI Cough Management 2024</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · ALERT STACK — Red flag symptoms (4 alerts, compressed)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>RED FLAGS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">이런 증상이 있으면 즉시 병원으로!</h2>
-      <p class="slide__subtitle">아래 위험 신호 중 하나라도 동반되면 추가 검사가 필요합니다 — 한국은 결핵 중등도 부담 국가입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-alert-stack">
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">객혈 (Hemoptysis) — 피가 섞인 가래</div>
-            <div class="alert-row__text">폐암·결핵·기관지확장증의 위험 신호. 흉부 CT·기관지경 검사로 즉시 평가가 필요합니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">설명되지 않는 체중 감소 + 야간 발한</div>
-            <div class="alert-row__text">악성종양·결핵·림프종의 전형적 동반 증상 — 흉부 CT, AFB 검사, 조직검사를 고려합니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">급성기 이후 지속되는 발열 또는 호흡곤란</div>
-            <div class="alert-row__text">폐렴·결핵·심부전·폐색전증 가능성. 안정 시 호흡곤란, 쉰 목소리 지속도 함께 평가 — 폐기능검사·D-dimer 등.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">기침 8주 이상 지속 — 만성 기침 진입</div>
-            <div class="alert-row__text">천식·역류·결핵 등 체계적 검사 알고리즘 적용. 기침 2주 이상 지속 시에도 결핵 검사를 고려합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KCDC 결핵 진료 지침 · ACCP Red Flags for Cough</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — Today's 8 essentials
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">감염후기침은 대부분 좋아지지만, 잘못된 습관이 회복을 방해합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">감염후기침은 <strong>3~8주 내</strong> 대부분 자연 소실됩니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">약물 없이도 <strong>50% 이상</strong> 호전 — 시간이 약입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">기침이 기침을 부르는 <strong>악순환</strong>을 의식적으로 끊으세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">헛기침 ("에헴!") — 모기 물린 곳 긁기, <strong>금지</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">기침 충동 시: <strong>물 삼키기·코 호흡·사탕</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">습도 40~60%·하루 1.5~2L 수분, <strong>흡연·찬 공기</strong> 회피</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">증상 심하면 ICS·진해제 — <strong>의사 처방</strong>으로만</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">객혈·체중감소·발열·8주 초과 → <strong>즉시 병원</strong></div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — recover faster, recognise red flags</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">감기 후 기침,<br><em>대부분 좋아집니다</em></h2>
-      <p class="slide__subtitle">기침 충동이 올 때 물 삼키기·코 호흡으로 악순환을 끊고 자연 회복을 기다려 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 한눈에</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">감기 뒤 기침, 약 없이도 절반 넘게 좋아집니다</h2>
+  <p class="v2-sub">감염후기침은 보통 3~8주 안에 저절로 사라집니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">50<span>%+</span></div><div class="q-stat__lab">약 없이 좋아짐</div><div class="q-stat__cap">시간이 지나며 저절로 나아지는 비율</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">3~8<span>주</span></div><div class="q-stat__lab">보통 이어지는 기간</div><div class="q-stat__cap">3~8주 기침의 가장 흔한 원인</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">약 25<span>%</span></div><div class="q-stat__lab">감기 뒤 2주 넘게</div><div class="q-stat__cap">감기 뒤 기침이 2주 이상 남는 비율</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>왜 시간이 필요한가요</b></div><div class="v2-body">감기로 다친 기도 점막과 신경이 회복되는 시간이 필요합니다. 잘못된 헛기침 습관만 피해도 회복이 빨라집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>8주가 넘으면</b></div><div class="v2-body">만성 기침으로 넘어간 것이므로 <b>다른 원인</b>을 찾는 검사가 필요합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 기침이 남아 있어도 열·콧물이 사라졌다면 대부분 회복 과정입니다.</span><span class="v2-src">근거 · 미국흉부의사협회(ACCP) 2018 기침 지침 · 유럽호흡기학회(ERS) 2020 만성기침 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 무엇인가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">감염후기침이란</h2>
+  <p class="v2-sub">감기·독감·코로나19가 나은 뒤에도 기침만 3주 넘게 남는 상태입니다</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.8323 13.4187C17.0529 11.4931 19.8857 10.2549 22.9997 10.0352V12C22.9997 12.5523 23.4475 13 23.9997 13C24.552 13 24.9997 12.5523 24.9997 12V10.0352C28.1136 10.2549 30.9463 11.493 33.1669 13.4184L31.7779 14.8074C31.3874 15.1979 31.3874 15.8311 31.7779 16.2216C32.1685 16.6121 32.8016 16.6121 33.1921 16.2216L34.5811 14.8326C36.5067 17.0532 37.7448 19.886 37.9646 23H35.9997C35.4475 23 34.9997 23.4477 34.9997 24C34.9997 24.5523 35.4475 25 35.9997 25H37.9646C37.7448 28.1139 36.5067 30.9466 34.5813 33.1672L33.1921 31.7781C32.8016 31.3876 32.1685 31.3876 31.7779 31.7781C31.3874 32.1686 31.3874 32.8018 31.7779 33.1923L33.167 34.5814C30.9465 36.5069 28.1137 37.7451 24.9997 37.9648V36C24.9997 35.4477 24.552 35 23.9997 35C23.4475 35 22.9997 35.4477 22.9997 36V37.9648C19.8859 37.7451 17.0532 36.507 14.8327 34.5816L16.2216 33.1927C16.6121 32.8022 16.6121 32.1691 16.2216 31.7785C15.8311 31.388 15.1979 31.388 14.8074 31.7785L13.4184 33.1674C11.4929 30.9468 10.2547 28.114 10.0349 25H11.9997C12.552 25 12.9997 24.5523 12.9997 24C12.9997 23.4477 12.552 23 11.9997 23H10.0349C10.2547 19.8861 11.4927 17.0535 13.4181 14.8329L14.8074 16.2221C15.1979 16.6126 15.831 16.6126 16.2216 16.2221C16.6121 15.8316 16.6121 15.1984 16.2216 14.8079L14.8323 13.4187ZM19.9998 25C21.1043 25 21.9998 25.8954 21.9998 27C21.9998 28.1046 21.1043 29 19.9998 29C18.8952 29 17.9998 28.1046 17.9998 27C17.9998 25.8954 18.8952 25 19.9998 25ZM24.9998 19C24.9998 17.8954 24.1043 17 22.9998 17C21.8952 17 20.9998 17.8954 20.9998 19C20.9998 20.1046 21.8952 21 22.9998 21C24.1043 21 24.9998 20.1046 24.9998 19ZM28.9998 24C30.1043 24 30.9998 24.8954 30.9998 26C30.9998 27.1046 30.1043 28 28.9998 28C27.8952 28 26.9998 27.1046 26.9998 26C26.9998 24.8954 27.8952 24 28.9998 24Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9998 5C20.9998 4.44772 21.4475 4 21.9998 4H25.9998C26.552 4 26.9998 4.44772 26.9998 5C26.9998 5.55228 26.552 6 25.9998 6H24.9998V8C24.9998 8.55228 24.552 9 23.9998 9C23.4475 9 22.9998 8.55228 22.9998 8V6H21.9998C21.4475 6 20.9998 5.55228 20.9998 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.9998 39C24.552 39 24.9998 39.4477 24.9998 40V42H25.9998C26.552 42 26.9998 42.4477 26.9998 43C26.9998 43.5523 26.552 44 25.9998 44H21.9998C21.4475 44 20.9998 43.5523 20.9998 43C20.9998 42.4477 21.4475 42 21.9998 42H22.9998V40C22.9998 39.4477 23.4475 39 23.9998 39Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.6861 39.5567C12.2956 39.9472 11.6624 39.9472 11.2719 39.5567L8.44347 36.7283C8.05295 36.3378 8.05295 35.7046 8.44347 35.3141C8.83399 34.9236 9.46716 34.9236 9.85768 35.3141L10.5648 36.0212L11.979 34.607C12.3695 34.2164 13.0027 34.2164 13.3932 34.607C13.7837 34.9975 13.7837 35.6307 13.3932 36.0212L11.979 37.4354L12.6861 38.1425C13.0766 38.533 13.0766 39.1662 12.6861 39.5567Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34.6064 13.3938C34.2159 13.0032 34.2159 12.3701 34.6064 11.9796L36.0206 10.5653L35.3135 9.85823C34.923 9.46771 34.923 8.83454 35.3135 8.44402C35.7041 8.0535 36.3372 8.0535 36.7277 8.44402L39.5562 11.2724C39.9467 11.663 39.9467 12.2961 39.5562 12.6867C39.1656 13.0772 38.5325 13.0772 38.142 12.6867L37.4348 11.9796L36.0206 13.3938C35.6301 13.7843 34.9969 13.7843 34.6064 13.3938Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.99976 27C4.44747 27 3.99976 26.5523 3.99976 26V22C3.99976 21.4477 4.44747 21 4.99976 21C5.55204 21 5.99976 21.4477 5.99976 22V23H7.99976C8.55204 23 8.99976 23.4477 8.99976 24C8.99976 24.5523 8.55204 25 7.99976 25H5.99976V26C5.99976 26.5523 5.55204 27 4.99976 27Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M38.9998 24C38.9998 23.4477 39.4475 23 39.9998 23H41.9998V22C41.9998 21.4477 42.4475 21 42.9998 21C43.552 21 43.9998 21.4477 43.9998 22V26C43.9998 26.5523 43.552 27 42.9998 27C42.4475 27 41.9998 26.5523 41.9998 26V25H39.9998C39.4475 25 38.9998 24.5523 38.9998 24Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.44341 12.6866C8.05288 12.2961 8.05288 11.6629 8.44341 11.2724L11.2718 8.44396C11.6624 8.05343 12.2955 8.05343 12.686 8.44396C13.0766 8.83448 13.0766 9.46765 12.686 9.85817L11.9789 10.5653L13.3932 11.9795C13.7837 12.37 13.7837 13.0032 13.3932 13.3937C13.0026 13.7842 12.3695 13.7842 11.9789 13.3937L10.5647 11.9795L9.85762 12.6866C9.46709 13.0771 8.83393 13.0771 8.44341 12.6866Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34.6064 34.6069C34.9969 34.2164 35.63 34.2164 36.0206 34.6069L37.4348 36.0211L38.1419 35.314C38.5324 34.9235 39.1656 34.9235 39.5561 35.314C39.9466 35.7045 39.9466 36.3377 39.5561 36.7282L36.7277 39.5567C36.3371 39.9472 35.704 39.9472 35.3135 39.5567C34.9229 39.1661 34.9229 38.533 35.3135 38.1424L36.0206 37.4353L34.6064 36.0211C34.2158 35.6306 34.2158 34.9974 34.6064 34.6069Z" fill="currentColor"/>
+</svg></div><b>진단</b></div><div class="v2-body">콧물·열은 사라졌는데 기침만 3주 이상 남고, 흉부 X선이 정상이며 다른 원인이 없을 때 진단합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.4376 8.12324C25.6644 8.6268 25.4401 9.21889 24.9365 9.44571C23.2008 10.2275 21.9943 11.9686 21.9875 13.9902L21.9875 14.0073L21.9875 14.0245C21.9967 16.7781 24.2317 19.0074 26.9874 19.0074C29.5665 19.0074 31.6906 17.0539 31.9588 14.5465C32.0175 13.9973 32.5103 13.5998 33.0595 13.6585C33.6086 13.7173 34.0062 14.2101 33.9474 14.7592C33.7892 16.2386 33.1705 17.5801 32.2374 18.6375C33.7386 18.9749 35.0575 19.7946 36.0215 20.9234C36.3801 21.3434 36.3304 21.9746 35.9104 22.3333C35.4904 22.6919 34.8592 22.6422 34.5006 22.2222C33.582 21.1465 32.2191 20.4672 30.6964 20.4672C27.935 20.4672 25.6964 22.7057 25.6964 25.4672C25.6964 26.5014 26.0094 27.4597 26.5457 28.256L26.5527 28.2651C26.6183 28.351 26.6679 28.4442 26.7019 28.541C26.7271 28.6109 26.7441 28.6826 26.7531 28.7549C27.0857 28.7973 27.4045 28.9577 27.6413 29.2311C27.8694 29.4946 28.0758 29.7642 28.263 30.0377C28.6256 30.5672 28.5785 31.2561 28.1918 31.729C28.7896 31.7163 29.3529 32.0872 29.5573 32.683C29.7676 33.296 29.9285 33.8952 30.0675 34.4387C30.2044 34.9739 30.0156 35.5159 29.6254 35.8552C30.0978 35.9225 30.5247 36.2277 30.726 36.6986C30.9114 37.1323 31.0877 37.3427 31.2518 37.4586C31.5155 37.6448 31.696 37.905 31.7851 38.1911C32.0084 37.8969 32.3461 37.6901 32.7418 37.6426C32.9557 37.6169 33.1945 37.5766 33.461 37.5186C33.8669 37.4302 34.2699 37.526 34.5831 37.75C34.6887 37.5988 34.8373 37.4751 35.0203 37.3994C35.112 37.3614 35.2033 37.3233 35.2942 37.2853C35.8112 37.031 36.1899 36.6107 36.3669 36.0756C36.566 35.4742 36.5486 34.6047 35.9748 33.4919C35.7217 33.001 35.9144 32.3979 36.4053 32.1448C36.8961 31.8917 37.4993 32.0844 37.7524 32.5753C38.1597 33.3653 38.3932 34.1406 38.4613 34.8769C39.0705 34.1531 39.7137 33.1747 40.2394 31.8849C40.4478 31.3734 41.0314 31.1278 41.5429 31.3362C42.0543 31.5447 42.2999 32.1283 42.0915 32.6397C41.4657 34.1753 40.6884 35.3492 39.9392 36.2265C40.4264 36.2843 40.9386 36.4044 41.4933 36.5968C42.015 36.7779 42.2912 37.3476 42.1102 37.8694C41.9291 38.3912 41.3594 38.6674 40.8376 38.4863C39.8433 38.1413 39.1357 38.1279 38.4468 38.2706C37.805 38.4036 37.1737 38.6675 36.2927 39.0359L36.1058 39.114C36.0101 39.1591 35.9126 39.2007 35.8134 39.2389C35.7934 39.2466 35.7733 39.2536 35.7531 39.26C35.5429 39.3388 35.3218 39.3422 35.1204 39.2829C34.9827 39.768 34.5889 40.1634 34.0617 40.2782C33.7196 40.3527 33.3921 40.4091 33.0784 40.4468C32.3913 40.5292 31.7604 40.1037 31.5619 39.4658C31.104 40.0698 30.2462 40.2061 29.6224 39.7655C28.8752 39.2377 28.429 38.5106 28.129 37.8087C27.8818 37.2302 28.0505 36.5785 28.5013 36.1872C27.952 36.1091 27.4773 35.7094 27.3313 35.1385C27.197 34.6136 27.0585 34.1026 26.8859 33.5995C26.7215 33.1202 26.8297 32.6132 27.1281 32.2475C26.6679 32.2569 26.2121 32.0414 25.9327 31.6333C25.8031 31.4441 25.6617 31.2594 25.5063 31.08C25.1723 30.6944 25.0842 30.1794 25.2282 29.7264C25.1172 29.6567 25.0181 29.5638 24.9387 29.4492L24.9271 29.4324C24.0103 28.2613 22.5866 27.5116 20.9874 27.5116C19.3879 27.5116 17.9638 28.2627 17.0485 29.4315C16.9805 29.5303 16.9099 29.6274 16.837 29.7225C16.3005 30.5193 15.9874 31.4789 15.9874 32.5116C15.9874 33.4647 16.2531 34.3527 16.714 35.109C17.0014 35.5806 16.852 36.1959 16.3804 36.4833C15.9088 36.7707 15.2935 36.6213 15.0061 36.1497C14.3596 35.0888 13.9874 33.8421 13.9874 32.5116C13.9874 32.31 13.996 32.1104 14.0127 31.9131C13.1727 32.2698 12.2486 32.4672 11.2785 32.4672C10.793 32.4672 10.318 32.4176 9.85863 32.3229C9.31772 32.2114 8.96964 31.6824 9.08116 31.1415C9.19269 30.6006 9.72159 30.2526 10.2625 30.3641C10.5897 30.4315 10.9294 30.4672 11.2785 30.4672C12.878 30.4672 14.3021 29.7161 15.2174 28.5473C15.2855 28.4484 15.356 28.3513 15.429 28.2561C15.9654 27.4594 16.2785 26.4999 16.2785 25.4672C16.2785 22.7057 14.0399 20.4672 11.2785 20.4672C9.81032 20.4672 8.49106 21.0987 7.57494 22.108C7.20375 22.5169 6.57133 22.5475 6.16238 22.1763C5.75344 21.8051 5.72283 21.1727 6.09402 20.7638C7.0438 19.7174 8.30805 18.9588 9.73754 18.6375C8.83287 17.6123 8.22371 16.32 8.0432 14.8939C7.97385 14.346 8.3618 13.8456 8.90972 13.7762C9.45763 13.7069 9.95802 14.0948 10.0274 14.6428C10.3389 17.1037 12.4416 19.0073 14.9875 19.0073C17.7431 19.0073 19.9781 16.7781 19.9875 14.0247L19.9874 14.0074L19.9875 13.99C19.9807 12.0017 18.8134 10.2847 17.1232 9.48483C16.6239 9.24859 16.4108 8.65239 16.647 8.15318C16.8832 7.65398 17.4794 7.4408 17.9787 7.67704C19.2292 8.26882 20.277 9.22097 20.9875 10.3999C21.7203 9.18387 22.8121 8.20911 24.1152 7.62216C24.6187 7.39534 25.2108 7.61969 25.4376 8.12324ZM20.9875 24.0102C21.8155 24.0102 22.4868 23.3389 22.4868 22.5109C22.4868 21.6828 21.8155 21.0116 20.9875 21.0116C20.1595 21.0116 19.4882 21.6828 19.4882 22.5109C19.4882 23.3389 20.1595 24.0102 20.9875 24.0102Z" fill="currentColor"/>
+</svg></div><b>왜 생기나요</b></div><div class="v2-body">바이러스가 기도 점막을 다치게 하고 기침 신경의 감지 센서를 예민하게 만듭니다. 작은 자극에도 기침이 쉽게 납니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.9631 22.0194H22.7229V21.0728H23.7825C24.4967 21.0728 25.1818 20.8048 25.6882 20.3273C26.1946 19.8497 26.4812 19.2015 26.4852 18.5243V16.8495C26.4852 16.919 26.9225 16.878 27.1323 16.8582L27.1323 16.8582L27.1323 16.8582C27.1862 16.8532 27.2251 16.8495 27.2377 16.8495C27.4248 16.821 27.5941 16.7279 27.7132 16.5881C27.8323 16.4483 27.8926 16.2717 27.8826 16.0922C27.8372 15.822 27.7438 15.561 27.6062 15.3204L27.2377 14.432C26.9766 13.8204 26.7156 13.2087 26.4699 12.5825C26.4699 12.5825 26.3163 11.1262 26.1781 10.6311C25.7497 9.29916 24.8842 8.13171 23.7076 7.29874C22.5309 6.46577 21.1046 6.01077 19.6363 6.00001C18.2155 5.99757 16.8293 6.41615 15.6716 7.19726C14.5138 7.97837 13.6423 9.08298 13.1788 10.3567C12.7153 11.6305 12.683 13.0097 13.0864 14.3018C13.4897 15.5938 14.3087 16.734 15.4287 17.5631V22.0194H12.6032C10.8822 22.0151 9.22776 22.6496 7.99374 23.7872C6.75973 24.9248 6.04412 26.4752 6 28.1068V42H32.9963V29.0534C33.0269 28.1523 32.8688 27.2544 32.531 26.4116C32.1931 25.5689 31.6824 24.7981 31.0282 24.1439C30.3741 23.4896 29.5896 22.965 28.7201 22.6003C27.8507 22.2357 26.9136 22.0382 25.9631 22.0194ZM20.8572 31.9962C20.7885 31.9931 20.6974 31.9874 20.5907 31.9771C20.3661 31.9552 20.0498 31.9104 19.72 31.8142C19.5042 31.7512 19.2486 31.6567 19 31.5095C18.7514 31.6567 18.4958 31.7512 18.28 31.8142C17.9502 31.9104 17.6339 31.9552 17.4093 31.9771C17.2945 31.9882 17.1978 31.9939 17.1276 31.9969C17.0923 31.9983 17.0634 31.9991 17.0419 31.9995L17.0377 31.9996C17.1036 33.8696 17.1314 36.2941 16.0567 37.3659C14.6469 38.7719 11.8272 39.4749 10.4174 38.3032C9.00755 37.1315 11.3573 25.6491 14.6469 25.6491C16.9296 25.6491 17.013 28.3908 17.0014 29.9999L17.003 29.9999L17.0272 29.9992L17.0443 29.9986C17.0835 29.997 17.143 29.9935 17.2157 29.9865C17.3661 29.9718 17.5498 29.9438 17.72 29.8942C17.8635 29.8523 17.9526 29.8079 18 29.7768V26.9792V25.5911V25.4618V25.4022V25.3461V25.245V25.2392V25.2335V25.2222V25.2004V25.1796V25.1598V25.0916V25.0879V25.0843V25.0808V25.0773V25.0739V25.0706V25.0674V25.0642V25.0522V25.0494V25.0467V25.044V25.0415V25.0235V25.0216V25.0198V25.0181V25.0164V25.0148V25.0133V25.0119V25.0106V25.0093V25.0081V25.007V25.006V25.005V25.0042V25.0034V25.0027V25.002V25.0015V25.001V25.0007V25.0004V25.0002V25L19 25L20 25V25.0002V25.0004V25.0007V25.001V25.0015V25.002V25.0027V25.0034V25.0042V25.005V25.006V25.007V25.0081V25.0093V25.0106V25.0119V25.0133V25.0148V25.0164V25.0181V25.0198V25.0216V25.0235V25.0415V25.044V25.0467V25.0494V25.0522V25.0642V25.0674V25.0706V25.0739V25.0773V25.0808V25.0843V25.0879V25.0916V25.1598V25.1796V25.2004V25.2222V25.2335V25.2392V25.245V25.3461V25.4022V25.4618V25.5911V26.9792V29.7768C20.0474 29.8079 20.1365 29.8523 20.28 29.8942C20.4502 29.9438 20.6339 29.9718 20.7843 29.9865C20.8253 29.9904 20.8621 29.9933 20.8934 29.9953C20.8819 28.3855 20.9673 25.6491 23.2479 25.6491C26.5375 25.6491 28.8872 37.1315 27.4774 38.3032C26.0675 39.4749 23.2479 38.7719 21.838 37.3659C20.7627 36.2935 20.7912 33.8667 20.8572 31.9962ZM16.9991 30.2411L16.9999 30.1664L17 30.8696C16.9979 30.7651 16.9966 30.6651 16.9966 30.5702C16.9966 30.4705 16.9978 30.3602 16.9991 30.2413L16.9991 30.2411ZM25 18C25 18.5523 24.5523 19 24 19C23.4477 19 23 18.5523 23 18C23 17.4477 23.4477 17 24 17C24.5523 17 25 17.4477 25 18ZM21 18C21.5523 18 22 17.5523 22 17C22 16.4477 21.5523 16 21 16C20.4477 16 20 16.4477 20 17C20 17.5523 20.4477 18 21 18Z" fill="currentColor"/>
+<path d="M32 14C32 14.5523 31.5523 15 31 15C30.4477 15 30 14.5523 30 14C30 13.4477 30.4477 13 31 13C31.5523 13 32 13.4477 32 14Z" fill="currentColor"/>
+<path d="M34 17C34 17.5523 33.5523 18 33 18C32.4477 18 32 17.5523 32 17C32 16.4477 32.4477 16 33 16C33.5523 16 34 16.4477 34 17Z" fill="currentColor"/>
+<path d="M36 20C36 20.5523 35.5523 21 35 21C34.4477 21 34 20.5523 34 20C34 19.4477 34.4477 19 35 19C35.5523 19 36 19.4477 36 20Z" fill="currentColor"/>
+<path d="M42 19C42 19.5523 41.5523 20 41 20C40.4477 20 40 19.5523 40 19C40 18.4477 40.4477 18 41 18C41.5523 18 42 18.4477 42 19Z" fill="currentColor"/>
+<path d="M42 14C42 14.5523 41.5523 15 41 15C40.4477 15 40 14.5523 40 14C40 13.4477 40.4477 13 41 13C41.5523 13 42 13.4477 42 14Z" fill="currentColor"/>
+<path d="M42 10C42 10.5523 41.5523 11 41 11C40.4477 11 40 10.5523 40 10C40 9.44772 40.4477 9 41 9C41.5523 9 42 9.44772 42 10Z" fill="currentColor"/>
+<path d="M38 12C38 12.5523 37.5523 13 37 13C36.4477 13 36 12.5523 36 12C36 11.4477 36.4477 11 37 11C37.5523 11 38 11.4477 38 12Z" fill="currentColor"/>
+<path d="M38 16C38 16.5523 37.5523 17 37 17C36.4477 17 36 16.5523 36 16C36 15.4477 36.4477 15 37 15C37.5523 15 38 15.4477 38 16Z" fill="currentColor"/>
+<path d="M30 19C30 19.5523 29.5523 20 29 20C28.4477 20 28 19.5523 28 19C28 18.4477 28.4477 18 29 18C29.5523 18 30 18.4477 30 19Z" fill="currentColor"/>
+</svg></div><b>기침 과민 상태</b></div><div class="v2-body">이렇게 기침 신경이 예민해진 상태를 ‘기침 과민 증후군’이라 부르며, 감염후기침이 대표적인 예입니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>얼마나 가나요</b></div><div class="v2-body">평균 3~8주 이어지며, 3~8주 기침(아급성 기침)의 가장 흔한 원인입니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 찬 공기·웃음·말하기에도 기침이 나는 것은 신경이 예민해졌기 때문입니다.</span><span class="v2-src">근거 · 미국흉부의사협회(ACCP) 2018 기침 지침 · 아급성 기침 정의</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 흔한 원인</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">감기 뒤 3주 넘는 기침의 네 가지 원인</h2>
+  <p class="v2-sub">감기 뒤 기침이 남는다면 대부분 이 네 가지에서 출발합니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">예민해진 기관지<span class="q-srow__tag">감염 뒤</span></div><div class="v2-body">찬 공기·먼지·웃음에도 기침이 납니다. 보통 6~10주 안에 정상으로&nbsp;돌아옵니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">코 뒤로 넘어가는 콧물<span class="q-srow__tag">상기도 기침 증후군</span></div><div class="v2-body">콧물이 목 뒤로 흘러 기침을 일으킵니다. 코막힘·목 이물감·잦은 헛기침.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">기침형 천식<span class="q-srow__tag">밤·새벽</span></div><div class="v2-body">쌕쌕거림 없이 기침만 나는 천식. 폐기능 검사·기관지 유발 검사로&nbsp;확인합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">위식도역류병<span class="q-srow__tag">식후·누운 뒤</span></div><div class="v2-body">위산이 식도·목을 자극합니다. 속쓰림·신물을 보고 위산억제제로 확인합니다.</div></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/pulmo-post-infectious-cough-s04-mechanism-pulmonary-0decca94-20260530-raster-20260531.jpg" alt="기도와 폐를 가운데 두고 코 뒤 콧물, 위산 역류, 좁아진 기관지를 확대한 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 기관지·코·위에서 각각 기침이 시작될 수 있습니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 원인마다 치료가 달라서, 기침이 오래가면 어느 쪽인지 함께 찾아봅니다.</span><span class="v2-src">근거 · ACCP 2018 아급성 기침 · 대한천식알레르기학회 2024</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 기침의 악순환</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">기침이 기침을 부릅니다</h2>
+  <p class="v2-sub">초기에 기침을 참으면 신경이 예민해지는 악순환을 끊을 수 있습니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">1</div><div class="q-step__h">바이러스 감염</div><div class="q-step__tag">시작</div><div class="v2-body">감기·독감·코로나 바이러스가 기도 점막을 다치게 합니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:300px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">2</div><div class="q-step__h">신경이 예민해짐</div><div class="q-step__tag">감작</div><div class="v2-body">다친 점막의 염증 물질이 기침 신경을 예민하게 만듭니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:536px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">3</div><div class="q-step__h">작은 자극에도 기침</div><div class="q-step__tag">문턱 ↓</div><div class="v2-body">찬 공기·먼지·향수·웃음에도 기침이 납니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:772px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">4</div><div class="q-step__h">기침이 점막을 다시&nbsp;다침</div><div class="q-step__tag">반복</div><div class="v2-body">센 기침이 반복되면 목과 기관 점막에 작은 상처가 쌓입니다.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:1008px;top:206px;width:208px;height:300px">
+    <div class="q-step__n">5</div><div class="q-step__h">기침이 오래감</div><div class="q-step__tag">8주 넘으면 만성</div><div class="v2-body">자극→기침→손상의 고리가 닫히며 기침이 길어집니다.</div>
+  </div>
+  <div class="q-arrow" style="left:278px;top:242px"></div>
+  <div class="q-arrow" style="left:514px;top:242px"></div>
+  <div class="q-arrow" style="left:750px;top:242px"></div>
+  <div class="q-arrow" style="left:986px;top:242px"></div>
+  <div class="v2-panel q-inline-p v2-panel--accent" style="left:64px;top:530px;width:1152px;height:76px">
+    <div class="q-inline"><b>고리를 끊는 방법</b> 기침을 의식적으로 참는 연습, 물 충분히 마시기, 자극 피하기로 신경이 예민해지는 단계에서 끊습니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 헛기침은 모기 물린 곳을 긁는 것과 같습니다 — 잠깐 시원하고 더 가렵습니다.</span><span class="v2-src">근거 · 기침 과민 증후군 · 유럽호흡기학회 전문가 보고 2014</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 기침 참기 연습</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">기침이 나오려 할 때 이렇게 해 보세요</h2>
+  <p class="v2-sub">기침 참기 연습(행동적 기침 억제 치료)은 기침 횟수를 최대 65%까지 줄였습니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:560px"><colgroup><col style="width:170px"><col style="width:390px"></colgroup><thead><tr><th>방법</th><th>이렇게</th></tr></thead><tbody><tr><th style="height:62px">물 한 모금</th><td style="height:62px">천천히 삼킵니다 — 가장 쉽고 효과적</td></tr><tr><th style="height:62px">무설탕 사탕</th><td style="height:62px">침이 늘어 목이 촉촉 — 외출·회의 때</td></tr><tr><th style="height:62px">코로 천천히 숨</th><td style="height:62px">입을 다물고 4초 들이쉬고 6초 내쉽니다</td></tr><tr><th style="height:62px">입술 오므려 내쉬기</th><td style="height:62px">천천히 내쉬어 기침 충동을 누그러뜨립니다</td></tr><tr><th style="height:62px">힘주어 침 삼키기</th><td style="height:62px">삼키는 반사가 기침 반사를 누릅니다</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/pulmo-post-infectious-cough-s06-action-pulmonary-a89029d9-20260530-raster-20260531.jpg" alt="물 마시기, 코로 숨쉬기, 침 삼키기, 입술 오므려 내쉬기를 차례로 보여 주는 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 물 삼키기 · 코 호흡 · 침 삼키기 · 입술 오므려 내쉬기(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 연구에서 이 연습을 4번 받은 환자의 87%가 좋아졌다고 답했습니다.</span><span class="v2-src">근거 · Vertigan 등, Thorax 2006 무작위 대조 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 생활 속 관리</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이렇게 하시고, 이건 피하세요</h2>
+  <p class="v2-sub">헛기침 대신 부드럽게 침을 삼키는 습관이 회복을 앞당깁니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:480px;height:270px">
+    <img class="v2-fig__img q-fig__img" style="width:480px;height:270px" src="../../../shared/assets/generated/pulmo-post-infectious-cough-s07-action-pulmonary-fb5667fe-20260530-raster-20260531.jpg" alt="가습기와 물병·따뜻한 차, 침실, 금연 표시와 조용히 하라는 손짓 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:488px;width:480px;height:118px"><div class="q-figcap__t">그림 · 촉촉한 실내와 충분한 수분, 연기와 큰 소리는 피합니다(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:576px;top:206px;width:640px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 23L7 42H9L9 23H10V12H9L9 6H7L7 12H6V23H7Z" fill="currentColor"/>
+<path d="M25 7C25 7.55228 24.5523 8 24 8H19V11H25V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7Z" fill="currentColor"/>
+<path d="M30 11C35.5228 11 40 15.4772 40 21V24H42V30H28V24H30V23C30 21.8954 29.1046 21 28 21H27V11H30Z" fill="currentColor"/>
+<path d="M35.5 42C37.433 42 39 40.3719 39 38.3636C39 35.1818 35.5 32 35.5 32C35.5 32 32 35.1818 32 38.3636C32 40.3719 33.567 42 35.5 42Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6H7L7 12H6V23H7L7 42H9L9 23H10V12H9L9 6ZM35.5 34.9879C35.4543 35.0478 35.4085 35.109 35.3628 35.1714C34.5524 36.2765 34 37.4318 34 38.3636C34 39.3401 34.7429 40 35.5 40C36.2571 40 37 39.3401 37 38.3636C37 37.4318 36.4476 36.2765 35.6372 35.1714C35.5915 35.109 35.5457 35.0478 35.5 34.9879ZM29.7324 22C29.9026 22.2942 30 22.6357 30 23V24H28V30H42V24H40V21C40 15.4772 35.5228 11 30 11H27V21H28C28.7403 21 29.3866 21.4022 29.7324 22ZM29 19.126C30.7252 19.5701 32 21.1362 32 23V26H30V28H40V26H38V21C38 16.5817 34.4183 13 30 13H29V19.126ZM14 13V22H23V13H14ZM25 11V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7C25 7.55228 24.5523 8 24 8H19V11H25ZM39 38.3636C39 40.3719 37.433 42 35.5 42C33.567 42 32 40.3719 32 38.3636C32 35.1818 35.5 32 35.5 32C35.5 32 39 35.1818 39 38.3636Z" fill="currentColor"/>
+</svg></div><b>이렇게 하세요</b></div><div class="v2-body">· 물 하루 1.5~2L, 실내 습도 40~60%(가습기)<br>· 기침이 나오려 하면 물 삼키기·사탕<br>· 코로 천천히 깊게 숨쉬기<br>· 충분한 잠과 가벼운 규칙 운동</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 8.58582L39.4142 38L38 39.4142L8.58579 10L10 8.58582Z" fill="currentColor"/>
+<path d="M7 37H28.7268C29.5969 37 30.0519 35.9657 29.4639 35.3243L26.0945 31.6486C25.7157 31.2353 25.1808 31 24.6202 31H7C5.89543 31 5 31.8954 5 33V35C5 36.1046 5.89543 37 7 37Z" fill="currentColor"/>
+<path d="M40 32C40 31.4477 39.5523 31 39 31C38.4477 31 38 31.4477 38 32V34C38 34.5523 38.4477 35 39 35C39.5523 35 40 34.5523 40 34V32Z" fill="currentColor"/>
+<path d="M34 17C32.3431 17 31 18.3431 31 20V21.8182C31 23.475 32.3431 24.8182 34 24.8182H37C38.6569 24.8182 40 26.1613 40 27.8182V28C40 28.5523 39.5523 29 39 29C38.4477 29 38 28.5523 38 28V27.8182C38 27.2659 37.5523 26.8182 37 26.8182H34C31.2386 26.8182 29 24.5796 29 21.8182V20C29 17.2386 31.2386 15 34 15C34.5523 15 35 15.4477 35 16C35 16.5523 34.5523 17 34 17Z" fill="currentColor"/>
+<path d="M38 19C37.4477 19 37 19.4477 37 20C37 20.5523 37.4477 21 38 21C40.2091 21 42 22.7909 42 25V28C42 28.5523 42.4477 29 43 29C43.5523 29 44 28.5523 44 28V25C44 22.9294 42.9512 21.1039 41.3559 20.0255C42.3585 19.2173 43 17.979 43 16.5909V15C43 12.2386 40.7614 10 38 10C37.4477 10 37 10.4477 37 11C37 11.5523 37.4477 12 38 12C39.6569 12 41 13.3431 41 15V16.5909C41 17.9214 39.9214 19 38.5909 19H38Z" fill="currentColor"/>
+<path d="M44 32C44 31.4477 43.5523 31 43 31C42.4477 31 42 31.4477 42 32V36C42 36.5523 42.4477 37 43 37C43.5523 37 44 36.5523 44 36V32Z" fill="currentColor"/>
+</svg></div><b>이건 피하세요</b></div><div class="v2-body">· 습관적인 헛기침(“에헴!”) · 흡연·간접흡연·연기<br>· 건조한 곳에 오래 있기 · 갑자기 찬 공기<br>· 큰 소리로 말하기·고함<br>· 카페인·술을 많이 마시기</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 헛기침이 하고 싶을 때는 침을 한 번 꿀꺽 삼켜 보세요.</span><span class="v2-src">근거 · 아급성 기침 생활 관리 · 대한천식알레르기학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 회복 흐름</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">시간이 약입니다 — 회복은 이렇게 갑니다</h2>
+  <p class="v2-sub">감염후기침은 단계적으로 약해지고, 8주가 넘으면 검사가 필요합니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">1</div><div class="q-step__h">급성기 끝</div><div class="q-step__tag">감염 뒤 1~2주</div><div class="v2-body">콧물·열이 사라지고 기침만 남기 시작합니다. 기침 참기 연습을 시작하세요.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:359px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">2</div><div class="q-step__h">절반은 좋아짐</div><div class="q-step__tag">3~4주</div><div class="v2-body">약 없이도 50% 넘는 분이 기침 세기가 30~40% 수준으로 줄어듭니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:654px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">3</div><div class="q-step__h">대부분 사라짐</div><div class="q-step__tag">6~8주</div><div class="v2-body">예민한 기관지가 정상으로 돌아옵니다. 아토피(알레르기) 질환이 있는 분은 더 오래갈&nbsp;수&nbsp;있습니다.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:949px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">4</div><div class="q-step__h">만성 기침 검사</div><div class="q-step__tag">8주 넘으면</div><div class="v2-body">폐기능 검사·흉부 CT·후두 내시경 등 차례대로 원인을 찾습니다.</div>
+  </div>
+  <div class="q-arrow" style="left:337px;top:242px"></div>
+  <div class="q-arrow" style="left:632px;top:242px"></div>
+  <div class="q-arrow" style="left:927px;top:242px"></div>
+  <div class="v2-panel q-inline-p" style="left:64px;top:530px;width:1152px;height:76px">
+    <div class="q-inline"><b>코로나19 뒤 기침</b> 4~12주에 18~25%, 12주 뒤에도 2.5~10%에서 남고, 약 43.7%에서 기관지가 예민한 상태로 확인됩니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 3~4주쯤이 가장 답답한 시기입니다 — 조금만 더 기다려 보세요.</span><span class="v2-src">근거 · 바이러스 감염 뒤 기침의 자연 경과 · 코로나19 기침 추적 연구</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 치료</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">치료는 생활 관리가 먼저, 약은 처방으로</h2>
+  <p class="v2-sub">증상이 심하거나 4주 넘게 이어질 때 단계적으로 약을 더합니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:400px;height:225px">
+    <img class="v2-fig__img q-fig__img" style="width:400px;height:225px" src="../../../shared/assets/generated/pulmo-post-infectious-cough-s09-risk-pulmonary-5cf7fd1c-20260530-raster-20260531.jpg" alt="따뜻한 물·꿀·사탕·휴식에서 흡입기와 물약으로 넘어가는 화살표 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:443px;width:400px;height:163px"><div class="q-figcap__t">그림 · 꿀·사탕·휴식 같은 생활 관리가 먼저이고, 필요하면 흡입제나 물약 같은 처방 약을 더합니다(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:496px;top:206px;width:720px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 23L7 42H9L9 23H10V12H9L9 6H7L7 12H6V23H7Z" fill="currentColor"/>
+<path d="M25 7C25 7.55228 24.5523 8 24 8H19V11H25V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7Z" fill="currentColor"/>
+<path d="M30 11C35.5228 11 40 15.4772 40 21V24H42V30H28V24H30V23C30 21.8954 29.1046 21 28 21H27V11H30Z" fill="currentColor"/>
+<path d="M35.5 42C37.433 42 39 40.3719 39 38.3636C39 35.1818 35.5 32 35.5 32C35.5 32 32 35.1818 32 38.3636C32 40.3719 33.567 42 35.5 42Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6H7L7 12H6V23H7L7 42H9L9 23H10V12H9L9 6ZM35.5 34.9879C35.4543 35.0478 35.4085 35.109 35.3628 35.1714C34.5524 36.2765 34 37.4318 34 38.3636C34 39.3401 34.7429 40 35.5 40C36.2571 40 37 39.3401 37 38.3636C37 37.4318 36.4476 36.2765 35.6372 35.1714C35.5915 35.109 35.5457 35.0478 35.5 34.9879ZM29.7324 22C29.9026 22.2942 30 22.6357 30 23V24H28V30H42V24H40V21C40 15.4772 35.5228 11 30 11H27V21H28C28.7403 21 29.3866 21.4022 29.7324 22ZM29 19.126C30.7252 19.5701 32 21.1362 32 23V26H30V28H40V26H38V21C38 16.5817 34.4183 13 30 13H29V19.126ZM14 13V22H23V13H14ZM25 11V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7C25 7.55228 24.5523 8 24 8H19V11H25ZM39 38.3636C39 40.3719 37.433 42 35.5 42C33.567 42 32 40.3719 32 38.3636C32 35.1818 35.5 32 35.5 32C35.5 32 39 35.1818 39 38.3636Z" fill="currentColor"/>
+</svg></div><b>기침 참기 연습 + 꿀</b></div><div class="v2-body">가장 먼저 권하며 부작용이 없습니다. 꿀은 기침을 줄입니다 — <b>12개월 미만 아기는 금지</b>.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>물 마시기 + 자극 피하기</b></div><div class="v2-body">가래가 묽어지고 기도 자극이 줄어듭니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.8652 6.13398C16.0949 6.26659 16.2625 6.485 16.3312 6.74118L17.406 10.7526L18.1771 10.4018C18.4447 10.2801 18.7522 10.2822 19.0181 10.4077C19.2839 10.5332 19.481 10.7693 19.5571 11.0532L23.83 27H30C30.5522 27 31 27.4477 31 28L31 40C31 40.2652 30.8946 40.5196 30.7071 40.7071C30.5195 40.8946 30.2652 41 30 41H17.0511C14.7987 41 12.8244 39.494 12.229 37.3217L6.55329 16.614C6.4235 16.1405 6.6567 15.6428 7.10362 15.4395L8.17812 14.9506L6.6719 9.32937C6.60326 9.07319 6.63919 8.80024 6.7718 8.57055C6.90441 8.34087 7.12283 8.17327 7.37901 8.10463L15.1064 6.03408C15.3626 5.96543 15.6356 6.00137 15.8652 6.13398ZM10.0237 14.111L8.86257 9.77766L14.6581 8.22475L15.5604 11.5922L10.0237 14.111Z" fill="currentColor"/>
+<path d="M33 29H35V39H33V29Z" fill="currentColor"/>
+<path d="M38 33C38.5523 33 39 32.5523 39 32C39 31.4477 38.5523 31 38 31C37.4477 31 37 31.4477 37 32C37 32.5523 37.4477 33 38 33Z" fill="currentColor"/>
+<path d="M39 36C39 36.5523 38.5523 37 38 37C37.4477 37 37 36.5523 37 36C37 35.4477 37.4477 35 38 35C38.5523 35 39 35.4477 39 36Z" fill="currentColor"/>
+<path d="M42 35C42.5523 35 43 34.5523 43 34C43 33.4477 42.5523 33 42 33C41.4477 33 41 33.4477 41 34C41 34.5523 41.4477 35 42 35Z" fill="currentColor"/>
+<path d="M43 30C43 30.5523 42.5523 31 42 31C41.4477 31 41 30.5523 41 30C41 29.4477 41.4477 29 42 29C42.5523 29 43 29.4477 43 30Z" fill="currentColor"/>
+<path d="M42 39C42.5523 39 43 38.5523 43 38C43 37.4477 42.5523 37 42 37C41.4477 37 41 37.4477 41 38C41 38.5523 41.4477 39 42 39Z" fill="currentColor"/>
+</svg></div><b>흡입 스테로이드 · 흡입 기관지확장제</b></div><div class="v2-body">기관지가 예민하면 흡입 스테로이드를 2~4주 써 봅니다. 이프라트로피움은 기도 분비를 줄입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>기침약 · 신경 조절 약</b></div><div class="v2-body">레보드로프로피진은 마약 성분이 없는 기침약입니다. 8주 넘게 안 나으면 가바펜틴 등을 고려합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약은 의사 처방으로만 — 기침약을 여러 개 겹쳐 먹지 마세요.</span><span class="v2-src">근거 · 유럽호흡기학회(ERS) 2020 만성기침 지침 · 대한천식알레르기학회 2024</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 위험 신호</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이런 증상이 있으면 바로 병원으로</h2>
+  <p class="v2-sub">하나라도 해당하면 추가 검사가 필요합니다 — 한국은 결핵이 적지 않은 나라입니다</p>
+  <div class="v2-panel q-card q-card--accent" style="left:64px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 4L23.3098 4.66021L23.3061 4.6638L23.2973 4.67227L23.2648 4.70366C23.2367 4.73095 23.1956 4.7709 23.1426 4.82303C23.0366 4.92728 22.8826 5.08029 22.6874 5.27827C22.297 5.67417 21.7417 6.25029 21.0763 6.97632C19.7465 8.42723 17.9719 10.4826 16.1951 12.8995C12.6815 17.6788 9 24.0809 9 30.0801C9 37.845 15.796 44 24 44C32.204 44 39 37.845 39 30.0801C39 24.0809 35.3185 17.6788 31.8049 12.8995C30.0281 10.4826 28.2535 8.42723 26.9237 6.97632C26.2583 6.25029 25.703 5.67417 25.3126 5.27827C25.1174 5.08029 24.9634 4.92728 24.8574 4.82303C24.8044 4.7709 24.7634 4.73095 24.7352 4.70366L24.7027 4.67227L24.6939 4.6638L24.6902 4.66021L24 4ZM15.4649 31.3985C15.2943 30.8716 14.7301 30.5833 14.2049 30.7545C13.6796 30.9257 13.3922 31.4915 13.5628 32.0183C14.3133 34.3349 15.7757 36.3536 17.7404 37.7853C19.7052 39.217 22.0714 39.9882 24.5 39.9882C25.0523 39.9882 25.5 39.5391 25.5 38.9852C25.5 38.4313 25.0523 37.9822 24.5 37.9822C22.4938 37.9822 20.5391 37.3452 18.916 36.1625C17.293 34.9798 16.0849 33.3121 15.4649 31.3985Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">01</span></div>
+    <div class="q-card__h">피 섞인 가래</div>
+    <div class="v2-body">폐암·결핵·기관지확장증의 신호일 수 있어 흉부 CT 등으로 바로 확인합니다.</div>
+    <div class="q-card__k">바로 검사</div>
+  </div>
+  <div class="v2-panel q-card" style="left:358px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7479 12.8156C17.0072 12.8833 15.4353 13.5043 14.5944 14.3454C14.2039 14.736 13.5707 14.736 13.1802 14.3455C12.7896 13.9551 12.7895 13.3219 13.18 12.9313C14.4774 11.6337 16.5888 10.8981 18.6701 10.8171C20.765 10.7356 23.0521 11.3092 24.6538 12.9112C25.0442 13.3017 25.0442 13.9349 24.6536 14.3254C24.2631 14.7159 23.6299 14.7158 23.2394 14.3253C22.1484 13.234 20.4749 12.7484 18.7479 12.8156Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.9355 27.3841C30.8475 25.1207 32 22.1949 32 19C32 11.8203 26.1797 6 19 6C11.8203 6 6 11.8203 6 19C6 26.1797 11.8203 32 19 32C22.1949 32 25.1207 30.8475 27.3841 28.9355L27 31.1442L34.5137 38.6579L38.6579 34.5137L31.1442 27L28.9355 27.3841ZM19 29C24.5228 29 29 24.5228 29 19C29 13.4772 24.5228 9 19 9C13.4772 9 9 13.4772 9 19C9 24.5228 13.4772 29 19 29Z" fill="currentColor"/>
+<path d="M35.9279 40.0721L40.0721 35.9279L41.4278 37.2837C42.1907 38.0466 42.1907 39.2835 41.4278 40.0464L40.0464 41.4278C39.2835 42.1907 38.0466 42.1907 37.2837 41.4278L35.9279 40.0721Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">02</span></div>
+    <div class="q-card__h">체중 감소 + 밤 식은땀</div>
+    <div class="v2-body">이유 없는 체중 감소는 종양·결핵·림프종을 확인해야 합니다.</div>
+    <div class="q-card__k">원인 확인</div>
+  </div>
+  <div class="v2-panel q-card" style="left:652px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.5 10.5C26.5 12.9853 24.4853 15 22 15C19.5147 15 17.5 12.9853 17.5 10.5C17.5 8.01472 19.5147 6 22 6C24.4853 6 26.5 8.01472 26.5 10.5Z" fill="currentColor"/>
+<path d="M14.1671 17.3509C14.438 16.5613 15.1697 16.0251 16 16.0009L16.0588 16H27.9412L28 16.0009C28.8303 16.0251 29.562 16.5613 29.8329 17.3509L31.8917 23.3509C32.163 24.1416 31.9105 24.988 31.3148 25.5077L31.1838 25.5514C30.7875 25.6835 30.2322 25.9276 29.6674 26.1758L29.5199 26.2407C29.0403 26.4512 28.534 26.6716 28.0367 26.8686L28 26.8831C27.8431 26.9449 27.6871 27.0043 27.5333 27.0603C26.8611 27.3047 26.3186 27.4486 25.9551 27.4706C25.9274 27.4723 25.9028 27.4731 25.8811 27.4733C25.6764 26.8104 25.5316 26.0799 25.6162 25.4447C25.6609 25.1099 25.7664 24.8261 25.9425 24.5897C26.1162 24.3567 26.3963 24.1186 26.8714 23.9285L27.7999 23.5571L27.0571 21.7002L26.1286 22.0716C25.3537 22.3815 24.7588 22.831 24.3388 23.3948C23.9211 23.9553 23.7142 24.5777 23.6338 25.1804C23.4775 26.3522 23.79 27.5322 24.0513 28.3163C24.2113 28.7963 24.5529 29.1289 24.9687 29.3065C25.3435 29.4665 25.7418 29.4872 26.0761 29.467C26.6759 29.4306 27.3581 29.2406 28 29.017L28 40C28 41.0616 27.1706 41.9382 26.1106 41.9969C25.0506 42.0556 24.1295 41.276 24.0122 40.2209L23.0122 31.2209C23.004 31.1471 23 31.0734 23 31H21C21 31.0734 20.996 31.1471 20.9878 31.2209L19.9878 40.2209C19.8705 41.276 18.9494 42.0556 17.8894 41.9969C16.8294 41.9382 16 41.0616 16 40L16 29.0071C16.7784 29.2397 17.5887 29.4322 18.2769 29.4675C18.6423 29.4862 19.0586 29.4664 19.4418 29.325C19.8591 29.171 20.2692 28.8549 20.4487 28.3163C20.7432 27.4329 20.9041 26.2281 20.5913 25.0549C20.2652 23.8323 19.433 22.6962 17.8714 22.0716L16.9429 21.7002L16.2002 23.5571L17.1286 23.9285C18.067 24.3039 18.4848 24.9178 18.6588 25.5702C18.8249 26.1931 18.7734 26.8897 18.616 27.4695C18.5584 27.4737 18.4807 27.4753 18.3794 27.4701C17.8988 27.4455 17.215 27.2892 16.4191 27.0443C16.2804 27.0016 16.1405 26.9569 16 26.9108V26.8823L13.3 25.8735C12.285 25.4943 11.7566 24.3757 12.1083 23.3509L14.1671 17.3509Z" fill="currentColor"/>
+<path d="M11 18C10.0698 18 9.25903 18.5053 8.72146 19.0429C8.20169 19.5627 7.71429 20.3384 7.71429 21.1429C7.71429 21.6834 7.97834 22.114 8.18214 22.3857C8.38619 22.6578 8.64375 22.9152 8.84228 23.1136L8.86432 23.1357C9.0146 23.286 9.13514 23.4077 9.23129 23.5153C9.0571 23.6014 8.85102 23.6904 8.60682 23.7959L8.60563 23.7964L8.60446 23.7969C8.51293 23.8364 8.41605 23.8783 8.31347 23.9231C7.88962 24.1086 7.36699 24.3475 6.94654 24.654C6.54617 24.946 6 25.4739 6 26.2857C6 26.9559 6.31691 27.4446 6.6732 27.7786C6.97773 28.0641 7.35622 28.2766 7.61518 28.422L7.6526 28.443C7.96517 28.6188 8.13561 28.7211 8.24463 28.8233C8.26611 28.8434 8.27871 28.8579 8.28562 28.8668C8.28248 29.0267 8.19783 29.1737 7.72146 29.65L7.66346 29.7077C7.27502 30.093 6.57143 30.7908 6.57143 31.8571C6.57143 33.0263 7.42843 33.8241 8.12065 34.258C8.83825 34.7078 9.7344 35 10.4286 35H11.4286V33H10.4286C10.1942 33 9.66175 32.8636 9.18292 32.5634C8.67871 32.2474 8.57143 31.9737 8.57143 31.8571C8.57143 31.6933 8.64977 31.5502 9.13568 31.0643L9.19368 31.0066C9.58213 30.6213 10.2857 29.9235 10.2857 28.8571C10.2857 28.187 9.9688 27.6982 9.61251 27.3642C9.30798 27.0787 8.92948 26.8662 8.67053 26.7209L8.63312 26.6999C8.32923 26.5289 8.15968 26.4275 8.05031 26.3281C8.07023 26.3114 8.09478 26.292 8.12489 26.2701C8.3473 26.1079 8.6818 25.945 9.1151 25.7554C9.18736 25.7238 9.26393 25.6909 9.34313 25.6568C9.6847 25.5097 10.0755 25.3415 10.3831 25.1685C10.5764 25.0597 10.8061 24.9125 10.9976 24.7158C11.191 24.5173 11.4286 24.18 11.4286 23.7143C11.4286 23.1737 11.1645 22.7432 10.9607 22.4714C10.7567 22.1994 10.4991 21.9419 10.3006 21.7435L10.2785 21.7215C10.0512 21.4941 9.89188 21.332 9.78214 21.1857C9.75302 21.1469 9.73416 21.1178 9.72227 21.0977C9.72364 21.0921 9.72526 21.086 9.72715 21.0794C9.73981 21.0351 9.76223 20.9766 9.79847 20.9067C9.87199 20.765 9.98704 20.6057 10.1357 20.4571C10.4553 20.1375 10.7873 20 11 20H12V18H11Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.9786 19.15C35.593 18.636 34.9052 18 34 18H33V20H33.987C33.9972 20.0032 34.0262 20.014 34.0748 20.0463C34.1616 20.1042 34.27 20.2052 34.3786 20.35C34.6102 20.6588 34.7105 20.9821 34.7142 21.1343C34.7119 21.1437 34.6994 21.193 34.6418 21.2955C34.5595 21.4418 34.4413 21.6021 34.2714 21.8286L34.2554 21.85C34.1057 22.0494 33.9111 22.3088 33.7579 22.5812C33.599 22.8636 33.4286 23.2542 33.4286 23.7143C33.4286 24.4499 33.9692 24.901 34.2304 25.0969C34.4772 25.282 34.7927 25.463 35.0489 25.61C35.0597 25.6161 35.0703 25.6222 35.0808 25.6283C35.1264 25.6544 35.1699 25.6794 35.2104 25.7031C35.532 25.8906 35.7567 26.0386 35.9011 26.179C35.9665 26.2426 35.9916 26.2812 36.0001 26.2983C36.001 26.3731 35.9973 26.4306 35.5429 26.7714L35.4906 26.8104C35.09 27.1081 34.2857 27.706 34.2857 28.8571C34.2857 29.837 34.7849 30.5004 35.0954 30.913L35.1286 30.9571C35.4649 31.4055 35.5714 31.587 35.5714 31.8571C35.5714 32.0734 35.433 32.3525 35.0859 32.6328C34.9243 32.7633 34.7503 32.8651 34.6008 32.9311C34.497 32.9769 34.4349 32.9925 34.4143 32.9977L34.4086 32.9992C34.4072 32.9996 34.4066 32.9998 34.4066 33H33.4286V35H34.4286C34.7725 35 35.126 34.8854 35.4081 34.7609C35.714 34.6259 36.0399 34.4331 36.3426 34.1887C36.9242 33.7189 37.5714 32.9266 37.5714 31.8571C37.5714 30.8773 37.0722 30.2139 36.7618 29.8013L36.7286 29.7571C36.3923 29.3088 36.2857 29.1272 36.2857 28.8571L36.2856 28.8467C36.2847 28.7708 36.284 28.7155 36.7429 28.3714L36.7952 28.3324C37.1957 28.0347 38 27.4368 38 26.2857C38 25.5941 37.644 25.0841 37.2953 24.7451C36.9576 24.4167 36.5395 24.1629 36.2182 23.9755C36.1343 23.9266 36.0572 23.8822 35.986 23.8412C35.7859 23.7259 35.6325 23.6376 35.5068 23.5515C35.5889 23.4079 35.7055 23.2498 35.8714 23.0286L35.8875 23.0072C36.0371 22.8077 36.2318 22.5483 36.385 22.276C36.5438 21.9936 36.7143 21.603 36.7143 21.1429C36.7143 20.434 36.3853 19.6924 35.9786 19.15ZM35.3317 23.4112C35.3311 23.4112 35.3348 23.416 35.3446 23.4257C35.3373 23.4161 35.3324 23.4113 35.3317 23.4112ZM36.0039 26.3087C36.0041 26.3088 36.0041 26.308 36.0035 26.3063L36.0028 26.3042L36.0013 26.3007C36.0023 26.306 36.0035 26.3087 36.0039 26.3087Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36 8.5C36 7.11929 37.1193 6 38.5 6C39.8807 6 41 7.11929 41 8.5V13.0505C41.6186 13.6818 42 14.5463 42 15.5C42 17.433 40.433 19 38.5 19C36.567 19 35 17.433 35 15.5C35 14.5463 35.3814 13.6818 36 13.0505V8.5ZM38 13.8671L37.4285 14.4503C37.1614 14.7229 37 15.0906 37 15.5C37 16.3284 37.6716 17 38.5 17C39.3284 17 40 16.3284 40 15.5C40 15.0906 39.8386 14.7229 39.5715 14.4503L39 13.8671V12H38V13.8671ZM38.5 8C38.7761 8 39 8.22386 39 8.5V10H38V8.5C38 8.22386 38.2239 8 38.5 8Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">03</span></div>
+    <div class="q-card__h">계속되는 열 · 숨참</div>
+    <div class="v2-body">폐렴·결핵·심부전·폐색전증 가능성. 쉬어도 숨이 차거나 숨참이 심하면 <b>즉시 119에 연락해 응급실로</b> 가세요.</div>
+    <div class="q-card__k">숨참 심하면 119</div>
+  </div>
+  <div class="v2-panel q-card" style="left:946px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">04</span></div>
+    <div class="q-card__h">기침 8주 이상</div>
+    <div class="v2-body">만성 기침입니다. 기침이 2주만 넘어도 결핵 검사를 고려합니다.</div>
+    <div class="q-card__k">결핵 검사</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 위험 신호가 없으면 대부분 시간이 지나며 좋아집니다.</span><span class="v2-src">근거 · 질병관리청 결핵 진료지침 · ACCP 기침 위험 신호</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 오늘 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 여덟 가지</h2>
+  <p class="v2-sub">감염후기침은 대부분 좋아지지만, 잘못된 습관이 회복을 늦춥니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">감염후기침은 3~8주 안에 대부분 저절로 사라집니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">약 없이도 절반 넘게 좋아집니다 — 시간이 약입니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">기침이 기침을 부르는 악순환을 의식적으로 끊으세요</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">헛기침(“에헴!”)은 모기 물린 곳 긁기와 같습니다</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">기침이 나오려 하면 물 삼키기·코 호흡·사탕</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">습도 40~60%, 물 하루 1.5~2L, 연기·찬 공기 피하기</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">증상이 심하면 흡입제·기침약은 처방으로만</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:518px;width:564px;height:88px"><span class="q-chk__n">08</span><span class="q-chk__t">피 섞인 가래·체중 감소·열·8주 넘는 기침은 병원으로</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 좋아지는 속도는 사람마다 다릅니다 — 조급해하지 마세요.</span><span class="v2-src">근거 · 미국흉부의사협회(ACCP) 2018 기침 지침 · 대한천식알레르기학회 2024</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">감기 뒤 기침이 오래가는 분을 위한 설명자료입니다. 약 사용과 추가 검사는 담당 의료진과 상의해&nbsp;정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">미국흉부의사협회(ACCP) 2018 기침 지침 · 유럽호흡기학회(ERS) 2020 만성기침 지침 · 대한천식알레르기학회 2024 · Vertigan, Thorax 2006</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM16,2H17V3H16zM18,2H19V3H18zM21,2H22V3H21zM22,2H23V3H22zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM14,3H15V4H14zM16,3H17V4H16zM19,3H20V4H19zM20,3H21V4H20zM21,3H22V4H21zM23,3H24V4H23zM24,3H25V4H24zM25,3H26V4H25zM26,3H27V4H26zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM13,4H14V5H13zM15,4H16V5H15zM16,4H17V5H16zM18,4H19V5H18zM21,4H22V5H21zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM27,4H28V5H27zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM17,5H18V6H17zM19,5H20V6H19zM22,5H23V6H22zM23,5H24V6H23zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM29,5H30V6H29zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM17,6H18V7H17zM18,6H19V7H18zM21,6H22V7H21zM23,6H24V7H23zM28,6H29V7H28zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM15,7H16V8H15zM17,7H18V8H17zM22,7H23V8H22zM24,7H25V8H24zM25,7H26V8H25zM27,7H28V8H27zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM12,9H13V10H12zM14,9H15V10H14zM15,9H16V10H15zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM22,9H23V10H22zM24,9H25V10H24zM27,9H28V10H27zM2,10H3V11H2zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM21,10H22V11H21zM23,10H24V11H23zM24,10H25V11H24zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM34,10H35V11H34zM36,10H37V11H36zM37,10H38V11H37zM38,10H39V11H38zM2,11H3V12H2zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM11,11H12V12H11zM12,11H13V12H12zM13,11H14V12H13zM14,11H15V12H14zM16,11H17V12H16zM18,11H19V12H18zM20,11H21V12H20zM23,11H24V12H23zM26,11H27V12H26zM28,11H29V12H28zM29,11H30V12H29zM30,11H31V12H30zM33,11H34V12H33zM34,11H35V12H34zM36,11H37V12H36zM37,11H38V12H37zM3,12H4V13H3zM6,12H7V13H6zM8,12H9V13H8zM11,12H12V13H11zM12,12H13V13H12zM15,12H16V13H15zM17,12H18V13H17zM18,12H19V13H18zM20,12H21V13H20zM21,12H22V13H21zM22,12H23V13H22zM24,12H25V13H24zM25,12H26V13H25zM27,12H28V13H27zM29,12H30V13H29zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM34,12H35V13H34zM36,12H37V13H36zM38,12H39V13H38zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM7,13H8V14H7zM9,13H10V14H9zM10,13H11V14H10zM12,13H13V14H12zM13,13H14V14H13zM15,13H16V14H15zM18,13H19V14H18zM19,13H20V14H19zM21,13H22V14H21zM22,13H23V14H22zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM30,13H31V14H30zM32,13H33V14H32zM33,13H34V14H33zM35,13H36V14H35zM36,13H37V14H36zM37,13H38V14H37zM38,13H39V14H38zM4,14H5V15H4zM5,14H6V15H5zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM13,14H14V15H13zM16,14H17V15H16zM17,14H18V15H17zM18,14H19V15H18zM20,14H21V15H20zM22,14H23V15H22zM25,14H26V15H25zM29,14H30V15H29zM30,14H31V15H30zM32,14H33V15H32zM33,14H34V15H33zM38,14H39V15H38zM2,15H3V16H2zM4,15H5V16H4zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM10,15H11V16H10zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM20,15H21V16H20zM23,15H24V16H23zM25,15H26V16H25zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM2,16H3V17H2zM3,16H4V17H3zM4,16H5V17H4zM8,16H9V17H8zM11,16H12V17H11zM12,16H13V17H12zM14,16H15V17H14zM15,16H16V17H15zM17,16H18V17H17zM20,16H21V17H20zM21,16H22V17H21zM22,16H23V17H22zM26,16H27V17H26zM28,16H29V17H28zM29,16H30V17H29zM32,16H33V17H32zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM3,17H4V18H3zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM9,17H10V18H9zM10,17H11V18H10zM12,17H13V18H12zM14,17H15V18H14zM15,17H16V18H15zM17,17H18V18H17zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM26,17H27V18H26zM29,17H30V18H29zM31,17H32V18H31zM33,17H34V18H33zM35,17H36V18H35zM36,17H37V18H36zM37,17H38V18H37zM4,18H5V19H4zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM13,18H14V19H13zM14,18H15V19H14zM16,18H17V19H16zM19,18H20V19H19zM20,18H21V19H20zM23,18H24V19H23zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM30,18H31V19H30zM32,18H33V19H32zM36,18H37V19H36zM6,19H7V20H6zM10,19H11V20H10zM11,19H12V20H11zM16,19H17V20H16zM24,19H25V20H24zM25,19H26V20H25zM28,19H29V20H28zM29,19H30V20H29zM33,19H34V20H33zM35,19H36V20H35zM36,19H37V20H36zM3,20H4V21H3zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM10,20H11V21H10zM11,20H12V21H11zM13,20H14V21H13zM15,20H16V21H15zM18,20H19V21H18zM21,20H22V21H21zM24,20H25V21H24zM26,20H27V21H26zM29,20H30V21H29zM32,20H33V21H32zM33,20H34V21H33zM35,20H36V21H35zM36,20H37V21H36zM38,20H39V21H38zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM9,21H10V22H9zM10,21H11V22H10zM12,21H13V22H12zM17,21H18V22H17zM18,21H19V22H18zM21,21H22V22H21zM22,21H23V22H22zM24,21H25V22H24zM25,21H26V22H25zM27,21H28V22H27zM30,21H31V22H30zM32,21H33V22H32zM34,21H35V22H34zM38,21H39V22H38zM2,22H3V23H2zM3,22H4V23H3zM4,22H5V23H4zM8,22H9V23H8zM10,22H11V23H10zM12,22H13V23H12zM14,22H15V23H14zM18,22H19V23H18zM19,22H20V23H19zM21,22H22V23H21zM25,22H26V23H25zM28,22H29V23H28zM29,22H30V23H29zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM34,22H35V23H34zM35,22H36V23H35zM3,23H4V24H3zM7,23H8V24H7zM9,23H10V24H9zM12,23H13V24H12zM16,23H17V24H16zM17,23H18V24H17zM19,23H20V24H19zM21,23H22V24H21zM24,23H25V24H24zM25,23H26V24H25zM29,23H30V24H29zM31,23H32V24H31zM34,23H35V24H34zM36,23H37V24H36zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM11,24H12V25H11zM13,24H14V25H13zM14,24H15V25H14zM15,24H16V25H15zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM22,24H23V25H22zM23,24H24V25H23zM25,24H26V25H25zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM35,24H36V25H35zM38,24H39V25H38zM3,25H4V26H3zM4,25H5V26H4zM6,25H7V26H6zM7,25H8V26H7zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM14,25H15V26H14zM15,25H16V26H15zM16,25H17V26H16zM20,25H21V26H20zM22,25H23V26H22zM25,25H26V26H25zM26,25H27V26H26zM28,25H29V26H28zM29,25H30V26H29zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM35,25H36V26H35zM36,25H37V26H36zM37,25H38V26H37zM38,25H39V26H38zM2,26H3V27H2zM3,26H4V27H3zM6,26H7V27H6zM8,26H9V27H8zM15,26H16V27H15zM16,26H17V27H16zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM23,26H24V27H23zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM29,26H30V27H29zM32,26H33V27H32zM33,26H34V27H33zM37,26H38V27H37zM38,26H39V27H38zM2,27H3V28H2zM5,27H6V28H5zM6,27H7V28H6zM7,27H8V28H7zM9,27H10V28H9zM11,27H12V28H11zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM20,27H21V28H20zM21,27H22V28H21zM23,27H24V28H23zM24,27H25V28H24zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM34,27H35V28H34zM35,27H36V28H35zM36,27H37V28H36zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM14,28H15V29H14zM15,28H16V29H15zM17,28H18V29H17zM20,28H21V29H20zM27,28H28V29H27zM29,28H30V29H29zM31,28H32V29H31zM32,28H33V29H32zM33,28H34V29H33zM34,28H35V29H34zM36,28H37V29H36zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM4,29H5V30H4zM11,29H12V30H11zM12,29H13V30H12zM13,29H14V30H13zM15,29H16V30H15zM18,29H19V30H18zM20,29H21V30H20zM21,29H22V30H21zM25,29H26V30H25zM29,29H30V30H29zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM35,29H36V30H35zM36,29H37V30H36zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM13,30H14V31H13zM15,30H16V31H15zM16,30H17V31H16zM17,30H18V31H17zM21,30H22V31H21zM22,30H23V31H22zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM19,31H20V32H19zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM24,31H25V32H24zM30,31H31V32H30zM34,31H35V32H34zM36,31H37V32H36zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM20,32H21V33H20zM21,32H22V33H21zM25,32H26V33H25zM26,32H27V33H26zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM12,33H13V34H12zM13,33H14V34H13zM18,33H19V34H18zM23,33H24V34H23zM25,33H26V34H25zM26,33H27V34H26zM27,33H28V34H27zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM37,33H38V34H37zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM14,34H15V35H14zM15,34H16V35H15zM18,34H19V35H18zM20,34H21V35H20zM22,34H23V35H22zM23,34H24V35H23zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM37,34H38V35H37zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM14,35H15V36H14zM22,35H23V36H22zM23,35H24V36H23zM24,35H25V36H24zM25,35H26V36H25zM26,35H27V36H26zM27,35H28V36H27zM28,35H29V36H28zM32,35H33V36H32zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM11,36H12V37H11zM13,36H14V37H13zM19,36H20V37H19zM23,36H24V37H23zM24,36H25V37H24zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM30,36H31V37H30zM31,36H32V37H31zM34,36H35V37H34zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM12,37H13V38H12zM17,37H18V38H17zM19,37H20V38H19zM25,37H26V38H25zM26,37H27V38H26zM28,37H29V38H28zM31,37H32V38H31zM34,37H35V38H34zM35,37H36V38H35zM36,37H37V38H36zM37,37H38V38H37zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM13,38H14V39H13zM14,38H15V39H14zM16,38H17V39H16zM18,38H19V39H18zM21,38H22V39H21zM22,38H23V39H22zM24,38H25V39H24zM26,38H27V39H26zM30,38H31V39H30zM32,38H33V39H32zM33,38H34V39H33zM35,38H36V39H35zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -761,96 +485,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

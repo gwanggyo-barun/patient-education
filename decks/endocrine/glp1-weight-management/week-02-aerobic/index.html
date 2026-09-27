@@ -12,413 +12,286 @@
   <meta property="og:site_name" content="광교바른내과">
   <meta name="theme-color" content="#003366">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <link rel="stylesheet" href="../../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
-  <style>
-    .slide__bg-num { display: none !important; }
-    .slide__title-block { max-width: 1040px; margin-bottom: 24px; }
-    .slide__title { font-size: 42px; letter-spacing: -0.02em; }
-    .slide__subtitle { font-size: 21px; line-height: 1.28; }
-    .slide--cover .slide__title { font-size: 60px; max-width: 980px; }
-    .slide--cover .slide__subtitle { max-width: 1060px; }
-    .series-split { display: grid; grid-template-columns: 0.98fr 1.02fr; gap: 30px; height: 100%; min-height: 0; align-items: stretch; }
-    .series-split--reverse { grid-template-columns: 1.02fr 0.98fr; }
-    .series-copy { display: flex; flex-direction: column; gap: 14px; min-height: 0; justify-content: center; }
-    .keyline { padding: 15px 18px; border-left: 5px solid var(--color-steel); background: var(--color-canvas-warm); border-radius: var(--radius-md); font-size: 19px; line-height: 1.45; color: var(--color-ink); font-weight: var(--weight-450); }
-    .keyline strong { color: var(--color-navy); font-weight: var(--weight-bold); }
-    .lesson-cards { display: grid; grid-template-columns: 1fr; gap: 10px; }
-    .lesson-card { border: 1px solid var(--color-border); border-left: 4px solid var(--color-steel); border-radius: var(--radius-md); background: var(--color-canvas); padding: 12px 14px; }
-    .lesson-card--alert { border-left-color: var(--color-danger); background: var(--color-danger-bg); }
-    .lesson-card--navy { border-left-color: var(--color-navy); background: var(--color-canvas-warm); }
-    .lesson-card__label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: var(--weight-bold); color: var(--color-steel-deep); margin-bottom: 4px; }
-    .lesson-card--alert .lesson-card__label { color: var(--color-danger); }
-    .lesson-card__title { font-size: 20px; line-height: 1.12; color: var(--color-navy); font-weight: var(--weight-540); margin-bottom: 5px; }
-    .lesson-card__body { font-size: 15px; line-height: 1.42; color: var(--color-ink-soft); font-weight: var(--weight-450); }
-    .lesson-visual { position: relative; height: 100%; min-height: 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-canvas); display: flex; align-items: center; justify-content: center; padding: 0; }
-    .lesson-visual img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .visual-label { position: absolute; left: 18px; bottom: 16px; padding: 8px 11px; background: rgba(255,255,255,0.92); border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-navy); font-size: 13px; font-weight: var(--weight-bold); }
-    .closing-takeaways { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .takeaway { border-bottom: 1px solid var(--color-border-soft); padding: 12px 0; display: flex; gap: 14px; align-items: flex-start; }
-    .takeaway__num { color: var(--color-steel); font-weight: var(--weight-black); font-size: 24px; line-height: 1; min-width: 34px; }
-    .takeaway__text { font-size: 18px; line-height: 1.35; color: var(--color-ink); font-weight: var(--weight-450); }
-    .takeaway__text strong { color: var(--color-navy); }
-    .slide--closing .slide__title { font-size: 46px; }
-    .slide--closing .slide__body { gap: 18px; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide--closing .slide__body { justify-content: center; }
-    .slide--closing .closing-grid { height: auto; align-items: center; }
-    .slide--closing .closing-grid > .qr-block { height: auto; }
-    .slide--closing .qr-block { padding: 4px 10px; }
-    .slide--closing .qr-block__code svg { width: 34mm; height: 34mm; }
-  </style>
+  <link rel="stylesheet" href="../../../../shared/deck-look-v2.css">
+<style>
+ /* HQ5G-redesign 2026-09-27 (원장님 49113 · HQ3F 방식) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠. */
+ /* HQ5G 시리즈 조각 */
+ .q-lead{display:flex;flex-direction:column;justify-content:center}
+ .q-lead .v2-head{margin-bottom:10px}
+ .q-lead .v2-body{font-size:17px;line-height:1.65}
+ .q-tc{display:flex;flex-direction:column;justify-content:center;padding:18px 22px}
+ .q-tc .v2-head{margin-bottom:8px}
+ .q-tc .v2-head b{font-size:19px}
+ .q-tc .v2-body{font-size:16px;line-height:1.55}
+ .q-tc__n{position:absolute;right:18px;top:12px;font-size:34px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-tks{display:flex;flex-direction:column;gap:6px}
+ .q-tk{display:flex;gap:12px;align-items:baseline}
+ .q-tk__n{flex:none;font-size:17px;font-weight:800;color:var(--v2-accent)}
+ .q-tk__t{font-size:16px;line-height:1.5;color:var(--v2-ink);word-break:keep-all}
+ .q-rule{display:flex;align-items:center;padding:0 22px}
+ .q-close{display:flex;flex-direction:column;justify-content:space-between}
+ .q-close .q-tk__t{font-size:17px}
+ .q-qr{padding-top:12px;padding-bottom:12px}
+ .q-stat .q-stat__num{font-size:50px}
+ .q-stat .q-stat__num span{font-size:inherit;margin-left:4px}
+ /* */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{white-space:nowrap;font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num--long{font-size:48px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-text:has(.v2-block:nth-child(4)){padding-top:16px;padding-bottom:16px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-block + .v2-block{padding-top:12px}
+ .q-text:has(.v2-block:nth-child(4)) .v2-head{margin-bottom:6px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="마운자로·위고비 치료 환자를 위한 8회 생활관리 교육 시리즈. 운동, 식단, 주사법, 부작용, 장기 유지 전략을 회차별로 설명합니다.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/glp1-weight-management/week-02-aerobic/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "마운자로·위고비 2회차 — 걷기와 활동량 — 광교바른내과", "description": "마운자로·위고비 치료 환자를 위한 8회 생활관리 교육 시리즈. 운동, 식단, 주사법, 부작용, 장기 유지 전략을 회차별로 설명합니다.", "url": "https://edu.gwanggyobarun.com/decks/endocrine/glp1-weight-management/week-02-aerobic/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-<div class="deck">
-
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter"><strong>GLP-1 WEIGHT CARE</strong> · SESSION 02</div>
+      <div class="slide__chapter"><strong>마운자로·위고비 체중 관리</strong> · 8회 중 2회차</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">운동은 벌칙이 아니라<br><em>대사 신호</em></h1>
       <p class="slide__subtitle">약을 시작한 첫 주부터 가벼운 걷기를 붙이면 혈당·식욕·수면이 같이 안정됩니다. 목표는 완벽한 운동이 아니라 끊기지 않는 활동량입니다.</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">근거 — Wegovy PI · Mounjaro PI · 한국릴리 FAQ · CDC Physical Activity · OMA Nutrition Advisory</span>
+      <span class="slide__source">근거 — 위고비·마운자로 허가사항 · 한국릴리 안내 · 미국 질병통제예방센터 신체활동 지침 · 미국비만의학회 영양 권고 · 광교바른내과 진료 안내</span>
       <span class="slide__page">01 / 06</span>
     </footer>
   </section>
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>활동량의 의미</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">걷기는 감량보다 먼저 혈당을 안정시킵니다</h2>
-      <p class="slide__subtitle">식후 10분 걷기만 붙여도 혈당 패턴과 식욕 반동을 줄이는 데 도움이 됩니다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="series-split">
-      <div class="series-copy">
-        <div class="keyline">처음부터 1시간 운동을 목표로 잡으면 오래 못 갑니다. 식후, 출퇴근, 계단, 집안일처럼 <strong>하루에 나눠 넣는 10분</strong>이 더 현실적입니다.</div>
-        <div class="lesson-cards">
-        <div class="lesson-card">
-          <div class="lesson-card__label">START</div>
-          <div class="lesson-card__title">첫 목표</div>
-          <div class="lesson-card__body">식후 10분 걷기, 하루 1회부터 시작합니다.</div>
-        </div>
-
-        <div class="lesson-card">
-          <div class="lesson-card__label">BUILD</div>
-          <div class="lesson-card__title">누적 방식</div>
-          <div class="lesson-card__body">10분 × 3회도 30분 운동입니다. 연속 시간이 아니어도 좋습니다.</div>
-        </div>
-
-        <div class="lesson-card">
-          <div class="lesson-card__label">SIGNAL</div>
-          <div class="lesson-card__title">대사 효과</div>
-          <div class="lesson-card__body">근육이 포도당을 쓰면서 식후 혈당과 졸림이 줄어들 수 있습니다.</div>
-        </div>
-        </div>
-      </div>
-
-      <figure class="lesson-visual">
-        <img src="../../../../shared/assets/generated/glp1-walking-plan-20260529.png" alt="성인 걷기와 일상활동 일러스트">
-        <figcaption class="visual-label">식후 10분 걷기</figcaption>
-      </figure>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Wegovy PI · Mounjaro PI · 한국릴리 FAQ · CDC Physical Activity · OMA Nutrition Advisory</span>
-      <span class="slide__page">02 / 06</span>
-    </footer>
-  </section>
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>주간 처방</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">성인 기준은 주 150분, 시작은 절반부터</h2>
-      <p class="slide__subtitle">CDC 권고는 주 150분 중등도 유산소와 주 2일 근력운동입니다. 첫 달은 절반 목표로 충분합니다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="series-split series-split--reverse">
-      <figure class="lesson-visual">
-        <img src="../../../../shared/assets/generated/glp1-week02-weekly-walking-goal-20260529.png" alt="주간 걷기 목표와 점진적 활동량 일러스트">
-        <figcaption class="visual-label">주간 걷기 목표</figcaption>
-      </figure>
-
-      <div class="series-copy">
-        <div class="keyline">처음 2주는 150분을 채우기보다 <strong>기록이 끊기지 않는 패턴</strong>을 만드는 시기입니다. 진료 때 걸음수보다 실제 가능한 시간을 같이 조정합니다.</div>
-        <div class="lesson-cards">
-        <div class="lesson-card">
-          <div class="lesson-card__label">WEEK 1</div>
-          <div class="lesson-card__title">70–90분</div>
-          <div class="lesson-card__body">하루 10–15분, 주 5–6일. 숨이 약간 차지만 대화 가능한 정도.</div>
-        </div>
-
-        <div class="lesson-card">
-          <div class="lesson-card__label">WEEK 2</div>
-          <div class="lesson-card__title">90–120분</div>
-          <div class="lesson-card__body">컨디션이 괜찮으면 한 번에 20분까지 늘립니다.</div>
-        </div>
-
-        <div class="lesson-card">
-          <div class="lesson-card__label">TARGET</div>
-          <div class="lesson-card__title">150분</div>
-          <div class="lesson-card__body">오심·어지럼 없이 유지되면 주 150분으로 천천히 접근합니다.</div>
-        </div>
-        </div>
-      </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Wegovy PI · Mounjaro PI · 한국릴리 FAQ · CDC Physical Activity · OMA Nutrition Advisory</span>
-      <span class="slide__page">03 / 06</span>
-    </footer>
-  </section>
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>과운동 피하기</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">약 시작 초반에는 무리한 운동이 독이 될 수 있습니다</h2>
-      <p class="slide__subtitle">식사량이 줄고 수분이 부족하면 어지럼, 저혈당, 탈수가 생길 수 있습니다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="series-split">
-      <div class="series-copy">
-        <div class="keyline">운동은 좋지만, 식사를 거의 못 하는 날의 고강도 운동은 위험할 수 있습니다. 몸이 보내는 신호를 보고 강도를 낮추는 것도 치료입니다.</div>
-        <div class="lesson-cards">
-        <div class="lesson-card lesson-card--alert">
-          <div class="lesson-card__label">STOP</div>
-          <div class="lesson-card__title">멈춰야 할 때</div>
-          <div class="lesson-card__body">식은땀, 심한 어지럼, 가슴통증, 호흡곤란이 있으면 중단합니다.</div>
-        </div>
-
-        <div class="lesson-card">
-          <div class="lesson-card__label">HYDRATE</div>
-          <div class="lesson-card__title">수분 먼저</div>
-          <div class="lesson-card__body">구토·설사·더운 날에는 운동보다 수분과 전해질 보충이 우선입니다.</div>
-        </div>
-
-        <div class="lesson-card">
-          <div class="lesson-card__label">LOW GLUCOSE</div>
-          <div class="lesson-card__title">당뇨약 병용</div>
-          <div class="lesson-card__body">인슐린·설폰요소제 사용자는 운동 전후 저혈당 증상을 확인합니다.</div>
-        </div>
-        </div>
-      </div>
-
-      <figure class="lesson-visual">
-        <img src="../../../../shared/assets/generated/glp1-week02-overexercise-hydration-20260529.png" alt="과운동 피하기와 수분 보충 일러스트">
-        <figcaption class="visual-label">수분·회복</figcaption>
-      </figure>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Wegovy PI · Mounjaro PI · 한국릴리 FAQ · CDC Physical Activity · OMA Nutrition Advisory</span>
-      <span class="slide__page">04 / 06</span>
-    </footer>
-  </section>
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>일상화</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">운동복을 입기 전에도 운동은 시작됩니다</h2>
-      <p class="slide__subtitle">주차, 계단, 청소, 산책처럼 생활 안에서 활동량을 올리면 실패율이 낮습니다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="series-split series-split--reverse">
-      <figure class="lesson-visual">
-        <img src="../../../../shared/assets/generated/glp1-week02-habit-stack-20260529.png" alt="운동과 수분 및 식사 습관 연결 일러스트">
-        <figcaption class="visual-label">생활 속 루틴</figcaption>
-      </figure>
-
-      <div class="series-copy">
-        <div class="keyline">운동은 별도 일정이 아니라 생활 흐름에 붙일 때 오래 갑니다. <strong>식후-양치-걷기</strong>처럼 이미 있는 습관 뒤에 붙이세요.</div>
-        <div class="lesson-cards">
-        <div class="lesson-card">
-          <div class="lesson-card__label">ANCHOR</div>
-          <div class="lesson-card__title">습관 연결</div>
-          <div class="lesson-card__body">식사 후 10분, 퇴근 후 한 정거장, 전화 통화 중 걷기.</div>
-        </div>
-
-        <div class="lesson-card">
-          <div class="lesson-card__label">PAIN</div>
-          <div class="lesson-card__title">관절 통증</div>
-          <div class="lesson-card__body">무릎·허리가 불편하면 평지 걷기, 실내 자전거, 수중운동을 고려합니다.</div>
-        </div>
-
-        <div class="lesson-card">
-          <div class="lesson-card__label">SLEEP</div>
-          <div class="lesson-card__title">수면 보너스</div>
-          <div class="lesson-card__body">낮 활동량이 늘면 밤 수면의 질이 좋아지고 야식 욕구도 줄 수 있습니다.</div>
-        </div>
-        </div>
-      </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Wegovy PI · Mounjaro PI · 한국릴리 FAQ · CDC Physical Activity · OMA Nutrition Advisory</span>
-      <span class="slide__page">05 / 06</span>
-    </footer>
-  </section>
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF LESSON · <strong>SESSION 02</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">이번 회차는<br><em>10분부터 쌓기</em></h2>
-      <p class="slide__subtitle">이번 주는 오래 하는 운동보다, 식후와 일상 속에 자주 넣는 움직임이 목표입니다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-takeaways">
-        <div class="takeaway">
-          <div class="takeaway__num">01</div>
-          <div class="takeaway__text">운동 시작은 <strong>식후 10분 걷기</strong>면 충분합니다.</div>
-        </div>
-
-        <div class="takeaway">
-          <div class="takeaway__num">02</div>
-          <div class="takeaway__text">처음부터 주 150분을 강박적으로 채우지 않아도 됩니다.</div>
-        </div>
-
-        <div class="takeaway">
-          <div class="takeaway__num">03</div>
-          <div class="takeaway__text">식사불가·탈수·어지럼이 있으면 운동 강도를 낮춥니다.</div>
-        </div>
-
-        <div class="takeaway">
-          <div class="takeaway__num">04</div>
-          <div class="takeaway__text">운동은 별도 이벤트가 아니라 생활에 붙이는 루틴입니다.</div>
-        </div>
-      </div>
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item"><div class="contact-card__label">Phone</div><div class="contact-card__value">031-893-4560</div></div>
-          <div class="contact-card__item"><div class="contact-card__label">Address</div><div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div></div>
-          <div class="contact-card__item"><div class="contact-card__label">Specialty</div><div class="contact-card__value">소화기내과 · 일반내과<br>5대암 검진</div></div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 활동량의 의미</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">걷기는 체중보다 먼저 혈당에 도움이 됩니다</h2>
+  <p class="v2-sub">식후 10분 걷기만 붙여도 혈당 패턴과 식욕 반동을 줄이는 데 도움이 됩니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:380px;height:223px">
+    <img class="v2-fig__img q-fig__img" style="width:380px;height:223px" src="../../../../shared/assets/generated/glp1-walking-plan-20260529.png" alt="공원 걷기·계단 오르기·앉았다 일어서기를 이어 가는 사람 그림">
+  </div>
+  <div class="v2-panel q-lead" style="left:468px;top:206px;width:748px;height:223px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M31.2502 8C31.2502 10.2091 29.4594 12 27.2502 12C25.0411 12 23.2502 10.2091 23.2502 8C23.2502 5.79086 25.0411 4 27.2502 4C29.4594 4 31.2502 5.79086 31.2502 8Z" fill="currentColor"/>
+<path d="M25.6928 28.3968L30.8857 33.5207C31.0849 33.7172 31.2405 33.9533 31.3427 34.2137L34.112 41.2693C34.5155 42.2975 34.0091 43.4582 32.9809 43.8617C31.9527 44.2653 30.7921 43.7589 30.3885 42.7307L27.7743 36.07L18.8455 27.2598C18.4087 26.8288 18.1939 26.2211 18.2629 25.6113L18.9781 19.2919C17.2542 21.0046 15.9244 23.4143 14.9053 26.607C14.5695 27.6592 13.4442 28.24 12.3919 27.9041C11.3396 27.5682 10.7589 26.4429 11.0948 25.3907C12.965 19.5312 16.0701 15.1454 21.2797 13.1341L21.3034 13.1251C22.6301 12.6321 24.0105 12.6718 25.2398 13.3074C26.4214 13.9182 27.2624 14.9731 27.8131 16.1554C28.0449 16.6532 28.2594 17.1184 28.4607 17.5551C28.9485 18.6129 29.3594 19.5041 29.7535 20.2873C30.3073 21.3877 30.7523 22.1161 31.1921 22.6285C31.5998 23.1034 32.0055 23.3952 32.5225 23.597C33.0782 23.8141 33.8572 23.9636 35.06 23.9997C36.1641 24.0328 37.0323 24.9547 36.9992 26.0588C36.966 27.1628 36.0442 28.031 34.9401 27.9979C33.4952 27.9546 32.2121 27.77 31.0673 27.323C29.8838 26.8608 28.9506 26.1584 28.157 25.2339C27.6565 24.6508 27.2176 23.9859 26.8062 23.2621L25.6928 28.3968Z" fill="currentColor"/>
+<path d="M18.2627 30.2198L21.5778 33.3994L20.0524 38.547C19.9343 38.9453 19.6952 39.297 19.3681 39.5531L14.2335 43.5755C13.364 44.2566 12.1069 44.1039 11.4257 43.2344C10.7445 42.3649 10.8972 41.1078 11.7668 40.4266L16.3987 36.7981L17.7944 32.0881L18.2627 30.2198Z" fill="currentColor"/>
+</svg></div><b>하루에 나눠 넣는 10분</b></div><div class="v2-body">처음부터 1시간 운동을 목표로 잡으면 오래 못 갑니다. 식후·출퇴근·계단·집안일처럼 하루에 나눠 넣는 <b>10분</b>이 더 현실적입니다.</div></div>
+  </div>
+  <div class="v2-panel q-tc" style="left:64px;top:449px;width:368px;height:157px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M31.2502 8C31.2502 10.2091 29.4594 12 27.2502 12C25.0411 12 23.2502 10.2091 23.2502 8C23.2502 5.79086 25.0411 4 27.2502 4C29.4594 4 31.2502 5.79086 31.2502 8Z" fill="currentColor"/>
+<path d="M25.6928 28.3968L30.8857 33.5207C31.0849 33.7172 31.2405 33.9533 31.3427 34.2137L34.112 41.2693C34.5155 42.2975 34.0091 43.4582 32.9809 43.8617C31.9527 44.2653 30.7921 43.7589 30.3885 42.7307L27.7743 36.07L18.8455 27.2598C18.4087 26.8288 18.1939 26.2211 18.2629 25.6113L18.9781 19.2919C17.2542 21.0046 15.9244 23.4143 14.9053 26.607C14.5695 27.6592 13.4442 28.24 12.3919 27.9041C11.3396 27.5682 10.7589 26.4429 11.0948 25.3907C12.965 19.5312 16.0701 15.1454 21.2797 13.1341L21.3034 13.1251C22.6301 12.6321 24.0105 12.6718 25.2398 13.3074C26.4214 13.9182 27.2624 14.9731 27.8131 16.1554C28.0449 16.6532 28.2594 17.1184 28.4607 17.5551C28.9485 18.6129 29.3594 19.5041 29.7535 20.2873C30.3073 21.3877 30.7523 22.1161 31.1921 22.6285C31.5998 23.1034 32.0055 23.3952 32.5225 23.597C33.0782 23.8141 33.8572 23.9636 35.06 23.9997C36.1641 24.0328 37.0323 24.9547 36.9992 26.0588C36.966 27.1628 36.0442 28.031 34.9401 27.9979C33.4952 27.9546 32.2121 27.77 31.0673 27.323C29.8838 26.8608 28.9506 26.1584 28.157 25.2339C27.6565 24.6508 27.2176 23.9859 26.8062 23.2621L25.6928 28.3968Z" fill="currentColor"/>
+<path d="M18.2627 30.2198L21.5778 33.3994L20.0524 38.547C19.9343 38.9453 19.6952 39.297 19.3681 39.5531L14.2335 43.5755C13.364 44.2566 12.1069 44.1039 11.4257 43.2344C10.7445 42.3649 10.8972 41.1078 11.7668 40.4266L16.3987 36.7981L17.7944 32.0881L18.2627 30.2198Z" fill="currentColor"/>
+</svg></div><b>첫 목표</b></div><div class="v2-body">식후 10분 걷기, 하루 1회부터 시작합니다.</div></div>
+  </div>
+  <div class="v2-panel q-tc" style="left:456px;top:449px;width:368px;height:157px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>나눠서 쌓기</b></div><div class="v2-body">10분씩 3번도 30분 운동입니다. 이어서 하지 않아도 됩니다.</div></div>
+  </div>
+  <div class="v2-panel q-tc v2-panel--accent" style="left:848px;top:449px;width:368px;height:157px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M43 29.143C43 30.743 41.68 32.0001 40 32.0001C38.32 32.0001 37 30.743 37 29.143C37 27.543 40 24.0001 40 24.0001C40 24.0001 43 27.6573 43 29.143Z" fill="currentColor"/>
+<path d="M24.1528 17.7833H41.8719C43.0472 17.7833 44 18.7361 44 19.9114C44 21.0867 43.0472 22.0395 41.8719 22.0395H41.8685C41.9544 21.8721 42.0014 21.6902 42.0012 21.5001C42.0005 20.6717 41.1046 20.0009 40 20.0018C38.8954 20.0027 38.0005 20.675 38.0012 21.5034C38.0014 21.6923 38.0481 21.8731 38.1332 22.0395H25.1111V23.1035H32C33.1046 23.1035 34 23.999 34 25.1035V25.3597C34 26.4643 33.1046 27.3597 32 27.3597H25.1111V28.4238H30.8889C31.9935 28.4238 32.8889 29.3192 32.8889 30.4238V30.6799C32.8889 31.7845 31.9935 32.6799 30.8889 32.6799H22.8889V33.7439H27C28.1046 33.7439 29 34.6394 29 35.7439V36.0001C29 37.1047 28.1046 38.0001 27 38.0001H15.4562C9.12912 38.0001 4 32.871 4 26.5439C4 21.8893 6.8162 17.6974 11.1254 15.9378L24.0124 10.6756C24.9864 10.2779 26.106 10.5891 26.735 11.4324C27.6143 12.6113 27.1815 14.301 25.8437 14.9119L23.7374 15.8737C22.76 16.32 23.0783 17.7833 24.1528 17.7833Z" fill="currentColor"/>
+</svg></div><b>몸에 생기는 변화</b></div><div class="v2-body">근육이 포도당을 쓰면서 식후 혈당과 졸림이 줄어들&nbsp;수&nbsp;있습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 식사 뒤, 출퇴근길, 계단 — 하루 중 이미 있는 틈에 10분을 넣으세요.</span><span class="v2-src">근거 · 미국 질병통제예방센터 신체활동 지침 · 광교바른내과 진료 안내(식후 10분 걷기)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 06</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 주간 목표</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">성인 기준은 주 150분, 시작은 절반부터</h2>
+  <p class="v2-sub">성인 기준은 주 150분 중간 강도 유산소와 주 2일 근력운동 — 아래 1·2주차 분량은 병원의 시작 예시입니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">70~90<span>분</span></div><div class="q-stat__lab">1주차</div><div class="q-stat__cap">하루 10~15분, 주 5~6일</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">90~120<span>분</span></div><div class="q-stat__lab">2주차</div><div class="q-stat__cap">컨디션이 괜찮으면 한 번에 20분까지</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">150<span>분</span></div><div class="q-stat__lab">목표</div><div class="q-stat__cap">오심·어지럼 없이 유지되면 천천히</div>
+  </div>
+  <div class="v2-panel q-lead" style="left:64px;top:390px;width:761px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>주간 걷기 목표</b></div><div class="v2-body">처음 2주는 150분을 채우기보다 <b>기록이 끊기지 않는 패턴</b>을 만드는 시기입니다. 진료 때 걸음 수보다 실제로 가능한 시간을 같이 조정합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:849px;top:390px;width:367px;height:216px">
+    <img class="v2-fig__img q-fig__img" style="width:367px;height:216px" src="../../../../shared/assets/generated/glp1-week02-weekly-walking-goal-20260529.png" alt="운동화·물병·심박을 지나 공원을 걷는 사람 그림">
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 중간 강도란 숨이 약간 차지만 대화는 할 수 있는 정도입니다.</span><span class="v2-src">근거 · 미국 질병통제예방센터 신체활동 지침(주 150분·주 2일 근력) · 광교바른내과 진료 안내(1·2주차 예시)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 06</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 과한 운동 피하기</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">약 시작 초반에는 무리한 운동이 독이 될 수 있습니다</h2>
+  <p class="v2-sub">식사량이 줄고 수분이 부족하면 어지럼·저혈당·탈수가 생길 수 있습니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:329px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:329px" src="../../../../shared/assets/generated/glp1-week02-overexercise-hydration-20260529.png" alt="벤치에서 쉬며 물을 마시는 사람과 운동·휴식의 저울 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:547px;width:560px;height:59px"><div class="q-figcap__t">그림 · 수분·회복 — 운동과 휴식의 균형을 맞춥니다(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>이럴 땐 멈추세요</b></div><div class="v2-body">식은땀, 심한 어지럼, 가슴 통증, 숨이 차서 힘든 느낌이 있으면 운동을 중단합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 23L7 42H9L9 23H10V12H9L9 6H7L7 12H6V23H7Z" fill="currentColor"/>
+<path d="M25 7C25 7.55228 24.5523 8 24 8H19V11H25V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7Z" fill="currentColor"/>
+<path d="M30 11C35.5228 11 40 15.4772 40 21V24H42V30H28V24H30V23C30 21.8954 29.1046 21 28 21H27V11H30Z" fill="currentColor"/>
+<path d="M35.5 42C37.433 42 39 40.3719 39 38.3636C39 35.1818 35.5 32 35.5 32C35.5 32 32 35.1818 32 38.3636C32 40.3719 33.567 42 35.5 42Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6H7L7 12H6V23H7L7 42H9L9 23H10V12H9L9 6ZM35.5 34.9879C35.4543 35.0478 35.4085 35.109 35.3628 35.1714C34.5524 36.2765 34 37.4318 34 38.3636C34 39.3401 34.7429 40 35.5 40C36.2571 40 37 39.3401 37 38.3636C37 37.4318 36.4476 36.2765 35.6372 35.1714C35.5915 35.109 35.5457 35.0478 35.5 34.9879ZM29.7324 22C29.9026 22.2942 30 22.6357 30 23V24H28V30H42V24H40V21C40 15.4772 35.5228 11 30 11H27V21H28C28.7403 21 29.3866 21.4022 29.7324 22ZM29 19.126C30.7252 19.5701 32 21.1362 32 23V26H30V28H40V26H38V21C38 16.5817 34.4183 13 30 13H29V19.126ZM14 13V22H23V13H14ZM25 11V24H12V11H17V8H12C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6H24C24.5523 6 25 6.44772 25 7C25 7.55228 24.5523 8 24 8H19V11H25ZM39 38.3636C39 40.3719 37.433 42 35.5 42C33.567 42 32 40.3719 32 38.3636C32 35.1818 35.5 32 35.5 32C35.5 32 39 35.1818 39 38.3636Z" fill="currentColor"/>
+</svg></div><b>수분이 먼저</b></div><div class="v2-body">구토·설사가 있거나 더운 날에는 운동보다 수분과 전해질 보충이 먼저입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M43 29.143C43 30.743 41.68 32.0001 40 32.0001C38.32 32.0001 37 30.743 37 29.143C37 27.543 40 24.0001 40 24.0001C40 24.0001 43 27.6573 43 29.143Z" fill="currentColor"/>
+<path d="M24.1528 17.7833H41.8719C43.0472 17.7833 44 18.7361 44 19.9114C44 21.0867 43.0472 22.0395 41.8719 22.0395H41.8685C41.9544 21.8721 42.0014 21.6902 42.0012 21.5001C42.0005 20.6717 41.1046 20.0009 40 20.0018C38.8954 20.0027 38.0005 20.675 38.0012 21.5034C38.0014 21.6923 38.0481 21.8731 38.1332 22.0395H25.1111V23.1035H32C33.1046 23.1035 34 23.999 34 25.1035V25.3597C34 26.4643 33.1046 27.3597 32 27.3597H25.1111V28.4238H30.8889C31.9935 28.4238 32.8889 29.3192 32.8889 30.4238V30.6799C32.8889 31.7845 31.9935 32.6799 30.8889 32.6799H22.8889V33.7439H27C28.1046 33.7439 29 34.6394 29 35.7439V36.0001C29 37.1047 28.1046 38.0001 27 38.0001H15.4562C9.12912 38.0001 4 32.871 4 26.5439C4 21.8893 6.8162 17.6974 11.1254 15.9378L24.0124 10.6756C24.9864 10.2779 26.106 10.5891 26.735 11.4324C27.6143 12.6113 27.1815 14.301 25.8437 14.9119L23.7374 15.8737C22.76 16.32 23.0783 17.7833 24.1528 17.7833Z" fill="currentColor"/>
+</svg></div><b>당뇨약을 함께 쓰는 분</b></div><div class="v2-body">인슐린·설폰요소제(혈당약)를 쓰는 분은 운동 전후에 저혈당 증상이 없는지&nbsp;확인합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 식사를 거의 못 한 날의 고강도 운동은 위험할 수 있습니다 — 몸의 신호를 보고 강도를 낮추는 것도 치료입니다.</span><span class="v2-src">근거 · 위고비·마운자로 허가사항 · 미국 질병통제예방센터 신체활동 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 06</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 생활 속 운동</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">운동복을 입기 전에도 운동은 시작됩니다</h2>
+  <p class="v2-sub">주차·계단·청소·산책처럼 생활 안에서 활동량을 올리면 실패가 적습니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:600px"><colgroup><col style="width:180px"><col style="width:420px"></colgroup><thead><tr><th>이럴 때</th><th>이렇게 해 보세요</th></tr></thead><tbody><tr><th style="height:110px">이미 있는 습관에 붙이기</th><td style="height:110px">식사 뒤 10분, 퇴근길 한 정거장 먼저 내리기, 통화하며 걷기</td></tr><tr><th style="height:110px">무릎·허리가 불편하면</th><td style="height:110px">평지 걷기, 실내 자전거, 물속 운동을 고려합니다</td></tr><tr><th style="height:110px">덤으로 좋아지는 잠</th><td style="height:110px">낮 활동량이 늘면 밤잠의 질이 좋아지고 야식 욕구도 줄&nbsp;수&nbsp;있습니다</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:696px;top:206px;width:520px;height:306px">
+    <img class="v2-fig__img q-fig__img" style="width:520px;height:306px" src="../../../../shared/assets/generated/glp1-week02-habit-stack-20260529.png" alt="현관 운동화·물·식사·잠자리 조명을 하루 흐름으로 이은 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:696px;top:524px;width:520px;height:82px"><div class="q-figcap__t">그림 · 생활 속 루틴 — 운동화·물·식사·잠을 하루 흐름에 잇습니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 식후 → 양치 → 걷기처럼 이미 있는 습관 뒤에 붙이면 오래 갑니다.</span><span class="v2-src">근거 · 미국 질병통제예방센터 신체활동 지침 · 광교바른내과 진료 안내</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 06</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이번 회차는 10분부터 쌓기</h2>
+  <p class="v2-sub">이번 주는 오래 하는 운동보다, 식후와 일상 속에 자주 넣는 움직임이 목표입니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이번 회차 핵심</b></div><div class="v2-body"><div class="q-tks"><div class="q-tk"><span class="q-tk__n">01</span><span class="q-tk__t">운동 시작은 식후 10분 걷기면 충분합니다.</span></div><div class="q-tk"><span class="q-tk__n">02</span><span class="q-tk__t">처음부터 주 150분을 억지로 채우지 않아도 됩니다.</span></div><div class="q-tk"><span class="q-tk__n">03</span><span class="q-tk__t">식사를 못 하거나 탈수·어지럼이 있으면 운동 강도를 낮춥니다.</span></div><div class="q-tk"><span class="q-tk__n">04</span><span class="q-tk__t">운동은 따로 하는 행사가 아니라 생활에 붙이는 습관입니다.</span></div></div></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:290px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM13,2H14V3H13zM14,2H15V3H14zM16,2H17V3H16zM17,2H18V3H17zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM25,2H26V3H25zM27,2H28V3H27zM28,2H29V3H28zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM17,3H18V4H17zM18,3H19V4H18zM20,3H21V4H20zM25,3H26V4H25zM26,3H27V4H26zM27,3H28V4H27zM31,3H32V4H31zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM16,4H17V5H16zM18,4H19V5H18zM19,4H20V5H19zM21,4H22V5H21zM22,4H23V5H22zM26,4H27V5H26zM29,4H30V5H29zM32,4H33V5H32zM33,4H34V5H33zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM13,5H14V6H13zM14,5H15V6H14zM15,5H16V6H15zM17,5H18V6H17zM18,5H19V6H18zM21,5H22V6H21zM23,5H24V6H23zM26,5H27V6H26zM28,5H29V6H28zM32,5H33V6H32zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM12,6H13V7H12zM13,6H14V7H13zM15,6H16V7H15zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM24,6H25V7H24zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM33,6H34V7H33zM34,6H35V7H34zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM13,7H14V8H13zM14,7H15V8H14zM15,7H16V8H15zM18,7H19V8H18zM20,7H21V8H20zM21,7H22V8H21zM22,7H23V8H22zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM32,7H33V8H32zM33,7H34V8H33zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM10,9H11V10H10zM11,9H12V10H11zM12,9H13V10H12zM13,9H14V10H13zM14,9H15V10H14zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM22,9H23V10H22zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM29,9H30V10H29zM30,9H31V10H30zM31,9H32V10H31zM32,9H33V10H32zM33,9H34V10H33zM34,9H35V10H34zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM15,10H16V11H15zM17,10H18V11H17zM18,10H19V11H18zM19,10H20V11H19zM20,10H21V11H20zM21,10H22V11H21zM22,10H23V11H22zM23,10H24V11H23zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM36,10H37V11H36zM39,10H40V11H39zM41,10H42V11H41zM42,10H43V11H42zM2,11H3V12H2zM3,11H4V12H3zM7,11H8V12H7zM9,11H10V12H9zM13,11H14V12H13zM16,11H17V12H16zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM30,11H31V12H30zM31,11H32V12H31zM32,11H33V12H32zM33,11H34V12H33zM34,11H35V12H34zM35,11H36V12H35zM36,11H37V12H36zM37,11H38V12H37zM38,11H39V12H38zM40,11H41V12H40zM41,11H42V12H41zM42,11H43V12H42zM3,12H4V13H3zM4,12H5V13H4zM5,12H6V13H5zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM11,12H12V13H11zM15,12H16V13H15zM16,12H17V13H16zM19,12H20V13H19zM20,12H21V13H20zM22,12H23V13H22zM23,12H24V13H23zM24,12H25V13H24zM25,12H26V13H25zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM30,12H31V13H30zM32,12H33V13H32zM35,12H36V13H35zM36,12H37V13H36zM40,12H41V13H40zM41,12H42V13H41zM4,13H5V14H4zM7,13H8V14H7zM9,13H10V14H9zM10,13H11V14H10zM13,13H14V14H13zM14,13H15V14H14zM15,13H16V14H15zM16,13H17V14H16zM17,13H18V14H17zM18,13H19V14H18zM20,13H21V14H20zM25,13H26V14H25zM26,13H27V14H26zM27,13H28V14H27zM28,13H29V14H28zM29,13H30V14H29zM32,13H33V14H32zM34,13H35V14H34zM35,13H36V14H35zM37,13H38V14H37zM38,13H39V14H38zM41,13H42V14H41zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM15,14H16V15H15zM17,14H18V15H17zM19,14H20V15H19zM22,14H23V15H22zM24,14H25V15H24zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM33,14H34V15H33zM35,14H36V15H35zM39,14H40V15H39zM40,14H41V15H40zM42,14H43V15H42zM2,15H3V16H2zM4,15H5V16H4zM6,15H7V16H6zM9,15H10V16H9zM11,15H12V16H11zM15,15H16V16H15zM17,15H18V16H17zM19,15H20V16H19zM20,15H21V16H20zM22,15H23V16H22zM23,15H24V16H23zM25,15H26V16H25zM26,15H27V16H26zM31,15H32V16H31zM39,15H40V16H39zM42,15H43V16H42zM2,16H3V17H2zM3,16H4V17H3zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM12,16H13V17H12zM15,16H16V17H15zM16,16H17V17H16zM21,16H22V17H21zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM25,16H26V17H25zM27,16H28V17H27zM28,16H29V17H28zM31,16H32V17H31zM32,16H33V17H32zM36,16H37V17H36zM40,16H41V17H40zM41,16H42V17H41zM42,16H43V17H42zM3,17H4V18H3zM4,17H5V18H4zM7,17H8V18H7zM9,17H10V18H9zM10,17H11V18H10zM12,17H13V18H12zM15,17H16V18H15zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM29,17H30V18H29zM33,17H34V18H33zM34,17H35V18H34zM36,17H37V18H36zM37,17H38V18H37zM38,17H39V18H38zM39,17H40V18H39zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM15,18H16V19H15zM16,18H17V19H16zM18,18H19V19H18zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM27,18H28V19H27zM28,18H29V19H28zM32,18H33V19H32zM33,18H34V19H33zM34,18H35V19H34zM38,18H39V19H38zM42,18H43V19H42zM5,19H6V20H5zM6,19H7V20H6zM10,19H11V20H10zM13,19H14V20H13zM15,19H16V20H15zM16,19H17V20H16zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM31,19H32V20H31zM34,19H35V20H34zM35,19H36V20H35zM37,19H38V20H37zM3,20H4V21H3zM6,20H7V21H6zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM14,20H15V21H14zM15,20H16V21H15zM17,20H18V21H17zM20,20H21V21H20zM24,20H25V21H24zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM38,20H39V21H38zM39,20H40V21H39zM40,20H41V21H40zM2,21H3V22H2zM6,21H7V22H6zM7,21H8V22H7zM9,21H10V22H9zM11,21H12V22H11zM13,21H14V22H13zM16,21H17V22H16zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM21,21H22V22H21zM22,21H23V22H22zM23,21H24V22H23zM25,21H26V22H25zM26,21H27V22H26zM30,21H31V22H30zM33,21H34V22H33zM35,21H36V22H35zM37,21H38V22H37zM39,21H40V22H39zM40,21H41V22H40zM41,21H42V22H41zM42,21H43V22H42zM2,22H3V23H2zM3,22H4V23H3zM5,22H6V23H5zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM18,22H19V23H18zM21,22H22V23H21zM22,22H23V23H22zM27,22H28V23H27zM30,22H31V23H30zM32,22H33V23H32zM34,22H35V23H34zM35,22H36V23H35zM36,22H37V23H36zM38,22H39V23H38zM39,22H40V23H39zM40,22H41V23H40zM42,22H43V23H42zM4,23H5V24H4zM6,23H7V24H6zM7,23H8V24H7zM9,23H10V24H9zM13,23H14V24H13zM14,23H15V24H14zM15,23H16V24H15zM17,23H18V24H17zM19,23H20V24H19zM21,23H22V24H21zM25,23H26V24H25zM28,23H29V24H28zM30,23H31V24H30zM32,23H33V24H32zM33,23H34V24H33zM34,23H35V24H34zM35,23H36V24H35zM36,23H37V24H36zM38,23H39V24H38zM41,23H42V24H41zM42,23H43V24H42zM2,24H3V25H2zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM12,24H13V25H12zM14,24H15V25H14zM16,24H17V25H16zM18,24H19V25H18zM20,24H21V25H20zM22,24H23V25H22zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM28,24H29V25H28zM31,24H32V25H31zM32,24H33V25H32zM35,24H36V25H35zM36,24H37V25H36zM38,24H39V25H38zM41,24H42V25H41zM5,25H6V26H5zM6,25H7V26H6zM13,25H14V26H13zM15,25H16V26H15zM18,25H19V26H18zM21,25H22V26H21zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM28,25H29V26H28zM35,25H36V26H35zM36,25H37V26H36zM41,25H42V26H41zM42,25H43V26H42zM2,26H3V27H2zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM14,26H15V27H14zM17,26H18V27H17zM18,26H19V27H18zM19,26H20V27H19zM20,26H21V27H20zM22,26H23V27H22zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM31,26H32V27H31zM33,26H34V27H33zM40,26H41V27H40zM2,27H3V28H2zM3,27H4V28H3zM5,27H6V28H5zM6,27H7V28H6zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM14,27H15V28H14zM16,27H17V28H16zM17,27H18V28H17zM19,27H20V28H19zM21,27H22V28H21zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM33,27H34V28H33zM34,27H35V28H34zM36,27H37V28H36zM37,27H38V28H37zM39,27H40V28H39zM40,27H41V28H40zM42,27H43V28H42zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM13,28H14V29H13zM14,28H15V29H14zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM23,28H24V29H23zM26,28H27V29H26zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM39,28H40V29H39zM41,28H42V29H41zM42,28H43V29H42zM3,29H4V30H3zM5,29H6V30H5zM7,29H8V30H7zM10,29H11V30H10zM11,29H12V30H11zM13,29H14V30H13zM17,29H18V30H17zM18,29H19V30H18zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM30,29H31V30H30zM33,29H34V30H33zM34,29H35V30H34zM35,29H36V30H35zM36,29H37V30H36zM37,29H38V30H37zM38,29H39V30H38zM39,29H40V30H39zM41,29H42V30H41zM42,29H43V30H42zM2,30H3V31H2zM3,30H4V31H3zM5,30H6V31H5zM7,30H8V31H7zM8,30H9V31H8zM11,30H12V31H11zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM17,30H18V31H17zM18,30H19V31H18zM20,30H21V31H20zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM29,30H30V31H29zM32,30H33V31H32zM33,30H34V31H33zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM38,30H39V31H38zM39,30H40V31H39zM3,31H4V32H3zM4,31H5V32H4zM6,31H7V32H6zM10,31H11V32H10zM11,31H12V32H11zM14,31H15V32H14zM18,31H19V32H18zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM24,31H25V32H24zM33,31H34V32H33zM36,31H37V32H36zM37,31H38V32H37zM40,31H41V32H40zM2,32H3V33H2zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM9,32H10V33H9zM11,32H12V33H11zM12,32H13V33H12zM13,32H14V33H13zM16,32H17V33H16zM18,32H19V33H18zM21,32H22V33H21zM23,32H24V33H23zM24,32H25V33H24zM27,32H28V33H27zM28,32H29V33H28zM34,32H35V33H34zM35,32H36V33H35zM36,32H37V33H36zM37,32H38V33H37zM39,32H40V33H39zM6,33H7V34H6zM7,33H8V34H7zM11,33H12V34H11zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM19,33H20V34H19zM20,33H21V34H20zM21,33H22V34H21zM24,33H25V34H24zM25,33H26V34H25zM29,33H30V34H29zM30,33H31V34H30zM31,33H32V34H31zM32,33H33V34H32zM34,33H35V34H34zM36,33H37V34H36zM38,33H39V34H38zM40,33H41V34H40zM41,33H42V34H41zM3,34H4V35H3zM4,34H5V35H4zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM13,34H14V35H13zM15,34H16V35H15zM19,34H20V35H19zM20,34H21V35H20zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM39,34H40V35H39zM40,34H41V35H40zM41,34H42V35H41zM42,34H43V35H42zM10,35H11V36H10zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM19,35H20V36H19zM21,35H22V36H21zM23,35H24V36H23zM24,35H25V36H24zM25,35H26V36H25zM27,35H28V36H27zM28,35H29V36H28zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM40,35H41V36H40zM41,35H42V36H41zM42,35H43V36H42zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM12,36H13V37H12zM13,36H14V37H13zM16,36H17V37H16zM20,36H21V37H20zM22,36H23V37H22zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM30,36H31V37H30zM31,36H32V37H31zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM40,36H41V37H40zM41,36H42V37H41zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM11,37H12V38H11zM17,37H18V38H17zM18,37H19V38H18zM19,37H20V38H19zM21,37H22V38H21zM25,37H26V38H25zM26,37H27V38H26zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM15,38H16V39H15zM22,38H23V39H22zM23,38H24V39H23zM26,38H27V39H26zM28,38H29V39H28zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM39,38H40V39H39zM40,38H41V39H40zM42,38H43V39H42zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM12,39H13V40H12zM14,39H15V40H14zM18,39H19V40H18zM19,39H20V40H19zM21,39H22V40H21zM24,39H25V40H24zM26,39H27V40H26zM27,39H28V40H27zM28,39H29V40H28zM29,39H30V40H29zM30,39H31V40H30zM31,39H32V40H31zM32,39H33V40H32zM33,39H34V40H33zM34,39H35V40H34zM38,39H39V40H38zM41,39H42V40H41zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM10,40H11V41H10zM11,40H12V41H11zM12,40H13V41H12zM13,40H14V41H13zM15,40H16V41H15zM16,40H17V41H16zM17,40H18V41H17zM19,40H20V41H19zM20,40H21V41H20zM21,40H22V41H21zM23,40H24V41H23zM24,40H25V41H24zM26,40H27V41H26zM28,40H29V41H28zM30,40H31V41H30zM32,40H33V41H32zM33,40H34V41H33zM37,40H38V41H37zM41,40H42V41H41zM42,40H43V41H42zM2,41H3V42H2zM8,41H9V42H8zM11,41H12V42H11zM14,41H15V42H14zM15,41H16V42H15zM16,41H17V42H16zM18,41H19V42H18zM19,41H20V42H19zM20,41H21V42H20zM22,41H23V42H22zM23,41H24V42H23zM26,41H27V42H26zM30,41H31V42H30zM34,41H35V42H34zM35,41H36V42H35zM38,41H39V42H38zM39,41H40V42H39zM41,41H42V42H41zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM11,42H12V43H11zM15,42H16V43H15zM17,42H18V43H17zM18,42H19V43H18zM19,42H20V43H19zM20,42H21V43H20zM21,42H22V43H21zM22,42H23V43H22zM23,42H24V43H23zM24,42H25V43H24zM27,42H28V43H27zM29,42H30V43H29zM33,42H34V43H33zM34,42H35V43H34zM35,42H36V43H35zM36,42H37V43H36zM41,42H42V43H41z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -426,80 +299,12 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · 본 자료는 진료실 설명 보조자료이며 개인별 처방은 담당의 지시에 따릅니다.</span>
-      <span class="slide__page">06 / 06</span>
-    </footer>
-  </section>
-</div>
-<script>
-  const qrEl = document.querySelector('.qr-block__code');
-  const ogUrl = document.querySelector('meta[property="og:url"]')?.content || window.location.href;
-  if (qrEl && window.QRCode) { new QRCode(qrEl, { text: ogUrl, width: 120, height: 120, colorDark: '#003366', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M }); }
-</script>
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-panel q-inline-p" style="left:796px;top:512px;width:420px;height:94px">
+    <div class="q-inline q-refs"><b>참고한 자료</b>위고비·마운자로 허가사항 · 한국릴리 안내<br>미국 질병통제예방센터 신체활동 지침<br>미국비만의학회 영양 권고 · 광교바른내과 진료 안내</div>
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 06</div>
+</section>
 </body>
 </html>
