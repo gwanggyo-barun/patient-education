@@ -24,699 +24,484 @@
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-  <style>
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-  </style>
+<link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3B-redesign 2026-09-27 (원장님 49028) — v1 격자판을 v2 어휘(결론 카드·대비 2단·표·가로 도해·격자)로
+    다시 짰다. 그림칸 = 원본 그림 비율(잘림·빈 띠 없음), 본문 글자 15px 이상. */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ section.slide--cover{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ .q-text .v2-body{font-size:16px;line-height:1.6}
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none;overflow:visible}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-key{position:absolute;display:flex;align-items:center;padding:0 20px;border-radius:10px;background:var(--v2-chip-navy);border-left:4px solid var(--v2-navy);font-size:17px;line-height:1.45;font-weight:600;color:var(--v2-navy);word-break:keep-all;box-sizing:border-box}
+ .q-key--accent{background:var(--v2-chip-accent);border-left-color:var(--v2-accent)}
+ .q-card{display:flex;flex-direction:column;padding:26px 24px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ .q-cell{display:flex;flex-direction:column;justify-content:center}
+ .q-cell .v2-head{margin-bottom:10px}
+ .q-cell .v2-head b{font-size:20px}
+ .q-cell .v2-body{font-size:16px;line-height:1.6}
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:16px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--rule,var(--v2-navy));color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+ .q-step__h{font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.35;margin-bottom:12px;word-break:keep-all}
+ .q-step .v2-body{font-size:16.5px;line-height:1.6}
+ .q-step__k{margin-top:auto;padding:10px 12px;border-radius:8px;background:var(--chip,var(--v2-chip-navy));border-left:4px solid var(--rule,var(--v2-navy));font-size:15px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-card__why{margin-top:12px;font-size:15px;line-height:1.55;color:var(--v2-muted);word-break:keep-all}
+ .q-arrow{position:absolute;width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:20px solid var(--v2-line)}
+ .q-labs{position:absolute;display:grid;gap:12px}
+ .q-lab{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:8px 14px;border-radius:8px;background:var(--v2-chip-navy);border-top:4px solid var(--v2-navy)}
+ .q-lab b{font-size:17px;color:var(--v2-navy)}
+ .q-lab span{font-size:15px;color:var(--v2-body);line-height:1.4;word-break:keep-all}
+ .q-lab--on{background:var(--v2-chip-accent);border-top-color:var(--v2-accent)}
+ .q-stat{display:flex;flex-direction:column;justify-content:center;text-align:center;padding:20px}
+ .q-stat__num{font-size:44px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px;line-height:1.05}
+ .q-stat__cap{margin-top:10px;font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-close{display:flex;flex-direction:column;justify-content:space-between}
+ .q-close .v2-block + .v2-block{margin-top:0;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+ .q-text--4{padding-top:18px;padding-bottom:16px}
+ .q-text--4 .v2-head{margin-bottom:4px}
+ .q-text--4 .v2-block + .v2-block{padding-top:10px}
+ 
+ .q-text .v2-body{font-size:15.5px;line-height:1.5}
+
+</style>
 <!-- seo:geo2 --><meta name="description" content="결과지의 FVC · FEV1 · FEV1/FVC가 그리는 패턴 — 폐쇄성·제한성·혼합형을 읽고 의심 질환을 좁히는 법, 그리고 제대로 된 검사인지 확인하는 6가지 기준">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/pulmo/pft-interpretation/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "폐기능검사 결과 해석 — 광교바른내과", "description": "결과지의 FVC · FEV1 · FEV1/FVC가 그리는 패턴 — 폐쇄성·제한성·혼합형을 읽고 의심 질환을 좁히는 법, 그리고 제대로 된 검사인지 확인하는 6가지 기준", "url": "https://edu.gwanggyobarun.com/decks/pulmo/pft-interpretation/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · PULMONOLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">폐기능검사 결과 읽기,<br><em>패턴이 말하는 것</em></h1>
-      <p class="slide__subtitle">폐쇄성 · 제한성 · 혼합형 — 결과지의 숫자가 그리는 패턴을 읽고, 의심 질환을 좁히는 법</p>
+      <p class="slide__subtitle">결과지의 숫자가 그리는 세 가지 모양 — 무엇을 뜻하고, 다음에 무엇을 하는지</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">PFT · Pulmonary Function Test · Spirometry Interpretation</span>
+      <span class="slide__source">폐기능검사(폐활량 검사) 결과지 읽기</span>
       <span class="slide__page">광교바른내과 호흡기내과</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · HERO NUMBER — 3 patterns the result page can show
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">결과지가 말하는 3가지 패턴</h2>
-      <p class="slide__subtitle">폐기능검사 결과는 결국 세 가지 패턴 중 하나로 분류됩니다 — 정상 / 폐쇄성 / 제한성 (혼합형 포함)</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>3</em>패턴</div>
-          <div class="pattern-hero-number__caption">폐기능 검사의 임상적 해석은 결국 패턴 분류 — <strong>폐쇄성 (Obstructive)</strong>, <strong>제한성 (Restrictive)</strong>, <strong>혼합형 (Mixed)</strong> 중 어디에 해당하는지가 진단 방향을 결정합니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why pattern matters more than absolute numbers</div>
-          <div class="pattern-hero-number__detail-text">
-            FEV1 60%라는 수치 자체가 진단을 만들지 않습니다. 같은 60%라도 <strong>FEV1/FVC가 낮으면 폐쇄성</strong>(COPD·천식 의심), <strong>FEV1/FVC가 정상이면 제한성</strong>(간질성 폐질환·신경근 질환 의심)으로 방향이 갈립니다. 결과지에서 가장 먼저 확인할 것은 단일 숫자가 아닌 <strong>비율 패턴</strong>입니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS/ERS Technical Standard, Eur Respir J 2019; 53: 1801499</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — What spirometry actually measures
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IT MEASURES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">폐기능 검사는 무엇을 보는가</h2>
-      <p class="slide__subtitle">노력성 호기 검사 (Forced Expiration) — 최대로 들이마신 후 가능한 한 빠르고 끝까지 내쉬며 얻은 두 가지 핵심 메트릭</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">스파이로미터(spirometer)는 단 두 가지 — <em>얼마나 많이 (Volume), 얼마나 빨리 (Flow)</em> 공기가 빠져나오는지를 측정합니다.</p>
-          <p class="pattern-split__supporting">
-            환자가 마우스피스를 통해 최대로 들이마신 후 가능한 한 강하고 끝까지 내쉬면, 장비는 시간에 따른 부피 변화 곡선 (volume-time)과 부피에 따른 유량 곡선 (flow-volume)을 동시에 그립니다. 이 두 곡선에서 결과지의 모든 숫자(FVC·FEV1·PEF·FEF25-75)와 결정적 비율(FEV1/FVC)이 자동 산출됩니다. 결과지의 정상·비정상은 환자 본인의 절대값이 아닌 <strong>같은 나이·키·성별·인종의 예측치(% predicted)</strong>와의 비교로 판정됩니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Primary metric — Volume</div>
-            <div class="pattern-split__metric-value">FVC</div>
-            <div class="pattern-split__metric-detail">노력성 폐활량 — 최대로 들이마신 후 끝까지 내쉰 공기의 총량. 폐의 "크기"를 반영합니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Primary metric — Flow</div>
-            <div class="pattern-split__metric-value">FEV1</div>
-            <div class="pattern-split__metric-detail">첫 1초 동안 빠져나간 공기의 양. 기관지 통로의 "넓이"와 호기 속도를 반영합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS/ERS Spirometry Standardization 2019</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 3×2 — 6 key numbers on the report
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>READING THE REPORT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">결과지에 나오는 6가지 핵심 수치</h2>
-      <p class="slide__subtitle">각 수치의 의미와 정상 기준 — 결과지에서 이 순서대로 따라가면 패턴이 보입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">METRIC · 01</div>
-          <div class="tile__title">FVC · 노력성 폐활량</div>
-          <div class="tile__body">최대 흡기 후 끝까지 내쉰 총량 (L). 정상은 예측치의 80% 이상 (또는 LLN 이상). 제한성 패턴에서 가장 먼저 떨어집니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METRIC · 02</div>
-          <div class="tile__title">FEV1 · 1초 호기량</div>
-          <div class="tile__body">첫 1초간 빠져나간 공기 (L). 폐쇄성 질환의 중증도 평가에 사용 (GOLD 분류 기준). 예측치의 80% 이상이 정상.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METRIC · 03</div>
-          <div class="tile__title">FEV1/FVC · 1초율</div>
-          <div class="tile__body">전체 FVC 중 1초에 내쉰 비율. <strong>0.70 미만 또는 LLN 미만</strong>이면 폐쇄성. 결과지에서 가장 먼저 봐야 할 비율입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METRIC · 04</div>
-          <div class="tile__title">FEF25-75% · 중기 유량</div>
-          <div class="tile__body">FVC의 25~75% 구간 평균 유량. 작은 기도 (small airway) 폐쇄에 민감하지만 변동이 커서 단독 진단 근거로는 부족합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METRIC · 05</div>
-          <div class="tile__title">PEF · 최대 호기 유속</div>
-          <div class="tile__body">호기 시작 직후의 최고 속도 (L/sec). 환자 노력에 크게 좌우되며, 천식의 일중 변동 (diurnal variability) 모니터링에 활용됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">METRIC · 06</div>
-          <div class="tile__title">% Predicted · LLN</div>
-          <div class="tile__body">같은 인구 통계 정상인 대비 비율 (%). 최신 가이드라인은 80% 기준보다 <strong>LLN (Lower Limit of Normal, z-score &lt; -1.645)</strong> 사용을 권장합니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/pulmo-pft-interpretation-s04-comparison-pulmonary-08bb8bf2-20260530-raster-20260531.jpg" alt="결과지에 나오는 6가지 핵심 수치 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ERS/ATS Standardisation of Lung Function Testing 2022, GLI reference equations</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 3×2 — Obstructive pattern
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>OBSTRUCTIVE PATTERN</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">패턴 ① 폐쇄성 (Obstructive)</h2>
-      <p class="slide__subtitle">기관지 통로가 좁아져 공기가 빠르게 빠져나오지 못하는 패턴 — FEV1/FVC 저하가 진단의 핵심</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">CRITERION · 01</div>
-          <div class="tile__title">진단 기준</div>
-          <div class="tile__body"><strong>FEV1/FVC &lt; 0.70</strong> (GOLD 고정 기준) 또는 <strong>&lt; LLN</strong> (z &lt; -1.645). 기관지 확장제 투여 후에도 비가역적이면 COPD를 시사합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CRITERION · 02</div>
-          <div class="tile__title">FVC 변화</div>
-          <div class="tile__body">초기에는 정상, 중증으로 갈수록 공기 가둠 (air trapping)으로 인해 감소. FVC가 떨어졌다고 제한성으로 단정하지 않습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CRITERION · 03</div>
-          <div class="tile__title">Flow-Volume 곡선</div>
-          <div class="tile__body">호기 곡선이 <strong>오목하게 들어가는 (scooped / concave)</strong> 모양. PEF는 어느 정도 보존되지만 그 후 급격히 떨어집니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUSPECT · 04</div>
-          <div class="tile__title">의심 질환</div>
-          <div class="tile__body"><strong>COPD</strong> (40세 이상·흡연력), <strong>천식</strong> (가역성·일중 변동), 기관지확장증, 폐쇄성 세기관지염, α1-antitrypsin 결핍.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">NEXT STEP · 05</div>
-          <div class="tile__title">기관지확장제 반응성 (BDR)</div>
-          <div class="tile__body">SABA 흡입 후 <strong>FEV1 또는 FVC가 ≥12% 그리고 ≥200mL 증가</strong>하면 양성 — 천식 가능성. 음성이라도 천식을 배제하지 않습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SEVERITY · 06</div>
-          <div class="tile__title">중증도 분류 (GOLD)</div>
-          <div class="tile__body">FEV1 % predicted 기준: <strong>경증 ≥80%</strong> / 중등도 50-79% / 중증 30-49% / <strong>최중증 &lt;30%</strong>. 증상·악화 빈도와 함께 종합 판단.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — GOLD 2024 Report · GINA 2024 · Pellegrino R, Eur Respir J 2005</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 3×2 — Restrictive pattern
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>RESTRICTIVE PATTERN</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">패턴 ② 제한성 (Restrictive)</h2>
-      <p class="slide__subtitle">폐가 충분히 확장되지 못하는 패턴 — 스파이로미터로는 <strong>의심</strong>만 가능, 확진은 폐용적 검사 (TLC)</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">CRITERION · 01</div>
-          <div class="tile__title">진단 기준 (의심)</div>
-          <div class="tile__body"><strong>FVC &lt; LLN 이면서 FEV1/FVC 정상 또는 증가</strong>. 1초율이 떨어지지 않으면서 폐활량 자체가 작아진 상태입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CRITERION · 02</div>
-          <div class="tile__title">확진은 TLC</div>
-          <div class="tile__body"><strong>총폐용적 (TLC) &lt; LLN</strong> 이 진짜 제한성. 폐용적 검사 (body plethysmography·gas dilution)를 종합병원 검사실에서 추가 시행합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CRITERION · 03</div>
-          <div class="tile__title">Flow-Volume 곡선</div>
-          <div class="tile__body">전체 곡선이 <strong>작아지지만 모양은 보존</strong> (좁고 키 작은 정상 모양). PEF·FEF는 비례적으로 낮아집니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUSPECT · 04</div>
-          <div class="tile__title">간질성·실질 질환</div>
-          <div class="tile__body">간질성 폐질환 (ILD·IPF), 사르코이드증, 진폐증, 방사선 폐렴, 폐절제술 후 — DLCO 동반 감소가 특징.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUSPECT · 05</div>
-          <div class="tile__title">흉곽 · 외인성</div>
-          <div class="tile__body">중증 비만 (BMI ≥35), 흉곽 변형 (척추측만), 흉수, 횡격막 마비, 임신 후기 — DLCO는 보존되는 경우가 많습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUSPECT · 06</div>
-          <div class="tile__title">신경근 질환</div>
-          <div class="tile__body">중증 근무력증, ALS, Guillain-Barré, 횡격막 마비 — MIP·MEP (최대흡기·호기압) 추가 확인. 누운 자세 FVC 감소 (≥10%)가 단서.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/pulmo-pft-interpretation-s06-comparison-pulmonary-ec786503-20260530-raster-20260531.jpg" alt="패턴 ② 제한성 (Restrictive) 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS/ERS Interpretive Strategies 2022 · Pellegrino R, Eur Respir J 2005</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · COMPARISON — Obstructive vs Restrictive (Mixed note)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>SIDE-BY-SIDE · MIXED</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한눈에 보는 패턴 비교</h2>
-      <p class="slide__subtitle">폐쇄성 vs 제한성 — 같은 FEV1 감소라도 FEV1/FVC와 FVC의 방향이 패턴을 결정합니다 (혼합형은 두 기준 모두 충족)</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">↓</span>
-            폐쇄성 (Obstructive)
-          </div>
-          <ul class="compare-col__list">
-            <li><strong>FEV1/FVC</strong> ↓ (&lt; 0.70 또는 &lt; LLN)</li>
-            <li><strong>FEV1</strong> ↓↓ (중등도~중증에서 크게 감소)</li>
-            <li><strong>FVC</strong> 정상 → 후기엔 감소 (공기 가둠)</li>
-            <li>Flow-Volume — <strong>오목 (scooped)</strong> 호기 곡선</li>
-            <li>BDR — 양성 시 천식 시사</li>
-            <li>대표 질환 — COPD · 천식 · 기관지확장증</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">↓</span>
-            제한성 (Restrictive)
-          </div>
-          <ul class="compare-col__list">
-            <li><strong>FEV1/FVC</strong> 정상 또는 ↑</li>
-            <li><strong>FEV1</strong> ↓ (FVC와 비례 감소)</li>
-            <li><strong>FVC</strong> ↓ (&lt; LLN)</li>
-            <li>Flow-Volume — 모양 보존, <strong>작아진 정상</strong> 곡선</li>
-            <li>확진 — TLC &lt; LLN (폐용적 검사 필요)</li>
-            <li>대표 질환 — ILD · 신경근 · 흉곽 · 비만</li>
-          </ul>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/pulmo-pft-interpretation-s07-comparison-pulmonary-fc17802d-20260530-raster-20260531.jpg" alt="한눈에 보는 패턴 비교 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 혼합형 (Mixed) = FEV1/FVC ↓ AND TLC ↓ 모두 충족 시</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · TIMELINE — 4-step interpretation flow
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>INTERPRETATION FLOW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">결과지 해석 4단계</h2>
-      <p class="slide__subtitle">결과지를 받았을 때 이 순서대로 확인 — 1단계를 건너뛰면 나머지 모든 해석이 무효가 될 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">검사 품질 확인 · Quality</div>
-          <div class="timeline-step__body">acceptability + repeatability 기준 통과 여부 먼저. 부적합 검사는 패턴 자체가 신뢰 불가.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">FEV1/FVC 확인 · Ratio</div>
-          <div class="timeline-step__body">&lt; LLN (또는 &lt; 0.70) → 폐쇄성 패턴 확정. 정상·증가 → 다음 단계로.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">FVC 확인 · Volume</div>
-          <div class="timeline-step__body">FVC &lt; LLN + 1단계 비율 정상 → 제한성 의심. TLC 측정으로 확진하거나 배제.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">추가 검사 결정 · Next</div>
-          <div class="timeline-step__body">폐쇄성 → BDR + DLCO. 제한성 → TLC + DLCO + MIP/MEP. 임상과 영상 통합.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS/ERS Interpretive Strategies for Lung Function Tests 2022</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · DENSITY GRID 3×2 — Quality criteria (ATS/ERS 2019)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>QUALITY CRITERIA</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">제대로 된 검사의 6가지 특징</h2>
-      <p class="slide__subtitle">ATS/ERS 2019 acceptability + repeatability 기준 — 이 조건을 만족해야 결과지의 숫자를 신뢰할 수 있습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">QUALITY · 01</div>
-          <div class="tile__title">빠른 출발 (BEV)</div>
-          <div class="tile__body">Back-extrapolated volume이 <strong>FVC의 5% 미만 또는 0.10L 미만</strong>. 시작이 머뭇거리면 FEV1이 실제보다 좋아 보입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">QUALITY · 02</div>
-          <div class="tile__title">1초간 기침 없음</div>
-          <div class="tile__body">호기 시작 후 첫 1초 동안 기침·중단 없이 부드러운 호기. 기침은 FEV1을 즉시 부정합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">QUALITY · 03</div>
-          <div class="tile__title">성문 폐쇄 없음</div>
-          <div class="tile__body">호기 중간에 성문 (glottis) 닫힘 없이 끝까지 일정한 흐름. 곡선이 평탄해지거나 끊기면 부적합.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">QUALITY · 04</div>
-          <div class="tile__title">충분한 호기 시간</div>
-          <div class="tile__body">성인 <strong>≥6초</strong> (소아 ≥3초) 또는 volume-time 곡선의 plateau (1초간 부피 변화 &lt; 0.025L) 도달까지.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">QUALITY · 05</div>
-          <div class="tile__title">3회 이상 적합 검사</div>
-          <div class="tile__body">위 4가지 기준을 만족하는 <strong>acceptable 호기를 최소 3회</strong> 시도. 환자 피로·노력에 따라 8회까지도 시행 가능합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">QUALITY · 06</div>
-          <div class="tile__title">재현성 (Repeatability)</div>
-          <div class="tile__body">상위 2개의 FVC와 FEV1이 <strong>0.150L 이내</strong> (FVC ≤ 1.0L이면 0.100L 이내) 일치. 가장 큰 값을 보고에 사용.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Measurement">
-        <img src="../../../shared/assets/generated/pulmo-pft-interpretation-s09-measurement-pulmonary-18142814-20260530-raster-20260531.jpg" alt="제대로 된 검사의 6가지 특징 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS/ERS Spirometry Standardization 2019 · Eur Respir J 53: 1801499</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · DENSITY GRID 3×2 — Common errors (ERROR · NN)
-       Design rule: alert tile 0-2개 max — 우리는 2개만 alert 사용
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>COMMON ERRORS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">이런 게 보이면 부적절한 검사</h2>
-      <p class="slide__subtitle">결과지에 다음 신호가 보이면 숫자 해석을 보류하고 재검사 — 환자 노력 부족·기술 오류로 패턴이 왜곡됩니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--alert">
-          <div class="tile__index">ERROR · 01</div>
-          <div class="tile__title">머뭇거린 출발</div>
-          <div class="tile__body">BEV &gt; FVC의 5% 또는 &gt; 0.15L. 호기 초기에 천천히 내쉬면 <strong>FEV1이 가짜로 높아져</strong> 폐쇄성을 놓칠 수 있습니다.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">ERROR · 02</div>
-          <div class="tile__title">1초 내 기침</div>
-          <div class="tile__body">호기 1초 안에 기침·끊김 발생. 해당 호기는 <strong>FEV1 측정 무효</strong>. volume-time 곡선의 작은 꺾임으로 확인됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ERROR · 03</div>
-          <div class="tile__title">조기 종료</div>
-          <div class="tile__body">호기 시간 &lt; 6초 그리고 plateau 미도달. <strong>FVC가 실제보다 작게</strong> 측정되어 가짜 제한성으로 보일 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ERROR · 04</div>
-          <div class="tile__title">성문 폐쇄 · 노력 변동</div>
-          <div class="tile__body">중간에 성문이 닫히거나 호기 강도가 일정하지 않음. flow-volume 곡선이 <strong>들쭉날쭉하거나 평탄해짐</strong>.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ERROR · 05</div>
-          <div class="tile__title">마우스피스 누출</div>
-          <div class="tile__body">입술·혀의 밀착 불량으로 공기가 새어 나감. FVC 과소측정·flow-volume 곡선 모양 변형.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">ERROR · 06</div>
-          <div class="tile__title">최대 노력 부족</div>
-          <div class="tile__body">PEF가 일관되게 낮고 호기마다 변동이 큼. <strong>재현성 기준 (2개 시도 0.150L 이내) 미달</strong>이면 결과 신뢰 불가.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS/ERS 2019 Acceptability Criteria · Graham BL et al.</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — Patient action 7 items
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>PATIENT ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">검사 받을 때 실천할 7가지</h2>
-      <p class="slide__subtitle">정확한 결과를 위해 환자가 직접 챙겨야 할 항목 — 검사 품질의 절반은 환자의 협조에서 나옵니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">검사 <strong>1시간 전 흡연 금지</strong>, 24시간 전 격렬한 운동·과식·과음 피하기</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">흡입제 사용 중이면 <strong>의사 지시에 따라 일시 중단</strong> (SABA 4-6h, LABA 12-24h, LAMA 24-36h)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">검사복은 가슴·복부를 <strong>조이지 않는 옷</strong>, 의치는 그대로 착용</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">마우스피스를 <strong>입술로 완전히 감싸고</strong> 혀로 막지 않기 — 코마개 (nose clip) 착용 확인</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">최대로 들이마신 후 <strong>지체 없이 가장 빠르고 강하게</strong> 내쉬기 시작</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text"><strong>6초 이상 끝까지</strong> — 기사가 "그만"이라고 할 때까지 멈추지 않기</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text"><strong>3회 이상 일관되게</strong> — 피곤하더라도 비슷한 크기로 재현해야 신뢰할 결과</div>
-        </div>
-        <div class="check-item" style="border-bottom: none;">
-          <div class="check-item__num" style="color: var(--color-navy);">→</div>
-          <div class="check-item__text" style="color: var(--color-slate);">검사의 절반은 환자 노력 — 최대로 협조한 만큼 정확한 결과가 나옵니다</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATS/ERS 2019 Patient Preparation · GINA 2024 BDR Protocol</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — Contact card + QR code
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">결과지가 보내는 신호,<br><em>패턴으로 읽으면 보입니다</em></h2>
-      <p class="slide__subtitle">정확한 검사 + 올바른 해석 → 의심 질환을 좁히고 다음 검사 방향을 결정합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Specialty</div>
-            <div class="contact-card__value">소화기내과 · 일반내과<br>5대암 검진</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 결론 먼저</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">결과지를 볼 때 세 가지만 기억하세요</h2>
+  <p class="v2-sub">숫자 하나보다 ‘숫자들이 그리는 모양’이 진단 방향을 정합니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.7903 26.7461L8 35.3472V40H42V42H7C6.44772 42 6 41.5523 6 41V7H8V32.1195L13.3297 25.3686C13.1189 24.9583 13 24.493 13 24C13 22.3431 14.3431 21 16 21C17.6387 21 18.9706 22.3139 18.9995 23.9457L25.6328 26.1568C26.1818 25.4528 27.038 25 28 25C28.3668 25 28.7182 25.0658 29.043 25.1863L35.4207 17.5331C35.1535 17.0844 35 16.5601 35 16C35 14.3431 36.3431 13 38 13C39.6569 13 41 14.3431 41 16C41 17.6569 39.6569 19 38 19C37.6332 19 37.2818 18.9342 36.957 18.8137L30.5793 26.4669C30.8465 26.9156 31 27.4399 31 28C31 29.6569 29.6569 31 28 31C26.3613 31 25.0294 29.6861 25.0005 28.0543L18.3672 25.8432C17.8182 26.5472 16.962 27 16 27C15.5696 27 15.1603 26.9094 14.7903 26.7461Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">숫자 하나보다 비율을 봅니다</div>
+    <div class="v2-body">1초 동안 내쉰 양이 전체 폐활량에서 차지하는 <b>비율</b>이 먼저입니다. 같은 수치라도 비율에 따라 뜻이 갈립니다.</div>
+    <div class="q-card__why">비율이 낮으면 좁아진 기도, 비율은 정상인데 폐활량이 작으면 작아진 폐 쪽을 의심합니다.</div>
+    <div class="q-card__k">먼저 볼 것: 1초율</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M35.5 3.58569L39.7071 7.7928C40.0976 8.18332 40.0976 8.81649 39.7071 9.20701C39.3166 9.59754 38.6834 9.59754 38.2929 9.20701L36.5 7.41412V44H34.5V7.41412L32.7071 9.20701C32.3166 9.59754 31.6834 9.59754 31.2929 9.20701C30.9024 8.81649 30.9024 8.18332 31.2929 7.7928L35.5 3.58569Z" fill="currentColor"/>
+<path d="M27.9999 8C27.9999 10.2091 26.2091 12 23.9999 12C21.7908 12 19.9999 10.2091 19.9999 8C19.9999 5.79086 21.7908 4 23.9999 4C26.2091 4 27.9999 5.79086 27.9999 8Z" fill="currentColor"/>
+<path d="M29.9999 28.8007C30.6279 28.4964 31.0751 27.8728 31.1244 27.133L31.8293 16.5597C31.9159 15.2602 30.7574 14.2218 29.4702 14.4196C27.6892 14.6933 25.3845 15 23.9999 15C22.6154 15 20.3107 14.6933 18.5297 14.4196C17.2425 14.2218 16.084 15.2602 16.1706 16.5597L16.8755 27.133C16.9248 27.8728 17.372 28.4964 17.9999 28.8007V42C17.9999 43.0747 18.8493 43.9573 19.9232 43.9985C20.9971 44.0398 21.9116 43.2249 21.994 42.1534L22.994 29.1534C22.998 29.1022 22.9999 29.051 22.9999 29H24.9999C24.9999 29.051 25.0019 29.1022 25.0058 29.1534L26.0058 42.1534C26.0883 43.2249 27.0028 44.0398 28.0767 43.9985C29.1506 43.9573 29.9999 43.0747 29.9999 42V28.8007Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">내 나이·키·성별과 비교합니다</div>
+    <div class="v2-body">결과는 절대값이 아니라 나와 같은 나이·키·성별의 <b>예상 정상치</b>와 비교해 판정합니다.</div>
+    <div class="q-card__why">그래서 키와 나이를 정확히 적는 것이 중요합니다.</div>
+    <div class="q-card__k">예측치 % · 정상 하한</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 36C6 31.0347 17.9925 28 24 28C30.0075 28 42 31.0347 42 36V42H6V36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">검사는 내 노력이 절반입니다</div>
+    <div class="v2-body">최대로 들이마신 뒤 <b>가장 세게, 끝까지</b> 내쉬어야 숫자를 믿을 수 있습니다.</div>
+    <div class="q-card__why">충분히 불지 못하면 실제보다 나쁘게 나올 수 있습니다.</div>
+    <div class="q-card__k">세게 · 끝까지 · 여러 번</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 결과지는 검사 품질 → 비율 → 폐활량 → 추가 검사 순서로 읽습니다(9장).</span><span class="v2-src">근거 · ATS/ERS 2019 · 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 무엇을 재나</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">폐활량 검사는 두 가지를 잽니다</h2>
+  <p class="v2-sub">얼마나 많이, 얼마나 빨리 — 최대로 들이마신 뒤 세게 끝까지 내쉴 때의 공기</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>FVC · 노력성 폐활량</b></div><div class="v2-body">최대로 들이마신 뒤 끝까지 내쉰 공기의 <b>총량</b>입니다. 폐가 얼마나 커지는지를 보여&nbsp;줍니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.7903 26.7461L8 35.3472V40H42V42H7C6.44772 42 6 41.5523 6 41V7H8V32.1195L13.3297 25.3686C13.1189 24.9583 13 24.493 13 24C13 22.3431 14.3431 21 16 21C17.6387 21 18.9706 22.3139 18.9995 23.9457L25.6328 26.1568C26.1818 25.4528 27.038 25 28 25C28.3668 25 28.7182 25.0658 29.043 25.1863L35.4207 17.5331C35.1535 17.0844 35 16.5601 35 16C35 14.3431 36.3431 13 38 13C39.6569 13 41 14.3431 41 16C41 17.6569 39.6569 19 38 19C37.6332 19 37.2818 18.9342 36.957 18.8137L30.5793 26.4669C30.8465 26.9156 31 27.4399 31 28C31 29.6569 29.6569 31 28 31C26.3613 31 25.0294 29.6861 25.0005 28.0543L18.3672 25.8432C17.8182 26.5472 16.962 27 16 27C15.5696 27 15.1603 26.9094 14.7903 26.7461Z" fill="currentColor"/>
+</svg></div><b>FEV1 · 1초 호기량</b></div><div class="v2-body">처음 <b>1초 동안</b> 내쉰 공기의 양입니다. 기관지가 얼마나 넓은지를 보여 줍니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 24C11.4477 24 11 24.4477 11 25V40H8V7H6V41C6 41.5523 6.44772 42 7 42H41V40H39V13C39 12.4477 38.5523 12 38 12H32C31.4477 12 31 12.4477 31 13V40H29V21C29 20.4477 28.5523 20 28 20H22C21.4477 20 21 20.4477 21 21V40H19V25C19 24.4477 18.5523 24 18 24H12Z" fill="currentColor"/>
+</svg></div><b>FEV1/FVC · 1초율</b></div><div class="v2-body">두 값의 <b>비율</b>입니다. 결과지에서 가장 먼저 보는 숫자이고, 이것으로 기도가 좁아졌는지를 가립니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px"><img class="q-fig__img" src="../../../shared/assets/generated/pulmo-pft-interpretation-s09-measurement-pulmonary-18142814-20260530-raster-20260531.jpg" alt="마우스피스를 물고 숨을 들이마셨다 세게 내쉬는 네 장면과 각 장면의 호흡 곡선" style="width:560px;height:315px"></div>
+  <div class="q-key q-key--accent" style="left:656px;top:535px;width:560px;height:71px">장비가 시간·유량 곡선을 그리고, 결과지의 모든 숫자가 그 곡선에서 나옵니다</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 코로 새지 않도록 코마개를 하고, 입술로 마우스피스를 꼭 감쌉니다.</span><span class="v2-src">근거 · ATS/ERS 2019 폐활량 검사 표준</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 결과지 숫자</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">결과지에 나오는 다섯 가지 숫자</h2>
+  <p class="v2-sub">각 숫자의 뜻과 정상 기준 — 기준은 ‘예측치 대비 %’ 또는 ‘정상 하한(LLN)’입니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:270px"><col style="width:470px"><col style="width:412px"></colgroup><thead><tr><th>숫자</th><th>무슨 뜻인가요</th><th>정상으로 보는 기준</th></tr></thead><tbody><tr><th style="height:66px">FVC · 폐활량</th><td style="height:66px">끝까지 내쉰 총량 — 폐가 작아지면 가장 먼저 줄어듭니다</td><td style="height:66px">예측치의 80% 이상 또는 정상 하한 이상</td></tr><tr><th style="height:66px">FEV1 · 1초량</th><td style="height:66px">1초 동안 내쉰 양 — 좁아진 기도의 정도를 봅니다</td><td style="height:66px">예측치의 80% 이상</td></tr><tr><th style="height:66px">FEV1/FVC · 1초율</th><td style="height:66px">1초량이 폐활량에서 차지하는 비율</td><td style="height:66px"><b>0.70 이상</b> 또는 정상 하한 이상</td></tr><tr><th style="height:66px">PEF · 최고 속도</th><td style="height:66px">내쉬기 시작 직후 가장 빠른 속도 — 노력에 따라 크게 달라집니다</td><td style="height:66px">천식의 하루 변동을 볼 때 씁니다</td></tr><tr><th style="height:66px">예측치 % · 정상 하한</th><td style="height:66px">나와 같은 나이·키·성별의 정상인과 비교한 값</td><td style="height:66px">최근에는 80% 대신 정상 하한을 권합니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · ‘FEV1 60%’처럼 숫자 하나만 보고 병명을 정하지 않습니다 — 비율과 함께 봅니다.</span><span class="v2-src">근거 · ERS/ATS 2022 · GLI 기준식</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 세 가지 모양</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">결과는 세 가지 모양 중 하나로 나뉩니다</h2>
+  <p class="v2-sub">정상 · 폐쇄성(좁아진 기도) · 제한성(작아진 폐) — 둘이 함께면 혼합형</p>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>정상</b></div><div class="v2-body">비율과 폐활량이 모두 기준 안에 있습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.9631 22.0194H22.7229V21.0728H23.7825C24.4967 21.0728 25.1818 20.8048 25.6882 20.3273C26.1946 19.8497 26.4812 19.2015 26.4852 18.5243V16.8495C26.4852 16.919 26.9225 16.878 27.1323 16.8582L27.1323 16.8582L27.1323 16.8582C27.1862 16.8532 27.2251 16.8495 27.2377 16.8495C27.4248 16.821 27.5941 16.7279 27.7132 16.5881C27.8323 16.4483 27.8926 16.2717 27.8826 16.0922C27.8372 15.822 27.7438 15.561 27.6062 15.3204L27.2377 14.432C26.9766 13.8204 26.7156 13.2087 26.4699 12.5825C26.4699 12.5825 26.3163 11.1262 26.1781 10.6311C25.7497 9.29916 24.8842 8.13171 23.7076 7.29874C22.5309 6.46577 21.1046 6.01077 19.6363 6.00001C18.2155 5.99757 16.8293 6.41615 15.6716 7.19726C14.5138 7.97837 13.6423 9.08298 13.1788 10.3567C12.7153 11.6305 12.683 13.0097 13.0864 14.3018C13.4897 15.5938 14.3087 16.734 15.4287 17.5631V22.0194H12.6032C10.8822 22.0151 9.22776 22.6496 7.99374 23.7872C6.75973 24.9248 6.04412 26.4752 6 28.1068V42H32.9963V29.0534C33.0269 28.1523 32.8688 27.2544 32.531 26.4116C32.1931 25.5689 31.6824 24.7981 31.0282 24.1439C30.3741 23.4896 29.5896 22.965 28.7201 22.6003C27.8507 22.2357 26.9136 22.0382 25.9631 22.0194ZM20.8572 31.9962C20.7885 31.9931 20.6974 31.9874 20.5907 31.9771C20.3661 31.9552 20.0498 31.9104 19.72 31.8142C19.5042 31.7512 19.2486 31.6567 19 31.5095C18.7514 31.6567 18.4958 31.7512 18.28 31.8142C17.9502 31.9104 17.6339 31.9552 17.4093 31.9771C17.2945 31.9882 17.1978 31.9939 17.1276 31.9969C17.0923 31.9983 17.0634 31.9991 17.0419 31.9995L17.0377 31.9996C17.1036 33.8696 17.1314 36.2941 16.0567 37.3659C14.6469 38.7719 11.8272 39.4749 10.4174 38.3032C9.00755 37.1315 11.3573 25.6491 14.6469 25.6491C16.9296 25.6491 17.013 28.3908 17.0014 29.9999L17.003 29.9999L17.0272 29.9992L17.0443 29.9986C17.0835 29.997 17.143 29.9935 17.2157 29.9865C17.3661 29.9718 17.5498 29.9438 17.72 29.8942C17.8635 29.8523 17.9526 29.8079 18 29.7768V26.9792V25.5911V25.4618V25.4022V25.3461V25.245V25.2392V25.2335V25.2222V25.2004V25.1796V25.1598V25.0916V25.0879V25.0843V25.0808V25.0773V25.0739V25.0706V25.0674V25.0642V25.0522V25.0494V25.0467V25.044V25.0415V25.0235V25.0216V25.0198V25.0181V25.0164V25.0148V25.0133V25.0119V25.0106V25.0093V25.0081V25.007V25.006V25.005V25.0042V25.0034V25.0027V25.002V25.0015V25.001V25.0007V25.0004V25.0002V25L19 25L20 25V25.0002V25.0004V25.0007V25.001V25.0015V25.002V25.0027V25.0034V25.0042V25.005V25.006V25.007V25.0081V25.0093V25.0106V25.0119V25.0133V25.0148V25.0164V25.0181V25.0198V25.0216V25.0235V25.0415V25.044V25.0467V25.0494V25.0522V25.0642V25.0674V25.0706V25.0739V25.0773V25.0808V25.0843V25.0879V25.0916V25.1598V25.1796V25.2004V25.2222V25.2335V25.2392V25.245V25.3461V25.4022V25.4618V25.5911V26.9792V29.7768C20.0474 29.8079 20.1365 29.8523 20.28 29.8942C20.4502 29.9438 20.6339 29.9718 20.7843 29.9865C20.8253 29.9904 20.8621 29.9933 20.8934 29.9953C20.8819 28.3855 20.9673 25.6491 23.2479 25.6491C26.5375 25.6491 28.8872 37.1315 27.4774 38.3032C26.0675 39.4749 23.2479 38.7719 21.838 37.3659C20.7627 36.2935 20.7912 33.8667 20.8572 31.9962ZM16.9991 30.2411L16.9999 30.1664L17 30.8696C16.9979 30.7651 16.9966 30.6651 16.9966 30.5702C16.9966 30.4705 16.9978 30.3602 16.9991 30.2413L16.9991 30.2411ZM25 18C25 18.5523 24.5523 19 24 19C23.4477 19 23 18.5523 23 18C23 17.4477 23.4477 17 24 17C24.5523 17 25 17.4477 25 18ZM21 18C21.5523 18 22 17.5523 22 17C22 16.4477 21.5523 16 21 16C20.4477 16 20 16.4477 20 17C20 17.5523 20.4477 18 21 18Z" fill="currentColor"/>
+<path d="M32 14C32 14.5523 31.5523 15 31 15C30.4477 15 30 14.5523 30 14C30 13.4477 30.4477 13 31 13C31.5523 13 32 13.4477 32 14Z" fill="currentColor"/>
+<path d="M34 17C34 17.5523 33.5523 18 33 18C32.4477 18 32 17.5523 32 17C32 16.4477 32.4477 16 33 16C33.5523 16 34 16.4477 34 17Z" fill="currentColor"/>
+<path d="M36 20C36 20.5523 35.5523 21 35 21C34.4477 21 34 20.5523 34 20C34 19.4477 34.4477 19 35 19C35.5523 19 36 19.4477 36 20Z" fill="currentColor"/>
+<path d="M42 19C42 19.5523 41.5523 20 41 20C40.4477 20 40 19.5523 40 19C40 18.4477 40.4477 18 41 18C41.5523 18 42 18.4477 42 19Z" fill="currentColor"/>
+<path d="M42 14C42 14.5523 41.5523 15 41 15C40.4477 15 40 14.5523 40 14C40 13.4477 40.4477 13 41 13C41.5523 13 42 13.4477 42 14Z" fill="currentColor"/>
+<path d="M42 10C42 10.5523 41.5523 11 41 11C40.4477 11 40 10.5523 40 10C40 9.44772 40.4477 9 41 9C41.5523 9 42 9.44772 42 10Z" fill="currentColor"/>
+<path d="M38 12C38 12.5523 37.5523 13 37 13C36.4477 13 36 12.5523 36 12C36 11.4477 36.4477 11 37 11C37.5523 11 38 11.4477 38 12Z" fill="currentColor"/>
+<path d="M38 16C38 16.5523 37.5523 17 37 17C36.4477 17 36 16.5523 36 16C36 15.4477 36.4477 15 37 15C37.5523 15 38 15.4477 38 16Z" fill="currentColor"/>
+<path d="M30 19C30 19.5523 29.5523 20 29 20C28.4477 20 28 19.5523 28 19C28 18.4477 28.4477 18 29 18C29.5523 18 30 18.4477 30 19Z" fill="currentColor"/>
+</svg></div><b>폐쇄성 — 기도가 좁아짐</b></div><div class="v2-body">공기가 빨리 빠져나오지 못해 <b>1초율이 낮아집니다</b>. 천식·COPD에서 흔합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7479 12.8156C17.0072 12.8833 15.4353 13.5043 14.5944 14.3454C14.2039 14.736 13.5707 14.736 13.1802 14.3455C12.7896 13.9551 12.7895 13.3219 13.18 12.9313C14.4774 11.6337 16.5888 10.8981 18.6701 10.8171C20.765 10.7356 23.0521 11.3092 24.6538 12.9112C25.0442 13.3017 25.0442 13.9349 24.6536 14.3254C24.2631 14.7159 23.6299 14.7158 23.2394 14.3253C22.1484 13.234 20.4749 12.7484 18.7479 12.8156Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.9355 27.3841C30.8475 25.1207 32 22.1949 32 19C32 11.8203 26.1797 6 19 6C11.8203 6 6 11.8203 6 19C6 26.1797 11.8203 32 19 32C22.1949 32 25.1207 30.8475 27.3841 28.9355L27 31.1442L34.5137 38.6579L38.6579 34.5137L31.1442 27L28.9355 27.3841ZM19 29C24.5228 29 29 24.5228 29 19C29 13.4772 24.5228 9 19 9C13.4772 9 9 13.4772 9 19C9 24.5228 13.4772 29 19 29Z" fill="currentColor"/>
+<path d="M35.9279 40.0721L40.0721 35.9279L41.4278 37.2837C42.1907 38.0466 42.1907 39.2835 41.4278 40.0464L40.0464 41.4278C39.2835 42.1907 38.0466 42.1907 37.2837 41.4278L35.9279 40.0721Z" fill="currentColor"/>
+</svg></div><b>제한성 — 폐가 덜 펴짐</b></div><div class="v2-body">1초율은 정상인데 <b>폐활량 자체가 작습니다</b>. 확진에는 폐용적 검사가 필요합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:315px"><img class="q-fig__img" src="../../../shared/assets/generated/pulmo-pft-interpretation-s07-comparison-pulmonary-fc17802d-20260530-raster-20260531.jpg" alt="정상 폐·기도가 좁아진 폐·작아진 폐 세 가지와 그 아래 각각의 호흡 곡선" style="width:560px;height:315px"></div>
+  <div class="q-key q-key--accent" style="left:64px;top:535px;width:560px;height:71px">혼합형 — 둘이 함께 있는 경우로, 확인은 폐용적 검사(TLC)로 합니다</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 어떤 모양인지에 따라 의심하는 병과 다음 검사가 달라집니다.</span><span class="v2-src">근거 · ATS/ERS 2022 해석 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 폐쇄성</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">모양 ① 폐쇄성 — 기도가 좁아진 경우</h2>
+  <p class="v2-sub">1초율이 기준보다 낮으면 폐쇄성입니다</p>
+  <div class="v2-panel q-cell" style="left:64px;top:206px;width:564px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 24C11.4477 24 11 24.4477 11 25V40H8V7H6V41C6 41.5523 6.44772 42 7 42H41V40H39V13C39 12.4477 38.5523 12 38 12H32C31.4477 12 31 12.4477 31 13V40H29V21C29 20.4477 28.5523 20 28 20H22C21.4477 20 21 20.4477 21 21V40H19V25C19 24.4477 18.5523 24 18 24H12Z" fill="currentColor"/>
+</svg></div><b>기준</b></div><div class="v2-body">1초율이 <b>0.70 미만</b> 또는 정상 하한 미만입니다. 폐활량은 처음엔 정상이다가 심해지면 줄 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:652px;top:206px;width:564px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.9631 22.0194H22.7229V21.0728H23.7825C24.4967 21.0728 25.1818 20.8048 25.6882 20.3273C26.1946 19.8497 26.4812 19.2015 26.4852 18.5243V16.8495C26.4852 16.919 26.9225 16.878 27.1323 16.8582L27.1323 16.8582L27.1323 16.8582C27.1862 16.8532 27.2251 16.8495 27.2377 16.8495C27.4248 16.821 27.5941 16.7279 27.7132 16.5881C27.8323 16.4483 27.8926 16.2717 27.8826 16.0922C27.8372 15.822 27.7438 15.561 27.6062 15.3204L27.2377 14.432C26.9766 13.8204 26.7156 13.2087 26.4699 12.5825C26.4699 12.5825 26.3163 11.1262 26.1781 10.6311C25.7497 9.29916 24.8842 8.13171 23.7076 7.29874C22.5309 6.46577 21.1046 6.01077 19.6363 6.00001C18.2155 5.99757 16.8293 6.41615 15.6716 7.19726C14.5138 7.97837 13.6423 9.08298 13.1788 10.3567C12.7153 11.6305 12.683 13.0097 13.0864 14.3018C13.4897 15.5938 14.3087 16.734 15.4287 17.5631V22.0194H12.6032C10.8822 22.0151 9.22776 22.6496 7.99374 23.7872C6.75973 24.9248 6.04412 26.4752 6 28.1068V42H32.9963V29.0534C33.0269 28.1523 32.8688 27.2544 32.531 26.4116C32.1931 25.5689 31.6824 24.7981 31.0282 24.1439C30.3741 23.4896 29.5896 22.965 28.7201 22.6003C27.8507 22.2357 26.9136 22.0382 25.9631 22.0194ZM20.8572 31.9962C20.7885 31.9931 20.6974 31.9874 20.5907 31.9771C20.3661 31.9552 20.0498 31.9104 19.72 31.8142C19.5042 31.7512 19.2486 31.6567 19 31.5095C18.7514 31.6567 18.4958 31.7512 18.28 31.8142C17.9502 31.9104 17.6339 31.9552 17.4093 31.9771C17.2945 31.9882 17.1978 31.9939 17.1276 31.9969C17.0923 31.9983 17.0634 31.9991 17.0419 31.9995L17.0377 31.9996C17.1036 33.8696 17.1314 36.2941 16.0567 37.3659C14.6469 38.7719 11.8272 39.4749 10.4174 38.3032C9.00755 37.1315 11.3573 25.6491 14.6469 25.6491C16.9296 25.6491 17.013 28.3908 17.0014 29.9999L17.003 29.9999L17.0272 29.9992L17.0443 29.9986C17.0835 29.997 17.143 29.9935 17.2157 29.9865C17.3661 29.9718 17.5498 29.9438 17.72 29.8942C17.8635 29.8523 17.9526 29.8079 18 29.7768V26.9792V25.5911V25.4618V25.4022V25.3461V25.245V25.2392V25.2335V25.2222V25.2004V25.1796V25.1598V25.0916V25.0879V25.0843V25.0808V25.0773V25.0739V25.0706V25.0674V25.0642V25.0522V25.0494V25.0467V25.044V25.0415V25.0235V25.0216V25.0198V25.0181V25.0164V25.0148V25.0133V25.0119V25.0106V25.0093V25.0081V25.007V25.006V25.005V25.0042V25.0034V25.0027V25.002V25.0015V25.001V25.0007V25.0004V25.0002V25L19 25L20 25V25.0002V25.0004V25.0007V25.001V25.0015V25.002V25.0027V25.0034V25.0042V25.005V25.006V25.007V25.0081V25.0093V25.0106V25.0119V25.0133V25.0148V25.0164V25.0181V25.0198V25.0216V25.0235V25.0415V25.044V25.0467V25.0494V25.0522V25.0642V25.0674V25.0706V25.0739V25.0773V25.0808V25.0843V25.0879V25.0916V25.1598V25.1796V25.2004V25.2222V25.2335V25.2392V25.245V25.3461V25.4022V25.4618V25.5911V26.9792V29.7768C20.0474 29.8079 20.1365 29.8523 20.28 29.8942C20.4502 29.9438 20.6339 29.9718 20.7843 29.9865C20.8253 29.9904 20.8621 29.9933 20.8934 29.9953C20.8819 28.3855 20.9673 25.6491 23.2479 25.6491C26.5375 25.6491 28.8872 37.1315 27.4774 38.3032C26.0675 39.4749 23.2479 38.7719 21.838 37.3659C20.7627 36.2935 20.7912 33.8667 20.8572 31.9962ZM16.9991 30.2411L16.9999 30.1664L17 30.8696C16.9979 30.7651 16.9966 30.6651 16.9966 30.5702C16.9966 30.4705 16.9978 30.3602 16.9991 30.2413L16.9991 30.2411ZM25 18C25 18.5523 24.5523 19 24 19C23.4477 19 23 18.5523 23 18C23 17.4477 23.4477 17 24 17C24.5523 17 25 17.4477 25 18ZM21 18C21.5523 18 22 17.5523 22 17C22 16.4477 21.5523 16 21 16C20.4477 16 20 16.4477 20 17C20 17.5523 20.4477 18 21 18Z" fill="currentColor"/>
+<path d="M32 14C32 14.5523 31.5523 15 31 15C30.4477 15 30 14.5523 30 14C30 13.4477 30.4477 13 31 13C31.5523 13 32 13.4477 32 14Z" fill="currentColor"/>
+<path d="M34 17C34 17.5523 33.5523 18 33 18C32.4477 18 32 17.5523 32 17C32 16.4477 32.4477 16 33 16C33.5523 16 34 16.4477 34 17Z" fill="currentColor"/>
+<path d="M36 20C36 20.5523 35.5523 21 35 21C34.4477 21 34 20.5523 34 20C34 19.4477 34.4477 19 35 19C35.5523 19 36 19.4477 36 20Z" fill="currentColor"/>
+<path d="M42 19C42 19.5523 41.5523 20 41 20C40.4477 20 40 19.5523 40 19C40 18.4477 40.4477 18 41 18C41.5523 18 42 18.4477 42 19Z" fill="currentColor"/>
+<path d="M42 14C42 14.5523 41.5523 15 41 15C40.4477 15 40 14.5523 40 14C40 13.4477 40.4477 13 41 13C41.5523 13 42 13.4477 42 14Z" fill="currentColor"/>
+<path d="M42 10C42 10.5523 41.5523 11 41 11C40.4477 11 40 10.5523 40 10C40 9.44772 40.4477 9 41 9C41.5523 9 42 9.44772 42 10Z" fill="currentColor"/>
+<path d="M38 12C38 12.5523 37.5523 13 37 13C36.4477 13 36 12.5523 36 12C36 11.4477 36.4477 11 37 11C37.5523 11 38 11.4477 38 12Z" fill="currentColor"/>
+<path d="M38 16C38 16.5523 37.5523 17 37 17C36.4477 17 36 16.5523 36 16C36 15.4477 36.4477 15 37 15C37.5523 15 38 15.4477 38 16Z" fill="currentColor"/>
+<path d="M30 19C30 19.5523 29.5523 20 29 20C28.4477 20 28 19.5523 28 19C28 18.4477 28.4477 18 29 18C29.5523 18 30 18.4477 30 19Z" fill="currentColor"/>
+</svg></div><b>의심하는 병</b></div><div class="v2-body">COPD(40세 이상·흡연력), 천식(좋아졌다 나빠졌다 함), 기관지확장증 등입니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:64px;top:416px;width:564px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.8652 6.13398C16.0949 6.26659 16.2625 6.485 16.3312 6.74118L17.406 10.7526L18.1771 10.4018C18.4447 10.2801 18.7522 10.2822 19.0181 10.4077C19.2839 10.5332 19.481 10.7693 19.5571 11.0532L23.83 27H30C30.5522 27 31 27.4477 31 28L31 40C31 40.2652 30.8946 40.5196 30.7071 40.7071C30.5195 40.8946 30.2652 41 30 41H17.0511C14.7987 41 12.8244 39.494 12.229 37.3217L6.55329 16.614C6.4235 16.1405 6.6567 15.6428 7.10362 15.4395L8.17812 14.9506L6.6719 9.32937C6.60326 9.07319 6.63919 8.80024 6.7718 8.57055C6.90441 8.34087 7.12283 8.17327 7.37901 8.10463L15.1064 6.03408C15.3626 5.96543 15.6356 6.00137 15.8652 6.13398ZM10.0237 14.111L8.86257 9.77766L14.6581 8.22475L15.5604 11.5922L10.0237 14.111Z" fill="currentColor"/>
+<path d="M33 29H35V39H33V29Z" fill="currentColor"/>
+<path d="M38 33C38.5523 33 39 32.5523 39 32C39 31.4477 38.5523 31 38 31C37.4477 31 37 31.4477 37 32C37 32.5523 37.4477 33 38 33Z" fill="currentColor"/>
+<path d="M39 36C39 36.5523 38.5523 37 38 37C37.4477 37 37 36.5523 37 36C37 35.4477 37.4477 35 38 35C38.5523 35 39 35.4477 39 36Z" fill="currentColor"/>
+<path d="M42 35C42.5523 35 43 34.5523 43 34C43 33.4477 42.5523 33 42 33C41.4477 33 41 33.4477 41 34C41 34.5523 41.4477 35 42 35Z" fill="currentColor"/>
+<path d="M43 30C43 30.5523 42.5523 31 42 31C41.4477 31 41 30.5523 41 30C41 29.4477 41.4477 29 42 29C42.5523 29 43 29.4477 43 30Z" fill="currentColor"/>
+<path d="M42 39C42.5523 39 43 38.5523 43 38C43 37.4477 42.5523 37 42 37C41.4477 37 41 37.4477 41 38C41 38.5523 41.4477 39 42 39Z" fill="currentColor"/>
+</svg></div><b>다음 검사 — 기관지 확장제 반응</b></div><div class="v2-body">기관지를 넓히는 약을 흡입한 뒤 다시 불어 봅니다. 뚜렷이 좋아지면 천식 쪽을 생각하지만, 반응이 없어도 천식을 배제하지는 않습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:652px;top:416px;width:564px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.7903 26.7461L8 35.3472V40H42V42H7C6.44772 42 6 41.5523 6 41V7H8V32.1195L13.3297 25.3686C13.1189 24.9583 13 24.493 13 24C13 22.3431 14.3431 21 16 21C17.6387 21 18.9706 22.3139 18.9995 23.9457L25.6328 26.1568C26.1818 25.4528 27.038 25 28 25C28.3668 25 28.7182 25.0658 29.043 25.1863L35.4207 17.5331C35.1535 17.0844 35 16.5601 35 16C35 14.3431 36.3431 13 38 13C39.6569 13 41 14.3431 41 16C41 17.6569 39.6569 19 38 19C37.6332 19 37.2818 18.9342 36.957 18.8137L30.5793 26.4669C30.8465 26.9156 31 27.4399 31 28C31 29.6569 29.6569 31 28 31C26.3613 31 25.0294 29.6861 25.0005 28.0543L18.3672 25.8432C17.8182 26.5472 16.962 27 16 27C15.5696 27 15.1603 26.9094 14.7903 26.7461Z" fill="currentColor"/>
+</svg></div><b>COPD 정도 나누기</b></div><div class="v2-body">1초량(예측치 %)으로 경증 80% 이상 · 중등도 50~79% · 중증 30~49% · 최중증 30% 미만으로 나누고, 증상·악화 횟수와 함께 봅니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 흡연 중이라면 금연이 폐기능 저하 속도를 늦추는 가장 확실한 방법입니다.</span><span class="v2-src">근거 · GOLD 2024 · GINA 2024</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 제한성</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">모양 ② 제한성 — 폐가 덜 펴지는 경우</h2>
+  <p class="v2-sub">폐활량 검사로는 ‘의심’까지이고, 확진은 폐용적 검사로 합니다</p>
+  <div class="v2-panel q-text q-text--4" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7479 12.8156C17.0072 12.8833 15.4353 13.5043 14.5944 14.3454C14.2039 14.736 13.5707 14.736 13.1802 14.3455C12.7896 13.9551 12.7895 13.3219 13.18 12.9313C14.4774 11.6337 16.5888 10.8981 18.6701 10.8171C20.765 10.7356 23.0521 11.3092 24.6538 12.9112C25.0442 13.3017 25.0442 13.9349 24.6536 14.3254C24.2631 14.7159 23.6299 14.7158 23.2394 14.3253C22.1484 13.234 20.4749 12.7484 18.7479 12.8156Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.9355 27.3841C30.8475 25.1207 32 22.1949 32 19C32 11.8203 26.1797 6 19 6C11.8203 6 6 11.8203 6 19C6 26.1797 11.8203 32 19 32C22.1949 32 25.1207 30.8475 27.3841 28.9355L27 31.1442L34.5137 38.6579L38.6579 34.5137L31.1442 27L28.9355 27.3841ZM19 29C24.5228 29 29 24.5228 29 19C29 13.4772 24.5228 9 19 9C13.4772 9 9 13.4772 9 19C9 24.5228 13.4772 29 19 29Z" fill="currentColor"/>
+<path d="M35.9279 40.0721L40.0721 35.9279L41.4278 37.2837C42.1907 38.0466 42.1907 39.2835 41.4278 40.0464L40.0464 41.4278C39.2835 42.1907 38.0466 42.1907 37.2837 41.4278L35.9279 40.0721Z" fill="currentColor"/>
+</svg></div><b>기준과 확진</b></div><div class="v2-body">1초율은 정상인데 폐활량이 정상 하한보다 작으면 의심합니다. 확진은 큰 병원 검사실의 <b>폐용적 검사(TLC)</b>로 합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.5 8.5C28.5 10.9853 26.4853 13 24 13C21.5147 13 19.5 10.9853 19.5 8.5C19.5 6.01472 21.5147 4 24 4C26.4853 4 28.5 6.01472 28.5 8.5ZM30 34H25.2645L26.0082 42.1811C26.105 43.246 27.0224 44.0464 28.0906 43.998C29.1589 43.9495 30 43.0693 30 42V34ZM22.7355 34H18V42C18 43.0693 18.8412 43.9495 19.9094 43.998C20.9776 44.0464 21.895 43.246 21.9918 42.1811L22.7355 34ZM35.9555 14H36.0463C36.0161 13.9993 35.9859 13.9993 35.9555 14ZM11.954 14C11.9839 13.9993 12.0138 13.9993 12.0438 14H11.954Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11 15C10.4477 15 10 15.4477 10 16V31C10 31.5523 10.4477 32 11 32H37C37.5523 32 38 31.5523 38 31V16C38 15.4477 37.5523 15 37 15H11ZM23 17V18.5H22.5C21.5691 18.5 20.5591 18.8008 19.8458 19.0602C19.4755 19.1948 19.1567 19.3291 18.9298 19.4299C18.816 19.4805 18.7245 19.5231 18.6601 19.5536C18.6279 19.5689 18.6025 19.5812 18.5844 19.59L18.5629 19.6006L18.5564 19.6038L18.5542 19.6049L18.5531 19.6054C18.5529 19.6055 18.5528 19.6056 19 20.5C19.4472 21.3944 19.4471 21.3945 19.447 21.3945L19.4487 21.3937L19.4613 21.3875C19.4732 21.3817 19.4922 21.3725 19.5176 21.3605C19.5685 21.3363 19.6449 21.3007 19.7421 21.2576C19.937 21.1709 20.212 21.0552 20.5292 20.9398C21.1909 20.6992 21.9309 20.5 22.5 20.5H23V22.5H22.2C21.0027 22.5 19.7465 23.1358 18.9067 23.6448C18.4612 23.9148 18.0788 24.1833 17.8079 24.3839C17.6719 24.4847 17.5627 24.5693 17.4863 24.6297C17.448 24.66 17.4179 24.6843 17.3966 24.7016L17.3713 24.7223L17.3638 24.7285L17.3614 24.7305L17.3605 24.7312C17.3603 24.7314 17.3598 24.7318 18 25.5C18.6402 26.2682 18.6401 26.2683 18.6399 26.2684L18.6426 26.2663L18.6582 26.2535C18.673 26.2415 18.6961 26.2228 18.727 26.1984C18.7888 26.1495 18.8812 26.0778 18.9984 25.9911C19.2337 25.8167 19.5638 25.5852 19.9433 25.3552C20.7535 24.8642 21.5973 24.5 22.2 24.5H23V26.6678C22.2986 26.865 21.6252 27.2103 21.0794 27.6016C20.6796 27.8883 20.3086 28.2276 20.0276 28.6006C19.7591 28.9572 19.5 29.4424 19.5 30H21.5C21.5 30.0043 21.4999 30.008 21.4998 30.0109C21.4997 30.0135 21.4995 30.0155 21.4995 30.0171C21.4993 30.0192 21.4993 30.0204 21.4994 30.0204C21.4995 30.0204 21.4999 30.0193 21.5007 30.0171C21.5059 30.0015 21.5297 29.9307 21.6252 29.8038C21.7556 29.6307 21.9657 29.4272 22.2449 29.227C22.8052 28.8252 23.4877 28.5464 24.032 28.5004C24.4937 28.5117 25.1478 28.7645 25.7243 29.1837C26.0071 29.3894 26.2259 29.6033 26.3641 29.7875C26.4653 29.9224 26.4921 29.9988 26.4987 30.0174L26.4995 30.0198C26.5 30.0212 26.5003 30.0219 26.5005 30.0219C26.501 30.0218 26.5 30.0145 26.5 30H28.5C28.5 29.4379 28.2324 28.9452 27.9641 28.5875C27.6803 28.2092 27.3054 27.8606 26.9007 27.5663C26.3675 27.1785 25.6989 26.8257 25 26.6391V24.5H26.1C26.8489 24.5 27.6186 24.8663 28.2631 25.3186C28.5735 25.5364 28.8285 25.7556 29.0048 25.9197C29.0925 26.0012 29.1594 26.0679 29.2026 26.1122C29.2241 26.1343 29.2397 26.1507 29.2488 26.1605L29.2571 26.1694C29.2569 26.1692 29.2567 26.169 30 25.5C30.7433 24.831 30.7431 24.8308 30.7429 24.8306L30.7414 24.829L30.7389 24.8262L30.7318 24.8184L30.7097 24.7946C30.6915 24.7751 30.6663 24.7485 30.6346 24.716C30.5711 24.6509 30.4809 24.5613 30.367 24.4553C30.1403 24.2444 29.814 23.9636 29.4119 23.6814C28.6314 23.1337 27.4511 22.5 26.1 22.5H25V20.5H25.75C26.4443 20.5 27.1193 20.7011 27.6432 20.9216C27.9003 21.0299 28.1092 21.1378 28.2509 21.2169C28.3215 21.2564 28.3747 21.2882 28.408 21.3087C28.4247 21.3189 28.4363 21.3263 28.4427 21.3304L28.4457 21.3323C28.4455 21.3322 28.4453 21.3321 29 20.5C29.5547 19.6679 29.5545 19.6678 29.5542 19.6676L29.5527 19.6666L29.5501 19.6649L29.5432 19.6604L29.5228 19.6472C29.5063 19.6366 29.484 19.6225 29.4562 19.6054C29.4007 19.5712 29.323 19.5249 29.2256 19.4706C29.0315 19.3622 28.7559 19.2201 28.4193 19.0784C27.7557 18.7989 26.8057 18.5 25.75 18.5H25.0009L25 17H23Z" fill="currentColor"/>
+</svg></div><b>폐 조직의 병</b></div><div class="v2-body">간질성 폐질환(폐섬유증 등), 사르코이드증, 진폐증, 폐 수술 뒤 등입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 13C26.4853 13 28.5 10.9853 28.5 8.5C28.5 6.01472 26.4853 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13ZM36.5596 17.0799C37.6201 17.3889 38.2292 18.4992 37.9201 19.5596C37.6111 20.6201 36.5009 21.2292 35.4404 20.9201C34.3489 20.602 33.3213 20.3256 32.3433 20.0894L32.3912 20.2384C33.6992 24.3151 35.0282 28.4572 32.8172 32.0289L30.4503 42.4432C30.2246 43.4362 29.2889 44.1011 28.277 43.9875C27.2651 43.874 26.5 43.0183 26.5 42V35.9302C25.7042 36 24.8762 36 24 36C23.3058 36 22.6417 36 22 35.9653V42C22 43.0183 21.2349 43.874 20.223 43.9875C19.2111 44.1011 18.2754 43.4362 18.0497 42.4432L15.9101 33.0287C12.7197 29.2431 14.1769 24.7016 15.6089 20.2384L15.6458 20.1234C14.6639 20.355 13.6318 20.6228 12.5348 20.9272C11.4704 21.2225 10.3682 20.5991 10.0728 19.5347C9.7775 18.4704 10.4009 17.3681 11.4653 17.0728C16.2296 15.7508 20.0803 15.0178 23.9908 15.0003C27.9083 14.9828 31.768 15.6834 36.5596 17.0799Z" fill="currentColor"/>
+</svg></div><b>가슴·몸 바깥의 원인</b></div><div class="v2-body">심한 비만, 척추가 휜 경우, 흉수, 임신 후기 등도 폐가 덜 펴지게 합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.5844 22.8706C30.7438 22.8706 31.8763 22.5549 32.8338 21.9648C33.806 22.5538 34.9534 22.8626 36.1242 22.8503L39.8433 21.6286C40.8913 20.8487 41.6107 19.7675 41.8813 18.5661C42.1518 17.3646 41.9569 16.1157 41.3293 15.0284C40.7017 13.9411 39.6794 13.0813 38.4336 12.5931C38.1491 11.4298 37.4326 10.3894 36.4029 9.64443L32.7725 8.49751H32.3638C31.5563 7.43391 30.344 6.67523 28.9574 6.36571L21.1741 5.9707C19.8803 6.06775 18.6603 6.55488 17.7105 7.35371C17.2617 7.25819 16.8023 7.20868 16.3412 7.20612C15.2247 7.20819 14.1327 7.50194 13.1971 8.05191C12.2615 8.60187 11.5222 9.38455 11.0685 10.3055L8.11115 12.1966C7.37528 13.0966 6.97913 14.1863 6.98108 15.305C6.9738 15.7727 7.04266 16.2389 7.18545 16.6886C6.40957 17.5975 5.99236 18.7143 6.00011 19.8617C5.99826 21.1925 6.56142 22.4733 7.57375 23.4407C7.65545 24.3934 8.02424 25.3079 8.64022 26.085C9.2562 26.8622 10.0959 27.4725 11.0685 27.8499C12.1891 28.4841 13.138 29.337 13.8453 30.3458C14.5527 31.3547 15.0005 32.4939 15.1559 33.6796H17.8743V25.9364L15.2325 23.5882L13.4451 25.3757C13.0545 25.7662 12.4214 25.7662 12.0308 25.3757C11.6403 24.9852 11.6403 24.352 12.0308 23.9615L14.1148 21.8775L13.4797 18.3848L10.6544 16.9721C10.1604 16.7251 9.96018 16.1244 10.2072 15.6304C10.4542 15.1365 11.0548 14.9362 11.5488 15.1832L14.3156 16.5666L17.7773 14.3638L16.7107 11.5197C16.5168 11.0026 16.7788 10.4262 17.2959 10.2322C17.813 10.0383 18.3895 10.3003 18.5834 10.8174L19.721 13.851H21.1199L21.7691 12.5526L20.8188 10.3352C20.6013 9.82758 20.8364 9.2397 21.344 9.02214C21.8517 8.80459 22.4396 9.03974 22.6571 9.54737L23.4829 11.4742L26.7826 12.0741C26.8011 12.0568 26.8204 12.0401 26.8405 12.0241L28.886 10.3877C29.3173 10.0427 29.9466 10.1126 30.2916 10.5439C30.6366 10.9751 30.5666 11.6044 30.1354 11.9494L28.6637 13.1268L30.3929 15.3499L31.0708 13.9941C31.2402 13.6553 31.5865 13.4413 31.9652 13.4413H34.4198C34.9721 13.4413 35.4198 13.889 35.4198 14.4413C35.4198 14.9936 34.9721 15.4413 34.4198 15.4413H32.5833L32.164 16.2799L34.2276 16.7384C34.3074 16.7562 34.3847 16.7836 34.4579 16.8202L36.0942 17.6384C36.5882 17.8854 36.7884 18.486 36.5415 18.98C36.2945 19.474 35.6938 19.6742 35.1998 19.4272L33.6736 18.6641L30.1119 17.8726C29.8848 17.8221 29.6823 17.694 29.5395 17.5104L26.9104 14.1301L23.6471 13.5368C23.5854 13.5943 23.5156 13.6446 23.4385 13.6859L22.7379 15.0871V15.8958H24.1925C24.3478 15.8958 24.5009 15.932 24.6397 16.0014L27.9125 17.6378C28.4064 17.8848 28.6067 18.4854 28.3597 18.9794C28.1127 19.4734 27.512 19.6736 27.018 19.4266L23.9564 17.8958H22.7379V19.7601C22.7379 20.3124 22.2902 20.7601 21.7379 20.7601C21.1856 20.7601 20.7379 20.3124 20.7379 19.7601V15.851H19.1655L15.4784 18.1973L16.1146 21.6964L19.5387 24.7399C19.7521 24.9297 19.8743 25.2017 19.8743 25.4873V33.6796H22.7915V28.145C22.7901 27.1624 23.0938 26.199 23.6682 25.3642C24.2425 24.5295 25.0645 23.8567 26.041 23.4222C26.5901 23.2326 26.7252 22.9773 26.8907 22.6645C27.001 22.456 27.1249 22.222 27.3937 21.9648C27.6273 22.1087 27.8082 22.2364 27.9652 22.347C28.4518 22.6901 28.7077 22.8706 29.5844 22.8706Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 38.0001H15V36.0001H23V38.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 42.0001H15V40.0001H23V42.0001Z" fill="currentColor"/>
+</svg></div><b>신경·근육의 병</b></div><div class="v2-body">숨 쉬는 근육이 약해지는 병에서도 생깁니다. 필요하면 호흡근 힘을 따로 잽니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px"><img class="q-fig__img" src="../../../shared/assets/generated/pulmo-pft-interpretation-s06-comparison-pulmonary-ec786503-20260530-raster-20260531.jpg" alt="작아진 폐와 눌린 횡격막, 좁고 낮아진 호흡 곡선, 섬유화된 폐 조직을 나란히 놓은 그림" style="width:560px;height:315px"></div>
+  <div class="q-key q-key--accent" style="left:656px;top:535px;width:560px;height:71px">원인을 가리기 위해 영상 검사와 폐확산능(DLCO) 검사를 함께 하기도 합니다</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 폐활량만 작게 나왔다면 ‘제대로 끝까지 불었는지’도 함께 확인합니다.</span><span class="v2-src">근거 · ATS/ERS 2022 · Pellegrino 2005</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 한눈에 비교</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">폐쇄성과 제한성, 이렇게 다릅니다</h2>
+  <p class="v2-sub">같은 ‘1초량 감소’라도 1초율과 폐활량의 방향이 모양을 정합니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">폐쇄성 — 좁아진 기도</div><div class="v2-vs__lead">1초율이 <b>낮아집니다</b>.</div><ul class="v2-vs__list"><li>1초율: 0.70 미만 또는 정상 하한 미만</li><li>1초량: 중등도 이상에서 크게 줄어듦</li><li>폐활량: 처음엔 정상, 심해지면 줄 수 있음</li><li>곡선: 내쉬는 곡선이 오목하게 들어감</li><li>대표 질환: COPD · 천식 · 기관지확장증</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">제한성 — 작아진 폐</div><div class="v2-vs__lead">1초율은 <b>정상이거나 높습니다</b>.</div><ul class="v2-vs__list"><li>1초율: 정상 또는 증가</li><li>1초량: 폐활량과 함께 비례해서 줄어듦</li><li>폐활량: 정상 하한보다 작음</li><li>곡선: 모양은 정상인데 전체가 작아짐</li><li>확진: 폐용적 검사(TLC)가 필요</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 1초율과 폐활량이 모두 낮으면 혼합형을 의심하고, 폐용적 검사에서 총폐용적(TLC)도 낮아야 혼합형으로 확인합니다.</span><span class="v2-src">근거 · ATS/ERS 2022 해석 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 읽는 순서</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">결과지는 이 순서로 읽습니다</h2>
+  <p class="v2-sub">첫 단계를 건너뛰면 나머지 해석이 모두 틀릴 수 있습니다</p>
+  <div class="v2-panel q-text q-text--4" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7479 12.8156C17.0072 12.8833 15.4353 13.5043 14.5944 14.3454C14.2039 14.736 13.5707 14.736 13.1802 14.3455C12.7896 13.9551 12.7895 13.3219 13.18 12.9313C14.4774 11.6337 16.5888 10.8981 18.6701 10.8171C20.765 10.7356 23.0521 11.3092 24.6538 12.9112C25.0442 13.3017 25.0442 13.9349 24.6536 14.3254C24.2631 14.7159 23.6299 14.7158 23.2394 14.3253C22.1484 13.234 20.4749 12.7484 18.7479 12.8156Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.9355 27.3841C30.8475 25.1207 32 22.1949 32 19C32 11.8203 26.1797 6 19 6C11.8203 6 6 11.8203 6 19C6 26.1797 11.8203 32 19 32C22.1949 32 25.1207 30.8475 27.3841 28.9355L27 31.1442L34.5137 38.6579L38.6579 34.5137L31.1442 27L28.9355 27.3841ZM19 29C24.5228 29 29 24.5228 29 19C29 13.4772 24.5228 9 19 9C13.4772 9 9 13.4772 9 19C9 24.5228 13.4772 29 19 29Z" fill="currentColor"/>
+<path d="M35.9279 40.0721L40.0721 35.9279L41.4278 37.2837C42.1907 38.0466 42.1907 39.2835 41.4278 40.0464L40.0464 41.4278C39.2835 42.1907 38.0466 42.1907 37.2837 41.4278L35.9279 40.0721Z" fill="currentColor"/>
+</svg></div><b>① 검사가 잘 됐는지</b></div><div class="v2-body">검사자가 기준에 맞게 여러 번 잘 불었는지 먼저 봅니다. 제대로 안 된 검사는 모양을 믿을 수 없습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 24C11.4477 24 11 24.4477 11 25V40H8V7H6V41C6 41.5523 6.44772 42 7 42H41V40H39V13C39 12.4477 38.5523 12 38 12H32C31.4477 12 31 12.4477 31 13V40H29V21C29 20.4477 28.5523 20 28 20H22C21.4477 20 21 20.4477 21 21V40H19V25C19 24.4477 18.5523 24 18 24H12Z" fill="currentColor"/>
+</svg></div><b>② 1초율 보기</b></div><div class="v2-body">기준보다 낮으면 폐쇄성입니다. 정상이거나 높으면 다음 단계로 갑니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>③ 폐활량 보기</b></div><div class="v2-body">1초율은 정상인데 폐활량이 작으면 제한성을 의심하고 폐용적 검사로 확인합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 20H20V23H16V20Z" fill="currentColor"/>
+<path d="M20 25H16V28H20V25Z" fill="currentColor"/>
+<path d="M16 30H20V33H16V30Z" fill="currentColor"/>
+<path d="M26 20H22V23H26V20Z" fill="currentColor"/>
+<path d="M22 25H26V28H22V25Z" fill="currentColor"/>
+<path d="M26 30H22V33H26V30Z" fill="currentColor"/>
+<path d="M28 20H32V23H28V20Z" fill="currentColor"/>
+<path d="M32 25H28V28H32V25Z" fill="currentColor"/>
+<path d="M28 30H32V33H28V30Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 6C31 4.89543 30.1046 4 29 4H19C17.8954 4 17 4.89543 17 6L10 6V8H12V42H9C8.44772 42 8 42.4477 8 43C8 43.5523 8.44772 44 9 44H39C39.5523 44 40 43.5523 40 43C40 42.4477 39.5523 42 39 42H36V8H38V6H31ZM29 18C30.1046 18 31 17.1046 31 16V11H34V42H31V38H32V36H16V38H17V42H14V11H17V16C17 17.1046 17.8954 18 19 18H29ZM23 42H25V38H23V42ZM34 8V9H31V8H34ZM14 9H17V8H14V9ZM20 10H23V7H25V10H28V12H25V15H23V12H20V10Z" fill="currentColor"/>
+</svg></div><b>④ 추가 검사 정하기</b></div><div class="v2-body">폐쇄성이면 기관지 확장제 반응, 제한성이면 폐용적·확산능 검사를 생각합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:315px"><img class="q-fig__img" src="../../../shared/assets/generated/pulmo-pft-interpretation-s04-comparison-pulmonary-08bb8bf2-20260530-raster-20260531.jpg" alt="의사가 폐 그림과 호흡 곡선이 붙은 판을 가리키며 환자에게 설명하는 모습" style="width:560px;height:315px"></div>
+  <div class="q-key q-key--accent" style="left:64px;top:535px;width:560px;height:71px">최종 판단은 증상·진찰·영상과 합쳐 담당 의사가 합니다</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 궁금한 숫자가 있으면 결과지를 가져와 진료실에서 물어보세요.</span><span class="v2-src">근거 · ATS/ERS 2022 해석 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 다시 불게 되는 이유</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이럴 때는 다시 불어 봅니다</h2>
+  <p class="v2-sub">검사자가 ‘한 번 더’를 부탁하는 이유 — 숫자가 실제와 달라지기 때문입니다</p>
+  <div class="v2-panel q-cell" style="left:64px;top:206px;width:368px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>머뭇거린 출발</b></div><div class="v2-body">처음에 천천히 내쉬면 1초량이 실제와 다르게 나와 좁아진 기도를 놓칠 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:456px;top:206px;width:368px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.9631 22.0194H22.7229V21.0728H23.7825C24.4967 21.0728 25.1818 20.8048 25.6882 20.3273C26.1946 19.8497 26.4812 19.2015 26.4852 18.5243V16.8495C26.4852 16.919 26.9225 16.878 27.1323 16.8582L27.1323 16.8582L27.1323 16.8582C27.1862 16.8532 27.2251 16.8495 27.2377 16.8495C27.4248 16.821 27.5941 16.7279 27.7132 16.5881C27.8323 16.4483 27.8926 16.2717 27.8826 16.0922C27.8372 15.822 27.7438 15.561 27.6062 15.3204L27.2377 14.432C26.9766 13.8204 26.7156 13.2087 26.4699 12.5825C26.4699 12.5825 26.3163 11.1262 26.1781 10.6311C25.7497 9.29916 24.8842 8.13171 23.7076 7.29874C22.5309 6.46577 21.1046 6.01077 19.6363 6.00001C18.2155 5.99757 16.8293 6.41615 15.6716 7.19726C14.5138 7.97837 13.6423 9.08298 13.1788 10.3567C12.7153 11.6305 12.683 13.0097 13.0864 14.3018C13.4897 15.5938 14.3087 16.734 15.4287 17.5631V22.0194H12.6032C10.8822 22.0151 9.22776 22.6496 7.99374 23.7872C6.75973 24.9248 6.04412 26.4752 6 28.1068V42H32.9963V29.0534C33.0269 28.1523 32.8688 27.2544 32.531 26.4116C32.1931 25.5689 31.6824 24.7981 31.0282 24.1439C30.3741 23.4896 29.5896 22.965 28.7201 22.6003C27.8507 22.2357 26.9136 22.0382 25.9631 22.0194ZM20.8572 31.9962C20.7885 31.9931 20.6974 31.9874 20.5907 31.9771C20.3661 31.9552 20.0498 31.9104 19.72 31.8142C19.5042 31.7512 19.2486 31.6567 19 31.5095C18.7514 31.6567 18.4958 31.7512 18.28 31.8142C17.9502 31.9104 17.6339 31.9552 17.4093 31.9771C17.2945 31.9882 17.1978 31.9939 17.1276 31.9969C17.0923 31.9983 17.0634 31.9991 17.0419 31.9995L17.0377 31.9996C17.1036 33.8696 17.1314 36.2941 16.0567 37.3659C14.6469 38.7719 11.8272 39.4749 10.4174 38.3032C9.00755 37.1315 11.3573 25.6491 14.6469 25.6491C16.9296 25.6491 17.013 28.3908 17.0014 29.9999L17.003 29.9999L17.0272 29.9992L17.0443 29.9986C17.0835 29.997 17.143 29.9935 17.2157 29.9865C17.3661 29.9718 17.5498 29.9438 17.72 29.8942C17.8635 29.8523 17.9526 29.8079 18 29.7768V26.9792V25.5911V25.4618V25.4022V25.3461V25.245V25.2392V25.2335V25.2222V25.2004V25.1796V25.1598V25.0916V25.0879V25.0843V25.0808V25.0773V25.0739V25.0706V25.0674V25.0642V25.0522V25.0494V25.0467V25.044V25.0415V25.0235V25.0216V25.0198V25.0181V25.0164V25.0148V25.0133V25.0119V25.0106V25.0093V25.0081V25.007V25.006V25.005V25.0042V25.0034V25.0027V25.002V25.0015V25.001V25.0007V25.0004V25.0002V25L19 25L20 25V25.0002V25.0004V25.0007V25.001V25.0015V25.002V25.0027V25.0034V25.0042V25.005V25.006V25.007V25.0081V25.0093V25.0106V25.0119V25.0133V25.0148V25.0164V25.0181V25.0198V25.0216V25.0235V25.0415V25.044V25.0467V25.0494V25.0522V25.0642V25.0674V25.0706V25.0739V25.0773V25.0808V25.0843V25.0879V25.0916V25.1598V25.1796V25.2004V25.2222V25.2335V25.2392V25.245V25.3461V25.4022V25.4618V25.5911V26.9792V29.7768C20.0474 29.8079 20.1365 29.8523 20.28 29.8942C20.4502 29.9438 20.6339 29.9718 20.7843 29.9865C20.8253 29.9904 20.8621 29.9933 20.8934 29.9953C20.8819 28.3855 20.9673 25.6491 23.2479 25.6491C26.5375 25.6491 28.8872 37.1315 27.4774 38.3032C26.0675 39.4749 23.2479 38.7719 21.838 37.3659C20.7627 36.2935 20.7912 33.8667 20.8572 31.9962ZM16.9991 30.2411L16.9999 30.1664L17 30.8696C16.9979 30.7651 16.9966 30.6651 16.9966 30.5702C16.9966 30.4705 16.9978 30.3602 16.9991 30.2413L16.9991 30.2411ZM25 18C25 18.5523 24.5523 19 24 19C23.4477 19 23 18.5523 23 18C23 17.4477 23.4477 17 24 17C24.5523 17 25 17.4477 25 18ZM21 18C21.5523 18 22 17.5523 22 17C22 16.4477 21.5523 16 21 16C20.4477 16 20 16.4477 20 17C20 17.5523 20.4477 18 21 18Z" fill="currentColor"/>
+<path d="M32 14C32 14.5523 31.5523 15 31 15C30.4477 15 30 14.5523 30 14C30 13.4477 30.4477 13 31 13C31.5523 13 32 13.4477 32 14Z" fill="currentColor"/>
+<path d="M34 17C34 17.5523 33.5523 18 33 18C32.4477 18 32 17.5523 32 17C32 16.4477 32.4477 16 33 16C33.5523 16 34 16.4477 34 17Z" fill="currentColor"/>
+<path d="M36 20C36 20.5523 35.5523 21 35 21C34.4477 21 34 20.5523 34 20C34 19.4477 34.4477 19 35 19C35.5523 19 36 19.4477 36 20Z" fill="currentColor"/>
+<path d="M42 19C42 19.5523 41.5523 20 41 20C40.4477 20 40 19.5523 40 19C40 18.4477 40.4477 18 41 18C41.5523 18 42 18.4477 42 19Z" fill="currentColor"/>
+<path d="M42 14C42 14.5523 41.5523 15 41 15C40.4477 15 40 14.5523 40 14C40 13.4477 40.4477 13 41 13C41.5523 13 42 13.4477 42 14Z" fill="currentColor"/>
+<path d="M42 10C42 10.5523 41.5523 11 41 11C40.4477 11 40 10.5523 40 10C40 9.44772 40.4477 9 41 9C41.5523 9 42 9.44772 42 10Z" fill="currentColor"/>
+<path d="M38 12C38 12.5523 37.5523 13 37 13C36.4477 13 36 12.5523 36 12C36 11.4477 36.4477 11 37 11C37.5523 11 38 11.4477 38 12Z" fill="currentColor"/>
+<path d="M38 16C38 16.5523 37.5523 17 37 17C36.4477 17 36 16.5523 36 16C36 15.4477 36.4477 15 37 15C37.5523 15 38 15.4477 38 16Z" fill="currentColor"/>
+<path d="M30 19C30 19.5523 29.5523 20 29 20C28.4477 20 28 19.5523 28 19C28 18.4477 28.4477 18 29 18C29.5523 18 30 18.4477 30 19Z" fill="currentColor"/>
+</svg></div><b>처음 1초 안의 기침</b></div><div class="v2-body">1초량을 잴 수 없게 됩니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:848px;top:206px;width:368px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>너무 일찍 멈춤</b></div><div class="v2-body">끝까지 내쉬지 않으면 폐활량이 작게 나와 제한성처럼 보일 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:64px;top:416px;width:368px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C7 18.5453 15.2 10.2545 24 14.1818C33 9.81822 41 18.5454 44 24C41 28.3636 32.8 36 24 36C15.2 36 7 28.3636 4 24ZM9.30929 23.5229C12.4149 22.4731 18.1843 21 24 21C29.7472 21 35.4492 22.4386 38.5799 23.4856C39.0367 23.6384 39.0113 24.2838 38.55 24.4225L38.5245 24.4302C35.5004 25.3398 29.9805 27 24 27C17.9208 27 12.3174 25.3748 9.32775 24.4265C8.88033 24.2845 8.86462 23.6732 9.30929 23.5229Z" fill="currentColor"/>
+</svg></div><b>입가로 공기가 샘</b></div><div class="v2-body">입술을 꼭 물지 않으면 공기가 새어 폐활량이 작게&nbsp;나옵니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:456px;top:416px;width:368px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>중간에 숨이 막힘</b></div><div class="v2-body">목에서 숨을 멈추거나 세기가 들쭉날쭉하면 곡선이 흐트러집니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:848px;top:416px;width:368px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 36C6 31.0347 17.9925 28 24 28C30.0075 28 42 31.0347 42 36V42H6V36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>힘을 덜 줌</b></div><div class="v2-body">불 때마다 결과가 크게 다르면 믿을 만한 값을 얻을&nbsp;때까지 반복합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 여러 번 불어서 가장 좋은 값을 씁니다 — 힘들어도 끝까지 협조해 주세요.</span><span class="v2-src">근거 · ATS/ERS 2019 폐활량 검사 표준</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 검사 받을 때</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">정확한 결과를 위해 챙길 일곱 가지</h2>
+  <p class="v2-sub">검사 품질의 절반은 검사받는 분의 협조에서 나옵니다</p>
+  <div class="v2-panel q-cell" style="left:64px;top:206px;width:270px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24ZM16.2218 31.7782C15.8313 31.3877 15.8313 30.7546 16.2218 30.364L22.5858 24.0001L16.2218 17.6361C15.8313 17.2455 15.8313 16.6124 16.2218 16.2218C16.6123 15.8313 17.2455 15.8313 17.636 16.2218L24 22.5858L30.364 16.2219C30.7545 15.8314 31.3877 15.8314 31.7782 16.2219C32.1687 16.6124 32.1687 17.2456 31.7782 17.6361L25.4142 24.0001L31.7782 30.364C32.1687 30.7545 32.1687 31.3877 31.7782 31.7782C31.3876 32.1687 30.7545 32.1687 30.364 31.7782L24 25.4143L17.6361 31.7782C17.2455 32.1688 16.6124 32.1688 16.2218 31.7782Z" fill="currentColor"/>
+</svg></div><b>담배</b></div><div class="v2-body">검사 1시간 전부터 피우지 않습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:358px;top:206px;width:270px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>검사 당일</b></div><div class="v2-body">격한 운동·과식·음주를 피합니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:652px;top:206px;width:270px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.8652 6.13398C16.0949 6.26659 16.2625 6.485 16.3312 6.74118L17.406 10.7526L18.1771 10.4018C18.4447 10.2801 18.7522 10.2822 19.0181 10.4077C19.2839 10.5332 19.481 10.7693 19.5571 11.0532L23.83 27H30C30.5522 27 31 27.4477 31 28L31 40C31 40.2652 30.8946 40.5196 30.7071 40.7071C30.5195 40.8946 30.2652 41 30 41H17.0511C14.7987 41 12.8244 39.494 12.229 37.3217L6.55329 16.614C6.4235 16.1405 6.6567 15.6428 7.10362 15.4395L8.17812 14.9506L6.6719 9.32937C6.60326 9.07319 6.63919 8.80024 6.7718 8.57055C6.90441 8.34087 7.12283 8.17327 7.37901 8.10463L15.1064 6.03408C15.3626 5.96543 15.6356 6.00137 15.8652 6.13398ZM10.0237 14.111L8.86257 9.77766L14.6581 8.22475L15.5604 11.5922L10.0237 14.111Z" fill="currentColor"/>
+<path d="M33 29H35V39H33V29Z" fill="currentColor"/>
+<path d="M38 33C38.5523 33 39 32.5523 39 32C39 31.4477 38.5523 31 38 31C37.4477 31 37 31.4477 37 32C37 32.5523 37.4477 33 38 33Z" fill="currentColor"/>
+<path d="M39 36C39 36.5523 38.5523 37 38 37C37.4477 37 37 36.5523 37 36C37 35.4477 37.4477 35 38 35C38.5523 35 39 35.4477 39 36Z" fill="currentColor"/>
+<path d="M42 35C42.5523 35 43 34.5523 43 34C43 33.4477 42.5523 33 42 33C41.4477 33 41 33.4477 41 34C41 34.5523 41.4477 35 42 35Z" fill="currentColor"/>
+<path d="M43 30C43 30.5523 42.5523 31 42 31C41.4477 31 41 30.5523 41 30C41 29.4477 41.4477 29 42 29C42.5523 29 43 29.4477 43 30Z" fill="currentColor"/>
+<path d="M42 39C42.5523 39 43 38.5523 43 38C43 37.4477 42.5523 37 42 37C41.4477 37 41 37.4477 41 38C41 38.5523 41.4477 39 42 39Z" fill="currentColor"/>
+</svg></div><b>흡입약</b></div><div class="v2-body">검사 전 쉬어야 할 수 있어 미리 안내받습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:946px;top:206px;width:270px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 36C6 31.0347 17.9925 28 24 28C30.0075 28 42 31.0347 42 36V42H6V36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>옷차림</b></div><div class="v2-body">가슴·배를 조이지 않는 옷 · 틀니는&nbsp;그대로.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:64px;top:416px;width:270px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C7 18.5453 15.2 10.2545 24 14.1818C33 9.81822 41 18.5454 44 24C41 28.3636 32.8 36 24 36C15.2 36 7 28.3636 4 24ZM9.30929 23.5229C12.4149 22.4731 18.1843 21 24 21C29.7472 21 35.4492 22.4386 38.5799 23.4856C39.0367 23.6384 39.0113 24.2838 38.55 24.4225L38.5245 24.4302C35.5004 25.3398 29.9805 27 24 27C17.9208 27 12.3174 25.3748 9.32775 24.4265C8.88033 24.2845 8.86462 23.6732 9.30929 23.5229Z" fill="currentColor"/>
+</svg></div><b>마우스피스</b></div><div class="v2-body">입술로 꼭 감싸고 혀로 막지 않습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:358px;top:416px;width:270px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>세게 시작</b></div><div class="v2-body">최대로 들이마신 뒤 바로 가장 세게 내쉽니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:652px;top:416px;width:270px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.7903 26.7461L8 35.3472V40H42V42H7C6.44772 42 6 41.5523 6 41V7H8V32.1195L13.3297 25.3686C13.1189 24.9583 13 24.493 13 24C13 22.3431 14.3431 21 16 21C17.6387 21 18.9706 22.3139 18.9995 23.9457L25.6328 26.1568C26.1818 25.4528 27.038 25 28 25C28.3668 25 28.7182 25.0658 29.043 25.1863L35.4207 17.5331C35.1535 17.0844 35 16.5601 35 16C35 14.3431 36.3431 13 38 13C39.6569 13 41 14.3431 41 16C41 17.6569 39.6569 19 38 19C37.6332 19 37.2818 18.9342 36.957 18.8137L30.5793 26.4669C30.8465 26.9156 31 27.4399 31 28C31 29.6569 29.6569 31 28 31C26.3613 31 25.0294 29.6861 25.0005 28.0543L18.3672 25.8432C17.8182 26.5472 16.962 27 16 27C15.5696 27 15.1603 26.9094 14.7903 26.7461Z" fill="currentColor"/>
+</svg></div><b>끝까지</b></div><div class="v2-body">검사자가 ‘그만’이라고 할 때까지 멈추지 않습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:946px;top:416px;width:270px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 24C11.4477 24 11 24.4477 11 25V40H8V7H6V41C6 41.5523 6.44772 42 7 42H41V40H39V13C39 12.4477 38.5523 12 38 12H32C31.4477 12 31 12.4477 31 13V40H29V21C29 20.4477 28.5523 20 28 20H22C21.4477 20 21 20.4477 21 21V40H19V25C19 24.4477 18.5523 24 18 24H12Z" fill="currentColor"/>
+</svg></div><b>여러 번</b></div><div class="v2-body">3번 이상 비슷한 크기로 반복합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 최대로 협조한 만큼 정확한 결과가 나옵니다.</span><span class="v2-src">근거 · ATS/ERS 2019 검사 준비</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">폐기능검사를 받았거나 받을 분을 위한 결과지 읽기 안내입니다. 진단과 치료는 증상·진찰·영상과 함께 담당 의료진이 판단합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7479 12.8156C17.0072 12.8833 15.4353 13.5043 14.5944 14.3454C14.2039 14.736 13.5707 14.736 13.1802 14.3455C12.7896 13.9551 12.7895 13.3219 13.18 12.9313C14.4774 11.6337 16.5888 10.8981 18.6701 10.8171C20.765 10.7356 23.0521 11.3092 24.6538 12.9112C25.0442 13.3017 25.0442 13.9349 24.6536 14.3254C24.2631 14.7159 23.6299 14.7158 23.2394 14.3253C22.1484 13.234 20.4749 12.7484 18.7479 12.8156Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.9355 27.3841C30.8475 25.1207 32 22.1949 32 19C32 11.8203 26.1797 6 19 6C11.8203 6 6 11.8203 6 19C6 26.1797 11.8203 32 19 32C22.1949 32 25.1207 30.8475 27.3841 28.9355L27 31.1442L34.5137 38.6579L38.6579 34.5137L31.1442 27L28.9355 27.3841ZM19 29C24.5228 29 29 24.5228 29 19C29 13.4772 24.5228 9 19 9C13.4772 9 9 13.4772 9 19C9 24.5228 13.4772 29 19 29Z" fill="currentColor"/>
+<path d="M35.9279 40.0721L40.0721 35.9279L41.4278 37.2837C42.1907 38.0466 42.1907 39.2835 41.4278 40.0464L40.0464 41.4278C39.2835 42.1907 38.0466 42.1907 37.2837 41.4278L35.9279 40.0721Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">ATS/ERS 폐활량 검사 표준(Eur Respir J 2019) · ERS/ATS 해석 지침(2022) · GLI 기준식 · GOLD 2024 · GINA 2024 · Pellegrino R, Eur Respir J 2005</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM12,2H13V3H12zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM17,2H18V3H17zM18,2H19V3H18zM20,2H21V3H20zM21,2H22V3H21zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM23,3H24V4H23zM25,3H26V4H25zM26,3H27V4H26zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM14,4H15V5H14zM16,4H17V5H16zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM24,4H25V5H24zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM15,5H16V6H15zM20,5H21V6H20zM21,5H22V6H21zM22,5H23V6H22zM25,5H26V6H25zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM12,6H13V7H12zM16,6H17V7H16zM17,6H18V7H17zM20,6H21V7H20zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM13,7H14V8H13zM17,7H18V8H17zM21,7H22V8H21zM22,7H23V8H22zM24,7H25V8H24zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM13,9H14V10H13zM14,9H15V10H14zM16,9H17V10H16zM19,9H20V10H19zM20,9H21V10H20zM23,9H24V10H23zM26,9H27V10H26zM2,10H3V11H2zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM23,10H24V11H23zM25,10H26V11H25zM26,10H27V11H26zM27,10H28V11H27zM29,10H30V11H29zM5,11H6V12H5zM6,11H7V12H6zM7,11H8V12H7zM9,11H10V12H9zM12,11H13V12H12zM13,11H14V12H13zM14,11H15V12H14zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM22,11H23V12H22zM26,11H27V12H26zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM33,11H34V12H33zM34,11H35V12H34zM2,12H3V13H2zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM12,12H13V13H12zM13,12H14V13H13zM14,12H15V13H14zM18,12H19V13H18zM21,12H22V13H21zM24,12H25V13H24zM26,12H27V13H26zM29,12H30V13H29zM30,12H31V13H30zM32,12H33V13H32zM34,12H35V13H34zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM9,13H10V14H9zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM14,13H15V14H14zM16,13H17V14H16zM18,13H19V14H18zM20,13H21V14H20zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM27,13H28V14H27zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM5,14H6V15H5zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM17,14H18V15H17zM18,14H19V15H18zM19,14H20V15H19zM21,14H22V15H21zM23,14H24V15H23zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM28,14H29V15H28zM31,14H32V15H31zM34,14H35V15H34zM2,15H3V16H2zM5,15H6V16H5zM14,15H15V16H14zM19,15H20V16H19zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM24,15H25V16H24zM26,15H27V16H26zM28,15H29V16H28zM30,15H31V16H30zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM34,15H35V16H34zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM9,16H10V17H9zM11,16H12V17H11zM15,16H16V17H15zM16,16H17V17H16zM20,16H21V17H20zM24,16H25V17H24zM25,16H26V17H25zM26,16H27V17H26zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM33,16H34V17H33zM3,17H4V18H3zM11,17H12V18H11zM12,17H13V18H12zM13,17H14V18H13zM14,17H15V18H14zM15,17H16V18H15zM16,17H17V18H16zM18,17H19V18H18zM19,17H20V18H19zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM28,17H29V18H28zM33,17H34V18H33zM2,18H3V19H2zM6,18H7V19H6zM8,18H9V19H8zM11,18H12V19H11zM14,18H15V19H14zM15,18H16V19H15zM17,18H18V19H17zM19,18H20V19H19zM21,18H22V19H21zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM26,18H27V19H26zM28,18H29V19H28zM30,18H31V19H30zM31,18H32V19H31zM33,18H34V19H33zM4,19H5V20H4zM5,19H6V20H5zM14,19H15V20H14zM15,19H16V20H15zM16,19H17V20H16zM18,19H19V20H18zM20,19H21V20H20zM25,19H26V20H25zM27,19H28V20H27zM29,19H30V20H29zM31,19H32V20H31zM33,19H34V20H33zM5,20H6V21H5zM6,20H7V21H6zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM24,20H25V21H24zM27,20H28V21H27zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM6,21H7V22H6zM7,21H8V22H7zM9,21H10V22H9zM11,21H12V22H11zM14,21H15V22H14zM15,21H16V22H15zM16,21H17V22H16zM18,21H19V22H18zM19,21H20V22H19zM23,21H24V22H23zM25,21H26V22H25zM26,21H27V22H26zM27,21H28V22H27zM29,21H30V22H29zM33,21H34V22H33zM2,22H3V23H2zM3,22H4V23H3zM4,22H5V23H4zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM12,22H13V23H12zM13,22H14V23H13zM16,22H17V23H16zM18,22H19V23H18zM21,22H22V23H21zM22,22H23V23H22zM23,22H24V23H23zM25,22H26V23H25zM27,22H28V23H27zM29,22H30V23H29zM33,22H34V23H33zM5,23H6V24H5zM7,23H8V24H7zM9,23H10V24H9zM12,23H13V24H12zM13,23H14V24H13zM15,23H16V24H15zM16,23H17V24H16zM18,23H19V24H18zM19,23H20V24H19zM22,23H23V24H22zM26,23H27V24H26zM27,23H28V24H27zM28,23H29V24H28zM31,23H32V24H31zM33,23H34V24H33zM34,23H35V24H34zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM8,24H9V25H8zM10,24H11V25H10zM11,24H12V25H11zM14,24H15V25H14zM18,24H19V25H18zM21,24H22V25H21zM23,24H24V25H23zM24,24H25V25H24zM28,24H29V25H28zM31,24H32V25H31zM34,24H35V25H34zM3,25H4V26H3zM4,25H5V26H4zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM14,25H15V26H14zM17,25H18V26H17zM20,25H21V26H20zM21,25H22V26H21zM23,25H24V26H23zM25,25H26V26H25zM26,25H27V26H26zM28,25H29V26H28zM29,25H30V26H29zM34,25H35V26H34zM2,26H3V27H2zM6,26H7V27H6zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM17,26H18V27H17zM18,26H19V27H18zM19,26H20V27H19zM23,26H24V27H23zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM33,26H34V27H33zM10,27H11V28H10zM11,27H12V28H11zM13,27H14V28H13zM19,27H20V28H19zM21,27H22V28H21zM22,27H23V28H22zM24,27H25V28H24zM26,27H27V28H26zM30,27H31V28H30zM31,27H32V28H31zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM11,28H12V29H11zM14,28H15V29H14zM16,28H17V29H16zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM22,28H23V29H22zM23,28H24V29H23zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM11,29H12V30H11zM14,29H15V30H14zM15,29H16V30H15zM18,29H19V30H18zM19,29H20V30H19zM20,29H21V30H20zM22,29H23V30H22zM23,29H24V30H23zM26,29H27V30H26zM30,29H31V30H30zM33,29H34V30H33zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM12,30H13V31H12zM13,30H14V31H13zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM12,31H13V32H12zM15,31H16V32H15zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM23,31H24V32H23zM24,31H25V32H24zM28,31H29V32H28zM30,31H31V32H30zM31,31H32V32H31zM32,31H33V32H32zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM11,32H12V33H11zM13,32H14V33H13zM15,32H16V33H15zM16,32H17V33H16zM18,32H19V33H18zM19,32H20V33H19zM22,32H23V33H22zM23,32H24V33H23zM25,32H26V33H25zM26,32H27V33H26zM30,32H31V33H30zM31,32H32V33H31zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM19,33H20V34H19zM22,33H23V34H22zM23,33H24V34H23zM25,33H26V34H25zM26,33H27V34H26zM27,33H28V34H27zM28,33H29V34H28zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM13,34H14V35H13zM18,34H19V35H18zM20,34H21V35H20zM23,34H24V35H23zM25,34H26V35H25zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM30,34H31V35H30zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -724,96 +509,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 결과 해석과 진단은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

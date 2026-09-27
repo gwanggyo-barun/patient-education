@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Chronic Constipation — Gwanggyo Barun Internal Medicine</title>
+  <title>만성변비 환자 교육 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,752 +18,382 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <!-- Local extensions for this deck (alert-stack for slide 5) -->
-  <style>
-    /* Vertical alert stack — single column, alert rows */
-    .pattern-alert-stack {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: 1fr;
-      gap: var(--space-3);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .alert-row {
-      display: flex;
-      gap: var(--space-4);
-      align-items: flex-start;
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-danger-bg);
-      border: 1px solid var(--color-danger);
-      border-radius: var(--radius-lg);
-      min-height: 0;
-      overflow: hidden;
-    }
-    .alert-row__icon {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--color-canvas);
-      color: var(--color-danger);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--text-h3);
-      font-weight: var(--weight-bold);
-      border: 1px solid var(--color-danger);
-    }
-    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
-    .alert-row__title {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-bold);
-      color: var(--color-danger);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-tight);
-    }
-    .alert-row__text {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3F-redesign 2026-09-27 (원장님 49028) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="만성변비를 제대로 알고 안전하게 치료하기 — Rome IV 진단부터 약물·생활습관까지">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/gi/chronic-constipation/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Chronic Constipation — Gwanggyo Barun Internal Medicine", "description": "만성변비를 제대로 알고 안전하게 치료하기 — Rome IV 진단부터 약물·생활습관까지", "url": "https://edu.gwanggyobarun.com/decks/gi/chronic-constipation/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "만성변비 환자 교육 — 광교바른내과", "description": "만성변비를 제대로 알고 안전하게 치료하기 — Rome IV 진단부터 약물·생활습관까지", "url": "https://edu.gwanggyobarun.com/decks/gi/chronic-constipation/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GASTROENTEROLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">만성변비,<br><em>제대로 알고 치료하기</em></h1>
-      <p class="slide__subtitle">Rome IV 진단부터 안전한 약물·식이·생활습관까지 — 편안한 배변을 위한 가이드</p>
+      <p class="slide__subtitle">진단 기준부터 안전한 약·식사·생활습관까지 — 편안한 배변을 위한 안내</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Chronic Constipation · Rome IV · Bristol Stool · Lifestyle &amp; Pharmacotherapy</span>
-      <span class="slide__page">광교바른내과 소화기내과</span>
+      <span class="slide__source">만성변비 · 진단 기준 · 대변 모양 · 약과 생활습관</span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · ASYMMETRIC SPLIT — Definition + Rome IV criteria
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>DEFINITION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">만성변비 (Chronic Constipation) 란</h2>
-      <p class="slide__subtitle">단순한 변 횟수의 문제가 아니라 "편하게 완전히 비우지 못하는 상태" 입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">힘주기·딱딱한 변·잔변감 등 배변과 관련된 불편이 <em>3개월 이상</em> 지속될 때 만성변비로 진단합니다 (Rome IV).</p>
-          <p class="pattern-split__supporting">
-            매일 보지 못해도 정상일 수 있고, 매일 봐도 만성변비일 수 있습니다. 핵심은 횟수가 아니라 "편안함"과 "완전 배출"입니다. 6개월 전부터 증상이 시작되어 최근 3개월간 아래 기준 중 2개 이상에 해당하면 진단됩니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Rome IV criteria</div>
-            <div class="pattern-split__metric-value">25% 이상 배변</div>
-            <div class="pattern-split__metric-detail">힘주기·딱딱한 변(Bristol 1-2)·잔변감·항문폐쇄감·수기 도움 필요 중 2개 이상.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Frequency threshold</div>
-            <div class="pattern-split__metric-value">주 3회 미만</div>
-            <div class="pattern-split__metric-detail">자발적 배변 횟수가 이 수준 이하면 함께 고려합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Rome IV Criteria · AGA/ACG CIC Guideline 2023</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · HERO NUMBER — Frequency myth busted (week 3 times = OK)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>WHAT IS NORMAL</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">매일 보지 않아도 건강합니다</h2>
-      <p class="slide__subtitle">배변 횟수보다 "편안함과 완전 배출"이 더 중요한 지표입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value">주 <em>3</em>회</div>
-          <div class="pattern-hero-number__caption">주 3회 이상 편안한 배변(Bristol Type 3-4)이면 정상 — 매일 화장실 가지 않아도 건강합니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Why frequency alone is misleading</div>
-          <div class="pattern-hero-number__detail-text">
-            치료 목표는 "매일 보는 것"이 아니라 "편하게, 완전하게 비우는 것"입니다. 매일 보더라도 딱딱하거나 잔변감이 있다면 변비로 봅니다. 본인의 배변 패턴을 정확히 파악하기 위해 2주간 배변 일기(횟수·Bristol Type·힘주기 정도)를 작성해 보시기를 권장합니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Rome IV Criteria · Bristol Stool Form Scale</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 3×2 — Bristol Stool Scale (6 of 7 types)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>BRISTOL STOOL SCALE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">나의 변은 어떤 타입인가요?</h2>
-      <p class="slide__subtitle">Bristol 대변 형태 척도 (Bristol Stool Scale) — 치료 목표는 Type 3-4</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">TYPE · 01 · 심한 변비</div>
-          <div class="tile__title">분리된 단단한 덩어리</div>
-          <div class="tile__body">토끼 똥처럼 딱딱한 알갱이로 분리됨. 통과 시간이 가장 긴 상태로, 힘주기와 항문 통증·치열을 자주 동반합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">TYPE · 02 · 가벼운 변비</div>
-          <div class="tile__title">소시지 모양 + 단단</div>
-          <div class="tile__body">덩어리가 뭉쳤지만 표면이 울퉁불퉁하고 단단함. 힘주기가 필요한 변비 상태로, 식이·수분 보강과 PEG가 도움이 됩니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">TYPE · 03-04 · 이상적</div>
-          <div class="tile__title">매끄러운 소시지 (목표)</div>
-          <div class="tile__body">표면이 매끄럽고 균열이 적은 정상 변. 힘주기 없이 편안하게 한 번에 비우는 가장 이상적인 형태 — 치료 목표입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">TYPE · 05 · 경미한 설사 기운</div>
-          <div class="tile__title">부드러운 덩어리</div>
-          <div class="tile__body">조각조각 부드러운 덩어리로 쉽게 통과. 섬유질·수분 부족 또는 빠른 통과 신호일 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">TYPE · 06 · 가벼운 설사</div>
-          <div class="tile__title">진흙 같은 변</div>
-          <div class="tile__body">형태가 흐트러진 죽 같은 변. 통과 시간이 너무 빠른 상태로, 감염·과민성장증후군 등을 고려합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">TYPE · 07 · 심한 설사</div>
-          <div class="tile__title">고형물 없는 액체</div>
-          <div class="tile__body">완전 액체 상태. 탈수·전해질 불균형 위험이 있어, 지속되면 빠른 진료가 필요합니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../shared/assets/generated/gi-chronic-constipation-s04-action-gi-ec81d1c5-20260530-raster-20260531.jpg" alt="나의 변은 어떤 타입인가요? 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Bristol Stool Form Scale · Heaton &amp; Lewis 1997</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · ALERT STACK — Alarm symptoms (Red Flags) — must see doctor
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>ALARM SYMPTOMS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">반드시 진료받아야 하는 경고 신호</h2>
-      <p class="slide__subtitle">아래 증상이 하나라도 있으면 단순 변비로 판단하지 말고 대장내시경 등 추가 검사가 필요합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-alert-stack">
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">혈변 · 잠혈 양성 · 설명되지 않는 빈혈</div>
-            <div class="alert-row__text">대변에 피가 섞이거나 분변잠혈검사 양성, 설명되지 않는 철결핍빈혈은 대장암을 시사할 수 있습니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">의도하지 않은 체중 감소</div>
-            <div class="alert-row__text">식사·운동 변화 없이 6개월 내 5% 이상 체중 감소는 악성 종양·대사 질환을 강하게 의심해야 합니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">50세 이후 새로 시작된 변비 · 가족력</div>
-            <div class="alert-row__text">중년 이후 새로 시작된 변비, 대장암 가족력, 최근 급격한 배변 양상 변화는 즉시 대장내시경이 필요합니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">복부 종괴 · 심한 팽만 · 구토</div>
-            <div class="alert-row__text">복부나 직장에 만져지는 종괴, 심한 복부 팽만이나 구토 동반은 장폐색·종양 가능성 — 응급 평가가 필요합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — AGA/ACG CIC Guideline 2023 · Korean College of Gastroenterology</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 3×2 — 3 subtypes × 2 (특징 + 치료) = 6 cards
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>SUBTYPES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">만성변비의 3가지 아형 (Subtypes)</h2>
-      <p class="slide__subtitle">같은 변비라도 원인과 치료법이 다릅니다 — 정확한 분류가 효과적인 치료의 시작</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">SUBTYPE · 01 · 가장 흔함</div>
-          <div class="tile__title">정상 통과형 (Normal Transit / IBS-C)</div>
-          <div class="tile__body">대장 운동은 정상이지만 변이 굳어 불편함. 복통·팽만 동반 시 IBS-C(변비형 과민성장증후군)로 분류됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUBTYPE · 02</div>
-          <div class="tile__title">서행성 (Slow Transit)</div>
-          <div class="tile__body">대장 연동운동 자체가 극도로 저하된 상태. 며칠씩 변의가 없고, 일반 하제·섬유질에 잘 반응하지 않습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUBTYPE · 03 · 출구 문제</div>
-          <div class="tile__title">배변장애형 (Dyssynergic Defecation)</div>
-          <div class="tile__body">골반저 근육이 역설적으로 수축해 배출이 안 됨. "출구가 막힌 느낌"이 핵심 증상 — 약·식이로 해결되지 않습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">TREATMENT · 01</div>
-          <div class="tile__title">식이 + PEG (1차)</div>
-          <div class="tile__body">정상 통과형에는 키위·차전자피 같은 가용성 섬유질과 PEG(마크로골) 삼투성 하제로 대부분 호전됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">TREATMENT · 02</div>
-          <div class="tile__title">전문 처방약 (Prokinetic)</div>
-          <div class="tile__body">서행성에는 섬유질 단독은 오히려 팽만 악화. 프루칼로프라이드·리나클로타이드 등 처방약 필요.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">TREATMENT · 03 · 1차 치료</div>
-          <div class="tile__title">바이오피드백 (Biofeedback)</div>
-          <div class="tile__body">배변장애형에는 골반저 근육 이완 타이밍을 재학습시키는 바이오피드백이 약물보다 일관되게 우월합니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/gi-chronic-constipation-s06-comparison-gi-c3e55856-20260530-raster-20260531.jpg" alt="만성변비의 3가지 아형 (Subtypes) 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Rome IV Subtype Classification · ACG 2021</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · DENSITY GRID 2×2 — Safe vs cautious laxatives + alert strip
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>SAFE LAXATIVES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">안전한 변비약 vs 주의가 필요한 변비약</h2>
-      <p class="slide__subtitle">모든 변비약이 같지 않습니다 — 장기 복용 가능한 약과 단기·구제용 약을 구분하세요</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2" style="grid-template-rows: 1fr 1fr auto;">
-        <div class="tile tile--accent">
-          <div class="tile__index">LONG-TERM SAFE · 01</div>
-          <div class="tile__title">PEG (마크로골)</div>
-          <div class="tile__body">유일하게 만성 사용에 강력 권고되는 삼투성 하제. 장 점막 자극·내성·의존성 없음 — 년 단위 장기 복용 안전.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CONDITIONAL · 02</div>
-          <div class="tile__title">산화마그네슘 (MgO)</div>
-          <div class="tile__body">효과적이나 신장 기능 저하·고령자는 정기 혈청 마그네슘 검사 필요. 신부전 환자에서는 고마그네슘혈증 위험.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">RESCUE ONLY · 03</div>
-          <div class="tile__title">비사코딜 (둘코락스)</div>
-          <div class="tile__body">자극성 하제 — 가끔 막힐 때만 쓰는 구제용. 4주 이내 단기 사용 권장. 매일 먹는 영양제가 아닙니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CAUTION · 04</div>
-          <div class="tile__title">센나 · 알로에 · 디톡스 차</div>
-          <div class="tile__body">"천연" 이름의 안트라퀴논 자극성 하제. 장기 안전성 데이터 부족 — 매일 복용 절대 금지.</div>
-        </div>
-        <div class="alert-strip">
-          <span class="alert-strip__label">중요</span>
-          <span class="alert-strip__text">"알로에 전잎 · 숙변 제거 차 · 다이어트 차"는 자극성 하제(안트라퀴논)와 동일 성분입니다. "천연"이라는 이름에 속지 마세요.</span>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/gi-chronic-constipation-s07-risk-gi-1a2d86d2-20260530-raster-20260531.jpg" alt="안전한 변비약 vs 주의가 필요한 변비약 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — AGA/ACG CIC Guideline 2023 · Pharmacologic Therapy</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · COMPARISON — Recommended vs not-recommended foods
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>DIETARY GUIDE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">근거가 있는 식단 가이드</h2>
-      <p class="slide__subtitle">강력 권장 식품과 권장하지 않는 식품 — 효과 강한 것부터 차례로 시도하세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            강력 권장 (DO)
-          </div>
-          <ul class="compare-col__list">
-            <li>그린 키위 2개 / 일 (껍질 제거) — RCT 효과 입증</li>
-            <li>차전자피 (Psyllium) — 물 200mL 이상 함께</li>
-            <li>푸룬 (건자두) 50–100g / 일 — IBS에는 부적합</li>
-            <li>가용성 섬유질이 풍부한 채소 · 과일</li>
-            <li>프로바이오틱스 (B. lactis) — 4주 이상 보조적</li>
-            <li>충분한 수분 (탈수 교정 목적)</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">−</span>
-            권장하지 않음 (DON'T)
-          </div>
-          <ul class="compare-col__list">
-            <li>밀기울 (Bran) — 가스 · 팽만 악화 가능</li>
-            <li>이눌린 — 고FODMAP, IBS-C에서 팽만 유발</li>
-            <li>알로에 전잎 · 숙변 제거 차 (자극성 하제)</li>
-            <li>다이어트 차 · 디톡스 차 (안트라퀴논)</li>
-            <li>Docusate (변연화제) — 위약 대비 효과 미입증</li>
-            <li>억지로 많은 물 섭취 (효과 근거 부족)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — CIC Lifestyle Evidence · Kiwifruit RCT 2021</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · DENSITY GRID 3×2 — 6 lifestyle action points (bowel training)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>BOWEL TRAINING</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">생활습관 6가지 — 약보다 중요한 일상의 변화</h2>
-      <p class="slide__subtitle">배변 습관 재훈련 (Bowel Training) — 작은 실천이 큰 변화를 만듭니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">HABIT · 01</div>
-          <div class="tile__title">식후 15-30분 배변 시도</div>
-          <div class="tile__body">위-대장 반사(gastrocolic reflex)가 가장 강한 시간. 식사 직후 화장실에 앉는 습관을 만들면 자연스러운 배변이 유도됩니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">HABIT · 02 · 가장 중요</div>
-          <div class="tile__title">변의가 오면 절대 참지 말 것</div>
-          <div class="tile__body">참기를 반복하면 직장 감각이 둔해져 변의를 못 느끼게 됩니다. 변비의 가장 큰 적은 "참는 습관"입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HABIT · 03</div>
-          <div class="tile__title">정해진 시간 배변 시도</div>
-          <div class="tile__body">매일 같은 시간(예: 아침 식사 후)에 5-10분 화장실에 앉는 규칙적 습관 형성이 장 리듬을 만듭니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HABIT · 04</div>
-          <div class="tile__title">규칙적 걷기 · 가벼운 운동</div>
-          <div class="tile__body">하루 30분 걷기, 요가, 가벼운 유산소가 장 운동을 자극. 격렬한 운동은 필요하지 않습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HABIT · 05</div>
-          <div class="tile__title">수분 유지 (탈수 피하기)</div>
-          <div class="tile__body">하루 1.5-2L 수분 유지. 단, 억지로 더 많이 마신다고 변비가 낫는 것은 아닙니다 — 탈수 교정 목적입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HABIT · 06 · 선택</div>
-          <div class="tile__title">배변 시 발판 사용</div>
-          <div class="tile__body">발 아래 작은 발판을 두면 무릎이 골반보다 높아져 직장-항문 각도가 펴짐. 일부 환자에서 보조적 도움 가능.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../shared/assets/generated/gi-chronic-constipation-s09-action-gi-395f548b-20260530-raster-20260531.jpg" alt="생활습관 6가지 — 약보다 중요한 일상의 변화 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACG 2021 Lifestyle Modification · Bowel Training Protocols</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · TIMELINE — 4-step refractory pathway (specialist eval)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>REFRACTORY PATHWAY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">기본 치료가 안 통할 때 — 전문의 영역</h2>
-      <p class="slide__subtitle">식이 · 생활습관 · 일반 하제로도 호전 없을 때 따르는 단계별 진료 경로</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">기본 치료 실패 확인</div>
-          <div class="timeline-step__body">식이 + 생활습관 + 하제 사용에도 6개월 이상 증상 지속. 약물 점검(진통제·칼슘제·철분제·혈압약).</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">전문 검사 (ARM · BET)</div>
-          <div class="timeline-step__body">항문직장내압검사(ARM) · 풍선배출검사(BET)로 골반저 기능과 대장 통과시간을 객관적으로 평가합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">아형 진단 확정</div>
-          <div class="timeline-step__body">배변장애형(Dyssynergic) · 서행성(Slow Transit) · 복합형 — 아형에 따라 치료가 완전히 달라집니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">맞춤 치료 시작</div>
-          <div class="timeline-step__body">배변장애형 → 바이오피드백 4-6회 / 서행성 → 프루칼로프라이드·리나클로타이드 처방.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">참고</span>
-        <span class="alert-strip__text">변비가 새로 생겼다면 최근 시작한 약물(진통제 · 칼슘제 · 철분제 · 혈압약 · 항우울제)이 원인일 수 있으니 점검하세요.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — AGA/ACG CIC Guideline 2023 · Korean Society of Neurogastroenterology</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — 7 essentials + closing nudge
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 7가지</h2>
-      <p class="slide__subtitle">변비는 참는 병이 아니라 치료하는 병입니다 — 일상에서 실천해 보세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">목표는 매일 보는 것이 아니라 <strong>"편하게 완전히 비우는 것"</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">안전한 약 <strong>PEG(마크로골)</strong>은 장기 복용해도 장을 망가뜨리지 않습니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">"천연 · 디톡스 차"를 매일 마시는 것이 <strong>가장 위험한 패턴</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">변의가 오면 <strong>바로 가세요</strong> — 참는 것이 변비의 가장 큰 적</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">그린 키위 2개 + 차전자피 + 충분한 물이 <strong>가장 쉬운 첫걸음</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">"출구가 막힌 느낌" 지속되면 근육 문제 → <strong>바이오피드백</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">50세 이후 새 변비 · 혈변 · 체중 감소 → <strong>반드시 대장내시경</strong></div>
-        </div>
-        <div class="check-item" style="border-bottom: none;">
-          <div class="check-item__num" style="color: var(--color-navy);">→</div>
-          <div class="check-item__text" style="color: var(--color-slate);">2주 배변 일기를 작성해 진료 시 함께 검토해 보세요</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — recognize alarm symptoms, build healthy bowel habits</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">변비는 참는 병이 아니라,<br><em>치료하는 병입니다</em></h2>
-      <p class="slide__subtitle">편안한 배변을 위해 함께 고민하고 결정하겠습니다 — 궁금한 점은 언제든 진료 시 질문해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Specialty</div>
-            <div class="contact-card__value">소화기내과 · 일반내과<br>5대암 검진</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 무엇인가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">만성변비 — 횟수가 아니라 ‘편하게 다 비우는가’</h2>
+  <p class="v2-sub">국제 진단 기준(로마 기준 IV)은 세 가지를 봅니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">3개월 넘게 이어집니다</div>
+    <div class="v2-body">6개월 전에 시작해 최근 3개월 동안 아래 불편이 계속되면 만성변비로 봅니다.</div>
+    <div class="q-card__k">잠깐의 변비는 해당 안 됨</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M27.7428 11.6503C27.7428 12.6997 26.077 13.5504 24.0222 13.5504C21.9673 13.5504 20.3015 12.6997 20.3015 11.6503C20.3015 10.6009 21.9673 9.75024 24.0222 9.75024C26.077 9.75024 27.7428 10.6009 27.7428 11.6503Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.3039 11.6503C21.3164 11.6866 21.3923 11.8715 21.8461 12.1033C22.3514 12.3613 23.1193 12.5504 24.0222 12.5504C24.925 12.5504 25.6929 12.3613 26.1982 12.1033C26.6521 11.8715 26.7279 11.6866 26.7404 11.6503C26.7279 11.614 26.6521 11.4291 26.1982 11.1973C25.6929 10.9393 24.925 10.7502 24.0222 10.7502C23.1193 10.7502 22.3514 10.9393 21.8461 11.1973C21.3923 11.4291 21.3164 11.614 21.3039 11.6503ZM20.9365 9.41617C21.7777 8.98656 22.8702 8.75024 24.0222 8.75024C25.1741 8.75024 26.2666 8.98656 27.1078 9.41617C27.8951 9.81822 28.7428 10.5539 28.7428 11.6503C28.7428 12.7467 27.8951 13.4824 27.1078 13.8844C26.2666 14.314 25.1741 14.5504 24.0222 14.5504C22.8702 14.5504 21.7777 14.314 20.9365 13.8844C20.1492 13.4824 19.3015 12.7467 19.3015 11.6503C19.3015 10.5539 20.1492 9.81822 20.9365 9.41617Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.2689 7.83839C13.0264 8.98363 12 10.3855 12 11.6502C12 12.9149 13.0264 14.3168 15.2689 15.462C17.4575 16.5797 20.5507 17.3004 24.0221 17.3004C27.4936 17.3004 30.5868 16.5797 32.7754 15.462C35.0179 14.3168 36.0443 12.9149 36.0443 11.6502C36.0443 10.3855 35.0179 8.98363 32.7754 7.83839C30.5868 6.72071 27.4936 6 24.0221 6C20.5507 6 17.4575 6.72071 15.2689 7.83839ZM14.3593 6.05721C16.8838 4.76799 20.3016 4 24.0221 4C27.7427 4 31.1605 4.76799 33.685 6.05721C36.1555 7.31887 38.0443 9.24207 38.0443 11.6502C38.0443 14.0583 36.1555 15.9815 33.685 17.2432C31.1605 18.5324 27.7427 19.3004 24.0221 19.3004C20.3016 19.3004 16.8838 18.5324 14.3593 17.2432C11.8888 15.9815 10 14.0583 10 11.6502C10 9.24207 11.8888 7.31887 14.3593 6.05721Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 36.3511V11.6502H10V36.3511C10 38.7592 11.8888 40.6824 14.3593 41.9441C16.8838 43.2333 20.3016 44.0013 24.0221 44.0013C26.5684 44.0013 28.973 43.6416 31.0464 43.0013H24.0221V42.0013C20.5507 42.0013 17.4575 41.2806 15.2689 40.1629C13.0264 39.0177 12 37.6158 12 36.3511ZM32.8464 40.1264L33.3236 41.1012L32.6836 42.4085C33.031 42.2624 33.3652 42.1075 33.685 41.9441C36.1555 40.6824 38.0443 38.7592 38.0443 36.3511V11.6502H36.0443V36.3511C36.0443 37.6024 35.0396 38.9879 32.8464 40.1264Z" fill="currentColor"/>
+<path d="M15.7904 20.3005C15.7904 20.8528 15.3427 21.3005 14.7904 21.3005C14.2382 21.3005 13.7904 20.8528 13.7904 20.3005C13.7904 19.7483 14.2382 19.3005 14.7904 19.3005C15.3427 19.3005 15.7904 19.7483 15.7904 20.3005Z" fill="currentColor"/>
+<path d="M15.7904 27.9005C15.7904 28.4528 15.3427 28.9005 14.7904 28.9005C14.2382 28.9005 13.7904 28.4528 13.7904 27.9005C13.7904 27.3482 14.2382 26.9005 14.7904 26.9005C15.3427 26.9005 15.7904 27.3482 15.7904 27.9005Z" fill="currentColor"/>
+<path d="M15.7904 35.5009C15.7904 36.0531 15.3427 36.5009 14.7904 36.5009C14.2382 36.5009 13.7904 36.0531 13.7904 35.5009C13.7904 34.9486 14.2382 34.5009 14.7904 34.5009C15.3427 34.5009 15.7904 34.9486 15.7904 35.5009Z" fill="currentColor"/>
+<path d="M15.7904 24.1006C15.7904 24.6529 15.3427 25.1006 14.7904 25.1006C14.2382 25.1006 13.7904 24.6529 13.7904 24.1006C13.7904 23.5483 14.2382 23.1006 14.7904 23.1006C15.3427 23.1006 15.7904 23.5483 15.7904 24.1006Z" fill="currentColor"/>
+<path d="M15.7904 31.7007C15.7904 32.253 15.3427 32.7007 14.7904 32.7007C14.2382 32.7007 13.7904 32.253 13.7904 31.7007C13.7904 31.1484 14.2382 30.7007 14.7904 30.7007C15.3427 30.7007 15.7904 31.1484 15.7904 31.7007Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0221 18.3005C23.0221 17.7483 23.4699 17.3004 24.0221 17.3004L33.3236 17.3005C33.6687 17.3005 33.9894 17.4785 34.1721 17.7712C34.3547 18.064 34.3735 18.4303 34.2218 18.7402L33.5069 20.2006L34.2218 21.661C34.3576 21.9384 34.3576 22.2629 34.2218 22.5403L33.5069 24.0007L34.2218 25.4611C34.3576 25.7385 34.3576 26.0631 34.2218 26.3405L33.5069 27.8008L34.2218 29.2612C34.3576 29.5386 34.3576 29.8632 34.2218 30.1406L33.5069 31.6009L34.2218 33.0613C34.3576 33.3387 34.3576 33.6633 34.2218 33.9407L33.5069 35.4011L34.2218 36.8614C34.3576 37.1388 34.3576 37.4634 34.2218 37.7408L33.5069 39.2012L34.2218 40.6616C34.3576 40.9389 34.3576 41.2635 34.2218 41.5409L33.2916 43.441C33.1238 43.7839 32.7753 44.0013 32.3935 44.0013L24.0221 44.0013C23.4699 44.0013 23.0221 43.5536 23.0221 43.0013C23.0221 42.449 23.4698 42.0013 24.0221 42.0013L31.7696 42.0013L32.2102 41.1012L31.4953 39.6409C31.3595 39.3635 31.3595 39.0389 31.4953 38.7615L32.2102 37.3011L31.4953 35.8407C31.3595 35.5633 31.3595 35.2388 31.4953 34.9614L32.2102 33.501L31.4953 32.0406C31.3595 31.7632 31.3595 31.4387 31.4953 31.1613L32.2102 29.7009L31.4953 28.2405C31.3595 27.9631 31.3595 27.6385 31.4953 27.3611L32.2102 25.9008L31.4953 24.4404C31.3595 24.163 31.3595 23.8384 31.4953 23.561L32.2102 22.1007L31.4953 20.6403C31.3595 20.3629 31.3595 20.0383 31.4953 19.7609L31.7207 19.3005L24.0221 19.3004C23.4699 19.3004 23.0221 18.8528 23.0221 18.3005Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">네 번에 한 번 이상 불편합니다</div>
+    <div class="v2-body">배변할 때 <b>네 번 중 한 번 이상</b> 힘주기·딱딱한 변·덜 나온 느낌·막힌 느낌·손으로 도와야 함 중 두 가지 이상.</div>
+    <div class="q-card__k">불편 두 가지 이상</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.2 4C27.8569 4 29.2 5.34315 29.2 7V11.8769C29.2 12.7103 28.9144 13.5172 28.3634 14.1676C27.8644 14.7568 27.2732 15.0716 26.8522 15.2434C26.064 15.565 25.2071 15.6459 24.6429 15.6823C24.0379 15.7213 23.36 15.7259 22.7505 15.73L22.6768 15.7305C22.0123 15.735 21.379 15.7403 20.7581 15.7731C19.4258 15.8434 18.6096 16.0283 18.1898 16.258C18.1063 16.3037 18.066 16.3367 18.0494 16.3529C18.2255 16.4205 18.4631 16.4925 18.7744 16.5615C20.1924 16.8759 22.1332 16.9383 24.5214 17.015L25.0984 17.0337C27.5102 17.1128 30.4236 17.2279 32.7451 17.9315C33.9361 18.2925 35.2493 18.8848 36.2859 19.9451C37.4045 21.0894 38 22.5752 38 24.2615C38 26.0512 37.289 27.5996 35.9694 28.6936C34.7921 29.6696 33.3442 30.1067 32.0942 30.3318C29.6993 30.7631 26.6763 30.622 24.1036 30.502L23.8608 30.4907C20.9864 30.3572 18.6275 30.2662 16.9768 30.5678C16.5988 30.6369 16.3228 30.7168 16.1294 30.793C16.0783 30.8131 16.036 30.8318 16.0014 30.8484C16.0073 31.0329 16.0307 31.1524 16.05 31.222C16.0712 31.2982 16.0916 31.3299 16.0979 31.3392C16.1027 31.3466 16.1605 31.4351 16.4274 31.5525C17.1024 31.8497 18.2904 31.9881 20.0269 31.9458C20.8178 31.9265 21.6166 31.8753 22.4349 31.8228L22.5152 31.8176C23.3257 31.7657 24.1994 31.7102 24.9757 31.7087C25.6783 31.7074 26.6714 31.741 27.5724 32.0533C28.0523 32.2196 28.7205 32.5362 29.2823 33.168C29.9031 33.8661 30.2 34.7318 30.2 35.6V41C30.2 42.6569 28.8569 44 27.2 44C25.5431 44 24.2 42.6569 24.2 41V37.73C23.8169 37.7474 23.3863 37.7741 22.8989 37.8054L22.7825 37.8128C21.9917 37.8636 21.0862 37.9217 20.1731 37.944C18.3596 37.9882 15.9976 37.9189 14.0101 37.0441C12.9513 36.578 11.8965 35.8407 11.1227 34.6929C10.3429 33.5363 10 32.1874 10 30.759C10 28.9705 10.7056 27.4201 12.0214 26.3204C13.1974 25.3374 14.6457 24.8945 15.8982 24.6656C18.3073 24.2254 21.3485 24.3671 23.9305 24.4874L24.1392 24.4971C27.0156 24.6307 29.3764 24.7247 31.0308 24.4268C31.4096 24.3586 31.6864 24.2794 31.8804 24.2038C31.9247 24.1865 31.9624 24.1703 31.9942 24.1556C31.9932 24.1475 31.9921 24.1407 31.9911 24.1351C31.9264 24.0716 31.6729 23.8761 31.0049 23.6736C29.5764 23.2407 27.4898 23.1154 24.9016 23.0304C24.673 23.0229 24.4395 23.0158 24.2022 23.0085H24.2022C22.0041 22.941 19.4789 22.8634 17.4756 22.4193C16.3536 22.1705 15.042 21.7394 13.9659 20.8637C12.7503 19.8745 12 18.4449 12 16.7179C12 15.4732 12.2828 14.2876 12.9161 13.2434C13.5465 12.2038 14.4151 11.4838 15.3102 10.9942C16.9904 10.075 18.9742 9.85886 20.4419 9.78141C21.221 9.7403 21.9877 9.73505 22.6357 9.73061C22.8378 9.72923 23.0253 9.7279 23.2 9.726V7C23.2 5.34315 24.5431 4 26.2 4Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">스스로 보는 횟수가 적습니다</div>
+    <div class="v2-body">약 없이 저절로 보는 배변이 <b>주 3회 미만</b>이면 함께 고려합니다.</div>
+    <div class="q-card__k">주 3회 미만</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 매일 못 봐도 정상일 수 있고, 매일 봐도 변비일 수 있습니다.</span><span class="v2-src">근거 · 로마 기준 IV · AGA/ACG 2023 만성변비 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 정상과 변비</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">매일 보지 않아도 건강할 수 있습니다</h2>
+  <p class="v2-sub">횟수보다 ‘편안함’과 ‘다 비웠는가’가 더 중요합니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">변비가 아닙니다</div><div class="v2-vs__lead">주 3회 이상, <b>편하게</b> 봅니다.</div><ul class="v2-vs__list"><li>매일 가지 않아도 편하면 정상입니다</li><li>매끈한 소시지 모양(3~4형) 변</li><li>힘주지 않고 한 번에 나옵니다</li><li>다 비운 느낌이 듭니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">변비로 봅니다</div><div class="v2-vs__lead">매일 봐도 <b>불편하면</b> 변비입니다.</div><ul class="v2-vs__list"><li>딱딱한 알갱이·덩어리 변(1~2형)</li><li>오래 힘을 줘야 나옵니다</li><li>덜 나온 느낌·막힌 느낌이 남습니다</li><li>치료 목표는 ‘매일’이 아니라 ‘편하게 다 비우기’</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 2주 동안 배변 일기(횟수·모양·힘주기)를 써 오시면 진료에 큰 도움이 됩니다.</span><span class="v2-src">근거 · 로마 기준 IV · 브리스톨 대변 척도</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 대변 모양</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">나의 변은 어떤 모양인가요?</h2>
+  <p class="v2-sub">브리스톨 대변 척도 — 1형(딱딱)부터 7형(물)까지, 목표는 3~4형</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/gi-chronic-constipation-s04-action-gi-ec81d1c5-20260530-raster-20260531.jpg" alt="대장 앞에 딱딱한 알갱이부터 물 같은 변까지 일곱 가지 대변 모양이 차례로 놓인 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 왼쪽 딱딱한 알갱이(1형)에서 오른쪽 묽은 변(7형)으로 갈수록 장을 빨리 지나간 변입니다(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">따로 떨어진 딱딱한 알갱이<span class="q-srow__tag">1형</span></div><div class="v2-body">심한 변비 — 힘주기·항문 통증·찢어짐이 잦습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">울퉁불퉁 단단한 소시지<span class="q-srow__tag">2형</span></div><div class="v2-body">변비 — 식사·물 보강과 약이 도움이 됩니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">매끈한 소시지<span class="q-srow__tag">3~4형 · 목표</span></div><div class="v2-body">힘주지 않고 한 번에 나오는 <b>가장 좋은 변</b>입니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">부드러운 덩어리 → 진흙 → 물<span class="q-srow__tag">5~7형</span></div><div class="v2-body">설사 쪽 — 7형이 계속되면 탈수 위험이 있어 진료가 필요합니다.</div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 변을 보고 몇 형인지 적어 두면 치료 효과를 스스로 확인할 수 있습니다.</span><span class="v2-src">근거 · 브리스톨 대변 척도 · Heaton & Lewis 1997</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 경고 신호</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이런 신호가 있으면 꼭 진료를 받으세요</h2>
+  <p class="v2-sub">하나라도 있으면 단순 변비로 넘기지 말고 대장내시경 등 검사가 필요합니다</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 4L23.3098 4.66021L23.3061 4.6638L23.2973 4.67227L23.2648 4.70366C23.2367 4.73095 23.1956 4.7709 23.1426 4.82303C23.0366 4.92728 22.8826 5.08029 22.6874 5.27827C22.297 5.67417 21.7417 6.25029 21.0763 6.97632C19.7465 8.42723 17.9719 10.4826 16.1951 12.8995C12.6815 17.6788 9 24.0809 9 30.0801C9 37.845 15.796 44 24 44C32.204 44 39 37.845 39 30.0801C39 24.0809 35.3185 17.6788 31.8049 12.8995C30.0281 10.4826 28.2535 8.42723 26.9237 6.97632C26.2583 6.25029 25.703 5.67417 25.3126 5.27827C25.1174 5.08029 24.9634 4.92728 24.8574 4.82303C24.8044 4.7709 24.7634 4.73095 24.7352 4.70366L24.7027 4.67227L24.6939 4.6638L24.6902 4.66021L24 4ZM15.4649 31.3985C15.2943 30.8716 14.7301 30.5833 14.2049 30.7545C13.6796 30.9257 13.3922 31.4915 13.5628 32.0183C14.3133 34.3349 15.7757 36.3536 17.7404 37.7853C19.7052 39.217 22.0714 39.9882 24.5 39.9882C25.0523 39.9882 25.5 39.5391 25.5 38.9852C25.5 38.4313 25.0523 37.9822 24.5 37.9822C22.4938 37.9822 20.5391 37.3452 18.916 36.1625C17.293 34.9798 16.0849 33.3121 15.4649 31.3985Z" fill="currentColor"/>
+</svg></div><b>피가 섞인 변 · 빈혈</b></div><div class="v2-body">변에 피가 섞이거나 대변 잠혈 검사가 양성, 이유를 모르는 철 결핍 빈혈은 대장암의 신호일 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 36C6 31.0347 17.9925 28 24 28C30.0075 28 42 31.0347 42 36V42H6V36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>나도 모르게 빠지는 체중</b></div><div class="v2-body">식사·운동 변화 없이 6개월 안에 체중이 5% 넘게 줄면 종양·대사 질환을&nbsp;의심합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 24C20.8675 24 24 20.8675 24 17C24 13.1325 20.8675 10 17 10C13.1325 10 10 13.1325 10 17C10 20.8675 13.1325 24 17 24Z" fill="currentColor"/>
+<path d="M39 20.5C39 23.5387 36.5387 26 33.5 26C30.4613 26 28 23.5387 28 20.5C28 17.4612 30.4613 15 33.5 15C36.5387 15 39 17.4612 39 20.5Z" fill="currentColor"/>
+<path d="M17 26C19.7336 26 24.183 26.8511 27.1011 28.5452C28.293 29.7585 29 31.0814 29 32.4V38H4V32.4C4 28.144 12.6612 26 17 26Z" fill="currentColor"/>
+<path d="M44 38H31V32.4C31 30.9837 30.4886 29.6801 29.6764 28.5166C31.2173 28.1725 32.7343 28 33.8927 28C37.6211 28 44 29.7867 44 33.3333V38Z" fill="currentColor"/>
+</svg></div><b>50세 이후 새로 생긴 변비 · 가족력</b></div><div class="v2-body">중년 이후 처음 생긴 변비, 대장암 가족력, 최근 갑자기 달라진 배변 습관은 대장내시경이 필요합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>만져지는 덩어리 · 심한 팽만 · 구토</b></div><div class="v2-body">배나 항문에 덩어리가 만져지거나 배가 심하게 부르고 토하면 장이 막혔을 수 있어 바로 진료받습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 경고 신호가 없으면 아래의 식사·생활습관·약으로 먼저 치료합니다.</span><span class="v2-src">근거 · AGA/ACG 2023 만성변비 지침 · 대한소화기학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 세 가지 유형</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">같은 변비라도 유형에 따라 치료가 다릅니다</h2>
+  <p class="v2-sub">정확히 나누는 것이 효과적인 치료의 시작입니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.2 4C27.8569 4 29.2 5.34315 29.2 7V11.8769C29.2 12.7103 28.9144 13.5172 28.3634 14.1676C27.8644 14.7568 27.2732 15.0716 26.8522 15.2434C26.064 15.565 25.2071 15.6459 24.6429 15.6823C24.0379 15.7213 23.36 15.7259 22.7505 15.73L22.6768 15.7305C22.0123 15.735 21.379 15.7403 20.7581 15.7731C19.4258 15.8434 18.6096 16.0283 18.1898 16.258C18.1063 16.3037 18.066 16.3367 18.0494 16.3529C18.2255 16.4205 18.4631 16.4925 18.7744 16.5615C20.1924 16.8759 22.1332 16.9383 24.5214 17.015L25.0984 17.0337C27.5102 17.1128 30.4236 17.2279 32.7451 17.9315C33.9361 18.2925 35.2493 18.8848 36.2859 19.9451C37.4045 21.0894 38 22.5752 38 24.2615C38 26.0512 37.289 27.5996 35.9694 28.6936C34.7921 29.6696 33.3442 30.1067 32.0942 30.3318C29.6993 30.7631 26.6763 30.622 24.1036 30.502L23.8608 30.4907C20.9864 30.3572 18.6275 30.2662 16.9768 30.5678C16.5988 30.6369 16.3228 30.7168 16.1294 30.793C16.0783 30.8131 16.036 30.8318 16.0014 30.8484C16.0073 31.0329 16.0307 31.1524 16.05 31.222C16.0712 31.2982 16.0916 31.3299 16.0979 31.3392C16.1027 31.3466 16.1605 31.4351 16.4274 31.5525C17.1024 31.8497 18.2904 31.9881 20.0269 31.9458C20.8178 31.9265 21.6166 31.8753 22.4349 31.8228L22.5152 31.8176C23.3257 31.7657 24.1994 31.7102 24.9757 31.7087C25.6783 31.7074 26.6714 31.741 27.5724 32.0533C28.0523 32.2196 28.7205 32.5362 29.2823 33.168C29.9031 33.8661 30.2 34.7318 30.2 35.6V41C30.2 42.6569 28.8569 44 27.2 44C25.5431 44 24.2 42.6569 24.2 41V37.73C23.8169 37.7474 23.3863 37.7741 22.8989 37.8054L22.7825 37.8128C21.9917 37.8636 21.0862 37.9217 20.1731 37.944C18.3596 37.9882 15.9976 37.9189 14.0101 37.0441C12.9513 36.578 11.8965 35.8407 11.1227 34.6929C10.3429 33.5363 10 32.1874 10 30.759C10 28.9705 10.7056 27.4201 12.0214 26.3204C13.1974 25.3374 14.6457 24.8945 15.8982 24.6656C18.3073 24.2254 21.3485 24.3671 23.9305 24.4874L24.1392 24.4971C27.0156 24.6307 29.3764 24.7247 31.0308 24.4268C31.4096 24.3586 31.6864 24.2794 31.8804 24.2038C31.9247 24.1865 31.9624 24.1703 31.9942 24.1556C31.9932 24.1475 31.9921 24.1407 31.9911 24.1351C31.9264 24.0716 31.6729 23.8761 31.0049 23.6736C29.5764 23.2407 27.4898 23.1154 24.9016 23.0304C24.673 23.0229 24.4395 23.0158 24.2022 23.0085H24.2022C22.0041 22.941 19.4789 22.8634 17.4756 22.4193C16.3536 22.1705 15.042 21.7394 13.9659 20.8637C12.7503 19.8745 12 18.4449 12 16.7179C12 15.4732 12.2828 14.2876 12.9161 13.2434C13.5465 12.2038 14.4151 11.4838 15.3102 10.9942C16.9904 10.075 18.9742 9.85886 20.4419 9.78141C21.221 9.7403 21.9877 9.73505 22.6357 9.73061C22.8378 9.72923 23.0253 9.7279 23.2 9.726V7C23.2 5.34315 24.5431 4 26.2 4Z" fill="currentColor"/>
+</svg></div><b>장 운동은 정상 — 가장 흔함</b></div><div class="v2-body">변이 굳어 불편합니다. 배가 아프고 부글거리면 변비형 과민성장증후군입니다. <b>수용성 섬유질과 PEG</b>로 대부분 좋아집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M27.2501 6C28.3415 6 29.3543 6.33661 30.1904 6.91167C29.9539 7.28228 29.7477 7.68802 29.5714 8.12871C29.3663 8.6415 29.6157 9.22347 30.1285 9.42857C30.6413 9.63368 31.2233 9.38425 31.4284 8.87146C31.8542 7.80688 32.4624 7.12162 33.2401 6.6842C33.9833 6.26621 34.9539 6.0341 36.211 6.00364C39.427 6.11479 42 8.75692 42 12C42 13.5367 41.4223 14.9385 40.4722 16C41.4223 17.0615 42 18.4633 42 20C42 21.9858 41.0353 23.7463 39.5489 24.8384C41.0206 25.7554 42 27.3884 42 29.2501C42 32.1189 39.6744 34.4446 36.8056 34.4446C35.0314 34.4446 33.4649 33.5551 32.5278 32.1977C32.1668 32.7207 31.7123 33.1742 31.1885 33.5342C30.4115 35.1254 30.0492 36.3993 30 38.1317V42H26V37.32C25.8819 35.7752 25.4006 34.5096 24.4522 32.7939C23.5859 31.8658 23.0557 30.6199 23.0557 29.2501C23.0557 26.3813 25.3813 24.0557 28.2501 24.0557C29.0247 24.0557 29.7598 24.2252 30.4201 24.5293C30.8926 24.7945 31.2397 25.0628 31.5101 25.3602C31.9689 25.8649 32.2894 26.5459 32.5194 27.6961C32.6277 28.2377 33.1545 28.5889 33.6961 28.4806C34.2377 28.3723 34.5889 27.8455 34.4806 27.3039C34.2106 25.9542 33.7811 24.8851 32.9899 24.0148C32.3349 23.2943 31.4916 22.7771 30.4656 22.3214C30.1657 21.6074 30 20.823 30 20C30 18.4633 30.5777 17.0615 31.5278 16C31.2507 15.6905 31.0054 15.352 30.7967 14.9897C29.8684 15.8576 28.6213 16.3889 27.2501 16.3889C25.4933 16.3889 23.9402 15.5167 23.0001 14.1818C22.06 15.5167 20.5069 16.3889 18.7501 16.3889C17.2616 16.3889 15.9193 15.7628 14.9723 14.7596C14.7216 15.0251 14.4433 15.2642 14.1419 15.4723C15.4994 16.4093 16.3889 17.9758 16.3889 19.7501C16.3889 20.8063 16.0737 21.7888 15.5323 22.6088C14.5043 21.8918 13.3565 21.5 12.0001 21.5C11.4478 21.5 11.0001 21.9477 11.0001 22.5C11.0001 23.0523 11.4478 23.5 12.0001 23.5C13.1662 23.5 14.1503 23.9091 15.1536 24.8872C15.924 25.7934 16.3889 26.9675 16.3889 28.2501C16.3889 30.0855 15.437 31.6985 14 32.6225V35.5C14 36.3284 13.3284 37 12.5 37C11.6716 37 11 36.3284 11 35.5V33.441C8.22129 33.3387 6.00003 31.0538 6.00003 28.2501C6.00003 26.4933 6.87217 24.9402 8.20712 24.0001C6.87217 23.06 6.00003 21.5069 6.00003 19.7501C6.00003 17.9758 6.88958 16.4094 8.24702 15.4723C6.88956 14.5352 6 12.9687 6 11.1944C6 8.32563 8.32563 6 11.1944 6C12.6829 6 14.0252 6.62609 14.9723 7.62928C15.9193 6.62609 17.2616 6 18.7501 6C20.5069 6 22.06 6.87215 23.0001 8.20709C23.9402 6.87215 25.4933 6 27.2501 6Z" fill="currentColor"/>
+</svg></div><b>장이 느린 유형</b></div><div class="v2-body">며칠씩 변의가 없고 섬유질·일반 변비약이 잘 듣지 않습니다. <b>장 운동을 돕는 처방약</b>을 씁니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>출구가 안 열리는 유형</b></div><div class="v2-body">힘줄 때 항문 주위 근육이 오히려 조입니다. 근육 푸는 법을 다시 익히는 <b>바이오피드백</b>이 약보다 낫습니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/gi-chronic-constipation-s06-comparison-gi-c3e55856-20260530-raster-20260531.jpg" alt="시계가 그려진 느린 대장, 골반 바닥 근육, 붉게 부푼 대장 세 장면">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 느린 장(왼쪽), 출구 근육(가운데), 부글거리는 장(오른쪽) — 원인이 다른 세 가지 변비입니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 장이 느린 유형은 섬유질만 늘리면 오히려 더 부를 수 있습니다.</span><span class="v2-src">근거 · 로마 기준 IV 유형 분류 · ACG 2021</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 변비약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오래 써도 되는 약과 가끔만 쓰는 약을 나눕니다</h2>
+  <p class="v2-sub">모든 변비약이 같지 않습니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:592px"><colgroup><col style="width:170px"><col style="width:422px"></colgroup><thead><tr><th>약</th><th>얼마나 써도 되나</th></tr></thead><tbody><tr><th style="height:84px">PEG(마크로골)</th><td style="height:84px"><b>오래 써도 안전합니다</b> — 장에 물을 붙잡아 변을 부드럽게 하고, 장을 자극하지 않아 내성·의존이 없습니다</td></tr><tr><th style="height:84px">산화마그네슘</th><td style="height:84px">효과적이지만 콩팥 기능이 떨어졌거나 나이가 많으면 혈중 마그네슘을 정기적으로 확인합니다</td></tr><tr><th style="height:84px">비사코딜(둘코락스)</th><td style="height:84px">장을 자극해 밀어내는 약 — 막혔을 때만 쓰는 <b>구조용</b>, 4주&nbsp;이내로</td></tr><tr><th style="height:84px">센나·알로에·디톡스 차</th><td style="height:84px">‘천연’ 이름의 자극성 성분 — 오래 쓴 안전성 근거가 부족해 <b>매일 마시지 않습니다</b></td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:688px;top:206px;width:528px;height:297px">
+    <img class="v2-fig__img q-fig__img" style="width:528px;height:297px" src="../../../shared/assets/generated/gi-chronic-constipation-s07-risk-gi-1a2d86d2-20260530-raster-20260531.jpg" alt="물에 타는 가루약, 알약, 알로에 잎, 기록지와 장 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:688px;top:515px;width:528px;height:91px"><div class="q-figcap__t">그림 · 물에 타 먹는 가루약(PEG), 알약, ‘천연’ 차 — 성분에 따라 쓰는 기간이 다릅니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 잘 듣지 않으면 장 운동을 돕는 처방약(리나클로타이드·프루칼로프라이드 등)도 지침이 권하는 선택지입니다.</span><span class="v2-src">근거 · AGA/ACG 2023 만성변비 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 식사</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">근거가 있는 식사 — 효과가 확인된 것부터</h2>
+  <p class="v2-sub">권하는 음식과 권하지 않는 음식</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">권합니다</div><div class="v2-vs__lead">효과가 확인된 것부터 차례로 해 봅니다.</div><ul class="v2-vs__list"><li>그린키위 하루 2개(껍질 벗겨서)</li><li>차전자피 — 물 200mL 이상과 함께</li><li>푸룬(말린 자두) 하루 50~100g — 과민성장에는 맞지 않음</li><li>수용성 섬유질이 많은 채소·과일</li><li>비피더스 유산균 — 4주 넘게, 보조로</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">권하지 않습니다</div><div class="v2-vs__lead">효과가 없거나 오히려 불편해집니다.</div><ul class="v2-vs__list"><li>밀기울 — 가스·더부룩함이 심해질 수 있음</li><li>이눌린 — 과민성장 변비에서 배가 부름</li><li>알로에 전잎·숙변 제거 차·다이어트 차</li><li>변 연화제(도큐세이트) — 효과가 확인 안 됨</li><li>억지로 물을 많이 마시기 — 근거 부족</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 물은 탈수를 막을 만큼이면 충분합니다 — 억지로 더 마신다고 변비가 낫지는 않습니다.</span><span class="v2-src">근거 · 만성변비 생활요법 근거 · 키위 무작위 연구 2021</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 배변 습관</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">약보다 중요한 생활습관 여섯 가지</h2>
+  <p class="v2-sub">배변 습관을 다시 들이면 작은 실천이 큰 변화를 만듭니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:440px;height:248px">
+    <img class="v2-fig__img q-fig__img" style="width:440px;height:248px" src="../../../shared/assets/generated/gi-chronic-constipation-s09-action-gi-395f548b-20260530-raster-20260531.jpg" alt="채소·곡물, 물 한 잔, 걷기, 발판 놓인 변기, 시계를 대장 둘레에 배치한 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:466px;width:440px;height:140px"><div class="q-figcap__t">그림 · 먹고, 마시고, 걷고, 정해진 시간에 발판을 딛고 앉는 하루(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:536px;top:206px;width:680px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">변의가 오면 참지 않기<span class="q-srow__tag">가장 중요</span></div><div class="v2-body">참기를 되풀이하면 신호를 못 느끼게 됩니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">식후 15~30분에 앉아 보기<span class="q-srow__tag">식후</span></div><div class="v2-body">밥을 먹으면 장이 움직이는 반사가 가장 강합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">같은 시간에 5~10분<span class="q-srow__tag">매일</span></div><div class="v2-body">아침 식사 뒤처럼 시간을 정해 두면 장 리듬이 생깁니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">하루 30분 걷기<span class="q-srow__tag">가벼운 운동</span></div><div class="v2-body">걷기·요가 정도로 충분합니다.</div></div></div><div class="q-srow"><span class="q-srow__n">5</span><div class="q-srow__c"><div class="q-srow__h">물은 하루 1.5~2L<span class="q-srow__tag">탈수 막기</span></div><div class="v2-body">더 많이 마신다고 낫지는 않습니다.</div></div></div><div class="q-srow"><span class="q-srow__n">6</span><div class="q-srow__c"><div class="q-srow__h">발판 딛고 앉기<span class="q-srow__tag">선택</span></div><div class="v2-body">무릎이 올라가 나오는 길이 곧게 펴집니다.</div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 변비의 가장 큰 적은 ‘참는 습관’입니다.</span><span class="v2-src">근거 · ACG 2021 생활요법 · 배변 훈련 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 잘 안 들을 때</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">기본 치료로 안 좋아지면 — 단계별로 찾아갑니다</h2>
+  <p class="v2-sub">식사·생활습관·일반 변비약으로도 나아지지 않을 때</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">1</div><div class="q-step__h">기본 치료 점검</div><div class="q-step__tag">6개월 넘게</div><div class="v2-body">식사·습관·변비약에도 계속되면, 먹는 약 중 원인이 있는지 봅니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:359px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">2</div><div class="q-step__h">항문·직장 검사</div><div class="q-step__tag">전문 검사</div><div class="v2-body">항문 근육 압력을 재는 검사와 작은 풍선을 밀어내 보는 검사로 출구 기능을 봅니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:654px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">3</div><div class="q-step__h">유형 확정</div><div class="q-step__tag">진단</div><div class="v2-body">출구형·느린 장·섞인 형 중 어디인지 정합니다.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:949px;top:206px;width:267px;height:300px">
+    <div class="q-step__n">4</div><div class="q-step__h">맞춤 치료</div><div class="q-step__tag">치료</div><div class="v2-body">출구형은 바이오피드백 4~6회, 느린 장은 장 운동을 돕는 처방약.</div>
+  </div>
+  <div class="q-arrow" style="left:337px;top:242px"></div>
+  <div class="q-arrow" style="left:632px;top:242px"></div>
+  <div class="q-arrow" style="left:927px;top:242px"></div>
+  <div class="v2-panel q-inline-p v2-panel--accent" style="left:64px;top:530px;width:1152px;height:76px">
+    <div class="q-inline"><b>최근 시작한 약을 확인하세요</b> 진통제·칼슘제·철분제·혈압약·항우울제가 변비를 일으킬 수 있습니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 새로 생긴 변비라면 최근 바뀐 약부터 진료 때 알려 주세요.</span><span class="v2-src">근거 · AGA/ACG 2023 만성변비 지침 · 대한소화기기능성질환·운동학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 오늘 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 여덟 가지</h2>
+  <p class="v2-sub">변비는 참는 병이 아니라 치료하는 병입니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">목표는 ‘매일’이 아니라 ‘편하게 다 비우기’</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">PEG(마크로골)는 오래 써도 장을 망가뜨리지 않습니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">‘천연·디톡스 차’를 매일 마시는 것이 가장 위험합니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">변의가 오면 바로 — 참는 것이 가장 큰 적</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">그린키위 2개 + 차전자피 + 적당한 물로 시작</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">‘출구가 막힌 느낌’이 계속되면 바이오피드백</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">50세 이후 새 변비·피 섞인 변·체중 감소는 대장내시경</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:518px;width:564px;height:88px"><span class="q-chk__n">08</span><span class="q-chk__t">2주 배변 일기를 써서 진료 때 함께 봅니다</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 궁금한 점은 진료 때 언제든 물어보세요.</span><span class="v2-src">근거 · AGA/ACG 2023 만성변비 지침 · 로마 기준 IV</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">만성변비로 불편한 분과 가족을 위한 설명자료입니다. 약 선택과 검사는 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">AGA/ACG 2023 만성변비 지침 · ACG 2021 · 로마 기준 IV · 브리스톨 대변 척도 · 대한소화기학회 · 키위 무작위 연구 2021</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM12,2H13V3H12zM14,2H15V3H14zM15,2H16V3H15zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM13,3H14V4H13zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM20,3H21V4H20zM23,3H24V4H23zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM16,5H17V6H16zM19,5H20V6H19zM24,5H25V6H24zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM14,6H15V7H14zM15,6H16V7H15zM17,6H18V7H17zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM20,7H21V8H20zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM12,9H13V10H12zM13,9H14V10H13zM14,9H15V10H14zM16,9H17V10H16zM18,9H19V10H18zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM14,10H15V11H14zM15,10H16V11H15zM16,10H17V11H16zM19,10H20V11H19zM24,10H25V11H24zM25,10H26V11H25zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM2,11H3V12H2zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM7,11H8V12H7zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM13,11H14V12H13zM18,11H19V12H18zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM2,12H3V13H2zM5,12H6V13H5zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM11,12H12V13H11zM12,12H13V13H12zM14,12H15V13H14zM17,12H18V13H17zM18,12H19V13H18zM20,12H21V13H20zM22,12H23V13H22zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM2,13H3V14H2zM10,13H11V14H10zM14,13H15V14H14zM16,13H17V14H16zM18,13H19V14H18zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM27,13H28V14H27zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM2,14H3V15H2zM3,14H4V15H3zM5,14H6V15H5zM8,14H9V15H8zM11,14H12V15H11zM14,14H15V15H14zM19,14H20V15H19zM21,14H22V15H21zM22,14H23V15H22zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM3,15H4V16H3zM5,15H6V16H5zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM11,15H12V16H11zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM25,15H26V16H25zM28,15H29V16H28zM29,15H30V16H29zM33,15H34V16H33zM34,15H35V16H34zM2,16H3V17H2zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM14,16H15V17H14zM17,16H18V17H17zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM27,16H28V17H27zM28,16H29V17H28zM31,16H32V17H31zM33,16H34V17H33zM3,17H4V18H3zM4,17H5V18H4zM5,17H6V18H5zM6,17H7V18H6zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM16,17H17V18H16zM18,17H19V18H18zM20,17H21V18H20zM21,17H22V18H21zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM27,17H28V18H27zM28,17H29V18H28zM29,17H30V18H29zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM14,18H15V19H14zM19,18H20V19H19zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM34,18H35V19H34zM2,19H3V20H2zM3,19H4V20H3zM6,19H7V20H6zM7,19H8V20H7zM10,19H11V20H10zM13,19H14V20H13zM15,19H16V20H15zM16,19H17V20H16zM18,19H19V20H18zM21,19H22V20H21zM22,19H23V20H22zM25,19H26V20H25zM26,19H27V20H26zM28,19H29V20H28zM29,19H30V20H29zM31,19H32V20H31zM32,19H33V20H32zM34,19H35V20H34zM3,20H4V21H3zM5,20H6V21H5zM6,20H7V21H6zM8,20H9V21H8zM10,20H11V21H10zM11,20H12V21H11zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM23,20H24V21H23zM24,20H25V21H24zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM3,21H4V22H3zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM10,21H11V22H10zM16,21H17V22H16zM23,21H24V22H23zM24,21H25V22H24zM27,21H28V22H27zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM12,22H13V23H12zM17,22H18V23H17zM19,22H20V23H19zM21,22H22V23H21zM22,22H23V23H22zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM2,23H3V24H2zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM9,23H10V24H9zM13,23H14V24H13zM14,23H15V24H14zM16,23H17V24H16zM18,23H19V24H18zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM2,24H3V25H2zM4,24H5V25H4zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM15,24H16V25H15zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM24,24H25V25H24zM26,24H27V25H26zM27,24H28V25H27zM30,24H31V25H30zM31,24H32V25H31zM33,24H34V25H33zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM6,25H7V26H6zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM16,25H17V26H16zM18,25H19V26H18zM21,25H22V26H21zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM32,25H33V26H32zM2,26H3V27H2zM6,26H7V27H6zM8,26H9V27H8zM11,26H12V27H11zM12,26H13V27H12zM15,26H16V27H15zM16,26H17V27H16zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM33,26H34V27H33zM34,26H35V27H34zM10,27H11V28H10zM16,27H17V28H16zM18,27H19V28H18zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM32,27H33V28H32zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM11,28H12V29H11zM15,28H16V29H15zM16,28H17V29H16zM17,28H18V29H17zM22,28H23V29H22zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM12,29H13V30H12zM13,29H14V30H13zM15,29H16V30H15zM18,29H19V30H18zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM10,30H11V31H10zM12,30H13V31H12zM14,30H15V31H14zM16,30H17V31H16zM19,30H20V31H19zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM15,31H16V32H15zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM31,31H32V32H31zM33,31H34V32H33zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM22,32H23V33H22zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM17,33H18V34H17zM20,33H21V34H20zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM25,33H26V34H25zM28,33H29V34H28zM30,33H31V34H30zM31,33H32V34H31zM32,33H33V34H32zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM15,34H16V35H15zM16,34H17V35H16zM19,34H20V35H19zM20,34H21V35H20zM21,34H22V35H21zM24,34H25V35H24zM25,34H26V35H25zM26,34H27V35H26zM29,34H30V35H29zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -771,96 +401,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

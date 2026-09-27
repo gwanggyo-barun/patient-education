@@ -22,34 +22,70 @@
 <link rel="stylesheet" href="../../../shared/clinic-slides.css">
 <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
 <style>
+ /* HQ3D-redesign 2026-09-27 (원장님 49028) — 한 가지 틀 반복·작은 글자·글 벽·빈칸을
+    결론 카드·대비 2단·표·가로 흐름·2x2·그림 분할로 바꿨다. 그림칸 비율 = 원본 비율(잘림·레터박스 없음).
+    제목 36px·본문 16~17px·표 셀 16px(reference/deck-design-proportions.md §1). */
  body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
- .v2-cite{font-size:13px;color:var(--color-steel-deep);text-decoration:none;border-bottom:1px dotted var(--color-steel-deep);white-space:nowrap}
- .v2-noanchor{font-size:12px;color:var(--color-warning);background:var(--color-warning-bg);border-radius:4px;padding:1px 6px;white-space:nowrap}
- .v2-reflist{margin:4px 0 0 0;padding-left:18px;font-size:13px;line-height:1.75}
- .v2-reflist a{color:var(--color-steel-deep);text-decoration:none}
  section.slide--v2{margin:0 auto 28px}
- /* 본문 밀도 — 실측 넘침(패널당 14~91px)에 맞춘 조정. 슬라이드 기하는 v2 규격 그대로 둔다. */
- /* v2 규격(본문 16px/1.6·패널 24px)을 그대로 쓴다 — 넘치면 글씨가 아니라 문장을 줄인다 */
- /* 텍스트 패널만 안쪽 여백을 줄인다 — 슬라이드 기하(206/400)는 v2 규격 그대로 유지 */
- /* 2026-08-22: 새 게이트 실측 — 3·4·5·6·7·8·11 장에서 본문이 패널 밖 14px 넘쳐 잘렸다.
-    (8/21 dcc8a68 로 문장을 쉬운 말로 풀면서 늘어난 분량. 게이트가 없어 못 봤다.)
-    임상 내용은 그대로 두고 블록 사이 여백만 줄여 회수한다 — 글씨 크기·문장은 안 건드린다. */
- .v2-panel .v2-block{margin-bottom:4px}
- /* 실측: 블록 사이 간격이 mb4 + 공용 CSS 의 mt14 = 18px 였다. 그중 7px 씩만 회수하면
-    두 간격에서 14px = 넘침 전량이 사라진다(내용·글씨 무접촉). */
- .v2-panel .v2-block + .v2-block{margin-top:7px}
- .v2-panel .v2-block:last-child{margin-bottom:0}
- .v2-panel .v2-step:last-child{margin-bottom:0}
- .v2-reflist{font-size:12px;line-height:1.6}
- .v2-step{margin-bottom:6px}
- .v2-panel--accent .v2-stat{margin-bottom:10px}
- /* 도해 패널 — 임상 도해는 잘리면 오독되므로 contain 고정 */
- .v2-panel--fig{display:flex;flex-direction:column;background:#FFF;border:1px solid var(--v2-line)}
- .v2-fig{display:flex;flex-direction:column;height:100%;width:100%}
- .v2-fig__img{flex:1 1 auto;width:100%;height:100%;object-fit:contain;min-height:0}
- .v2-fig__ph{flex:1 1 auto;display:flex;align-items:center;justify-content:center;
-   background:var(--v2-surface);color:var(--v2-faint);font-size:14px;border-radius:6px}
- .v2-fig__cap{flex:0 0 auto;padding-top:8px;font-size:12px;color:#64748B;line-height:1.45}
+ .slide--v2 .v2-title{font-size:36px;line-height:42px;top:96px;letter-spacing:-.5px}
+ .slide--v2 .v2-sub{top:146px}
+ .v2-tip{justify-content:space-between;gap:16px;font-size:14px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap;max-width:520px;overflow:hidden;text-overflow:ellipsis}
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:10px}
+ .q-text .v2-body{font-size:16.5px;line-height:1.6}
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none;overflow:visible}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-card{display:flex;flex-direction:column;padding:26px 24px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:40px;font-weight:800;line-height:1;color:var(--v2-navy);letter-spacing:-1px}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:16.5px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ .q-table thead th{font-size:16px}
+ .q-table tbody th{font-size:16.5px}
+ .q-table tbody td{font-size:16px;height:60px}
+ .q-table--tall tbody th,.q-table--tall tbody td{height:66px}
+ .q-table--short tbody th,.q-table--short tbody td{height:54px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:16px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:16.5px;padding:12px 0 12px 22px}
+ .v2-vs__list li::before{top:21px}
+ .q-four{display:flex;flex-direction:column;justify-content:center}
+ .q-four .v2-head{margin-bottom:10px}
+ .q-four .v2-head b{font-size:20px}
+ .q-four .v2-body{font-size:17px;line-height:1.65}
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-step__tag{align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--chip);color:var(--v2-navy);font-size:15px;font-weight:800;margin-bottom:14px}
+ .q-step__h{font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.35;margin-bottom:12px;word-break:keep-all}
+ .q-step .v2-body{font-size:16px;line-height:1.62}
+ .q-arrow{position:absolute;width:18px;height:18px;border-top:4px solid var(--v2-accent);border-right:4px solid var(--v2-accent);transform:rotate(45deg)}
+ .q-stat{display:flex;flex-direction:column;justify-content:center}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1.05;letter-spacing:-1.5px}
+ .q-stat__cap{margin-top:10px;font-size:16px;color:var(--v2-body);line-height:1.5;word-break:keep-all;font-weight:600}
+ .q-stat__body{margin-top:12px;padding-top:12px;border-top:1px solid var(--v2-line);font-size:15.5px}
+ .q-strip{display:flex;flex-direction:column;justify-content:center;padding:14px 24px}
+ .q-strip .v2-head{margin-bottom:6px}
+ .q-strip .v2-body{font-size:16.5px}
+ .q-row{display:flex;align-items:center;gap:20px;padding:10px 22px}
+ .q-row__tag{flex:none;width:88px;text-align:center;padding:8px 0;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:800}
+ .q-row__h{font-size:19px;font-weight:700;color:var(--v2-navy);margin-bottom:2px;line-height:1.3;word-break:keep-all}
+ .q-row .v2-body{font-size:16px;line-height:1.55}
+ .q-note{position:absolute;font-size:15px;line-height:1.55;color:var(--v2-body);word-break:keep-all}
+ .q-refs{font-size:15px;line-height:1.6}
+ .q-refs li{margin-bottom:6px}
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-table--drug tbody th,.q-table--drug tbody td{height:118px}
+ .v2-cite{font-size:15px;color:var(--color-steel-deep);text-decoration:none;border-bottom:1px dotted var(--color-steel-deep);white-space:nowrap}
 </style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
@@ -65,215 +101,310 @@
   </div>
   <footer class="slide__footer">
     <span class="slide__source">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</span>
-    <span class="slide__page">01 / 14</span>
-  </footer>
+    <span class="slide__page">01 / 13</span>
+    </footer>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 01 · DEFINITION</div>
+  <div class="v2-chapter">CHAPTER 01 · 정의·감별</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">진성 경련인가, 아닌가 — 첫 갈림길은 병력 청취다</h2>
-  <p class="v2-sub">환자의 "쥐가 난다"는 표현 안에 서로 다른 질환이 섞여 있습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>진성 경련(true cramp)이란</b></div><div class="v2-body">근육 하나 또는 한 무리가 갑자기 제멋대로 수축해 몹시 아픈 상태입니다. 쥐가 난 근육이 <b>눈에 보이거나 손으로 만져질 만큼 단단하게</b> 뭉칩니다. 수 초~수 분(드물게 10분) 이어지고, 풀린 뒤에도 누르면 아픈 통증·근육통이 <b>수 시간~48~72시간</b> 남을 수 있습니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>쥐와 헷갈리기 쉬운 것들</b></div><div class="v2-body"><b>근경직</b> — 근전도에 전기 신호가 없고 스트레칭으로 안 풀림 · <b>근간대경련</b> — 0.2초 이내로 짧게 홱 움직임, 통증 없음 · <b>근긴장이상</b> — 반대 방향 근육이 함께 수축해 자세가 비틀림 · <b>테타니</b> — 양쪽에 대칭으로, Chvostek·Trousseau 징후 양성 · <b>하지불안증후군</b> — 움직이고 싶은 충동만 있고 실제로 뭉치지는 않음(국내 유병률 5.4~7.5%). <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <h2 class="v2-title">진성 경련인가 — 첫 갈림길은 병력 청취</h2>
+  <p class="v2-sub">50세 이상 성인의 33%(60세 이상에서는 약 50%)가 겪습니다 — “쥐가 난다” 안에 다른 질환이 섞여 있습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:500px;height:224px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.1338 19.672L21.3303 4.79C21.4293 4.32915 21.8367 4 22.308 4H32.8652C33.4674 4 33.9345 4.52795 33.8141 5.118C32.2655 12.7051 25 20.8205 25 20.8205L26.281 22.9751C27.0763 24.313 27.4642 25.8539 27.397 27.4089L27 36.5897L28.8435 38.8508C29.555 39.7234 29.7258 40.9179 29.2873 41.9549L29.2317 42.0866C28.5688 43.6545 26.707 44.3203 25.2002 43.5283C24.4231 43.1199 23.5305 42.9872 22.6682 43.152L18.6861 43.9132C18.5623 43.9368 18.4366 43.9487 18.3106 43.9487H15C13.8954 43.9487 13 43.0533 13 41.9487V40.7949H16L22.5 38.1667L18.301 25.4141C18.1016 24.8086 18 24.1751 18 23.5376V20.932C18 20.5084 18.0448 20.0861 18.1338 19.672Z" fill="currentColor"/>
+</svg></div><b>진성 경련(true cramp)이란</b></div><div class="v2-body">근육이 갑자기 제멋대로 수축해 몹시 아프고, <b>손으로 만져질 만큼 단단히</b> 뭉칩니다. 수 초~수 분(드물게 10분) 이어지고, 풀린 뒤 압통이 48~72시간 남기도 합니다.</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">33<span>%</span></div><div class="v2-stat__cap">50세 이상 성인이 야간 하지 경련을 경험<br>(60세 이상에서는 약 50%)<br><span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-step"><i>1</i><span>정말 <b>뭉치는가</b> — 손으로 만져지는지</span></div><div class="v2-step"><i>2</i><span>스트레칭으로 <b>즉각 풀리는가</b></span></div><div class="v2-step"><i>3</i><span>쉴 때인가 <b>움직일 때인가</b></span></div>
+  <div class="v2-panel q-text v2-panel--accent" style="left:64px;top:446px;width:500px;height:160px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 36C6 31.0347 17.9925 28 24 28C30.0075 28 42 31.0347 42 36V42H6V36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>병력에서 묻는 세 가지</b></div><div class="v2-body">정말 뭉치는가 · 스트레칭으로 바로 풀리는가 · 쉴 때인가 움직일&nbsp;때인가.</div></div>
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · 활동 중에만 생기는 종아리 통증은 경련이 아니라 <b>말초동맥질환·척추관협착증</b>을 먼저 의심합니다.</span></div>
+  <table class="v2-table q-table q-table--tall" style="left:596px;top:206px;width:620px"><colgroup><col style="width:190px"><col style="width:430px"></colgroup><thead><tr><th>헷갈리는 것</th><th>구별점</th></tr></thead><tbody><tr><th>근구축(contracture)</th><td>겉보기엔 쥐 같지만 근전도가 조용함(<b>전기적 침묵</b>) · 스트레칭으로 안 풀림</td></tr><tr><th>근간대경련</th><td>0.2초 이내로 짧게 홱 움직임 · 통증 없음</td></tr><tr><th>근긴장이상</th><td>반대 방향 근육이 함께 수축해 자세가 비틀림</td></tr><tr><th>테타니</th><td>양쪽 대칭 · Chvostek·Trousseau 징후 양성</td></tr><tr><th>하지불안증후군</th><td>움직이고 싶은 충동만 · 실제로 뭉치지 않음(국내 유병률 5.4~7.5%)</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 활동 중에만 생기는 종아리 통증은 경련이 아니라 말초동맥질환·척추관협착증을 먼저 의심합니다.</span><span class="v2-src">근거 · 원문 임상 지침 요약 · 개별 문헌 앵커 없음</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">02 / 14</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 02 · PATHOPHYSIOLOGY</div>
+  <div class="v2-chapter">CHAPTER 02 · 기전</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">근육의 병이 아니라 신경의 과흥분이다</h2>
-  <p class="v2-sub">치료 선택이 바뀌는 지점입니다 — 전해질 교정만으로 설명되지 않습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>말초 운동신경 과흥분 가설</b></div><div class="v2-body">경련 신호는 근육이 아니라 <b>운동신경 끝</b>에서 시작합니다(근전도). <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>근육 속 감지기(근방추·골지건기관) 불균형</b></div><div class="v2-body">근육이 짧아진 채 피로가 쌓이면 흥분은 늘고 억제는 줄어듭니다. <b>스트레칭이 바로 듣는 이유</b>입니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>TRP 채널 매개 가설 — 왜 즉효인가</b></div><div class="v2-body">TRP 채널이 자극되면 척수 억제 경로로 과흥분이 곧바로 가라앉습니다. <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/28192854/">PMID 28192854</a></div></div>
+  <h2 class="v2-title">근육의 병이 아니라 신경의 과흥분입니다</h2>
+  <p class="v2-sub">치료 선택이 바뀌는 지점 — 전해질 교정만으로 설명되지 않습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:720px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.4376 8.12324C25.6644 8.6268 25.4401 9.21889 24.9365 9.44571C23.2008 10.2275 21.9943 11.9686 21.9875 13.9902L21.9875 14.0073L21.9875 14.0245C21.9967 16.7781 24.2317 19.0074 26.9874 19.0074C29.5665 19.0074 31.6906 17.0539 31.9588 14.5465C32.0175 13.9973 32.5103 13.5998 33.0595 13.6585C33.6086 13.7173 34.0062 14.2101 33.9474 14.7592C33.7892 16.2386 33.1705 17.5801 32.2374 18.6375C33.7386 18.9749 35.0575 19.7946 36.0215 20.9234C36.3801 21.3434 36.3304 21.9746 35.9104 22.3333C35.4904 22.6919 34.8592 22.6422 34.5006 22.2222C33.582 21.1465 32.2191 20.4672 30.6964 20.4672C27.935 20.4672 25.6964 22.7057 25.6964 25.4672C25.6964 26.5014 26.0094 27.4597 26.5457 28.256L26.5527 28.2651C26.6183 28.351 26.6679 28.4442 26.7019 28.541C26.7271 28.6109 26.7441 28.6826 26.7531 28.7549C27.0857 28.7973 27.4045 28.9577 27.6413 29.2311C27.8694 29.4946 28.0758 29.7642 28.263 30.0377C28.6256 30.5672 28.5785 31.2561 28.1918 31.729C28.7896 31.7163 29.3529 32.0872 29.5573 32.683C29.7676 33.296 29.9285 33.8952 30.0675 34.4387C30.2044 34.9739 30.0156 35.5159 29.6254 35.8552C30.0978 35.9225 30.5247 36.2277 30.726 36.6986C30.9114 37.1323 31.0877 37.3427 31.2518 37.4586C31.5155 37.6448 31.696 37.905 31.7851 38.1911C32.0084 37.8969 32.3461 37.6901 32.7418 37.6426C32.9557 37.6169 33.1945 37.5766 33.461 37.5186C33.8669 37.4302 34.2699 37.526 34.5831 37.75C34.6887 37.5988 34.8373 37.4751 35.0203 37.3994C35.112 37.3614 35.2033 37.3233 35.2942 37.2853C35.8112 37.031 36.1899 36.6107 36.3669 36.0756C36.566 35.4742 36.5486 34.6047 35.9748 33.4919C35.7217 33.001 35.9144 32.3979 36.4053 32.1448C36.8961 31.8917 37.4993 32.0844 37.7524 32.5753C38.1597 33.3653 38.3932 34.1406 38.4613 34.8769C39.0705 34.1531 39.7137 33.1747 40.2394 31.8849C40.4478 31.3734 41.0314 31.1278 41.5429 31.3362C42.0543 31.5447 42.2999 32.1283 42.0915 32.6397C41.4657 34.1753 40.6884 35.3492 39.9392 36.2265C40.4264 36.2843 40.9386 36.4044 41.4933 36.5968C42.015 36.7779 42.2912 37.3476 42.1102 37.8694C41.9291 38.3912 41.3594 38.6674 40.8376 38.4863C39.8433 38.1413 39.1357 38.1279 38.4468 38.2706C37.805 38.4036 37.1737 38.6675 36.2927 39.0359L36.1058 39.114C36.0101 39.1591 35.9126 39.2007 35.8134 39.2389C35.7934 39.2466 35.7733 39.2536 35.7531 39.26C35.5429 39.3388 35.3218 39.3422 35.1204 39.2829C34.9827 39.768 34.5889 40.1634 34.0617 40.2782C33.7196 40.3527 33.3921 40.4091 33.0784 40.4468C32.3913 40.5292 31.7604 40.1037 31.5619 39.4658C31.104 40.0698 30.2462 40.2061 29.6224 39.7655C28.8752 39.2377 28.429 38.5106 28.129 37.8087C27.8818 37.2302 28.0505 36.5785 28.5013 36.1872C27.952 36.1091 27.4773 35.7094 27.3313 35.1385C27.197 34.6136 27.0585 34.1026 26.8859 33.5995C26.7215 33.1202 26.8297 32.6132 27.1281 32.2475C26.6679 32.2569 26.2121 32.0414 25.9327 31.6333C25.8031 31.4441 25.6617 31.2594 25.5063 31.08C25.1723 30.6944 25.0842 30.1794 25.2282 29.7264C25.1172 29.6567 25.0181 29.5638 24.9387 29.4492L24.9271 29.4324C24.0103 28.2613 22.5866 27.5116 20.9874 27.5116C19.3879 27.5116 17.9638 28.2627 17.0485 29.4315C16.9805 29.5303 16.9099 29.6274 16.837 29.7225C16.3005 30.5193 15.9874 31.4789 15.9874 32.5116C15.9874 33.4647 16.2531 34.3527 16.714 35.109C17.0014 35.5806 16.852 36.1959 16.3804 36.4833C15.9088 36.7707 15.2935 36.6213 15.0061 36.1497C14.3596 35.0888 13.9874 33.8421 13.9874 32.5116C13.9874 32.31 13.996 32.1104 14.0127 31.9131C13.1727 32.2698 12.2486 32.4672 11.2785 32.4672C10.793 32.4672 10.318 32.4176 9.85863 32.3229C9.31772 32.2114 8.96964 31.6824 9.08116 31.1415C9.19269 30.6006 9.72159 30.2526 10.2625 30.3641C10.5897 30.4315 10.9294 30.4672 11.2785 30.4672C12.878 30.4672 14.3021 29.7161 15.2174 28.5473C15.2855 28.4484 15.356 28.3513 15.429 28.2561C15.9654 27.4594 16.2785 26.4999 16.2785 25.4672C16.2785 22.7057 14.0399 20.4672 11.2785 20.4672C9.81032 20.4672 8.49106 21.0987 7.57494 22.108C7.20375 22.5169 6.57133 22.5475 6.16238 22.1763C5.75344 21.8051 5.72283 21.1727 6.09402 20.7638C7.0438 19.7174 8.30805 18.9588 9.73754 18.6375C8.83287 17.6123 8.22371 16.32 8.0432 14.8939C7.97385 14.346 8.3618 13.8456 8.90972 13.7762C9.45763 13.7069 9.95802 14.0948 10.0274 14.6428C10.3389 17.1037 12.4416 19.0073 14.9875 19.0073C17.7431 19.0073 19.9781 16.7781 19.9875 14.0247L19.9874 14.0074L19.9875 13.99C19.9807 12.0017 18.8134 10.2847 17.1232 9.48483C16.6239 9.24859 16.4108 8.65239 16.647 8.15318C16.8832 7.65398 17.4794 7.4408 17.9787 7.67704C19.2292 8.26882 20.277 9.22097 20.9875 10.3999C21.7203 9.18387 22.8121 8.20911 24.1152 7.62216C24.6187 7.39534 25.2108 7.61969 25.4376 8.12324ZM20.9875 24.0102C21.8155 24.0102 22.4868 23.3389 22.4868 22.5109C22.4868 21.6828 21.8155 21.0116 20.9875 21.0116C20.1595 21.0116 19.4882 21.6828 19.4882 22.5109C19.4882 23.3389 20.1595 24.0102 20.9875 24.0102Z" fill="currentColor"/>
+</svg></div><b>말초 운동신경 과흥분</b></div><div class="v2-body">경련 신호는 근육이 아니라 <b>운동신경 끝</b>에서 시작합니다(근전도 소견).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.1338 19.672L21.3303 4.79C21.4293 4.32915 21.8367 4 22.308 4H32.8652C33.4674 4 33.9345 4.52795 33.8141 5.118C32.2655 12.7051 25 20.8205 25 20.8205L26.281 22.9751C27.0763 24.313 27.4642 25.8539 27.397 27.4089L27 36.5897L28.8435 38.8508C29.555 39.7234 29.7258 40.9179 29.2873 41.9549L29.2317 42.0866C28.5688 43.6545 26.707 44.3203 25.2002 43.5283C24.4231 43.1199 23.5305 42.9872 22.6682 43.152L18.6861 43.9132C18.5623 43.9368 18.4366 43.9487 18.3106 43.9487H15C13.8954 43.9487 13 43.0533 13 41.9487V40.7949H16L22.5 38.1667L18.301 25.4141C18.1016 24.8086 18 24.1751 18 23.5376V20.932C18 20.5084 18.0448 20.0861 18.1338 19.672Z" fill="currentColor"/>
+</svg></div><b>근방추·골지건기관 불균형</b></div><div class="v2-body">근육이 짧아진 채 피로가 쌓이면 흥분은 늘고 억제는 줄어듭니다. 스트레칭이 바로 듣는 이유입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.5844 22.8706C30.7438 22.8706 31.8763 22.5549 32.8338 21.9648C33.806 22.5538 34.9534 22.8626 36.1242 22.8503L39.8433 21.6286C40.8913 20.8487 41.6107 19.7675 41.8813 18.5661C42.1518 17.3646 41.9569 16.1157 41.3293 15.0284C40.7017 13.9411 39.6794 13.0813 38.4336 12.5931C38.1491 11.4298 37.4326 10.3894 36.4029 9.64443L32.7725 8.49751H32.3638C31.5563 7.43391 30.344 6.67523 28.9574 6.36571L21.1741 5.9707C19.8803 6.06775 18.6603 6.55488 17.7105 7.35371C17.2617 7.25819 16.8023 7.20868 16.3412 7.20612C15.2247 7.20819 14.1327 7.50194 13.1971 8.05191C12.2615 8.60187 11.5222 9.38455 11.0685 10.3055L8.11115 12.1966C7.37528 13.0966 6.97913 14.1863 6.98108 15.305C6.9738 15.7727 7.04266 16.2389 7.18545 16.6886C6.40957 17.5975 5.99236 18.7143 6.00011 19.8617C5.99826 21.1925 6.56142 22.4733 7.57375 23.4407C7.65545 24.3934 8.02424 25.3079 8.64022 26.085C9.2562 26.8622 10.0959 27.4725 11.0685 27.8499C12.1891 28.4841 13.138 29.337 13.8453 30.3458C14.5527 31.3547 15.0005 32.4939 15.1559 33.6796H17.8743V25.9364L15.2325 23.5882L13.4451 25.3757C13.0545 25.7662 12.4214 25.7662 12.0308 25.3757C11.6403 24.9852 11.6403 24.352 12.0308 23.9615L14.1148 21.8775L13.4797 18.3848L10.6544 16.9721C10.1604 16.7251 9.96018 16.1244 10.2072 15.6304C10.4542 15.1365 11.0548 14.9362 11.5488 15.1832L14.3156 16.5666L17.7773 14.3638L16.7107 11.5197C16.5168 11.0026 16.7788 10.4262 17.2959 10.2322C17.813 10.0383 18.3895 10.3003 18.5834 10.8174L19.721 13.851H21.1199L21.7691 12.5526L20.8188 10.3352C20.6013 9.82758 20.8364 9.2397 21.344 9.02214C21.8517 8.80459 22.4396 9.03974 22.6571 9.54737L23.4829 11.4742L26.7826 12.0741C26.8011 12.0568 26.8204 12.0401 26.8405 12.0241L28.886 10.3877C29.3173 10.0427 29.9466 10.1126 30.2916 10.5439C30.6366 10.9751 30.5666 11.6044 30.1354 11.9494L28.6637 13.1268L30.3929 15.3499L31.0708 13.9941C31.2402 13.6553 31.5865 13.4413 31.9652 13.4413H34.4198C34.9721 13.4413 35.4198 13.889 35.4198 14.4413C35.4198 14.9936 34.9721 15.4413 34.4198 15.4413H32.5833L32.164 16.2799L34.2276 16.7384C34.3074 16.7562 34.3847 16.7836 34.4579 16.8202L36.0942 17.6384C36.5882 17.8854 36.7884 18.486 36.5415 18.98C36.2945 19.474 35.6938 19.6742 35.1998 19.4272L33.6736 18.6641L30.1119 17.8726C29.8848 17.8221 29.6823 17.694 29.5395 17.5104L26.9104 14.1301L23.6471 13.5368C23.5854 13.5943 23.5156 13.6446 23.4385 13.6859L22.7379 15.0871V15.8958H24.1925C24.3478 15.8958 24.5009 15.932 24.6397 16.0014L27.9125 17.6378C28.4064 17.8848 28.6067 18.4854 28.3597 18.9794C28.1127 19.4734 27.512 19.6736 27.018 19.4266L23.9564 17.8958H22.7379V19.7601C22.7379 20.3124 22.2902 20.7601 21.7379 20.7601C21.1856 20.7601 20.7379 20.3124 20.7379 19.7601V15.851H19.1655L15.4784 18.1973L16.1146 21.6964L19.5387 24.7399C19.7521 24.9297 19.8743 25.2017 19.8743 25.4873V33.6796H22.7915V28.145C22.7901 27.1624 23.0938 26.199 23.6682 25.3642C24.2425 24.5295 25.0645 23.8567 26.041 23.4222C26.5901 23.2326 26.7252 22.9773 26.8907 22.6645C27.001 22.456 27.1249 22.222 27.3937 21.9648C27.6273 22.1087 27.8082 22.2364 27.9652 22.347C28.4518 22.6901 28.7077 22.8706 29.5844 22.8706Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 38.0001H15V36.0001H23V38.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 42.0001H15V40.0001H23V42.0001Z" fill="currentColor"/>
+</svg></div><b>TRP 채널 매개 가설</b></div><div class="v2-body">TRP 채널이 자극되면 척수 억제 경로로 과흥분이 곧바로 가라앉는다는 가설입니다 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/28192854/">PMID 28192854</a>.</div></div>
   </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="images/calf-nmj-anatomy-02.jpg" alt="비복근·가자미근 단면과 신경근접합부 개념도"><div class="v2-fig__cap">종아리 근육과 신경근접합부 개념도 — 경련의 기원은 근육이 아니라 <b>말초 운동신경 말단</b>이다. 설명용 일러스트(실제 조직 사진 아님).</div></div>
+  <div class="v2-panel q-fig" style="left:816px;top:206px;width:400px;height:400px">
+    <img class="v2-fig__img q-fig__img" src="images/calf-nmj-anatomy-02.jpg" alt="종아리 근육과 신경근접합부 개념도 — 경련의 기원은 말초 운동신경 말단">
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · 혈액 검사의 마그네슘 수치가 정상이라고 근육·조직 안까지 정상이라는 뜻은 아닙니다. 다만 그것이 보충 효과를 보장하지도 않습니다(슬라이드 08).</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 혈청 마그네슘이 정상이라고 조직까지 정상은 아니지만, 그것이 보충 효과를 보장하지도 않습니다.</span><span class="v2-src">근거 · PMID 28192854 · 원문 임상 지침 요약 · 개별 문헌 앵커 없음</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">03 / 14</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 03 · RED FLAGS</div>
+  <div class="v2-chapter">CHAPTER 03 · 위험신호</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">🚩 이 경련은 그냥 경련이 아니다</h2>
-  <p class="v2-sub">아래 중 하나라도 있으면 단순한 경련으로 끝내지 않습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>이럴 땐 원인 검사를 먼저 합니다</b></div><div class="v2-body"><b>한쪽·같은 자리</b> 반복 · <b>팔·몸통</b>까지 · <b>근력저하·근위축·섬유속연축</b>(운동신경질환) · <b>걸을 때 유발</b>(말초동맥질환·협착증) · <b>약 시작 직후</b>. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>약이 원인일 때 — 먼저 확인할 목록</b></div><div class="v2-body">이뇨제 · 베타작용제 · 스타틴 · 니페디핀 · 호르몬제. <b>어느 쪽이 먼저인지</b>가 핵심입니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>바탕에 다른 병이 있다는 신호</b></div><div class="v2-body">간경변 · 만성콩팥병·투석 · 갑상선 · 당뇨 신경병증 · 임신 · 전해질 이상. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <h2 class="v2-title">🚩 이 경련은 그냥 경련이 아닙니다</h2>
+  <p class="v2-sub">하나라도 있으면 원인 검사를 먼저 합니다 — 감별은 혈관·신경·대사·약물 네 축으로</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:400px;height:400px">
+    <img class="v2-fig__img q-fig__img" src="images/four-axis-differential-02.jpg" alt="감별 네 축 — 혈관·신경·대사·약물을 상징하는 혈관 단면·신경 다발·채혈관·알약">
   </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="images/four-axis-differential-02.jpg" alt="혈관·신경·대사·약물 4축 아이콘"><div class="v2-fig__cap">감별 네 축 — ①혈관(말초동맥질환·정맥부전) ②신경(신경병증·운동신경질환) ③대사(전해질·간·콩팥·갑상선) ④약물. 설명용 일러스트.</div></div>
+  <div class="v2-panel q-text" style="left:496px;top:206px;width:720px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>이럴 땐 원인 검사부터</b></div><div class="v2-body">한쪽·같은 자리 반복 · 팔·몸통까지 · <b>근력저하·근위축·섬유속연축</b>(운동신경질환) · 걸을 때 유발(말초동맥질환·협착증) · 약 시작 직후.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>약이 원인일 때</b></div><div class="v2-body">이뇨제 · 베타작용제 · 스타틴 · 니페디핀 · 호르몬제 — 어느 쪽이 먼저인지가 핵심입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.2157 10.0607C22.5621 11.0012 22.112 11.962 21.8034 12.8418C21.446 13.8608 21.2754 14.777 21.1939 15.4417C21.153 15.7748 21.1342 16.047 21.1257 16.2402C21.1214 16.3368 21.1197 16.4139 21.1192 16.4692C21.1189 16.4969 21.1189 16.5191 21.1189 16.5356L21.1191 16.556L21.1192 16.563L21.1193 16.5656L21.1193 16.5667C21.1193 16.5667 21.1193 16.5677 22.1191 16.5479C23.1189 16.528 23.1189 16.5288 23.1189 16.5288L23.1189 16.5255L23.1189 16.5227L23.1191 16.4903C23.1194 16.4562 23.1205 16.4015 23.1238 16.3282C23.1302 16.1815 23.1451 15.9615 23.179 15.6853C23.247 15.1312 23.3904 14.3599 23.6907 13.5039C24.0603 12.4502 24.6632 11.2773 25.6539 10.2157C27.9787 10.4791 28.8525 11.0046 29.5758 11.4395C30.2149 11.8238 30.7364 12.1374 32.0374 12.1374C33.3805 12.1374 35.2609 11.7362 37.1413 11.335C39.9619 10.7332 42.7825 10.1315 43.7898 10.8837C45.4687 12.1374 40.432 21.3314 35.3952 21.3314C32.8027 21.3314 31.2481 23.1899 29.7392 24.9937C28.3166 26.6944 26.9347 28.3464 24.762 28.3464C22.6699 28.3464 21.311 29.0047 20 29.7061V23.0479C20 22.6526 20.195 22.2841 20.5335 21.9879C20.8909 21.6752 21.2902 21.5479 21.5 21.5479V19.5479C20.7098 19.5479 19.8591 19.9205 19.2165 20.4828C18.5727 21.0461 18.0298 21.8962 18.0012 22.9597H12.9072C10.5179 22.9597 7.65082 24.0112 10.5179 26.1135C12.5977 27.6385 16.186 26.4249 18 25.6433V30.707C17.0781 31.0885 16.0352 31.3613 14.6885 31.3613C12.8526 31.3613 12.2458 32.8297 11.6009 34.3903C10.8697 36.1599 10.0895 38.0479 7.41312 38.0479C2.37634 38.0479 3.61914 22.5479 6.61916 16.5479C9.61919 10.5479 13.7245 10.0479 22.1192 10.0479C22.5059 10.0479 22.8709 10.0523 23.2157 10.0607Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18 40.0479V30.707L20 29.7061V40.0479H18Z" fill="currentColor"/>
+</svg></div><b>바탕에 다른 병이 있다는 신호</b></div><div class="v2-body">간경변 · 만성콩팥병·투석 · 갑상선 · 당뇨 신경병증 · 임신 · 전해질 이상.</div></div>
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · 특발성 야간 하지경련은 <b>다른 원인을 모두 배제한 뒤</b> 붙이는 이름입니다. 위 네 축을 훑고 나서 붙입니다.</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 특발성 야간 하지경련은 네 축을 모두 훑은 뒤에 붙이는 이름입니다.</span><span class="v2-src">근거 · 원문 임상 지침 요약 · 개별 문헌 앵커 없음</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">04 / 14</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 04 · SECONDARY</div>
+  <div class="v2-chapter">CHAPTER 04 · 약물 원인</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">먹고 있는 약부터 확인한다 — 가장 흔하고 가장 잘 놓친다</h2>
-  <p class="v2-sub">약을 시작한 시점과 증상이 생긴 시점, 어느 쪽이 먼저인지가 핵심입니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>전해질을 흔드는 약</b></div><div class="v2-body"><b>이뇨제</b>(칼륨·마그네슘 저하) · 흡입 <b>β작용제</b> · <b>위산억제제(PPI)</b> 장기 복용(마그네슘 저하). <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>근육에 직접 오는 약</b></div><div class="v2-body"><b>스타틴</b> — 근육효소(CK) 확인 후 감량·변경 검토. 랄록시펜·에스트로겐·정맥 철분제도 보고돼 있습니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>확인하는 순서</b></div><div class="v2-body">①최근 3개월 안에 시작·증량한 약 ②경련 시작과 어느 쪽이 먼저인지 ③바꿀 수 있는지. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <h2 class="v2-title">먹고 있는 약부터 확인합니다</h2>
+  <p class="v2-sub">다른 병·약 때문에 생긴 원인 중 가장 흔하고, 가장 잘 놓치고, 바로잡을 수 있습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:420px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>확인하는 순서</b></div><div class="v2-body">① 최근 3개월 안에 시작·증량한 약 ② 경련 시작과 어느 쪽이 먼저인지 ③ 뺄 수 있는지, 바꿀 수 있는지.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>약을 더하기 전에</b></div><div class="v2-body">경련만 보고 약을 더하기 전에, 이미 먹고 있는 약을 <b>뺄&nbsp;수&nbsp;있는지</b> 먼저 봅니다.</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">1<span>순위</span></div><div class="v2-stat__cap">다른 병·약 때문에 생긴 원인 중<br>가장 흔하고 바로잡을 수 있는 원인</div></div><div class="v2-step"><i>1</i><span>이뇨제·기관지확장제 — 전해질</span></div><div class="v2-step"><i>2</i><span>스타틴 — 근육효소(CK) 확인</span></div><div class="v2-step"><i>3</i><span>위산억제제(PPI) 장기 — 마그네슘</span></div>
-  </div>
-  <div class="v2-tip"><span><b>Tip</b> · 경련만 보고 약을 더하기 전에, <b>이미 먹고 있는 약을 뺄 수 있는지</b> 먼저 봅니다.</span></div>
+  <table class="v2-table q-table q-table--tall" style="left:516px;top:206px;width:700px"><colgroup><col style="width:210px"><col style="width:190px"><col style="width:300px"></colgroup><thead><tr><th>약</th><th>어떻게 경련을 부르나</th><th>확인할 것</th></tr></thead><tbody><tr><th>이뇨제</th><td>칼륨·마그네슘 저하</td><td>전해질 · 시작 시점과 증상 시점</td></tr><tr><th>흡입 β작용제</th><td>전해질을 흔듦</td><td>시작·증량 시점과 비교</td></tr><tr><th>위산억제제(PPI) 장기</th><td>마그네슘 저하</td><td>마그네슘 · 계속 필요한지</td></tr><tr><th>스타틴</th><td>근육에 직접</td><td>근육효소(CK) 확인 후 감량·변경 검토</td></tr><tr><th>니페디핀 · 랄록시펜·에스트로겐 · 정맥 철분제</th><td>보고된 약</td><td>시작 시점과 비교 · 바꿀 수 있는지</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 다른 병·약 때문에 생긴 원인 중 가장 흔하고 바로잡을 수 있는 원인입니다.</span><span class="v2-src">근거 · 원문 임상 지침 요약 · 개별 문헌 앵커 없음</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">05 / 14</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 05 · WORKUP</div>
+  <div class="v2-chapter">CHAPTER 05 · 검사</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">먼저 하는 혈액검사 — 여기서 대부분 갈린다</h2>
-  <p class="v2-sub">특발성은 다른 원인을 모두 배제한 뒤 붙이는 이름입니다. 최소한 이만큼은 확인합니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>기본 검사</b></div><div class="v2-body">나트륨·칼륨·<b>칼슘</b>(알부민 보정)·<b>마그네슘</b> · 혈당/당화혈색소 · 콩팥·간기능 · <b>갑상선(TSH)</b> · (근육통 시)<b>근육효소(CK)</b>. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>상황에 따라 추가</b></div><div class="v2-body">술·영양결핍 → 인(P) · 하지불안증후군 감별 → <b>페리틴</b> · 신경병증 의심 → <b>비타민 B12</b>. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>큰 병원으로 보내는 기준</b></div><div class="v2-body">근력저하·근위축·섬유속연축 → <b>근전도·신경전도검사</b> · 걸을 때 유발+맥박 약함 → <b>발목-팔 혈압비(ABI)</b> · 다리로 뻗치는 통증 → <b>요추 MRI</b>. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <h2 class="v2-title">검사는 이차 원인이 의심될 때 고릅니다</h2>
+  <p class="v2-sub">전형적인 야간 하지경련은 병력과 진찰로 평가합니다 — 단서가 있을 때 해당 검사를 선택</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:357px;height:264px">
+    <div class="q-step__tag">1 · 기본</div><div class="q-step__h">이차 원인이 의심되면</div><div class="v2-body">병력·진찰에서 단서가 있을 때 고릅니다 — 나트륨·칼륨·칼슘(알부민 보정)·마그네슘 · 혈당/당화혈색소 · 콩팥·간기능 · 갑상선(TSH) · 근육통이 있으면 근육효소(CK).</div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">8<span>항목</span></div><div class="v2-stat__cap">모두 정상 + 먹는 약 이상 없음<br>+ 신경 진찰 정상<br>= 특발성으로 봅니다</div></div><div class="v2-step"><i>1</i><span>전해질·콩팥·간·갑상선·혈당</span></div><div class="v2-step"><i>2</i><span>필요하면 CK·페리틴·비타민 B12</span></div><div class="v2-step"><i>3</i><span>필요할 때만 추가 검사</span></div>
+  <div class="q-arrow" style="left:429px;top:326px"></div>
+  <div class="v2-panel q-step" style="left:461px;top:206px;width:357px;height:264px">
+    <div class="q-step__tag">2 · 상황별</div><div class="q-step__h">의심될 때 추가</div><div class="v2-body">술·영양결핍 → 인(P) · 하지불안증후군 감별 → 페리틴 · 신경병증 의심 → 비타민 B12.</div>
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · 검사를 넓게 벌이기보다 <b>확인할 목록을 정해 두고</b> 매번 같은 항목을 도는 편이 빠릅니다.</span></div>
+  <div class="q-arrow" style="left:826px;top:326px"></div>
+  <div class="v2-panel q-step q-step--accent" style="left:858px;top:206px;width:357px;height:264px">
+    <div class="q-step__tag">3 · 의뢰</div><div class="q-step__h">큰 병원으로</div><div class="v2-body">근력저하·근위축·섬유속연축 → 근전도·신경전도검사 · 걸을 때 유발+맥박 약함 → 발목-팔 혈압비(ABI) · 다리로 뻗치는 통증 → 요추 MRI.</div>
+  </div>
+  <div class="v2-panel q-strip v2-panel--accent" style="left:64px;top:494px;width:1152px;height:112px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 10C13.1046 10 14 9.10457 14 8C14 6.89543 13.1046 6 12 6C11.2597 6 10.6134 6.4022 10.2676 7H10C8.34315 7 7 8.34315 7 10V19C6.44774 19 5.99531 19.4487 6.04543 19.9987C6.27792 22.5499 7.39568 24.952 9.22186 26.7782C10.561 28.1173 12.2098 29.0755 14 29.583V32C14 33.3064 14.835 34.4177 16.0004 34.8294C16.043 38.7969 19.2725 42 23.25 42C27.2541 42 30.5 38.7541 30.5 34.75V30.75C30.5 28.6789 32.1789 27 34.25 27C36.3211 27 38 28.6789 38 30.75V33.1707C36.8348 33.5825 36 34.6938 36 36C36 37.6569 37.3431 39 39 39C40.6569 39 42 37.6569 42 36C42 34.6938 41.1652 33.5825 40 33.1707V30.75C40 27.5744 37.4256 25 34.25 25C31.0744 25 28.5 27.5744 28.5 30.75V34.75C28.5 37.6495 26.1495 40 23.25 40C20.3769 40 18.0429 37.6921 18.0006 34.8291C19.1655 34.4171 20 33.306 20 32V29.583C21.7902 29.0755 23.4391 28.1173 24.7782 26.7782C26.6044 24.952 27.7221 22.5499 27.9546 19.9987C28.0048 19.4487 27.5523 19 27 19L27 10C27 8.34315 25.6569 7 24 7H23.7324C23.3866 6.4022 22.7403 6 22 6C20.8954 6 20 6.89543 20 8C20 9.10457 20.8954 10 22 10C22.7403 10 23.3866 9.5978 23.7324 9H24C24.5523 9 25 9.44772 25 10V19H25.2095C24.6572 19 24.2166 19.4499 24.1403 19.9969C23.9248 21.5406 23.2127 22.983 22.0979 24.0979C20.7458 25.4499 18.9121 26.2095 17 26.2095C15.088 26.2095 13.2542 25.4499 11.9022 24.0979C10.7873 22.983 10.0753 21.5406 9.8598 19.9969C9.78344 19.4499 9.34286 19 8.79057 19L9 19V10C9 9.44772 9.44772 9 10 9H10.2676C10.6134 9.5978 11.2597 10 12 10Z" fill="currentColor"/>
+</svg></div><b>판정 — 특발성으로 봅니다</b></div><div class="v2-body">병력·진찰에서 이차 원인 단서가 없고(고른 검사는 정상) 먹는 약·신경 진찰에 이상이 없으면 <b>특발성 야간 하지경련</b>으로 봅니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 검사를 넓게 벌이기보다, 병력에서 나온 단서에 맞는 항목만 고릅니다.</span><span class="v2-src">근거 · 원문 임상 지침 요약 · 개별 문헌 앵커 없음</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">06 / 14</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 06 · FIRST LINE</div>
+  <div class="v2-chapter">CHAPTER 06 · 1차 치료</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">1차 치료는 약이 아니라 스트레칭이다</h2>
+  <h2 class="v2-title">1차 치료는 약이 아니라 스트레칭입니다</h2>
   <p class="v2-sub">근거가 가장 확실하고, 부작용이 없고, 돈이 들지 않습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>자기 전 종아리·허벅지 뒤쪽 스트레칭</b></div><div class="v2-body">고령자 무작위 시험에서 <b>자기 전 스트레칭</b>이 경련의 <b>횟수와 강도를 모두 줄였습니다</b>. <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/22341378/">PMID 22341378</a></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>실제로 하는 방법</b></div><div class="v2-body">벽을 짚고 종아리를 편 채 <b>10초씩 3회</b>, 자기 직전 매일. <b>발끝을 몸 쪽으로 당긴</b> 자세가 핵심입니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>함께 바꿀 것</b></div><div class="v2-body">잠자는 자세 · 이불 무게로 발끝이 눌리지 않게 · 수분 · 카페인·술 줄이기. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:720px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M29 10C29 12.7614 26.7614 15 24 15C21.2386 15 19 12.7614 19 10C19 7.23858 21.2386 5 24 5C26.7614 5 29 7.23858 29 10Z" fill="currentColor"/>
+<path d="M31 43C31 43.5523 30.5523 44 30 44H12.8559C11.2786 44 10 42.7214 10 41.1441C10 40.1566 10.5102 39.2392 11.349 38.7182L16.6329 35.4363C17.5141 34.8889 18.05 33.9252 18.05 32.8878V32H20.424C21.4849 32 22.5023 31.5786 23.2524 30.8284L24 30.0809L24.7475 30.8284C25.4977 31.5786 26.5151 32 27.576 32H30V32.8915C30 33.9259 30.5329 34.8873 31.41 35.4355L36.6556 38.714C37.4919 39.2367 38 40.1534 38 41.1396C38 42.7194 36.7194 44 35.1396 44H32.8293C32.9398 43.6872 33 43.3506 33 43V42.7503C33 41.2472 31.8876 39.9761 30.3978 39.7767L17.1826 38.0088C16.6352 37.9356 16.1321 38.32 16.0588 38.8674C15.9856 39.4148 16.37 39.9179 16.9174 39.9912L30.1326 41.7591C30.6292 41.8255 31 42.2492 31 42.7503V43Z" fill="currentColor"/>
+<path d="M26.1617 29.4142L25 28.2525V24.51C25.1481 24.5956 25.2875 24.7017 25.4142 24.8284L27.2929 26.7071C27.4804 26.8946 27.7348 27 28 27H31C31.3466 27 31.6684 26.8205 31.8506 26.5257C32.0328 26.2309 32.0494 25.8628 31.8944 25.5528L30.8944 23.5528C30.6474 23.0588 30.0467 22.8586 29.5528 23.1056C29.0588 23.3526 28.8586 23.9532 29.1056 24.4472L29.3819 25H28.4142L26.8284 23.4142C25.2663 21.8521 22.7336 21.8521 21.1716 23.4142L19.5858 25H18.618L18.8944 24.4472C19.1414 23.9532 18.9412 23.3526 18.4472 23.1056C17.9532 22.8586 17.3525 23.0588 17.1056 23.5528L16.1056 25.5528C15.9506 25.8628 15.9671 26.2309 16.1493 26.5257C16.3315 26.8205 16.6534 27 17 27H20C20.2652 27 20.5195 26.8946 20.7071 26.7071L22.5858 24.8284C22.7125 24.7017 22.8519 24.5956 23 24.51V28.2525L21.8382 29.4142C21.4631 29.7893 20.9544 30 20.424 30H14.3855C12.9788 30 12.0116 28.5862 12.5215 27.2751L15.5256 19.5502C16.1235 18.0127 17.604 17 19.2536 17H28.7463C30.396 17 31.8764 18.0127 32.4743 19.5502L35.4785 27.2751C35.9883 28.5862 35.0212 30 33.6144 30H27.576C27.0455 30 26.5368 29.7893 26.1617 29.4142Z" fill="currentColor"/>
+</svg></div><b>자기 전 종아리·허벅지 뒤 스트레칭</b></div><div class="v2-body">고령자 무작위 시험에서 자기 전 스트레칭이 경련의 <b>횟수와 강도</b>를 모두 줄였습니다 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/22341378/">PMID 22341378</a>.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.1338 19.672L21.3303 4.79C21.4293 4.32915 21.8367 4 22.308 4H32.8652C33.4674 4 33.9345 4.52795 33.8141 5.118C32.2655 12.7051 25 20.8205 25 20.8205L26.281 22.9751C27.0763 24.313 27.4642 25.8539 27.397 27.4089L27 36.5897L28.8435 38.8508C29.555 39.7234 29.7258 40.9179 29.2873 41.9549L29.2317 42.0866C28.5688 43.6545 26.707 44.3203 25.2002 43.5283C24.4231 43.1199 23.5305 42.9872 22.6682 43.152L18.6861 43.9132C18.5623 43.9368 18.4366 43.9487 18.3106 43.9487H15C13.8954 43.9487 13 43.0533 13 41.9487V40.7949H16L22.5 38.1667L18.301 25.4141C18.1016 24.8086 18 24.1751 18 23.5376V20.932C18 20.5084 18.0448 20.0861 18.1338 19.672Z" fill="currentColor"/>
+</svg></div><b>실제로 하는 방법</b></div><div class="v2-body">벽을 짚고 종아리를 편 채 <b>10초씩 3회</b>, 자기 직전 매일. 발끝을 몸 쪽으로 당긴 자세가 핵심입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>다시 평가하는 때</b></div><div class="v2-body">스트레칭을 시작하고 <b>6주 뒤</b> 처음 다시 봅니다. 잠자는 자세·수분·카페인·술도 함께 정리합니다.</div></div>
   </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="images/pre-sleep-calf-stretch-02.jpg" alt="벽 짚고 종아리 스트레칭 측면도"><div class="v2-fig__cap">자기 전 종아리 스트레칭 — 벽을 짚고 뒷발 뒤꿈치를 바닥에 붙인 채 <b>발끝을 몸 쪽으로</b> 당깁니다. 10초씩 3회, 매일. 설명용 일러스트.</div></div>
+  <div class="v2-panel q-fig" style="left:816px;top:206px;width:400px;height:400px">
+    <img class="v2-fig__img q-fig__img" src="images/pre-sleep-calf-stretch-02.jpg" alt="자기 전 벽을 짚고 뒷발 뒤꿈치를 바닥에 붙인 채 종아리를 늘리는 모습">
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · '해볼 만한 것' 이 아니라 <b>1차 처방</b>입니다. 약보다 먼저 하는 치료입니다.</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · ‘해볼 만한 것’이 아니라 1차 처방입니다 — 진료실에서 한 번 같이 해 봅니다.</span><span class="v2-src">근거 · PMID 22341378</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">07 / 14</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 07 · POSTURE</div>
+  <div class="v2-chapter">CHAPTER 07 · 잠자는 자세</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">밤새 발끝이 아래로 향해 있으면 경련이 온다</h2>
+  <h2 class="v2-title">밤새 발끝이 아래로 향하면 경련이 옵니다</h2>
   <p class="v2-sub">약보다 먼저 바꿀 수 있고, 스스로 확인할 수 있습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>무엇이 문제인가</b></div><div class="v2-body">발끝이 <b>밤새 아래로 향해 있으면</b> 종아리가 짧아진 채 피로가 쌓입니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>바꿀 것</b></div><div class="v2-body">이불 무게가 발등을 누르지 않게 발치 쪽을 느슨하게. 필요하면 베개로 발목을 <b>바로 세워</b> 받칩니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>같이 바꿀 것</b></div><div class="v2-body">수분 · 카페인·술 줄이기 · 활동량 유지(너무 적어도, 갑자기 늘려도 경련이 옵니다). <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:400px;height:400px">
+    <img class="v2-fig__img q-fig__img" src="images/sleep-ankle-posture-02.jpg" alt="왼쪽은 이불 무게로 발끝이 아래로 눌린 자세, 오른쪽은 발목을 바로 세운 자세">
   </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="images/sleep-ankle-posture-02.jpg" alt="수면 중 족저굴곡 대 중립 자세 비교"><div class="v2-fig__cap">왼쪽=문제 자세(이불 무게로 발끝이 아래로) · 오른쪽=발목을 바로 세운 자세. 설명용 일러스트.</div></div>
+  <div class="v2-panel q-text" style="left:496px;top:206px;width:720px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>무엇이 문제인가</b></div><div class="v2-body">이불 무게로 발끝이 <b>밤새 아래로</b> 향하면 종아리가 짧아진 채 피로가 쌓입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.1338 19.672L21.3303 4.79C21.4293 4.32915 21.8367 4 22.308 4H32.8652C33.4674 4 33.9345 4.52795 33.8141 5.118C32.2655 12.7051 25 20.8205 25 20.8205L26.281 22.9751C27.0763 24.313 27.4642 25.8539 27.397 27.4089L27 36.5897L28.8435 38.8508C29.555 39.7234 29.7258 40.9179 29.2873 41.9549L29.2317 42.0866C28.5688 43.6545 26.707 44.3203 25.2002 43.5283C24.4231 43.1199 23.5305 42.9872 22.6682 43.152L18.6861 43.9132C18.5623 43.9368 18.4366 43.9487 18.3106 43.9487H15C13.8954 43.9487 13 43.0533 13 41.9487V40.7949H16L22.5 38.1667L18.301 25.4141C18.1016 24.8086 18 24.1751 18 23.5376V20.932C18 20.5084 18.0448 20.0861 18.1338 19.672Z" fill="currentColor"/>
+</svg></div><b>바꿀 것</b></div><div class="v2-body">발치 쪽 이불을 느슨하게 해 발등이 눌리지 않게 합니다. 필요하면 베개로 발목을 <b>바로 세워</b> 받칩니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M29 10C29 12.7614 26.7614 15 24 15C21.2386 15 19 12.7614 19 10C19 7.23858 21.2386 5 24 5C26.7614 5 29 7.23858 29 10Z" fill="currentColor"/>
+<path d="M31 43C31 43.5523 30.5523 44 30 44H12.8559C11.2786 44 10 42.7214 10 41.1441C10 40.1566 10.5102 39.2392 11.349 38.7182L16.6329 35.4363C17.5141 34.8889 18.05 33.9252 18.05 32.8878V32H20.424C21.4849 32 22.5023 31.5786 23.2524 30.8284L24 30.0809L24.7475 30.8284C25.4977 31.5786 26.5151 32 27.576 32H30V32.8915C30 33.9259 30.5329 34.8873 31.41 35.4355L36.6556 38.714C37.4919 39.2367 38 40.1534 38 41.1396C38 42.7194 36.7194 44 35.1396 44H32.8293C32.9398 43.6872 33 43.3506 33 43V42.7503C33 41.2472 31.8876 39.9761 30.3978 39.7767L17.1826 38.0088C16.6352 37.9356 16.1321 38.32 16.0588 38.8674C15.9856 39.4148 16.37 39.9179 16.9174 39.9912L30.1326 41.7591C30.6292 41.8255 31 42.2492 31 42.7503V43Z" fill="currentColor"/>
+<path d="M26.1617 29.4142L25 28.2525V24.51C25.1481 24.5956 25.2875 24.7017 25.4142 24.8284L27.2929 26.7071C27.4804 26.8946 27.7348 27 28 27H31C31.3466 27 31.6684 26.8205 31.8506 26.5257C32.0328 26.2309 32.0494 25.8628 31.8944 25.5528L30.8944 23.5528C30.6474 23.0588 30.0467 22.8586 29.5528 23.1056C29.0588 23.3526 28.8586 23.9532 29.1056 24.4472L29.3819 25H28.4142L26.8284 23.4142C25.2663 21.8521 22.7336 21.8521 21.1716 23.4142L19.5858 25H18.618L18.8944 24.4472C19.1414 23.9532 18.9412 23.3526 18.4472 23.1056C17.9532 22.8586 17.3525 23.0588 17.1056 23.5528L16.1056 25.5528C15.9506 25.8628 15.9671 26.2309 16.1493 26.5257C16.3315 26.8205 16.6534 27 17 27H20C20.2652 27 20.5195 26.8946 20.7071 26.7071L22.5858 24.8284C22.7125 24.7017 22.8519 24.5956 23 24.51V28.2525L21.8382 29.4142C21.4631 29.7893 20.9544 30 20.424 30H14.3855C12.9788 30 12.0116 28.5862 12.5215 27.2751L15.5256 19.5502C16.1235 18.0127 17.604 17 19.2536 17H28.7463C30.396 17 31.8764 18.0127 32.4743 19.5502L35.4785 27.2751C35.9883 28.5862 35.0212 30 33.6144 30H27.576C27.0455 30 26.5368 29.7893 26.1617 29.4142Z" fill="currentColor"/>
+</svg></div><b>같이 바꿀 것</b></div><div class="v2-body">수분 · 카페인·술 줄이기 · 활동량 유지(너무 적어도, 갑자기 늘려도 경련이 옵니다).</div></div>
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · <b>이불 무게</b>는 좀처럼 확인하지 않는 항목입니다. 한 번 살펴보면 오늘 밤부터 바꿀 수 있습니다.</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 이불 무게는 좀처럼 확인하지 않는 항목입니다 — 한 번 살펴보면 오늘 밤부터 바꿀 수 있습니다.</span><span class="v2-src">근거 · 원문 임상 지침 요약 · 개별 문헌 앵커 없음</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">08 / 14</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 08 · MAGNESIUM</div>
+  <div class="v2-chapter">CHAPTER 08 · 보충제·약물</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">마그네슘 — 기전은 그럴듯하지만 근거는 음성이다</h2>
-  <p class="v2-sub">가장 많이 찾는 보충제입니다. 근거를 있는 그대로 말씀드립니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>무작위 대조시험 결과</b></div><div class="v2-body">특발성 야간 하지경련에서 <b>횟수 감소를 입증하지 못했습니다</b>(Cochrane <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/32956536/">PMID 32956536</a> · 산화Mg RCT <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/28241153/">PMID 28241153</a>)</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>그래도 설명은 그럴듯한 이유</b></div><div class="v2-body">혈액 수치가 정상이어도 조직 안은 부족할 수 있지만, <b>그럴듯한 설명이 효과를 대신하지는 않습니다</b>. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>예외적으로 고려하는 상황</b></div><div class="v2-body">임신 · 검사로 확인된 저마그네슘혈증 · 이뇨제·PPI 장기 복용 등 <b>부족이 의심될 때</b>. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <h2 class="v2-title">마그네슘은 음성, 퀴닌은 쓰지 않습니다</h2>
+  <p class="v2-sub">⛔ 이 자료에는 용량표를 싣지 않습니다 — 용량은 최신 허가사항·1차 자료로 확인</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:460px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>마그네슘 — 근거는 음성</b></div><div class="v2-body">특발성 야간 하지경련에서 가짜약과 차이를 <b>입증하지 못했습니다</b> <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/32956536/">PMID 32956536</a> · 산화Mg RCT <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/28241153/">PMID 28241153</a>. 임신 · 확인된 저마그네슘혈증 · 이뇨제·PPI 장기 복용일 때만 고려합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>퀴닌 — 쓰지 않습니다</b></div><div class="v2-body">효과는 있으나 혈소판감소증·QT 연장 위험으로 여러 나라가 제한했습니다 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/25842375/">PMID 25842375</a>.</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">음성<span></span></div><div class="v2-stat__cap">특발성 야간 하지경련에서<br>산화마그네슘의 횟수 감소 효과<br>— <b>입증되지 않음</b><br><a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/28241153/">PMID 28241153</a></div></div><div class="v2-step"><i>1</i><span>부족이 의심되나 — 아니면 근거 없음</span></div><div class="v2-step"><i>2</i><span>그렇다면 <b>원인</b>부터(약·흡수)</span></div><div class="v2-step"><i>3</i><span>보충은 그다음</span></div>
-  </div>
-  <div class="v2-tip"><span><b>Tip</b> · "안 듣는다" 가 아니라 <b>"가짜약과 차이를 입증하지 못했다"</b> 가 정확한 표현입니다.</span></div>
+  <table class="v2-table q-table q-table--drug" style="left:556px;top:206px;width:660px"><colgroup><col style="width:160px"><col style="width:330px"><col style="width:170px"></colgroup><thead><tr><th>약</th><th>근거</th><th>판단</th></tr></thead><tbody><tr><th>딜티아젬</th><td>규모가 작은 무작위 시험의 긍정적 신호 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/11322688/">PMID 11322688</a></td><td>권고하기엔 이릅니다</td></tr><tr><th>비타민 B 복합</th><td>소규모 무작위 시험 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/11301568/">PMID 11301568</a></td><td>보조적으로만</td></tr><tr><th>타우린</th><td>간경변 환자 경련 무작위 대조시험 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/30136291/">PMID 30136291</a></td><td>간경변일 때(다음 장)</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · “안 듣는다”가 아니라 “가짜약과 차이를 입증하지 못했다”가 정확한 표현입니다.</span><span class="v2-src">근거 · PMID 32956536 · 28241153 · 25842375 · 11322688 · 11301568</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">09 / 14</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 09 · PHARMACOLOGY</div>
+  <div class="v2-chapter">CHAPTER 09 · 쥐가 난 순간</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">약물 — 퀴닌은 쓰지 않고, 남은 선택지는 좁다</h2>
-  <p class="v2-sub">⛔ 이 자료에는 용량표를 싣지 않습니다(용량은 최신 허가사항·1차 자료로 확인)</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>퀴닌 — 효과는 있으나 안전성 때문에 밀려났다</b></div><div class="v2-body">혈소판감소증·심전도 QT 연장 위험 때문에, 여러 나라 규제기관이 야간 하지경련에 쓰는 것을 제한했습니다. <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/25842375/">PMID 25842375</a></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>딜티아젬 — 규모는 작지만 긍정적 신호</b></div><div class="v2-body">규모가 작은 무작위 시험 — <b>확실히 권고하기에는 이릅니다</b>. <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/11322688/">PMID 11322688</a></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>타우린 — 간경변이 있는 경우</b></div><div class="v2-body">간경변 환자의 경련에 대한 <b>먹는 타우린 무작위 대조시험</b>이 있습니다. <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/30136291/">PMID 30136291</a></div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">0<span>순위</span></div><div class="v2-stat__cap">약물은 <b>1차가 아닙니다</b><br>스트레칭·유발요인 정리가 먼저</div></div><div class="v2-step"><i>1</i><span>퀴닌 — <b>일상적으로 쓰지 않음</b></span></div><div class="v2-step"><i>2</i><span>다른 병이 있으면 그 원인부터</span></div><div class="v2-step"><i>3</i><span>비타민 B 복합 — 소규모 무작위시험 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/11301568/">PMID 11301568</a></span></div>
-  </div>
-  <div class="v2-tip"><span><b>Tip</b> · 약을 시작할 때 <b>중단 조건과 재평가 시점</b>을 함께 적어두면 불필요한 장기 복용을 막습니다.</span></div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">10 / 14</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 10 · ACUTE</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">쥐가 난 순간 — 무엇을 하고, 무엇을 알아둘 것인가</h2>
+  <h2 class="v2-title">쥐가 난 순간 — 무엇을 하고, 무엇을 알아 둘까</h2>
   <p class="v2-sub">바로 풀리는 원리는 스트레칭과 반사 억제입니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>즉시 할 일</b></div><div class="v2-body">쥐가 난 근육을 <b>손으로 강하게 늘려 펴기</b> → 마사지·온찜질. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>반사 억제 — 왜 소량으로 즉효인가</b></div><div class="v2-body">몸에 흡수될 시간보다 빠르게 멎습니다 — <b>입안이 자극돼 생기는 반사</b>입니다. <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/19997012/">PMID 19997012</a></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>꼭 알아두실 것</b></div><div class="v2-body">쥐가 풀린 뒤에도 <b>2~3일</b>은 누르면 아플 수 있습니다. <b>2주 동안 증상 일지</b>를 적어 오십시오. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.1338 19.672L21.3303 4.79C21.4293 4.32915 21.8367 4 22.308 4H32.8652C33.4674 4 33.9345 4.52795 33.8141 5.118C32.2655 12.7051 25 20.8205 25 20.8205L26.281 22.9751C27.0763 24.313 27.4642 25.8539 27.397 27.4089L27 36.5897L28.8435 38.8508C29.555 39.7234 29.7258 40.9179 29.2873 41.9549L29.2317 42.0866C28.5688 43.6545 26.707 44.3203 25.2002 43.5283C24.4231 43.1199 23.5305 42.9872 22.6682 43.152L18.6861 43.9132C18.5623 43.9368 18.4366 43.9487 18.3106 43.9487H15C13.8954 43.9487 13 43.0533 13 41.9487V40.7949H16L22.5 38.1667L18.301 25.4141C18.1016 24.8086 18 24.1751 18 23.5376V20.932C18 20.5084 18.0448 20.0861 18.1338 19.672Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">01</span></div>
+    <div class="q-card__h">손으로 늘려 펴기</div>
+    <div class="v2-body">쥐가 난 근육을 손으로 강하게 늘려 폅니다. 풀리면 <b>마사지·온찜질</b>을 합니다.</div>
+    <div class="q-card__k">가장 먼저 할 일</div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">즉시<span></span></div><div class="v2-stat__cap">손으로 늘려 펴기 — 가장 먼저<br><span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-step"><i>1</i><span>늘려 펴기 → 풀리는지 확인</span></div><div class="v2-step"><i>2</i><span>마사지·온찜질</span></div><div class="v2-step"><i>3</i><span>2주 일지 → 다시 진료</span></div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M25.1716 8.17157C26.0154 7.32777 27.1424 6.93977 28.2466 7.00756C27.631 5.25582 25.9622 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13C24.1751 13 24.348 12.99 24.5179 12.9705C23.6533 11.4448 23.8712 9.47191 25.1716 8.17157Z" fill="currentColor"/>
+<path d="M13.8493 17.0002C15.0941 15.7409 16.8649 15 18.9884 15H29.1716L26.5858 12.4142C25.8047 11.6332 25.8047 10.3668 26.5858 9.58579C27.3668 8.80474 28.6332 8.80474 29.4142 9.58579L35.4142 15.5858C35.9862 16.1578 36.1573 17.018 35.8478 17.7654C35.5382 18.5127 34.8089 19 34 19H30V42C30 43.0722 29.1544 43.9537 28.0831 43.9983C27.0118 44.0428 26.096 43.2346 26.0069 42.1661L25.1597 32H22.8403L21.9931 42.1661C21.904 43.2346 20.9882 44.0428 19.9169 43.9983C18.8456 43.9537 18 43.0722 18 42V30H21C23.2091 30 25 28.2091 25 26C25 23.7909 23.2091 22 21 22H18V19.1088C17.3996 19.2527 16.9805 19.5224 16.694 19.8123C16.2492 20.2622 16.0063 20.879 16.0001 21.5192C15.994 22.158 16.2233 22.758 16.6498 23.1924C17.0565 23.6064 17.7714 24 18.9884 24H20.9913C22.0959 24 22.9913 24.8954 22.9913 26C22.9913 27.1046 22.0959 28 20.9913 28H18.9893C16.8375 28 15.0466 27.2686 13.796 25.9951C12.5652 24.742 11.9848 23.092 12.0003 21.4808C12.0158 19.871 12.6259 18.2378 13.8493 17.0002Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">02</span></div>
+    <div class="q-card__h">피클 주스 반사 억제</div>
+    <div class="v2-body">전기 자극으로 유발한 경련 실험에서 <b>피클 주스</b>를 소량 마시자 흡수되기 전에 경련이 짧아졌습니다 — 입안 자극 반사로 봅니다 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/19997012/">PMID 19997012</a>.</div>
+    <div class="q-card__k">야간 경련 효과는 미확인</div>
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · 밤에는 잠결에 대응하게 됩니다. <b>말로만 듣지 마시고 진료실에서 한 번 직접 해보십시오.</b></span></div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">03</span></div>
+    <div class="q-card__h">풀린 뒤에 알아 둘 것</div>
+    <div class="v2-body">풀린 뒤에도 2~3일은 누르면 아플 수 있습니다. <b>2주 동안 증상 일지</b>를 적어 오게 합니다.</div>
+    <div class="q-card__k">2주 일지 → 다시 진료</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 밤에는 잠결에 대응하게 됩니다 — 말로만 듣지 말고 진료실에서 한 번 직접 해 봅니다.</span><span class="v2-src">근거 · PMID 19997012 · 원문 임상 지침 요약 · 개별 문헌 앵커 없음</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">11 / 14</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 11 · SPECIAL</div>
+  <div class="v2-chapter">CHAPTER 10 · 특수 상황</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">특수 상황 — 여기서는 다른 약을 씁니다</h2>
-  <p class="v2-sub">앞의 결론을 그대로 적용하면 안 되는 세 가지 경우</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>간경변 — 삶의 질을 가장 크게 떨어뜨린다</b></div><div class="v2-body"><b>경구 타우린</b> <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/30136291/">PMID 30136291</a> · 국내 4주 연구 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/33381931/">PMID 33381931</a></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>혈액투석 중</b></div><div class="v2-body"><b>비타민 E</b> <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/19829096/">PMID 19829096</a> · <b>가바펜틴</b> <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/26586051/">PMID 26586051</a>. <b>투석 처방 조정</b>이 원인을 바로잡는 데 더 가깝습니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>임신 — 중기 이후 흔합니다</b></div><div class="v2-body"><b style="color:var(--color-success);background:var(--color-success-bg);border-radius:4px;padding:0 6px">권고</b> 종아리 스트레칭 등 <b>약을 쓰지 않는 방법이 1차</b>입니다.<br><b style="color:var(--color-danger);background:var(--color-danger-bg);border-radius:4px;padding:0 6px">금기</b> <b>퀴닌</b>은 임신 중 쓰지 않습니다. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div>
+  <h2 class="v2-title">특수 상황 — 앞의 결론을 그대로 쓰지 않습니다</h2>
+  <p class="v2-sub">간경변 · 혈액투석 · 임신, 세 경우는 따로 봅니다</p>
+  <div class="v2-panel q-row" style="left:64px;top:206px;width:1152px;height:124px">
+    <div class="q-row__tag">간경변</div><div class="q-row__c"><div class="q-row__h">삶의 질을 가장 크게 떨어뜨립니다</div><div class="v2-body">먹는 타우린 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/30136291/">PMID 30136291</a> · 국내 4주 연구 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/33381931/">PMID 33381931</a>. 흔한데도 진료 때 잘 말하지 않는 증상입니다.</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">3<span>집단</span></div><div class="v2-stat__cap">간경변 · 투석 · 임신<br>— 앞의 결론을 그대로 쓰지 않습니다</div></div><div class="v2-step"><i>1</i><span>간경변 — 타우린 근거</span></div><div class="v2-step"><i>2</i><span>투석 — 비타민 E·가바펜틴, 투석 처방 조정</span></div><div class="v2-step"><i>3</i><span>임신 — <b style="color:var(--color-success)">스트레칭 권고</b> / <b style="color:var(--color-danger)">퀴닌만 금기</b></span></div>
+  <div class="v2-panel q-row" style="left:64px;top:344px;width:1152px;height:124px">
+    <div class="q-row__tag">혈액투석</div><div class="q-row__c"><div class="q-row__h">투석 처방 조정이 원인에 더 가깝습니다</div><div class="v2-body">비타민 E <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/19829096/">PMID 19829096</a> · 가바펜틴 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/26586051/">PMID 26586051</a>. 먼저 투석 처방을 살핍니다.</div></div>
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · <b>간경변이 있으면 경련</b>이 흔한데도 진료 때 잘 이야기하지 않는 증상입니다. 있으면 꼭 말씀해 주십시오.</span></div>
+  <div class="v2-panel q-row v2-panel--accent" style="left:64px;top:482px;width:1152px;height:124px">
+    <div class="q-row__tag">임신</div><div class="q-row__c"><div class="q-row__h">중기 이후 흔합니다</div><div class="v2-body">종아리 스트레칭 등 약을 쓰지 않는 방법이 1차입니다. <b>퀴닌은 임신 중 쓰지 않습니다</b>.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 간경변이 있으면 경련을 먼저 물어봅니다 — 환자가 먼저 말하지 않는 경우가 많습니다.</span><span class="v2-src">근거 · PMID 30136291 · 33381931 · 19829096 · 26586051</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">12 / 14</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 12 · SUMMARY</div>
+  <div class="v2-chapter">CHAPTER 11 · 요약</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">진료실에서 밟는 순서</h2>
-  <p class="v2-sub">이 자료의 결론을 한 장으로</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>① 감별 → ② 위험신호</b></div><div class="v2-body">단단하게 뭉침 · 늘리면 바로 풀림 · 수 초~수 분 = 진성 경련 → <b>네 축</b> 훑기. <span class="v2-noanchor">원문 근거(앵커 없음)</span></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>③ 1차 처방 — 자기 전 스트레칭</b></div><div class="v2-body">10초씩 3회 매일, <b>6주 뒤 다시 평가</b>. <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/22341378/">PMID 22341378</a></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>④ 약물 — 좁고 신중하게</b></div><div class="v2-body">퀴닌은 쓰지 않습니다. 마그네슘 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/32956536/">PMID 32956536</a></div></div>
+  <p class="v2-sub">대부분의 특발성 야간 하지경련은 설명과 스트레칭에서 끝납니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">① 감별</div><div class="q-step__h">진성 경련인가</div><div class="v2-body">단단하게 뭉침 · 늘리면 바로 풀림 · 수 초~수 분 — 헷갈리는 다섯 가지를 먼저 거릅니다.</div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">6<span>주</span></div><div class="v2-stat__cap">스트레칭을 시작한 뒤<br>처음 다시 평가하는 시점</div></div><div class="v2-step"><i>1</i><span>감별 → 위험신호 네 축</span></div><div class="v2-step"><i>2</i><span>스트레칭 6주</span></div><div class="v2-step"><i>3</i><span>그다음 약물</span></div>
+  <div class="q-arrow" style="left:330px;top:326px"></div>
+  <div class="v2-panel q-step" style="left:362px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">② 위험신호</div><div class="q-step__h">네 축 훑기</div><div class="v2-body">혈관 · 신경 · 대사 · 약물. 먹는 약부터 보고, 단서가 있으면 해당&nbsp;검사.</div>
   </div>
-  <div class="v2-tip"><span><b>Tip</b> · 대부분의 특발성 야간 하지경련은 <b>설명과 스트레칭</b>에서 끝납니다. 약은 그다음 이야기입니다.</span></div>
+  <div class="q-arrow" style="left:628px;top:326px"></div>
+  <div class="v2-panel q-step" style="left:660px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">③ 1차 처방</div><div class="q-step__h">자기 전 스트레칭</div><div class="v2-body">10초씩 3회 매일, 6주 뒤 다시 평가 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/22341378/">PMID 22341378</a>.</div>
+  </div>
+  <div class="q-arrow" style="left:926px;top:326px"></div>
+  <div class="v2-panel q-step q-step--accent" style="left:958px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">④ 약물</div><div class="q-step__h">좁고 신중하게</div><div class="v2-body">퀴닌은 쓰지 않고, 마그네슘은 부족이 의심될 때만 <a class="v2-cite" href="https://pubmed.ncbi.nlm.nih.gov/32956536/">PMID 32956536</a>.</div>
+  </div>
+  <div class="v2-panel q-strip v2-panel--accent" style="left:64px;top:494px;width:1152px;height:112px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M29 10C29 12.7614 26.7614 15 24 15C21.2386 15 19 12.7614 19 10C19 7.23858 21.2386 5 24 5C26.7614 5 29 7.23858 29 10Z" fill="currentColor"/>
+<path d="M31 43C31 43.5523 30.5523 44 30 44H12.8559C11.2786 44 10 42.7214 10 41.1441C10 40.1566 10.5102 39.2392 11.349 38.7182L16.6329 35.4363C17.5141 34.8889 18.05 33.9252 18.05 32.8878V32H20.424C21.4849 32 22.5023 31.5786 23.2524 30.8284L24 30.0809L24.7475 30.8284C25.4977 31.5786 26.5151 32 27.576 32H30V32.8915C30 33.9259 30.5329 34.8873 31.41 35.4355L36.6556 38.714C37.4919 39.2367 38 40.1534 38 41.1396C38 42.7194 36.7194 44 35.1396 44H32.8293C32.9398 43.6872 33 43.3506 33 43V42.7503C33 41.2472 31.8876 39.9761 30.3978 39.7767L17.1826 38.0088C16.6352 37.9356 16.1321 38.32 16.0588 38.8674C15.9856 39.4148 16.37 39.9179 16.9174 39.9912L30.1326 41.7591C30.6292 41.8255 31 42.2492 31 42.7503V43Z" fill="currentColor"/>
+<path d="M26.1617 29.4142L25 28.2525V24.51C25.1481 24.5956 25.2875 24.7017 25.4142 24.8284L27.2929 26.7071C27.4804 26.8946 27.7348 27 28 27H31C31.3466 27 31.6684 26.8205 31.8506 26.5257C32.0328 26.2309 32.0494 25.8628 31.8944 25.5528L30.8944 23.5528C30.6474 23.0588 30.0467 22.8586 29.5528 23.1056C29.0588 23.3526 28.8586 23.9532 29.1056 24.4472L29.3819 25H28.4142L26.8284 23.4142C25.2663 21.8521 22.7336 21.8521 21.1716 23.4142L19.5858 25H18.618L18.8944 24.4472C19.1414 23.9532 18.9412 23.3526 18.4472 23.1056C17.9532 22.8586 17.3525 23.0588 17.1056 23.5528L16.1056 25.5528C15.9506 25.8628 15.9671 26.2309 16.1493 26.5257C16.3315 26.8205 16.6534 27 17 27H20C20.2652 27 20.5195 26.8946 20.7071 26.7071L22.5858 24.8284C22.7125 24.7017 22.8519 24.5956 23 24.51V28.2525L21.8382 29.4142C21.4631 29.7893 20.9544 30 20.424 30H14.3855C12.9788 30 12.0116 28.5862 12.5215 27.2751L15.5256 19.5502C16.1235 18.0127 17.604 17 19.2536 17H28.7463C30.396 17 31.8764 18.0127 32.4743 19.5502L35.4785 27.2751C35.9883 28.5862 35.0212 30 33.6144 30H27.576C27.0455 30 26.5368 29.7893 26.1617 29.4142Z" fill="currentColor"/>
+</svg></div><b>대부분은 여기서 끝납니다</b></div><div class="v2-body">특발성 야간 하지경련 대부분은 <b>설명과 스트레칭</b>에서 끝납니다. 간경변·투석·임신은 앞 장의 따로 보는 길을 따릅니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약은 스트레칭과 유발요인 정리 다음 이야기입니다.</span><span class="v2-src">근거 · PMID 22341378 · 32956536</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">13 / 14</div>
-</section>
-
-<section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">12 / 13</div>
+</section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
   <div class="v2-chapter">CLOSING</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">다시 보기 · 문의</h2>
   <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><b>광교바른내과</b></div>
-      <div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · 031-893-4560<br>소화기내과 · 일반내과 · 5대암 검진</div></div>
-    <div class="v2-block"><div class="v2-head"><b>이 자료의 성격</b></div>
-      <div class="v2-body">1차 진료 관점의 <b>의료진 학습자료</b>입니다. 인용은 본문 각 슬라이드의 PubMed 링크를 따르며,
-      실제 처방·시술 결정은 최신 1차 자료와 임상 판단으로 최종 확인하십시오.</div></div>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>소화기내과 · 일반내과 · 5대암 검진</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">1차 진료 관점의 <b>의료진 학습자료</b>입니다. 인용은 각 슬라이드의 PubMed 링크를 따르며, 실제 처방·시술 결정은 최신 1차 자료와 임상 판단으로 최종 확인하십시오.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 10C9 7.23858 11.2386 5 14 5H38C38.5523 5 39 5.44772 39 6V36C39 36.5523 38.5523 37 38 37H14C12.3431 37 11 38.3431 11 40V41H38V43H10C9.44772 43 9 42.5523 9 42V10ZM23 26V21H18V19H23V14H25V19H30V21H25V26H23Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">원문 임상 지침(근육 경련·야간 하지 경련) · 스트레칭 RCT · Cochrane 마그네슘 · Cochrane 퀴닌 · 간경변 타우린 RCT</span></div></div>
   </div>
   <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
     <div class="qr-block">
@@ -286,7 +417,7 @@
     </div>
   </div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">14 / 14</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
 </section>
 </body>
 </html>

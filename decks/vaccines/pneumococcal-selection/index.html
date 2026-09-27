@@ -15,111 +15,88 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-  <style>
-    .slide__bg-num { display: none !important; }
-    .slide__subtitle { max-width: 1080px; }
-    .stars { color: var(--color-warning); letter-spacing: 0.12em; font-size: 1.15em; }
-    .slide--cover .slide__subtitle { max-width: 1060px; }
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
 
-    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); height: 100%; }
-    .stat-card { border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--space-5); display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); background: var(--color-canvas); min-height: 0; }
-    .stat-card--navy { background: var(--color-navy); color: var(--color-canvas); border-color: var(--color-navy); }
-    .stat-card--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .stat-card--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .stat-card--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .stat-card--danger { background: #fef2f2; border-color: var(--color-danger-border); }
-    .stat-card__label { font-size: 0.82rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.07em; text-transform: uppercase; }
-    .stat-card--navy .stat-card__label { color: var(--color-sky); }
-    .stat-card__value { font-size: 2.5rem; font-weight: var(--weight-black); color: var(--color-navy); line-height: 1.05; letter-spacing: var(--tracking-tight); }
-    .stat-card--navy .stat-card__value { color: var(--color-canvas); }
-    .stat-card--good .stat-card__value { color: var(--color-success); }
-    .stat-card--warn .stat-card__value { color: var(--color-warning); }
-    .stat-card--danger .stat-card__value { color: #b91c1c; }
-    .stat-card__body { font-size: 1rem; line-height: 1.45; color: var(--color-ink); }
-    .stat-card--navy .stat-card__body { color: rgba(255,255,255,0.9); }
-
-    .note { margin-top: var(--space-4); padding: var(--space-4) var(--space-5); border-radius: var(--radius-lg); background: var(--color-canvas-warm); border-left: 5px solid var(--color-steel); font-size: 0.98rem; line-height: 1.5; color: var(--color-ink); }
-    .note strong { color: var(--color-navy); }
-    .note--good { background: var(--color-success-bg); border-left-color: var(--color-success); }
-    .note--warn { background: #fff7ed; border-left-color: var(--color-warning); }
-    .note--danger { background: #fef2f2; border-left-color: var(--color-danger); }
-
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); height: 100%; }
-    .split-col { min-height: 0; display: flex; flex-direction: column; }
-    .split-col__title { font-size: 1.28rem; font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: var(--space-3); line-height: 1.2; }
-    .line-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0; flex: 1 1 auto; justify-content: space-between; }
-    .line-list li { padding: 9px 0; border-bottom: 1px solid var(--color-border-soft); font-size: 0.98rem; line-height: 1.4; }
-    .line-list li strong { color: var(--color-navy); }
-    .line-list li:last-child { border-bottom: 0; }
-
-    .card-grid { display: grid; gap: var(--space-3); height: 100%; }
-    .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
-    .card-grid--3 { grid-template-columns: repeat(3, 1fr); }
-    .card-grid--6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
-    .review-card { border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-canvas); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); min-height: 0; overflow: hidden; }
-    .review-card--navy { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-canvas); }
-    .review-card--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .review-card--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .review-card--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .review-card--danger { background: #fef2f2; border-color: var(--color-danger-border); }
-    .review-card__kicker { font-size: 0.72rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.08em; text-transform: uppercase; }
-    .review-card__title { font-size: 1.08rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.22; }
-    .review-card--navy .review-card__title { color: var(--color-canvas); }
-    .review-card--good .review-card__title { color: var(--color-success); }
-    .review-card--warn .review-card__title { color: var(--color-warning); }
-    .review-card--danger .review-card__title { color: #b91c1c; }
-    .review-card__body { font-size: 0.95rem; line-height: 1.42; color: var(--color-ink); }
-    .review-card--navy .review-card__body { color: rgba(255,255,255,0.9); }
-
-    .table-wrap { display: flex; flex-direction: column; gap: 7px; height: 100%; justify-content: center; }
-    .tbl-row { display: grid; gap: var(--space-3); align-items: center; padding: 8px var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: var(--color-canvas); }
-    .tbl-row--3 { grid-template-columns: 1.2fr 1.8fr 1.4fr; }
-    .tbl-row--4 { grid-template-columns: 1fr 0.7fr 1.5fr 1.3fr; }
-    .tbl-row--head { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-canvas); font-weight: var(--weight-bold); }
-    .tbl-row--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tbl-row--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .tbl-row--danger { background: #fef2f2; border-color: var(--color-danger-border); }
-    .tbl-row--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .tbl-cell { font-size: 1rem; line-height: 1.34; color: var(--color-ink); }
-    .tbl-row--head .tbl-cell { color: var(--color-canvas); font-size: 0.9rem; }
-    .tbl-cell strong { color: var(--color-navy); }
-    .tbl-row--head .tbl-cell strong { color: var(--color-canvas); }
-
-    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); height: 100%; }
-    .step { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); }
-    .step--navy { background: var(--color-navy); border-color: var(--color-navy); }
-    .step--navy .step__num { color: var(--color-sky); }
-    .step--navy .step__title { color: var(--color-canvas); }
-    .step--navy .step__body { color: rgba(255,255,255,0.9); }
-    .step--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .step--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .step--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .step__num { font-size: 1.5rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; }
-    .step__title { font-size: 1.05rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.25; }
-    .step__body { font-size: 0.95rem; line-height: 1.42; color: var(--color-ink); }
-
-    .takehome-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-2); }
-    .takehome-card { background: var(--color-navy); color: var(--color-canvas); border-radius: var(--radius-lg); padding: var(--space-2) var(--space-3); display: flex; gap: var(--space-3); align-items: center; min-height: 0; }
-    .takehome-card__num { color: var(--color-steel); font-size: 1.9rem; line-height: 1; font-weight: var(--weight-black); min-width: 40px; }
-    .takehome-card__text { font-size: 0.95rem; line-height: 1.35; font-weight: var(--weight-540); }
-    .takehome-card__text strong { color: var(--color-sky); }
-
-    .slide--closing .slide__body { gap: var(--space-2); justify-content: space-between; }
-    .closing-grid { display: grid; grid-template-columns: 2.5fr 1fr; gap: var(--space-3); align-items: stretch; }
-    .closing-src { background: var(--color-canvas-warm); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-    .closing-src__label { font-size: 0.72rem; color: var(--color-steel); font-weight: var(--weight-bold); letter-spacing: 0.08em; text-transform: uppercase; }
-    .closing-src__body { font-size: 0.88rem; line-height: 1.45; color: var(--color-ink); }
-    .closing-src__body strong { color: var(--color-navy); }
-    .qr-block { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-2); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; background: var(--color-canvas); }
-    .qr-block__code { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
-    .qr-block__code svg { width: 80px !important; height: 80px !important; }
-  </style>
+<style>
+ /* HQ3E-redesign 2026-09-27 (원장님 49028) — v2 룩 재구성. 제목 36px·본문 15.5px 하한(reference/deck-design-proportions.md §1),
+    그림칸 = 원본 비율(§3·SKILL.md Step 3.5), 한 가지 틀 반복 대신 카드·대비 2단·표·단계·격자를 섞는다. */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .slide--cover .slide__subtitle{max-width:1060px}
+ .v2-title{font-size:36px;line-height:42px;top:96px}
+ .v2-sub{top:142px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ .v2-head b{font-size:19px}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다(아래 빈칸 방지) */
+ .q-text{display:flex;flex-direction:column;justify-content:space-evenly}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율이라 잘림·레터박스 없음. radius·그림자는 img 에(§0-2) */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ /* 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 24px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:40px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:16.5px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ /* 숫자 카드 */
+ .q-stat{display:flex;flex-direction:column;justify-content:center;padding:18px 24px}
+ .q-stat__lab{font-size:15px;font-weight:700;letter-spacing:.3px;color:var(--rule)}
+ .q-stat__num{font-size:44px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px;line-height:1.1;margin:6px 0 8px}
+ .q-stat__body{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ /* 격자 칸 */
+ .q-cell{display:flex;flex-direction:column;justify-content:center}
+ .q-cell .v2-head{margin-bottom:10px}
+ /* 단계 */
+ .q-step{display:flex;flex-direction:column;justify-content:center;padding:24px 22px}
+ .q-step .v2-body{font-size:17px;line-height:1.65}
+ .q-step__tag{align-self:flex-start;font-size:15px;font-weight:800;color:#fff;background:var(--rule);border-radius:6px;padding:4px 10px;margin-bottom:14px}
+ .q-step__h{font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.35;margin-bottom:12px;word-break:keep-all}
+ .q-step .v2-body{font-size:16px}
+ .q-arrow{position:absolute;width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:16px solid var(--v2-accent)}
+ /* 표 */
+ .q-table tbody th{font-size:16px}
+ .q-table tbody td{font-size:16px;line-height:1.45}
+ .q-table tbody th, .q-table tbody td{height:var(--rh,60px)}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:16.5px;padding:10px 0 10px 22px}
+ .v2-vs__list li::before{top:19px}
+ .q-note{position:absolute;font-size:16px;line-height:1.55;color:var(--v2-body);padding:12px 18px;border-radius:8px;background:var(--v2-chip-navy);border-left:4px solid var(--v2-navy);word-break:keep-all}
+ .q-close .v2-body{font-size:16px}
+ .q-close .v2-head{margin-bottom:4px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
+<style>
+ .q-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+ .q-cell .q-list, .q-text .q-list{height:100%;justify-content:space-evenly}
+ .q-list li{position:relative;padding-left:18px;font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-list li::before{content:"";position:absolute;left:2px;top:10px;width:6px;height:6px;border-radius:50%;background:var(--rule,var(--v2-navy))}
+ .q-list b{color:var(--v2-navy)}
+ .q-list--tight{gap:14px}
+</style>
+<style>
+ .q-text > .v2-block:only-child{flex:1;display:flex;flex-direction:column}
+ .q-text > .v2-block:only-child > .v2-body{flex:1;display:flex;flex-direction:column}
+ .q-text > .v2-block:only-child .q-list{flex:1}
+</style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
-<div class="deck">
-
-  <section class="slide slide--cover">
+<!-- HQ3E-redesign pcv -->
+<section class="slide slide--cover">
 
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
@@ -127,399 +104,374 @@
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">성인 폐렴구균 백신 선택 가이드,<br><em>외래 실무 (2024–2026 ACIP·KDCA)</em></h1>
-      <p class="slide__subtitle">PCV-naïve 성인 ≥50세 또는 19–64세 위험군은 PCV20 또는 PCV21 1회로 완결(PPSV23 불필요), PCV15만 PPSV23을 순차 접종한다. 국내 NIP은 65세+ PPSV23만 무료다.</p>
+      <p class="slide__subtitle">PCV-naïve 성인 ≥50세 또는 19–64세 위험군은 PCV20 또는 PCV21 1회로 완결(PPSV23 불필요), PCV15만 PPSV23을 순차 접종한다. 국내 NIP은 65세+ PPSV23만&nbsp;무료다.</p>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">ACIP 2024 (MMWR 2025;74(1)) · KSID 2025–2026 · KDCA 예방접종도우미 · DOI 10.15585/mmwr.mm7401a1</span>
-      <span class="slide__page"><span class="stars">★★★★</span></span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>3줄 결론</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">3줄 결론 — '1회 완결'의 시대</h2>
-      <p class="slide__subtitle">대상은 넓어졌고, PCV20·PCV21은 한 번으로 끝난다. PCV15만 뒤에 PPSV23을 붙인다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="stat-grid">
-
-        <div class="stat-card stat-card--navy">
-          <div class="stat-card__label">대상 확대</div>
-          <div class="stat-card__value">≥50세</div>
-          <div class="stat-card__body">PCV-naïve 성인 ≥50세 또는 19–64세 위험군. 미 ACIP가 2024-10-23 연령을 65→50세로 하향했다.</div>
-        </div>
-        <div class="stat-card stat-card--good">
-          <div class="stat-card__label">1회 완결</div>
-          <div class="stat-card__value">PCV20·21</div>
-          <div class="stat-card__body">PCV20 1회 또는 PCV21 1회로 완결(PPSV23 불필요). PCV15만 뒤에 PPSV23을 순차 접종한다.</div>
-        </div>
-        <div class="stat-card stat-card--steel">
-          <div class="stat-card__label">PCV21 커버리지</div>
-          <div class="stat-card__value">~83–88%</div>
-          <div class="stat-card__body">PCV21(캡박시브)은 성인형 재설계로 성인 IPD ~83–88% 커버(vs PCV20 ~54%). 단 혈청형 4는 없다.</div>
-        </div>
-      </div>
-      <div class="note note--warn"><strong>교육·참고용 자료 — </strong>실제 접종 결정은 최신 1차 자료(ACIP/KDCA 원문)와 개별 환자 상황으로 <strong>최종 확인</strong>. 국내 급여·허가는 변동하므로 접종 시점에 재확인한다.</div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">ACIP 성인 ≥50세 확대 — MMWR 2025;74(1):1–8 (PMID 39773952)</span>
-      <span class="slide__page">02 / 10</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>무엇이 바뀌었나</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">2024–2026 — 무엇이 바뀌었나</h2>
-      <p class="slide__subtitle">연령이 내려가고, PCV21이 새로 나왔으며, PCV13·PPSV23 단독 전략은 은퇴했다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="timeline">
-
-        <div class="step step--navy">
-          <div class="step__num">01</div>
-          <div class="step__title">연령 65 → 50세 하향</div>
-          <div class="step__body">ACIP 2024-10-23(MMWR 2025;74(1))로 PCV-naïve 성인 접종 연령이 65세에서 50세로 내려갔다. 대상이 크게 넓어진 핵심 변화다. 19–49세 위험군·PCV13 기접종자 권고는 그대로 유지된다.</div>
-        </div>
-        <div class="step step--good">
-          <div class="step__num">02</div>
-          <div class="step__title">PCV21 신규</div>
-          <div class="step__body">PCV21(V116, 캡박시브)이 FDA 2024-06-17 승인, ACIP 2024-06-27 옵션 권고로 등장했다. 성인 IPD 혈청형에 맞춰 재설계된 백신으로, PCV20과 함께 1회 완결 옵션이 됐다.</div>
-        </div>
-        <div class="step step--warn">
-          <div class="step__num">03</div>
-          <div class="step__title">PCV13·PPSV23 단독 은퇴</div>
-          <div class="step__body">PCV13 단독은 이제 과거력 해석용으로만 쓴다. PCV13 시리즈를 마무리하던 PPSV23 자리는 PCV20/PCV21로 대체돼, 단독 PPSV23 1차 전략도 함께 물러났다.</div>
-        </div>
-        <div class="step step--steel">
-          <div class="step__num">04</div>
-          <div class="step__title">2026 동향</div>
-          <div class="step__body">PCV21은 이후 FDA가 고위험 소아 2–17세로 적응증을 확대했으나(소아 ACIP 권고 전) 성인 선택과는 무관하다. 따라서 "성인 전용"이라는 옛 설명은 업데이트가 필요하다.</div>
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">ACIP PCV21(성인) — MMWR 2024;73(36):793–798 (PMID 39264843)</span>
-      <span class="slide__page">03 / 10</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>백신 5종</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">백신 5종 한눈에</h2>
-      <p class="slide__subtitle">성인 초기접종에서 PCV20·PCV21은 1회 완결, PCV15만 PPSV23 순차가 필요하다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="table-wrap">
-        <div class="tbl-row tbl-row--4 tbl-row--head"><div class="tbl-cell">백신</div><div class="tbl-cell">가수</div><div class="tbl-cell">성인 초기접종</div><div class="tbl-cell">뒤에 PPSV23?</div></div>
-        <div class="tbl-row tbl-row--4 tbl-row--steel"><div class="tbl-cell"><strong>PPSV23</strong> (다당)</div><div class="tbl-cell">23</div><div class="tbl-cell">단독 1차전략 아님</div><div class="tbl-cell">—</div></div>
-        <div class="tbl-row tbl-row--4 tbl-row--warn"><div class="tbl-cell"><strong>PCV13</strong></div><div class="tbl-cell">13</div><div class="tbl-cell">❌ 은퇴</div><div class="tbl-cell">과거력용</div></div>
-        <div class="tbl-row tbl-row--4 tbl-row--steel"><div class="tbl-cell"><strong>PCV15</strong></div><div class="tbl-cell">15</div><div class="tbl-cell">✅ 순차</div><div class="tbl-cell"><strong>필요</strong> (≥1년 후)</div></div>
-        <div class="tbl-row tbl-row--4 tbl-row--good"><div class="tbl-cell"><strong>PCV20</strong></div><div class="tbl-cell">20</div><div class="tbl-cell">✅ 1회 완결</div><div class="tbl-cell">불필요</div></div>
-        <div class="tbl-row tbl-row--4 tbl-row--good"><div class="tbl-cell"><strong>PCV21</strong></div><div class="tbl-cell">21</div><div class="tbl-cell">✅ 1회 완결</div><div class="tbl-cell">불필요</div></div>
-      </div>
-      <div class="note"><strong>혈청형 — </strong>PCV15=PCV13+22F·33F, PCV20=PCV15+5종. <strong>PCV21은 'PCV20+1'이 아니다</strong> — 소아우세형을 빼고 성인우세형 11종(9N·15A·17F·20A·23A·35B 등)을 새로 넣은 재설계 백신이다.</div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">ACIP adult pneumococcal schedule 2024–2025 · CDC EtR</span>
-      <span class="slide__page">04 / 10</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>외래 의사결정</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">외래 의사결정 (PCV-naïve)</h2>
-      <p class="slide__subtitle">대상을 확인하고, 세 갈래 중 하나를 고르고, 순차 접종 간격을 맞춘다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="card-grid card-grid--2">
-
-        <div class="review-card review-card--navy">
-          <div class="review-card__kicker">STEP 1 · 대상?</div>
-          <div class="review-card__title">누구에게 접종하나</div>
-          <div class="review-card__body">≥50세 전원이 대상이다. 19–49세는 위험조건이 있을 때만 접종한다 — 흡연·알코올, 만성 심·폐·간·신질환, 당뇨, 면역저하, CSF 누출, 인공와우. <strong>고혈압 단독은 위험조건에 해당하지 않는다</strong>.</div>
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">STEP 2 · 선택</div>
-          <div class="review-card__title">세 갈래 동급</div>
-          <div class="review-card__body">PCV21 1회 / PCV20 1회 / PCV15→PPSV23 — 세 옵션이 동급 권고다. 국내 일반 성인은 1회 완결 편의와 성인 커버리지 우위로 PCV21·PCV20을 우선하고, 특별한 이유가 있을 때 PCV15+PPSV23을 고려한다.</div>
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">STEP 3 · 간격(면역정상)</div>
-          <div class="review-card__title">PCV15 후 PPSV23</div>
-          <div class="review-card__body">PCV15를 골랐다면 면역정상 성인은 최소 ≥1년 뒤 PPSV23을 접종해 시리즈를 완성한다. 이 순차 단계는 PCV15를 고른 경우에만 필요하며, PCV20·PCV21을 골랐다면 뒤에 PPSV23을 붙이지 않고 <strong>그대로 1회로 완결</strong>이다.</div>
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">STEP 3 · 간격(고위험)</div>
-          <div class="review-card__title">면역저하·CSF·인공와우</div>
-          <div class="review-card__body">면역저하·CSF 누출·인공와우가 있으면 PCV15 후 PPSV23 간격을 8주로 앞당긴다. 고위험군은 침습성 감염 위험이 커 보호를 서둘러야 하므로, 면역정상의 1년이 아니라 <strong>≥8주 뒤 접종</strong>한다.</div>
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">ACIP adult decision algorithm (PCV-naïve) 2024–2025</span>
-      <span class="slide__page">05 / 10</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>기접종자</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">기접종자 시리즈 완성표</h2>
-      <p class="slide__subtitle">과거 접종력에 따라 지금 무엇을, 얼마의 간격으로 접종할지 결정한다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="table-wrap">
-        <div class="tbl-row tbl-row--3 tbl-row--head"><div class="tbl-cell">과거력</div><div class="tbl-cell">지금</div><div class="tbl-cell">간격</div></div>
-        <div class="tbl-row tbl-row--3 tbl-row--steel"><div class="tbl-cell"><strong>PPSV23만</strong></div><div class="tbl-cell">PCV21/PCV20(또는 PCV15) 1회</div><div class="tbl-cell">마지막 PPSV23 후 <strong>≥1년</strong></div></div>
-        <div class="tbl-row tbl-row--3 tbl-row--steel"><div class="tbl-cell"><strong>PCV13만</strong></div><div class="tbl-cell">PCV21/PCV20 1회</div><div class="tbl-cell">PCV13 후 <strong>≥1년</strong></div></div>
-        <div class="tbl-row tbl-row--3 tbl-row--steel"><div class="tbl-cell"><strong>PCV13+PPSV23</strong> (&lt;65 완료)</div><div class="tbl-cell">PCV21/PCV20 1회</div><div class="tbl-cell">마지막 후 <strong>≥5년</strong></div></div>
-        <div class="tbl-row tbl-row--3 tbl-row--warn"><div class="tbl-cell"><strong>PCV13+PPSV23</strong> (≥65 완료)</div><div class="tbl-cell">공유의사결정 — PCV21/PCV20 1회 또는 생략</div><div class="tbl-cell">시행 시 <strong>≥5년</strong></div></div>
-        <div class="tbl-row tbl-row--3 tbl-row--good"><div class="tbl-cell"><strong>PCV15만</strong> (PPSV23 안함)</div><div class="tbl-cell">PPSV23로 완성</div><div class="tbl-cell">≥1년(면역저하 ≥8주)</div></div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">ACIP previously-vaccinated adults — series completion 2024–2025</span>
-      <span class="slide__page">06 / 10</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>PCV20 vs PCV21</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">PCV20 vs PCV21 — 어떻게 고르나</h2>
-      <p class="slide__subtitle">국내 일반 성인은 1회 완결 + 성인 커버리지 우위로 PCV21 또는 PCV20을 우선한다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="card-grid card-grid--2">
-
-        <div class="review-card review-card--navy">
-          <div class="review-card__kicker">01 · 커버리지</div>
-          <div class="review-card__title">성인 IPD 커버</div>
-          <div class="review-card__body">PCV21은 성인 IPD ~83–88%(성인 특화), PCV20은 ~54%. 성인에서 실제 원인 혈청형을 더 많이 덮는다.</div>
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">02 · 혈청형 4 함정</div>
-          <div class="review-card__title">PCV21엔 4 없음</div>
-          <div class="review-card__body">지역·집단 IPD의 ≥30%가 혈청형 4면 4-포함 백신(PCV20 또는 PCV15+PPSV23)을 권고한다. 국내 일반 성인엔 통상 무관하다.</div>
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">03 · 근거</div>
-          <div class="review-card__title">V116 STRIDE 3상</div>
-          <div class="review-card__body">공통형 비열등·고유형 우월 — STRIDE-8(위험군 18–64), STRIDE-9(일본 ≥65), STRIDE-7(HIV). 독감백신 동시접종도 대체로 비열등.</div>
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">04 · 정리</div>
-          <div class="review-card__title">국내 일반 성인</div>
-          <div class="review-card__body">1회 완결 + 성인 커버리지 우위로 PCV21 또는 PCV20을 우선하고, 특별한 이유가 있을 때 PCV15+PPSV23을 고려한다.</div>
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">STRIDE-8 (PMID 41208546) · STRIDE-9 (PMID 40763490) · STRIDE-7 (PMID 40953572)</span>
-      <span class="slide__page">07 / 10</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>🇰🇷 한국 현실</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">한국 현실 — 급여가 실제 선택을 좌우</h2>
-      <p class="slide__subtitle">"학회 권고 vs 국가 지원"을 분리해 설명해야 접종률이 올라간다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="stat-grid">
-
-        <div class="stat-card stat-card--navy">
-          <div class="stat-card__label">NIP</div>
-          <div class="stat-card__value">65세+ 무료</div>
-          <div class="stat-card__body">만 65세 이상 미접종자에게 PPSV23 1회를 무료로 지원한다. 성인 PCV(15/20/21)는 모두 자비 접종이라, 비용이 실제 선택을 크게 좌우한다.</div>
-        </div>
-        <div class="stat-card stat-card--good">
-          <div class="stat-card__label">KSID 2025→2026</div>
-          <div class="stat-card__value">ACIP 정렬</div>
-          <div class="stat-card__body">국내 학회 권고도 PCV21 1회 / PCV20 1회 / PCV15→PPSV23로 미국 ACIP과 정렬돼 있다. 세 갈래 동급이라는 원칙이 국내에도 동일하게 적용된다.</div>
-        </div>
-        <div class="stat-card stat-card--steel">
-          <div class="stat-card__label">국내 출시</div>
-          <div class="stat-card__value">PCV21 '26.3</div>
-          <div class="stat-card__body">PCV20은 2024-10 허가·2025-06경 성인 출시, PCV21은 2026-03 출시됐다. 접종 시점의 급여·자비 비용을 먼저 정리해 설명하면 접종률이 오른다.</div>
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">KSID 한국 성인 폐렴구균 접종 2025 권고 · KDCA 예방접종도우미</span>
-      <span class="slide__page">08 / 10</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>RED FLAG</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">🚩 Red Flag · 실무 팁</h2>
-      <p class="slide__subtitle">완결 백신 뒤 PPSV23을 덧붙이거나, 위험조건을 잘못 잡는 실수를 피한다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="card-grid card-grid--6">
-
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">고혈압 단독 ≠ 위험조건</div>
-          <div class="review-card__body">고혈압만 있는 19–49세는 위험조건에 해당하지 않는다.</div>
-        </div>
-        <div class="review-card review-card--danger">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">완결 뒤 PPSV23 금지</div>
-          <div class="review-card__body">PCV20/PCV21 뒤에는 PPSV23을 붙이지 않는다 — 이미 완결이다.</div>
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">03</div>
-          <div class="review-card__title">고위험 ≥8주</div>
-          <div class="review-card__body">면역저하·CSF 누출·인공와우는 PCV15→PPSV23 간격을 ≥8주로.</div>
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">04</div>
-          <div class="review-card__title">FDA ≥18 vs ACIP ≥19</div>
-          <div class="review-card__body">FDA 허가(≥18세)와 ACIP 성인 스케줄(≥19세) 연령을 혼동하지 않는다.</div>
-        </div>
-        <div class="review-card review-card--navy">
-          <div class="review-card__kicker">05</div>
-          <div class="review-card__title">비용부터 정리</div>
-          <div class="review-card__body">국내 환자는 급여·자비 비용을 먼저 정리해 설명하면 접종률이 오른다.</div>
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">06</div>
-          <div class="review-card__title">권고 vs 지원 분리</div>
-          <div class="review-card__body">"학회 권고(무엇이 최선)"와 "국가 지원(무엇이 무료)"을 분리해 안내한다.</div>
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">ACIP/KDCA practice notes — pitfalls & tips</span>
-      <span class="slide__page">09 / 10</span>
-    </footer>
-  </section>
-
-  <section class="slide slide--closing">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.png" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>핵심 정리</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">진료실 핵심 정리 — Take-home 4가지</h2>
-      <p class="slide__subtitle">대상 ≥50세, PCV20·PCV21 1회 완결, PCV15만 PPSV23, 국내는 비용부터.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="takehome-grid">
-
-        <div class="takehome-card">
-          <div class="takehome-card__num">01</div>
-          <div class="takehome-card__text"><strong>대상 ≥50세</strong> — PCV-naïve 성인 ≥50세 또는 19–64세 위험군. 고혈압 단독은 위험조건 아님.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">02</div>
-          <div class="takehome-card__text"><strong>1회 완결</strong> — PCV20 1회 또는 PCV21 1회로 끝. 완결 백신 뒤 PPSV23을 붙이지 않는다.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">03</div>
-          <div class="takehome-card__text"><strong>PCV15만 순차</strong> — PCV15 후 PPSV23은 면역정상 ≥1년, 면역저하·CSF·인공와우 ≥8주.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">04</div>
-          <div class="takehome-card__text"><strong>국내는 비용부터</strong> — NIP은 65세+ PPSV23만 무료, 성인 PCV는 자비. 권고와 지원을 분리 설명.</div>
-        </div>
-      </div>
-      <div class="closing-grid">
-        <div class="closing-src">
-          <div class="closing-src__label">근거 (According to PubMed)</div>
-          <div class="closing-src__body">ACIP ≥50세 확대 — MMWR 2025;74(1) (PMID 39773952) · ACIP PCV21 — MMWR 2024;73(36) (PMID 39264843) · STRIDE-8 (PMID 41208546) · STRIDE-9 (PMID 40763490) · STRIDE-7 (PMID 40953572) · V116+독감 (PMID 40714528) · KSID 2025 · KDCA.</div>
-        </div>
-        <div class="qr-block">
-          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM17,2H18V3H17zM19,2H20V3H19zM25,2H26V3H25zM26,2H27V3H26zM27,2H28V3H27zM28,2H29V3H28zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM14,3H15V4H14zM15,3H16V4H15zM18,3H19V4H18zM19,3H20V4H19zM20,3H21V4H20zM22,3H23V4H22zM24,3H25V4H24zM26,3H27V4H26zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM15,4H16V5H15zM16,4H17V5H16zM23,4H24V5H23zM25,4H26V5H25zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM14,5H15V6H14zM16,5H17V6H16zM17,5H18V6H17zM19,5H20V6H19zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM18,6H19V7H18zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM13,7H14V8H13zM14,7H15V8H14zM18,7H19V8H18zM19,7H20V8H19zM22,7H23V8H22zM24,7H25V8H24zM27,7H28V8H27zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM13,9H14V10H13zM14,9H15V10H14zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM28,9H29V10H28zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM14,10H15V11H14zM15,10H16V11H15zM18,10H19V11H18zM23,10H24V11H23zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM2,11H3V12H2zM4,11H5V12H4zM9,11H10V12H9zM11,11H12V12H11zM14,11H15V12H14zM17,11H18V12H17zM20,11H21V12H20zM22,11H23V12H22zM25,11H26V12H25zM33,11H34V12H33zM36,11H37V12H36zM37,11H38V12H37zM5,12H6V13H5zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM11,12H12V13H11zM13,12H14V13H13zM16,12H17V13H16zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM21,12H22V13H21zM24,12H25V13H24zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM34,12H35V13H34zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM4,13H5V14H4zM5,13H6V14H5zM7,13H8V14H7zM11,13H12V14H11zM12,13H13V14H12zM15,13H16V14H15zM17,13H18V14H17zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM25,13H26V14H25zM28,13H29V14H28zM29,13H30V14H29zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM2,14H3V15H2zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM16,14H17V15H16zM17,14H18V15H17zM19,14H20V15H19zM20,14H21V15H20zM21,14H22V15H21zM24,14H25V15H24zM25,14H26V15H25zM27,14H28V15H27zM28,14H29V15H28zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM4,15H5V16H4zM5,15H6V16H5zM7,15H8V16H7zM10,15H11V16H10zM11,15H12V16H11zM13,15H14V16H13zM15,15H16V16H15zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM25,15H26V16H25zM30,15H31V16H30zM33,15H34V16H33zM6,16H7V17H6zM8,16H9V17H8zM9,16H10V17H9zM15,16H16V17H15zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM26,16H27V17H26zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM38,16H39V17H38zM9,17H10V18H9zM11,17H12V18H11zM16,17H17V18H16zM17,17H18V18H17zM22,17H23V18H22zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM2,18H3V19H2zM3,18H4V19H3zM4,18H5V19H4zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM16,18H17V19H16zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM38,18H39V19H38zM2,19H3V20H2zM6,19H7V20H6zM12,19H13V20H12zM13,19H14V20H13zM14,19H15V20H14zM15,19H16V20H15zM17,19H18V20H17zM18,19H19V20H18zM19,19H20V20H19zM23,19H24V20H23zM25,19H26V20H25zM30,19H31V20H30zM33,19H34V20H33zM35,19H36V20H35zM37,19H38V20H37zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM16,20H17V21H16zM19,20H20V21H19zM22,20H23V21H22zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM35,20H36V21H35zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM3,21H4V22H3zM9,21H10V22H9zM12,21H13V22H12zM13,21H14V22H13zM16,21H17V22H16zM18,21H19V22H18zM23,21H24V22H23zM24,21H25V22H24zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM32,21H33V22H32zM33,21H34V22H33zM34,21H35V22H34zM38,21H39V22H38zM3,22H4V23H3zM5,22H6V23H5zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM14,22H15V23H14zM15,22H16V23H15zM19,22H20V23H19zM24,22H25V23H24zM25,22H26V23H25zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM35,22H36V23H35zM36,22H37V23H36zM3,23H4V24H3zM4,23H5V24H4zM7,23H8V24H7zM9,23H10V24H9zM12,23H13V24H12zM15,23H16V24H15zM18,23H19V24H18zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM37,23H38V24H37zM2,24H3V25H2zM4,24H5V25H4zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM12,24H13V25H12zM13,24H14V25H13zM15,24H16V25H15zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM23,24H24V25H23zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM2,25H3V26H2zM4,25H5V26H4zM6,25H7V26H6zM7,25H8V26H7zM10,25H11V26H10zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM26,25H27V26H26zM30,25H31V26H30zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM37,25H38V26H37zM38,25H39V26H38zM2,26H3V27H2zM3,26H4V27H3zM4,26H5V27H4zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM17,26H18V27H17zM18,26H19V27H18zM23,26H24V27H23zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM5,27H6V28H5zM6,27H7V28H6zM7,27H8V28H7zM11,27H12V28H11zM13,27H14V28H13zM15,27H16V28H15zM16,27H17V28H16zM17,27H18V28H17zM20,27H21V28H20zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM30,27H31V28H30zM33,27H34V28H33zM36,27H37V28H36zM2,28H3V29H2zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM17,28H18V29H17zM18,28H19V29H18zM19,28H20V29H19zM21,28H22V29H21zM24,28H25V29H24zM26,28H27V29H26zM29,28H30V29H29zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM33,28H34V29H33zM35,28H36V29H35zM36,28H37V29H36zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM5,29H6V30H5zM6,29H7V30H6zM9,29H10V30H9zM14,29H15V30H14zM16,29H17V30H16zM17,29H18V30H17zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM11,30H12V31H11zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM14,31H15V32H14zM16,31H17V32H16zM18,31H19V32H18zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM12,32H13V33H12zM13,32H14V33H13zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM24,32H25V33H24zM26,32H27V33H26zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM12,33H13V34H12zM16,33H17V34H16zM21,33H22V34H21zM22,33H23V34H22zM25,33H26V34H25zM26,33H27V34H26zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM13,34H14V35H13zM15,34H16V35H15zM16,34H17V35H16zM17,34H18V35H17zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM37,34H38V35H37zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM13,35H14V36H13zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM15,36H16V37H15zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM14,37H15V38H14zM16,37H17V38H16zM18,37H19V38H18zM23,37H24V38H23zM24,37H25V38H24zM25,37H26V38H25zM26,37H27V38H26zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM14,38H15V39H14zM16,38H17V39H16zM19,38H20V39H19zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
-          <div class="qr-block__caption">온라인 슬라이드<br>QR 스캔</div>
-        </div>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 3줄 결론</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">3줄 결론 — '1회 완결'의 시대</h2>
+  <p class="v2-sub">대상은 넓어졌고, PCV20·PCV21은 한 번으로 끝난다. PCV15만 뒤에 PPSV23을 붙인다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:246px">
+    <div class="q-stat__lab">대상 확대</div><div class="q-stat__num">≥50세</div><div class="q-stat__body">PCV-naïve 성인 ≥50세 또는 19–64세 위험군. 미 ACIP가 2024-10-23 연령을 65→50세로&nbsp;하향했다.</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:246px">
+    <div class="q-stat__lab">PCV20 · PCV21 완결</div><div class="q-stat__num">1회</div><div class="q-stat__body">PCV20 1회 또는 PCV21 1회로 완결(PPSV23 불필요). PCV15만 뒤에 PPSV23을 순차 접종한다.</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:246px">
+    <div class="q-stat__lab">PCV21 성인 IPD 커버</div><div class="q-stat__num">~83–88%</div><div class="q-stat__body">성인형 재설계로 성인 IPD ~83–88% 커버(vs PCV20 ~54%). 단 혈청형 4는 없다.</div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:64px;top:472px;width:1152px;height:134px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7 10C5.34315 10 4 11.3431 4 13V35C4 36.6569 5.34315 38 7 38H41C42.6569 38 44 36.6569 44 35V13C44 11.3431 42.6569 10 41 10H7ZM37 20C37 22.2091 35.2091 24 33 24C30.7909 24 29 22.2091 29 20C29 17.7909 30.7909 16 33 16C35.2091 16 37 17.7909 37 20ZM24 19H10V17H24V19ZM24 23H10V21H24V23ZM10 27H24V25H10V27ZM24 31H10V29H24V31ZM30.3922 25.4784C29.1546 25.2309 28 26.1775 28 27.4396V32H38V27.4396C38 26.1775 36.8454 25.2309 35.6078 25.4784L33.3922 25.9216C33.1333 25.9733 32.8667 25.9733 32.6078 25.9216L30.3922 25.4784Z" fill="currentColor"/>
+</svg></div><b>국내는 비용부터</b></div><div class="v2-body">국내 NIP은 <b>65세 이상 PPSV23 1회만 무료</b>다. 성인 PCV(15/20/21)는 자비 접종이라 권고와 지원을 나눠 설명한다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 세 갈래(PCV21 1회 / PCV20 1회 / PCV15→PPSV23)는 동급 권고입니다.</span><span class="v2-src">근거 · ACIP ≥50세 확대 — MMWR 2025;74(1):1–8 (PMID 39773952)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 무엇이 바뀌었나</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">2024–2026 — 무엇이 바뀌었나</h2>
+  <p class="v2-sub">연령이 내려가고, PCV21이 새로 나왔으며, PCV13·PPSV23 단독 전략은 은퇴했다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:301px;width:373px;height:210px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/adult-pneumococcal-pcv20-pcv21-s03-serotype-shift-20260626.png" alt="소아 접종 뒤 성인에서 원인 혈청형 구성이 바뀌는 흐름" style="width:373px;height:210px">
+  </div>
+  <div class="v2-panel q-cell" style="left:469px;top:206px;width:363px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18 15C20.2091 15 22 13.2091 22 11C22 8.79086 20.2091 7 18 7C15.7909 7 14 8.79086 14 11C14 13.2091 15.7909 15 18 15Z" fill="currentColor"/>
+<path d="M12.5161 20.9354C12.6775 20.7418 12.8393 20.5632 13 20.3993V38C13 39.0616 13.8294 39.9382 14.8894 39.9969C15.9494 40.0556 16.8706 39.276 16.9878 38.2209L17.7901 31H18.2099L19.0123 38.2209C19.1295 39.276 20.0506 40.0556 21.1106 39.9969C22.1706 39.9382 23 39.0616 23 38L23 24.3603C23.1494 23.5645 23.7113 22.4114 24.5962 21.3282C25.389 22.3029 25.9217 23.3345 26.1285 24.1117C26.1069 25.7631 24.7785 31.9425 24.2316 34.421C24.107 34.9855 24.4844 35.537 25.0572 35.6155C28.75 36.1216 31.9406 36.121 35.6027 35.6554C36.2864 35.5685 36.6851 34.8112 36.4373 34.1681C35.7 32.2554 34.5001 28.2816 34.5001 22.6778L34.5001 19.7516C34.8908 20.0529 35.3004 20.4464 35.7082 20.9354C36.7648 22.2022 37.4209 23.653 37.5068 24.5548C37.5853 25.3795 38.3176 25.9844 39.1423 25.9059C39.9669 25.8273 40.5718 25.0951 40.4933 24.2704C40.3299 22.5543 39.2923 20.5488 38.012 19.0138C36.7678 17.522 34.8932 16 32.7903 16H28.1618C26.879 16 25.6609 16.5152 24.5999 17.2482C23.5426 16.5154 22.3281 16 21.0482 16H15.434C13.3311 16 11.4565 17.522 10.2123 19.0138C8.93198 20.5488 7.89441 22.5543 7.73098 24.2704C7.65245 25.0951 8.25733 25.8273 9.08202 25.9059C9.90672 25.9844 10.6389 25.3795 10.7175 24.5548C10.8034 23.653 11.4594 22.2022 12.5161 20.9354Z" fill="currentColor"/>
+<path d="M6 28.5C6 27.1193 7.11929 26 8.5 26C9.88071 26 11 27.1193 11 28.5V39C11 39.5523 10.5523 40 10 40C9.44772 40 9 39.5523 9 39V28.5C9 28.2239 8.77614 28 8.5 28C8.22386 28 8 28.2239 8 28.5V29.5128C8 30.0651 7.55228 30.5128 7 30.5128C6.44772 30.5128 6 30.0651 6 29.5128V28.5Z" fill="currentColor"/>
+<path d="M30.5001 15C32.7092 15 34.5001 13.2091 34.5001 11C34.5001 8.79086 32.7092 7 30.5001 7C28.291 7 26.5001 8.79086 26.5001 11C26.5001 13.2091 28.291 15 30.5001 15Z" fill="currentColor"/>
+<path d="M39.5001 26C38.1194 26 37.0001 27.1193 37.0001 28.5V29.5128C37.0001 30.0651 37.4478 30.5128 38.0001 30.5128C38.5524 30.5128 39.0001 30.0651 39.0001 29.5128V28.5C39.0001 28.2239 39.224 28 39.5001 28C39.7762 28 40.0001 28.2239 40.0001 28.5V39C40.0001 39.5523 40.4478 40 41.0001 40C41.5524 40 42.0001 39.5523 42.0001 39V28.5C42.0001 27.1193 40.8808 26 39.5001 26Z" fill="currentColor"/>
+<path d="M25.5 39.3877V37.1515C26.75 37.3096 27.9265 37.4031 29.0877 37.4336L28.4471 39.7824C28.2494 40.5074 27.5457 40.9742 26.8009 40.8744C26.0561 40.7747 25.5 40.1392 25.5 39.3877Z" fill="currentColor"/>
+<path d="M32.5529 39.7824L31.899 37.3848C33.0507 37.3157 34.2327 37.187 35.5 37V39.3877C35.5 40.1392 34.9439 40.7747 34.1991 40.8744C33.4543 40.9742 32.7506 40.5074 32.5529 39.7824Z" fill="currentColor"/>
+</svg></div><b>연령 65 → 50세 하향</b></div><div class="v2-body">ACIP 2024-10-23(MMWR 2025;74(1)) — PCV-naïve 성인 접종 연령 65→50세. 19–49세 위험군·PCV13 기접종자 권고는 그대로.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:852px;top:206px;width:363px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81818 12.8638C6.36631 13.3156 6.36631 14.0483 6.81818 14.5001C7.27005 14.952 8.00267 14.952 8.45454 14.5001L9.27324 13.6814L13.3636 17.7719L10.0909 21.0447C9.63902 21.4966 9.63902 22.2292 10.0909 22.6811C10.5428 23.133 11.2754 23.133 11.7272 22.6811L13.3632 21.0451L16.3181 24H8.37441C7.74469 24 7.14076 24.2528 6.69547 24.7028C6.25019 25.1528 6.00003 25.7632 6.00003 26.3996V29.9983C5.99395 32.7931 6.93225 35.5063 8.65965 37.6887C10.3871 39.8712 12.8 41.3922 15.4992 42C18.1987 41.3925 20.612 39.8717 22.3397 37.6892C23.5568 36.1518 24.3822 34.351 24.7617 32.4438L27.2727 34.9549C28.9502 36.6325 31.4016 37.0645 33.4777 36.2509L34.6362 37.4095C35.242 38.0153 36.1002 38.215 36.8724 38.0086L39.5455 40.6818C39.9974 41.1337 40.73 41.1337 41.1818 40.6818C41.6337 40.2299 41.6337 39.4973 41.1818 39.0454L38.5083 36.3718C38.7142 35.5999 38.5144 34.7422 37.9089 34.1367L36.7504 32.9782C36.9538 32.4591 37.0794 31.9166 37.1271 31.3686C37.163 30.9555 37.1548 30.5392 37.1022 30.1275C36.9457 28.9009 36.3965 27.7148 35.4545 26.7728L21.545 12.863L23.1818 11.2263C23.6336 10.7744 23.6336 10.0418 23.1818 9.58989C22.7299 9.13801 21.9973 9.13801 21.5454 9.58989L18.2727 12.8627L14.1823 8.77223L15 7.95456C15.4518 7.50268 15.4518 6.77004 15 6.31816C14.5481 5.86628 13.8155 5.86628 13.3636 6.31816L6.81818 12.8638ZM26.5467 31.4003L31.9 26.0468L20.1308 14.2773L14.7774 19.6308L19.1465 24H22.6256C23.2553 24 23.8592 24.2528 24.3045 24.7028C24.7498 25.1528 25 25.7632 25 26.3996V29.8536L26.5467 31.4003ZM16.8585 14.2769L12.7681 10.1865L10.6874 12.2672L14.7778 16.3576L16.8585 14.2769ZM35.6707 34.7269C35.6011 34.8043 35.529 34.8804 35.4545 34.9549C35.3799 35.0295 35.3039 35.1016 35.2264 35.1712L36.0504 35.9952C36.1731 36.1179 36.372 36.1179 36.4947 35.9952C36.6174 35.8725 36.6174 35.6736 36.4947 35.5509L35.6707 34.7269ZM33.5364 27.6832L34.0403 28.1872C34.6458 28.7927 35.0033 29.5523 35.1128 30.3398C35.1522 30.6234 35.1595 30.9105 35.1346 31.1954C35.1032 31.5541 35.0209 31.9092 34.8876 32.2489L32.7486 34.3879C31.3898 34.9211 29.785 34.6387 28.6869 33.5406L28.183 33.0367L33.5364 27.6832ZM17 29C17 28.4477 16.5523 28 16 28C15.4477 28 15 28.4477 15 29V31H13C12.4477 31 12 31.4477 12 32C12 32.5522 12.4477 33 13 33H15V35C15 35.5522 15.4477 36 16 36C16.5523 36 17 35.5522 17 35V33H19C19.5523 33 20 32.5522 20 32C20 31.4477 19.5523 31 19 31H17V29Z" fill="currentColor"/>
+</svg></div><b>PCV21 신규</b></div><div class="v2-body">V116(캡박시브) FDA 2024-06-17 승인, ACIP 2024-06-27 옵션 권고 — 성인 IPD 혈청형에 맞춘 재설계.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:469px;top:416px;width:363px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 5H29L38 14V37C38 38.1046 37.1046 39 36 39H16C14.8954 39 14 38.1046 14 37V7C14 5.89543 14.8954 5 16 5ZM35 14L29 8V13C29 13.5523 29.4477 14 30 14H35ZM21.2929 20.2929C21.6834 19.9024 22.3166 19.9024 22.7071 20.2929L26 23.5858L29.2929 20.2929C29.6834 19.9024 30.3166 19.9024 30.7071 20.2929C31.0976 20.6834 31.0976 21.3166 30.7071 21.7071L27.4142 25L30.7071 28.2929C31.0976 28.6834 31.0976 29.3166 30.7071 29.7071C30.3166 30.0976 29.6834 30.0976 29.2929 29.7071L26 26.4142L22.7071 29.7071C22.3166 30.0976 21.6834 30.0976 21.2929 29.7071C20.9024 29.3166 20.9024 28.6834 21.2929 28.2929L24.5858 25L21.2929 21.7071C20.9024 21.3166 20.9024 20.6834 21.2929 20.2929Z" fill="currentColor"/>
+<path d="M12 11H10V38C10 40.7614 12.2386 43 15 43H34V41H15C13.3431 41 12 39.6569 12 38V11Z" fill="currentColor"/>
+</svg></div><b>PCV13·PPSV23 단독 은퇴</b></div><div class="v2-body">PCV13 단독은 과거력 해석용만. PCV13 시리즈 뒤 PPSV23 자리는 PCV20/PCV21로 대체됐다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:852px;top:416px;width:363px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>2026 동향</b></div><div class="v2-body">FDA가 PCV21을 고위험 소아 2–17세로 확대(소아 ACIP 권고 전) — 성인 선택과는 무관하지만 '성인 전용' 설명은 업데이트 필요.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 그림은 소아 접종이 퍼진 뒤 성인에서 남는 원인 혈청형이 달라지는 흐름입니다(설명용 그림).</span><span class="v2-src">근거 · ACIP PCV21(성인) — MMWR 2024;73(36):793–798 (PMID 39264843)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 백신 5종</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">백신 5종 한눈에</h2>
+  <p class="v2-sub">성인 초기접종에서 PCV20·PCV21은 1회 완결, PCV15만 PPSV23 순차가 필요하다</p>
+  <table class="v2-table q-table " style="--rh:50px;left:64px;top:206px;width:1152px"><colgroup><col style="width:300px"><col style="width:170px"><col style="width:342px"><col style="width:340px"></colgroup><thead><tr><th>백신</th><th>가수</th><th>성인 초기접종</th><th>뒤에 PPSV23?</th></tr></thead><tbody><tr><th>PPSV23 (다당)</th><td>23</td><td>단독 1차전략 아님</td><td>—</td></tr><tr><th>PCV13</th><td>13</td><td>❌ 은퇴</td><td>과거력용</td></tr><tr><th>PCV15</th><td>15</td><td>✅ 순차</td><td>필요 (≥1년 후)</td></tr><tr><th>PCV20</th><td>20</td><td>✅ 1회 완결</td><td>불필요</td></tr><tr><th>PCV21</th><td>21</td><td>✅ 1회 완결</td><td>불필요</td></tr></tbody></table>
+  <div class="q-note" style="left:64px;top:524px;width:1112px">혈청형 — PCV15 = PCV13 + 22F·33F, PCV20 = PCV15 + 5종. <b>PCV21은 'PCV20+1'이 아니다</b> — 소아우세형을 빼고 성인우세형 11종(9N·15A·17F·20A·23A·35B 등)을 새로 넣은 재설계 백신이다.</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 가수가 많다고 더 좋은 백신이 아닙니다 — 성인에게 실제 원인 혈청형을 덮는지가 기준입니다.</span><span class="v2-src">근거 · ACIP adult pneumococcal schedule 2024–2025 · CDC EtR</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 외래 의사결정 ①</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">누구에게 접종하나 — 대상부터</h2>
+  <p class="v2-sub">PCV-naïve 성인 — 50세 이상은 전원, 19–49세는 위험조건이 있을 때만</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:551px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18 15C20.2091 15 22 13.2091 22 11C22 8.79086 20.2091 7 18 7C15.7909 7 14 8.79086 14 11C14 13.2091 15.7909 15 18 15Z" fill="currentColor"/>
+<path d="M12.5161 20.9354C12.6775 20.7418 12.8393 20.5632 13 20.3993V38C13 39.0616 13.8294 39.9382 14.8894 39.9969C15.9494 40.0556 16.8706 39.276 16.9878 38.2209L17.7901 31H18.2099L19.0123 38.2209C19.1295 39.276 20.0506 40.0556 21.1106 39.9969C22.1706 39.9382 23 39.0616 23 38L23 24.3603C23.1494 23.5645 23.7113 22.4114 24.5962 21.3282C25.389 22.3029 25.9217 23.3345 26.1285 24.1117C26.1069 25.7631 24.7785 31.9425 24.2316 34.421C24.107 34.9855 24.4844 35.537 25.0572 35.6155C28.75 36.1216 31.9406 36.121 35.6027 35.6554C36.2864 35.5685 36.6851 34.8112 36.4373 34.1681C35.7 32.2554 34.5001 28.2816 34.5001 22.6778L34.5001 19.7516C34.8908 20.0529 35.3004 20.4464 35.7082 20.9354C36.7648 22.2022 37.4209 23.653 37.5068 24.5548C37.5853 25.3795 38.3176 25.9844 39.1423 25.9059C39.9669 25.8273 40.5718 25.0951 40.4933 24.2704C40.3299 22.5543 39.2923 20.5488 38.012 19.0138C36.7678 17.522 34.8932 16 32.7903 16H28.1618C26.879 16 25.6609 16.5152 24.5999 17.2482C23.5426 16.5154 22.3281 16 21.0482 16H15.434C13.3311 16 11.4565 17.522 10.2123 19.0138C8.93198 20.5488 7.89441 22.5543 7.73098 24.2704C7.65245 25.0951 8.25733 25.8273 9.08202 25.9059C9.90672 25.9844 10.6389 25.3795 10.7175 24.5548C10.8034 23.653 11.4594 22.2022 12.5161 20.9354Z" fill="currentColor"/>
+<path d="M6 28.5C6 27.1193 7.11929 26 8.5 26C9.88071 26 11 27.1193 11 28.5V39C11 39.5523 10.5523 40 10 40C9.44772 40 9 39.5523 9 39V28.5C9 28.2239 8.77614 28 8.5 28C8.22386 28 8 28.2239 8 28.5V29.5128C8 30.0651 7.55228 30.5128 7 30.5128C6.44772 30.5128 6 30.0651 6 29.5128V28.5Z" fill="currentColor"/>
+<path d="M30.5001 15C32.7092 15 34.5001 13.2091 34.5001 11C34.5001 8.79086 32.7092 7 30.5001 7C28.291 7 26.5001 8.79086 26.5001 11C26.5001 13.2091 28.291 15 30.5001 15Z" fill="currentColor"/>
+<path d="M39.5001 26C38.1194 26 37.0001 27.1193 37.0001 28.5V29.5128C37.0001 30.0651 37.4478 30.5128 38.0001 30.5128C38.5524 30.5128 39.0001 30.0651 39.0001 29.5128V28.5C39.0001 28.2239 39.224 28 39.5001 28C39.7762 28 40.0001 28.2239 40.0001 28.5V39C40.0001 39.5523 40.4478 40 41.0001 40C41.5524 40 42.0001 39.5523 42.0001 39V28.5C42.0001 27.1193 40.8808 26 39.5001 26Z" fill="currentColor"/>
+<path d="M25.5 39.3877V37.1515C26.75 37.3096 27.9265 37.4031 29.0877 37.4336L28.4471 39.7824C28.2494 40.5074 27.5457 40.9742 26.8009 40.8744C26.0561 40.7747 25.5 40.1392 25.5 39.3877Z" fill="currentColor"/>
+<path d="M32.5529 39.7824L31.899 37.3848C33.0507 37.3157 34.2327 37.187 35.5 37V39.3877C35.5 40.1392 34.9439 40.7747 34.1991 40.8744C33.4543 40.9742 32.7506 40.5074 32.5529 39.7824Z" fill="currentColor"/>
+</svg></div><b>≥50세 — 전원</b></div><div class="v2-body">PCV-naïve 성인 50세 이상은 위험조건과 관계없이 접종 대상이다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.9677 6.00038C25.0147 6.00042 25.0147 6.00044 25.0147 6.00047L25.0113 11.9348C25.0095 15.0387 25.0074 18.4163 25.0064 19.5104C25.0057 20.2958 25.2875 20.5408 25.4233 20.6333C25.5181 20.698 25.6175 20.7348 25.6951 20.7545C25.7325 20.7641 25.7605 20.7685 25.7738 20.7703L25.7811 20.7712L25.7727 20.7706L25.7659 20.7702L25.7617 20.77L25.7595 20.7699L25.7583 20.7698C25.7577 20.7698 25.757 20.7698 25.7151 21.7689C25.6733 22.768 25.6726 22.768 25.672 22.768L25.6679 22.7678L25.6619 22.7675L25.6478 22.7667C25.6375 22.766 25.6254 22.7652 25.6117 22.764C25.5842 22.7617 25.5498 22.7582 25.5095 22.7528C25.4293 22.7421 25.3236 22.7239 25.2007 22.6926C24.9575 22.6306 24.6294 22.5128 24.2967 22.2861C24.1913 22.2142 24.089 22.1339 23.9912 22.0447C23.8934 22.1339 23.7911 22.2142 23.6857 22.2861C23.3531 22.5128 23.0249 22.6306 22.7818 22.6926C22.6589 22.7239 22.5532 22.7421 22.4729 22.7528C22.4326 22.7582 22.3982 22.7617 22.3708 22.764C22.357 22.7652 22.3449 22.766 22.3346 22.7667L22.3205 22.7675L22.3145 22.7678L22.3118 22.7679L22.3104 22.768C22.3098 22.768 22.3092 22.768 22.2673 21.7689C22.2254 20.7698 22.2248 20.7698 22.2242 20.7698L22.223 20.7699L22.2207 20.77L22.2165 20.7702L22.2098 20.7706L22.2022 20.7711L22.2087 20.7703C22.222 20.7685 22.2499 20.7641 22.2874 20.7545C22.3649 20.7348 22.4643 20.698 22.5591 20.6333C22.695 20.5408 22.9768 20.2958 22.976 19.5104C22.975 18.4163 22.973 15.0387 22.9711 11.9348L22.9677 6.00086C22.9677 6.00083 22.9677 6.00042 23.0147 6.00038L9 6C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6L24.9677 6.00038ZM17.7058 14.2403C21.5367 14.2372 21.4888 19.0773 21.4642 21.5628C21.4623 21.7525 21.4606 21.9288 21.4607 22.0878C21.4611 22.5953 21.4839 23.1944 21.5087 23.8489C21.624 26.8864 21.7846 31.1179 19.9702 32.9303C17.7229 35.1751 13.2256 36.3003 10.9749 34.433C8.72429 32.5657 12.4578 14.2446 17.7058 14.2403ZM26.4899 21.5601C26.4613 19.0747 26.4055 14.2346 30.2364 14.2315C35.4843 14.2272 39.2479 32.5421 37.0003 34.4131C34.7527 36.2841 30.2535 35.1663 28.0026 32.9251C26.1852 31.1157 26.3389 26.884 26.4492 23.8463C26.4729 23.1918 26.4947 22.5926 26.4943 22.0851C26.4942 21.926 26.4921 21.7499 26.4899 21.5601Z" fill="currentColor"/>
+</svg></div><b>19–49세 — 위험조건이 있을 때</b></div><div class="v2-body">흡연·알코올, 만성 심·폐·간·신질환, 당뇨, 면역저하, CSF 누출, 인공와우.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18.7241C6 12.6409 10.0359 7 15.5625 7C19.3976 7 22.2434 9.53088 24 13.1211C25.7565 9.53111 28.6022 7 32.4375 7C37.9647 7 42 12.6419 42 18.7241C42 19.8027 41.8765 20.8554 41.6499 21.8791C39.7247 19.5122 36.7889 18 33.5 18C27.701 18 23 22.701 23 28.5C23 32.6537 25.4118 36.244 28.9115 37.947C26.1234 39.9082 24 41 24 41C24 41 6 32.3045 6 18.7241Z" fill="currentColor"/>
+<path d="M36 29C36 30.1046 35.1046 31 34 31C32.8954 31 32 30.1046 32 29C32 28.8812 32.0104 28.7649 32.0302 28.6518L29.6108 26.2324L31.0251 24.8182L33.324 27.1171C33.5351 27.0413 33.7627 27 34 27C35.1046 27 36 27.8954 36 29Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 28.5C42 33.1944 38.1944 37 33.5 37C28.8056 37 25 33.1944 25 28.5C25 23.8056 28.8056 20 33.5 20C38.1944 20 42 23.8056 42 28.5ZM40 28.5C40 32.0899 37.0899 35 33.5 35C29.9101 35 27 32.0899 27 28.5C27 24.9101 29.9101 22 33.5 22C37.0899 22 40 24.9101 40 28.5Z" fill="currentColor"/>
+</svg></div><b>고혈압 단독은 아니다</b></div><div class="v2-body">고혈압만 있는 19–49세는 위험조건에 해당하지&nbsp;않는다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:647px;top:246px;width:569px;height:320px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/vaccines-pneumococcal-s06-risk-infectious-deebe535-20260530-raster-20260531.jpg" alt="진료실에서 고령자·만성질환자에게 폐 보호 백신을 설명하는 그림" style="width:569px;height:320px">
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 그림은 고령·만성질환 위험군이 폐렴구균 감염에서 보호가 필요한 대상임을 보여 줍니다(설명용 그림).</span><span class="v2-src">근거 · ACIP adult decision algorithm (PCV-naïve) 2024–2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 외래 의사결정 ②</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">무엇을 고르고, 간격은 얼마나</h2>
+  <p class="v2-sub">세 갈래 중 하나를 고르고, PCV15를 골랐을 때만 PPSV23 간격을 맞춘다</p>
+  <div class="v2-panel q-card q-card--accent" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81818 12.8638C6.36631 13.3156 6.36631 14.0483 6.81818 14.5001C7.27005 14.952 8.00267 14.952 8.45454 14.5001L9.27324 13.6814L13.3636 17.7719L10.0909 21.0447C9.63902 21.4966 9.63902 22.2292 10.0909 22.6811C10.5428 23.133 11.2754 23.133 11.7272 22.6811L13.3632 21.0451L16.3181 24H8.37441C7.74469 24 7.14076 24.2528 6.69547 24.7028C6.25019 25.1528 6.00003 25.7632 6.00003 26.3996V29.9983C5.99395 32.7931 6.93225 35.5063 8.65965 37.6887C10.3871 39.8712 12.8 41.3922 15.4992 42C18.1987 41.3925 20.612 39.8717 22.3397 37.6892C23.5568 36.1518 24.3822 34.351 24.7617 32.4438L27.2727 34.9549C28.9502 36.6325 31.4016 37.0645 33.4777 36.2509L34.6362 37.4095C35.242 38.0153 36.1002 38.215 36.8724 38.0086L39.5455 40.6818C39.9974 41.1337 40.73 41.1337 41.1818 40.6818C41.6337 40.2299 41.6337 39.4973 41.1818 39.0454L38.5083 36.3718C38.7142 35.5999 38.5144 34.7422 37.9089 34.1367L36.7504 32.9782C36.9538 32.4591 37.0794 31.9166 37.1271 31.3686C37.163 30.9555 37.1548 30.5392 37.1022 30.1275C36.9457 28.9009 36.3965 27.7148 35.4545 26.7728L21.545 12.863L23.1818 11.2263C23.6336 10.7744 23.6336 10.0418 23.1818 9.58989C22.7299 9.13801 21.9973 9.13801 21.5454 9.58989L18.2727 12.8627L14.1823 8.77223L15 7.95456C15.4518 7.50268 15.4518 6.77004 15 6.31816C14.5481 5.86628 13.8155 5.86628 13.3636 6.31816L6.81818 12.8638ZM26.5467 31.4003L31.9 26.0468L20.1308 14.2773L14.7774 19.6308L19.1465 24H22.6256C23.2553 24 23.8592 24.2528 24.3045 24.7028C24.7498 25.1528 25 25.7632 25 26.3996V29.8536L26.5467 31.4003ZM16.8585 14.2769L12.7681 10.1865L10.6874 12.2672L14.7778 16.3576L16.8585 14.2769ZM35.6707 34.7269C35.6011 34.8043 35.529 34.8804 35.4545 34.9549C35.3799 35.0295 35.3039 35.1016 35.2264 35.1712L36.0504 35.9952C36.1731 36.1179 36.372 36.1179 36.4947 35.9952C36.6174 35.8725 36.6174 35.6736 36.4947 35.5509L35.6707 34.7269ZM33.5364 27.6832L34.0403 28.1872C34.6458 28.7927 35.0033 29.5523 35.1128 30.3398C35.1522 30.6234 35.1595 30.9105 35.1346 31.1954C35.1032 31.5541 35.0209 31.9092 34.8876 32.2489L32.7486 34.3879C31.3898 34.9211 29.785 34.6387 28.6869 33.5406L28.183 33.0367L33.5364 27.6832ZM17 29C17 28.4477 16.5523 28 16 28C15.4477 28 15 28.4477 15 29V31H13C12.4477 31 12 31.4477 12 32C12 32.5522 12.4477 33 13 33H15V35C15 35.5522 15.4477 36 16 36C16.5523 36 17 35.5522 17 35V33H19C19.5523 33 20 32.5522 20 32C20 31.4477 19.5523 31 19 31H17V29Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">세 갈래 동급</div>
+    <div class="v2-body">PCV21 1회 / PCV20 1회 / PCV15→PPSV23 — 세 옵션이 동급 권고다. 국내 일반 성인은 1회 완결 편의와 성인 커버리지 우위로 PCV21·PCV20을 우선하고, 특별한 이유가 있을&nbsp;때 PCV15+PPSV23을 고려한다.</div>
+    <div class="q-card__k">PCV20·21이면 여기서 끝</div>
+  </div>
+  <div class="v2-panel q-card" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">PCV15 후 PPSV23 ≥1년</div>
+    <div class="v2-body">PCV15를 골랐다면 면역정상 성인은 최소 1년 뒤 PPSV23으로 시리즈를 완성한다. PCV20·PCV21을 골랐다면 뒤에 PPSV23을 붙이지 않는다.</div>
+    <div class="q-card__k">간격 ≥1년</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H9ZM24.018 34.9934C28.498 34.9898 32.0152 31.5297 32.0116 27.1297C32.0082 23.044 24 12.9934 24 12.9934C24 12.9934 16.008 22.7429 16.0116 27.1429C16.0152 31.5429 19.538 34.9971 24.018 34.9934Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">면역저하·CSF·인공와우 ≥8주</div>
+    <div class="v2-body">침습성 감염 위험이 커 보호를 서둘러야 하므로 PCV15 후 PPSV23 간격을 면역정상의 1년이 아니라 8주로 앞당긴다.</div>
+    <div class="q-card__k">간격 ≥8주</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 순차 단계는 PCV15를 골랐을 때만 필요합니다.</span><span class="v2-src">근거 · ACIP adult decision algorithm (PCV-naïve) 2024–2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 기접종자</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">기접종자 시리즈 완성표</h2>
+  <p class="v2-sub">과거 접종력에 따라 지금 무엇을, 얼마의 간격으로 접종할지 정한다</p>
+  <table class="v2-table q-table " style="--rh:66px;left:64px;top:206px;width:1152px"><colgroup><col style="width:380px"><col style="width:470px"><col style="width:302px"></colgroup><thead><tr><th>과거력</th><th>지금</th><th>간격</th></tr></thead><tbody><tr><th>PPSV23만</th><td>PCV21/PCV20(또는 PCV15) 1회</td><td>마지막 PPSV23 후 ≥1년</td></tr><tr><th>PCV13만</th><td>PCV21/PCV20 1회</td><td>PCV13 후 ≥1년</td></tr><tr><th>PCV13+PPSV23 (&lt;65 완료)</th><td>PCV21/PCV20 1회</td><td>마지막 후 ≥5년</td></tr><tr><th>PCV13+PPSV23 (≥65 완료)</th><td>공유의사결정 — PCV21/PCV20 1회 또는 생략</td><td>시행 시 ≥5년</td></tr><tr><th>PCV15만 (PPSV23 안 함)</th><td>PPSV23로 완성</td><td>≥1년(면역저하 ≥8주)</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 과거력이 불확실하면 접종 기록부터 확인합니다 — 간격은 마지막 접종일에서 셉니다.</span><span class="v2-src">근거 · ACIP previously-vaccinated adults — series completion 2024–2025</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · PCV20 vs PCV21</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">PCV20 vs PCV21 — 어떻게 고르나</h2>
+  <p class="v2-sub">국내 일반 성인은 1회 완결 + 성인 커버리지 우위로 PCV21 또는 PCV20을 우선한다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:587px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M33 9.22967V6H31V9H13V6H11V9.22967C11 14.6524 13.5895 19.6466 17.8037 22.7875C18.4275 22.3933 19.0782 22.0334 19.7536 21.7107C17.8831 20.4891 16.329 18.8727 15.1851 17H23.1319C23.2566 16.2999 23.4669 15.6295 23.7517 15H14.1615C13.6308 13.7364 13.2711 12.392 13.1051 11H27.4964C28.6894 10.3618 30.0525 10 31.5 10C32.0035 10 32.4968 10.0438 32.9763 10.1277C32.992 9.82987 33 9.53043 33 9.22967Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22 22.9172C22.611 22.6536 23.1981 22.352 23.7589 22.0158C24.0375 22.6283 24.3867 23.2018 24.7959 23.7261C24.6398 23.8198 24.4819 23.9111 24.3223 24C23.698 24.3476 23.0469 24.6583 22.3714 24.9285C22.252 24.9762 22.1335 25.0254 22.0159 25.076L22 25.0828C19.1137 26.3281 16.7605 28.4211 15.1851 31H28.8149C27.671 29.1273 26.1169 27.5109 24.2464 26.2893C24.9218 25.9666 25.5725 25.6067 26.1963 25.2125C29.9474 28.0082 32.4113 32.2723 32.9075 37L33 42H31V39H13V42H11L11.0925 37C11.6672 31.5245 14.8813 26.6708 19.6777 24C20.302 23.6524 20.9531 23.3417 21.6286 23.0715C21.748 23.0238 21.8665 22.9746 21.9841 22.924L22 22.9172ZM29.8385 33H14.1615C13.6308 34.2636 13.2711 35.608 13.1051 37H30.8949C30.7289 35.608 30.3692 34.2636 29.8385 33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.5 25C33.0621 25 34.4955 24.449 35.6164 23.5307L39.293 27.2072L40.7072 25.793L36.9531 22.0389C37.6153 21.0206 38 19.8052 38 18.5C38 14.9101 35.0899 12 31.5 12C27.9101 12 25 14.9101 25 18.5C25 22.0899 27.9101 25 31.5 25ZM31.5 23C33.9853 23 36 20.9853 36 18.5C36 16.0147 33.9853 14 31.5 14C29.0147 14 27 16.0147 27 18.5C27 20.9853 29.0147 23 31.5 23Z" fill="currentColor"/>
+</svg></div><b>커버리지</b></div><div class="v2-body">PCV21은 성인 IPD <b>~83–88%</b>(성인 특화), PCV20은 <b>~54%</b>. 성인에서 실제 원인 혈청형을 더 많이 덮는다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>혈청형 4 함정</b></div><div class="v2-body">지역·집단 IPD의 ≥30%가 혈청형 4면 4-포함 백신(PCV20 또는 PCV15+PPSV23)을 권고. 국내 일반 성인엔 통상 무관하다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 10C9 7.23858 11.2386 5 14 5H38C38.5523 5 39 5.44772 39 6V36C39 36.5523 38.5523 37 38 37H14C12.3431 37 11 38.3431 11 40V41H38V43H10C9.44772 43 9 42.5523 9 42V10ZM23 26V21H18V19H23V14H25V19H30V21H25V26H23Z" fill="currentColor"/>
+</svg></div><b>근거 — V116 STRIDE 3상</b></div><div class="v2-body">공통형 비열등·고유형 우월 — STRIDE-8(위험군 18–64), STRIDE-9(일본 ≥65), STRIDE-7(HIV). 독감백신 동시접종도 대체로 비열등.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:683px;top:256px;width:533px;height:300px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/adult-pneumococcal-pcv20-pcv21-s04-vaccine-design-20260626.png" alt="서로 다른 혈청형 구성을 담은 두 백신 병 비교" style="width:533px;height:300px">
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 그림은 두 백신이 서로 다른 혈청형 묶음을 담고 있음을 보여 줍니다(설명용 그림). 특별한 이유가 있으면&nbsp;PCV15+PPSV23.</span><span class="v2-src">근거 · STRIDE-8 (PMID 41208546) · STRIDE-9 (PMID 40763490) · STRIDE-7 (PMID 40953572)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 한국 현실</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">한국 현실 — 급여가 실제 선택을 좌우</h2>
+  <p class="v2-sub">'학회 권고'와 '국가 지원'을 나눠 설명해야 접종률이 올라간다</p>
+  <div class="v2-panel q-text" style="left:629px;top:206px;width:587px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7 10C5.34315 10 4 11.3431 4 13V35C4 36.6569 5.34315 38 7 38H41C42.6569 38 44 36.6569 44 35V13C44 11.3431 42.6569 10 41 10H7ZM37 20C37 22.2091 35.2091 24 33 24C30.7909 24 29 22.2091 29 20C29 17.7909 30.7909 16 33 16C35.2091 16 37 17.7909 37 20ZM24 19H10V17H24V19ZM24 23H10V21H24V23ZM10 27H24V25H10V27ZM24 31H10V29H24V31ZM30.3922 25.4784C29.1546 25.2309 28 26.1775 28 27.4396V32H38V27.4396C38 26.1775 36.8454 25.2309 35.6078 25.4784L33.3922 25.9216C33.1333 25.9733 32.8667 25.9733 32.6078 25.9216L30.3922 25.4784Z" fill="currentColor"/>
+</svg></div><b>NIP — 65세 이상 무료</b></div><div class="v2-body">만 65세 이상 미접종자에게 PPSV23 1회를 무료 지원. 성인 PCV(15/20/21)는 모두 자비 접종이라 비용이 선택을 크게 좌우한다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 10C9 7.23858 11.2386 5 14 5H38C38.5523 5 39 5.44772 39 6V36C39 36.5523 38.5523 37 38 37H14C12.3431 37 11 38.3431 11 40V41H38V43H10C9.44772 43 9 42.5523 9 42V10ZM23 26V21H18V19H23V14H25V19H30V21H25V26H23Z" fill="currentColor"/>
+</svg></div><b>KSID 2025→2026 — ACIP와 정렬</b></div><div class="v2-body">국내 학회 권고도 PCV21 1회 / PCV20 1회 / PCV15→PPSV23 세 갈래 동급으로 미국 ACIP과 같다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>국내 출시 — 접종 전 확인</b></div><div class="v2-body">작성 시점 기준 PCV20은 2024-10 허가·2025-06경 성인 출시, PCV21은 2026-03 출시로 파악했다. <b>허가·공급 현황은 접종 전에 다시 확인</b>한다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:64px;top:256px;width:533px;height:300px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/adult-pneumococcal-pcv20-pcv21-s10-consultation-20260626.png" alt="의사가 태블릿으로 고령 환자에게 백신 선택지를 설명하는 장면" style="width:533px;height:300px">
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 접종 시점의 급여·자비 비용을 먼저 정리해 설명하면 접종률이 오릅니다.</span><span class="v2-src">근거 · KSID 한국 성인 폐렴구균 접종 2025 권고 · KDCA 예방접종도우미</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · RED FLAG</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">Red Flag · 실무 팁 여섯 가지</h2>
+  <p class="v2-sub">완결 백신 뒤 PPSV23을 덧붙이거나, 위험조건을 잘못 잡는 실수를 피한다</p>
+  <div class="v2-panel q-cell" style="left:64px;top:206px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18.7241C6 12.6409 10.0359 7 15.5625 7C19.3976 7 22.2434 9.53088 24 13.1211C25.7565 9.53111 28.6022 7 32.4375 7C37.9647 7 42 12.6419 42 18.7241C42 19.8027 41.8765 20.8554 41.6499 21.8791C39.7247 19.5122 36.7889 18 33.5 18C27.701 18 23 22.701 23 28.5C23 32.6537 25.4118 36.244 28.9115 37.947C26.1234 39.9082 24 41 24 41C24 41 6 32.3045 6 18.7241Z" fill="currentColor"/>
+<path d="M36 29C36 30.1046 35.1046 31 34 31C32.8954 31 32 30.1046 32 29C32 28.8812 32.0104 28.7649 32.0302 28.6518L29.6108 26.2324L31.0251 24.8182L33.324 27.1171C33.5351 27.0413 33.7627 27 34 27C35.1046 27 36 27.8954 36 29Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 28.5C42 33.1944 38.1944 37 33.5 37C28.8056 37 25 33.1944 25 28.5C25 23.8056 28.8056 20 33.5 20C38.1944 20 42 23.8056 42 28.5ZM40 28.5C40 32.0899 37.0899 35 33.5 35C29.9101 35 27 32.0899 27 28.5C27 24.9101 29.9101 22 33.5 22C37.0899 22 40 24.9101 40 28.5Z" fill="currentColor"/>
+</svg></div><b>고혈압 단독 ≠ 위험조건</b></div><div class="v2-body">고혈압만 있는 19–49세는 위험조건에 해당하지&nbsp;않는다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:454px;top:206px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24ZM36.7278 36.728C33.4705 39.9853 28.9705 42 24 42C14.0589 42 6 33.9411 6 24C6 19.0295 8.01468 14.5295 11.272 11.2722L36.7278 36.728ZM38.0637 35.2355L12.7645 9.93628C15.8439 7.47298 19.7499 6 24 6C33.9411 6 42 14.0589 42 24C42 28.2501 40.527 32.1561 38.0637 35.2355Z" fill="currentColor"/>
+</svg></div><b>완결 뒤 PPSV23 금지</b></div><div class="v2-body">PCV20/PCV21 뒤에는 PPSV23을 붙이지 않는다 — 이미 완결이다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:844px;top:206px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H9ZM24.018 34.9934C28.498 34.9898 32.0152 31.5297 32.0116 27.1297C32.0082 23.044 24 12.9934 24 12.9934C24 12.9934 16.008 22.7429 16.0116 27.1429C16.0152 31.5429 19.538 34.9971 24.018 34.9934Z" fill="currentColor"/>
+</svg></div><b>고위험 ≥8주</b></div><div class="v2-body">면역저하·CSF 누출·인공와우는 PCV15→PPSV23 간격을 8주로.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:64px;top:416px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10 7V37C10 38.6569 11.3431 40 13 40H26V36.4649C24.8044 35.7733 24 34.4806 24 33C24 30.7909 25.7909 29 28 29C30.2091 29 32 30.7909 32 33C32 34.4806 31.1956 35.7733 30 36.4649V40H35C36.6569 40 38 38.6569 38 37V7C38 5.34315 36.6569 4 35 4H13C11.3431 4 10 5.34315 10 7ZM28 35C29.1046 35 30 34.1046 30 33C30 31.8954 29.1046 31 28 31C26.8954 31 26 31.8954 26 33C26 34.1046 26.8954 35 28 35ZM18 11C18 10.4477 18.4477 10 19 10L29 10C29.5523 10 30 10.4477 30 11C30 11.5523 29.5523 12 29 12L19 12C18.4477 12 18 11.5523 18 11ZM15 16C14.4477 16 14 16.4477 14 17C14 17.5523 14.4477 18 15 18H33C33.5523 18 34 17.5523 34 17C34 16.4477 33.5523 16 33 16H15ZM14 21C14 20.4477 14.4477 20 15 20H33C33.5523 20 34 20.4477 34 21C34 21.5523 33.5523 22 33 22H15C14.4477 22 14 21.5523 14 21ZM15 24C14.4477 24 14 24.4477 14 25C14 25.5523 14.4477 26 15 26H33C33.5523 26 34 25.5523 34 25C34 24.4477 33.5523 24 33 24H15Z" fill="currentColor"/>
+<path d="M26 44V40H30V44L28 42.5L26 44Z" fill="currentColor"/>
+</svg></div><b>FDA ≥18 vs ACIP ≥19</b></div><div class="v2-body">FDA 허가(18세 이상)와 ACIP 성인 스케줄(19세 이상) 연령을 혼동하지 않는다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:454px;top:416px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M37.9725 27.9747C39.2563 25.9594 40 23.5665 40 21C40 13.8203 34.1797 8 27 8C24.4335 8 22.0407 8.74375 20.0253 10.0275C18.6579 10.1048 17.3336 10.3437 16.0714 10.7254C18.8073 7.8165 22.6915 6 27 6C35.2843 6 42 12.7157 42 21C42 25.3085 40.1835 29.1927 37.2746 31.9286C37.6563 30.6664 37.8953 29.3422 37.9725 27.9747Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.9333 28.6028C39.2073 29.8352 38.3101 30.9547 37.2746 31.9286C37.6563 30.6664 37.8953 29.3422 37.9725 27.9747C37.9725 27.9749 37.9726 27.9745 37.9725 27.9747C39.256 25.9598 39.9997 23.5675 40 21.0015C40 21.001 40 21.0005 40 21C40 13.8203 34.1797 8 27 8C24.4335 8 22.0407 8.74375 20.0253 10.0275C20.0251 10.0275 20.0256 10.0275 20.0253 10.0275C18.6579 10.1048 17.3336 10.3437 16.0714 10.7254C17.0454 9.68988 18.1648 8.79277 19.3972 8.06676C21.6173 6.75886 24.2037 6.00629 26.9654 6.00004C26.9769 6.00001 26.9885 6 27 6C35.2843 6 42 12.7157 42 21C42 21.151 41.9978 21.3014 41.9934 21.4513C41.9164 24.0564 41.1752 26.4947 39.9333 28.6028Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36 27C36 35.2843 29.2843 42 21 42C12.7157 42 6 35.2843 6 27C6 18.7157 12.7157 12 21 12C29.2843 12 36 18.7157 36 27ZM20 22C18.8954 22 18 22.8954 18 24C18 25.1046 18.8954 26 20 26V22ZM22 20V19H20V20C17.7909 20 16 21.7909 16 24C16 26.2091 17.7909 28 20 28V32C19.1307 32 18.3886 31.4449 18.1135 30.6668C17.9295 30.146 17.3582 29.8731 16.8375 30.0572C16.3167 30.2412 16.0438 30.8125 16.2279 31.3332C16.7765 32.8855 18.2568 34 20 34V35H22V34C24.2091 34 26 32.2091 26 30C26 27.7909 24.2091 26 22 26V22C22.8693 22 23.6114 22.5551 23.8865 23.3332C24.0705 23.854 24.6418 24.1269 25.1625 23.9428C25.6833 23.7588 25.9562 23.1875 25.7721 22.6668C25.2235 21.1145 23.7432 20 22 20ZM22 28V32C23.1046 32 24 31.1046 24 30C24 28.8954 23.1046 28 22 28Z" fill="currentColor"/>
+</svg></div><b>비용부터 정리</b></div><div class="v2-body">국내 환자는 급여·자비 비용을 먼저 정리해 설명하면 접종률이 오른다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:844px;top:416px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 12.0417C24 8.70495 21.2951 6 17.9583 6H12.0417C8.70495 6 6 8.70495 6 12.0417C6 15.3784 8.70495 18.0833 12.0417 18.0833H13.2V21C13.2 21 24 19.5417 24 12.0417Z" fill="currentColor"/>
+<path d="M18.5 28C18.5 30.21 16.71 32 14.5 32C12.29 32 10.5 30.21 10.5 28C10.5 25.79 12.29 24 14.5 24C16.71 24 18.5 25.79 18.5 28Z" fill="currentColor"/>
+<path d="M14.5 34C11.6631 34 6 35.4293 6 38.2667V42H23V38.2667C23 35.4293 17.3369 34 14.5 34Z" fill="currentColor"/>
+<path d="M33.5 32C35.71 32 37.5 30.21 37.5 28C37.5 25.79 35.71 24 33.5 24C31.29 24 29.5 25.79 29.5 28C29.5 30.21 31.29 32 33.5 32Z" fill="currentColor"/>
+<path d="M33.5 34C30.6631 34 25 35.4293 25 38.2667V42H42V38.2667C42 35.4293 36.3369 34 33.5 34Z" fill="currentColor"/>
+<path d="M32.0417 7C28.7049 7 26 9.70495 26 13.0417C26 20.5417 35.6 22 35.6 22V19.0833H35.9583C39.2951 19.0833 42 16.3784 42 13.0417C42 9.70495 39.2951 7 35.9583 7H32.0417Z" fill="currentColor"/>
+</svg></div><b>권고 vs 지원 분리</b></div><div class="v2-body">'학회 권고(무엇이 최선)'와 '국가 지원(무엇이 무료)'을 나눠 안내한다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 가장 흔한 실수는 '완결 뒤 PPSV23 추가'입니다.</span><span class="v2-src">근거 · ACIP/KDCA practice notes — pitfalls &amp; tips</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 핵심 정리</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진료실 핵심 정리 — 네 가지</h2>
+  <p class="v2-sub">대상 ≥50세, PCV20·PCV21 1회 완결, PCV15만 PPSV23, 국내는 비용부터</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18 15C20.2091 15 22 13.2091 22 11C22 8.79086 20.2091 7 18 7C15.7909 7 14 8.79086 14 11C14 13.2091 15.7909 15 18 15Z" fill="currentColor"/>
+<path d="M12.5161 20.9354C12.6775 20.7418 12.8393 20.5632 13 20.3993V38C13 39.0616 13.8294 39.9382 14.8894 39.9969C15.9494 40.0556 16.8706 39.276 16.9878 38.2209L17.7901 31H18.2099L19.0123 38.2209C19.1295 39.276 20.0506 40.0556 21.1106 39.9969C22.1706 39.9382 23 39.0616 23 38L23 24.3603C23.1494 23.5645 23.7113 22.4114 24.5962 21.3282C25.389 22.3029 25.9217 23.3345 26.1285 24.1117C26.1069 25.7631 24.7785 31.9425 24.2316 34.421C24.107 34.9855 24.4844 35.537 25.0572 35.6155C28.75 36.1216 31.9406 36.121 35.6027 35.6554C36.2864 35.5685 36.6851 34.8112 36.4373 34.1681C35.7 32.2554 34.5001 28.2816 34.5001 22.6778L34.5001 19.7516C34.8908 20.0529 35.3004 20.4464 35.7082 20.9354C36.7648 22.2022 37.4209 23.653 37.5068 24.5548C37.5853 25.3795 38.3176 25.9844 39.1423 25.9059C39.9669 25.8273 40.5718 25.0951 40.4933 24.2704C40.3299 22.5543 39.2923 20.5488 38.012 19.0138C36.7678 17.522 34.8932 16 32.7903 16H28.1618C26.879 16 25.6609 16.5152 24.5999 17.2482C23.5426 16.5154 22.3281 16 21.0482 16H15.434C13.3311 16 11.4565 17.522 10.2123 19.0138C8.93198 20.5488 7.89441 22.5543 7.73098 24.2704C7.65245 25.0951 8.25733 25.8273 9.08202 25.9059C9.90672 25.9844 10.6389 25.3795 10.7175 24.5548C10.8034 23.653 11.4594 22.2022 12.5161 20.9354Z" fill="currentColor"/>
+<path d="M6 28.5C6 27.1193 7.11929 26 8.5 26C9.88071 26 11 27.1193 11 28.5V39C11 39.5523 10.5523 40 10 40C9.44772 40 9 39.5523 9 39V28.5C9 28.2239 8.77614 28 8.5 28C8.22386 28 8 28.2239 8 28.5V29.5128C8 30.0651 7.55228 30.5128 7 30.5128C6.44772 30.5128 6 30.0651 6 29.5128V28.5Z" fill="currentColor"/>
+<path d="M30.5001 15C32.7092 15 34.5001 13.2091 34.5001 11C34.5001 8.79086 32.7092 7 30.5001 7C28.291 7 26.5001 8.79086 26.5001 11C26.5001 13.2091 28.291 15 30.5001 15Z" fill="currentColor"/>
+<path d="M39.5001 26C38.1194 26 37.0001 27.1193 37.0001 28.5V29.5128C37.0001 30.0651 37.4478 30.5128 38.0001 30.5128C38.5524 30.5128 39.0001 30.0651 39.0001 29.5128V28.5C39.0001 28.2239 39.224 28 39.5001 28C39.7762 28 40.0001 28.2239 40.0001 28.5V39C40.0001 39.5523 40.4478 40 41.0001 40C41.5524 40 42.0001 39.5523 42.0001 39V28.5C42.0001 27.1193 40.8808 26 39.5001 26Z" fill="currentColor"/>
+<path d="M25.5 39.3877V37.1515C26.75 37.3096 27.9265 37.4031 29.0877 37.4336L28.4471 39.7824C28.2494 40.5074 27.5457 40.9742 26.8009 40.8744C26.0561 40.7747 25.5 40.1392 25.5 39.3877Z" fill="currentColor"/>
+<path d="M32.5529 39.7824L31.899 37.3848C33.0507 37.3157 34.2327 37.187 35.5 37V39.3877C35.5 40.1392 34.9439 40.7747 34.1991 40.8744C33.4543 40.9742 32.7506 40.5074 32.5529 39.7824Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">01</span></div>
+    <div class="q-card__h">대상 ≥50세</div>
+    <div class="v2-body">PCV-naïve 성인 50세 이상 또는 19–64세 위험군. 고혈압 단독은 위험조건 아님.</div>
+    <div class="q-card__k">50세 이상은 전원</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:358px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81818 12.8638C6.36631 13.3156 6.36631 14.0483 6.81818 14.5001C7.27005 14.952 8.00267 14.952 8.45454 14.5001L9.27324 13.6814L13.3636 17.7719L10.0909 21.0447C9.63902 21.4966 9.63902 22.2292 10.0909 22.6811C10.5428 23.133 11.2754 23.133 11.7272 22.6811L13.3632 21.0451L16.3181 24H8.37441C7.74469 24 7.14076 24.2528 6.69547 24.7028C6.25019 25.1528 6.00003 25.7632 6.00003 26.3996V29.9983C5.99395 32.7931 6.93225 35.5063 8.65965 37.6887C10.3871 39.8712 12.8 41.3922 15.4992 42C18.1987 41.3925 20.612 39.8717 22.3397 37.6892C23.5568 36.1518 24.3822 34.351 24.7617 32.4438L27.2727 34.9549C28.9502 36.6325 31.4016 37.0645 33.4777 36.2509L34.6362 37.4095C35.242 38.0153 36.1002 38.215 36.8724 38.0086L39.5455 40.6818C39.9974 41.1337 40.73 41.1337 41.1818 40.6818C41.6337 40.2299 41.6337 39.4973 41.1818 39.0454L38.5083 36.3718C38.7142 35.5999 38.5144 34.7422 37.9089 34.1367L36.7504 32.9782C36.9538 32.4591 37.0794 31.9166 37.1271 31.3686C37.163 30.9555 37.1548 30.5392 37.1022 30.1275C36.9457 28.9009 36.3965 27.7148 35.4545 26.7728L21.545 12.863L23.1818 11.2263C23.6336 10.7744 23.6336 10.0418 23.1818 9.58989C22.7299 9.13801 21.9973 9.13801 21.5454 9.58989L18.2727 12.8627L14.1823 8.77223L15 7.95456C15.4518 7.50268 15.4518 6.77004 15 6.31816C14.5481 5.86628 13.8155 5.86628 13.3636 6.31816L6.81818 12.8638ZM26.5467 31.4003L31.9 26.0468L20.1308 14.2773L14.7774 19.6308L19.1465 24H22.6256C23.2553 24 23.8592 24.2528 24.3045 24.7028C24.7498 25.1528 25 25.7632 25 26.3996V29.8536L26.5467 31.4003ZM16.8585 14.2769L12.7681 10.1865L10.6874 12.2672L14.7778 16.3576L16.8585 14.2769ZM35.6707 34.7269C35.6011 34.8043 35.529 34.8804 35.4545 34.9549C35.3799 35.0295 35.3039 35.1016 35.2264 35.1712L36.0504 35.9952C36.1731 36.1179 36.372 36.1179 36.4947 35.9952C36.6174 35.8725 36.6174 35.6736 36.4947 35.5509L35.6707 34.7269ZM33.5364 27.6832L34.0403 28.1872C34.6458 28.7927 35.0033 29.5523 35.1128 30.3398C35.1522 30.6234 35.1595 30.9105 35.1346 31.1954C35.1032 31.5541 35.0209 31.9092 34.8876 32.2489L32.7486 34.3879C31.3898 34.9211 29.785 34.6387 28.6869 33.5406L28.183 33.0367L33.5364 27.6832ZM17 29C17 28.4477 16.5523 28 16 28C15.4477 28 15 28.4477 15 29V31H13C12.4477 31 12 31.4477 12 32C12 32.5522 12.4477 33 13 33H15V35C15 35.5522 15.4477 36 16 36C16.5523 36 17 35.5522 17 35V33H19C19.5523 33 20 32.5522 20 32C20 31.4477 19.5523 31 19 31H17V29Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">02</span></div>
+    <div class="q-card__h">1회 완결</div>
+    <div class="v2-body">PCV20 1회 또는 PCV21 1회로 끝. 완결 백신 뒤 PPSV23을 붙이지 않는다.</div>
+    <div class="q-card__k">PCV20·21 = 한 번</div>
+  </div>
+  <div class="v2-panel q-card" style="left:652px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">03</span></div>
+    <div class="q-card__h">PCV15만 순차</div>
+    <div class="v2-body">PCV15 후 PPSV23은 면역정상 ≥1년, 면역저하·CSF·인공와우&nbsp;≥8주.</div>
+    <div class="q-card__k">≥1년 / ≥8주</div>
+  </div>
+  <div class="v2-panel q-card" style="left:946px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M37.9725 27.9747C39.2563 25.9594 40 23.5665 40 21C40 13.8203 34.1797 8 27 8C24.4335 8 22.0407 8.74375 20.0253 10.0275C18.6579 10.1048 17.3336 10.3437 16.0714 10.7254C18.8073 7.8165 22.6915 6 27 6C35.2843 6 42 12.7157 42 21C42 25.3085 40.1835 29.1927 37.2746 31.9286C37.6563 30.6664 37.8953 29.3422 37.9725 27.9747Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.9333 28.6028C39.2073 29.8352 38.3101 30.9547 37.2746 31.9286C37.6563 30.6664 37.8953 29.3422 37.9725 27.9747C37.9725 27.9749 37.9726 27.9745 37.9725 27.9747C39.256 25.9598 39.9997 23.5675 40 21.0015C40 21.001 40 21.0005 40 21C40 13.8203 34.1797 8 27 8C24.4335 8 22.0407 8.74375 20.0253 10.0275C20.0251 10.0275 20.0256 10.0275 20.0253 10.0275C18.6579 10.1048 17.3336 10.3437 16.0714 10.7254C17.0454 9.68988 18.1648 8.79277 19.3972 8.06676C21.6173 6.75886 24.2037 6.00629 26.9654 6.00004C26.9769 6.00001 26.9885 6 27 6C35.2843 6 42 12.7157 42 21C42 21.151 41.9978 21.3014 41.9934 21.4513C41.9164 24.0564 41.1752 26.4947 39.9333 28.6028Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36 27C36 35.2843 29.2843 42 21 42C12.7157 42 6 35.2843 6 27C6 18.7157 12.7157 12 21 12C29.2843 12 36 18.7157 36 27ZM20 22C18.8954 22 18 22.8954 18 24C18 25.1046 18.8954 26 20 26V22ZM22 20V19H20V20C17.7909 20 16 21.7909 16 24C16 26.2091 17.7909 28 20 28V32C19.1307 32 18.3886 31.4449 18.1135 30.6668C17.9295 30.146 17.3582 29.8731 16.8375 30.0572C16.3167 30.2412 16.0438 30.8125 16.2279 31.3332C16.7765 32.8855 18.2568 34 20 34V35H22V34C24.2091 34 26 32.2091 26 30C26 27.7909 24.2091 26 22 26V22C22.8693 22 23.6114 22.5551 23.8865 23.3332C24.0705 23.854 24.6418 24.1269 25.1625 23.9428C25.6833 23.7588 25.9562 23.1875 25.7721 22.6668C25.2235 21.1145 23.7432 20 22 20ZM22 28V32C23.1046 32 24 31.1046 24 30C24 28.8954 23.1046 28 22 28Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">04</span></div>
+    <div class="q-card__h">국내는 비용부터</div>
+    <div class="v2-body">NIP은 65세 이상 PPSV23만 무료, 성인 PCV는 자비. 권고와 지원을 나눠 설명.</div>
+    <div class="q-card__k">권고 ≠ 지원</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 한 줄 요약 — 대상은 넓게, 백신은 한 번에, 비용은 먼저.</span><span class="v2-src">근거 · ACIP 2024 · KSID 2025 · KDCA</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">근거 · 다시 보기</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-text q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>소화기내과 · 일반내과 · 5대암 검진</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">외래 실무용 요약입니다. 실제 접종은 최신 권고·허가사항과 접종 기록으로 확인하십시오.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">ACIP ≥50세 확대 — MMWR 2025;74(1) (PMID 39773952) · ACIP PCV21 — MMWR 2024;73(36) (PMID 39264843) · STRIDE-8 (PMID 41208546) · STRIDE-9 (PMID 40763490) · STRIDE-7 (PMID 40953572) · V116+독감 (PMID 40714528) · KSID 2025 · KDCA</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
+      <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM17,2H18V3H17zM19,2H20V3H19zM25,2H26V3H25zM26,2H27V3H26zM27,2H28V3H27zM28,2H29V3H28zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM14,3H15V4H14zM15,3H16V4H15zM18,3H19V4H18zM19,3H20V4H19zM20,3H21V4H20zM22,3H23V4H22zM24,3H25V4H24zM26,3H27V4H26zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM15,4H16V5H15zM16,4H17V5H16zM23,4H24V5H23zM25,4H26V5H25zM29,4H30V5H29zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM14,5H15V6H14zM16,5H17V6H16zM17,5H18V6H17zM19,5H20V6H19zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM18,6H19V7H18zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM13,7H14V8H13zM14,7H15V8H14zM18,7H19V8H18zM19,7H20V8H19zM22,7H23V8H22zM24,7H25V8H24zM27,7H28V8H27zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM13,9H14V10H13zM14,9H15V10H14zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM28,9H29V10H28zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM14,10H15V11H14zM15,10H16V11H15zM18,10H19V11H18zM23,10H24V11H23zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM2,11H3V12H2zM4,11H5V12H4zM9,11H10V12H9zM11,11H12V12H11zM14,11H15V12H14zM17,11H18V12H17zM20,11H21V12H20zM22,11H23V12H22zM25,11H26V12H25zM33,11H34V12H33zM36,11H37V12H36zM37,11H38V12H37zM5,12H6V13H5zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM11,12H12V13H11zM13,12H14V13H13zM16,12H17V13H16zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM21,12H22V13H21zM24,12H25V13H24zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM34,12H35V13H34zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM4,13H5V14H4zM5,13H6V14H5zM7,13H8V14H7zM11,13H12V14H11zM12,13H13V14H12zM15,13H16V14H15zM17,13H18V14H17zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM25,13H26V14H25zM28,13H29V14H28zM29,13H30V14H29zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM2,14H3V15H2zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM16,14H17V15H16zM17,14H18V15H17zM19,14H20V15H19zM20,14H21V15H20zM21,14H22V15H21zM24,14H25V15H24zM25,14H26V15H25zM27,14H28V15H27zM28,14H29V15H28zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM4,15H5V16H4zM5,15H6V16H5zM7,15H8V16H7zM10,15H11V16H10zM11,15H12V16H11zM13,15H14V16H13zM15,15H16V16H15zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM25,15H26V16H25zM30,15H31V16H30zM33,15H34V16H33zM6,16H7V17H6zM8,16H9V17H8zM9,16H10V17H9zM15,16H16V17H15zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM26,16H27V17H26zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM38,16H39V17H38zM9,17H10V18H9zM11,17H12V18H11zM16,17H17V18H16zM17,17H18V18H17zM22,17H23V18H22zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM2,18H3V19H2zM3,18H4V19H3zM4,18H5V19H4zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM12,18H13V19H12zM16,18H17V19H16zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM26,18H27V19H26zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM31,18H32V19H31zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM38,18H39V19H38zM2,19H3V20H2zM6,19H7V20H6zM12,19H13V20H12zM13,19H14V20H13zM14,19H15V20H14zM15,19H16V20H15zM17,19H18V20H17zM18,19H19V20H18zM19,19H20V20H19zM23,19H24V20H23zM25,19H26V20H25zM30,19H31V20H30zM33,19H34V20H33zM35,19H36V20H35zM37,19H38V20H37zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM16,20H17V21H16zM19,20H20V21H19zM22,20H23V21H22zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM35,20H36V21H35zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM3,21H4V22H3zM9,21H10V22H9zM12,21H13V22H12zM13,21H14V22H13zM16,21H17V22H16zM18,21H19V22H18zM23,21H24V22H23zM24,21H25V22H24zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM32,21H33V22H32zM33,21H34V22H33zM34,21H35V22H34zM38,21H39V22H38zM3,22H4V23H3zM5,22H6V23H5zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM14,22H15V23H14zM15,22H16V23H15zM19,22H20V23H19zM24,22H25V23H24zM25,22H26V23H25zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM35,22H36V23H35zM36,22H37V23H36zM3,23H4V24H3zM4,23H5V24H4zM7,23H8V24H7zM9,23H10V24H9zM12,23H13V24H12zM15,23H16V24H15zM18,23H19V24H18zM19,23H20V24H19zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM37,23H38V24H37zM2,24H3V25H2zM4,24H5V25H4zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM12,24H13V25H12zM13,24H14V25H13zM15,24H16V25H15zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM23,24H24V25H23zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM31,24H32V25H31zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM2,25H3V26H2zM4,25H5V26H4zM6,25H7V26H6zM7,25H8V26H7zM10,25H11V26H10zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM26,25H27V26H26zM30,25H31V26H30zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM37,25H38V26H37zM38,25H39V26H38zM2,26H3V27H2zM3,26H4V27H3zM4,26H5V27H4zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM17,26H18V27H17zM18,26H19V27H18zM23,26H24V27H23zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM38,26H39V27H38zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM5,27H6V28H5zM6,27H7V28H6zM7,27H8V28H7zM11,27H12V28H11zM13,27H14V28H13zM15,27H16V28H15zM16,27H17V28H16zM17,27H18V28H17zM20,27H21V28H20zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM30,27H31V28H30zM33,27H34V28H33zM36,27H37V28H36zM2,28H3V29H2zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM17,28H18V29H17zM18,28H19V29H18zM19,28H20V29H19zM21,28H22V29H21zM24,28H25V29H24zM26,28H27V29H26zM29,28H30V29H29zM30,28H31V29H30zM31,28H32V29H31zM32,28H33V29H32zM33,28H34V29H33zM35,28H36V29H35zM36,28H37V29H36zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM5,29H6V30H5zM6,29H7V30H6zM9,29H10V30H9zM14,29H15V30H14zM16,29H17V30H16zM17,29H18V30H17zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM28,29H29V30H28zM31,29H32V30H31zM32,29H33V30H32zM33,29H34V30H33zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM11,30H12V31H11zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM14,31H15V32H14zM16,31H17V32H16zM18,31H19V32H18zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM25,31H26V32H25zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM12,32H13V33H12zM13,32H14V33H13zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM24,32H25V33H24zM26,32H27V33H26zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM12,33H13V34H12zM16,33H17V34H16zM21,33H22V34H21zM22,33H23V34H22zM25,33H26V34H25zM26,33H27V34H26zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM13,34H14V35H13zM15,34H16V35H15zM16,34H17V35H16zM17,34H18V35H17zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM37,34H38V35H37zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM13,35H14V36H13zM16,35H17V36H16zM17,35H18V36H17zM18,35H19V36H18zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM15,36H16V37H15zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM14,37H15V38H14zM16,37H17V38H16zM18,37H19V38H18zM23,37H24V38H23zM24,37H25V38H24zM25,37H26V38H25zM26,37H27V38H26zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM14,38H15V39H14zM16,38H17V39H16zM19,38H20V39H19zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM31,38H32V39H31zM34,38H35V39H34zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
+      <div class="qr-block__text">
+        <div class="qr-block__label">SCAN TO REVISIT</div>
+        <div class="qr-block__heading">휴대폰에서 다시 보기</div>
+        <div class="qr-block__hint">QR을 스캔하면 같은 자료를<br>휴대폰에서 다시 볼 수 있습니다</div>
       </div>
     </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">생성: medical-deep-research (4엔진 교차검증 + PubMed 하드인용) · 교육·참고용</span>
-      <span class="slide__page">10 / 10</span>
-    </footer>
-  </section>
-
-</div>
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 가이드라인 리뷰 · ⚠️ 교육·참고용 — 실제 접종 결정은 최신 권고·허가사항으로 최종 확인</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
   <button id="presentBtn" type="button">Present</button>
 </div>
 
@@ -579,6 +531,5 @@
     });
   })();
 </script>
-
 </body>
 </html>

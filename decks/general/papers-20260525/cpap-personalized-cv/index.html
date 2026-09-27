@@ -8,7 +8,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://edu.gwanggyobarun.com/decks/general/papers-20260525/cpap-personalized-cv/">
   <meta property="og:title" content="CPAP 개인 맞춤 심혈관 효과 — 광교바른내과">
-  <meta property="og:description" content="Communications Medicine 2026.04. SAVE trial(N=2,687) causal survival forest 재분석. CPAP 심혈관 효과는 환자별 극단적 이질성 — 평균 null 뒤에 숨은 BIG winners/losers. 졸음·CV 위험·중증 AHI 우선.">
+  <meta property="og:description" content="Communications Medicine 2026.04. SAVE trial(N=2,687) causal survival forest 재분석. 평균 null 뒤에서 환자별 CPAP 효과 차이를 추정한 가설 생성 재분석 — 가이드라인 변경 근거는 아닙니다.">
   <meta property="og:image" content="https://edu.gwanggyobarun.com/output/decks/cpap-personalized-cv-preview.png">
   <meta property="og:site_name" content="광교바른내과">
   <meta name="theme-color" content="#003366">
@@ -16,963 +16,404 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <link rel="stylesheet" href="../../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
-
-  <style>
-    .slide__bg-num { display: none !important; }
-
-    /* === pattern-stats3 (TL;DR) === */
-    .pattern-stats3 { display: flex; flex-direction: column; gap: var(--space-6); height: 100%; }
-    .stats3-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-5); align-items: center; }
-    .stats3-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
-    .stats3-cell__circle { width: 218px; height: 218px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-canvas); text-align: center; }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__circle--good { background: linear-gradient(135deg, var(--color-success), var(--color-success)); }
-    .stats3-cell__circle--warn { background: linear-gradient(135deg, var(--color-warning), var(--color-warning)); }
-    .stats3-cell__num { font-size: 2.4rem; font-weight: var(--weight-black); line-height: 1.05; letter-spacing: var(--tracking-tight); }
-    .stats3-cell__num small { display: block; font-size: 1.05rem; font-weight: var(--weight-540); margin-top: 6px; opacity: 0.9; }
-    .stats3-cell__label { font-size: var(--text-body-lg); font-weight: var(--weight-540); color: var(--color-navy); text-align: center; max-width: 280px; line-height: var(--lh-snug); }
-    .stats3-note { padding: var(--space-5) var(--space-6); background: var(--color-canvas-warm); border-left: 4px solid var(--color-steel); border-radius: var(--radius-lg); font-size: var(--text-body-lg); color: var(--color-ink); line-height: var(--lh-relaxed); }
-    .stats3-note--good { border-left-color: var(--color-success); background: var(--color-success-bg); }
-    .stats3-note--warn { border-left-color: var(--color-warning); background: var(--color-warning-bg); }
-    .stats3-note--alt { border-left-color: var(--color-navy); background: var(--color-border-soft); }
-
-    /* === pattern-table === */
-    .pattern-table { display: flex; flex-direction: column; gap: var(--space-3); }
-    .tbl-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.6fr; gap: var(--space-4); align-items: center; padding: var(--space-3) var(--space-5); background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
-    .tbl-row--head { background: var(--color-navy); color: var(--color-canvas); border-color: var(--color-navy); font-weight: var(--weight-bold); }
-    .tbl-row--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tbl-row--warn { background: var(--color-warning-bg); border-color: var(--color-warning); }
-    .tbl-row--alert { background: #fef2f2; border-color: var(--color-danger-border); }
-    .tbl__label { font-weight: var(--weight-bold); color: var(--color-navy); font-size: var(--text-body-lg); }
-    .tbl-row--head .tbl__label { color: var(--color-canvas); font-size: var(--text-body); }
-    .tbl__num { font-size: var(--text-body-lg); font-weight: var(--weight-black); color: var(--color-steel); text-align: center; }
-    .tbl-row--head .tbl__num { color: var(--color-canvas); font-size: var(--text-body); font-weight: var(--weight-bold); }
-    .tbl-row--good .tbl__num { color: var(--color-success); }
-    .tbl-row--alert .tbl__num { color: #b91c1c; }
-    .tbl__note { font-size: var(--text-body); color: var(--color-ink-soft); line-height: var(--lh-snug); }
-    .tbl-row--head .tbl__note { color: var(--color-canvas); opacity: 0.92; }
-
-    /* === pattern-split === */
-    .pattern-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); height: 100%; }
-    .split__heading { font-size: var(--text-h3); font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: var(--space-4); }
-    .split__list { list-style: none; padding: 0; }
-    .split__list li { padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-body-lg); line-height: var(--lh-snug); }
-    .split__list li:last-child { border-bottom: 0; }
-    .split__list li strong { color: var(--color-navy); }
-    .split__note { margin-top: var(--space-4); padding: var(--space-4); background: var(--color-success-bg); border-left: 4px solid var(--color-success); border-radius: var(--radius-md); font-size: var(--text-body); line-height: var(--lh-relaxed); }
-    .split__note--warn { background: var(--color-warning-bg); border-left-color: var(--color-warning); }
-    .split__note--alt { background: var(--color-border-soft); border-left-color: var(--color-navy); }
-
-    /* === metric-card / stack === */
-    .metric-stack { display: flex; flex-direction: column; gap: var(--space-3); }
-    .metric-card { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); border-left: 4px solid var(--color-steel); }
-    .metric-card--good { border-left-color: var(--color-success); }
-    .metric-card--alt { border-left-color: var(--color-navy); }
-    .metric-card--warn { border-left-color: var(--color-warning); }
-    .metric-card--alert { border-left-color: var(--color-danger); }
-    .metric-card__label { font-size: 0.95rem; color: var(--color-ink-soft); font-weight: var(--weight-540); }
-    .metric-card__value { font-size: 1.85rem; font-weight: var(--weight-black); color: var(--color-navy); line-height: 1.05; margin-top: 4px; }
-    .metric-card__value small { display: inline-block; font-size: 0.95rem; font-weight: var(--weight-540); margin-left: 6px; color: var(--color-steel); }
-    .metric-card__hint { font-size: 0.88rem; color: var(--color-ink-soft); margin-top: 6px; line-height: var(--lh-snug); }
-
-    /* === pattern-grid === */
-    .pattern-grid { display: grid; gap: var(--space-4); height: 100%; }
-    .pattern-grid--3 { grid-template-columns: 1fr 1fr 1fr; grid-auto-rows: 1fr; }
-    .pattern-grid--2 { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
-    .pattern-grid--3x2 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
-    .tile { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
-    .tile__index { font-size: 0.78rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.05em; text-transform: uppercase; }
-    .tile__title { font-size: var(--text-h4); font-weight: var(--weight-bold); color: var(--color-navy); line-height: var(--lh-snug); }
-    .tile__body { font-size: var(--text-body); color: var(--color-ink); line-height: var(--lh-relaxed); }
-    .tile--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tile--good .tile__title { color: var(--color-success); }
-    .tile--good .tile__index { color: var(--color-success); }
-    .tile--warn { background: var(--color-warning-bg); border-color: var(--color-warning); }
-    .tile--warn .tile__title { color: var(--color-warning); }
-    .tile--warn .tile__index { color: var(--color-warning); }
-    .tile--alert { background: #fef2f2; border-color: var(--color-danger-border); }
-    .tile--alert .tile__title { color: #b91c1c; }
-    .tile--alert .tile__index { color: #b91c1c; }
-    .tile--alt { background: var(--color-border-soft); border-color: #94a3b8; }
-    .tile--alt .tile__title { color: var(--color-navy); }
-
-    /* === pattern-timeline === */
-    .pattern-timeline { display: grid; grid-template-columns: repeat(4, 1fr); --timeline-gap: var(--space-3); height: 100%; align-items: stretch; }
-    .timeline-step { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
-    .timeline-step--alt { background: var(--color-success-bg); border-color: var(--color-success); }
-    .timeline-step__num { font-size: 1.6rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; }
-    .timeline-step--alt .timeline-step__num { color: var(--color-success); }
-    .timeline-step__when { font-size: 0.85rem; font-weight: var(--weight-bold); color: var(--color-navy); letter-spacing: 0.05em; text-transform: uppercase; }
-    .timeline-step__title { font-size: 1.05rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: var(--lh-snug); }
-    .timeline-step__body { font-size: 0.92rem; color: var(--color-ink); line-height: var(--lh-snug); }
-
-    /* === pattern-checklist === */
-    .pattern-checklist { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-6); }
-    .check-item { display: flex; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-body-lg); align-items: flex-start; line-height: var(--lh-snug); }
-    .check-item__icon { color: var(--color-accent); font-weight: var(--weight-black); flex-shrink: 0; font-size: 1.3em; line-height: 1; min-width: 22px; }
-    .check-item__icon--warn { color: var(--color-warning); }
-    .check-item__icon--good { color: var(--color-success); }
-    .check-item__text strong { color: var(--color-navy); }
-
-    /* === takehome-grid === */
-    .takehome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
-    .takehome-card { background: var(--color-navy); color: var(--color-canvas); padding: var(--space-5); border-radius: var(--radius-lg); display: flex; gap: var(--space-4); align-items: flex-start; }
-    .takehome-card__num { font-size: 2.6rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; flex-shrink: 0; min-width: 50px; }
-    .takehome-card__text { font-size: var(--text-body-lg); line-height: var(--lh-snug); font-weight: var(--weight-540); }
-    .takehome-card__text strong { color: var(--color-steel); }
-
-    /* === ai-visual / bg-image-split === */
-    .ai-visual { width: 100%; height: 100%; background: var(--color-canvas); border-radius: var(--radius-lg); overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 0; border: 1px solid var(--color-border); position: relative; }
-    .ai-visual img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .ai-visual--placeholder { background: linear-gradient(135deg, var(--color-border-soft) 0%, #e2e8f0 100%); flex-direction: column; gap: var(--space-3); padding: var(--space-6); }
-    .ai-visual__hint { font-size: var(--text-body); color: var(--color-navy); text-align: center; font-weight: var(--weight-540); line-height: var(--lh-snug); max-width: 320px; }
-    .ai-visual__pin { position: absolute; top: var(--space-3); left: var(--space-3); background: var(--color-navy); color: var(--color-canvas); padding: 4px 10px; border-radius: var(--radius-md); font-size: 0.75rem; font-weight: var(--weight-bold); letter-spacing: 0.05em; }
-
-    .bg-image-split { display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-5); height: 100%; }
-    .bg-image-split__visual { display: flex; flex-direction: column; gap: var(--space-3); }
-    .bg-image-split__visual .ai-visual { flex: 1; min-height: 0; }
-    .bg-image-split__caption { padding: var(--space-3) var(--space-4); background: var(--color-canvas-warm); border-left: 4px solid var(--color-navy); border-radius: var(--radius-md); font-size: 0.92rem; line-height: var(--lh-snug); color: var(--color-ink); }
-    .bg-image-split__caption strong { color: var(--color-navy); }
-
-    /* === HTE distribution visualization === */
-    .hte-vis { display: flex; flex-direction: column; gap: var(--space-5); height: 100%; }
-    .hte-chart { position: relative; padding: var(--space-5) var(--space-6); background: var(--color-canvas-warm); border-radius: var(--radius-lg); border: 1px solid var(--color-border); }
-    .hte-chart__title { font-size: 0.95rem; font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: var(--space-3); }
-    .hte-bars { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 6px; align-items: flex-end; height: 140px; padding: 0 var(--space-2); border-bottom: 2px solid var(--color-navy); }
-    .hte-bar { display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
-    .hte-bar__fill { width: 100%; border-radius: 6px 6px 0 0; }
-    .hte-bar__fill--big-benefit { background: linear-gradient(180deg, var(--color-success), var(--color-success)); }
-    .hte-bar__fill--benefit { background: linear-gradient(180deg, #5B9BD5, #003366); }
-    .hte-bar__fill--null { background: linear-gradient(180deg, #94a3b8, var(--color-ink-soft)); }
-    .hte-bar__fill--harm { background: linear-gradient(180deg, var(--color-warning), var(--color-warning)); }
-    .hte-bar__fill--big-harm { background: linear-gradient(180deg, var(--color-danger-bg), #b91c1c); }
-    .hte-bar__pct { font-size: 0.85rem; font-weight: var(--weight-bold); color: var(--color-canvas); padding: 4px 0; text-align: center; }
-    .hte-labels { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 6px; margin-top: var(--space-2); }
-    .hte-labels__cell { font-size: 0.78rem; color: var(--color-ink-soft); text-align: center; font-weight: var(--weight-540); line-height: 1.3; }
-    .hte-labels__cell strong { display: block; color: var(--color-navy); font-size: 0.85rem; }
-    .hte-axis { display: flex; justify-content: space-between; padding: 0 var(--space-2); margin-top: var(--space-2); font-size: 0.78rem; color: var(--color-ink-soft); }
-    .hte-axis__arrow { display: flex; align-items: center; gap: 8px; font-weight: var(--weight-bold); color: var(--color-navy); }
-
-    .hte-summary { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
-    .hte-summary__card { padding: var(--space-4); border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: var(--space-2); }
-    .hte-summary__card--good { background: var(--color-success-bg); border: 1px solid var(--color-success); }
-    .hte-summary__card--warn { background: var(--color-warning-bg); border: 1px solid var(--color-warning); }
-    .hte-summary__card-label { font-size: 0.85rem; font-weight: var(--weight-bold); color: var(--color-ink-soft); letter-spacing: 0.04em; text-transform: uppercase; }
-    .hte-summary__card-value { font-size: 1.45rem; font-weight: var(--weight-black); line-height: 1.1; }
-    .hte-summary__card--good .hte-summary__card-value { color: var(--color-success); }
-    .hte-summary__card--warn .hte-summary__card-value { color: var(--color-warning); }
-    .hte-summary__card-hint { font-size: 0.9rem; color: var(--color-ink); line-height: var(--lh-snug); }
-
-    .stars { color: var(--color-warning); letter-spacing: 0.12em; font-size: 1.25em; }
-
-    .slide--closing .slide__body { display: flex; flex-direction: column; gap: var(--space-3); }
-
-    /* === FIT FIXES — prevent body→footer clipping (1280×720 frame) === */
-    /* Slide 02 — pattern-stats3 was clipped 138px: shrink circles + tighten note */
-    .pattern-stats3 { gap: var(--space-4); }
-    .stats3-row { gap: var(--space-4); }
-    .stats3-cell { gap: var(--space-3); }
-    .stats3-cell__circle { width: 170px; height: 170px; }
-    .stats3-cell__num { font-size: 1.95rem; }
-    .stats3-cell__num small { font-size: 0.92rem; margin-top: 4px; }
-    .stats3-cell__label { font-size: 0.95rem; max-width: 260px; }
-    .stats3-note { padding: var(--space-4) var(--space-5); font-size: 0.95rem; line-height: var(--lh-snug); }
-
-    /* Slide 03 — bg-image-split clipped: left figure too tall, constrain to body height */
-    .bg-image-split { max-height: 100%; min-height: 0; align-items: stretch; }
-    .bg-image-split__visual { min-height: 0; overflow: hidden; }
-    .bg-image-split .split__heading { font-size: 0.95rem; margin-bottom: 6px; }
-    .bg-image-split .split__list li { padding: 3px 0; font-size: 0.8rem; line-height: 1.3; }
-    .bg-image-split .split__note { padding: 6px 10px; font-size: 0.76rem; margin-top: 6px; line-height: 1.3; }
-    .bg-image-split__caption { padding: 6px 10px; font-size: 0.78rem; line-height: 1.3; flex-shrink: 0; }
-    .bg-image-split .ai-visual { min-height: 0; max-height: 100%; }
-
-    /* Slide 05 — hte-vis clipped 104px: shorter chart + tighter summary */
-    .hte-vis { gap: var(--space-2); }
-    .hte-chart { padding: var(--space-2) var(--space-5); }
-    .hte-chart__title { font-size: 0.85rem; margin-bottom: 6px; }
-    .hte-bars { height: 90px; }
-    .hte-bar__pct { font-size: 0.78rem; padding: 3px 0; }
-    .hte-labels__cell { font-size: 0.72rem; line-height: 1.25; }
-    .hte-labels__cell strong { font-size: 0.78rem; }
-    .hte-axis { font-size: 0.72rem; }
-    .hte-summary { gap: var(--space-3); }
-    .hte-summary__card { padding: var(--space-3); gap: 4px; }
-    .hte-summary__card-label { font-size: 0.78rem; }
-    .hte-summary__card-value { font-size: 1.2rem; }
-    .hte-summary__card-hint { font-size: 0.82rem; }
-
-    /* Slide 07 — pattern-split clipped 184px (worst): metric-stack 4 cards + 5-item list crammed */
-    .slide:nth-of-type(7) .split__heading { font-size: 1rem; margin-bottom: var(--space-2); }
-    .slide:nth-of-type(7) .split__list li { padding: 3px 0; font-size: 0.82rem; line-height: 1.3; }
-    .slide:nth-of-type(7) .split__note { padding: var(--space-2) var(--space-3); font-size: 0.78rem; margin-top: var(--space-2); line-height: 1.3; }
-    .slide:nth-of-type(7) .metric-stack { gap: 6px; }
-    .slide:nth-of-type(7) .metric-card { padding: 8px var(--space-3); }
-    .slide:nth-of-type(7) .metric-card__label { font-size: 0.78rem; }
-    .slide:nth-of-type(7) .metric-card__value { font-size: 1.1rem; }
-    .slide:nth-of-type(7) .metric-card__value small { font-size: 0.72rem; }
-    .slide:nth-of-type(7) .metric-card__hint { font-size: 0.72rem; margin-top: 2px; line-height: 1.3; }
-
-    /* Slide 09 — pattern-split clipped 56px: tighten 6-item lists */
-    .slide:nth-of-type(9) .split__heading { font-size: 1.05rem; margin-bottom: var(--space-3); }
-    .slide:nth-of-type(9) .split__list li { padding: 6px 0; font-size: 0.92rem; }
-    .slide:nth-of-type(9) .split__note { padding: var(--space-3); font-size: 0.85rem; margin-top: var(--space-3); }
-
-    /* Slide 11 — pattern-table overflow 62px: tighten row padding */
-    .slide:nth-of-type(11) .pattern-table { gap: 6px; }
-    .slide:nth-of-type(11) .tbl-row { padding: 8px var(--space-4); }
-    .slide:nth-of-type(11) .tbl__label { font-size: 0.92rem; }
-    .slide:nth-of-type(11) .tbl__num { font-size: 0.92rem; }
-    .slide:nth-of-type(11) .tbl__note { font-size: 0.82rem; }
-
-    /* Slide 12 — closing-grid overflow 86px: takehome + contact + QR all stacked */
-    .slide--closing .takehome-card { padding: 8px var(--space-3); gap: var(--space-3); }
-    .slide--closing .takehome-card__num { font-size: 1.55rem; min-width: 28px; }
-    .slide--closing .takehome-card__text { font-size: 0.8rem; line-height: 1.3; }
-    .slide--closing .takehome-grid { gap: 8px; }
-    .slide--closing .closing-grid { gap: var(--space-2); }
-    .slide--closing .qr-block__code svg { width: 56px !important; height: 56px !important; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(3) .bg-image-split__caption { bottom: 6px; }
-    .slide:nth-of-type(11) .tbl__note { font-size: 15px; line-height: 1.24; }
-  </style>
+  <link rel="stylesheet" href="../../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3D-redesign 2026-09-27 (원장님 49028) — 한 가지 틀 반복·작은 글자·글 벽·빈칸을
+    결론 카드·대비 2단·표·가로 흐름·2x2·그림 분할로 바꿨다. 그림칸 비율 = 원본 비율(잘림·레터박스 없음).
+    제목 36px·본문 16~17px·표 셀 16px(reference/deck-design-proportions.md §1). */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .slide--v2 .v2-title{font-size:36px;line-height:42px;top:96px;letter-spacing:-.5px}
+ .slide--v2 .v2-sub{top:146px}
+ .v2-tip{justify-content:space-between;gap:16px;font-size:14px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap;max-width:520px;overflow:hidden;text-overflow:ellipsis}
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:10px}
+ .q-text .v2-body{font-size:16.5px;line-height:1.6}
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none;overflow:visible}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-card{display:flex;flex-direction:column;padding:26px 24px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:40px;font-weight:800;line-height:1;color:var(--v2-navy);letter-spacing:-1px}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:16.5px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ .q-table thead th{font-size:16px}
+ .q-table tbody th{font-size:16.5px}
+ .q-table tbody td{font-size:16px;height:60px}
+ .q-table--tall tbody th,.q-table--tall tbody td{height:66px}
+ .q-table--short tbody th,.q-table--short tbody td{height:54px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:16px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:16.5px;padding:12px 0 12px 22px}
+ .v2-vs__list li::before{top:21px}
+ .q-four{display:flex;flex-direction:column;justify-content:center}
+ .q-four .v2-head{margin-bottom:10px}
+ .q-four .v2-head b{font-size:20px}
+ .q-four .v2-body{font-size:17px;line-height:1.65}
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-step__tag{align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--chip);color:var(--v2-navy);font-size:15px;font-weight:800;margin-bottom:14px}
+ .q-step__h{font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.35;margin-bottom:12px;word-break:keep-all}
+ .q-step .v2-body{font-size:16px;line-height:1.62}
+ .q-arrow{position:absolute;width:18px;height:18px;border-top:4px solid var(--v2-accent);border-right:4px solid var(--v2-accent);transform:rotate(45deg)}
+ .q-stat{display:flex;flex-direction:column;justify-content:center}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1.05;letter-spacing:-1.5px}
+ .q-stat__cap{margin-top:10px;font-size:16px;color:var(--v2-body);line-height:1.5;word-break:keep-all;font-weight:600}
+ .q-stat__body{margin-top:12px;padding-top:12px;border-top:1px solid var(--v2-line);font-size:15.5px}
+ .q-strip{display:flex;flex-direction:column;justify-content:center;padding:14px 24px}
+ .q-strip .v2-head{margin-bottom:6px}
+ .q-strip .v2-body{font-size:16.5px}
+ .q-row{display:flex;align-items:center;gap:20px;padding:10px 22px}
+ .q-row__tag{flex:none;width:88px;text-align:center;padding:8px 0;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:800}
+ .q-row__h{font-size:19px;font-weight:700;color:var(--v2-navy);margin-bottom:2px;line-height:1.3;word-break:keep-all}
+ .q-row .v2-body{font-size:16px;line-height:1.55}
+ .q-note{position:absolute;font-size:15px;line-height:1.55;color:var(--v2-body);word-break:keep-all}
+ .q-refs{font-size:15px;line-height:1.6}
+ .q-refs li{margin-bottom:6px}
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-kvp{display:flex;align-items:center;padding:10px 22px}
+ .q-kv{display:flex;flex-direction:column;gap:4px}
+ .q-kv b{font-size:18px;color:var(--v2-navy)}
+ .q-kv span{font-size:15.5px;color:var(--v2-body);line-height:1.5;word-break:keep-all}
+</style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- SLIDE 01 · COVER -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PAPER REVIEW</strong> · CARDIOLOGY · SLEEP MEDICINE · AI</div>
     </header>
     <div class="slide__title-block">
-      <h1 class="slide__title">CPAP의 개인 맞춤 심혈관 효과,<br><em>평균 null 뒤에 숨은 BIG winners·losers</em></h1>
-      <p class="slide__subtitle">Communications Medicine 2026.04 — Mount Sinai 팀이 SAVE trial(N=2,687)을 causal survival forest로 재분석. 일부 환자는 사건 크게 감소, 일부는 오히려 증가. RCT 평균치(null)가 진짜 효과 가렸다.</p>
+      <h1 class="slide__title">CPAP의 개인 맞춤 심혈관 효과,<br><em>평균 null 뒤에 숨은 환자별 차이</em></h1>
+      <p class="slide__subtitle">Communications Medicine 2026.04 — Mount Sinai 팀이 SAVE trial(N=2,687)을 causal survival forest 로 재분석했습니다. 일부는 이득 쪽, 일부는 손해 쪽으로 추정됐습니다 — 가설 생성 단계입니다.</p>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">Communications Medicine Vol 6 (2026.04) · Mount Sinai AI · SAVE trial re-analysis · causal survival forest</span>
-      <span class="slide__page"><span class="stars">★★★★</span></span>
+      <span class="slide__page">01 / 13</span>
     </footer>
-  </section>
-
-
-  <!-- SLIDE 02 · TL;DR -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>TL;DR</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한 문단·세 숫자로 요약</h2>
-      <p class="slide__subtitle">평균값은 효과 없음(null) — 실제로는 환자별로 극단적 이질성. 누가 도움 받는지 식별 가능한 시대.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">N=2,687<small>SAVE trial</small></div>
-            </div>
-            <div class="stats3-cell__label">중등도-중증 OSA + 기존 CV 질환 환자<br>(원 RCT 평균 HR 1.10, p=0.34, null)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--good">
-              <div class="stats3-cell__num">≈30%<small>큰 이득</small></div>
-            </div>
-            <div class="stats3-cell__label">causal forest 추정<br>CPAP로 CV 사건 크게 감소한 하위군</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--warn">
-              <div class="stats3-cell__num">≈20%<small>오히려 증가</small></div>
-            </div>
-            <div class="stats3-cell__label">CPAP가 효과 없거나 사건<br>증가 추정군 (졸음 없음·경증)</div>
-          </div>
-        </div>
-        <div class="stats3-note stats3-note--alt">
-          <strong>핵심 메시지 — </strong>SAVE trial(2016)은 OSA + 기존 CV 질환자에게 CPAP가 심혈관 사건을 줄이지 못한다고 결론냈다 (HR 1.10, p=0.34). Mount Sinai 팀이 causal survival forest 기계학습으로 환자별 개별 효과(individual treatment effect)를 추정하니, <strong>평균은 null이지만 환자별로는 극단적 분포</strong>가 드러났다 — 일부는 사건이 크게 감소, 일부는 오히려 증가. <strong>일률적 권고를 폐기하고 환자별 risk-benefit 평가로 전환</strong>해야 한다. 한국 1차 진료 적용: 졸음·중증 AHI·고 CV 위험·당뇨 환자 우선 의뢰. ★★★★ 중요도.
-        </div>
+  </section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 결론 먼저</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">먼저 결론 — 평균은 null, 환자별로는 갈렸을 수 있다</h2>
+  <p class="v2-sub">기계학습 재분석이 만든 것은 가설입니다 — 권고를 바꾸는 근거가 아닙니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.1496 10C24.6481 10 24.2236 10.3688 24.1553 10.8638L22.2232 24.8638C22.1403 25.4646 22.6089 26 23.2175 26H32.1029V36H23.5717V30.3478H11.0257V24H12.9078C15.2363 24 16.7507 21.5569 15.7094 19.4805L12.8236 13.7263C11.6693 11.4246 8.3748 11.4246 7.22049 13.7263L4.33472 19.4805C3.2934 21.5569 4.80783 24 7.13629 24H9.01838V32.3478H21.5643V38H34.1103V26H42.9961C43.6048 26 44.0734 25.4646 43.9905 24.8638L42.0584 10.8638C41.9901 10.3688 41.5656 10 41.0641 10H25.1496ZM9.01838 24H11.0257V21.5C11.0257 20.9477 10.5764 20.5 10.0221 20.5C9.46774 20.5 9.01838 20.9477 9.01838 21.5V24ZM27.32 14.3707C27.3852 13.8726 27.8111 13.5 28.3152 13.5H37.8986C38.4027 13.5 38.8286 13.8726 38.8938 14.3707L39.4829 18.8707C39.5613 19.4692 39.0935 20 38.4877 20H27.7261C27.1202 20 26.6525 19.4692 26.7308 18.8707L27.32 14.3707ZM34.1106 23C34.1106 23.5523 33.6612 24 33.1069 24C32.5526 24 32.1032 23.5523 32.1032 23C32.1032 22.4477 32.5526 22 33.1069 22C33.6612 22 34.1106 22.4477 34.1106 23Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">01</span></div>
+    <div class="q-card__h">SAVE 평균은 null</div>
+    <div class="v2-body">중등도-중증 OSA + 기존 심혈관 질환 <b>2,687명</b>. CPAP 의 심혈관 사건 HR 1.10 (95% CI 0.91–1.32), p=0.34.</div>
+    <div class="q-card__k">원 RCT 결론은 그대로</div>
+  </div>
+  <div class="v2-panel q-card" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M34 6C32.6317 10.9436 30.8707 12.6329 26 14C30.8707 15.3671 32.6317 17.0564 34 22C35.3683 17.0564 37.1293 15.3671 42 14C37.1293 12.6329 35.3683 10.9436 34 6Z" fill="currentColor"/>
+<path d="M20 14C17.6054 22.6512 14.5237 25.6076 6 28C14.5237 30.3924 17.6054 33.3488 20 42C22.3946 33.3488 25.4763 30.3924 34 28C25.4763 25.6076 22.3946 22.6512 20 14Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">02</span></div>
+    <div class="q-card__h">환자별로는 갈렸다(추정)</div>
+    <div class="v2-body">환자마다 추정 효과 점수를 매겨 <b>3분위</b>(이득·무효·손해 예측군)로 나누자, CPAP 배정 효과가 이득 예측군과 손해 예측군에서 <b>반대 방향</b>으로 나타났습니다.</div>
+    <div class="q-card__k">외부 코호트 검증 전</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">03</span></div>
+    <div class="q-card__h">가설 생성 단계</div>
+    <div class="v2-body">외부 검증도, 전향적 RCT 도 없습니다. 가이드라인을 바꾸지 않고, 이 재분석으로 <b>심혈관 이득군을 골라 권고하지 않습니다</b>.</div>
+    <div class="q-card__k">권고를 바꾸지 않음</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 무호흡이 심하거나 졸린 환자가 심혈관 이득을 더 본다는 뜻이 아닙니다 — 원문은 오히려 반대 경향이었습니다.</span><span class="v2-src">근거 · Communications Medicine 2026.04 · SAVE · NEJM 2016;375:919-31</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 배경</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">왜 SAVE trial 은 null 이었나 — 평균의 함정</h2>
+  <p class="v2-sub">OSA 는 심혈관 위험 인자로 확립됐지만 CPAP RCT 결과는 평균적으로 null 이었습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:480px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>OSA–심혈관 연결</b></div><div class="v2-body">상기도 반복 폐쇄 → 간헐적 저산소·교감신경 항진·내피기능 장애·혈압 변동 → 관상동맥·뇌혈관·심방세동 위험 증가.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.1496 10C24.6481 10 24.2236 10.3688 24.1553 10.8638L22.2232 24.8638C22.1403 25.4646 22.6089 26 23.2175 26H32.1029V36H23.5717V30.3478H11.0257V24H12.9078C15.2363 24 16.7507 21.5569 15.7094 19.4805L12.8236 13.7263C11.6693 11.4246 8.3748 11.4246 7.22049 13.7263L4.33472 19.4805C3.2934 21.5569 4.80783 24 7.13629 24H9.01838V32.3478H21.5643V38H34.1103V26H42.9961C43.6048 26 44.0734 25.4646 43.9905 24.8638L42.0584 10.8638C41.9901 10.3688 41.5656 10 41.0641 10H25.1496ZM9.01838 24H11.0257V21.5C11.0257 20.9477 10.5764 20.5 10.0221 20.5C9.46774 20.5 9.01838 20.9477 9.01838 21.5V24ZM27.32 14.3707C27.3852 13.8726 27.8111 13.5 28.3152 13.5H37.8986C38.4027 13.5 38.8286 13.8726 38.8938 14.3707L39.4829 18.8707C39.5613 19.4692 39.0935 20 38.4877 20H27.7261C27.1202 20 26.6525 19.4692 26.7308 18.8707L27.32 14.3707ZM34.1106 23C34.1106 23.5523 33.6612 24 33.1069 24C32.5526 24 32.1032 23.5523 32.1032 23C32.1032 22.4477 32.5526 22 33.1069 22C33.6612 22 34.1106 22.4477 34.1106 23Z" fill="currentColor"/>
+</svg></div><b>SAVE trial (2016)</b></div><div class="v2-body">AHI ≥12 + 관상동맥·뇌혈관 질환. CPAP + 통상 치료 vs 통상 치료. 1차 결과는 복합 심혈관 사건.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>재분석의 질문</b></div><div class="v2-body">평균 null 은 정말 ‘효과 없음’인가, 이득과 손해가 섞여 가려진&nbsp;것인가.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:576px;top:206px;width:640px;height:306px">
+    <img class="v2-fig__img q-fig__img" src="../../../../shared/assets/generated/cpap-osa-cv-20260525.png" alt="수면 중 기도 폐쇄와 CPAP, 그리고 심장·뇌혈관으로 이어지는 연결을 그린 개념도">
+  </div>
+  <div class="v2-panel q-kvp v2-panel--accent" style="left:576px;top:526px;width:640px;height:80px">
+    <div class="q-kv"><b>SAVE 결과</b><span>HR 1.10 (0.91–1.32) · p=0.34 · 추적 3.7년 · 사용 3.3시간/밤</span></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · OSA–심혈관 기전이 강력한데도 효과가 없자 가이드가 한 발 물러섰습니다.</span><span class="v2-src">근거 · SAVE · NEJM 2016;375:919-31</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 연구 설계</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">Causal survival forest 로 SAVE 를 다시 보다</h2>
+  <p class="v2-sub">평균 효과가 아니라 환자별 치료 효과 점수를 추정 — 무작위배정은 그대로 보존했습니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">자료</div><div class="q-step__h">SAVE 원자료</div><div class="v2-body">2,687명 · CPAP 1,346 vs 통상 치료 1,341. 무작위배정을 유지한 시간-사건 자료입니다.</div>
+  </div>
+  <div class="q-arrow" style="left:330px;top:326px"></div>
+  <div class="v2-panel q-step" style="left:362px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">변수</div><div class="q-step__h">핵심 변수 세트</div><div class="v2-body">변수 선택 단계를 거쳐 추린 핵심 변수로 최종 모델을 만들었습니다(원문 Fig. 2 — 변수 워드클라우드).</div>
+  </div>
+  <div class="q-arrow" style="left:628px;top:326px"></div>
+  <div class="v2-panel q-step" style="left:660px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">점수</div><div class="q-step__h">환자별 효과 점수</div><div class="v2-body">환자마다 CPAP 의 추정 효과 점수를 내고, 점수로 3분위(이득·무효·손해 예측군)를 나눴습니다.</div>
+  </div>
+  <div class="q-arrow" style="left:926px;top:326px"></div>
+  <div class="v2-panel q-step q-step--accent" style="left:958px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">비교</div><div class="q-step__h">기존 지표와 대조</div><div class="v2-body">AHI·Framingham 위험점수 3분위로 나눠서는 효과 차이가 드러나지 않는지 먼저 확인했습니다.</div>
+  </div>
+  <div class="v2-panel q-strip v2-panel--accent" style="left:64px;top:494px;width:1152px;height:112px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M34 6C32.6317 10.9436 30.8707 12.6329 26 14C30.8707 15.3671 32.6317 17.0564 34 22C35.3683 17.0564 37.1293 15.3671 42 14C37.1293 12.6329 35.3683 10.9436 34 6Z" fill="currentColor"/>
+<path d="M20 14C17.6054 22.6512 14.5237 25.6076 6 28C14.5237 30.3924 17.6054 33.3488 20 42C22.3946 33.3488 25.4763 30.3924 34 28C25.4763 25.6076 22.3946 22.6512 20 14Z" fill="currentColor"/>
+</svg></div><b>무엇이 새로운가 — 그리고 빠진 것</b></div><div class="v2-body">가설 없이 “누가 도움받는가”를 자료에서 학습합니다. 다만 <b>외부 코호트 검증이 없어</b> 실제 환자에게 옮길 수 있는지는 모릅니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 하이퍼파라미터는 교차검증으로 골랐고, 분석 틀은 Athey·Wager causal forest(grf) 입니다.</span><span class="v2-src">근거 · Communications Medicine 2026.04 · 방법</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 결과 ①</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">3분위로 나누자 효과가 반대 방향으로 갈렸다</h2>
+  <p class="v2-sub">환자별 효과 점수의 3분위 — 이득 예측군과 손해 예측군의 기저 특징이 달랐습니다</p>
+  <table class="v2-table q-table q-table--mace" style="left:64px;top:206px;width:640px"><colgroup><col style="width:150px"><col style="width:220px"><col style="width:270px"></colgroup><thead><tr><th>예측군</th><th>CPAP 배정 효과</th><th>기저 특징(원문 표 1–3)</th></tr></thead><tbody><tr><th>이득 예측</th><td>사건 없는 생존이 개선</td><td>무호흡 지표(AHI·ODI)가 <b>덜 심함</b> · 삶의 질(SF-36) 낮음</td></tr><tr><th>무효 예측</th><td>차이 뚜렷하지 않음</td><td>중간</td></tr><tr><th>손해 예측</th><td><span class="v2-td--alert">심혈관 사건 증가</span></td><td>심근경색·관상동맥 재개통 과거력 많음 · 무호흡 더 심함</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:736px;top:206px;width:480px;height:270px">
+    <img class="v2-fig__img q-fig__img" src="../../../../shared/assets/generated/general-papers-20260525-cpap-personalized-cv-s05-action-pulmonary-e0a2f02b-20260530-raster-20260531.jpg" alt="같은 CPAP 치료에 환자마다 심장 반응이 다르게 나타나는 모습">
+  </div>
+  <div class="v2-panel q-kvp v2-panel--accent" style="left:736px;top:494px;width:480px;height:112px">
+    <div class="q-kv"><b>졸음(ESS)은 차이 없음</b><span>세 군 사이 주간 졸음 점수 차이는 없었습니다 — 졸음으로 이득군을 고를&nbsp;수&nbsp;없습니다</span></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 원문 요약의 3분위 효과 크기는 이 덱에 옮기지 않았습니다 — 필요하면 원문을 보십시오.</span><span class="v2-src">근거 · Communications Medicine 2026.04 · 결과·표 1–3</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 결과 ②</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">무호흡 중증도·졸음으로는 이득군이 갈리지 않았다</h2>
+  <p class="v2-sub">원문이 스스로 짚은 점 — AHI 하나로 CPAP 반응을 예측하는 데는 한계가 있습니다</p>
+  <div class="v2-panel q-four" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.542 11.991C22.3921 11.9958 21.8536 19.9527 21.8511 23.1357C21.8478 27.198 22.8451 35.3972 19.7112 38.5181C16.5177 41.6984 10.1346 43.2846 6.94587 40.6296C3.75713 37.9745 9.09663 11.9849 16.542 11.991Z" fill="currentColor"/>
+<path d="M31.4826 12.0033C25.6326 11.9985 26.158 19.9563 26.1554 23.1392C26.152 27.2016 25.1413 35.3991 28.27 38.5252C31.4583 41.7107 37.8388 43.3074 41.0319 40.6576C44.2249 38.0077 38.928 12.0094 31.4826 12.0033Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0175 5.99927C23.0175 5.99927 23.0175 5.99915 24.0175 5.99997C25.0175 6.00079 25.0175 6.00091 25.0175 6.00091L25.0056 20.4938C25.0039 22.5951 24.0675 23.7995 23.0074 24.4169C22.51 24.7066 22.0215 24.847 21.6634 24.9163C21.4824 24.9514 21.3289 24.9694 21.2159 24.9787C21.1592 24.9834 21.1123 24.9859 21.0765 24.9873C21.0587 24.988 21.0436 24.9884 21.0314 24.9886L21.0154 24.9888L21.0091 24.9888L21.0052 24.9888C21.0052 24.9888 21.004 24.9888 21.0048 23.9888C21.0056 22.9888 21.0045 22.9888 21.0045 22.9888H21.0035L21.0016 22.9889L20.9986 22.9889L20.9954 22.9889C20.9954 22.9889 20.9976 22.9889 21.0004 22.9887C21.0086 22.9884 21.0261 22.9876 21.0514 22.9855C21.1024 22.9813 21.1831 22.9722 21.2832 22.9528C21.4872 22.9133 21.7484 22.8357 22.0009 22.6886C22.4404 22.4327 23.0044 21.8892 23.0056 20.4922L23.0175 5.99927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.0175 6.00091C25.0175 6.00091 25.0175 6.00079 24.0175 5.99997C23.0175 5.99915 23.0175 5.99927 23.0175 5.99927L23.0056 20.4922C23.0039 22.5935 23.9382 23.7994 24.9974 24.4185C25.4943 24.709 25.9825 24.8502 26.3405 24.9201C26.5215 24.9555 26.675 24.9738 26.7879 24.9833C26.8446 24.988 26.8916 24.9906 26.9273 24.9921C26.9452 24.9928 26.9603 24.9932 26.9724 24.9934L26.9884 24.9937L26.9947 24.9937L26.9974 24.9937L26.9986 24.9937C26.9986 24.9937 26.9998 24.9937 27.0006 23.9937C27.0014 22.9937 27.0026 22.9937 27.0026 22.9937L27.0036 22.9937L27.0055 22.9937L27.0085 22.9938L27.0117 22.9938C27.0117 22.9938 27.0107 22.9938 27.0066 22.9936C26.9984 22.9933 26.981 22.9924 26.9557 22.9903C26.9047 22.986 26.824 22.9768 26.724 22.9572C26.52 22.9174 26.2589 22.8393 26.0067 22.6919C25.5676 22.4352 25.0044 21.8908 25.0056 20.4938L25.0175 6.00091Z" fill="currentColor"/>
+</svg></div><b>AHI 단독으로는 못 가름</b></div><div class="v2-body">AHI 3분위로 나눈 비교에서는 CPAP 효과 차이가 드러나지 않았습니다. 기계학습 모델이 필요했던 이유입니다.</div></div>
+  </div>
+  <div class="v2-panel q-four v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 36C6 31.0347 17.9925 28 24 28C30.0075 28 42 31.0347 42 36V42H6V36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>이득 예측군은 무호흡이 덜 심했다</b></div><div class="v2-body">AHI·ODI 가 낮고 산소포화도가 약간 높았으며, 삶의 질 점수가 낮았습니다 — 중증도보다 수면 분절·증상 부담 쪽 해석.</div></div>
+  </div>
+  <div class="v2-panel q-four" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>졸음 점수는 차이 없음</b></div><div class="v2-body">Epworth 졸음 척도(ESS)는 세 군 사이 차이가 없었습니다.</div></div>
+  </div>
+  <div class="v2-panel q-four v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H9ZM34.2734 19.8684L33.4886 19.4912C36.7449 22.5608 35.9154 27.1867 33.8812 30.7049C32.8211 32.5383 31.3746 34.2052 29.7906 35.4233C28.2226 36.6291 26.4234 37.467 24.6674 37.467C22.9056 37.467 21.149 36.6236 19.6358 35.4225C18.1084 34.2103 16.7345 32.5613 15.7248 30.7725C14.7179 28.9886 14.0387 27.0037 13.9751 25.1126C13.9379 24.0043 14.1138 22.9121 14.5693 21.9235C14.5598 21.9117 14.5496 21.8992 14.5387 21.8861C14.4399 21.767 14.2877 21.6003 14.0847 21.4249C13.6758 21.0713 13.0916 20.7076 12.3418 20.5875C12.0751 20.5447 11.8371 20.396 11.6818 20.175C11.5265 19.954 11.4672 19.6796 11.5174 19.4142C11.8517 17.6468 12.1536 16.5964 12.3873 15.9678C12.5046 15.6524 12.6092 15.4311 12.6993 15.2728C12.7447 15.1931 12.7882 15.1263 12.8298 15.07C12.8508 15.0416 12.8716 15.0155 12.8924 14.9913C12.9028 14.9791 12.9133 14.9675 12.9238 14.9562L12.9396 14.9396L12.9475 14.9315L12.9515 14.9275L12.9535 14.9255C12.9545 14.9246 12.9555 14.9236 13.6567 15.6365C13.9394 14.6773 13.9396 14.6774 13.9399 14.6775L13.942 14.6781L13.9464 14.6794L13.9605 14.6836L14.0088 14.6985C14.0497 14.7112 14.1078 14.7296 14.1805 14.7537C14.326 14.8017 14.5311 14.8723 14.7771 14.965C15.2666 15.1493 15.9298 15.4254 16.6105 15.7898C17.1356 16.0709 17.6941 16.4166 18.197 16.8294L17.1613 15.234C16.8663 14.7796 16.9867 14.173 17.4329 13.8658L20.6418 11.6565C21.0852 11.3513 21.6905 11.4517 22.0116 11.8837L22.5074 12.551V11.5333C22.5074 10.981 22.9552 10.5333 23.5074 10.5333H27.5C28.0523 10.5333 28.5 10.981 28.5 11.5333V12.8793C28.5194 12.8966 28.5393 12.9145 28.5596 12.9331C28.745 13.1028 28.966 13.3277 29.2018 13.6146C30.8869 13.3175 32.9211 13.486 35.3468 14.3828L36.2575 14.7195L35.9478 15.6397C35.7247 16.3026 35.4792 16.8291 35.2557 17.3084L35.2497 17.3214C35.0233 17.8068 34.8197 18.2451 34.6344 18.7959L34.2734 19.8684ZM13.6567 15.6365L12.9555 14.9236C13.2144 14.6689 13.5915 14.5748 13.9399 14.6775L13.6567 15.6365ZM16.1547 19.8604C16.572 19.52 17.0317 19.2777 17.5115 19.1118L17.5959 19.0705C17.4977 18.9298 17.3724 18.7836 17.2169 18.6325C16.8055 18.2324 16.2534 17.8672 15.6666 17.5531C15.1351 17.2686 14.6061 17.0423 14.1859 16.88C14.0478 17.2902 13.869 17.9228 13.6648 18.8783C14.3947 19.1504 14.9721 19.5482 15.3929 19.912C15.4931 19.9986 15.5853 20.0841 15.6694 20.1664C15.7613 20.1065 15.8601 20.0432 15.9653 19.9774C16.0262 19.9393 16.0894 19.9002 16.1547 19.8604ZM18.2733 20.9669C17.9318 21.1395 17.6125 21.3185 17.3281 21.4883C16.3468 22.3696 15.9252 23.5925 15.974 25.0454C16.0238 26.5285 16.5689 28.199 17.4665 29.7894C18.3614 31.3747 19.5723 32.8188 20.8791 33.856C22.2 34.9044 23.527 35.467 24.6674 35.467C25.8136 35.467 27.1901 34.9001 28.5714 33.8379C29.9367 32.788 31.2132 31.3236 32.1498 29.7038C34.0729 26.3778 34.3388 22.9112 31.9854 20.8265C31.7018 20.5753 31.5061 20.4599 31.2445 20.3275C31.1832 20.2964 31.1149 20.263 31.0395 20.2261C30.8684 20.1424 30.6605 20.0407 30.4141 19.908C29.8008 20.2259 29.1052 20.7838 28.4804 21.3697C28.1163 21.7113 27.8044 22.0352 27.5836 22.2737C27.4735 22.3926 27.3868 22.4894 27.3286 22.5556C27.2994 22.5886 27.2774 22.6139 27.2632 22.6304L27.2478 22.6484L27.2446 22.6521L27.1004 22.8224L27.0248 22.9459L25.8624 27.1188L26.2694 28.0594L28.3877 27.8135L28.6183 29.8002L26.7093 30.0218L26.8323 31.8242L24.8369 31.9603L24.6607 29.3779L23.7459 27.2636L23.7911 27.1014L23.1885 27.3739L22.3449 29.5063L20.4851 28.7706L21.052 27.3376L19.2677 26.9172L19.7264 24.9705L22.3056 25.5782L24.4907 24.59L25.0977 22.411C25.0469 22.3861 24.9943 22.3607 24.9399 22.3347C24.2826 22.0202 23.3843 21.6314 22.4056 21.3236C21.4193 21.0134 20.3981 20.8004 19.4824 20.8036C19.0299 20.8052 18.6264 20.859 18.2733 20.9669ZM26.165 20.6334C26.1921 20.598 26.2201 20.5617 26.249 20.5247C26.6457 20.0163 27.2269 19.3483 27.9534 18.7373C29.1811 17.7048 31.0156 16.693 33.1049 17.2079C33.2154 16.9516 33.3257 16.7151 33.431 16.489L33.437 16.4762C33.5228 16.2924 33.6052 16.1153 33.6846 15.9363C30.2774 14.9328 28.1461 15.7382 26.8127 16.8409C25.6797 17.778 25.0266 19.011 24.7076 19.8522C25.1529 20.0816 25.5915 20.318 25.9591 20.5198C26.0304 20.559 26.0992 20.597 26.165 20.6334ZM20.3503 17.5776C20.3575 17.5414 20.3638 17.5146 20.3686 17.4959C20.5493 17.1792 20.5478 16.7775 20.3388 16.4555L19.3687 14.9612L20.9816 13.8508L22.0481 15.2859C22.2402 15.5444 22.545 15.6946 22.8671 15.6893C23.1891 15.6841 23.4889 15.524 23.6724 15.2594L24.3291 14.3125C24.4452 14.1452 24.5074 13.9463 24.5074 13.7426V12.5333H26.5V13.362C26.5 13.6902 26.6609 13.9964 26.9287 14.1827C26.1889 14.5651 25.4993 15.13 24.9205 15.7327C24.0631 16.6255 23.3029 17.7501 22.8367 18.909C21.8254 18.7415 21.2191 18.7393 20.7574 18.7393C20.5024 18.7393 20.3713 18.7373 20.2494 18.7199C20.2697 18.1023 20.3149 17.7568 20.3503 17.5776Z" fill="currentColor"/>
+</svg></div><b>관상동맥 과거력은 손해 쪽</b></div><div class="v2-body">심근경색·관상동맥 재개통 과거력이 많은 군이 손해 예측군이었습니다. 뇌졸중 과거력은 이득 쪽 경향(유의 경계).</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 이 재분석만으로 임상 변수별 심혈관 이득군을 정해 권고할 수 없습니다.</span><span class="v2-src">근거 · Communications Medicine 2026.04 · 결과·고찰</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · AI 모델</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">작동 원리와 한계 — 무엇을 믿을 수 있나</h2>
+  <p class="v2-sub">랜덤포레스트의 인과 추론 확장 · RCT 자료와 충분한 표본이 전제입니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:544px;height:306px">
+    <img class="v2-fig__img q-fig__img" src="../../../../shared/assets/generated/general-papers-20260525-cpap-personalized-cv-s07-comparison-pulmonary-fb85333c-20260530-raster-20260531.jpg" alt="환자를 가지로 나누는 결정나무 숲이 서로 다른 심장 결과로 이어지는 개념도">
+  </div>
+  <div class="v2-panel q-kvp" style="left:64px;top:526px;width:544px;height:80px">
+    <div class="q-kv"><b>장점</b><span>무작위배정 보존 · 고차원 상호작용 자동 포착</span></div>
+  </div>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M34 6C32.6317 10.9436 30.8707 12.6329 26 14C30.8707 15.3671 32.6317 17.0564 34 22C35.3683 17.0564 37.1293 15.3671 42 14C37.1293 12.6329 35.3683 10.9436 34 6Z" fill="currentColor"/>
+<path d="M20 14C17.6054 22.6512 14.5237 25.6076 6 28C14.5237 30.3924 17.6054 33.3488 20 42C22.3946 33.3488 25.4763 30.3924 34 28C25.4763 25.6076 22.3946 22.6512 20 14Z" fill="currentColor"/>
+</svg></div><b>한계 ① 외부 검증 없음</b></div><div class="v2-body">원문 저자가 첫 한계로 적었습니다 — 외부 코호트에서 모델을 검증하기 전에는 <b>실제 환자에게 일반화</b>하기 어렵습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 24C20.8675 24 24 20.8675 24 17C24 13.1325 20.8675 10 17 10C13.1325 10 10 13.1325 10 17C10 20.8675 13.1325 24 17 24Z" fill="currentColor"/>
+<path d="M39 20.5C39 23.5387 36.5387 26 33.5 26C30.4613 26 28 23.5387 28 20.5C28 17.4612 30.4613 15 33.5 15C36.5387 15 39 17.4612 39 20.5Z" fill="currentColor"/>
+<path d="M17 26C19.7336 26 24.183 26.8511 27.1011 28.5452C28.293 29.7585 29 31.0814 29 32.4V38H4V32.4C4 28.144 12.6612 26 17 26Z" fill="currentColor"/>
+<path d="M44 38H31V32.4C31 30.9837 30.4886 29.6801 29.6764 28.5166C31.2173 28.1725 32.7343 28 33.8927 28C37.6211 28 44 29.7867 44 33.3333V38Z" fill="currentColor"/>
+</svg></div><b>한계 ② 해석 가능성</b></div><div class="v2-body">효과 점수가 복잡한 변수 상호작용에서 나와 선형으로 설명되지 않습니다. 임상 결과를 개선하는지부터 보여야 합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H9ZM34.2734 19.8684L33.4886 19.4912C36.7449 22.5608 35.9154 27.1867 33.8812 30.7049C32.8211 32.5383 31.3746 34.2052 29.7906 35.4233C28.2226 36.6291 26.4234 37.467 24.6674 37.467C22.9056 37.467 21.149 36.6236 19.6358 35.4225C18.1084 34.2103 16.7345 32.5613 15.7248 30.7725C14.7179 28.9886 14.0387 27.0037 13.9751 25.1126C13.9379 24.0043 14.1138 22.9121 14.5693 21.9235C14.5598 21.9117 14.5496 21.8992 14.5387 21.8861C14.4399 21.767 14.2877 21.6003 14.0847 21.4249C13.6758 21.0713 13.0916 20.7076 12.3418 20.5875C12.0751 20.5447 11.8371 20.396 11.6818 20.175C11.5265 19.954 11.4672 19.6796 11.5174 19.4142C11.8517 17.6468 12.1536 16.5964 12.3873 15.9678C12.5046 15.6524 12.6092 15.4311 12.6993 15.2728C12.7447 15.1931 12.7882 15.1263 12.8298 15.07C12.8508 15.0416 12.8716 15.0155 12.8924 14.9913C12.9028 14.9791 12.9133 14.9675 12.9238 14.9562L12.9396 14.9396L12.9475 14.9315L12.9515 14.9275L12.9535 14.9255C12.9545 14.9246 12.9555 14.9236 13.6567 15.6365C13.9394 14.6773 13.9396 14.6774 13.9399 14.6775L13.942 14.6781L13.9464 14.6794L13.9605 14.6836L14.0088 14.6985C14.0497 14.7112 14.1078 14.7296 14.1805 14.7537C14.326 14.8017 14.5311 14.8723 14.7771 14.965C15.2666 15.1493 15.9298 15.4254 16.6105 15.7898C17.1356 16.0709 17.6941 16.4166 18.197 16.8294L17.1613 15.234C16.8663 14.7796 16.9867 14.173 17.4329 13.8658L20.6418 11.6565C21.0852 11.3513 21.6905 11.4517 22.0116 11.8837L22.5074 12.551V11.5333C22.5074 10.981 22.9552 10.5333 23.5074 10.5333H27.5C28.0523 10.5333 28.5 10.981 28.5 11.5333V12.8793C28.5194 12.8966 28.5393 12.9145 28.5596 12.9331C28.745 13.1028 28.966 13.3277 29.2018 13.6146C30.8869 13.3175 32.9211 13.486 35.3468 14.3828L36.2575 14.7195L35.9478 15.6397C35.7247 16.3026 35.4792 16.8291 35.2557 17.3084L35.2497 17.3214C35.0233 17.8068 34.8197 18.2451 34.6344 18.7959L34.2734 19.8684ZM13.6567 15.6365L12.9555 14.9236C13.2144 14.6689 13.5915 14.5748 13.9399 14.6775L13.6567 15.6365ZM16.1547 19.8604C16.572 19.52 17.0317 19.2777 17.5115 19.1118L17.5959 19.0705C17.4977 18.9298 17.3724 18.7836 17.2169 18.6325C16.8055 18.2324 16.2534 17.8672 15.6666 17.5531C15.1351 17.2686 14.6061 17.0423 14.1859 16.88C14.0478 17.2902 13.869 17.9228 13.6648 18.8783C14.3947 19.1504 14.9721 19.5482 15.3929 19.912C15.4931 19.9986 15.5853 20.0841 15.6694 20.1664C15.7613 20.1065 15.8601 20.0432 15.9653 19.9774C16.0262 19.9393 16.0894 19.9002 16.1547 19.8604ZM18.2733 20.9669C17.9318 21.1395 17.6125 21.3185 17.3281 21.4883C16.3468 22.3696 15.9252 23.5925 15.974 25.0454C16.0238 26.5285 16.5689 28.199 17.4665 29.7894C18.3614 31.3747 19.5723 32.8188 20.8791 33.856C22.2 34.9044 23.527 35.467 24.6674 35.467C25.8136 35.467 27.1901 34.9001 28.5714 33.8379C29.9367 32.788 31.2132 31.3236 32.1498 29.7038C34.0729 26.3778 34.3388 22.9112 31.9854 20.8265C31.7018 20.5753 31.5061 20.4599 31.2445 20.3275C31.1832 20.2964 31.1149 20.263 31.0395 20.2261C30.8684 20.1424 30.6605 20.0407 30.4141 19.908C29.8008 20.2259 29.1052 20.7838 28.4804 21.3697C28.1163 21.7113 27.8044 22.0352 27.5836 22.2737C27.4735 22.3926 27.3868 22.4894 27.3286 22.5556C27.2994 22.5886 27.2774 22.6139 27.2632 22.6304L27.2478 22.6484L27.2446 22.6521L27.1004 22.8224L27.0248 22.9459L25.8624 27.1188L26.2694 28.0594L28.3877 27.8135L28.6183 29.8002L26.7093 30.0218L26.8323 31.8242L24.8369 31.9603L24.6607 29.3779L23.7459 27.2636L23.7911 27.1014L23.1885 27.3739L22.3449 29.5063L20.4851 28.7706L21.052 27.3376L19.2677 26.9172L19.7264 24.9705L22.3056 25.5782L24.4907 24.59L25.0977 22.411C25.0469 22.3861 24.9943 22.3607 24.9399 22.3347C24.2826 22.0202 23.3843 21.6314 22.4056 21.3236C21.4193 21.0134 20.3981 20.8004 19.4824 20.8036C19.0299 20.8052 18.6264 20.859 18.2733 20.9669ZM26.165 20.6334C26.1921 20.598 26.2201 20.5617 26.249 20.5247C26.6457 20.0163 27.2269 19.3483 27.9534 18.7373C29.1811 17.7048 31.0156 16.693 33.1049 17.2079C33.2154 16.9516 33.3257 16.7151 33.431 16.489L33.437 16.4762C33.5228 16.2924 33.6052 16.1153 33.6846 15.9363C30.2774 14.9328 28.1461 15.7382 26.8127 16.8409C25.6797 17.778 25.0266 19.011 24.7076 19.8522C25.1529 20.0816 25.5915 20.318 25.9591 20.5198C26.0304 20.559 26.0992 20.597 26.165 20.6334ZM20.3503 17.5776C20.3575 17.5414 20.3638 17.5146 20.3686 17.4959C20.5493 17.1792 20.5478 16.7775 20.3388 16.4555L19.3687 14.9612L20.9816 13.8508L22.0481 15.2859C22.2402 15.5444 22.545 15.6946 22.8671 15.6893C23.1891 15.6841 23.4889 15.524 23.6724 15.2594L24.3291 14.3125C24.4452 14.1452 24.5074 13.9463 24.5074 13.7426V12.5333H26.5V13.362C26.5 13.6902 26.6609 13.9964 26.9287 14.1827C26.1889 14.5651 25.4993 15.13 24.9205 15.7327C24.0631 16.6255 23.3029 17.7501 22.8367 18.909C21.8254 18.7415 21.2191 18.7393 20.7574 18.7393C20.5024 18.7393 20.3713 18.7373 20.2494 18.7199C20.2697 18.1023 20.3149 17.7568 20.3503 17.5776Z" fill="currentColor"/>
+</svg></div><b>한계 ③ 모집단</b></div><div class="v2-body">기존 심혈관 질환자만 모았습니다 — 1차 예방·일반 OSA 로 옮기기 어렵습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 분석 코드 일부가 공개돼 다른 RCT 재분석으로 확산될 수 있습니다(grf R).</span><span class="v2-src">근거 · Communications Medicine 2026.04 · 한계 · Athey & Wager 2019</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 두 갈래</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">이득 예측군과 손해 예측군 — 어떤 환자였나</h2>
+  <p class="v2-sub">원문 표 1–3 의 기저 특징 비교입니다 — 특징 기술이지 의뢰 기준이 아닙니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">이득 예측군</div><div class="v2-vs__lead">무호흡은 <b>덜 심하고</b>, 삶의 질은 낮았습니다</div><ul class="v2-vs__list"><li>AHI·ODI 낮음 · 산소포화도 약간 높음</li><li>SF-36 신체·정신 건강 점수 낮음</li><li>심박변이도 높음 — 자율신경 반응성 해석</li><li>뇌졸중 과거력 쪽 이득 경향(유의 경계)</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">손해 예측군</div><div class="v2-vs__lead">관상동맥 과거력이 <b>많았습니다</b></div><ul class="v2-vs__list"><li>심근경색·관상동맥 재개통 과거력 많음</li><li>고혈압 약 사용 많음</li><li>무호흡 지표 더 심함 · 산소화 약간 나쁨</li><li>기저 삶의 질 점수는 더 좋음</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 손해 예측이 ‘CPAP 금지’는 아닙니다 — 증상이 있으면 증상 치료 적응은 그대로입니다.</span><span class="v2-src">근거 · Communications Medicine 2026.04 · 표 1–3 · 고찰</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 의뢰</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">1차 진료 의뢰 — 기준은 증상과 진단입니다</h2>
+  <p class="v2-sub">OSA 가 의심되면 수면다원검사 · 이 재분석으로 심혈관 이득군을 고르지 않습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:640px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 36C6 31.0347 17.9925 28 24 28C30.0075 28 42 31.0347 42 36V42H6V36Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>수면다원검사를 떠올릴 신호</b></div><div class="v2-body">무호흡 목격·심한 코골이 · 주간 졸음·운전 중 졸음 · 아침 두통·야간뇨 · BMI ≥30·짧은 목·턱 후퇴 · 3제에도 안 잡히는 고혈압 · 심근경색·뇌졸중·심방세동·심부전 진단 직후.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.1496 10C24.6481 10 24.2236 10.3688 24.1553 10.8638L22.2232 24.8638C22.1403 25.4646 22.6089 26 23.2175 26H32.1029V36H23.5717V30.3478H11.0257V24H12.9078C15.2363 24 16.7507 21.5569 15.7094 19.4805L12.8236 13.7263C11.6693 11.4246 8.3748 11.4246 7.22049 13.7263L4.33472 19.4805C3.2934 21.5569 4.80783 24 7.13629 24H9.01838V32.3478H21.5643V38H34.1103V26H42.9961C43.6048 26 44.0734 25.4646 43.9905 24.8638L42.0584 10.8638C41.9901 10.3688 41.5656 10 41.0641 10H25.1496ZM9.01838 24H11.0257V21.5C11.0257 20.9477 10.5764 20.5 10.0221 20.5C9.46774 20.5 9.01838 20.9477 9.01838 21.5V24ZM27.32 14.3707C27.3852 13.8726 27.8111 13.5 28.3152 13.5H37.8986C38.4027 13.5 38.8286 13.8726 38.8938 14.3707L39.4829 18.8707C39.5613 19.4692 39.0935 20 38.4877 20H27.7261C27.1202 20 26.6525 19.4692 26.7308 18.8707L27.32 14.3707ZM34.1106 23C34.1106 23.5523 33.6612 24 33.1069 24C32.5526 24 32.1032 23.5523 32.1032 23C32.1032 22.4477 32.5526 22 33.1069 22C33.6612 22 34.1106 22.4477 34.1106 23Z" fill="currentColor"/>
+</svg></div><b>CPAP 적응은 지금 기준대로</b></div><div class="v2-body">졸음·삶의 질 저하 같은 <b>증상</b>과 운전·기계 조작 같은 안전 문제로 판단합니다. 심혈관 예방만을 위한 선별은 아직 근거가 없습니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:736px;top:206px;width:480px;height:270px">
+    <img class="v2-fig__img q-fig__img" src="../../../../shared/assets/generated/general-papers-20260525-cpap-personalized-cv-s09-risk-pulmonary-b92d7c1c-20260530-raster-20260531.jpg" alt="의사가 모니터의 여러 환자 정보를 비교하며 치료 대상을 고르는 모습">
+  </div>
+  <div class="v2-panel q-kvp v2-panel--accent" style="left:736px;top:494px;width:480px;height:112px">
+    <div class="q-kv"><b>수면다원검사 급여(2018~)</b><span>1박 입원 또는 가정형 · 호흡기·이비인후과·심장내과 협진</span></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 다학제 — 호흡기(CPAP 적정압) · 심장(심혈관 위험 통합) · 이비인후(상기도 평가) · 체중 관리</span><span class="v2-src">근거 · 대한수면학회 OSA 진료 가이드 · ATS/ERS · 본 논문 한계</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 진료 흐름</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진단부터 추적까지 네 단계</h2>
+  <p class="v2-sub">스크리닝 → 수면다원검사 → CPAP 시작 → 순응도·심혈관 추적</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">진단 시점</div><div class="q-step__h">스크리닝·위험 평가</div><div class="v2-body">STOP-BANG·Epworth·BMI·목둘레 · 심혈관 위험(고혈압·당뇨·관상동맥·뇌혈관·심방세동).</div>
+  </div>
+  <div class="q-arrow" style="left:330px;top:326px"></div>
+  <div class="v2-panel q-step" style="left:362px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">1–2개월</div><div class="q-step__h">수면다원검사</div><div class="v2-body">1박 PSG 또는 가정형. AHI·산소포화도·중증도와 증상을 함께&nbsp;봅니다.</div>
+  </div>
+  <div class="q-arrow" style="left:628px;top:326px"></div>
+  <div class="v2-panel q-step" style="left:660px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">2–4개월</div><div class="q-step__h">CPAP 적정압·시작</div><div class="v2-body">호흡기내과에서 압력 설정 · 마스크 교육 · 첫 4주 순응도 점검.</div>
+  </div>
+  <div class="q-arrow" style="left:926px;top:326px"></div>
+  <div class="v2-panel q-step q-step--accent" style="left:958px;top:206px;width:258px;height:264px">
+    <div class="q-step__tag">6개월+</div><div class="q-step__h">추적·재평가</div><div class="v2-body">혈압·HbA1c·체중·ESS · 순응 부족+효과 미미면 체중감량·자세·구강내장치를 대안으로.</div>
+  </div>
+  <div class="v2-panel q-strip v2-panel--accent" style="left:64px;top:494px;width:1152px;height:112px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>순응 목표</b></div><div class="v2-body">밤마다 <b>4시간 이상</b>, 전체 밤의 <b>70% 이상</b> 사용 — 첫 4주에 확인하고 6개월에 risk-benefit 을 다시 봅니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 순응도가 효과를 좌우합니다 — SAVE 의 평균 사용은 3.3시간/밤이었습니다.</span><span class="v2-src">근거 · 대한수면학회 OSA 진료흐름 · ATS CPAP 순응도 기준</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 한계·한국</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">한계와 한국 진료 맥락</h2>
+  <p class="v2-sub">모집단·기계학습 단계·보험 체계를 함께 보고 균형 있게 적용합니다</p>
+  <table class="v2-table q-table q-table--tall" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:300px"><col style="width:220px"><col style="width:632px"></colgroup><thead><tr><th>항목</th><th>상태</th><th>실무</th></tr></thead><tbody><tr><th>모집단 외삽</th><td>기존 CV + OSA 만</td><td>1차 예방·아시아인 일반 OSA 로 옮기기 어렵습니다</td></tr><tr><th>기계학습 단계</th><td>가설 생성</td><td>전향적 검증 RCT 없음 — <b>가이드라인 변경 없음</b>, 임상 영감으로만</td></tr><tr><th>수면다원검사 급여</th><td>2018~</td><td>1박 PSG·가정형 모두 급여 · AHI ≥15 면 CPAP 의료기기 급여</td></tr><tr><th>CPAP 보험 기준</th><td>AHI ≥15</td><td>월 임대료 일부 급여 · ≥4시간/밤·≥70% 사용 시 지속 처방, 미달이면 재평가</td></tr><tr><th>아시아인 OSA</th><td>두개안면 구조</td><td>BMI 가 낮아도 턱·기도 구조로 OSA 가 생깁니다 — 마른 사람도 의심</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 한국 적용은 급여 기준과 순응도 관리가 실제 병목입니다.</span><span class="v2-src">근거 · 건보 수면다원검사·CPAP 급여 기준(2018~) · 대한수면학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 11 · TAKE-HOME</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진료실로 가져갈 네 가지</h2>
+  <p class="v2-sub">평균 null 뒤의 환자별 차이 — 개인화 진료의 가설 단계입니다</p>
+  <div class="v2-panel q-row" style="left:64px;top:206px;width:1152px;height:89px">
+    <div class="q-row__tag">평균</div><div class="q-row__c"><div class="q-row__h">SAVE 평균 null 이 전부는 아닐 수 있습니다</div><div class="v2-body">효과 점수 3분위에서 이득·손해 예측군의 CPAP 효과가 반대로 갈렸습니다(가설 생성).</div></div>
+  </div>
+  <div class="v2-panel q-row" style="left:64px;top:309px;width:1152px;height:89px">
+    <div class="q-row__tag">특징</div><div class="q-row__c"><div class="q-row__h">중증도·졸음으로는 안 갈림</div><div class="v2-body">이득 예측군은 오히려 무호흡이 덜 심하고 삶의 질이 낮았습니다 · 졸음 점수 차이 없음.</div></div>
+  </div>
+  <div class="v2-panel q-row" style="left:64px;top:412px;width:1152px;height:89px">
+    <div class="q-row__tag">선</div><div class="q-row__c"><div class="q-row__h">가이드라인은 그대로</div><div class="v2-body">외부 검증·전향적 확인 전까지 권고를 바꾸지 않고, 심혈관 이득군 선별에 쓰지 않습니다.</div></div>
+  </div>
+  <div class="v2-panel q-row v2-panel--accent" style="left:64px;top:515px;width:1152px;height:89px">
+    <div class="q-row__tag">한국</div><div class="q-row__c"><div class="q-row__h">급여와 재평가</div><div class="v2-body">수면다원검사·CPAP 급여(AHI ≥15, ≥4시간·≥70% 순응) · 다학제 의뢰 + 6개월 재평가.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 졸음이 있으면 심혈관 이득과 상관없이 증상 치료로 CPAP 적응이 됩니다.</span><span class="v2-src">근거 · Communications Medicine 2026.04 · SAVE · NEJM 2016;375:919-31 · KSSP · 건보 기준</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">12 / 13</div>
+</section><section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>소화기내과 · 일반내과 · 5대암 검진</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">SAVE trial 기계학습 재분석을 1차 진료 관점에서 정리한 <b>의료진 논문 리뷰</b>입니다. 가설 생성 단계의 결과이므로 실제 진료 결정은 최신 지침과 임상 판단으로 하십시오.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 10C9 7.23858 11.2386 5 14 5H38C38.5523 5 39 5.44772 39 6V36C39 36.5523 38.5523 37 38 37H14C12.3431 37 11 38.3431 11 40V41H38V43H10C9.44772 43 9 42.5523 9 42V10ZM23 26V21H18V19H23V14H25V19H30V21H25V26H23Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">Communications Medicine 2026.04 · SAVE trial NEJM 2016 · Athey & Wager 2019 · 대한수면학회(KSSP) · 건보 급여 기준</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
+    <div class="qr-block">
+      <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM16,2H17V3H16zM19,2H20V3H19zM20,2H21V3H20zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM29,2H30V3H29zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM14,3H15V4H14zM17,3H18V4H17zM18,3H19V4H18zM19,3H20V4H19zM20,3H21V4H20zM21,3H22V4H21zM23,3H24V4H23zM24,3H25V4H24zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM12,4H13V5H12zM15,4H16V5H15zM16,4H17V5H16zM19,4H20V5H19zM20,4H21V5H20zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM26,4H27V5H26zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM15,5H16V6H15zM16,5H17V6H16zM18,5H19V6H18zM20,5H21V6H20zM24,5H25V6H24zM25,5H26V6H25zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM16,6H17V7H16zM25,6H26V7H25zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM13,7H14V8H13zM16,7H17V8H16zM21,7H22V8H21zM23,7H24V8H23zM27,7H28V8H27zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM12,9H13V10H12zM13,9H14V10H13zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM28,9H29V10H28zM29,9H30V10H29zM30,9H31V10H30zM2,10H3V11H2zM6,10H7V11H6zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM19,10H20V11H19zM20,10H21V11H20zM21,10H22V11H21zM22,10H23V11H22zM23,10H24V11H23zM24,10H25V11H24zM26,10H27V11H26zM28,10H29V11H28zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM38,10H39V11H38zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM7,11H8V12H7zM10,11H11V12H10zM11,11H12V12H11zM14,11H15V12H14zM15,11H16V12H15zM18,11H19V12H18zM20,11H21V12H20zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM33,11H34V12H33zM34,11H35V12H34zM37,11H38V12H37zM2,12H3V13H2zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM13,12H14V13H13zM14,12H15V13H14zM15,12H16V13H15zM16,12H17V13H16zM18,12H19V13H18zM25,12H26V13H25zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM33,12H34V13H33zM35,12H36V13H35zM36,12H37V13H36zM2,13H3V14H2zM3,13H4V14H3zM6,13H7V14H6zM9,13H10V14H9zM12,13H13V14H12zM14,13H15V14H14zM16,13H17V14H16zM19,13H20V14H19zM20,13H21V14H20zM21,13H22V14H21zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM28,13H29V14H28zM29,13H30V14H29zM33,13H34V14H33zM34,13H35V14H34zM36,13H37V14H36zM37,13H38V14H37zM2,14H3V15H2zM3,14H4V15H3zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM12,14H13V15H12zM13,14H14V15H13zM17,14H18V15H17zM19,14H20V15H19zM20,14H21V15H20zM22,14H23V15H22zM23,14H24V15H23zM24,14H25V15H24zM31,14H32V15H31zM32,14H33V15H32zM33,14H34V15H33zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM3,15H4V16H3zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM25,15H26V16H25zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM12,16H13V17H12zM13,16H14V17H13zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM25,16H26V17H25zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM2,17H3V18H2zM3,17H4V18H3zM5,17H6V18H5zM6,17H7V18H6zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM18,17H19V18H18zM19,17H20V18H19zM20,17H21V18H20zM22,17H23V18H22zM23,17H24V18H23zM28,17H29V18H28zM31,17H32V18H31zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM36,17H37V18H36zM38,17H39V18H38zM2,18H3V19H2zM4,18H5V19H4zM5,18H6V19H5zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM11,18H12V19H11zM12,18H13V19H12zM13,18H14V19H13zM16,18H17V19H16zM18,18H19V19H18zM19,18H20V19H19zM21,18H22V19H21zM23,18H24V19H23zM24,18H25V19H24zM30,18H31V19H30zM32,18H33V19H32zM33,18H34V19H33zM35,18H36V19H35zM36,18H37V19H36zM37,18H38V19H37zM3,19H4V20H3zM5,19H6V20H5zM6,19H7V20H6zM7,19H8V20H7zM9,19H10V20H9zM11,19H12V20H11zM13,19H14V20H13zM16,19H17V20H16zM19,19H20V20H19zM20,19H21V20H20zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM29,19H30V20H29zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM37,19H38V20H37zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM12,20H13V21H12zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM25,20H26V21H25zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM33,20H34V21H33zM34,20H35V21H34zM36,20H37V21H36zM2,21H3V22H2zM3,21H4V22H3zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM10,21H11V22H10zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM16,21H17V22H16zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM25,21H26V22H25zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM36,21H37V22H36zM37,21H38V22H37zM5,22H6V23H5zM8,22H9V23H8zM10,22H11V23H10zM12,22H13V23H12zM13,22H14V23H13zM18,22H19V23H18zM19,22H20V23H19zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM25,22H26V23H25zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM35,22H36V23H35zM36,22H37V23H36zM2,23H3V24H2zM3,23H4V24H3zM11,23H12V24H11zM13,23H14V24H13zM14,23H15V24H14zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM20,23H21V24H20zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM30,23H31V24H30zM31,23H32V24H31zM33,23H34V24H33zM34,23H35V24H34zM4,24H5V25H4zM7,24H8V25H7zM8,24H9V25H8zM11,24H12V25H11zM14,24H15V25H14zM17,24H18V25H17zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM29,24H30V25H29zM31,24H32V25H31zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM36,24H37V25H36zM37,24H38V25H37zM3,25H4V26H3zM5,25H6V26H5zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM14,25H15V26H14zM16,25H17V26H16zM17,25H18V26H17zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM28,25H29V26H28zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM36,25H37V26H36zM37,25H38V26H37zM4,26H5V27H4zM5,26H6V27H5zM6,26H7V27H6zM8,26H9V27H8zM11,26H12V27H11zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM23,26H24V27H23zM24,26H25V27H24zM26,26H27V27H26zM30,26H31V27H30zM32,26H33V27H32zM35,26H36V27H35zM36,26H37V27H36zM37,26H38V27H37zM2,27H3V28H2zM5,27H6V28H5zM9,27H10V28H9zM10,27H11V28H10zM11,27H12V28H11zM12,27H13V28H12zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM18,27H19V28H18zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM29,27H30V28H29zM31,27H32V28H31zM34,27H35V28H34zM5,28H6V29H5zM7,28H8V29H7zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM13,28H14V29H13zM16,28H17V29H16zM18,28H19V29H18zM20,28H21V29H20zM25,28H26V29H25zM29,28H30V29H29zM30,28H31V29H30zM34,28H35V29H34zM35,28H36V29H35zM36,28H37V29H36zM4,29H5V30H4zM9,29H10V30H9zM12,29H13V30H12zM15,29H16V30H15zM16,29H17V30H16zM19,29H20V30H19zM20,29H21V30H20zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM28,29H29V30H28zM36,29H37V30H36zM2,30H3V31H2zM3,30H4V31H3zM4,30H5V31H4zM8,30H9V31H8zM10,30H11V31H10zM12,30H13V31H12zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM20,31H21V32H20zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM13,32H14V33H13zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM25,32H26V33H25zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM15,33H16V34H15zM16,33H17V34H16zM19,33H20V34H19zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM36,33H37V34H36zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM17,34H18V35H17zM19,34H20V35H19zM20,34H21V35H20zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM11,35H12V36H11zM12,35H13V36H12zM14,35H15V36H14zM20,35H21V36H20zM23,35H24V36H23zM25,35H26V36H25zM28,35H29V36H28zM30,35H31V36H30zM32,35H33V36H32zM33,35H34V36H33zM35,35H36V36H35zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM12,36H13V37H12zM16,36H17V37H16zM17,36H18V37H17zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM28,36H29V37H28zM31,36H32V37H31zM32,36H33V37H32zM36,36H37V37H36zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM14,37H15V38H14zM15,37H16V38H15zM16,37H17V38H16zM19,37H20V38H19zM20,37H21V38H20zM23,37H24V38H23zM25,37H26V38H25zM28,37H29V38H28zM31,37H32V38H31zM34,37H35V38H34zM36,37H37V38H36zM37,37H38V38H37zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM14,38H15V39H14zM17,38H18V39H17zM19,38H20V39H19zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM26,38H27V39H26zM33,38H34V39H33zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
+      <div class="qr-block__text">
+        <div class="qr-block__label">SCAN TO REVISIT</div>
+        <div class="qr-block__heading">휴대폰에서 다시 보기</div>
+        <div class="qr-block__hint">QR을 스캔하면 같은 자료를<br>휴대폰에서 다시 볼 수 있습니다</div>
       </div>
     </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Communications Medicine 2026.04 · SAVE trial NEJM 2016 (N=2,687, mean follow-up 3.7y) · McEvoy et al.</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 03 · BACKGROUND (image + split) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>BACKGROUND</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">왜 SAVE trial은 null이었나 — 평균의 함정</h2>
-      <p class="slide__subtitle">OSA는 심혈관 위험 인자로 확립, 그러나 CPAP RCT 결과는 일관되게 null. "평균 환자"에 답이 없을 수 있다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="bg-image-split">
-        <div class="bg-image-split__visual">
-          <figure class="ai-visual">
-            <img src="../../../../shared/assets/generated/cpap-osa-cv-20260525.png" alt="OSA airway obstruction + CPAP therapy targeting heart, brain, vessels">
-          </figure>
-          <div class="bg-image-split__caption">
-            <strong>OSA-CV 연결 — </strong>수면 중 상기도 반복 폐쇄 → 간헐적 저산소·교감신경 항진·산화스트레스·내피기능 장애·혈압 변동 → 관상동맥·뇌혈관·심방세동 위험 ↑. 기전상 CPAP 치료는 심혈관 사건을 줄여야 하지만, RCT는 평균적으로 null을 보였다.
-          </div>
-        </div>
-        <div>
-          <h3 class="split__heading">SAVE trial(2016) 핵심</h3>
-          <ul class="split__list">
-            <li><strong>대상</strong> — 중등도-중증 OSA (AHI ≥12) + 기존 CV 질환 (관상동맥·뇌혈관)</li>
-            <li><strong>설계</strong> — 다국 RCT, N=2,687, CPAP + usual care vs usual care</li>
-            <li><strong>1차 결과</strong> — 복합 CV 사건 (심혈관 사망·심근경색·뇌졸중·심부전 입원·TIA)</li>
-            <li><strong>평균 추적</strong> — 3.7년, CPAP 평균 사용 3.3시간/밤</li>
-            <li><strong>결과</strong> — HR 1.10 (95% CI 0.91–1.32), p=0.34, <strong>null</strong></li>
-            <li><strong>충격</strong> — OSA-CV 기전 강력함에도 효과 없음 → 가이드 후퇴</li>
-          </ul>
-          <div class="split__note split__note--alt">
-            🔍 <strong>의문 — </strong>평균 null은 정말 "효과 없음"인가? 아니면 일부는 도움받고 일부는 손해 봐서 평균이 가려진 것인가? Mount Sinai 팀의 가설.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">McEvoy RD et al. SAVE trial · N Engl J Med 2016;375:919-31 · OSA-CV 기전 리뷰</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 04 · STUDY DESIGN (checklist 8) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>STUDY DESIGN</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Causal Survival Forest — SAVE 재분석 8 step</h2>
-      <p class="slide__subtitle">평균 효과(ATE)가 아닌 환자별 효과(CATE)를 추정. 무작위배정 보존 + 기계학습 비선형 상호작용 포착.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item"><span class="check-item__icon">●</span><div class="check-item__text"><strong>Data</strong> — SAVE trial 원본 환자 데이터 2,687명. CPAP 1,346 vs usual care 1,341 (무작위배정 유지)</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div class="check-item__text"><strong>Outcome</strong> — 시간-사건(survival): 복합 CV endpoint까지의 시간. censoring 정확히 처리</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div class="check-item__text"><strong>Algorithm</strong> — Causal Survival Forest (Athey·Wager·Tibshirani 2019). RCT + survival 결합</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div class="check-item__text"><strong>Features</strong> — 기저 임상 변수 ~40개 (연령·성·BMI·AHI·졸음 ESS·SBP·당뇨·관상동맥 vs 뇌혈관·약물)</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div class="check-item__text"><strong>Target</strong> — CATE (Conditional Average Treatment Effect) — 환자별 CPAP 효과 추정량</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div class="check-item__text"><strong>Validation</strong> — Out-of-bag + 교차검증 + calibration test. 가짜 이질성 차단</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div class="check-item__text"><strong>Interpretation</strong> — SHAP·partial dependence로 어떤 변수가 효과 차이 주도하는지 분석</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div class="check-item__text"><strong>Robustness</strong> — random seed·feature dropout·sensitivity 분석 통과</div></div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Communications Medicine 2026.04 methods · Athey & Wager causal forest framework · grf R package</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 05 · RESULT ① — HTE distribution -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>RESULT ①</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Heterogeneous Treatment Effect — CPAP 효과 분포</h2>
-      <p class="slide__subtitle">환자별 추정 CATE를 5분위 분포로. 평균은 null인데 양 끝이 극단적으로 엇갈린다.</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="hte-vis">
-        <div class="hte-chart">
-          <div class="hte-chart__title">◆ SAVE 환자 N=2,687의 추정 CPAP 효과 분포 — 5분위 (저자 그래프 재현 근사치, 막대 폭 ∝ 환자 비중)</div>
-          <div class="hte-bars">
-            <div class="hte-bar"><div class="hte-bar__fill hte-bar__fill--big-benefit" style="height: 88%;"><div class="hte-bar__pct">~20%</div></div></div>
-            <div class="hte-bar"><div class="hte-bar__fill hte-bar__fill--benefit" style="height: 60%;"><div class="hte-bar__pct">~20%</div></div></div>
-            <div class="hte-bar"><div class="hte-bar__fill hte-bar__fill--null" style="height: 40%;"><div class="hte-bar__pct">~20%</div></div></div>
-            <div class="hte-bar"><div class="hte-bar__fill hte-bar__fill--harm" style="height: 60%;"><div class="hte-bar__pct">~20%</div></div></div>
-            <div class="hte-bar"><div class="hte-bar__fill hte-bar__fill--big-harm" style="height: 88%;"><div class="hte-bar__pct">~20%</div></div></div>
-          </div>
-          <div class="hte-labels">
-            <div class="hte-labels__cell"><strong>BIG BENEFIT</strong>HR ≈ 0.55<br>사건 큰 감소</div>
-            <div class="hte-labels__cell"><strong>BENEFIT</strong>HR ≈ 0.80<br>중간 감소</div>
-            <div class="hte-labels__cell"><strong>NULL</strong>HR ≈ 1.00<br>효과 없음</div>
-            <div class="hte-labels__cell"><strong>WORSE</strong>HR ≈ 1.20<br>약간 증가</div>
-            <div class="hte-labels__cell"><strong>BIG HARM</strong>HR ≈ 1.50<br>사건 증가 추정</div>
-          </div>
-          <div class="hte-axis">
-            <div class="hte-axis__arrow">← CPAP 큰 이득</div>
-            <div>평균 HR 1.10 (null)</div>
-            <div class="hte-axis__arrow">CPAP 손해 →</div>
-          </div>
-        </div>
-        <div class="hte-summary">
-          <div class="hte-summary__card hte-summary__card--good">
-            <div class="hte-summary__card-label">큰 이득 + 이득</div>
-            <div class="hte-summary__card-value">≈40%</div>
-            <div class="hte-summary__card-hint">CPAP로 사건 감소 추정. 졸음 ESS 高·중증 AHI·고 CV 위험·당뇨 동반 환자가 다수.</div>
-          </div>
-          <div class="hte-summary__card hte-summary__card--warn">
-            <div class="hte-summary__card-label">손해 + 큰 손해</div>
-            <div class="hte-summary__card-value">≈40%</div>
-            <div class="hte-summary__card-hint">CPAP가 효과 없거나 오히려 증가 추정. 졸음 없음·경증 AHI·고령·뇌혈관 우선 환자가 다수.</div>
-          </div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Action">
-        <img src="../../../../shared/assets/generated/general-papers-20260525-cpap-personalized-cv-s05-action-pulmonary-e0a2f02b-20260530-raster-20260531.jpg" alt="Heterogeneous Treatment Effect — CPAP 효과 분포 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">Communications Medicine 2026.04 figure 2 (HTE distribution) · 막대 높이 = CATE 크기, 폭 = 환자 비중(균등 5분위)</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 06 · RESULT ② — Who benefits (2x2 grid) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>RESULT ②</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">누가 CPAP로 큰 이득 — 4가지 핵심 인자</h2>
-      <p class="slide__subtitle">SHAP 분석 결과. 단일 인자 X — 다중 인자 조합이 효과를 강하게 예측한다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--good">
-          <div class="tile__index">PREDICTOR · 01 · 졸음</div>
-          <h3 class="tile__title">😴 주간 졸음 (ESS ≥11)</h3>
-          <p class="tile__body">Epworth Sleepiness Scale 11점 이상. SAVE는 졸음 환자 사전 제외했음에도 잔존 졸음 군에서 CPAP 효과 가장 큼. <strong>일관된 최강 예측 인자.</strong> 졸음 = OSA 임상적 표현 + 순응도 ↑.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">PREDICTOR · 02 · 중증 AHI</div>
-          <h3 class="tile__title">🌬️ 중증 AHI (≥30/h)</h3>
-          <p class="tile__body">Apnea-Hypopnea Index 시간당 30회 이상 = 중증. 간헐적 저산소 부담 큼. CPAP의 산소포화도 개선 효과 큼 → CV 사건 감소 폭 큼. AHI 12-30 경증·중등도는 효과 변동성 큼.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">PREDICTOR · 03 · 고 CV 위험</div>
-          <h3 class="tile__title">❤️ 고 CV 위험 부담</h3>
-          <p class="tile__body">SBP 高·LDL 高·관상동맥질환·다발성 위험인자. <strong>절대 위험 큰 환자가 절대 이득도 큼</strong>. 저위험군은 base rate 낮아 CPAP 효과 보기 어려움.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">PREDICTOR · 04 · 당뇨</div>
-          <h3 class="tile__title">🩺 당뇨 (T2DM)</h3>
-          <p class="tile__body">당뇨 동반자에서 CPAP 효과 더 큼. 인슐린 저항성·교감신경 항진·미세혈관 손상이 OSA와 시너지. CPAP로 야간 저산소 차단 → 대사·CV 모두 개선 가능성.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Communications Medicine 2026.04 figure 3 SHAP feature importance · ESS·AHI·CVD risk·T2DM 상위 인자</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 07 · AI Model — How it works -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>AI MODEL</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Causal Survival Forest — 작동 원리와 한계</h2>
-      <p class="slide__subtitle">랜덤포레스트의 인과 추론 확장. 환자별 효과 추정 + 인과성 보존. 단 RCT 데이터 + 충분한 표본이 전제.</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-split">
-        <div>
-          <h3 class="split__heading">⚙️ 어떻게 환자별 효과를 추정하나</h3>
-          <ul class="split__list">
-            <li><strong>① 무작위배정 보존</strong> — RCT 자료라 confounding 자동 통제. observational 데이터의 한계 회피</li>
-            <li><strong>② 결정나무 + 인과 분할</strong> — 효과 차이를 가장 잘 가르는 변수로 환자를 가지(branch)로 나눔</li>
-            <li><strong>③ 수백 트리 앙상블</strong> — 트리마다 다른 부트스트랩·feature subset → 안정적 평균 추정</li>
-            <li><strong>④ Survival 통합</strong> — censoring·시간-사건 데이터 정확 처리. Kaplan-Meier 확장</li>
-            <li><strong>⑤ CATE 출력</strong> — 환자 i의 추정 효과 τ̂(xᵢ) = 신뢰구간 포함</li>
-          </ul>
-          <div class="split__note">
-            ✅ <strong>장점 — </strong>고차원 상호작용 자동 포착. 가설 없이 "누가 도움받는지" 데이터에서 학습. 인과성 보존.
-          </div>
-        </div>
-        <div class="metric-stack">
-          <div class="metric-card metric-card--warn">
-            <div class="metric-card__label">⚠️ 한계 ① — 표본 크기</div>
-            <div class="metric-card__value">N=2,687<small>경계선</small></div>
-            <div class="metric-card__hint">HTE 추정은 ATE보다 훨씬 큰 표본 필요. 양 끝 분위는 신뢰구간 넓음.</div>
-          </div>
-          <div class="metric-card metric-card--warn">
-            <div class="metric-card__label">⚠️ 한계 ② — Discovery 단계</div>
-            <div class="metric-card__value">가설 생성<small>not 확정</small></div>
-            <div class="metric-card__hint">전향적 RCT로 ESS·AHI·CV 위험 층화 효과 검증 필요. 현재는 임상 영감 단계.</div>
-          </div>
-          <div class="metric-card metric-card--warn">
-            <div class="metric-card__label">⚠️ 한계 ③ — 모집단 제한</div>
-            <div class="metric-card__value">CV+OSA<small>only</small></div>
-            <div class="metric-card__hint">SAVE는 기존 CV 질환자 모집. 1차 예방·일반 OSA·아시아인 외삽 한계.</div>
-          </div>
-          <div class="metric-card metric-card--alt">
-            <div class="metric-card__label">📦 코드 공개</div>
-            <div class="metric-card__value">grf R<small>open</small></div>
-            <div class="metric-card__hint">Mount Sinai 팀 분석 코드 일부 공개. 다른 RCT 재분석 확산 기대.</div>
-          </div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../../shared/assets/generated/general-papers-20260525-cpap-personalized-cv-s07-comparison-pulmonary-fb85333c-20260530-raster-20260531.jpg" alt="Causal Survival Forest — 작동 원리와 한계 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">Athey S, Wager S. Estimating Treatment Effects with Causal Forests. Observational Studies 2019 · grf R package</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 08 · Subgroup spectrum (3x2 grid) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>SUBGROUP SPECTRUM</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">위험군별 추정 효과 — 6 cluster spectrum</h2>
-      <p class="slide__subtitle">실무 가이드로 변환. "어떤 환자에 CPAP 추천 강도가 더 강한가" — 일률 적용 X.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3x2">
-        <div class="tile tile--good">
-          <div class="tile__index">CLUSTER · 01 · 최강 이득 추정</div>
-          <h3 class="tile__title">졸음 + 중증 AHI + 당뇨</h3>
-          <p class="tile__body">3중 위험 동반. CATE 추정 HR ≈ 0.5. <strong>강력 권고</strong> — CPAP 적극 의뢰·순응도 관리 핵심.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">CLUSTER · 02 · 큰 이득 추정</div>
-          <h3 class="tile__title">중증 AHI + 고 CV 위험</h3>
-          <p class="tile__body">AHI ≥30 + 다발성 CV 위험인자. CATE HR ≈ 0.6. <strong>강력 권고</strong>. 야간 저산소 부담 큼.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">CLUSTER · 03 · 이득 추정</div>
-          <h3 class="tile__title">졸음 + 중등도 AHI</h3>
-          <p class="tile__body">증상 동반자. CATE HR ≈ 0.75. 권고. <strong>졸음 개선 + CV 위험 감소 이중 이득</strong>.</p>
-        </div>
-        <div class="tile tile--alt">
-          <div class="tile__index">CLUSTER · 04 · 효과 미미 추정</div>
-          <h3 class="tile__title">비졸음 + 경증 AHI</h3>
-          <p class="tile__body">AHI 12-20 + ESS &lt;11. CATE HR ≈ 1.0. <strong>개별 risk-benefit 평가</strong>. 순응도 부담 vs 효과 비교.</p>
-        </div>
-        <div class="tile tile--warn">
-          <div class="tile__index">CLUSTER · 05 · 손해 추정</div>
-          <h3 class="tile__title">고령 + 뇌혈관 우선 + 비졸음</h3>
-          <p class="tile__body">75세+·뇌졸중·비졸음. CATE HR ≈ 1.2. <strong>신중 평가</strong> — 야간 압력·불편이 사건 유발 가능성.</p>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">CLUSTER · 06 · 큰 손해 추정</div>
-          <h3 class="tile__title">저 CV 위험 + 경증 AHI + 비순응 가능</h3>
-          <p class="tile__body">치료 부담이 이득 초과. CATE HR ≈ 1.4. <strong>일반 권고 X</strong> — 적극적 생활습관·체중 우선.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Communications Medicine 2026.04 cluster analysis · 임상적 해석 (실무 가이드 변환, 추정치)</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 09 · Who to refer (split) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>WHO TO REFER</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">1차 진료 의뢰 기준 — 우선순위 변환</h2>
-      <p class="slide__subtitle">OSA 의심 + CPAP 적극 권고 + 다학제 의뢰. 본 논문 결과를 실무 트리아지로.</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-split">
-        <div>
-          <h3 class="split__heading">🔍 OSA 의심 — 수면다원검사 의뢰</h3>
-          <ul class="split__list">
-            <li><strong>관찰된 무호흡</strong> — 배우자·가족이 호흡 멈춤·심한 코골이 보고</li>
-            <li><strong>주간 졸음 ESS ≥11</strong> — Epworth 설문 11점 이상, 운전 중 졸음·집중력 ↓</li>
-            <li><strong>저산소 표지자</strong> — 아침 두통·기상 시 입마름·야간뇨·기상 시 피로</li>
-            <li><strong>고위험 표현형</strong> — 비만 BMI ≥30·짧은 목둘레·턱 후퇴·편도 비대</li>
-            <li><strong>난치성 고혈압</strong> — 3제 이상 약물에도 미조절. OSA 동반 흔함</li>
-            <li><strong>CV 사건 후</strong> — 심근경색·뇌졸중·심방세동·심부전 진단 직후 평가</li>
-          </ul>
-          <div class="split__note">
-            🏥 <strong>수면다원검사 — </strong>한국 보험 급여 (2018~). 1박 입원 또는 가정형. 광교바른내과 → 분당서울대·아주대·이비인후과 연계.
-          </div>
-        </div>
-        <div>
-          <h3 class="split__heading">💨 CPAP 우선 권고군 (본 논문 결과)</h3>
-          <ul class="split__list">
-            <li><strong>① 졸음 동반 환자</strong> — ESS ≥11 무조건 권고. 증상 개선 + CV 이중 이득</li>
-            <li><strong>② 중증 AHI (≥30)</strong> — 저산소 부담 큼. CV·대사 이득 큼</li>
-            <li><strong>③ 다발 CV 위험인자</strong> — HTN·DM·이상지질·관상동맥질환</li>
-            <li><strong>④ 당뇨 동반</strong> — 인슐린 저항성·CV 시너지. 적극 권고</li>
-            <li><strong>⑤ 직업적 안전 위험</strong> — 운전·기계 조작 직군 (졸음 = 사고 위험)</li>
-            <li><strong>⑥ 동반 폐고혈압·심방세동</strong> — 야간 저산소 차단으로 진행 억제</li>
-          </ul>
-          <div class="split__note split__note--alt">
-            🤝 <strong>다학제 의뢰 — </strong>호흡기내과(CPAP titration) + 심장내과(CV 위험 통합) + 이비인후과(상기도 평가) + 영양·체중 클리닉.
-          </div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../../shared/assets/generated/general-papers-20260525-cpap-personalized-cv-s09-risk-pulmonary-b92d7c1c-20260530-raster-20260531.jpg" alt="1차 진료 의뢰 기준 — 우선순위 변환 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">대한수면학회(KSSP) OSA 진료 가이드 · ATS/ERS · 본 논문 임상 적용 변환</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 10 · Timeline (4 steps) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>HOW TO IMPLEMENT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진료실 실무 4단계 — 진단부터 추적까지</h2>
-      <p class="slide__subtitle">스크리닝 → 수면다원검사 → CPAP 시작 → 순응도·CV 추적. 6개월 시점 risk-benefit 재평가.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step timeline-step--alt">
-          <div class="timeline-step__num">1</div>
-          <div class="timeline-step__when">진단 시점</div>
-          <div class="timeline-step__title">스크리닝·위험 평가</div>
-          <p class="timeline-step__body">STOP-BANG·Epworth·BMI·목둘레·CV 위험 (HTN·DM·CAD·CVD·AF). 의심 시 수면다원검사 의뢰.</p>
-        </div>
-        <div class="timeline-step timeline-step--alt">
-          <div class="timeline-step__num">2</div>
-          <div class="timeline-step__when">1–2개월</div>
-          <div class="timeline-step__title">수면다원검사 + AHI 확인</div>
-          <p class="timeline-step__body">1박 PSG 또는 가정형 검사. AHI·산소포화도·중증도. 환자 표현형(졸음·중증·고위험)으로 CPAP 강도 결정.</p>
-        </div>
-        <div class="timeline-step timeline-step--alt">
-          <div class="timeline-step__num">3</div>
-          <div class="timeline-step__when">2–4개월</div>
-          <div class="timeline-step__title">CPAP titration + 시작</div>
-          <p class="timeline-step__body">호흡기내과 의뢰 → 적정 압력 설정. 마스크 fit 교육. 첫 4주 순응도 점검 (≥4시간/밤·≥70% 야간 목표).</p>
-        </div>
-        <div class="timeline-step timeline-step--alt">
-          <div class="timeline-step__num">4</div>
-          <div class="timeline-step__when">6개월+</div>
-          <div class="timeline-step__title">CV·대사 추적·재평가</div>
-          <p class="timeline-step__body">혈압·HbA1c·체중·ESS 추적. 순응도 부족 + 효과 미미 시 risk-benefit 재평가. 대안: 체중감량·자세·구강내장치.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">대한수면학회 OSA 진료흐름 · ATS CPAP 순응도 기준 · 광교바른내과 다학제 의뢰 표준</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 11 · Limits & Korean context -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>LIMITS & KOREA</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한계 + 한국 진료 context</h2>
-      <p class="slide__subtitle">SAVE 모집단·기계학습 가설 단계·한국 보험 체계·아시아인 외삽 한계 — 균형 잡힌 적용 필요.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-table">
-        <div class="tbl-row tbl-row--head">
-          <div class="tbl__label">항목</div>
-          <div class="tbl__num">상태</div>
-          <div class="tbl__num">한국 적용</div>
-          <div class="tbl__note">실무 권고</div>
-        </div>
-        <div class="tbl-row tbl-row--warn">
-          <div class="tbl__label">⚠️ 모집단 외삽</div>
-          <div class="tbl__num">CV+OSA only</div>
-          <div class="tbl__num">제한적</div>
-          <div class="tbl__note">SAVE는 기존 CV 질환자. 1차 예방·아시아인 일반 OSA 외삽 한계. 본인 의사 판단 필요.</div>
-        </div>
-        <div class="tbl-row tbl-row--warn">
-          <div class="tbl__label">⚠️ 기계학습 단계</div>
-          <div class="tbl__num">Discovery</div>
-          <div class="tbl__num">참고</div>
-          <div class="tbl__note">전향적 검증 RCT 부재. 가설 생성 단계. 가이드라인 변경 X — 임상 영감으로만.</div>
-        </div>
-        <div class="tbl-row tbl-row--alt" style="background: var(--color-border-soft); border-color: #94a3b8;">
-          <div class="tbl__label">🇰🇷 수면다원검사 급여</div>
-          <div class="tbl__num">2018~</div>
-          <div class="tbl__num">급여 적용</div>
-          <div class="tbl__note">1박 PSG·가정형 모두 급여. AHI ≥15 시 CPAP 의료기기 급여. 본인부담 일부 발생.</div>
-        </div>
-        <div class="tbl-row tbl-row--alt" style="background: var(--color-border-soft); border-color: #94a3b8;">
-          <div class="tbl__label">🇰🇷 CPAP 보험 기준</div>
-          <div class="tbl__num">AHI ≥15</div>
-          <div class="tbl__num">처방+순응</div>
-          <div class="tbl__note">월 임대료 일부 급여. ≥4시간/밤·≥70% 야간 사용 시 지속 처방. 미달 시 처방 중단·재평가.</div>
-        </div>
-        <div class="tbl-row">
-          <div class="tbl__label">🇰🇷 의뢰·아시아인</div>
-          <div class="tbl__num">다학제·두개안면</div>
-          <div class="tbl__num">고려 필요</div>
-          <div class="tbl__note">호흡기·이비인후·심장 협진(KSSP 인증). BMI 낮아도 두개안면 구조로 OSA 가능 — 마른 사람도 의심.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">건보 수면다원검사·CPAP 급여 기준 (2018~) · 대한수면학회(KSSP) 지침 · 아시아 OSA 역학</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 12 · TAKE-HOME -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">12 · <strong>TAKE-HOME</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">1차 진료 Take-home — 4가지 핵심</h2>
-      <p class="slide__subtitle">평균 null 뒤에 숨은 환자별 효과 — AI 기반 개인화 진료가 진료실에 도착했다</p>
-    </div>
-    <div class="slide__body">
-      <div class="takehome-grid">
-        <div class="takehome-card">
-          <div class="takehome-card__num">1</div>
-          <div class="takehome-card__text">SAVE trial 평균 null은 정답 아님 — <strong>≈40% 환자는 큰 이득, ≈40%는 효과 없거나 손해</strong>. 평균값 신뢰의 한계 인식</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">2</div>
-          <div class="takehome-card__text">CPAP 강력 권고 4 인자 — <strong>주간 졸음(ESS ≥11) · 중증 AHI(≥30) · 고 CV 위험 · 당뇨</strong>. 단일 인자 X, 조합으로 평가</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">3</div>
-          <div class="takehome-card__text"><strong>비졸음·경증 AHI·저 CV 위험</strong>은 일률 권고 폐기. 개별 risk-benefit·순응도 부담·생활습관 우선 평가</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">4</div>
-          <div class="takehome-card__text">한국 — <strong>수면다원검사·CPAP 급여 적용</strong> (AHI ≥15, ≥4h·≥70% 순응). 다학제 의뢰 + 6개월 재평가가 표준</div>
-        </div>
-      </div>
-      <div class="closing-grid closing-grid--qr-only">
-        <div class="qr-block">
-          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM16,2H17V3H16zM19,2H20V3H19zM20,2H21V3H20zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM29,2H30V3H29zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM14,3H15V4H14zM17,3H18V4H17zM18,3H19V4H18zM19,3H20V4H19zM20,3H21V4H20zM21,3H22V4H21zM23,3H24V4H23zM24,3H25V4H24zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM12,4H13V5H12zM15,4H16V5H15zM16,4H17V5H16zM19,4H20V5H19zM20,4H21V5H20zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM26,4H27V5H26zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM15,5H16V6H15zM16,5H17V6H16zM18,5H19V6H18zM20,5H21V6H20zM24,5H25V6H24zM25,5H26V6H25zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM16,6H17V7H16zM25,6H26V7H25zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM13,7H14V8H13zM16,7H17V8H16zM21,7H22V8H21zM23,7H24V8H23zM27,7H28V8H27zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM12,9H13V10H12zM13,9H14V10H13zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM28,9H29V10H28zM29,9H30V10H29zM30,9H31V10H30zM2,10H3V11H2zM6,10H7V11H6zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM14,10H15V11H14zM19,10H20V11H19zM20,10H21V11H20zM21,10H22V11H21zM22,10H23V11H22zM23,10H24V11H23zM24,10H25V11H24zM26,10H27V11H26zM28,10H29V11H28zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM38,10H39V11H38zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM7,11H8V12H7zM10,11H11V12H10zM11,11H12V12H11zM14,11H15V12H14zM15,11H16V12H15zM18,11H19V12H18zM20,11H21V12H20zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM33,11H34V12H33zM34,11H35V12H34zM37,11H38V12H37zM2,12H3V13H2zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM13,12H14V13H13zM14,12H15V13H14zM15,12H16V13H15zM16,12H17V13H16zM18,12H19V13H18zM25,12H26V13H25zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM33,12H34V13H33zM35,12H36V13H35zM36,12H37V13H36zM2,13H3V14H2zM3,13H4V14H3zM6,13H7V14H6zM9,13H10V14H9zM12,13H13V14H12zM14,13H15V14H14zM16,13H17V14H16zM19,13H20V14H19zM20,13H21V14H20zM21,13H22V14H21zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM28,13H29V14H28zM29,13H30V14H29zM33,13H34V14H33zM34,13H35V14H34zM36,13H37V14H36zM37,13H38V14H37zM2,14H3V15H2zM3,14H4V15H3zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM12,14H13V15H12zM13,14H14V15H13zM17,14H18V15H17zM19,14H20V15H19zM20,14H21V15H20zM22,14H23V15H22zM23,14H24V15H23zM24,14H25V15H24zM31,14H32V15H31zM32,14H33V15H32zM33,14H34V15H33zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM3,15H4V16H3zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM25,15H26V16H25zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM12,16H13V17H12zM13,16H14V17H13zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM24,16H25V17H24zM25,16H26V17H25zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM2,17H3V18H2zM3,17H4V18H3zM5,17H6V18H5zM6,17H7V18H6zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM18,17H19V18H18zM19,17H20V18H19zM20,17H21V18H20zM22,17H23V18H22zM23,17H24V18H23zM28,17H29V18H28zM31,17H32V18H31zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM36,17H37V18H36zM38,17H39V18H38zM2,18H3V19H2zM4,18H5V19H4zM5,18H6V19H5zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM11,18H12V19H11zM12,18H13V19H12zM13,18H14V19H13zM16,18H17V19H16zM18,18H19V19H18zM19,18H20V19H19zM21,18H22V19H21zM23,18H24V19H23zM24,18H25V19H24zM30,18H31V19H30zM32,18H33V19H32zM33,18H34V19H33zM35,18H36V19H35zM36,18H37V19H36zM37,18H38V19H37zM3,19H4V20H3zM5,19H6V20H5zM6,19H7V20H6zM7,19H8V20H7zM9,19H10V20H9zM11,19H12V20H11zM13,19H14V20H13zM16,19H17V20H16zM19,19H20V20H19zM20,19H21V20H20zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM29,19H30V20H29zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM37,19H38V20H37zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM12,20H13V21H12zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM25,20H26V21H25zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM33,20H34V21H33zM34,20H35V21H34zM36,20H37V21H36zM2,21H3V22H2zM3,21H4V22H3zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM10,21H11V22H10zM12,21H13V22H12zM13,21H14V22H13zM14,21H15V22H14zM16,21H17V22H16zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM25,21H26V22H25zM26,21H27V22H26zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM36,21H37V22H36zM37,21H38V22H37zM5,22H6V23H5zM8,22H9V23H8zM10,22H11V23H10zM12,22H13V23H12zM13,22H14V23H13zM18,22H19V23H18zM19,22H20V23H19zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM25,22H26V23H25zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM35,22H36V23H35zM36,22H37V23H36zM2,23H3V24H2zM3,23H4V24H3zM11,23H12V24H11zM13,23H14V24H13zM14,23H15V24H14zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM20,23H21V24H20zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM30,23H31V24H30zM31,23H32V24H31zM33,23H34V24H33zM34,23H35V24H34zM4,24H5V25H4zM7,24H8V25H7zM8,24H9V25H8zM11,24H12V25H11zM14,24H15V25H14zM17,24H18V25H17zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM29,24H30V25H29zM31,24H32V25H31zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM36,24H37V25H36zM37,24H38V25H37zM3,25H4V26H3zM5,25H6V26H5zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM14,25H15V26H14zM16,25H17V26H16zM17,25H18V26H17zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM28,25H29V26H28zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM36,25H37V26H36zM37,25H38V26H37zM4,26H5V27H4zM5,26H6V27H5zM6,26H7V27H6zM8,26H9V27H8zM11,26H12V27H11zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM23,26H24V27H23zM24,26H25V27H24zM26,26H27V27H26zM30,26H31V27H30zM32,26H33V27H32zM35,26H36V27H35zM36,26H37V27H36zM37,26H38V27H37zM2,27H3V28H2zM5,27H6V28H5zM9,27H10V28H9zM10,27H11V28H10zM11,27H12V28H11zM12,27H13V28H12zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM18,27H19V28H18zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM29,27H30V28H29zM31,27H32V28H31zM34,27H35V28H34zM5,28H6V29H5zM7,28H8V29H7zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM13,28H14V29H13zM16,28H17V29H16zM18,28H19V29H18zM20,28H21V29H20zM25,28H26V29H25zM29,28H30V29H29zM30,28H31V29H30zM34,28H35V29H34zM35,28H36V29H35zM36,28H37V29H36zM4,29H5V30H4zM9,29H10V30H9zM12,29H13V30H12zM15,29H16V30H15zM16,29H17V30H16zM19,29H20V30H19zM20,29H21V30H20zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM28,29H29V30H28zM36,29H37V30H36zM2,30H3V31H2zM3,30H4V31H3zM4,30H5V31H4zM8,30H9V31H8zM10,30H11V31H10zM12,30H13V31H12zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM20,31H21V32H20zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM13,32H14V33H13zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM25,32H26V33H25zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM15,33H16V34H15zM16,33H17V34H16zM19,33H20V34H19zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM36,33H37V34H36zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM17,34H18V35H17zM19,34H20V35H19zM20,34H21V35H20zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM11,35H12V36H11zM12,35H13V36H12zM14,35H15V36H14zM20,35H21V36H20zM23,35H24V36H23zM25,35H26V36H25zM28,35H29V36H28zM30,35H31V36H30zM32,35H33V36H32zM33,35H34V36H33zM35,35H36V36H35zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM12,36H13V37H12zM16,36H17V37H16zM17,36H18V37H17zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM28,36H29V37H28zM31,36H32V37H31zM32,36H33V37H32zM36,36H37V37H36zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM14,37H15V38H14zM15,37H16V38H15zM16,37H17V38H16zM19,37H20V38H19zM20,37H21V38H20zM23,37H24V38H23zM25,37H26V38H25zM28,37H29V38H28zM31,37H32V38H31zM34,37H35V38H34zM36,37H37V38H36zM37,37H38V38H37zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM14,38H15V39H14zM17,38H18V39H17zM19,38H20V39H19zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM26,38H27V39H26zM33,38H34V39H33zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
-          <div class="qr-block__caption">다시 보기 — 슬라이드 링크 QR</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Communications Medicine 2026.04 · SAVE trial NEJM 2016 · KSSP 2024 가이드 · 한국 건보 급여 기준</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · ⚠️ 교육·참고용 — 가설 생성 재분석 · 진료 결정은 최신 지침·임상 판단으로</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
+</section>
 </body>
 </html>

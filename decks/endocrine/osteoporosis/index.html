@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Osteoporosis — Gwanggyo Barun Internal Medicine</title>
+  <title>골다공증 환자 교육 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,827 +18,418 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <!-- Local extensions for this deck (3-stat row + alert-stack) -->
-  <style>
-    /* Three-stat row — single row of 3 large circular stats + supporting card */
-    .pattern-stats3 {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-6);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .stats3-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-      align-items: center;
-      justify-items: center;
-    }
-    .stats3-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .stats3-cell__circle {
-      width: 168px;
-      height: 168px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-canvas);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-    }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__num {
-      font-size: 2.5rem;
-      font-weight: var(--weight-black);
-      line-height: 1;
-      letter-spacing: var(--tracking-mega);
-    }
-    .stats3-cell__unit {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      margin-top: var(--space-2);
-      opacity: 0.92;
-    }
-    .stats3-cell__label {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      text-align: center;
-      max-width: 240px;
-      line-height: var(--lh-snug);
-    }
-    .stats3-note {
-      padding: var(--space-5) var(--space-6);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-relaxed);
-    }
-
-    /* Vertical alert stack — single column, alert rows */
-    .pattern-alert-stack {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: 1fr;
-      gap: var(--space-3);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .alert-row {
-      display: flex;
-      gap: var(--space-4);
-      align-items: flex-start;
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-danger-bg);
-      border: 1px solid var(--color-danger);
-      border-radius: var(--radius-lg);
-      min-height: 0;
-      overflow: hidden;
-    }
-    .alert-row__icon {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--color-canvas);
-      color: var(--color-danger);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--text-h3);
-      font-weight: var(--weight-bold);
-      border: 1px solid var(--color-danger);
-    }
-    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
-    .alert-row__title {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-bold);
-      color: var(--color-danger);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-tight);
-    }
-    .alert-row__text {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-
-    /* Checklist with 8 items */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3F-redesign 2026-09-27 (원장님 49028) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:16px;line-height:1.6}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:17px;line-height:1.45;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="골다공증 진단(DXA·T-score)·약물 치료·영양·운동·낙상 예방까지 한눈에 보는 환자 교육 자료">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/osteoporosis/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Osteoporosis — Gwanggyo Barun Internal Medicine", "description": "골다공증 진단(DXA·T-score)·약물 치료·영양·운동·낙상 예방까지 한눈에 보는 환자 교육 자료", "url": "https://edu.gwanggyobarun.com/decks/endocrine/osteoporosis/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "골다공증 환자 교육 — 광교바른내과", "description": "골다공증 진단(DXA·T-score)·약물 치료·영양·운동·낙상 예방까지 한눈에 보는 환자 교육 자료", "url": "https://edu.gwanggyobarun.com/decks/endocrine/osteoporosis/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">골다공증,<br><em>뼈 건강 평생 관리하기</em></h1>
-      <p class="slide__subtitle">DXA T-score, FRAX, 약물 순차치료, 칼슘·비타민 D, 운동·낙상 예방까지 한눈에 정리합니다</p>
+      <p class="slide__subtitle">골밀도 검사부터 약, 칼슘·비타민 D, 운동, 낙상 예방까지 한눈에 정리합니다</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Osteoporosis · DXA · Sequential Therapy · Fall Prevention</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__source">골다공증 · 골밀도 검사 · 약물 치료 · 낙상 예방</span>
+      <span class="slide__page">01 / 13</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · STATS3 — Korean osteoporosis prevalence numbers
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">골다공증 (Osteoporosis) — 한국의 현실</h2>
-      <p class="slide__subtitle">뼈가 약해져 작은 충격에도 골절이 생기는 흔하지만 치료 가능한 질환입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">37.3<span style="font-size:1.4rem">%</span></div>
-              <div class="stats3-cell__unit">50세↑ 여성</div>
-            </div>
-            <div class="stats3-cell__label">폐경 후 여성 유병률<br>70세 이상은 68.5%</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">86<span style="font-size:1.4rem">%</span></div>
-              <div class="stats3-cell__unit">후속 골절 위험</div>
-            </div>
-            <div class="stats3-cell__label">한 번 골절 후 다음 골절 위험 (Imminent risk)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">17<span style="font-size:1.4rem">%</span></div>
-              <div class="stats3-cell__unit">고관절 1년 사망률</div>
-            </div>
-            <div class="stats3-cell__label">고관절 골절 후 1년 내 사망 (수술 미시행 시 70%)</div>
-          </div>
-        </div>
-        <div class="stats3-note">
-          폐경 후 에스트로겐 감소로 파골세포(뼈를 녹이는 세포)가 10배 활성화되고 조골세포(뼈를 만드는 세포)는 위축됩니다. 즉 뼈가 만들어지는 속도보다 녹는 속도가 빨라지는 것이 골다공증의 본질입니다. 2025년부터 국가검진에서 여성은 54·60·66세 생애 3회 무료 DXA 검사가 제공됩니다.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KSBMR 2024 · 국민건강영양조사 · HIRA 2024</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — DXA T-score classification
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>DIAGNOSIS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">DXA 골밀도 검사와 T-score</h2>
-      <p class="slide__subtitle">뼈의 '밀도 성적표' — 가장 낮은 부위의 T-score로 진단합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">요추 (L1–L4) 와 대퇴경부·전체 대퇴부 중 <em>가장 낮은 T-score</em>로 진단합니다. 동일 기기에서 1~2년마다 추적해 변화를 추적합니다.</p>
-          <p class="pattern-split__supporting">
-            T-score는 같은 성별 젊은 성인 평균 골밀도와의 표준편차 차이를 의미합니다. -1.0 이상이면 정상, -1.0 ~ -2.5 사이는 골감소증 (Osteopenia), -2.5 이하면 골다공증 (Osteoporosis) 으로 진단합니다. 골절을 동반하면 중증 골다공증이며, FRAX 같은 위험도 도구로 10년 내 골절 확률을 함께 평가합니다. 치료 목표는 T-score &gt; -2.5, 고위험군은 ≥ -2.0 입니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">정상 (Normal)</div>
-            <div class="pattern-split__metric-value">T ≥ -1.0</div>
-            <div class="pattern-split__metric-detail">생활습관 관리 — 칼슘·비타민 D, 체중부하 운동.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">골감소증 (Osteopenia)</div>
-            <div class="pattern-split__metric-value">-2.5 &lt; T ≤ -1.0</div>
-            <div class="pattern-split__metric-detail">FRAX 평가 후 위험도 따라 약물치료 검토.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">골다공증 (Osteoporosis)</div>
-            <div class="pattern-split__metric-value">T ≤ -2.5</div>
-            <div class="pattern-split__metric-detail">적극적 약물치료 적응 — 급여 인정 기준.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ISCD 2023 · KSBMR 2024 · HIRA 2024.05</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 3×2 — Risk stratification & high-risk groups
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>RISK STRATIFICATION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">골절 위험도 분류와 초고위험군</h2>
-      <p class="slide__subtitle">위험도가 높을수록 빠르고 강하게 — 초고위험군은 골형성촉진제 우선 고려</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">LOW · 01</div>
-          <div class="tile__title">저위험군 (Low risk)</div>
-          <div class="tile__body">골감소증이지만 위험인자가 적은 경우. 칼슘·비타민 D 보충 + 체중부하 운동 + 1~2년 후 추적 DXA로 관리합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HIGH · 02</div>
-          <div class="tile__title">고위험군 (High risk)</div>
-          <div class="tile__body">T-score ≤ -2.5 또는 골절 경험. 골흡수억제제 (비스포스포네이트·데노수맙) 중심의 약물치료를 시작합니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">VERY HIGH · 03</div>
-          <div class="tile__title">초고위험군 (Very high)</div>
-          <div class="tile__body">최근 1~2년 내 척추·고관절 골절, T &lt; -3.0, 다발성 척추골절, 또는 치료 중에도 새 골절이 생긴 경우 — 골형성촉진제 우선 고려.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FRAX · 04</div>
-          <div class="tile__title">FRAX 10년 골절 위험도</div>
-          <div class="tile__body">나이·성별·BMI·기존 골절·부모 고관절 골절·흡연·음주·스테로이드·류마티스 관절염 등을 입력해 10년 내 주요 골다공증성 골절 확률을 계산합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">GROUP · 05</div>
-          <div class="tile__title">남성 골다공증 (Male)</div>
-          <div class="tile__body">남성 50세 이상 7.5%가 골다공증. 70세 이상이거나 골절·스테로이드·저체중·테스토스테론 저하가 있으면 DXA 검사가 권장됩니다 (국가검진 미포함).</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SECONDARY · 06</div>
-          <div class="tile__title">이차성 원인 감별</div>
-          <div class="tile__body">갑상선·부갑상선 항진증, 쿠싱, 만성 신부전, 셀리악, 다발골수종, 조기 폐경 등을 혈액·소변 검사로 감별 — 원인 치료 없이는 약효 제한.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/endocrine-osteoporosis-s04-risk-bone-3d85237e-20260530-raster-20260531.jpg" alt="골절 위험도 분류와 초고위험군 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KSBMR 2024 · AACE 2020 · WHO FRAX</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 2×2 — Antiresorptives (osteoclast-targeting)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>ANTIRESORPTIVES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">골흡수억제제 — 뼈가 녹는 것을 막는 약</h2>
-      <p class="slide__subtitle">비스포스포네이트와 데노수맙 — 1차 치료의 중심 약제</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2" style="gap:var(--space-3)">
-        <div class="tile" style="padding-top:var(--space-3);padding-bottom:var(--space-3)">
-          <div class="tile__index">DRUG · 01 · 경구</div>
-          <div class="tile__title">알렌드로네이트 (Alendronate)</div>
-          <div class="tile__body">주 1회 70mg 경구. 기상 직후 공복에 200mL 생수와 복용 후 30분 직립 유지 — 식도 자극·궤양 예방. 척추·고관절·비척추 골절 모두 감소시키며 뼈에 축적되어 휴약 후에도 효과가 지속됩니다.</div>
-        </div>
-        <div class="tile" style="padding-top:var(--space-3);padding-bottom:var(--space-3)">
-          <div class="tile__index">DRUG · 02 · 정맥주사</div>
-          <div class="tile__title">졸레드론산 IV (Zoledronate)</div>
-          <div class="tile__body">연 1회 5mg 정맥주사 — 경구 복용이 어려운 환자에 적합. 첫 투여 후 2~3일 독감 유사 증상이 30% 정도 발생 (아세트아미노펜으로 완화). eGFR &lt; 35 에서는 금기.</div>
-        </div>
-        <div class="tile" style="padding-top:var(--space-3);padding-bottom:var(--space-3)">
-          <div class="tile__index">DRUG · 03 · 경구</div>
-          <div class="tile__title">리세드로네이트 (Risedronate)</div>
-          <div class="tile__body">주 1회 35mg 또는 월 1회 150mg 경구. 알렌드로네이트와 같은 복용 규칙 (공복·생수·30분 직립). 위장관 부작용이 적어 위장이 약한 환자에게 사용합니다.</div>
-        </div>
-        <div class="tile" style="padding-top:var(--space-3);padding-bottom:var(--space-3)">
-          <div class="tile__index">DRUG · 04 · 피하주사</div>
-          <div class="tile__title">데노수맙 / 프롤리아 (Denosumab)</div>
-          <div class="tile__body">6개월마다 60mg 피하주사. RANKL 항체로 파골세포 생존을 차단하며 신부전 환자에도 사용 가능. 10년 데이터에서 요추 BMD 21.7%↑. 단, 중단 시 반동성 골절 위험 — 평생 관리하거나 비스포스포네이트로 전환 필수.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">주의</span>
-        <span class="alert-strip__text">5년 이상 비스포스포네이트 복용 시 비정형 대퇴골골절 (AFF) ·턱뼈 괴사 (MRONJ) 위험 — 허벅지 통증·치과 시술 전 반드시 보고. 데노수맙은 6개월 간격을 하루도 늦추지 마세요.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — FDA Label · KSBMR 2024 · MHRA · TGA Safety Alert</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 2×2 — Anabolic agents (bone formation)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>ANABOLIC AGENTS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">골형성촉진제 — 새 뼈를 만드는 약</h2>
-      <p class="slide__subtitle">초고위험군에서 뼈 미세구조를 빠르게 복원하는 1단계 치료</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">DRUG · 01 · 매일 자가주사</div>
-          <div class="tile__title">테리파라타이드 / 포스테오 (Teriparatide)</div>
-          <div class="tile__body">매일 1회 20μg 피하 자가주사. 부갑상선호르몬 유사체로 조골세포를 직접 활성화. 척추골절 65%↓, 비척추골절 53%↓. 일생 최대 24개월만 사용. VERO 연구에서 리세드로네이트 대비 우월성 입증.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 02 · 월 1회 병원 투여</div>
-          <div class="tile__title">로모소주맙 / 이베니티 (Romosozumab)</div>
-          <div class="tile__body">매월 1회 210mg 피하주사 (병원), 총 12회. 스클레로스틴 항체로 골 형성↑ + 흡수↓ 동시 작용. 요추 BMD 13.3%↑·척추골절 73%↓. 일생 1회만 인정.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">CAUTION · 03</div>
-          <div class="tile__title">로모소주맙 심혈관 금기</div>
-          <div class="tile__body">최근 1년 내 심근경색·뇌졸중 병력이 있으면 절대 투여 금기 (FDA Boxed Warning). 투여 전 저칼슘혈증을 반드시 교정하고, 심혈관 위험 인자를 종합 평가합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SEQUENCE · 04</div>
-          <div class="tile__title">투여 종료 후 반드시 전환</div>
-          <div class="tile__body">테리파라타이드·로모소주맙 종료 후 골흡수억제제 (알렌드로네이트·졸레드론산·데노수맙) 로 전환하지 않으면 어렵게 올린 골밀도가 빠르게 소실됩니다 — 순차치료가 국제 표준.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/endocrine-osteoporosis-s06-risk-bone-3dd8026c-20260530-raster-20260531.jpg" alt="골형성촉진제 — 새 뼈를 만드는 약 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — VERO Study · ARCH Trial · FRAME Study · KSBMR 2024</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · TIMELINE — Sequential therapy 4 steps
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>SEQUENTIAL THERAPY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">순차치료 (Sequential Therapy) 전략</h2>
-      <p class="slide__subtitle">초고위험군은 '먼저 채우고, 그다음 잠그는' 단계별 치료가 표준입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">기반 재건 · 12~24개월</div>
-          <div class="timeline-step__body">로모소주맙 12개월 또는 테리파라타이드 최대 24개월. 무너진 뼈 미세구조를 빠르게 복원해 골밀도를 단기간에 끌어올립니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">유지 · 데노수맙 6개월 간격</div>
-          <div class="timeline-step__body">생성된 뼈가 다시 녹지 않도록 6개월마다 피하주사로 잠금. 10년 이상 안전성 데이터가 확인되어 있습니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">전환 · 비스포스포네이트 1년+</div>
-          <div class="timeline-step__body">데노수맙을 끊어야 할 때는 반드시 알렌드로네이트나 졸레드론산으로 전환 — 반동성 골절을 막는 핵심 단계.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">추적 · DXA 1~2년, P1NP·CTX 3개월</div>
-          <div class="timeline-step__body">DXA 1~2년마다, 골표지자 P1NP·CTX는 치료 시작·변경 후 3~6개월에 측정. 약효를 빠르게 확인해 자의 중단을 막습니다.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">주의</span>
-        <span class="alert-strip__text">데노수맙 중단 시 3개월 만에 CTX 70%↑ 오버슈트 — 척추뼈가 도미노처럼 무너지는 다발성 척추 골절 위험 (영국 MHRA·호주 TGA 경고). 절대 혼자 판단해 중단하지 마세요.</span>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../shared/assets/generated/endocrine-osteoporosis-s07-risk-bone-13fba1fb-20260530-raster-20260531.jpg" alt="순차치료 (Sequential Therapy) 전략 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ARCH · FRAME · MAXCARE · KSBMR Sequential Therapy 2024</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · COMPARISON — Bisphosphonate DO vs DON'T
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>SAFE USE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">경구 비스포스포네이트 복용법</h2>
-      <p class="slide__subtitle">복용 규칙을 정확히 지켜야 약효가 제대로 나오고 식도 손상을 막을 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            이렇게 하세요 (DO)
-          </div>
-          <ul class="compare-col__list">
-            <li>기상 직후 아침 공복에 복용</li>
-            <li>200mL 이상 생수와 함께 삼키기</li>
-            <li>복용 후 30분~1시간 직립 자세 유지</li>
-            <li>치과 치료 전 담당의에게 약 복용 사실 알리기</li>
-            <li>5년 이상 사용 시 약물 휴약기 (Drug Holiday) 논의</li>
-            <li>허벅지 통증·시력 저하 즉시 보고</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">−</span>
-            이것은 피하세요 (DON'T)
-          </div>
-          <ul class="compare-col__list">
-            <li>커피·주스·우유와 함께 복용 (흡수↓↓)</li>
-            <li>복용 후 바로 눕기 (식도 궤양 위험)</li>
-            <li>칼슘제와 동시 복용 (흡수 방해 — 2시간 간격)</li>
-            <li>임의 중단 — 특히 골절 고위험군</li>
-            <li>eGFR &lt; 35 환자에 투여 (금기)</li>
-            <li>허벅지 통증 무시 (비정형 대퇴골 골절 의심)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — FDA Label · KSBMR 2024 · ASBMR Safety Position Paper</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · DENSITY GRID 2×2 — Calcium & Vitamin D nutrition
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>NUTRITION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">칼슘과 비타민 D — 약효의 토대</h2>
-      <p class="slide__subtitle">칼슘은 시멘트, 비타민 D는 시멘트를 현장에 배달하는 트럭입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">CALCIUM · 01</div>
-          <div class="tile__title">칼슘 (Calcium) 권장량</div>
-          <div class="tile__body">50세 이하 1,000mg/일, 51세 이상 폐경 여성·71세 이상 남성 1,200mg/일. 한국인 평균 섭취는 약 500~600mg으로 권장량의 절반입니다. 식사+보충제로 800~1,200mg 목표.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CALCIUM · 02</div>
-          <div class="tile__title">탄산칼슘 vs 구연산칼슘</div>
-          <div class="tile__body">탄산칼슘 (CaCO₃) 은 위산이 필요해 식사 중·직후 복용. PPI (위산억제제) 복용자나 무산증 고령자는 위산 무관하게 흡수되는 구연산칼슘으로 교체합니다. 1회 흡수 한도 약 500mg — 분할 복용.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">VIT D · 03</div>
-          <div class="tile__title">비타민 D (Vitamin D) 800–1,000 IU</div>
-          <div class="tile__body">50세 이상 800~1,000 IU/일. 골다공증 치료 중에는 25(OH)D ≥ 30 ng/mL 유지를 위해 2,000 IU까지 증량 가능 (안전 상한 4,000 IU). 한국 여성 93.3%가 부족 상태입니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">MYTH · 04</div>
-          <div class="tile__title">사골국·짠 음식 오해</div>
-          <div class="tile__body">사골·곰국은 인 (P) 이 많아 오히려 칼슘 배출을 늘립니다 (뼈를 우린 국물 ≠ 뼈 건강). 짠 음식은 Na 2,300mg당 칼슘 40mg 손실, 카페인 3잔 초과·과음도 골 손실 가속.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/endocrine-osteoporosis-s09-comparison-bone-ff56c269-20260530-raster-20260531.jpg" alt="칼슘과 비타민 D — 약효의 토대 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — IOM DRI · KSBMR 2024 · 한국영양학회 KDRI</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · DENSITY GRID 3×2 — Strong / Steady / Straight exercise
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>EXERCISE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">운동 처방 — Strong, Steady, Straight</h2>
-      <p class="slide__subtitle">영국왕립골다공증학회 (ROS) 합의 권고안 기반 — 강하게, 안정적으로, 곧은 자세로</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">STRONG · 01</div>
-          <div class="tile__title">체중부하 충격 운동</div>
-          <div class="tile__body">빠르게 걷기, 계단 오르기, 스텝 운동. 골절력 없는 분은 가벼운 조깅·점프 포함. 하루 50회 중간 강도 충격이 이상적. 볼프의 법칙으로 조골세포가 자극됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STRONG · 02</div>
-          <div class="tile__title">점진적 근력 저항 훈련</div>
-          <div class="tile__body">주 2~3회, 8~12회 간신히 들 수 있는 무게로 스쿼트·런지·레그프레스. LIFTMOR 연구에서 고강도 저항운동 후 요추 BMD 약 4% 개선 — 전문가 지도 필수.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STEADY · 03</div>
-          <div class="tile__title">균형·민첩성 훈련</div>
-          <div class="tile__body">한 발 서기, 일직선 (텐덤) 걷기, 태극권, 부드러운 요가. 주 2회 50분 이상. 태극권 메타분석에서 낙상 위험 24%↓, 오타고 프로그램은 80세 이상에서 낙상 35~40%↓.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STRAIGHT · 04</div>
-          <div class="tile__title">등근육 강화 (Extension)</div>
-          <div class="tile__body">월프레스, 백 익스텐션, 매일 척추 신전근 운동. Sinaki 연구에서 신전 운동군 골절률 16% vs 굴곡 운동군 89% — 척추를 곧게 펴는 자세가 핵심입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">STRAIGHT · 05</div>
-          <div class="tile__title">힙 힌지 자세 (Hip Hinge)</div>
-          <div class="tile__body">물건을 줍거나 들 때 무릎과 고관절을 굽히고 척추는 곧게 유지합니다. 허리를 앞으로 굽히지 않고 엉덩이를 뒤로 빼는 자세 — 척추 압축력 분산.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">AVOID · 06</div>
-          <div class="tile__title">금기 동작 (Forbidden)</div>
-          <div class="tile__body">윗몸 일으키기·서서 발끝 만지기·골프·볼링·줄넘기 착지·요가의 깊은 비틀기·쟁기자세. 허리를 앞으로 구부리거나 비트는 동작은 척추 압박골절의 직접적 원인입니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ROS Consensus 2018 · LIFTMOR Trial · Sinaki MJ Mayo Clin 1984</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST 8 — Today's essentials
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">골다공증은 꾸준한 관리로 골절을 막을 수 있는 치료 가능한 질환입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">DXA <strong>T-score ≤ -2.5</strong> 또는 골절 경험 시 약물치료 시작</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">최근 골절·T &lt; -3.0 등 <strong>초고위험군</strong>은 골형성촉진제 우선</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">비스포스포네이트는 <strong>공복·생수·30분 직립</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">데노수맙 <strong>6개월 간격</strong> 절대 놓치지 않기</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">칼슘 <strong>800~1,200mg</strong> + 비타민 D <strong>800~1,000 IU</strong>/일</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">PPI 복용자는 <strong>구연산칼슘</strong>으로 교체</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">주 2~3회 근력+매일 균형운동, <strong>허리 굽힘·비틀기 금지</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">조명·미끄럼 매트·손잡이로 <strong>가정 낙상 위험</strong> 점검</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — DXA, drug adherence, nutrition, exercise, fall prevention</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">뼈 건강, 함께 관리하면<br><em>지킬 수 있습니다</em></h2>
-      <p class="slide__subtitle">조기 발견·꾸준한 약물·영양·운동 관리로 골절 위험을 극적으로 줄일 수 있습니다 — 궁금한 점은 언제든 문의해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 한국의 현실</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">골다공증 — 흔하지만 치료할 수 있는 병입니다</h2>
+  <p class="v2-sub">뼈가 약해져 가벼운 충격에도 부러지는 병입니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">37.3<span>%</span></div><div class="q-stat__lab">50세 이상 여성</div><div class="q-stat__cap">폐경 후 여성의 유병률 · 70세 이상은 68.5%</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">86<span>%</span></div><div class="q-stat__lab">다음 골절 위험 증가</div><div class="q-stat__cap">한 번 부러진 분은 다음 골절 위험이 그만큼 높아집니다</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:848px;top:206px;width:368px;height:160px">
+    <div class="q-stat__num">17<span>%</span></div><div class="q-stat__lab">고관절 골절 1년 사망</div><div class="q-stat__cap">고관절이 부러진 뒤 1년 안에 사망하는 비율</div>
+  </div>
+  <div class="v2-panel q-note" style="left:64px;top:390px;width:1152px;height:216px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19 4C19.5523 4 20 4.44772 20 5L20 13.3432C20 14.404 19.5786 15.4214 18.8284 16.1716L18.3246 16.6755C17.0407 17.9593 17.0407 20.0408 18.3246 21.3246C19.3251 22.3251 20.8537 22.5732 22.1193 21.9404L22.3617 21.8192C23.393 21.3035 24.607 21.3035 25.6383 21.8192L25.8807 21.9404C27.1463 22.5732 28.6749 22.3251 29.6754 21.3246C30.9593 20.0408 30.9593 17.9593 29.6754 16.6755L29.1716 16.1716C28.4214 15.4214 28 14.404 28 13.3432L28 5C28 4.44772 28.4477 4 29 4C29.5523 4 30 4.44772 30 5V7.02425C36.9912 9.49527 42 16.1627 42 24C42 31.8373 36.9912 38.5048 30 40.9758V43C30 43.5523 29.5523 44 29 44C28.4477 44 28 43.5523 28 43L28 34.6569C28 33.596 28.4214 32.5786 29.1716 31.8284L29.6754 31.3246C30.9593 30.0408 30.9593 27.9593 29.6754 26.6755C28.6749 25.6749 27.1463 25.4268 25.8807 26.0597L25.6383 26.1809C24.607 26.6965 23.393 26.6965 22.3617 26.1809L22.1193 26.0597C20.8537 25.4268 19.3251 25.6749 18.3246 26.6755C17.0407 27.9593 17.0407 30.0407 18.3246 31.3246L18.8284 31.8284C19.5786 32.5786 20 33.596 20 34.6569L20 43C20 43.5523 19.5523 44 19 44C18.4477 44 18 43.5523 18 43V40.9758C11.0088 38.5048 6 31.8373 6 24C6 16.1627 11.0088 9.49527 18 7.02425V5C18 4.44772 18.4477 4 19 4Z" fill="currentColor"/>
+</svg></div><b>왜 생기나요</b></div><div class="v2-body">폐경 뒤 여성호르몬이 줄면 뼈를 녹이는 세포는 활발해지고 뼈를 만드는 세포는 약해집니다. 뼈가 만들어지는 속도보다 <b>녹는 속도가 빨라지는 것</b>이 골다공증입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>국가검진으로 무료 검사</b></div><div class="v2-body">2025년부터 여성은 <b>54·60·66세</b>에 골밀도 검사를 무료로 받을&nbsp;수&nbsp;있습니다(생애 3회).</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 한 번 부러진 뒤가 가장 위험합니다 — 골절이 있었다면 바로 치료를 시작합니다.</span><span class="v2-src">근거 · 대한골대사학회 2024 지침 · 국민건강영양조사 · 건강보험심사평가원 2024</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 진단</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">골밀도 검사와 T-점수</h2>
+  <p class="v2-sub">뼈의 '밀도 성적표' — 허리뼈와 엉덩이뼈 중 가장 낮은 점수로 판단합니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:1152px"><colgroup><col style="width:300px"><col style="width:250px"><col style="width:602px"></colgroup><thead><tr><th>결과</th><th>T-점수</th><th>이렇게 합니다</th></tr></thead><tbody><tr><th style="height:66px">정상</th><td style="height:66px">−1.0 이상</td><td style="height:66px">칼슘·비타민 D, 걷기 같은 체중이 실리는 운동으로 관리합니다</td></tr><tr><th style="height:66px">골감소증 — 뼈가 줄기 시작</th><td style="height:66px">−1.0 ~ −2.5 사이</td><td style="height:66px">골절 위험도를 계산해 보고, 위험이 높으면 약을 검토합니다</td></tr><tr><th style="height:66px">골다공증</th><td style="height:66px"><b class="q-hl">−2.5 이하</b></td><td style="height:66px">약물치료를 시작합니다 — 건강보험 인정 기준입니다</td></tr><tr><th style="height:66px">중증 골다공증</th><td style="height:66px">−2.5 이하 + 골절</td><td style="height:66px">더 적극적으로 치료합니다 — 다음 장의 ‘초고위험군’</td></tr></tbody></table>
+  <div class="v2-panel q-inline-p" style="left:64px;top:544px;width:1152px;height:62px">
+    <div class="q-inline"><b>T-점수란?</b> 같은 성별 젊은 성인의 평균 골밀도와 비교해 얼마나 낮은지를 나타낸 값입니다. 같은 기계로 1~2년마다 다시 재서 변화를 봅니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 치료 목표는 T-점수 −2.5 초과, 골절 위험이 높은 분은 −2.0 이상입니다.</span><span class="v2-src">근거 · 국제임상골밀도학회 2023 · 대한골대사학회 2024 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 위험도</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">골절 위험이 높을수록 빠르고 강하게 치료합니다</h2>
+  <p class="v2-sub">같은 골다공증이라도 위험도에 따라 약이 달라집니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19 4C19.5523 4 20 4.44772 20 5L20 13.3432C20 14.404 19.5786 15.4214 18.8284 16.1716L18.3246 16.6755C17.0407 17.9593 17.0407 20.0408 18.3246 21.3246C19.3251 22.3251 20.8537 22.5732 22.1193 21.9404L22.3617 21.8192C23.393 21.3035 24.607 21.3035 25.6383 21.8192L25.8807 21.9404C27.1463 22.5732 28.6749 22.3251 29.6754 21.3246C30.9593 20.0408 30.9593 17.9593 29.6754 16.6755L29.1716 16.1716C28.4214 15.4214 28 14.404 28 13.3432L28 5C28 4.44772 28.4477 4 29 4C29.5523 4 30 4.44772 30 5V7.02425C36.9912 9.49527 42 16.1627 42 24C42 31.8373 36.9912 38.5048 30 40.9758V43C30 43.5523 29.5523 44 29 44C28.4477 44 28 43.5523 28 43L28 34.6569C28 33.596 28.4214 32.5786 29.1716 31.8284L29.6754 31.3246C30.9593 30.0408 30.9593 27.9593 29.6754 26.6755C28.6749 25.6749 27.1463 25.4268 25.8807 26.0597L25.6383 26.1809C24.607 26.6965 23.393 26.6965 22.3617 26.1809L22.1193 26.0597C20.8537 25.4268 19.3251 25.6749 18.3246 26.6755C17.0407 27.9593 17.0407 30.0407 18.3246 31.3246L18.8284 31.8284C19.5786 32.5786 20 33.596 20 34.6569L20 43C20 43.5523 19.5523 44 19 44C18.4477 44 18 43.5523 18 43V40.9758C11.0088 38.5048 6 31.8373 6 24C6 16.1627 11.0088 9.49527 18 7.02425V5C18 4.44772 18.4477 4 19 4Z" fill="currentColor"/>
+</svg></div><b>저위험군</b></div><div class="v2-body">골감소증이지만 위험 요인이 적은 경우 — 칼슘·비타민 D와 운동으로 관리하고 1~2년 뒤 다시 검사합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>고위험군</b></div><div class="v2-body">T-점수 −2.5 이하이거나 골절이 있었던 경우 — <b>뼈가 녹는 것을 막는 약</b>으로 치료를 시작합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>초고위험군</b></div><div class="v2-body">최근 1~2년 안에 척추·고관절 골절, T-점수 −3.0 미만, 척추 여러 곳 골절, 치료 중 새 골절 — <b>새 뼈를 만드는 약</b>을 먼저 고려합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/endocrine-osteoporosis-s04-risk-bone-3d85237e-20260530-raster-20260531.jpg" alt="골절 위험이 높아질수록 방패가 짙어지는 그림 — 척추와 고관절 골절">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 척추와 고관절이 대표적인 골절 부위입니다. 위험이 높을수록 더 강한 치료로 막습니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 위험도는 골밀도 숫자만이 아니라 나이·골절 경험·다른 병을 함께 보고 정합니다.</span><span class="v2-src">근거 · 대한골대사학회 2024 지침 · 미국임상내분비학회 2020</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 함께 따져 볼 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">골밀도 말고도 함께 따져 보는 네 가지</h2>
+  <p class="v2-sub">위험도 계산 · 남성 · 다른 병 · 스테로이드</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>10년 골절 위험 계산(FRAX)</b></div><div class="v2-body">나이·체중·골절 경험·부모의 고관절 골절·흡연·음주·스테로이드 복용 등을 넣어 앞으로 10년 안에 부러질 확률을 계산합니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28 8C28 10.2091 26.2091 12 24 12C21.7909 12 20 10.2091 20 8C20 5.79086 21.7909 4 24 4C26.2091 4 28 5.79086 28 8Z" fill="currentColor"/>
+<path d="M18 18.8206C17.7833 19.3328 17.5909 20.0103 17.4363 20.815C17.0295 22.9313 17 25.273 17 26C17 27.1046 16.1046 28 15 28C13.8954 28 13 27.1046 13 26C13 25.227 13.026 22.5687 13.5082 20.06C13.7458 18.8236 14.1243 17.4534 14.773 16.3428C15.4241 15.2281 16.595 14 18.4444 14H29.5556C31.405 14 32.5759 15.2281 33.227 16.3428C33.8757 17.4534 34.2542 18.8236 34.4918 20.06C34.974 22.5687 35 25.227 35 26C35 27.1046 34.1046 28 33 28C31.8954 28 31 27.1046 31 26C31 25.273 30.9705 22.9313 30.5637 20.815C30.4091 20.0103 30.2167 19.3328 30 18.8206V42C30 43.0747 29.1507 43.9573 28.0768 43.9985C27.0028 44.0398 26.0883 43.2249 26.0059 42.1534L25.0059 29.1534C25.002 29.1022 25 29.051 25 29H23C23 29.051 22.998 29.1022 22.9941 29.1534L21.9941 42.1534C21.9117 43.2249 20.9972 44.0398 19.9232 43.9985C18.8493 43.9573 18 43.0747 18 42V18.8206Z" fill="currentColor"/>
+</svg></div><b>남성도 생깁니다</b></div><div class="v2-body">50세 이상 남성의 <b>7.5%</b>가 골다공증입니다. 70세 이상이거나 골절·스테로이드·저체중이 있으면 검사를 권합니다(국가검진에는 없음).</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>다른 병이 원인일 때</b></div><div class="v2-body">갑상선·부갑상선 기능 항진, 쿠싱 증후군, 만성 콩팥병, 이른 폐경 등 — 혈액·소변 검사로 가려내야 약이 제대로 듣습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>원인 치료가 먼저</b></div><div class="v2-body">다른 병 때문에 뼈가 약해졌다면 그 병을 함께 치료해야 합니다. 원인을 두고 약만 쓰면 효과가 떨어집니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 처음 진단받을 때 혈액·소변 검사를 함께 하는 이유가 이것입니다.</span><span class="v2-src">근거 · 세계보건기구 FRAX · 대한골대사학회 2024 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 1차 치료 약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">뼈가 녹는 것을 막는 약 — 가장 먼저 쓰는 약</h2>
+  <p class="v2-sub">먹는 약·1년에 한 번 주사·6개월마다 주사가 있습니다</p>
+  <table class="v2-table q-table " style="left:64px;top:206px;width:1152px"><colgroup><col style="width:250px"><col style="width:250px"><col style="width:652px"></colgroup><thead><tr><th>약</th><th>쓰는 방법</th><th>알아 둘 점</th></tr></thead><tbody><tr><th style="height:84px">알렌드로네이트</th><td style="height:84px">주 1회 먹는 약</td><td style="height:84px">아침 공복에 물과 함께 먹고 30분은 눕지 않습니다 — 척추·고관절 골절을 모두 줄입니다</td></tr><tr><th style="height:84px">리세드로네이트</th><td style="height:84px">주 1회 또는 월 1회 먹는 약</td><td style="height:84px">먹는 규칙은 같습니다 — 위장이 약한 분에게 씁니다</td></tr><tr><th style="height:84px">졸레드론산</th><td style="height:84px">1년에 1회 정맥주사</td><td style="height:84px">약을 먹기 어려운 분에게 — 첫 주사 뒤 2~3일 몸살 기운이 30% 정도, 콩팥 기능이 많이 떨어진 분은 못 씁니다</td></tr><tr><th style="height:84px">데노수맙(프롤리아)</th><td style="height:84px">6개월마다 피하주사</td><td style="height:84px">콩팥이 약해도 쓸 수 있습니다 — <b>늦추거나 끊으면 골절이 몰려오므로</b> 끊을 때는 다른 약으로 이어&nbsp;갑니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 5년 넘게 쓰는 분은 허벅지 통증이 생기거나 치과에서 이를 뽑게 되면 꼭 알려 주세요.</span><span class="v2-src">근거 · 식약처·FDA 허가사항 · 대한골대사학회 2024 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 새 뼈를 만드는 약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">새 뼈를 만드는 약 — 위험이 아주 높은 분에게</h2>
+  <p class="v2-sub">무너진 뼈를 빠르게 채우고, 끝나면 반드시 다른 약으로 이어 갑니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81815 13.364C6.36628 13.8159 6.36628 14.5485 6.81815 15.0004C7.27002 15.4523 8.00264 15.4523 8.45451 15.0004L9.27321 14.1817L13.3636 18.2721L10.0909 21.5449C9.63899 21.9968 9.63899 22.7294 10.0909 23.1813C10.5427 23.6332 11.2753 23.6332 11.7272 23.1813L13.3632 21.5452L27.2727 35.455C28.9501 37.1325 31.4015 37.5646 33.4775 36.7511L34.6361 37.9097C35.242 38.5156 36.1002 38.7153 36.8724 38.5088L39.5455 41.182C39.9973 41.6339 40.7299 41.6339 41.1818 41.182C41.6337 40.7301 41.6337 39.9975 41.1818 39.5456L38.5083 36.872C38.7142 36.1001 38.5144 35.2425 37.9089 34.6369L36.7504 33.4784C37.564 31.4022 37.132 28.9506 35.4545 27.273L21.545 13.3632L23.1817 11.7265C23.6336 11.2746 23.6336 10.542 23.1817 10.0901C22.7299 9.63824 21.9972 9.63824 21.5454 10.0901L18.2726 13.3629L14.1823 9.27248L14.9999 8.4548C15.4518 8.00292 15.4518 7.27028 14.9999 6.8184C14.5481 6.36652 13.8155 6.36652 13.3636 6.8184L6.81815 13.364ZM16.8584 14.7772L12.7681 10.6867L10.6874 12.7674L14.7778 16.8579L16.8584 14.7772ZM20.1308 14.7775L14.7774 20.131L19.1834 24.5371L24.5368 19.1835L20.1308 14.7775ZM20.8197 26.1735L23.2743 28.6281C24.6878 30.0416 23.6463 29.0001 24.9107 30.2645L26.5466 31.9005C27.6463 33.0001 27.3953 32.7492 28.183 33.5369L28.6869 34.0408C29.785 35.1389 31.3899 35.4213 32.7487 34.888L34.8875 32.7492C35.4208 31.3903 35.1384 29.7854 34.0403 28.6873L26.1731 20.8199L20.8197 26.1735ZM36.5224 36.0829C36.514 36.0718 36.5047 36.0612 36.4947 36.0512L35.6706 35.227C35.601 35.3045 35.529 35.3805 35.4545 35.455C35.3799 35.5296 35.3038 35.6017 35.2262 35.6714L36.0503 36.4955C36.0605 36.5056 36.0712 36.5149 36.0823 36.5234C36.1328 36.4337 36.1963 36.3492 36.2727 36.2728C36.3489 36.1967 36.433 36.1333 36.5224 36.0829Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81815 13.3638C6.36628 13.8156 6.36628 14.5483 6.81815 15.0001C7.27002 15.452 8.00264 15.452 8.45451 15.0001L9.27321 14.1814L13.3636 18.2719L10.0909 21.5447C9.63899 21.9965 9.63899 22.7292 10.0909 23.1811C10.5427 23.6329 11.2753 23.6329 11.7272 23.1811L13.3632 21.545L17.2858 25.4677C17.4707 25.6526 17.665 25.8223 17.8672 25.977L17.831 26.0131L21.8601 30.0423L25.1331 26.7693C25.5849 26.3174 26.3176 26.3174 26.7694 26.7693C27.2213 27.2211 27.2213 27.9538 26.7694 28.4057L23.4965 31.6787L25.1327 33.3149L28.4055 30.042C28.8574 29.5901 29.59 29.5901 30.0419 30.042C30.4937 30.4939 30.4937 31.2265 30.0419 31.6784L26.769 34.9513L27.2726 35.4549C28.9501 37.1325 31.4015 37.5645 33.4776 36.7509L34.6361 37.9095C35.242 38.5154 36.1002 38.7151 36.8724 38.5086L39.5455 41.1818C39.9973 41.6336 40.7299 41.6336 41.1818 41.1818C41.6337 40.7299 41.6337 39.9972 41.1818 39.5454L38.5083 36.8718C38.7142 36.0999 38.5144 35.2422 37.9089 34.6367L36.7503 33.4781C37.5639 31.402 37.1319 28.9505 35.4544 27.2729L26.0128 17.8311L25.9769 17.867C25.8223 17.6649 25.6525 17.4706 25.4676 17.2857L21.545 13.363L23.1817 11.7263C23.6336 11.2744 23.6336 10.5417 23.1817 10.0899C22.7299 9.63799 21.9972 9.63799 21.5454 10.0899L18.2726 13.3627L14.1823 9.27223L14.9999 8.45456C15.4518 8.00268 15.4518 7.27004 14.9999 6.81816C14.5481 6.36628 13.8155 6.36628 13.3636 6.81816L6.81815 13.3638ZM16.8584 14.7769L12.7681 10.6865L10.6874 12.7672L14.7778 16.8576L16.8584 14.7769ZM20.1308 14.7772L24.0534 18.6999C24.2403 18.8868 24.4035 19.0883 24.5431 19.3008L19.3009 24.5432C19.0884 24.4036 18.8869 24.2403 18.7 24.0535L14.7774 20.1308L20.1308 14.7772Z" fill="currentColor"/>
+</svg></div><b>테리파라타이드(포스테오)</b></div><div class="v2-body">매일 한 번 스스로 놓는 주사 · 평생 최대 24개월. 척추 골절을 <b>65%</b> 줄였습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81815 13.364C6.36628 13.8159 6.36628 14.5485 6.81815 15.0004C7.27002 15.4523 8.00264 15.4523 8.45451 15.0004L9.27321 14.1817L13.3636 18.2721L10.0909 21.5449C9.63899 21.9968 9.63899 22.7294 10.0909 23.1813C10.5427 23.6332 11.2753 23.6332 11.7272 23.1813L13.3632 21.5452L27.2727 35.455C28.9501 37.1325 31.4015 37.5646 33.4775 36.7511L34.6361 37.9097C35.242 38.5156 36.1002 38.7153 36.8724 38.5088L39.5455 41.182C39.9973 41.6339 40.7299 41.6339 41.1818 41.182C41.6337 40.7301 41.6337 39.9975 41.1818 39.5456L38.5083 36.872C38.7142 36.1001 38.5144 35.2425 37.9089 34.6369L36.7504 33.4784C37.564 31.4022 37.132 28.9506 35.4545 27.273L21.545 13.3632L23.1817 11.7265C23.6336 11.2746 23.6336 10.542 23.1817 10.0901C22.7299 9.63824 21.9972 9.63824 21.5454 10.0901L18.2726 13.3629L14.1823 9.27248L14.9999 8.4548C15.4518 8.00292 15.4518 7.27028 14.9999 6.8184C14.5481 6.36652 13.8155 6.36652 13.3636 6.8184L6.81815 13.364ZM16.8584 14.7772L12.7681 10.6867L10.6874 12.7674L14.7778 16.8579L16.8584 14.7772ZM20.1308 14.7775L14.7774 20.131L19.1834 24.5371L24.5368 19.1835L20.1308 14.7775ZM20.8197 26.1735L23.2743 28.6281C24.6878 30.0416 23.6463 29.0001 24.9107 30.2645L26.5466 31.9005C27.6463 33.0001 27.3953 32.7492 28.183 33.5369L28.6869 34.0408C29.785 35.1389 31.3899 35.4213 32.7487 34.888L34.8875 32.7492C35.4208 31.3903 35.1384 29.7854 34.0403 28.6873L26.1731 20.8199L20.8197 26.1735ZM36.5224 36.0829C36.514 36.0718 36.5047 36.0612 36.4947 36.0512L35.6706 35.227C35.601 35.3045 35.529 35.3805 35.4545 35.455C35.3799 35.5296 35.3038 35.6017 35.2262 35.6714L36.0503 36.4955C36.0605 36.5056 36.0712 36.5149 36.0823 36.5234C36.1328 36.4337 36.1963 36.3492 36.2727 36.2728C36.3489 36.1967 36.433 36.1333 36.5224 36.0829Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81815 13.3638C6.36628 13.8156 6.36628 14.5483 6.81815 15.0001C7.27002 15.452 8.00264 15.452 8.45451 15.0001L9.27321 14.1814L13.3636 18.2719L10.0909 21.5447C9.63899 21.9965 9.63899 22.7292 10.0909 23.1811C10.5427 23.6329 11.2753 23.6329 11.7272 23.1811L13.3632 21.545L17.2858 25.4677C17.4707 25.6526 17.665 25.8223 17.8672 25.977L17.831 26.0131L21.8601 30.0423L25.1331 26.7693C25.5849 26.3174 26.3176 26.3174 26.7694 26.7693C27.2213 27.2211 27.2213 27.9538 26.7694 28.4057L23.4965 31.6787L25.1327 33.3149L28.4055 30.042C28.8574 29.5901 29.59 29.5901 30.0419 30.042C30.4937 30.4939 30.4937 31.2265 30.0419 31.6784L26.769 34.9513L27.2726 35.4549C28.9501 37.1325 31.4015 37.5645 33.4776 36.7509L34.6361 37.9095C35.242 38.5154 36.1002 38.7151 36.8724 38.5086L39.5455 41.1818C39.9973 41.6336 40.7299 41.6336 41.1818 41.1818C41.6337 40.7299 41.6337 39.9972 41.1818 39.5454L38.5083 36.8718C38.7142 36.0999 38.5144 35.2422 37.9089 34.6367L36.7503 33.4781C37.5639 31.402 37.1319 28.9505 35.4544 27.2729L26.0128 17.8311L25.9769 17.867C25.8223 17.6649 25.6525 17.4706 25.4676 17.2857L21.545 13.363L23.1817 11.7263C23.6336 11.2744 23.6336 10.5417 23.1817 10.0899C22.7299 9.63799 21.9972 9.63799 21.5454 10.0899L18.2726 13.3627L14.1823 9.27223L14.9999 8.45456C15.4518 8.00268 15.4518 7.27004 14.9999 6.81816C14.5481 6.36628 13.8155 6.36628 13.3636 6.81816L6.81815 13.3638ZM16.8584 14.7769L12.7681 10.6865L10.6874 12.7672L14.7778 16.8576L16.8584 14.7769ZM20.1308 14.7772L24.0534 18.6999C24.2403 18.8868 24.4035 19.0883 24.5431 19.3008L19.3009 24.5432C19.0884 24.4036 18.8869 24.2403 18.7 24.0535L14.7774 20.1308L20.1308 14.7772Z" fill="currentColor"/>
+</svg></div><b>로모소주맙(이베니티)</b></div><div class="v2-body">한 달에 한 번 병원에서 맞는 주사 · 총 12회. 척추 골절을 <b>73%</b> 줄였습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><b>로모소주맙을 못 쓰는 분</b></div><div class="v2-body">최근 1년 안에 <b>심근경색·뇌졸중</b>이 있었던 분은 맞지 않습니다. 맞기 전 혈중 칼슘도&nbsp;확인합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/endocrine-osteoporosis-s06-risk-bone-3dd8026c-20260530-raster-20260531.jpg" alt="주사로 새 뼈가 채워져 구멍 난 뼈가 촘촘해지는 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 구멍이 숭숭한 뼈(왼쪽)가 새 뼈로 촘촘하게 채워집니다(설명용 그림).</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 이 약을 끝내고 다른 약으로 잇지 않으면 어렵게 올린 골밀도가 빠르게 빠집니다.</span><span class="v2-src">근거 · VERO·ARCH·FRAME 연구 · 대한골대사학회 2024 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 순서대로 치료</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">위험이 아주 높은 분은 ‘먼저 채우고, 그다음 잠급니다’</h2>
+  <p class="v2-sub">약을 순서대로 바꿔 가며 쓰는 것이 국제 표준입니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/endocrine-osteoporosis-s07-risk-bone-13fba1fb-20260530-raster-20260531.jpg" alt="구멍 난 뼈가 치료 단계를 거치며 촘촘해지고 방패로 지켜지는 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 먼저 뼈를 채우고(왼쪽) 그 뼈를 방패처럼 지킵니다(오른쪽) — 아래 막대는 치료의 순서입니다(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="q-srow"><span class="q-srow__n">1</span><div class="q-srow__c"><div class="q-srow__h">채우기<span class="q-srow__tag">12~24개월</span></div><div class="v2-body">새 뼈를 만드는 주사로 무너진 뼈를 빠르게 채웁니다.</div></div></div><div class="q-srow"><span class="q-srow__n">2</span><div class="q-srow__c"><div class="q-srow__h">잠그기<span class="q-srow__tag">6개월마다</span></div><div class="v2-body">데노수맙 주사로 새로 만든 뼈가 다시 녹지 않게 잠급니다.</div></div></div><div class="q-srow"><span class="q-srow__n">3</span><div class="q-srow__c"><div class="q-srow__h">갈아타기<span class="q-srow__tag">1년 이상</span></div><div class="v2-body">데노수맙을 끊어야 할 때는 먹는 약이나 1년 1회 주사로 <b>반드시</b> 바꿉니다.</div></div></div><div class="q-srow"><span class="q-srow__n">4</span><div class="q-srow__c"><div class="q-srow__h">확인하기<span class="q-srow__tag">1~2년마다</span></div><div class="v2-body">골밀도 검사로 효과를 봅니다. 약을 시작하거나 바꾼 뒤 3~6개월에 뼈 대사 피검사를 하기도 합니다.</div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 데노수맙을 혼자 끊으면 척추뼈 여러 개가 한꺼번에 무너질 수 있습니다 — 절대 임의로 멈추지 마세요.</span><span class="v2-src">근거 · 대한골대사학회 순차치료 2024 · 영국 MHRA·호주 TGA 경고</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 먹는 약 복용법</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">먹는 골다공증약, 이렇게 드세요</h2>
+  <p class="v2-sub">규칙을 지켜야 약이 흡수되고 식도가 상하지 않습니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">이렇게 하세요</div><div class="v2-vs__lead">아침에 일어나자마자, <b>빈속에</b> 드십니다.</div><ul class="v2-vs__list"><li>맹물 한 컵(200mL 이상)과 함께 삼킵니다</li><li>먹은 뒤 30분~1시간은 <b>눕지 않습니다</b></li><li>치과 치료 전에는 이 약을 먹는다고 알립니다</li><li>허벅지 통증·시력 변화가 생기면 바로 알립니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">이것은 피하세요</div><div class="v2-vs__lead">흡수를 막거나 식도를 다치게 합니다.</div><ul class="v2-vs__list"><li>커피·주스·우유와 함께 먹기</li><li>먹고 바로 눕기 — 식도 궤양 위험</li><li>칼슘제와 같이 먹기 — 2시간 띄웁니다</li><li>골절 위험이 높은데 <b>혼자 끊기</b></li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 5년 넘게 드셨다면 잠시 쉬어도 되는지(약 휴일) 담당 의사와 상의합니다.</span><span class="v2-src">근거 · 식약처·FDA 허가사항 · 미국골대사학회 안전성 권고</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 영양</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">칼슘과 비타민 D — 약이 듣게 하는 바탕</h2>
+  <p class="v2-sub">칼슘은 벽돌, 비타민 D는 벽돌을 뼈까지 나르는 트럭입니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/endocrine-osteoporosis-s09-comparison-bone-ff56c269-20260530-raster-20260531.jpg" alt="우유·치즈·두부·멸치·채소, 햇볕과 보충제가 뼈를 둘러싼 그림">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 우유·치즈·두부·뼈째 먹는 생선·푸른 채소와 햇볕, 보충제(설명용 그림).</div></div>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.6752 6L18 21.6234V40.5217C18 41.4354 18.6793 42 19.3056 42L29.6944 42C30.3207 42 31 41.4354 31 40.5218V21.6234L27.3248 6.00004L21.6752 6ZM19.3056 7.33942C19.3056 7.33942 18.7752 7.38397 18.3154 7.10649C17.9634 6.89412 17.6528 6.49312 17.6528 5.73913C17.6528 4 18.4792 4 20.9583 4L28.0417 4.00004C30.5208 4.00004 31.3472 4.00004 31.3472 5.73917C31.3472 6.49316 31.0366 6.89416 30.6846 7.10653C30.2248 7.38401 29.6944 7.33946 29.6944 7.33946L33 21.3913V40.5218C33 42.4428 31.5201 44 29.6944 44L19.3056 44C17.4799 44 16 42.4427 16 40.5217V21.3913L19.3056 7.33942Z" fill="currentColor"/>
+<path d="M24 23.8138C21.6667 21.6275 17 23.8138 17 23.8138L20.5 6H28.5L31 16.5263L32 24.4211L31 26C31 26 26.3333 26 24 23.8138Z" fill="currentColor"/>
+<path d="M19 5H30L29 7H20L19 5Z" fill="currentColor"/>
+</svg></div><b>칼슘 하루 목표</b></div><div class="v2-body">50세 이하 1,000mg, 폐경 후 여성·71세 이상 남성 1,200mg. 한국인은 평균 500~600mg만 먹습니다 — 음식과 보충제로 <b>800~1,200mg</b>을 채웁니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>칼슘제 고르기</b></div><div class="v2-body">탄산칼슘은 식사 중이나 직후에, 위산 억제제를 먹는 분은 구연산칼슘으로 바꿉니다. 한 번에 500mg까지만 흡수되니 나눠 먹습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.9645 9.16263C21.8055 8.05919 20.1386 7.51048 17.9672 8.04371C17.5014 7.41474 16.8092 6.77117 15.8899 6.37651C14.5542 5.8031 12.8769 5.815 10.9856 6.90161C9.0077 7.82463 8.05482 9.18247 7.79227 10.6063C7.61382 11.5741 7.76893 12.4919 8.02385 13.2165C6.34565 14.6843 5.84115 16.36 6.08212 17.9391C6.29052 19.3048 7.03706 20.472 7.76902 21.2642C7.64293 21.8429 7.62641 22.4092 7.73113 22.9423C8.04139 22.7211 8.18808 22.6205 8.52484 22.4831C9.07459 22.2587 9.52484 22.2333 10.0248 22.2333C11.5998 22.2333 12.511 22.4158 14.0129 22.8327C14.8986 23.0786 15.6186 23.3808 16.2798 23.7481C16.335 23.7787 16.3898 23.8098 16.4442 23.8414L16.7282 23.7186C17.0853 23.5642 17.4796 23.5173 17.863 23.5834L21.3761 24.1897C21.3246 23.916 21.2818 23.6403 21.2475 23.3687C21.1866 22.8868 21.1523 22.4175 21.1433 21.9934C21.115 20.6556 21.3701 19.3269 21.892 18.0946C22.4139 16.8622 23.1908 15.7541 24.1717 14.8428C24.4339 14.5992 24.7092 14.3711 24.9959 14.1595C25.2316 13.9856 25.475 13.8227 25.7254 13.6715C25.8698 13.5842 26.0165 13.5008 26.1654 13.4214C25.7816 13.0105 25.2933 12.6855 24.7267 12.4487C24.4961 11.3958 23.966 10.1161 22.9645 9.16263ZM13.1391 10.2801C13.6341 10.0356 14.2339 10.2383 14.4787 10.7328L15.2704 12.3325L16.8829 10.6061C17.2597 10.2027 17.8925 10.1808 18.2963 10.5572C18.7001 10.9336 18.722 11.5657 18.3452 11.9691L16.2179 14.2467L17.0206 15.8684L18.352 14.6585C18.7605 14.2872 19.393 14.3171 19.7646 14.7252C20.1362 15.1333 20.1063 15.7651 19.6978 16.1364L17.9427 17.7314L18.9987 19.865C19.2435 20.3596 19.0406 20.9587 18.5455 21.2032C18.0505 21.4478 17.4507 21.2451 17.2059 20.7505L16.1106 18.5376L14.1466 18.9347C13.6053 19.0441 13.0777 18.6945 12.9681 18.1537C12.8586 17.613 13.2086 17.0859 13.7499 16.9765L15.1935 16.6846L14.3982 15.0778L11.359 15.5351C10.8128 15.6173 10.3034 15.2416 10.2212 14.696C10.1389 14.1505 10.515 13.6416 11.0611 13.5594L13.4674 13.1974L12.6859 11.6184C12.4411 11.1238 12.644 10.5246 13.1391 10.2801Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.1363 24.6951C23.9386 24.6562 23.7677 24.623 23.6285 24.5961C23.4483 24.1014 23.3154 23.5918 23.2338 23.0733L23.2187 23.0121C23.1167 22.5961 23.0488 22.2287 23.0429 21.9532C23.0202 20.883 23.2243 19.82 23.6418 18.8341C24.0594 17.8482 24.6809 16.9617 25.4656 16.2327C25.5272 16.1755 25.5897 16.1255 25.653 16.0818C27.6684 14.2827 30.4862 13.969 32.6678 15.7554C32.6426 13.3026 33.6388 10.907 36.0482 9.51735L36.8927 10.9786C34.852 12.1556 34.0931 14.3584 34.431 16.7135C39.086 15.1835 42.709 19.5865 41.3494 24.6555C40.9207 26.2537 40.0143 27.6088 38.8016 28.6326C38.6055 28.5638 38.402 28.4927 38.1925 28.42C36.3851 27.7926 34.1097 27.0345 32.2913 26.5327C30.5241 26.0452 28.2486 25.5404 26.4286 25.1598C25.5156 24.9689 24.7119 24.8082 24.1363 24.6951ZM37.5538 19.9861C38.096 19.8811 38.6207 20.2352 38.7258 20.7768C39.0901 22.6554 38.4106 24.5203 36.9228 25.7254C36.4938 26.0729 35.8641 26.0072 35.5162 25.5786C35.1684 25.1501 35.2342 24.521 35.6632 24.1735C36.5773 23.4331 36.9861 22.311 36.7623 21.1568C36.6572 20.6152 37.0116 20.091 37.5538 19.9861Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.2356 41.9984C13.2354 41.8312 15.0922 40.9782 16.2365 39.7291C16.6912 40.3391 17.4545 40.6927 18.2797 40.5629C19.1258 40.4298 20.1689 40.255 21.3779 40.0319V35.3473H23.6072V39.6011C26.4277 39.0317 29.8589 38.2479 33.6392 37.1948V34.2338H35.8685V36.5536C37.3921 36.1013 38.9612 35.6065 40.5601 35.0658C42.48 34.4166 42.48 31.8239 40.5601 31.1747C36.4875 29.7976 32.6087 28.7178 29.1805 27.8817V34.2338L26.9512 34.2338L26.9512 27.3568C23.2611 26.5188 20.241 25.9862 18.2797 25.6776C17.4544 25.5478 16.6911 25.9015 16.2365 26.5115C15.0922 25.2624 13.2353 24.4094 10.2356 24.2423C9.62092 24.208 9.11458 24.7124 9.12342 25.3273C9.14947 27.1402 9.25973 28.5801 9.63771 29.7034C8.41338 30.167 7.25745 31.1032 6.2022 32.512C5.9326 32.8719 5.9326 33.3687 6.2022 33.7286C7.24888 35.126 8.39461 36.0584 9.60789 36.5259C9.28585 37.6167 9.15814 39.0452 9.12544 40.9104C9.11467 41.5253 9.62092 42.0326 10.2356 41.9984ZM12.4346 31.0259L10.4279 31.7858C9.87237 31.9962 9.24764 32.4074 8.58864 33.1203C9.24067 33.8257 9.85918 34.2358 10.4101 34.448L12.3275 35.1868L11.7462 37.1558C11.5747 37.7367 11.4602 38.5299 11.3992 39.6442C13.5484 39.3131 14.4568 38.5174 14.9264 37.792C15.6014 36.7492 15.8044 35.2273 15.8044 33.1203C15.8044 31.0133 15.6014 29.4915 14.9264 28.4487C14.4563 27.7226 13.5467 26.926 11.393 26.5955C11.4498 27.6754 11.5623 28.4334 11.7508 28.9938L12.4346 31.0259Z" fill="currentColor"/>
+</svg></div><b>비타민 D 하루 800~1,000단위</b></div><div class="v2-body">한국 여성 93.3%가 부족합니다. 치료 중에는 피검사로 보며 2,000단위까지 늘리기도 합니다(상한 4,000단위).</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 사골국은 뼈에 좋지 않습니다 — 인이 많아 오히려 칼슘을 내보냅니다. 짠 음식·과음도 뼈를 줄입니다.</span><span class="v2-src">근거 · 미국 의학한림원 섭취기준 · 한국영양학회 · 대한골대사학회 2024 지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 운동</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">운동 — 튼튼하게, 흔들림 없이, 곧게</h2>
+  <p class="v2-sub">영국왕립골다공증학회 권고 — 허리를 굽히거나 비트는 동작만 피합니다</p>
+  <div class="v2-panel q-grid" style="left:64px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M31.2502 8C31.2502 10.2091 29.4594 12 27.2502 12C25.0411 12 23.2502 10.2091 23.2502 8C23.2502 5.79086 25.0411 4 27.2502 4C29.4594 4 31.2502 5.79086 31.2502 8Z" fill="currentColor"/>
+<path d="M25.6928 28.3968L30.8857 33.5207C31.0849 33.7172 31.2405 33.9533 31.3427 34.2137L34.112 41.2693C34.5155 42.2975 34.0091 43.4582 32.9809 43.8617C31.9527 44.2653 30.7921 43.7589 30.3885 42.7307L27.7743 36.07L18.8455 27.2598C18.4087 26.8288 18.1939 26.2211 18.2629 25.6113L18.9781 19.2919C17.2542 21.0046 15.9244 23.4143 14.9053 26.607C14.5695 27.6592 13.4442 28.24 12.3919 27.9041C11.3396 27.5682 10.7589 26.4429 11.0948 25.3907C12.965 19.5312 16.0701 15.1454 21.2797 13.1341L21.3034 13.1251C22.6301 12.6321 24.0105 12.6718 25.2398 13.3074C26.4214 13.9182 27.2624 14.9731 27.8131 16.1554C28.0449 16.6532 28.2594 17.1184 28.4607 17.5551C28.9485 18.6129 29.3594 19.5041 29.7535 20.2873C30.3073 21.3877 30.7523 22.1161 31.1921 22.6285C31.5998 23.1034 32.0055 23.3952 32.5225 23.597C33.0782 23.8141 33.8572 23.9636 35.06 23.9997C36.1641 24.0328 37.0323 24.9547 36.9992 26.0588C36.966 27.1628 36.0442 28.031 34.9401 27.9979C33.4952 27.9546 32.2121 27.77 31.0673 27.323C29.8838 26.8608 28.9506 26.1584 28.157 25.2339C27.6565 24.6508 27.2176 23.9859 26.8062 23.2621L25.6928 28.3968Z" fill="currentColor"/>
+<path d="M18.2627 30.2198L21.5778 33.3994L20.0524 38.547C19.9343 38.9453 19.6952 39.297 19.3681 39.5531L14.2335 43.5755C13.364 44.2566 12.1069 44.1039 11.4257 43.2344C10.7445 42.3649 10.8972 41.1078 11.7668 40.4266L16.3987 36.7981L17.7944 32.0881L18.2627 30.2198Z" fill="currentColor"/>
+</svg></div><b>체중이 실리는 운동</b></div><div class="v2-body">빠르게 걷기·계단 오르기. 골절이 없던 분은 가벼운 조깅·점프도 좋습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.5 13C32.9853 13 35 10.9853 35 8.5C35 6.01472 32.9853 4 30.5 4C28.0147 4 26 6.01472 26 8.5C26 10.9853 28.0147 13 30.5 13Z" fill="currentColor"/>
+<path d="M21.4601 17.2823C20.2126 17.5915 19.3619 18.0579 18.6751 18.6362C17.6443 19.5043 16.8134 20.7569 15.6892 22.7241C15.1412 23.6831 13.9195 24.0163 12.9605 23.4683C12.0014 22.9202 11.6683 21.6985 12.2163 20.7395C13.3348 18.7822 14.4662 16.9512 16.0985 15.5766C17.8028 14.1414 19.8883 13.3288 22.7024 13.016C23.8781 12.8854 25.1713 12.9117 26.3846 13.4532C27.6583 14.0218 28.5876 15.0406 29.2217 16.4023C30.0755 18.2358 30.7107 19.3274 31.2195 19.9595C31.4641 20.2633 31.6352 20.4042 31.7318 20.4673C31.8089 20.5176 31.8413 20.5214 31.8538 20.5228L31.8552 20.523C31.9423 20.5336 32.2236 20.5226 33.0524 20.1563C33.413 19.9969 33.8075 19.8042 34.289 19.5689L34.4042 19.5126C34.9254 19.2581 35.522 18.9686 36.1882 18.6724C37.1976 18.2238 38.3795 18.6784 38.8281 19.6878C39.2767 20.6971 38.8222 21.879 37.8128 22.3277C37.2175 22.5922 36.6766 22.8544 36.1596 23.1069L36.0289 23.1708C35.5679 23.3961 35.1041 23.6228 34.6695 23.8149C33.7688 24.213 32.6181 24.6454 31.3717 24.4937C30.0562 24.3335 29.0417 23.5914 28.2073 22.5941L25.4735 27.8666L29.2532 32.7853C29.4787 33.0786 29.6183 33.4288 29.6567 33.7968L30.4893 41.793C30.6037 42.8916 29.8058 43.875 28.7072 43.9893C27.6085 44.1038 26.6252 43.3059 26.5108 42.2072L25.7368 34.7739L23.441 31.7864L23.4218 31.8235L23.3373 31.6515L19.0949 26.1307C18.6709 25.579 18.5641 24.8467 18.8129 24.197L21.4601 17.2823Z" fill="currentColor"/>
+<path d="M18.4321 29.0071L16.9603 32.9676L11.1591 32.5063C10.058 32.4187 9.09445 33.2404 9.00689 34.3414C8.91932 35.4425 9.74095 36.4061 10.842 36.4937L18.15 37.0748C19.0415 37.1457 19.8717 36.6161 20.1833 35.7778L21.3084 32.7501L18.4321 29.0071Z" fill="currentColor"/>
+</svg></div><b>근력 운동 주 2~3회</b></div><div class="v2-body">스쿼트·런지처럼 8~12번 겨우 들 수 있는 무게로 — 처음엔 전문가 지도를 받습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:848px;top:206px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M29 10C29 12.7614 26.7614 15 24 15C21.2386 15 19 12.7614 19 10C19 7.23858 21.2386 5 24 5C26.7614 5 29 7.23858 29 10Z" fill="currentColor"/>
+<path d="M31 43C31 43.5523 30.5523 44 30 44H12.8559C11.2786 44 10 42.7214 10 41.1441C10 40.1566 10.5102 39.2392 11.349 38.7182L16.6329 35.4363C17.5141 34.8889 18.05 33.9252 18.05 32.8878V32H20.424C21.4849 32 22.5023 31.5786 23.2524 30.8284L24 30.0809L24.7475 30.8284C25.4977 31.5786 26.5151 32 27.576 32H30V32.8915C30 33.9259 30.5329 34.8873 31.41 35.4355L36.6556 38.714C37.4919 39.2367 38 40.1534 38 41.1396C38 42.7194 36.7194 44 35.1396 44H32.8293C32.9398 43.6872 33 43.3506 33 43V42.7503C33 41.2472 31.8876 39.9761 30.3978 39.7767L17.1826 38.0088C16.6352 37.9356 16.1321 38.32 16.0588 38.8674C15.9856 39.4148 16.37 39.9179 16.9174 39.9912L30.1326 41.7591C30.6292 41.8255 31 42.2492 31 42.7503V43Z" fill="currentColor"/>
+<path d="M26.1617 29.4142L25 28.2525V24.51C25.1481 24.5956 25.2875 24.7017 25.4142 24.8284L27.2929 26.7071C27.4804 26.8946 27.7348 27 28 27H31C31.3466 27 31.6684 26.8205 31.8506 26.5257C32.0328 26.2309 32.0494 25.8628 31.8944 25.5528L30.8944 23.5528C30.6474 23.0588 30.0467 22.8586 29.5528 23.1056C29.0588 23.3526 28.8586 23.9532 29.1056 24.4472L29.3819 25H28.4142L26.8284 23.4142C25.2663 21.8521 22.7336 21.8521 21.1716 23.4142L19.5858 25H18.618L18.8944 24.4472C19.1414 23.9532 18.9412 23.3526 18.4472 23.1056C17.9532 22.8586 17.3525 23.0588 17.1056 23.5528L16.1056 25.5528C15.9506 25.8628 15.9671 26.2309 16.1493 26.5257C16.3315 26.8205 16.6534 27 17 27H20C20.2652 27 20.5195 26.8946 20.7071 26.7071L22.5858 24.8284C22.7125 24.7017 22.8519 24.5956 23 24.51V28.2525L21.8382 29.4142C21.4631 29.7893 20.9544 30 20.424 30H14.3855C12.9788 30 12.0116 28.5862 12.5215 27.2751L15.5256 19.5502C16.1235 18.0127 17.604 17 19.2536 17H28.7463C30.396 17 31.8764 18.0127 32.4743 19.5502L35.4785 27.2751C35.9883 28.5862 35.0212 30 33.6144 30H27.576C27.0455 30 26.5368 29.7893 26.1617 29.4142Z" fill="currentColor"/>
+</svg></div><b>균형 운동</b></div><div class="v2-body">한 발 서기·일자로 걷기·태극권. 태극권은 낙상을 <b>24%</b> 줄였습니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:64px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 6.24184C15.5833 6.12178 15 6.59494 15 7.22895V7.88659C15 8.43888 14.5523 8.88659 14 8.88659H13C12.4477 8.88659 12 9.33431 12 9.8866V11.7353C12 12.2876 12.4477 12.7353 13 12.7353H14C14.5523 12.7353 15 13.183 15 13.7353V14.8453C15 15.3022 15.3106 15.702 15.7544 15.8107C22.2204 17.3952 26.0763 17.396 32.2561 15.8165C32.6948 15.7043 33 15.3069 33 14.8541V13.7353C33 13.183 33.4477 12.7353 34 12.7353H35C35.5523 12.7353 36 12.2876 36 11.7353V9.8866C36 9.33431 35.5523 8.88659 35 8.88659H34C33.4477 8.88659 33 8.43888 33 7.88659V7.23211C33 6.59707 32.415 6.12369 31.7916 6.24503C25.8882 7.39417 22.1085 7.38021 16.2058 6.24184ZM19 10.0001C19 9.4478 18.5523 9.00008 18 9.00008C17.4477 9.00008 17 9.4478 17 10.0001V13.0001C17 13.5524 17.4477 14.0001 18 14.0001C18.5523 14.0001 19 13.5524 19 13.0001V10.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 18.2418C15.5833 18.1218 15 18.5949 15 19.229V19.8866C15 20.4389 14.5523 20.8866 14 20.8866H13C12.4477 20.8866 12 21.3343 12 21.8866V23.7353C12 24.2876 12.4477 24.7353 13 24.7353H14C14.5523 24.7353 15 25.183 15 25.7353V26.8453C15 27.3022 15.3106 27.702 15.7544 27.8107C22.2204 29.3952 26.0763 29.396 32.2561 27.8165C32.6948 27.7043 33 27.3069 33 26.8541V25.7353C33 25.183 33.4477 24.7353 34 24.7353H35C35.5523 24.7353 36 24.2876 36 23.7353V21.8866C36 21.3343 35.5523 20.8866 35 20.8866H34C33.4477 20.8866 33 20.4389 33 19.8866V19.2321C33 18.5971 32.415 18.1237 31.7916 18.245C25.8882 19.3942 22.1085 19.3802 16.2058 18.2418ZM19 22.0001C19 21.4478 18.5523 21.0001 18 21.0001C17.4477 21.0001 17 21.4478 17 22.0001V25.0001C17 25.5524 17.4477 26.0001 18 26.0001C18.5523 26.0001 19 25.5524 19 25.0001V22.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 30.2418C15.5833 30.1218 15 30.5949 15 31.229V31.8866C15 32.4389 14.5523 32.8866 14 32.8866H13C12.4477 32.8866 12 33.3343 12 33.8866V35.7353C12 36.2876 12.4477 36.7353 13 36.7353H14C14.5523 36.7353 15 37.183 15 37.7353V38.8453C15 39.3022 15.3106 39.702 15.7544 39.8107C22.2204 41.3952 26.0763 41.396 32.2561 39.8165C32.6948 39.7043 33 39.3069 33 38.8541V37.7353C33 37.183 33.4477 36.7353 34 36.7353H35C35.5523 36.7353 36 36.2876 36 35.7353V33.8866C36 33.3343 35.5523 32.8866 35 32.8866H34C33.4477 32.8866 33 32.4389 33 31.8866V31.2321C33 30.5971 32.415 30.1237 31.7916 30.245C25.8882 31.3942 22.1085 31.3802 16.2058 30.2418ZM19 34.0001C19 33.4478 18.5523 33.0001 18 33.0001C17.4477 33.0001 17 33.4478 17 34.0001V37.0001C17 37.5524 17.4477 38.0001 18 38.0001C18.5523 38.0001 19 37.5524 19 37.0001V34.0001Z" fill="currentColor"/>
+</svg></div><b>등 펴기 운동</b></div><div class="v2-body">벽 밀기·등 신전 운동을 매일 — 척추를 곧게 세우는 근육을 키웁니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid" style="left:456px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19 4C19.5523 4 20 4.44772 20 5L20 13.3432C20 14.404 19.5786 15.4214 18.8284 16.1716L18.3246 16.6755C17.0407 17.9593 17.0407 20.0408 18.3246 21.3246C19.3251 22.3251 20.8537 22.5732 22.1193 21.9404L22.3617 21.8192C23.393 21.3035 24.607 21.3035 25.6383 21.8192L25.8807 21.9404C27.1463 22.5732 28.6749 22.3251 29.6754 21.3246C30.9593 20.0408 30.9593 17.9593 29.6754 16.6755L29.1716 16.1716C28.4214 15.4214 28 14.404 28 13.3432L28 5C28 4.44772 28.4477 4 29 4C29.5523 4 30 4.44772 30 5V7.02425C36.9912 9.49527 42 16.1627 42 24C42 31.8373 36.9912 38.5048 30 40.9758V43C30 43.5523 29.5523 44 29 44C28.4477 44 28 43.5523 28 43L28 34.6569C28 33.596 28.4214 32.5786 29.1716 31.8284L29.6754 31.3246C30.9593 30.0408 30.9593 27.9593 29.6754 26.6755C28.6749 25.6749 27.1463 25.4268 25.8807 26.0597L25.6383 26.1809C24.607 26.6965 23.393 26.6965 22.3617 26.1809L22.1193 26.0597C20.8537 25.4268 19.3251 25.6749 18.3246 26.6755C17.0407 27.9593 17.0407 30.0407 18.3246 31.3246L18.8284 31.8284C19.5786 32.5786 20 33.596 20 34.6569L20 43C20 43.5523 19.5523 44 19 44C18.4477 44 18 43.5523 18 43V40.9758C11.0088 38.5048 6 31.8373 6 24C6 16.1627 11.0088 9.49527 18 7.02425V5C18 4.44772 18.4477 4 19 4Z" fill="currentColor"/>
+</svg></div><b>물건 들 때 자세</b></div><div class="v2-body">허리는 곧게 두고 무릎과 엉덩이를 굽혀 앉았다 일어나며 듭니다.</div></div>
+  </div>
+  <div class="v2-panel q-grid v2-panel--accent" style="left:848px;top:418px;width:368px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>피할 동작</b></div><div class="v2-body">윗몸 일으키기·서서 발끝 닿기·골프·볼링·깊이 비트는 요가 — 척추 골절의 원인입니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 등을 굽히는 운동을 한 분들이 척추 골절이 훨씬 많았습니다 — 곧게 펴는 운동을 고르세요.</span><span class="v2-src">근거 · 영국왕립골다공증학회 2018 합의문</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 11 · 오늘 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 여덟 가지</h2>
+  <p class="v2-sub">꾸준히 관리하면 골절을 막을 수 있습니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:88px"><span class="q-chk__n">01</span><span class="q-chk__t">T-점수 −2.5 이하이거나 골절이 있으면 약을 시작합니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:310px;width:564px;height:88px"><span class="q-chk__n">02</span><span class="q-chk__t">최근 골절이 있는 초고위험군은 새 뼈를 만드는 약부터</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:414px;width:564px;height:88px"><span class="q-chk__n">03</span><span class="q-chk__t">먹는 약은 빈속에, 맹물과, 30분 눕지 않기</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:518px;width:564px;height:88px"><span class="q-chk__n">04</span><span class="q-chk__t">데노수맙은 6개월 간격을 놓치지 않습니다</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:88px"><span class="q-chk__n">05</span><span class="q-chk__t">칼슘 800~1,200mg + 비타민 D 800~1,000단위</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:310px;width:564px;height:88px"><span class="q-chk__n">06</span><span class="q-chk__t">위산 억제제를 먹는 분은 구연산칼슘으로</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:414px;width:564px;height:88px"><span class="q-chk__n">07</span><span class="q-chk__t">근력 주 2~3회 + 균형 운동 매일, 허리 굽힘·비틀기 금지</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:518px;width:564px;height:88px"><span class="q-chk__n">08</span><span class="q-chk__t">조명·미끄럼 방지 매트·손잡이로 집 안 낙상 점검</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약은 스스로 끊지 말고, 바꾸고 싶을 때는 먼저 상의하세요.</span><span class="v2-src">근거 · 대한골대사학회 2024 지침 · 영국왕립골다공증학회 2018</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">골다공증 진단·치료를 받는 분과 가족을 위한 설명자료입니다. 실제 약 선택과 치료 기간은 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">대한골대사학회 2024 · 국제임상골밀도학회 2023 · 미국임상내분비학회 2020 · 세계보건기구 FRAX · 영국왕립골다공증학회 2018 · VERO·ARCH·FRAME 연구 · 식약처·FDA 허가사항</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM17,2H18V3H17zM19,2H20V3H19zM20,2H21V3H20zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM12,3H13V4H12zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM18,3H19V4H18zM19,3H20V4H19zM21,3H22V4H21zM22,3H23V4H22zM24,3H25V4H24zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM16,4H17V5H16zM17,4H18V5H17zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM23,4H24V5H23zM26,4H27V5H26zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM13,5H14V6H13zM18,5H19V6H18zM20,5H21V6H20zM24,5H25V6H24zM25,5H26V6H25zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM13,6H14V7H13zM18,6H19V7H18zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM13,7H14V8H13zM17,7H18V8H17zM20,7H21V8H20zM21,7H22V8H21zM22,7H23V8H22zM23,7H24V8H23zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM11,9H12V10H11zM14,9H15V10H14zM16,9H17V10H16zM19,9H20V10H19zM20,9H21V10H20zM23,9H24V10H23zM26,9H27V10H26zM2,10H3V11H2zM6,10H7V11H6zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM12,10H13V11H12zM17,10H18V11H17zM19,10H20V11H19zM21,10H22V11H21zM22,10H23V11H22zM23,10H24V11H23zM24,10H25V11H24zM25,10H26V11H25zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM34,10H35V11H34zM3,11H4V12H3zM4,11H5V12H4zM6,11H7V12H6zM9,11H10V12H9zM12,11H13V12H12zM16,11H17V12H16zM17,11H18V12H17zM18,11H19V12H18zM23,11H24V12H23zM25,11H26V12H25zM27,11H28V12H27zM31,11H32V12H31zM32,11H33V12H32zM33,11H34V12H33zM2,12H3V13H2zM4,12H5V13H4zM5,12H6V13H5zM8,12H9V13H8zM11,12H12V13H11zM15,12H16V13H15zM16,12H17V13H16zM17,12H18V13H17zM22,12H23V13H22zM25,12H26V13H25zM27,12H28V13H27zM31,12H32V13H31zM33,12H34V13H33zM2,13H3V14H2zM4,13H5V14H4zM5,13H6V14H5zM6,13H7V14H6zM9,13H10V14H9zM10,13H11V14H10zM12,13H13V14H12zM14,13H15V14H14zM15,13H16V14H15zM19,13H20V14H19zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM26,13H27V14H26zM33,13H34V14H33zM34,13H35V14H34zM2,14H3V15H2zM3,14H4V15H3zM5,14H6V15H5zM8,14H9V15H8zM9,14H10V15H9zM12,14H13V15H12zM13,14H14V15H13zM15,14H16V15H15zM17,14H18V15H17zM19,14H20V15H19zM23,14H24V15H23zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM28,14H29V15H28zM30,14H31V15H30zM31,14H32V15H31zM33,14H34V15H33zM34,14H35V15H34zM2,15H3V16H2zM3,15H4V16H3zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM13,15H14V16H13zM15,15H16V16H15zM16,15H17V16H16zM20,15H21V16H20zM25,15H26V16H25zM27,15H28V16H27zM29,15H30V16H29zM2,16H3V17H2zM5,16H6V17H5zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM11,16H12V17H11zM13,16H14V17H13zM17,16H18V17H17zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM25,16H26V17H25zM26,16H27V17H26zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM32,16H33V17H32zM33,16H34V17H33zM4,17H5V18H4zM6,17H7V18H6zM11,17H12V18H11zM12,17H13V18H12zM16,17H17V18H16zM19,17H20V18H19zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM25,17H26V18H25zM27,17H28V18H27zM28,17H29V18H28zM2,18H3V19H2zM3,18H4V19H3zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM10,18H11V19H10zM12,18H13V19H12zM13,18H14V19H13zM14,18H15V19H14zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM19,18H20V19H19zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM28,18H29V19H28zM30,18H31V19H30zM31,18H32V19H31zM33,18H34V19H33zM4,19H5V20H4zM5,19H6V20H5zM7,19H8V20H7zM11,19H12V20H11zM14,19H15V20H14zM16,19H17V20H16zM17,19H18V20H17zM18,19H19V20H18zM19,19H20V20H19zM23,19H24V20H23zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM31,19H32V20H31zM32,19H33V20H32zM33,19H34V20H33zM2,20H3V21H2zM4,20H5V21H4zM5,20H6V21H5zM8,20H9V21H8zM9,20H10V21H9zM11,20H12V21H11zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM17,20H18V21H17zM20,20H21V21H20zM22,20H23V21H22zM25,20H26V21H25zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM31,20H32V21H31zM33,20H34V21H33zM2,21H3V22H2zM4,21H5V22H4zM6,21H7V22H6zM9,21H10V22H9zM11,21H12V22H11zM14,21H15V22H14zM15,21H16V22H15zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM25,21H26V22H25zM26,21H27V22H26zM27,21H28V22H27zM28,21H29V22H28zM29,21H30V22H29zM33,21H34V22H33zM2,22H3V23H2zM3,22H4V23H3zM5,22H6V23H5zM7,22H8V23H7zM8,22H9V23H8zM11,22H12V23H11zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM19,22H20V23H19zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM26,22H27V23H26zM28,22H29V23H28zM30,22H31V23H30zM31,22H32V23H31zM34,22H35V23H34zM2,23H3V24H2zM5,23H6V24H5zM6,23H7V24H6zM9,23H10V24H9zM12,23H13V24H12zM15,23H16V24H15zM17,23H18V24H17zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM32,23H33V24H32zM33,23H34V24H33zM4,24H5V25H4zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM12,24H13V25H12zM13,24H14V25H13zM16,24H17V25H16zM17,24H18V25H17zM19,24H20V25H19zM20,24H21V25H20zM22,24H23V25H22zM25,24H26V25H25zM27,24H28V25H27zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM4,25H5V26H4zM6,25H7V26H6zM7,25H8V26H7zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM15,25H16V26H15zM18,25H19V26H18zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM27,25H28V26H27zM30,25H31V26H30zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM2,26H3V27H2zM3,26H4V27H3zM8,26H9V27H8zM15,26H16V27H15zM16,26H17V27H16zM19,26H20V27H19zM21,26H22V27H21zM23,26H24V27H23zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM33,26H34V27H33zM10,27H11V28H10zM11,27H12V28H11zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM17,27H18V28H17zM18,27H19V28H18zM20,27H21V28H20zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM32,27H33V28H32zM33,27H34V28H33zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM13,28H14V29H13zM17,28H18V29H17zM18,28H19V29H18zM22,28H23V29H22zM24,28H25V29H24zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM31,28H32V29H31zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM11,29H12V30H11zM13,29H14V30H13zM15,29H16V30H15zM16,29H17V30H16zM19,29H20V30H19zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM26,29H27V30H26zM30,29H31V30H30zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM10,30H11V31H10zM11,30H12V31H11zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM16,30H17V31H16zM17,30H18V31H17zM18,30H19V31H18zM19,30H20V31H19zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM11,31H12V32H11zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM24,31H25V32H24zM26,31H27V32H26zM28,31H29V32H28zM29,31H30V32H29zM30,31H31V32H30zM31,31H32V32H31zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM11,32H12V33H11zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM20,32H21V33H20zM28,32H29V33H28zM29,32H30V33H29zM30,32H31V33H30zM32,32H33V33H32zM2,33H3V34H2zM8,33H9V34H8zM12,33H13V34H12zM16,33H17V34H16zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM22,33H23V34H22zM23,33H24V34H23zM26,33H27V34H26zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM13,34H14V35H13zM17,34H18V35H17zM19,34H20V35H19zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM25,34H26V35H25zM26,34H27V35H26zM34,34H35V35H34z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -846,96 +437,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
+</section>
 </body>
 </html>

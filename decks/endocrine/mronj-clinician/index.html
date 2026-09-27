@@ -21,792 +21,654 @@
 <link rel="stylesheet" href="../../../shared/design-tokens.css">
 <link rel="stylesheet" href="../../../shared/clinic-slides.css">
 <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+
 <style>
+ /* HQ3E-redesign 2026-09-27 (원장님 49028) — v2 룩 재구성. 제목 36px·본문 15.5px 하한(reference/deck-design-proportions.md §1),
+    그림칸 = 원본 비율(§3·SKILL.md Step 3.5), 한 가지 틀 반복 대신 카드·대비 2단·표·단계·격자를 섞는다. */
  body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
- .v2-cite{font-size:13px;color:var(--color-steel-deep);text-decoration:none;border-bottom:1px dotted var(--color-steel-deep);white-space:nowrap}
- .v2-noanchor{font-size:12px;color:var(--color-warning);background:var(--color-warning-bg);border-radius:4px;padding:1px 6px;white-space:nowrap}
- .v2-reflist{margin:4px 0 0 0;padding-left:18px;font-size:13px;line-height:1.75}
- .v2-reflist a{color:var(--color-steel-deep);text-decoration:none}
  section.slide--v2{margin:0 auto 28px}
- /* 본문 밀도 — 실측 넘침(패널당 14~91px)에 맞춘 조정. 슬라이드 기하는 v2 규격 그대로 둔다. */
- /* v2 규격(본문 16px/1.6·패널 24px)을 그대로 쓴다 — 넘치면 글씨가 아니라 문장을 줄인다 */
- /* 텍스트 패널만 안쪽 여백을 줄인다 — 슬라이드 기하(206/400)는 v2 규격 그대로 유지 */
- /* 2026-08-22: v2 넘침 게이트 실측 — 6·15·25·26·30·41 장에서 본문이 패널(398px) 밖 14px 넘쳐 잘렸다.
-    임상 내용·글씨 크기는 무접촉, 블록 사이 여백만 회수한다(수리 방식은 898b388 야간하지경련 덱과 동일).
-    실측: 블록 간격 = 상쇄 margin 18px + 구분선 padding 18px. margin 만 7px 로 내려 간격당 11px,
-    3블록 패널(=2간격)에서 22px 를 회수한다. */
- .v2-panel .v2-block{margin-bottom:4px}
- .v2-panel .v2-block + .v2-block{margin-top:7px}
- .v2-panel .v2-block:last-child{margin-bottom:0}
- .v2-panel .v2-step:last-child{margin-bottom:0}
- .v2-reflist{font-size:12px;line-height:1.6}
- .v2-step{margin-bottom:6px}
- .v2-panel--accent .v2-stat{margin-bottom:10px}
- /* 도해 패널 — 임상 도해는 잘리면 오독되므로 contain 고정 */
- .v2-panel--fig{display:flex;flex-direction:column;background:#FFF;border:1px solid var(--v2-line)}
- .v2-fig{display:flex;flex-direction:column;height:100%;width:100%}
- .v2-fig__img{flex:1 1 auto;width:100%;height:100%;object-fit:contain;min-height:0}
- .v2-fig__ph{flex:1 1 auto;display:flex;align-items:center;justify-content:center;
-   background:var(--v2-surface);color:var(--v2-faint);font-size:14px;border-radius:6px}
- .v2-fig__cap{flex:0 0 auto;padding-top:8px;font-size:12px;color:#64748B;line-height:1.45}
+ .slide--cover .slide__subtitle{max-width:1060px}
+ .v2-title{font-size:36px;line-height:42px;top:96px}
+ .v2-sub{top:142px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ .v2-head b{font-size:19px}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다(아래 빈칸 방지) */
+ .q-text{display:flex;flex-direction:column;justify-content:space-evenly}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율이라 잘림·레터박스 없음. radius·그림자는 img 에(§0-2) */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ /* 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 24px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:40px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:16.5px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ /* 숫자 카드 */
+ .q-stat{display:flex;flex-direction:column;justify-content:center;padding:18px 24px}
+ .q-stat__lab{font-size:15px;font-weight:700;letter-spacing:.3px;color:var(--rule)}
+ .q-stat__num{font-size:44px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px;line-height:1.1;margin:6px 0 8px}
+ .q-stat__body{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ /* 격자 칸 */
+ .q-cell{display:flex;flex-direction:column;justify-content:center}
+ .q-cell .v2-head{margin-bottom:10px}
+ /* 단계 */
+ .q-step{display:flex;flex-direction:column;justify-content:center;padding:24px 22px}
+ .q-step .v2-body{font-size:17px;line-height:1.65}
+ .q-step__tag{align-self:flex-start;font-size:15px;font-weight:800;color:#fff;background:var(--rule);border-radius:6px;padding:4px 10px;margin-bottom:14px}
+ .q-step__h{font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.35;margin-bottom:12px;word-break:keep-all}
+ .q-step .v2-body{font-size:16px}
+ .q-arrow{position:absolute;width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:16px solid var(--v2-accent)}
+ /* 표 */
+ .q-table tbody th{font-size:16px}
+ .q-table tbody td{font-size:16px;line-height:1.45}
+ .q-table tbody th, .q-table tbody td{height:var(--rh,60px)}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:16.5px;padding:10px 0 10px 22px}
+ .v2-vs__list li::before{top:19px}
+ .q-note{position:absolute;font-size:16px;line-height:1.55;color:var(--v2-body);padding:12px 18px;border-radius:8px;background:var(--v2-chip-navy);border-left:4px solid var(--v2-navy);word-break:keep-all}
+ .q-close .v2-body{font-size:16px}
+ .q-close .v2-head{margin-bottom:4px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
+<style>
+ .q-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+ .q-cell .q-list, .q-text .q-list{height:100%;justify-content:space-evenly}
+ .q-list li{position:relative;padding-left:18px;font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-list li::before{content:"";position:absolute;left:2px;top:10px;width:6px;height:6px;border-radius:50%;background:var(--rule,var(--v2-navy))}
+ .q-list b{color:var(--v2-navy)}
+ .q-list--tight{gap:14px}
+</style>
+<style>
+ .q-text > .v2-block:only-child{flex:1;display:flex;flex-direction:column}
+ .q-text > .v2-block:only-child > .v2-body{flex:1;display:flex;flex-direction:column}
+ .q-text > .v2-block:only-child .q-list{flex:1}
+</style>
+<style>
+ .q-tl{position:absolute;display:grid;gap:8px}
+ .q-tl__lab{display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 6px;border-radius:8px;background:var(--v2-chip-navy);border-top:3px solid var(--v2-navy)}
+ .q-tl__lab b{font-size:15px;color:var(--v2-navy)}
+ .q-tl__lab span{font-size:15px;color:var(--v2-body);white-space:nowrap}
+ .q-tl__lab--on{background:var(--v2-chip-accent);border-top-color:var(--v2-accent)}
+ .q-card{padding:22px 22px}
+ .q-card .v2-body{font-size:16px}
 </style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
+<!-- HQ3E-redesign mronjc -->
 <section class="slide slide--cover">
   <header class="slide__header">
     <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
     <div class="slide__chapter">CLINICIAN BRIEF · MRONJ</div>
   </header>
   <div class="slide__title-block">
-    <h1 class="slide__title">골다공증 약제와 치과 시술, 끊는 것이 답이 아닙니다</h1>
-    <p class="slide__subtitle">MRONJ 는 골다공증 용량에서 1만 명당 수 명 — 정작 큰 위험은 휴약 중 몰려오는 척추골절입니다</p>
+    <h1 class="slide__title">골다공증 약제와 치과 시술, 끊는&nbsp;것이 답이 아닙니다</h1>
+    <p class="slide__subtitle">MRONJ 는 골다공증 용량에서 1만 명당 수 명 — 정작 큰 위험은 휴약 중 몰려오는&nbsp;척추골절입니다</p>
   </div>
   <footer class="slide__footer">
     <span class="slide__source">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</span>
-    <span class="slide__page">01 / 43</span>
-  </footer>
-</section><section class="slide slide--v2">
+    <span class="slide__page">01 / 22</span>
+    </footer>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CLINICIAN BRIEF · MRONJ</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">골다공증 약제와 치과 시술, 끊는 것이 답이 아닙니다</h2>
-  <p class="v2-sub">MRONJ 는 골다공증 용량에서 1만 명당 수 명입니다. 정작 큰 위험은 턱이 아니라, 약을 끊는 동안 몰려오는 척추골절입니다.</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:1152px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>이 덱에서 다루는 것</b></div></div>
-    <div class="v2-step"><i>1</i><span>약제별 절대위험</span></div>
-    <div class="v2-step"><i>2</i><span>휴약 근거</span></div>
-    <div class="v2-step"><i>3</i><span>데노수맙 시점</span></div>
-    <div class="v2-step"><i>4</i><span>협진 문서</span></div>
-  </div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">02 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 01 · CONCLUSION</div>
+  <div class="v2-chapter">CHAPTER 01 · 결론</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">먹는 약은 끊지 않고, 프롤리아는 미루지 않는다</h2>
   <p class="v2-sub">이 덱의 결론을 먼저 놓습니다 — 근거는 뒤 슬라이드에서 하나씩</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>경구 BP — 끊지 않는다</b></div><div class="v2-body">골다공증 용량 경구 BP의 MRONJ 절대위험은 <b>0.02~0.05%</b>로 위약군 0~0.02%와 겹칩니다(AAOMS 2022). 발치 전 2~3개월 휴약이 MRONJ를 줄인다는 근거는 없습니다 — 메타분석 <b>OR 0.73</b>(95% CI 0.51~1.06, 비유의).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>프롤리아는 정반대다</b></div><div class="v2-body">계획 발치는 마지막 주사 <b>3~4개월</b> 후, 재투여는 점막치유(6~8주) 확인 뒤. 중단 시 척추골절률이 <b>1.2 → 7.1/100인년</b>으로 반등하고 발생 골절의 약 61%가 다발성입니다(Cummings 2018). 한국 전국 코호트(14.9만·Kim 2024) 30~90일 지연에 전체 골절 HR 1.2, 별개 코호트(2,594명·Lyu 2020) &gt;16주 지연에 척추골절 <b>HR 3.91</b>.</div></div>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">경구 BP — 끊지 않는다</div>
+    <div class="v2-body">골다공증 용량 MRONJ 절대위험 <b>0.02~0.05%</b>, 위약 0~0.02%와 겹친다(AAOMS 2022). 발치 전 2~3개월 휴약 이득은 입증 안 됨 — 메타분석 OR 0.73(95% CI 0.51~1.06, 비유의).</div>
+    <div class="q-card__k">대개 휴약 불필요</div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">30초</div><div class="v2-stat__cap">약 이름 · 마지막 주사일 · 누적 복용기간<br>이 셋만 확인하면 방향이 정해집니다</div></div><div class="v2-step"><i>1</i><span>경구 BP — 대개 휴약 불필요</span></div><div class="v2-step"><i>2</i><span>프롤리아 3~4개월 발치</span></div><div class="v2-step"><i>3</i><span>재투여 6~8주 뒤</span></div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81815 13.364C6.36628 13.8159 6.36628 14.5485 6.81815 15.0004C7.27002 15.4523 8.00264 15.4523 8.45451 15.0004L9.27321 14.1817L13.3636 18.2721L10.0909 21.5449C9.63899 21.9968 9.63899 22.7294 10.0909 23.1813C10.5427 23.6332 11.2753 23.6332 11.7272 23.1813L13.3632 21.5452L27.2727 35.455C28.9501 37.1325 31.4015 37.5646 33.4775 36.7511L34.6361 37.9097C35.242 38.5156 36.1002 38.7153 36.8724 38.5088L39.5455 41.182C39.9973 41.6339 40.7299 41.6339 41.1818 41.182C41.6337 40.7301 41.6337 39.9975 41.1818 39.5456L38.5083 36.872C38.7142 36.1001 38.5144 35.2425 37.9089 34.6369L36.7504 33.4784C37.564 31.4022 37.132 28.9506 35.4545 27.273L21.545 13.3632L23.1817 11.7265C23.6336 11.2746 23.6336 10.542 23.1817 10.0901C22.7299 9.63824 21.9972 9.63824 21.5454 10.0901L18.2726 13.3629L14.1823 9.27248L14.9999 8.4548C15.4518 8.00292 15.4518 7.27028 14.9999 6.8184C14.5481 6.36652 13.8155 6.36652 13.3636 6.8184L6.81815 13.364ZM16.8584 14.7772L12.7681 10.6867L10.6874 12.7674L14.7778 16.8579L16.8584 14.7772ZM20.1308 14.7775L14.7774 20.131L19.1834 24.5371L24.5368 19.1835L20.1308 14.7775ZM20.8197 26.1735L23.2743 28.6281C24.6878 30.0416 23.6463 29.0001 24.9107 30.2645L26.5466 31.9005C27.6463 33.0001 27.3953 32.7492 28.183 33.5369L28.6869 34.0408C29.785 35.1389 31.3899 35.4213 32.7487 34.888L34.8875 32.7492C35.4208 31.3903 35.1384 29.7854 34.0403 28.6873L26.1731 20.8199L20.8197 26.1735ZM36.5224 36.0829C36.514 36.0718 36.5047 36.0612 36.4947 36.0512L35.6706 35.227C35.601 35.3045 35.529 35.3805 35.4545 35.455C35.3799 35.5296 35.3038 35.6017 35.2262 35.6714L36.0503 36.4955C36.0605 36.5056 36.0712 36.5149 36.0823 36.5234C36.1328 36.4337 36.1963 36.3492 36.2727 36.2728C36.3489 36.1967 36.433 36.1333 36.5224 36.0829Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81815 13.3638C6.36628 13.8156 6.36628 14.5483 6.81815 15.0001C7.27002 15.452 8.00264 15.452 8.45451 15.0001L9.27321 14.1814L13.3636 18.2719L10.0909 21.5447C9.63899 21.9965 9.63899 22.7292 10.0909 23.1811C10.5427 23.6329 11.2753 23.6329 11.7272 23.1811L13.3632 21.545L17.2858 25.4677C17.4707 25.6526 17.665 25.8223 17.8672 25.977L17.831 26.0131L21.8601 30.0423L25.1331 26.7693C25.5849 26.3174 26.3176 26.3174 26.7694 26.7693C27.2213 27.2211 27.2213 27.9538 26.7694 28.4057L23.4965 31.6787L25.1327 33.3149L28.4055 30.042C28.8574 29.5901 29.59 29.5901 30.0419 30.042C30.4937 30.4939 30.4937 31.2265 30.0419 31.6784L26.769 34.9513L27.2726 35.4549C28.9501 37.1325 31.4015 37.5645 33.4776 36.7509L34.6361 37.9095C35.242 38.5154 36.1002 38.7151 36.8724 38.5086L39.5455 41.1818C39.9973 41.6336 40.7299 41.6336 41.1818 41.1818C41.6337 40.7299 41.6337 39.9972 41.1818 39.5454L38.5083 36.8718C38.7142 36.0999 38.5144 35.2422 37.9089 34.6367L36.7503 33.4781C37.5639 31.402 37.1319 28.9505 35.4544 27.2729L26.0128 17.8311L25.9769 17.867C25.8223 17.6649 25.6525 17.4706 25.4676 17.2857L21.545 13.363L23.1817 11.7263C23.6336 11.2744 23.6336 10.5417 23.1817 10.0899C22.7299 9.63799 21.9972 9.63799 21.5454 10.0899L18.2726 13.3627L14.1823 9.27223L14.9999 8.45456C15.4518 8.00268 15.4518 7.27004 14.9999 6.81816C14.5481 6.36628 13.8155 6.36628 13.3636 6.81816L6.81815 13.3638ZM16.8584 14.7769L12.7681 10.6865L10.6874 12.7672L14.7778 16.8576L16.8584 14.7769ZM20.1308 14.7772L24.0534 18.6999C24.2403 18.8868 24.4035 19.0883 24.5431 19.3008L19.3009 24.5432C19.0884 24.4036 18.8869 24.2403 18.7 24.0535L14.7774 20.1308L20.1308 14.7772Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">프롤리아는 정반대다</div>
+    <div class="v2-body">계획 발치는 마지막 주사 <b>3~4개월</b> 후, 재투여는 점막치유(6~8주) 확인 뒤. 중단 시 척추골절 1.2 → 7.1/100인년, 약 61% 다발성(Cummings 2018). 30~90일 지연 전체 골절 HR 1.2(Kim 2024, 14.9만), &gt;16주 척추골절 HR 3.91(Lyu 2020, 2,594명).</div>
+    <div class="q-card__k">끊지 말고 시점을 맞춘다</div>
   </div>
-  <div class="v2-tip">Tip · 암 치료 용량(졸레드론산 4mg 반복·데노수맙 120mg)은 다른 이야기입니다.</div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">셋만 확인하면 방향이 정해진다</div>
+    <div class="v2-body">약 이름 · 마지막 주사일 · 누적 복용기간. 암 치료 용량(졸레드론산 4mg 반복·데노수맙 120mg)은 다른 이야기다.</div>
+    <div class="q-card__k">① 경구 BP 대개 휴약 불필요 ② 프롤리아 3~4개월 발치 ③ 재투여 6~8주 뒤</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 상대위험이 아니라 절대위험으로 말합니다 — 골다공증 용량에서 MRONJ는 1만 명당 수 명입니다.</span><span class="v2-src">근거 · AAOMS 2022 · 휴약 메타분석 · Cummings 2018 · Kim 2024 · Lyu 2020</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">03 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">02 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 02 · DEFINITION</div>
+  <div class="v2-chapter">CHAPTER 02 · 정의와 영상</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">정의는 세 요소를 다 만족해야 한다</h2>
-  <p class="v2-sub">하나라도 빠지면 MRONJ가 아닙니다 — 감별이 먼저입니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>① 항흡수제 치료력</b></div><div class="v2-body">현재 또는 과거 항흡수제(BP·데노수맙)·혈관신생억제제 치료력.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>② 8주 이상 지속되는 노출골</b></div><div class="v2-body">노출골 또는 누공으로 탐침되는 골이 <b>8주 이상</b> 지속. 한국 2025는 괴사가 명백하면 8주 전 조기진단 여지를 둡니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>③ 방사선치료력·전이 없음</b></div><div class="v2-body">악골 방사선치료력이 없고 명백한 전이도 없어야 합니다 — 골방사선괴사·전이와의 감별점.</div></div>
+  <h2 class="v2-title">정의는 세 요소를 다 만족해야 한다 — 영상은 기준이 아니다</h2>
+  <p class="v2-sub">하나라도 빠지면 MRONJ가 아닙니다 — 감별이 먼저, 영상은 범위와 감별용</p>
+  <div class="v2-panel q-cell" style="left:64px;top:206px;width:370px;height:184px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M26 6C26.5523 6 27 6.44772 27 7V10.0008C27 10.5531 27.4477 11.0008 28 11.0008C28.5523 11.0008 29 10.5531 29 10.0008V8H30C31.6569 8 33 9.34315 33 11V35C33 36.6569 31.6569 38 30 38H13C11.3431 38 10 36.6569 10 35V11C10 9.34315 11.3431 8 13 8H15V7C15 6.44772 15.4477 6 16 6C16.5523 6 17 6.44772 17 7V10.0008C17 10.5531 17.4477 11.0008 18 11.0008C18.5523 11.0008 19 10.5531 19 10.0008V8H25V7C25 6.44772 25.4477 6 26 6ZM15 18C14.4477 18 14 18.4477 14 19C14 19.5523 14.4477 20 15 20H28C28.5523 20 29 19.5523 29 19C29 18.4477 28.5523 18 28 18H15ZM14 24C14 23.4477 14.4477 23 15 23H22C22.5523 23 23 23.4477 23 24C23 24.5523 22.5523 25 22 25H15C14.4477 25 14 24.5523 14 24ZM15 28C14.4477 28 14 28.4477 14 29C14 29.5523 14.4477 30 15 30H26C26.5523 30 27 29.5523 27 29C27 28.4477 26.5523 28 26 28H15Z" fill="currentColor"/>
+<path d="M13 42C9.13401 42 6 38.866 6 35V10H8V35C8 37.7614 10.2386 40 13 40H30V42H13Z" fill="currentColor"/>
+<path d="M36 13C36 11.3431 37.3431 10 39 10C40.6569 10 42 11.3431 42 13V16H36V13Z" fill="currentColor"/>
+<path d="M36 33V18H42V33L39 37L36 33Z" fill="currentColor"/>
+</svg></div><b>① 항흡수제 치료력</b></div><div class="v2-body">현재 또는 과거 항흡수제(BP·데노수맙)·혈관신생억제제 치료력.</div></div>
   </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="../../../shared/assets/generated/mronj-definition-triad-20260816.png" alt="발치와가 아물지 않고 치조골이 노출된 상태를 그린 개념도"><div class="v2-fig__cap">발치와가 아물지 않고 골이 노출된 상태 — 정의의 두 번째 요소. 설명용 일러스트(실제 임상 사진 아님).</div></div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:454px;top:206px;width:370px;height:184px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9591 9.2814C16.6218 6.84016 12.7792 7.98807 9.58534 11.8657C6.50278 15.6083 8.60445 22.3544 10.1153 27.2039C10.4755 28.3602 10.8022 29.4087 11.0169 30.2829C12.1324 34.8237 13.1996 37.6532 15.6331 39.701C16.8383 40.715 18.2048 38.9724 19.6465 37.1338C20.8965 35.5398 22.203 33.8737 23.5098 33.8697C24.7954 33.8658 26.0812 35.5293 27.3138 37.1239C28.7366 38.9646 30.0886 40.7135 31.2874 39.701C33.1461 38.1311 33.9903 36.9793 35.0116 33.745C36.1254 30.2179 37.9238 26 39.3536 21.138C40.3596 17.7171 40.4801 14.2345 37.5808 10.8727C33.4414 6.07315 27.704 8.55223 25.0332 10.1396L28.6508 13.2408C29.0701 13.6002 29.1187 14.2315 28.7592 14.6508C28.3998 15.0701 27.7685 15.1187 27.3492 14.7592L20.9591 9.2814Z" fill="currentColor"/>
+</svg></div><b>② 8주 이상 노출골</b></div><div class="v2-body">노출골 또는 누공으로 탐침되는 골이 8주 이상. 한국 2025는 괴사가 명백하면 8주 전 조기진단 여지.</div></div>
   </div>
-  <div class="v2-tip">Tip · 세 요소를 다 채우지 못한 병변에 MRONJ라는 이름을 먼저 붙이지 마십시오. 치성감염·골수염이 더 흔합니다.</div>
+  <div class="v2-panel q-cell" style="left:844px;top:206px;width:370px;height:184px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.5 8.5C28.5 10.9853 26.4853 13 24 13C21.5147 13 19.5 10.9853 19.5 8.5C19.5 6.01472 21.5147 4 24 4C26.4853 4 28.5 6.01472 28.5 8.5ZM30 34H25.2645L26.0082 42.1811C26.105 43.246 27.0224 44.0464 28.0906 43.998C29.1589 43.9495 30 43.0693 30 42V34ZM22.7355 34H18V42C18 43.0693 18.8412 43.9495 19.9094 43.998C20.9776 44.0464 21.895 43.246 21.9918 42.1811L22.7355 34ZM35.9555 14H36.0463C36.0161 13.9993 35.9859 13.9993 35.9555 14ZM11.954 14C11.9839 13.9993 12.0138 13.9993 12.0438 14H11.954Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11 15C10.4477 15 10 15.4477 10 16V31C10 31.5523 10.4477 32 11 32H37C37.5523 32 38 31.5523 38 31V16C38 15.4477 37.5523 15 37 15H11ZM23 17V18.5H22.5C21.5691 18.5 20.5591 18.8008 19.8458 19.0602C19.4755 19.1948 19.1567 19.3291 18.9298 19.4299C18.816 19.4805 18.7245 19.5231 18.6601 19.5536C18.6279 19.5689 18.6025 19.5812 18.5844 19.59L18.5629 19.6006L18.5564 19.6038L18.5542 19.6049L18.5531 19.6054C18.5529 19.6055 18.5528 19.6056 19 20.5C19.4472 21.3944 19.4471 21.3945 19.447 21.3945L19.4487 21.3937L19.4613 21.3875C19.4732 21.3817 19.4922 21.3725 19.5176 21.3605C19.5685 21.3363 19.6449 21.3007 19.7421 21.2576C19.937 21.1709 20.212 21.0552 20.5292 20.9398C21.1909 20.6992 21.9309 20.5 22.5 20.5H23V22.5H22.2C21.0027 22.5 19.7465 23.1358 18.9067 23.6448C18.4612 23.9148 18.0788 24.1833 17.8079 24.3839C17.6719 24.4847 17.5627 24.5693 17.4863 24.6297C17.448 24.66 17.4179 24.6843 17.3966 24.7016L17.3713 24.7223L17.3638 24.7285L17.3614 24.7305L17.3605 24.7312C17.3603 24.7314 17.3598 24.7318 18 25.5C18.6402 26.2682 18.6401 26.2683 18.6399 26.2684L18.6426 26.2663L18.6582 26.2535C18.673 26.2415 18.6961 26.2228 18.727 26.1984C18.7888 26.1495 18.8812 26.0778 18.9984 25.9911C19.2337 25.8167 19.5638 25.5852 19.9433 25.3552C20.7535 24.8642 21.5973 24.5 22.2 24.5H23V26.6678C22.2986 26.865 21.6252 27.2103 21.0794 27.6016C20.6796 27.8883 20.3086 28.2276 20.0276 28.6006C19.7591 28.9572 19.5 29.4424 19.5 30H21.5C21.5 30.0043 21.4999 30.008 21.4998 30.0109C21.4997 30.0135 21.4995 30.0155 21.4995 30.0171C21.4993 30.0192 21.4993 30.0204 21.4994 30.0204C21.4995 30.0204 21.4999 30.0193 21.5007 30.0171C21.5059 30.0015 21.5297 29.9307 21.6252 29.8038C21.7556 29.6307 21.9657 29.4272 22.2449 29.227C22.8052 28.8252 23.4877 28.5464 24.032 28.5004C24.4937 28.5117 25.1478 28.7645 25.7243 29.1837C26.0071 29.3894 26.2259 29.6033 26.3641 29.7875C26.4653 29.9224 26.4921 29.9988 26.4987 30.0174L26.4995 30.0198C26.5 30.0212 26.5003 30.0219 26.5005 30.0219C26.501 30.0218 26.5 30.0145 26.5 30H28.5C28.5 29.4379 28.2324 28.9452 27.9641 28.5875C27.6803 28.2092 27.3054 27.8606 26.9007 27.5663C26.3675 27.1785 25.6989 26.8257 25 26.6391V24.5H26.1C26.8489 24.5 27.6186 24.8663 28.2631 25.3186C28.5735 25.5364 28.8285 25.7556 29.0048 25.9197C29.0925 26.0012 29.1594 26.0679 29.2026 26.1122C29.2241 26.1343 29.2397 26.1507 29.2488 26.1605L29.2571 26.1694C29.2569 26.1692 29.2567 26.169 30 25.5C30.7433 24.831 30.7431 24.8308 30.7429 24.8306L30.7414 24.829L30.7389 24.8262L30.7318 24.8184L30.7097 24.7946C30.6915 24.7751 30.6663 24.7485 30.6346 24.716C30.5711 24.6509 30.4809 24.5613 30.367 24.4553C30.1403 24.2444 29.814 23.9636 29.4119 23.6814C28.6314 23.1337 27.4511 22.5 26.1 22.5H25V20.5H25.75C26.4443 20.5 27.1193 20.7011 27.6432 20.9216C27.9003 21.0299 28.1092 21.1378 28.2509 21.2169C28.3215 21.2564 28.3747 21.2882 28.408 21.3087C28.4247 21.3189 28.4363 21.3263 28.4427 21.3304L28.4457 21.3323C28.4455 21.3322 28.4453 21.3321 29 20.5C29.5547 19.6679 29.5545 19.6678 29.5542 19.6676L29.5527 19.6666L29.5501 19.6649L29.5432 19.6604L29.5228 19.6472C29.5063 19.6366 29.484 19.6225 29.4562 19.6054C29.4007 19.5712 29.323 19.5249 29.2256 19.4706C29.0315 19.3622 28.7559 19.2201 28.4193 19.0784C27.7557 18.7989 26.8057 18.5 25.75 18.5H25.0009L25 17H23Z" fill="currentColor"/>
+</svg></div><b>③ 방사선치료력·전이 없음</b></div><div class="v2-body">악골 방사선치료력이 없고 명백한 전이도 없어야 한다 — 골방사선괴사·전이와 감별.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:64px;top:410px;width:243px;height:196px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-definition-triad-20260816.png" alt="발치와가 아물지 않고 골이 노출된 턱 단면 그림" style="width:243px;height:196px">
+  </div>
+  <div class="v2-panel q-text v2-panel--accent" style="left:331px;top:410px;width:885px;height:196px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6 9C6 7.34315 7.34315 6 9 6H39C40.6569 6 42 7.34315 42 9V39C42 40.6569 40.6569 42 39 42H9C7.34315 42 6 40.6569 6 39V9ZM28.5 14.5C28.5 16.9853 26.4853 19 24 19C21.5147 19 19.5 16.9853 19.5 14.5C19.5 12.0147 21.5147 10 24 10C26.4853 10 28.5 12.0147 28.5 14.5ZM13 22C13 21.4477 13.4477 21 14 21H34C34.5523 21 35 21.4477 35 22V37C35 37.5523 34.5523 38 34 38H29C29 37.4027 28.7273 36.8603 28.4298 36.4438C28.119 36.0086 27.7038 35.602 27.2498 35.2552C26.6213 34.7753 25.8253 34.3413 25 34.132V31.1465H26.4C27.3909 31.1465 28.6372 31.5421 29.7118 31.9948C30.2329 32.2143 30.6842 32.4344 31.0047 32.5995C31.1646 32.6818 31.291 32.7499 31.376 32.7967C31.4186 32.82 31.4507 32.838 31.4715 32.8498L31.494 32.8626L31.4987 32.8653C31.4986 32.8652 31.4988 32.8653 32 32C32.5012 31.1347 32.5011 31.1346 32.5009 31.1345L32.4995 31.1337L32.4967 31.132L32.4875 31.1268L32.4555 31.1086C32.4282 31.0932 32.3892 31.0714 32.3396 31.0441C32.2403 30.9895 32.0979 30.9128 31.9203 30.8213C31.5658 30.6388 31.0671 30.3955 30.4882 30.1517C29.3628 29.6776 27.8091 29.1465 26.4 29.1465H25V27H25.8C26.5489 27 27.4846 27.2145 28.285 27.457C28.6741 27.5749 29.0109 27.6931 29.2496 27.7815C29.3686 27.8256 29.4626 27.862 29.5256 27.8869C29.5492 27.8963 29.5684 27.904 29.5829 27.9099C29.5878 27.9118 29.5922 27.9136 29.596 27.9152L29.6124 27.9218L29.6156 27.9232C29.6155 27.9231 29.6154 27.9231 30 27C30.3846 26.0769 30.3845 26.0769 30.3843 26.0768L30.3809 26.0754L30.3737 26.0724L30.3492 26.0624C30.3284 26.0539 30.2988 26.042 30.2611 26.0271C30.1859 25.9974 30.0782 25.9557 29.9442 25.906C29.6766 25.8069 29.3009 25.6751 28.865 25.543C28.0154 25.2855 26.8511 25 25.8 25H25V23H23V25H21.9C20.6996 25 19.6077 25.284 18.8314 25.5564C18.4395 25.6939 18.1185 25.8319 17.8923 25.937C17.7791 25.9897 17.689 26.0345 17.6251 26.0672C17.5932 26.0836 17.5677 26.097 17.5492 26.1069L17.5265 26.1192L17.5191 26.1232L17.5164 26.1247L17.5153 26.1253C17.5151 26.1255 17.5144 26.1258 18 27C18.4856 27.8742 18.4854 27.8743 18.4852 27.8744L18.4923 27.8706C18.5011 27.8659 18.5164 27.8578 18.5378 27.8468C18.5805 27.8249 18.6475 27.7915 18.7358 27.7505C18.9128 27.6681 19.173 27.5561 19.4936 27.4436C20.1423 27.216 21.0004 27 21.9 27H23V29.1465H21.2C19.5905 29.1465 18.1347 29.6754 17.1116 30.1745C16.594 30.4269 16.1714 30.6795 15.8758 30.8706C15.7276 30.9664 15.6104 31.0474 15.5281 31.1061C15.4869 31.1354 15.4544 31.1593 15.431 31.1766L15.4029 31.1978L15.394 31.2045L15.391 31.2069L15.3897 31.2078C15.3895 31.208 15.3888 31.2085 16 32C16.6112 32.7914 16.611 32.7916 16.6108 32.7918L16.6242 32.7817C16.6374 32.7719 16.6592 32.756 16.6891 32.7346C16.749 32.6919 16.8411 32.6281 16.9617 32.5501C17.2036 32.3938 17.556 32.1829 17.9884 31.972C18.8653 31.5443 20.0095 31.1465 21.2 31.1465H23V34.1644C22.1707 34.39 21.3693 34.8145 20.7267 35.2983C20.278 35.6361 19.8677 36.0315 19.5605 36.4598C19.2638 36.8734 19 37.407 19 38H14C13.4477 38 13 37.5523 13 37V22ZM26.9704 37.899C26.9956 37.9619 26.9994 37.9944 26.9999 38H21C21.0001 37.9977 21.0019 37.9661 21.0278 37.9008C21.0556 37.8308 21.1051 37.7378 21.1856 37.6255C21.3485 37.3985 21.6023 37.1425 21.9296 36.896C22.5878 36.4005 23.3896 36.0561 24.0338 36.0004C24.5874 36.0129 25.3594 36.3282 26.0359 36.8448C26.3676 37.098 26.631 37.3664 26.8023 37.6062C26.8872 37.725 26.9403 37.8241 26.9704 37.899Z" fill="currentColor"/>
+</svg></div><b>영상 — AAOMS 2022 진단기준에 영상 소견은 0개</b></div><div class="v2-body"><ul class="q-list"><li><b>파노라마</b> — 선별엔 유용하나 범위를 과소평가할 수 있다. CBCT가 피질골·골막 소견을 더 잘 잡는다</li><li><b>CT·CBCT</b> — 골경화·골용해·부골·피질골 미란/천공·치유 안 된 발치와·병적골절의 범위 확인에 가장 실용적</li><li><b>MRI</b> — 골수·연조직 평가 보조, MRONJ 특이 검사 아님. SIPMO-SICMF는 Stage 0에 CT를 쓰자고 해 AAOMS와 이견</li></ul></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 세 요소를 못 채운 병변에 MRONJ라는 이름을 먼저 붙이지 마십시오 — 치성감염·골수염이 더 흔합니다(그림은 설명용).</span><span class="v2-src">근거 · AAOMS 2022(PMID 35300956) · 한국 2025 권고안 · SIPMO-SICMF</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">04 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">03 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 03 · STAGING</div>
+  <div class="v2-chapter">CHAPTER 03 · 병기와 치료</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">Stage 0~3 — 함정은 Stage 0에 있다</h2>
-  <p class="v2-sub">Stage 0은 특이도가 낮습니다 — 약 <b>50%</b>만 상위 병기로 진행</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>Stage 0</b></div><div class="v2-body">골노출 없이 설명되지 않는 턱 통증·감각이상·치아동요, 골경화·치유 안 된 발치와 같은 비특이 소견.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>Stage 1·2</b></div><div class="v2-body">1 — 노출골·누공 있으나 무증상, 감염 없음. 2 — 노출골에 통증과 감염 동반(AAOMS 2022).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>Stage 3</b></div><div class="v2-body">치조골을 넘는 노출골 · 병리학적 골절 · 구강-상악동/비강 누공 · 하악하연·상악동저 침범.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">50%</div><div class="v2-stat__cap">Stage 0 중 상위 병기로 진행<br>나머지 절반은 진행하지 않습니다</div></div><div class="v2-step"><i>1</i><span>Stage 0 — 특이도 낮음</span></div><div class="v2-step"><i>2</i><span>치성감염과 먼저 감별</span></div><div class="v2-step"><i>3</i><span>Stage 2부터 감염 동반</span></div>
-  </div>
-  <div class="v2-tip">Tip · Stage 0을 확정 MRONJ와 같은 확실성으로 다루지 마십시오.</div>
+  <p class="v2-sub">병기마다 소견과 치료 원칙을 한 줄로 — Stage 0 중 약 50%만 상위 병기로 진행합니다</p>
+  <table class="v2-table q-table " style="--rh:72px;left:64px;top:206px;width:1152px"><colgroup><col style="width:150px"><col style="width:560px"><col style="width:442px"></colgroup><thead><tr><th>병기</th><th>소견</th><th>치료 원칙</th></tr></thead><tbody><tr><th>Stage 0</th><td>골노출 없이 설명되지 않는 턱 통증·감각이상·치아동요, 골경화·치유 안 된 발치와 같은 비특이 소견 — <b>특이도 낮음</b>, 치성감염과 먼저 감별</td><td>보존 — 항균 함수·경과관찰·통증관리. 노출골 절제는 목표가 아님</td></tr><tr><th>Stage 1</th><td>노출골·누공 있으나 무증상, 감염 없음</td><td>보존 — 항균 함수·경과관찰</td></tr><tr><th>Stage 2</th><td>노출골에 통증과 감염 동반</td><td>항생제 + 최소침습 수술 — 감염 통제가 축</td></tr><tr><th>Stage 3</th><td>치조골을 넘는 노출골 · 병리학적 골절 · 구강-상악동/비강 누공 · 하악하연·상악동저&nbsp;침범</td><td>변연·구획 절제</td></tr></tbody></table>
+  <div class="q-note" style="left:64px;top:528px;width:1112px">흐름은 <b>'보존 우선'에서 조기 적극 수술</b>로 이동했다. MRONJ 치료 중 골다공증약은 6~8주 치유 후 재개, 고위험군은 더 일찍.</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · Stage 0을 확정 MRONJ와 같은 확실성으로 다루지 마십시오.</span><span class="v2-src">근거 · AAOMS 2022 병기 · 한국 2025 권고안</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">05 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">04 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 03 · STAGING</div>
+  <div class="v2-chapter">CHAPTER 03 · 병기와 치료</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">병기는 이렇게 커진다</h2>
-  <p class="v2-sub">왼쪽에서 오른쪽으로 — 안 보이던 병변이 턱뼈 전체로 번집니다</p>
-  <div class="v2-panel v2-panel--figwide" style="left:174px;top:206px;width:932px;height:400px">
-    <img class="v2-figwide__img" src="../../../shared/assets/generated/mronj-stage-progression-20260816.png" alt="턱뼈 표본 네 개를 나란히 놓고 병변이 왼쪽에서 오른쪽으로 커지는 것을 보인 그림">
+  <h2 class="v2-title">병기는 이렇게 커지고, 개입은 단계로 올린다</h2>
+  <p class="v2-sub">왼쪽 = Stage 0~3 네 칸 · 오른쪽 = 세척 · 항생제 · 절제 — 병기가 오를수록 개입의 강도만 올립니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:401px;height:170px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-stage-progression-20260816.png" alt="안 보이던 병변이 턱뼈 전체로 번지는 네 칸 그림" style="width:401px;height:170px">
   </div>
-  <div class="v2-figwide__cap">네 칸이 Stage 0~3 과 1:1 — ①겉으로 안 보임 ②노출골이 드러남 ③감염이 얹힘 ④치조골을 넘어 광범위 파괴. 설명용 일러스트.</div>
+  <div class="v2-panel q-fig" style="left:815px;top:206px;width:401px;height:170px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-treatment-escalation-20260816.png" alt="같은 턱을 세척·항생제·절제 세 강도로 다룬 그림" style="width:401px;height:170px">
+  </div>
+  <div class="q-tl" style="left:64px;top:384px;width:401px;grid-template-columns:repeat(4,1fr)"><div class="q-tl__lab q-tl__lab--on"><b>0</b><span>안 보임</span></div><div class="q-tl__lab"><b>1</b><span>노출골</span></div><div class="q-tl__lab"><b>2</b><span>감염</span></div><div class="q-tl__lab"><b>3</b><span>광범위</span></div></div>
+  <div class="q-tl" style="left:815px;top:384px;width:401px;grid-template-columns:repeat(3,1fr)"><div class="q-tl__lab"><b>보존</b><span>세척·관찰</span></div><div class="q-tl__lab q-tl__lab--on"><b>감염 통제</b><span>항생제·최소침습</span></div><div class="q-tl__lab"><b>절제</b><span>변연·구획</span></div></div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:64px;top:440px;width:1152px;height:166px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><b>테리파라타이드 — 유일한 RCT급 보조요법</b></div><div class="v2-body">RCT N=34 · 20 μg/day 8주 → 52주 병변 해소 <b>45.4% vs 위약 33.3%</b>(PMID 32614699). 골형성 촉진. 표준치료가 아닌 보조요법 — 악성종양·방사선력 없는 골다공증 환자에서 금기가 없을 때 고려.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 두 그림은 설명용 일러스트입니다(실제 임상 사진 아님).</span><span class="v2-src">근거 · AAOMS 2022 · 테리파라타이드 RCT(PMID 32614699)</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">06 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">05 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 04 · SCAN</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">영상은 진단기준이 아니다 — 범위와 감별용</h2>
-  <p class="v2-sub">AAOMS 2022는 영상을 진단기준에 넣지 않았습니다 — 특이도 근거 부족</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>파노라마</b></div><div class="v2-body">선별에는 유용하지만 병변 범위를 <b>과소평가</b>할 수 있습니다. CBCT가 파노라마보다 피질골·골막 소견을 더 잘 잡습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>CT · CBCT</b></div><div class="v2-body">골경화·골용해·부골·피질골 미란/천공·치유 안 된 발치와·병적골절의 <b>범위 확인</b>에 가장 실용적.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>MRI — 골수 평가</b></div><div class="v2-body">MRI는 골수·연조직 침범 평가에 보조적이며 MRONJ 특이 검사는 아닙니다. 이탈리아 SIPMO-SICMF는 Stage 0에 CT를 쓰자고 주장해 AAOMS와 이견.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">0</div><div class="v2-stat__cap">AAOMS 2022 진단기준에 포함된 영상 소견<br>범위·감별에 씁니다</div></div><div class="v2-step"><i>1</i><span>영상만으로 진단 금지</span></div><div class="v2-step"><i>2</i><span>CBCT/CT — 범위·감별</span></div><div class="v2-step"><i>3</i><span>MRI — 골수 평가</span></div>
-  </div>
-  <div class="v2-tip">Tip · 판독지의 골경화 소견 하나로 MRONJ를 진단하지 마십시오.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">07 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 05 · RISK SIZE</div>
+  <div class="v2-chapter">CHAPTER 04 · 위험의 크기</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">약제마다 위험의 자릿수가 다르다</h2>
-  <p class="v2-sub">암 용량은 MRONJ 위험이 100~1,000배 높다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>골다공증 용량 — 1만 명당 수준</b></div><div class="v2-body">위약 <b>0~0.02%</b> · 경구BP <b>≤0.05%</b> · ZOL 5mg/년 <b>≤0.02%</b> · 데노수맙 60mg <b>0.04~0.3%</b> · 로모소주맙 <b>0.03~0.05%</b></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>암 용량은 다른 집단이다</b></div><div class="v2-body">ZOL 4mg·데노수맙 120mg 월 1회 — 노출 수십 배, MRONJ 위험 100~1,000배 = <b>1~15%</b>. 레인이 갈리는 칸도 있다 — ZOL 5mg/년은 AAOMS ≤0.02% / 0.017% / 0.06~0.13% 로 자료마다 다르다.</div></div>
+  <p class="v2-sub">골다공증 용량은 1만 명당 수준 — 암 용량은 MRONJ 위험이 100~1,000배 높다</p>
+  <table class="v2-table q-table " style="--rh:56px;left:64px;top:206px;width:709px"><colgroup><col style="width:210px"><col style="width:170px"><col style="width:329px"></colgroup><thead><tr><th>약제</th><th>MRONJ 절대위험</th><th>메모</th></tr></thead><tbody><tr><th>위약</th><td>0~0.02%</td><td>비교 기준</td></tr><tr><th>경구 BP</th><td>≤0.05%</td><td>위약과 겹침</td></tr><tr><th>ZOL 5mg/년</th><td>≤0.02%</td><td>자료마다 다름 — 0.017% / 0.06~0.13%</td></tr><tr><th>데노수맙 60mg</th><td>0.04~0.3%</td><td>골다공증 용량에서 실제로 다른 하나</td></tr><tr><th>로모소주맙</th><td>0.03~0.05%</td><td>알렌드로네이트(0.05%) 수준</td></tr><tr><th>암 용량</th><td><b>1~15%</b></td><td>ZOL 4mg·데노수맙 120mg 월 1회 — 노출 수십 배</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:801px;top:266px;width:415px;height:176px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-drug-risk-strip-20260816.png" alt="다섯 약제 칸 중 데노수맙 칸에만 병변이 그려진 띠 그림" style="width:415px;height:176px">
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">5<span>종</span></div><div class="v2-stat__cap">약제 다섯 종의 절대위험은 자릿수가 다릅니다<br>실제로 다른 것은 데노수맙 하나입니다</div></div><div class="v2-step"><i>1</i><span>경구BP ≤0.05%</span></div><div class="v2-step"><i>2</i><span>데노수맙 0.04~0.3%</span></div><div class="v2-step"><i>3</i><span>암 용량 1~15%</span></div>
-  </div>
-  <div class="v2-tip">Tip · 상대위험만 말하면 공포가 커집니다. 절대위험으로 환산해 말합니다.</div>
+  <div class="q-tl" style="left:801px;top:450px;width:415px;grid-template-columns:repeat(5,1fr)"><div class="q-tl__lab"><b>①</b><span>경구BP</span></div><div class="q-tl__lab"><b>②</b><span>ZOL</span></div><div class="q-tl__lab q-tl__lab--on"><b>③</b><span>데노수맙</span></div><div class="q-tl__lab"><b>④</b><span>로모</span></div><div class="q-tl__lab"><b>⑤</b><span>테리</span></div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 그림의 병변은 ③ 데노수맙 칸에만 있습니다 — 자릿수 차이를 옮긴 설명용 그림입니다.</span><span class="v2-src">근거 · AAOMS 2022 약제별 절대위험</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">08 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">06 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 05 · RISK SIZE</div>
+  <div class="v2-chapter">CHAPTER 05 · 같은 약, 다른 수</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">다른 것은 하나뿐이다</h2>
-  <p class="v2-sub">다섯 칸 중 병변이 그려진 칸은 하나입니다 — 데노수맙</p>
-  <div class="v2-panel v2-panel--figwide" style="left:174px;top:206px;width:932px;height:400px">
-    <img class="v2-figwide__img" src="../../../shared/assets/generated/mronj-drug-risk-strip-20260816.png" alt="약제 다섯 종의 턱뼈를 나란히 둔 비교 그림 — 가운데 데노수맙 칸에만 노출된 사골이 있다">
+  <h2 class="v2-title">같은 데노수맙인데 수가 셋이다 — 분모가 다르다</h2>
+  <p class="v2-sub">전체 발생률 · 침습시술군 · 발치 코호트 — 그리고 서로 비교할 수 없는 수들</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:368px;height:190px">
+    <div class="q-stat__lab">전체 · /10,000 patient-years</div><div class="q-stat__num">5.2</div><div class="q-stat__body">FREEDOM Extension 10년 — 골다공증 용량 사용자 전체가 분모</div>
   </div>
-  <div class="v2-figwide__cap">①경구BP ②ZOL ③데노수맙 ④로모소주맙 ⑤테리파라타이드. 병변은 ③에만 있습니다. 절대위험의 자릿수 차이를 그림으로 옮긴 것입니다.</div>
+  <div class="v2-panel q-stat" style="left:456px;top:206px;width:368px;height:190px">
+    <div class="q-stat__lab">침습 구강시술군 · 누적</div><div class="q-stat__num">0.68%</div><div class="q-stat__body">시술·사건을 보고한 환자. 없던 환자 0.05%(Watts&nbsp;2019)</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:848px;top:206px;width:368px;height:190px">
+    <div class="q-stat__lab">발치 코호트</div><div class="q-stat__num">2.3%</div><div class="q-stat__body">데노수맙 427명·1,081치아 발치 → ONJ 10명(Colella 2023)</div>
+  </div>
+  <div class="v2-panel q-cell" style="left:64px;top:416px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.3906 39.5251C14.8312 42.3229 19.2197 44 24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 29.7848 6.45593 34.9959 10.382 38.6476C10.481 38.7894 10.5813 38.9322 10.6828 39.0763C10.7999 39.2423 10.9647 39.3687 11.1554 39.4387L11.3906 39.5251ZM41.9995 24.1337C41.8513 24.0481 41.6801 24 41.5 24H33.6664C33.0439 23.9989 32.4409 24.2094 31.9529 24.5949C31.465 24.9804 31.1205 25.5182 30.9704 26.1209L30.9697 26.1238L30.0811 29.7379C29.9805 30.1494 29.9734 30.5787 30.0603 30.9934C30.1472 31.4081 30.326 31.7984 30.5843 32.1345C30.8427 32.4707 31.1742 32.744 31.5544 32.9325C31.9345 33.1209 32.3528 33.2192 32.7772 33.2191H33.2156L34.2044 38.8301C31.3043 40.8294 27.7889 42 24 42C20.2545 42 16.7762 40.856 13.8955 38.8984L15.4252 30.313H16.433C16.9755 30.3132 17.5108 30.189 17.998 29.9501C18.4854 29.7112 18.9117 29.364 19.2448 28.9352C19.578 28.5066 19.8094 28.0076 19.922 27.4762C20.0345 26.9449 20.0253 26.3949 19.895 25.8676L18.6117 20.7053L18.6109 20.7024C18.4165 19.9302 17.971 19.2443 17.3439 18.7543C16.7169 18.2644 15.9444 17.9985 15.149 18H7.02423C9.49525 11.0088 16.1627 6 24 6C25.3444 6 26.6543 6.14738 27.9146 6.42686L27.4816 7.8435H27.2925C26.9446 7.84341 26.6012 7.9225 26.2884 8.07479C25.9755 8.22714 25.7013 8.44876 25.4868 8.72289C25.2723 8.99701 25.123 9.31643 25.0504 9.65689C24.9778 9.99736 24.9837 10.3499 25.0678 10.6877C25.0838 10.7521 25.1062 10.8147 25.1346 10.8747L27.7448 16.3797C27.8828 16.8306 28.1569 17.2288 28.5308 17.5189C28.9338 17.8316 29.4295 18.0008 29.9394 18H40.9758C41.6391 19.8767 42 21.8962 42 24L41.9998 24.0758L41.9995 24.1337Z" fill="currentColor"/>
+</svg></div><b>핀란드 코호트(N=58,367)</b></div><div class="v2-body">저용량 0.3% · 고용량 9.0% · 데노수맙이 BP의 5배 — 진단코드 기반이라 AAOMS 추정보다 높다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:454px;top:416px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.4236 41.8172C23.424 41.8174 23.4243 41.8176 24 41L23.4236 41.8172ZM24.5764 41.8172L24.58 41.8146L24.5891 41.8082L24.6209 41.7854C24.6482 41.7658 24.6875 41.7374 24.7379 41.7004C24.8387 41.6263 24.9842 41.5178 25.1681 41.3765C25.5357 41.0938 26.0571 40.6794 26.6811 40.1459C27.9277 39.08 29.5908 37.5328 31.2565 35.6059C34.5639 31.7799 38 26.3195 38 20.0769C38 16.3454 36.5264 12.7655 33.9016 10.1251C31.2765 7.48454 27.7149 6 24 6C20.2851 6 16.7235 7.48454 14.0984 10.1251C11.4736 12.7655 10 16.3454 10 20.0769C10 26.3195 13.4361 31.7799 16.7435 35.6059C18.4092 37.5328 20.0723 39.08 21.3189 40.1459C21.9429 40.6794 22.4643 41.0938 22.8319 41.3765C23.0158 41.5178 23.1613 41.6263 23.2621 41.7004C23.3125 41.7374 23.3518 41.7658 23.3791 41.7854L23.4109 41.8082L23.42 41.8146L23.4236 41.8172C23.7689 42.0603 24.2311 42.0603 24.5764 41.8172ZM24 41L24.5764 41.8172C24.576 41.8174 24.5757 41.8176 24 41ZM29 20C29 22.7614 26.7614 25 24 25C21.2386 25 19 22.7614 19 20C19 17.2386 21.2386 15 24 15C26.7614 15 29 17.2386 29 20Z" fill="currentColor"/>
+</svg></div><b>한국 역학</b></div><div class="v2-body">경구BP 유병률 0.10%, 발생률 36.6/10만PY — 직접 비교 불가.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:844px;top:416px;width:370px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 24C20.8675 24 24 20.8675 24 17C24 13.1325 20.8675 10 17 10C13.1325 10 10 13.1325 10 17C10 20.8675 13.1325 24 17 24Z" fill="currentColor"/>
+<path d="M39 20.5C39 23.5387 36.5387 26 33.5 26C30.4613 26 28 23.5387 28 20.5C28 17.4612 30.4613 15 33.5 15C36.5387 15 39 17.4612 39 20.5Z" fill="currentColor"/>
+<path d="M17 26C19.7336 26 24.183 26.8511 27.1011 28.5452C28.293 29.7585 29 31.0814 29 32.4V38H4V32.4C4 28.144 12.6612 26 17 26Z" fill="currentColor"/>
+<path d="M44 38H31V32.4C31 30.9837 30.4886 29.6801 29.6764 28.5166C31.2173 28.1725 32.7343 28 33.8927 28C37.6211 28 44 29.7867 44 33.3333V38Z" fill="currentColor"/>
+</svg></div><b>아시아가 더 높다는 보고</b></div><div class="v2-body">아시아 발생률이 서구보다 높다는 보고(Taguchi) — 인구집단이 다르다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 분모·추적기간·진단기준이 다른 수는 비교하지 않습니다 — 임상시험 추정 vs 청구자료, 누적위험 vs 연간발생률.</span><span class="v2-src">근거 · FREEDOM Ext · Watts 2019 · Colella 2023 · 핀란드 코호트(Sci Rep 2025) · Taguchi</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">09 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">07 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 06 · SAME DRUG</div>
+  <div class="v2-chapter">CHAPTER 06 · 시술</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">같은 데노수맙인데 수가 셋이다</h2>
-  <p class="v2-sub">전체 발생률 · 침습시술군 · 발치 코호트 — 분모가 다릅니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>① 전체 발생률</b></div><div class="v2-body">FREEDOM Extension 10년 — ONJ <b>5.2/10,000 patient-years</b>. 골다공증 용량 사용자 전체가 분모다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>② 침습 구강시술군</b></div><div class="v2-body">침습 구강시술·사건을 보고한 환자 누적 ONJ <b>0.68%</b>, 없던 환자 0.05%(Watts 2019).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>③ 발치 코호트</b></div><div class="v2-body">데노수맙 427명·1,081치아 발치 → ONJ 10명 = <b>2.3%</b>(Colella 2023).</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">3</div><div class="v2-stat__cap">같은 데노수맙에서 나온 세 수<br>5.2/만PY · 0.68% · 2.3%<br>분모가 서로 다르다</div></div><div class="v2-step"><i>1</i><span>전체 5.2/만PY — 발생률</span></div><div class="v2-step"><i>2</i><span>침습시술군 0.68%</span></div><div class="v2-step"><i>3</i><span>발치 2.3%</span></div>
-  </div>
-  <div class="v2-tip">Tip · 어느 수를 말하는지 먼저 정합니다. 분모가 다르면 다른 질문의 답입니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">10 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 07 · COMPARISON</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">이 숫자들은 서로 비교할 수 없다</h2>
-  <p class="v2-sub">인구집단·추적기간·진단기준이 모두 다릅니다 — 표를 옆으로 읽지 마십시오</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>다른 것은 위험이 아니라 연구 설계일 수 있다</b></div><div class="v2-body">핀란드 코호트(N=58,367) 저용량 <b>0.3%</b> · 고용량 <b>9.0%</b> — 진단코드 기반이라 AAOMS 추정보다 높다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>한국 역학 — 유병률 0.10%</b></div><div class="v2-body">경구BP 유병률 <b>0.10%</b>, 발생률 36.6/10만PY. 직접 비교 불가.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>아시아가 더 높다는 보고</b></div><div class="v2-body">아시아 발생률이 서구보다 높다는 보고(Taguchi)가 있다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">금지</div><div class="v2-stat__cap">분모·추적기간·진단기준이<br>다른 수는 비교하지 않는다</div></div><div class="v2-step"><i>1</i><span>임상시험 추정 vs 청구자료</span></div><div class="v2-step"><i>2</i><span>누적위험 vs 연간발생률</span></div><div class="v2-step"><i>3</i><span>ZOL — ≤0.02% / 0.017% / 0.06~0.13%</span></div>
-  </div>
-  <div class="v2-tip">Tip · 표를 가로로 읽으면 위험이 커 보입니다. 같은 분모끼리만 비교합니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">11 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 08 · ORAL</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">침습적인가 — 그것이 약제조정을 정한다</h2>
+  <h2 class="v2-title">침습적인가 — 그것이 약제 조정을 정한다</h2>
   <p class="v2-sub">비침습 시술에는 약제 조정이 필요하지 않습니다 — 뼈를 건드리는지부터 봅니다</p>
-  <table class="v2-table v2-table--list" style="left:64px;top:206px;width:1152px">
-    <thead><tr>
-      <th style="width:340px">치과 시술</th>
-      <th>위험·조정</th>
-    </tr></thead>
-    <tbody>
-      <tr><th scope="row">스케일링</th><td>위험 증가 입증 안 됨 — 조정 없음</td></tr>
-      <tr><th scope="row">비수술 치주</th><td>낮음 — 조정 없음, 감염관리</td></tr>
-      <tr><th scope="row">근관</th><td>비외과 근관 — 조정 없음, 근단 유출 주의</td></tr>
-      <tr><th scope="row">단순 발치</th><td>BP 0~0.15% · DMB 1~2.3%</td></tr>
-      <tr><th scope="row">수술발치</th><td>같은 약제 원칙 — 골연 정리·항생제</td></tr>
-      <tr><th scope="row">임플란트 식립</th><td>BP 3/1,000·DMB 0.5%, 중단 불필요</td></tr>
-      <tr><th scope="row">주위염 수술</th><td>감염+골조작 — 침습 분기</td></tr>
-      <tr><th scope="row">골이식</th><td>상악동거상 포함 — 개별화·동의</td></tr>
-      <tr><th scope="row">치주골수술</th><td>증가 가능 — 침습 분기, 최소외상</td></tr>
-      <tr><th scope="row">임플란트 제거</th><td>증가 — 데노수맙 시점 고려</td></tr>
-      <tr><th scope="row">치근단절제</th><td>증가 가능 — 비외과 우선, 개별화</td></tr>
-      <tr><th scope="row">의치 점막외상</th><td>자발 MRONJ 유발 가능 — 틀니 조정</td></tr>
-    </tbody>
-  </table>
-  <div class="v2-tip">Tip · 약을 끊을지 묻기 전에 그 시술이 뼈를 건드리는지부터 봅니다.</div>
+  <table class="v2-table q-table q-table--l" style="--rh:56px;left:64px;top:206px;width:564px"><colgroup><col style="width:180px"><col style="width:384px"></colgroup><thead><tr><th>치과 시술</th><th>위험 · 조정</th></tr></thead><tbody><tr><th>스케일링</th><td>위험 증가 입증 안 됨 — 조정 없음</td></tr><tr><th>비수술 치주</th><td>낮음 — 조정 없음, 감염관리</td></tr><tr><th>근관</th><td>비외과 근관 — 조정 없음, 근단 유출 주의</td></tr><tr><th>단순 발치</th><td>BP 0~0.15% · DMB 1~2.3%</td></tr><tr><th>수술발치</th><td>같은 약제 원칙 — 골연 정리·항생제</td></tr><tr><th>임플란트 식립</th><td>BP 3/1,000 · DMB 0.5%, 중단 불필요</td></tr></tbody></table>
+  <table class="v2-table q-table " style="--rh:56px;left:652px;top:206px;width:564px"><colgroup><col style="width:180px"><col style="width:384px"></colgroup><thead><tr><th>치과 시술</th><th>위험 · 조정</th></tr></thead><tbody><tr><th>주위염 수술</th><td>감염+골조작 — 침습 분기</td></tr><tr><th>골이식</th><td>상악동거상 포함 — 개별화·동의</td></tr><tr><th>치주골수술</th><td>증가 가능 — 침습 분기, 최소외상</td></tr><tr><th>임플란트 제거</th><td>증가 — 데노수맙 시점 고려</td></tr><tr><th>치근단절제</th><td>증가 가능 — 비외과 우선, 개별화</td></tr><tr><th>의치 점막외상</th><td>자발 MRONJ 유발 가능 — 틀니 조정</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약을 끊을지 묻기 전에 그 시술이 뼈를 건드리는지부터 봅니다. 발치 DMB 2.3% = Colella 2023 · 임플란트 BP 3/1,000 = Endocrine ONJ Taskforce 2025.</span><span class="v2-src">근거 · 한국 2025 알고리즘 · ADA · AAOMS 2022</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">12 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">08 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 09 · HOLIDAY</div>
+  <div class="v2-chapter">CHAPTER 07 · BP 휴약</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">BP 휴약 — 권고와 입증은 다르다</h2>
-  <p class="v2-sub">'효과 없음'이 아니라 '입증 데이터 없음'입니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>약리 — 2~3개월로는 안 빠진다</b></div><div class="v2-body">BP는 골에 결합해 수년 잔류한다. 단기 중단으로 사라지지 않는다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>메타분석</b></div><div class="v2-body">발치 전 항흡수제 휴약이 MRONJ를 유의하게 줄이지 못했다 — <b>OR 0.73</b>(95% CI 0.51~1.06, p=0.10, 8편·6,808명).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>'무효 증명'은 아니다</b></div><div class="v2-body">포함 연구 대부분이 관찰연구이고 적응증 교란이 크다. 입증할 데이터가 없었다는 뜻에 가깝다.</div></div>
+  <p class="v2-sub">'효과 없음'이 아니라 '입증 데이터 없음' — 4년 룰은 폐기, 한국 2025의 숫자는 협진용 타협안</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 5H29L38 14V37C38 38.1046 37.1046 39 36 39H16C14.8954 39 14 38.1046 14 37V7C14 5.89543 14.8954 5 16 5ZM35 14L29 8V13C29 13.5523 29.4477 14 30 14H35ZM21.2929 20.2929C21.6834 19.9024 22.3166 19.9024 22.7071 20.2929L26 23.5858L29.2929 20.2929C29.6834 19.9024 30.3166 19.9024 30.7071 20.2929C31.0976 20.6834 31.0976 21.3166 30.7071 21.7071L27.4142 25L30.7071 28.2929C31.0976 28.6834 31.0976 29.3166 30.7071 29.7071C30.3166 30.0976 29.6834 30.0976 29.2929 29.7071L26 26.4142L22.7071 29.7071C22.3166 30.0976 21.6834 30.0976 21.2929 29.7071C20.9024 29.3166 20.9024 28.6834 21.2929 28.2929L24.5858 25L21.2929 21.7071C20.9024 21.3166 20.9024 20.6834 21.2929 20.2929Z" fill="currentColor"/>
+<path d="M12 11H10V38C10 40.7614 12.2386 43 15 43H34V41H15C13.3431 41 12 39.6569 12 38V11Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">휴약 — 입증되지 않았다</div>
+    <div class="v2-body">BP는 골에 결합해 수년 잔류 — 2~3개월로 안 빠진다. 메타분석(8편·6,808명): 휴약이 MRONJ를 유의하게 줄이지 못함, OR 0.73(95% CI 0.51~1.06, p=0.10). 관찰연구·적응증 교란이 커 '무효 증명'은 아니다.</div>
+    <div class="q-card__k">비유의 — 데이터 부족</div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">비유의</div><div class="v2-stat__cap">휴약 vs 비휴약 차이<br>OR 0.73(0.51~1.06)</div></div><div class="v2-step"><i>1</i><span>골 잔류 — 약리 무용</span></div><div class="v2-step"><i>2</i><span>메타 OR 0.73 — 유의하지 않음</span></div><div class="v2-step"><i>3</i><span>무효 증명 아님 — 데이터 부족</span></div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">'4년 룰'의 현재</div>
+    <div class="v2-body">2014 AAOMS: 경구BP &gt;4년 또는 스테로이드 병용 시 약 2개월 휴약을 prudent로 제시. 2022 AAOMS·한국 2025: 4년 cut-off 삭제, 휴약 자체는 controversial. 지금은 '&gt;12개월부터 점증'하는 연속 위험인자 중 하나.</div>
+    <div class="q-card__k">규칙에서 폐기</div>
   </div>
-  <div class="v2-tip">Tip · '휴약은 소용없다'와 '휴약의 이득을 입증한 데이터가 없다'는 다른 문장입니다.</div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.4236 41.8172C23.424 41.8174 23.4243 41.8176 24 41L23.4236 41.8172ZM24.5764 41.8172L24.58 41.8146L24.5891 41.8082L24.6209 41.7854C24.6482 41.7658 24.6875 41.7374 24.7379 41.7004C24.8387 41.6263 24.9842 41.5178 25.1681 41.3765C25.5357 41.0938 26.0571 40.6794 26.6811 40.1459C27.9277 39.08 29.5908 37.5328 31.2565 35.6059C34.5639 31.7799 38 26.3195 38 20.0769C38 16.3454 36.5264 12.7655 33.9016 10.1251C31.2765 7.48454 27.7149 6 24 6C20.2851 6 16.7235 7.48454 14.0984 10.1251C11.4736 12.7655 10 16.3454 10 20.0769C10 26.3195 13.4361 31.7799 16.7435 35.6059C18.4092 37.5328 20.0723 39.08 21.3189 40.1459C21.9429 40.6794 22.4643 41.0938 22.8319 41.3765C23.0158 41.5178 23.1613 41.6263 23.2621 41.7004C23.3125 41.7374 23.3518 41.7658 23.3791 41.7854L23.4109 41.8082L23.42 41.8146L23.4236 41.8172C23.7689 42.0603 24.2311 42.0603 24.5764 41.8172ZM24 41L24.5764 41.8172C24.576 41.8174 24.5757 41.8176 24 41ZM29 20C29 22.7614 26.7614 25 24 25C21.2386 25 19 22.7614 19 20C19 17.2386 21.2386 15 24 15C26.7614 15 29 17.2386 29 20Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">한국 2025는 왜 더 처방적인가</div>
+    <div class="v2-body">장기 경구BP 또는 전신 위험인자 시 2개월, IV 졸레드론산은 마지막 주입 6~12개월 후. AAOMS가 RCT 없음으로 철회한 휴약을 협진이 끊기지 않게 시간축으로 명시. 최근 척추골절 등 초고위험군은 휴약 없이 시술이 이득.</div>
+    <div class="q-card__k">제안 — 절대기준 아님</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · '휴약은 소용없다'와 '휴약의 이득을 입증한 데이터가 없다'는 다른 문장입니다. 근거는 관찰연관이지 인과 입증이 아닙니다.</span><span class="v2-src">근거 · 휴약 메타분석(PMC9674041) · AAOMS 2014·2022 · 한국 2025(DOI 10.3803/EnM.2025.2712)</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">13 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 10 · 4-YEAR</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">'4년 룰'의 현재</h2>
-  <p class="v2-sub">의사결정 규칙에서 폐기</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>① 2014 AAOMS</b></div><div class="v2-body">경구BP >4년 또는 스테로이드 병용 시 약 2개월 휴약을 prudent로 제시했다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>② 2022 AAOMS·한국2025</b></div><div class="v2-body">4년 cut-off 삭제, 휴약 자체는 controversial.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>③ 지금 남은 자리</b></div><div class="v2-body">'>12개월부터 점증' 연속 모델로 대체됨.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">폐기</div><div class="v2-stat__cap">'>4년 → 2개월 휴약'<br>규칙에서 폐기됨</div></div><div class="v2-step"><i>1</i><span>2014 기계적 컷오프</span></div><div class="v2-step"><i>2</i><span>2022 삭제</span></div><div class="v2-step"><i>3</i><span>위험인자로만</span></div>
-  </div>
-  <div class="v2-tip">Tip · '4년 넘었으니 무조건 끊는다'는 옛 기준입니다. 기간은 위험인자 중 하나입니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">14 / 43</div>
+  <div class="v2-foot v2-foot--r">09 / 22</div>
 </section>
-
 <section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 11 · KOREA</div>
+  <div class="v2-chapter">CHAPTER 08 · 데노수맙</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">한국 2025는 왜 더 처방적인가</h2>
-  <p class="v2-sub">임상 선호와 협진 마찰을 줄이려는 타협안입니다 — 절대기준이 아닙니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>제안된 숫자</b></div><div class="v2-body">장기 경구BP 또는 전신 위험인자 시 <b>2개월</b>. IV 졸레드론산은 마지막 주입 <b>6~12개월</b> 후.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>왜 이렇게 썼나</b></div><div class="v2-body">AAOMS는 RCT가 없다며 휴약 권고를 철회했다. 한국은 협진이 끊기는 것을 막으려 시간축을 명시했다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>붙은 단서</b></div><div class="v2-body">'절대적 기준이 아니다' — 최근 척추골절 등 초고위험군은 휴약 없이 시술하는 편이 이득.</div></div>
+  <h2 class="v2-title">데노수맙은 뼈에 남지 않는다 — 끊으면 척추가 몰려서 무너진다</h2>
+  <p class="v2-sub">BP와 약리가 다르면 전략도 다릅니다 — 중단이 아니라 시점입니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:236px;height:190px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-denosumab-binding-20260816.png" alt="골 무기질에 박혀 남는 BP와 순환에서 사라지는 데노수맙 비교" style="width:236px;height:190px">
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">2개월</div><div class="v2-stat__cap">장기 경구BP·위험인자 시<br>한국 2025의 제안 — 절대기준 아님</div></div><div class="v2-step"><i>1</i><span>경구BP — 2개월(제안)</span></div><div class="v2-step"><i>2</i><span>ZOL 주입 6~12개월 후</span></div><div class="v2-step"><i>3</i><span>근거는 관찰연관, 인과 입증 아님</span></div>
+  <div class="v2-panel q-fig" style="left:64px;top:416px;width:236px;height:190px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-rebound-vertebral-20260816.png" alt="데노수맙 중단 전후 척추 — 다발성 쐐기변형과 후만" style="width:236px;height:190px">
   </div>
-  <div class="v2-tip">Tip · 한국 권고안의 숫자는 국제 합의가 아니라 국내 협진용 타협안입니다.</div>
+  <div class="v2-panel q-cell" style="left:328px;top:206px;width:888px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M33 9.22967V6H31V9H13V6H11V9.22967C11 14.6524 13.5895 19.6466 17.8037 22.7875C18.4275 22.3933 19.0782 22.0334 19.7536 21.7107C17.8831 20.4891 16.329 18.8727 15.1851 17H23.1319C23.2566 16.2999 23.4669 15.6295 23.7517 15H14.1615C13.6308 13.7364 13.2711 12.392 13.1051 11H27.4964C28.6894 10.3618 30.0525 10 31.5 10C32.0035 10 32.4968 10.0438 32.9763 10.1277C32.992 9.82987 33 9.53043 33 9.22967Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22 22.9172C22.611 22.6536 23.1981 22.352 23.7589 22.0158C24.0375 22.6283 24.3867 23.2018 24.7959 23.7261C24.6398 23.8198 24.4819 23.9111 24.3223 24C23.698 24.3476 23.0469 24.6583 22.3714 24.9285C22.252 24.9762 22.1335 25.0254 22.0159 25.076L22 25.0828C19.1137 26.3281 16.7605 28.4211 15.1851 31H28.8149C27.671 29.1273 26.1169 27.5109 24.2464 26.2893C24.9218 25.9666 25.5725 25.6067 26.1963 25.2125C29.9474 28.0082 32.4113 32.2723 32.9075 37L33 42H31V39H13V42H11L11.0925 37C11.6672 31.5245 14.8813 26.6708 19.6777 24C20.302 23.6524 20.9531 23.3417 21.6286 23.0715C21.748 23.0238 21.8665 22.9746 21.9841 22.924L22 22.9172ZM29.8385 33H14.1615C13.6308 34.2636 13.2711 35.608 13.1051 37H30.8949C30.7289 35.608 30.3692 34.2636 29.8385 33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.5 25C33.0621 25 34.4955 24.449 35.6164 23.5307L39.293 27.2072L40.7072 25.793L36.9531 22.0389C37.6153 21.0206 38 19.8052 38 18.5C38 14.9101 35.0899 12 31.5 12C27.9101 12 25 14.9101 25 18.5C25 22.0899 27.9101 25 31.5 25ZM31.5 23C33.9853 23 36 20.9853 36 18.5C36 16.0147 33.9853 14 31.5 14C29.0147 14 27 16.0147 27 18.5C27 20.9853 29.0147 23 31.5 23Z" fill="currentColor"/>
+</svg></div><b>RANKL 단클론항체 — 가역적</b></div><div class="v2-body">골에 결합하지 않고 파골세포의 분화·기능·생존을 억제한다. 혈중 반감기 약 <b>25~28일</b>(레인별 25.4일), 주사 6개월경 억제 소실 시작. 중단하면 골전환표지자가 3개월부터 올라 6개월경 기저치를 넘고, 얻은 골밀도는 12개월 안에 되돌아간다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:328px;top:416px;width:888px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 6.24184C15.5833 6.12178 15 6.59494 15 7.22895V7.88659C15 8.43888 14.5523 8.88659 14 8.88659H13C12.4477 8.88659 12 9.33431 12 9.8866V11.7353C12 12.2876 12.4477 12.7353 13 12.7353H14C14.5523 12.7353 15 13.183 15 13.7353V14.8453C15 15.3022 15.3106 15.702 15.7544 15.8107C22.2204 17.3952 26.0763 17.396 32.2561 15.8165C32.6948 15.7043 33 15.3069 33 14.8541V13.7353C33 13.183 33.4477 12.7353 34 12.7353H35C35.5523 12.7353 36 12.2876 36 11.7353V9.8866C36 9.33431 35.5523 8.88659 35 8.88659H34C33.4477 8.88659 33 8.43888 33 7.88659V7.23211C33 6.59707 32.415 6.12369 31.7916 6.24503C25.8882 7.39417 22.1085 7.38021 16.2058 6.24184ZM19 10.0001C19 9.4478 18.5523 9.00008 18 9.00008C17.4477 9.00008 17 9.4478 17 10.0001V13.0001C17 13.5524 17.4477 14.0001 18 14.0001C18.5523 14.0001 19 13.5524 19 13.0001V10.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 18.2418C15.5833 18.1218 15 18.5949 15 19.229V19.8866C15 20.4389 14.5523 20.8866 14 20.8866H13C12.4477 20.8866 12 21.3343 12 21.8866V23.7353C12 24.2876 12.4477 24.7353 13 24.7353H14C14.5523 24.7353 15 25.183 15 25.7353V26.8453C15 27.3022 15.3106 27.702 15.7544 27.8107C22.2204 29.3952 26.0763 29.396 32.2561 27.8165C32.6948 27.7043 33 27.3069 33 26.8541V25.7353C33 25.183 33.4477 24.7353 34 24.7353H35C35.5523 24.7353 36 24.2876 36 23.7353V21.8866C36 21.3343 35.5523 20.8866 35 20.8866H34C33.4477 20.8866 33 20.4389 33 19.8866V19.2321C33 18.5971 32.415 18.1237 31.7916 18.245C25.8882 19.3942 22.1085 19.3802 16.2058 18.2418ZM19 22.0001C19 21.4478 18.5523 21.0001 18 21.0001C17.4477 21.0001 17 21.4478 17 22.0001V25.0001C17 25.5524 17.4477 26.0001 18 26.0001C18.5523 26.0001 19 25.5524 19 25.0001V22.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 30.2418C15.5833 30.1218 15 30.5949 15 31.229V31.8866C15 32.4389 14.5523 32.8866 14 32.8866H13C12.4477 32.8866 12 33.3343 12 33.8866V35.7353C12 36.2876 12.4477 36.7353 13 36.7353H14C14.5523 36.7353 15 37.183 15 37.7353V38.8453C15 39.3022 15.3106 39.702 15.7544 39.8107C22.2204 41.3952 26.0763 41.396 32.2561 39.8165C32.6948 39.7043 33 39.3069 33 38.8541V37.7353C33 37.183 33.4477 36.7353 34 36.7353H35C35.5523 36.7353 36 36.2876 36 35.7353V33.8866C36 33.3343 35.5523 32.8866 35 32.8866H34C33.4477 32.8866 33 32.4389 33 31.8866V31.2321C33 30.5971 32.415 30.1237 31.7916 30.245C25.8882 31.3942 22.1085 31.3802 16.2058 30.2418ZM19 34.0001C19 33.4478 18.5523 33.0001 18 33.0001C17.4477 33.0001 17 33.4478 17 34.0001V37.0001C17 37.5524 17.4477 38.0001 18 38.0001C18.5523 38.0001 19 37.5524 19 37.0001V34.0001Z" fill="currentColor"/>
+</svg></div><b>중단 후 반동 — MRONJ보다 흔하다</b></div><div class="v2-body">척추골절 <b>1.2 → 7.1/100인년</b>(FREEDOM 사후분석). 중단군 척추골절의 <b>60.7%</b>가 다발성(위약 38.7%), 이전 척추골절이 있으면 OR 3.9. &gt;3년 사용군 다발성 VF 7.5/100인년(Cosman 2022는 기간 관련성 부정).</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · BP 휴약 논리를 데노수맙에 옮기면 안 됩니다. MRONJ 절대위험보다 반동 골절 위험이 훨씬 큽니다(그림은 설명용).</span><span class="v2-src">근거 · 데노수맙 약리 · Cummings 2018(FREEDOM) · Cosman 2022</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">15 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">10 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 12 · RANKL</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">데노수맙은 뼈에 남지 않는다</h2>
-  <p class="v2-sub">BP 와 다른 약입니다 — 약리가 다르면 전략도 다릅니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>작용 기전</b></div><div class="v2-body">골에 결합하지 않는 <b>RANKL 단클론항체</b>입니다. 파골세포의 분화·기능·생존을 억제하며 가역적입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>반감기와 소실</b></div><div class="v2-body">혈중 반감기 약 25~28일(레인별 25.4일). 주사 <b>6개월경 억제 소실</b>이 시작됩니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>중단 후 반동</b></div><div class="v2-body">골전환표지자는 3개월부터 올라 6개월경 기저치를 넘고, 얻은 골밀도는 12개월 안에 되돌아갑니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="../../../shared/assets/generated/mronj-denosumab-binding-20260816.png" alt="같은 골소주를 두 번 그려 한쪽은 약 입자가 무기질에 박혀 있고 다른 쪽은 씻겨 나간 것을 보인 대비 그림"><div class="v2-fig__cap">왼쪽 = 골 무기질에 박혀 오래 남는 비스포스포네이트, 오른쪽 = 순환에서 사라지는 데노수맙. 중단 후 반동이 생기는 이유입니다.</div></div>
-  </div>
-  <div class="v2-tip">Tip · BP 휴약 논리를 데노수맙에 옮기면 안 됩니다. 중단이 아니라 시점입니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">16 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 13 · REBOUND</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">중단하면 척추골절이 몰려서 온다</h2>
-  <p class="v2-sub">MRONJ 보다 흔하고, 한 번에 여러 개가 무너집니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>1.2 → 7.1 /100인년</b></div><div class="v2-body">FREEDOM 사후분석 — 치료 중 1.2에서 중단 후 <b>7.1/100인년</b>으로 반등했습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>다발성이 문제</b></div><div class="v2-body">중단군 척추골절의 60.7%가 다발성(위약 38.7%), 이전 척추골절이 있으면 <b>OR 3.9</b>.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>오래 쓴 환자</b></div><div class="v2-body">&gt;3년 사용군 다발성 VF 7.5/100인년(Cosman 2022 는 기간 관련성 부정).</div></div>
-  </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="../../../shared/assets/generated/mronj-rebound-vertebral-20260816.png" alt="데노수맙 중단 전후 같은 측면 시점 — 다발성 쐐기변형과 후만"><div class="v2-fig__cap">데노수맙 중단 전후 같은 측면 시점 — 다발성 쐐기변형과 후만이 함께 옵니다. 설명용 일러스트.</div></div>
-  </div>
-  <div class="v2-tip">Tip · MRONJ 절대위험보다 rebound 골절 위험이 훨씬 큽니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">17 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 14 · DELAY</div>
+  <div class="v2-chapter">CHAPTER 09 · 지연과 한계선</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">얼마나 늦출 수 있나 — 절벽이 아니라 경사다</h2>
-  <p class="v2-sub">'7개월 안전, 8개월 위험' 같은 생물학적 절벽은 없습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>30일 이내 지연</b></div><div class="v2-body">한국 전국 코호트(n≈149,199)에서 예정일보다 30일 미만 지연은 위험 증가가 뚜렷하지 않았습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>30~90일 구간</b></div><div class="v2-body">전체골절 HR 1.20(1.1~1.4). 90~180일 지연 구간은 HR 약 1.9(1.6~2.3).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>&gt;16주 — 척추골절</b></div><div class="v2-body">Lyu 2020 척추골절 <b>HR 3.91</b>(1.62~9.45), 누적 2.2 → 10.1/1,000.</div></div>
+  <p class="v2-sub">'7개월 안전, 8개월 위험' 같은 생물학적 절벽은 없습니다 — 권고안 상한과 코호트 경계를 층으로 읽습니다</p>
+  <table class="v2-table q-table " style="--rh:44px;left:64px;top:206px;width:1152px"><colgroup><col style="width:250px"><col style="width:470px"><col style="width:432px"></colgroup><thead><tr><th>지연</th><th>결과</th><th>코호트</th></tr></thead><tbody><tr><th>30일 미만</th><td>위험 증가가 뚜렷하지 않음</td><td>한국 전국 코호트 n≈149,199</td></tr><tr><th>30~90일</th><td>전체골절 HR <b>1.20</b>(1.1~1.4)</td><td>같은 코호트</td></tr><tr><th>90~180일</th><td>HR 약 <b>1.9</b>(1.6~2.3)</td><td>같은 코호트</td></tr><tr><th>&gt;16주</th><td>척추골절 HR <b>3.91</b>(1.62~9.45), 누적 2.2 → 10.1/1,000</td><td>Lyu 2020 n=2,594</td></tr></tbody></table>
+  <div class="v2-panel q-stat" style="left:64px;top:456px;width:368px;height:150px">
+    <div class="q-stat__lab">목표</div><div class="q-stat__num">6개월</div><div class="q-stat__body">정시 투여</div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">16</div><div class="v2-stat__cap">16주 넘게 늦으면<br>척추골절 HR 3.91<br>Lyu 2020 n=2,594</div></div><div class="v2-step"><i>1</i><span>&lt;30일 — 뚜렷한 증가 없음</span></div><div class="v2-step"><i>2</i><span>30~90일 — 1.20</span></div><div class="v2-step"><i>3</i><span>&gt;16주 VF</span></div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:456px;top:456px;width:368px;height:150px">
+    <div class="q-stat__lab">실무 경계</div><div class="q-stat__num">7개월</div><div class="q-stat__body">HIRA n≈14.9만 · Lyu — 7개월부터 위험 상승</div>
   </div>
-  <div class="v2-tip">Tip · 위험은 계단이 아니라 연속입니다. 늦었다면 더 늦추지 말고 바로 결정하십시오.</div>
+  <div class="v2-panel q-stat" style="left:848px;top:456px;width:368px;height:150px">
+    <div class="q-stat__lab">비상 한계</div><div class="q-stat__num">9개월</div><div class="q-stat__body">한국 2025 — 마지막 주사로부터 총 9개월 이내</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 9개월은 MRONJ 치료 등 특수상황의 상한이지 일상 지연의 목표가 아닙니다. 늦었다면 더 늦추지 말고 바로 결정하십시오.</span><span class="v2-src">근거 · Kim 2024(HIRA) · Lyu 2020 · 한국 2025 권고안</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">18 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">11 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 14 · TIMING</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">시점이 전부다</h2>
-  <p class="v2-sub">한 번의 투여 간격을 왼쪽에서 오른쪽으로 펼쳤습니다</p>
-  <div class="v2-panel v2-panel--figwide" style="left:174px;top:206px;width:932px;height:400px">
-    <img class="v2-figwide__img" src="../../../shared/assets/generated/mronj-denosumab-timeline-20260816.png" alt="주사에서 발치, 그리고 척추 압박골절로 이어지는 시간 띠 그림">
-  </div>
-  <div class="v2-figwide__cap">왼쪽 = 마지막 주사 직후, 가운데 = 발치하기 좋은 구간, 오른쪽 = 반동으로 척추가 무너지는 구간. 색이 이어지듯 위험도 계단이 아니라 경사입니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">19 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 15 · THRESHOLD</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">7개월인가 9개월인가 — 둘 다 싣는다</h2>
-  <p class="v2-sub">권고안의 상한과 코호트의 경계는 대립이 아닙니다. 층으로 읽습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>권고안 상한 — 한국 2025 총 9개월</b></div><div class="v2-body">재투여 지연은 예정일 기준 3개월, 즉 마지막 주사로부터 <b>총 9개월 이내</b>로 제시된 상한입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>골절 코호트 경계 — 7개월</b></div><div class="v2-body">HIRA n≈14.9만 · Lyu n=2,594 — 7개월부터 위험이 오릅니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>두 근거를 층으로 읽으면</b></div><div class="v2-body">목표는 6개월 정시, 실무 경계는 7개월, 9개월은 넘지 말아야 할 선입니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">6개월</div><div class="v2-stat__cap">목표 6개월 정시<br>7개월=실무 경계<br>9개월=비상 한계</div></div><div class="v2-step"><i>1</i><span>목표 — 6개월 정시 투여</span></div><div class="v2-step"><i>2</i><span>실무 경계 — 7개월</span></div><div class="v2-step"><i>3</i><span>상한 — 총 9개월(한국 2025), 목표 아닌 비상 한계</span></div>
-  </div>
-  <div class="v2-tip">Tip · 9개월은 MRONJ 치료 등 특수상황의 상한입니다. 일상 지연의 목표치가 아닙니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">20 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 16 · TIMING</div>
+  <div class="v2-chapter">CHAPTER 10 · 발치 시점</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">발치 시점 — 4개월이 가장 깔끔하다</h2>
-  <p class="v2-sub">MRONJ 만이 아니라 다음 주사까지 함께 봅니다 — 6구간 장단점</p>
-  <table class="v2-table" style="left:64px;top:206px;width:1152px">
-    <thead><tr>
-      <th style="width:240px">개월</th>
-      <th>MRONJ 측면</th>
-      <th>다음 주사</th>
-      <th>실무 평가</th>
-    </tr></thead>
-    <tbody>
-      <tr><th scope="row">0~3</th><td>억제가 가장 강한 시기</td><td>치유 뒤에도 여유 큼</td><td>3개월부터 권장 구간</td></tr>
-      <tr><th scope="row">4</th><td>억제 효과가 완화 방향</td><td>6~8주 뒤 5.5~6개월</td><td>가장 깔끔한 계획 구간</td></tr>
-      <tr><th scope="row">5</th><td>억제가 더 감소</td><td>6~8주 뒤 6.5~7개월</td><td>이미 5개월이면 지금</td></tr>
-      <tr><th scope="row">6 직전</th><td>ONJ 0건(76명)</td><td>다음 주사가 7~8개월</td><td>골절 쪽 손해가 커짐</td></tr>
-      <tr><th scope="row">7 이후</th><td>억제가 더 풀림</td><td>골절 신호 이미 증가</td><td>일부러 미루지 않음</td></tr>
-    </tbody>
-  </table>
-  <div class="v2-tip">Tip · MRONJ 때문에 일부러 7개월까지 미루는 전략은 권하지 않습니다.</div>
+  <p class="v2-sub">MRONJ만이 아니라 다음 주사까지 함께 봅니다 — 마지막 주사 뒤 구간별 장단점</p>
+  <table class="v2-table q-table " style="--rh:62px;left:64px;top:206px;width:1152px"><colgroup><col style="width:170px"><col style="width:340px"><col style="width:300px"><col style="width:342px"></colgroup><thead><tr><th>마지막 주사 뒤</th><th>MRONJ 측면</th><th>다음 주사</th><th>실무 평가</th></tr></thead><tbody><tr><th>0~3개월</th><td>억제가 가장 강한 시기</td><td>치유 뒤에도 여유 큼</td><td>3개월부터 권장 구간</td></tr><tr><th>4개월</th><td>억제 효과가 완화 방향</td><td>6~8주 뒤 5.5~6개월</td><td><b>가장 깔끔한 계획 구간</b></td></tr><tr><th>5개월</th><td>억제가 더 감소</td><td>6~8주 뒤 6.5~7개월</td><td>이미 5개월이면 지금</td></tr><tr><th>6개월 직전</th><td>ONJ 0건(76명)</td><td>다음 주사가 7~8개월</td><td>골절 쪽 손해가 커짐</td></tr><tr><th>7개월 이후</th><td>억제가 더 풀림</td><td>골절 신호 이미 증가</td><td>일부러 미루지 않음</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · MRONJ 때문에 일부러 7개월까지 미루는 전략은 권하지 않습니다.</span><span class="v2-src">근거 · 한국 2025 권고안 · AAOMS 2022</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">21 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">12 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 17 · DOSE</div>
+  <div class="v2-chapter">CHAPTER 10 · 재투여</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">다음 주사 기준은 점막 폐쇄지 골 충전이 아니다</h2>
-  <p class="v2-sub">기준은 골 충전이 아니라 점막 폐쇄입니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>6~8주</b></div><div class="v2-body">AAOMS 2022·한국 2025 는 시술 <b>6~8주</b> 후 재투여를 제시합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>'뼈가 찰 때까지'는 근거 없음</b></div><div class="v2-body">수개월의 방사선학적 골 충전을 기다릴 근거가 없습니다. 총 간격만 밀립니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>최적 시점 미정</b></div><div class="v2-body">점막치유 후 2·4·6·8주 중 어디가 최적인지 비교 RCT 가 없습니다. 조기 재개는 ONJ 와 연관 보고.</div></div>
+  <p class="v2-sub">한 번의 투여 간격을 왼쪽에서 오른쪽으로 — 발치 뒤 6~8주, 총 7개월 이내</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:589px;height:250px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-denosumab-timeline-20260816.png" alt="주사기·발치·척추를 한 투여 간격 위에 시간 순서로 놓은 그림" style="width:589px;height:250px">
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">6주</div><div class="v2-stat__cap">점막이 덮이면<br>6~8주 후 재투여<br>총 7개월 이내 목표</div></div><div class="v2-step"><i>1</i><span>점막 폐쇄 확인 → 재투여</span></div><div class="v2-step"><i>2</i><span>6~8주 후</span></div><div class="v2-step"><i>3</i><span>총 7개월 넘기지 않기</span></div>
+  <div class="q-tl" style="left:64px;top:464px;width:589px;grid-template-columns:repeat(3,1fr)"><div class="q-tl__lab"><b>주사 직후</b><span>억제 가장 셈</span></div><div class="q-tl__lab q-tl__lab--on"><b>3~4개월</b><span>발치하기 좋은 구간</span></div><div class="q-tl__lab"><b>너무 미루면</b><span>반동 골절 구간</span></div></div>
+  <div class="v2-panel q-text" style="left:681px;top:206px;width:535px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>6~8주</b></div><div class="v2-body">AAOMS 2022·한국 2025는 시술 6~8주 후 재투여를 제시한다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24ZM36.7278 36.728C33.4705 39.9853 28.9705 42 24 42C14.0589 42 6 33.9411 6 24C6 19.0295 8.01468 14.5295 11.272 11.2722L36.7278 36.728ZM38.0637 35.2355L12.7645 9.93628C15.8439 7.47298 19.7499 6 24 6C33.9411 6 42 14.0589 42 24C42 28.2501 40.527 32.1561 38.0637 35.2355Z" fill="currentColor"/>
+</svg></div><b>'뼈가 찰 때까지'는 근거 없음</b></div><div class="v2-body">수개월의 방사선학적 골 충전을 기다릴 근거가 없다 — 총 간격만 밀린다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44ZM27 15.5C27 17.433 25.433 19 23.5 19C21.567 19 20 17.433 20 15.5C20 13.567 21.567 12 23.5 12C25.433 12 27 13.567 27 15.5ZM25.1211 21.8439C25.6707 22.2159 25.9999 22.8364 25.9999 23.5V31.2639L27.8943 30.3167L29.6832 33.8944L24.8943 36.2889C24.2743 36.5989 23.5381 36.5657 22.9484 36.2013C22.3588 35.8369 21.9999 35.1932 21.9999 34.5V26.4541L20.3857 27.0997L18.9001 23.3858L23.2571 21.6431C23.8733 21.3966 24.5716 21.4718 25.1211 21.8439Z" fill="currentColor"/>
+</svg></div><b>최적 시점은 미정</b></div><div class="v2-body">점막치유 후 2·4·6·8주 비교 RCT가 없다. 조기 재개는 ONJ와 연관 보고.</div></div>
   </div>
-  <div class="v2-tip">Tip · 치과가 '뼈 찰 때까지'를 요구하면 점막 폐쇄 기준으로 회신하십시오.</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 치과가 '뼈 찰 때까지'를 요구하면 점막 폐쇄 기준으로 회신하십시오. 위험은 계단이 아니라 경사입니다(그림은 설명용).</span><span class="v2-src">근거 · AAOMS 2022 · 한국 2025 권고안</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">22 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 18 · BRIDGE</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">중단이 불가피할 때 — bridging</h2>
-  <p class="v2-sub">치과 시술이 아니라 의학적 중단일 때만 겁니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>ECTS — 마지막 주사 6개월 후 시작</b></div><div class="v2-body">마지막 데노수맙 주사 약 6개월 후 대체 항흡수제를 시작합니다. ECTS 2021</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>약제 선택</b></div><div class="v2-body">졸레드론산 <b>5 mg 단회</b> 또는 <b>알렌드로네이트 ≥1년</b>. 데노수맙 노출이 짧으면 경구 알렌드로네이트 70 mg 주 1회도 선택지입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>BTM 으로 확인한다</b></div><div class="v2-body">억제 목표 <b>CTX 약 280 ng/L</b> · <b>P1NP 약 35 μg/L</b>. 3·6개월 CTX 로 반복 여부를 정합니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">6개월</div><div class="v2-stat__cap">마지막 주사 6개월 후 bridging 시작 (ECTS)</div></div><div class="v2-step"><i>1</i><span>ZOL 5 mg 단회</span></div><div class="v2-step"><i>2</i><span>또는 알렌드로네이트 70 mg 주간 ≥1년</span></div><div class="v2-step"><i>3</i><span>목표 CTX~280·P1NP~35</span></div>
-  </div>
-  <div class="v2-tip">Tip · 치과 시술만을 이유로 한 완전 중단은 정당화되지 않습니다. bridging 은 의학적 중단일 때만.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">23 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 18 · BRIDGE</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">끊지 않고 넘긴다</h2>
-  <p class="v2-sub">중단이 아니라 인수인계입니다 — 뼈를 받치는 손이 바뀔 뿐입니다</p>
-  <div class="v2-panel v2-panel--figwide" style="left:174px;top:206px;width:932px;height:400px">
-    <img class="v2-figwide__img" src="../../../shared/assets/generated/mronj-bridging-handover-20260816.png" alt="골소주 들보를 주사가 받치다가 다른 약제로 넘겨받는 세 구간 그림">
-  </div>
-  <div class="v2-figwide__cap">왼쪽에서 주사가 받치던 뼈를 가운데 구간에서 다른 계열이 이어받습니다. 오른쪽까지 들보가 처지지 않는 것이 bridging 의 목적입니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">24 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 19 · LIMITS</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">단회 ZOL 의 한계</h2>
-  <p class="v2-sub">완전히 막지는 못합니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>DST RCT — 대만</b></div><div class="v2-body">졸레드론산 단회로 <b>요추 BMD 손실을 완전히 예방하지 못했습니다</b>(JAMA Netw Open).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>ZOLARMAB — 시점 무관</b></div><div class="v2-body">투여 시점과 무관하게 요추 <b>−4.1~−4.8%</b> (Sølling)</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>장기 사용자는 부족</b></div><div class="v2-body">데노수맙 <b>>2.5~3년</b> 사용자는 단회 BP 로 불충분.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">부족</div><div class="v2-stat__cap">단회 ZOL 로는 요추 BMD 손실이 남음</div></div><div class="v2-step"><i>1</i><span>DST RCT · 요추</span></div><div class="v2-step"><i>2</i><span>−4.8%까지</span></div><div class="v2-step"><i>3</i><span>>2.5년</span></div>
-  </div>
-  <div class="v2-tip">Tip · bridging 은 rebound 를 줄이는 장치이지, 끊어도 된다는 근거가 아닙니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">25 / 43</div>
+  <div class="v2-foot v2-foot--r">13 / 22</div>
 </section>
-
 <section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 20 · NO RISK</div>
+  <div class="v2-chapter">CHAPTER 11 · bridging</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">이 약들은 MRONJ 때문에 멈추지 않는다</h2>
-  <p class="v2-sub">골형성제·SERM·MHT 는 MRONJ 연관이 없어 제한이 없습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>제한 없는 약제</b></div><div class="v2-body">테리파라타이드·아발로파라타이드 — MRONJ 유발 약제로 보지 않습니다. 중단 불필요, 치과 시술 제한 없음.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>SERM·MHT</b></div><div class="v2-body">랄록시펜·바제독시펜·MHT 는 확립된 MRONJ 연관이 없습니다. 다만 데노수맙 rebound 대체약으로는 신뢰하지 않습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>로모소주맙</b></div><div class="v2-body">로모소주맙 MRONJ 위험은 <b>0.03~0.05%</b> 로 알렌드로네이트(0.05%) 수준. 휴약 근거 없음.</div></div>
+  <h2 class="v2-title">중단이 불가피할 때 — 끊지 않고 넘긴다</h2>
+  <p class="v2-sub">치과 시술이 아니라 의학적 중단일 때만 겁니다 — 뼈를 받치는 손이 바뀔 뿐입니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:462px;height:196px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-bridging-handover-20260816.png" alt="주사가 받치던 뼈를 다른 계열 약이 이어받는 인수인계 그림" style="width:462px;height:196px">
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">없음</div><div class="v2-stat__cap">테리파라타이드·아발로파라타이드랄록시펜·바제독시펜·MHT— 제한 없음</div></div><div class="v2-step"><i>1</i><span>테리파라타이드 — 제한 없음</span></div><div class="v2-step"><i>2</i><span>랄록시펜·바제독시펜·MHT</span></div><div class="v2-step"><i>3</i><span>로모소주맙 — 알렌드로네이트 수준</span></div>
+  <div class="v2-panel q-cell" style="left:554px;top:206px;width:662px;height:196px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>ECTS 2021 — 마지막 주사 약 6개월 후 시작</b></div><div class="v2-body">대체 항흡수제: 졸레드론산 5 mg 단회 또는 알렌드로네이트 ≥1년. 데노수맙 노출이 짧으면 경구 알렌드로네이트 70 mg 주 1회도 선택지.</div></div>
   </div>
-  <div class="v2-tip">Tip · 아발로파라타이드는 2026-08 기준 국내 허가 여부를 확인하지 못했습니다.</div>
+  <div class="v2-panel q-cell" style="left:64px;top:420px;width:564px;height:186px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>BTM으로 확인한다</b></div><div class="v2-body">억제 목표 CTX 약 <b>280 ng/L</b> · P1NP 약 <b>35 μg/L</b>. 3·6개월 CTX로 반복 여부를&nbsp;정한다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:652px;top:420px;width:564px;height:186px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>단회 ZOL의 한계</b></div><div class="v2-body">DST RCT(대만, JAMA Netw Open) — 요추 BMD 손실을 완전히 막지 못함. ZOLARMAB — 시점과 무관하게 요추 −4.1~−4.8%(Sølling). 데노수맙 &gt;2.5~3년 사용자는 단회 BP로 불충분.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · bridging은 반동을 줄이는 장치이지, 끊어도 된다는 근거가 아닙니다. 치과 시술만을 이유로 한 완전 중단은 정당화되지 않습니다.</span><span class="v2-src">근거 · ECTS 2021 · DST RCT · ZOLARMAB(Sølling)</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">26 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 21 · DENTAL</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">임플란트 — 절대 금기가 아니다</h2>
-  <p class="v2-sub">권고는 약합니다(weak rec, very low). 생존율 ≠ MRONJ 위험</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>금기 여부</b></div><div class="v2-body">2025 ONJ Taskforce 는 임플란트 전 항흡수제 중단이 필요 없다고 했습니다. 다만 <b>weak rec · very-low quality</b>.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>핵심 구분</b></div><div class="v2-body">골다공증 용량이 임플란트 <b>생존율</b>을 악화시킨다는 근거는 없습니다(실패 OR 1.77, CI 0.99~3.18).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>MRONJ 는 별개</b></div><div class="v2-body">장기 BP 사용자에서 임플란트 연관 MRONJ 는 <b>3/1,000</b>(HR 4.09, 2.75~6.09), 데노수맙은 <b>0.5%</b> 로 보고됩니다. 암 용량은 임플란트 금기입니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">가능</div><div class="v2-stat__cap">임플란트는 절대 금기가 아닙니다다만 권고는 weak · very low</div></div><div class="v2-step"><i>1</i><span>생존율 — 악화 근거 없음</span></div><div class="v2-step"><i>2</i><span>MRONJ — BP 3/1,000</span></div><div class="v2-step"><i>3</i><span>데노수맙 0.5%</span></div>
-  </div>
-  <div class="v2-tip">Tip · 잘 붙는다와 MRONJ 위험이 0 이다는 같은 말이 아닙니다. 동의서에 남기십시오.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">27 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 22 · CTX</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">CTX 150 으로 안전한 날을 고를 수 없다</h2>
-  <p class="v2-sub">예측 도구로는 검증되지 않았습니다 — 민감도·특이도가 낮습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>Marx 의 제안</b></div><div class="v2-body">100 pg/mL 미만 고위험 · 100~150 중간 · 150 초과 저위험 이라는 가설이었지만 후향 관찰 기반이었습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>검증에서 무너졌다</b></div><div class="v2-body">150 컷오프 <b>민감도 34.26%·특이도 77.08%</b>(JADA 메타), <b>37.5%·57.7%</b>(EPMA J 2019).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>P1NP 도 마찬가지</b></div><div class="v2-body">P1NP 도 예측 역치가 없습니다. PLOS One 2025 도 150 컷오프 부적절을 확인했습니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">34</div><div class="v2-stat__cap">150 컷오프 민감도 34.26%특이도 77.08%예측 검사로 쓰기엔 부족</div></div><div class="v2-step"><i>1</i><span>CTX 로 발치 허가를 정하지 않는다</span></div><div class="v2-step"><i>2</i><span>휴약 길이도 마찬가지</span></div><div class="v2-step"><i>3</i><span>예측 ≠ 감시</span></div>
-  </div>
-  <div class="v2-tip">Tip · 예측용 CTX 150 과 bridging 모니터용 280 은 목적이 다릅니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">28 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 23 · RISK</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">위험은 세 축이 겹칠 때 터진다</h2>
-  <p class="v2-sub">약제만 탓하지 않습니다 — 교정 가능한 축은 구강입니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>약물 — 종류·용량·기간</b></div><div class="v2-body">데노수맙이 BP 보다, 암 용량이 골다공증 용량보다 높습니다. 순차 BP→데노수맙 병용 <b>OR 6.9</b>, 항혈관신생제 병용.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>구강 — 교정 가능한 축</b></div><div class="v2-body">치주염·치근단감염·부적합 의치. 발치 사유가 감염이면 <b>OR 22.8</b>.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>환자 — 전신 조건</b></div><div class="v2-body">스테로이드·당뇨·CKD/투석·고령·흡연·류마티스·빈혈·면역억제·영양불량.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="../../../shared/assets/generated/mronj-risk-convergence-20260816.png" alt="약물·구강·전신 세 갈래가 하나로 합쳐져 노출된 턱뼈 병변에 이르는 그림"><div class="v2-fig__cap">세 갈래가 한 자리에서 만날 때 한 병변이 됩니다 — 약물·구강·전신. 설명용 일러스트.</div></div>
-  </div>
-  <div class="v2-tip">Tip · 발치를 피하려고 조절 안 된 감염을 두는 편이 오히려 위험합니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">29 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 24 · GUARD</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">예방의 핵심은 휴약이 아니라 감염 통제다</h2>
-  <p class="v2-sub">약을 끊는 것보다 시술 전후 국소 관리입니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>1차 예방</b></div><div class="v2-body">항흡수제 시작 전 치과 clearance — 뽑을 치아는 뽑고 염증을 치료합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>시술 술기 — 세 가지</b></div><div class="v2-body">비외상 발치 · 날카로운 골연 정리 · 장력 없는 연조직 피개.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>봉합의 오해</b></div><div class="v2-body">무조건 primary closure 가 아니라 <b>atraumatic coverage</b> 가 핵심입니다. 판막 거상도 외상.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">감염</div><div class="v2-stat__cap">휴약이 아니라 감염 통제가예방의 중심입니다</div></div><div class="v2-step"><i>1</i><span>시작 전 치과 정리</span></div><div class="v2-step"><i>2</i><span>비외상 발치</span></div><div class="v2-step"><i>3</i><span>골연 정리 + 피개</span></div>
-  </div>
-  <div class="v2-tip">Tip · 판막을 크게 젖혀 억지로 덮는 것보다 외상을 덜 주고 덮는 쪽이 낫습니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">30 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 25 · ABX·CHX</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">항생제·CHX — 관례이되 근거는 약함</h2>
-  <p class="v2-sub">RCT 가 없습니다 — 검증된 예방약이 아닙니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>관찰연구가 보여주는 것</b></div><div class="v2-body">항생제 미사용군 <b>57%</b> vs 사용군 <b>0%</b> MRONJ(PMC5331477).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>다른 코호트</b></div><div class="v2-body">소규모 코호트에서 발생한 MRONJ <b>8건이 전원 무항생제군</b>이었습니다(p=0.012). 그러나 두 근거 모두 관찰연구이고 무작위 배정이 없습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>클로르헥시딘 함수</b></div><div class="v2-body">0.12% 클로르헥시딘 함수도 프로토콜에 흔히 들어 있지만, MRONJ 를 낮춘다는 <b>고품질 RCT 는 없습니다</b>.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">0건</div><div class="v2-stat__cap">항생제·CHX 의 예방 RCT근거는 관찰연구뿐입니다</div></div><div class="v2-step"><i>1</i><span>예방 RCT 0건</span></div><div class="v2-step"><i>2</i><span>관찰근거로 관례적 사용은 인정</span></div><div class="v2-step"><i>3</i><span>검증된 예방약으로 설명 금지</span></div>
-  </div>
-  <div class="v2-tip">Tip · 감염이 크거나 광범위 수술이면 통상 적응증에 따라 씁니다. MRONJ 예방약으로 설명하지 않습니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">31 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 26 · STAGING</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">병기별 치료 원칙</h2>
-  <p class="v2-sub">이미 생긴 MRONJ 관리</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>Stage 0~1 보존</b></div><div class="v2-body">항균 함수 · 경과관찰 · 통증관리. 노출골 절제는 이 단계의 목표가 아닙니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>Stage 2 — 항생제+최소침습</b></div><div class="v2-body">항생제 + 최소침습 수술. 감염 통제가 축입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>Stage 3 — 절제</b></div><div class="v2-body">치조골을 넘는 확장·병적골절 → 변연·구획 절제.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">조기</div><div class="v2-stat__cap">'보존 우선'에서<br>조기 적극 수술로 이동</div></div><div class="v2-step"><i>1</i><span>0~1 — 보존·경과관찰</span></div><div class="v2-step"><i>2</i><span>2 — 항생제</span></div><div class="v2-step"><i>3</i><span>3 — 절제</span></div>
-  </div>
-  <div class="v2-tip">Tip · MRONJ 치료 중 골다공증약은 6~8주 치유 후 재개, 고위험군은 더 일찍.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">32 / 43</div>
+  <div class="v2-foot v2-foot--r">14 / 22</div>
 </section>
-
 <section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 26 · TREATMENT</div>
+  <div class="v2-chapter">CHAPTER 12 · 자주 묻는 세 가지</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">개입은 단계로 올린다</h2>
-  <p class="v2-sub">같은 턱을 세 가지 강도로 다뤘습니다 — 세척 · 항생제 · 절제</p>
-  <div class="v2-panel v2-panel--figwide" style="left:174px;top:206px;width:932px;height:400px">
-    <img class="v2-figwide__img" src="../../../shared/assets/generated/mronj-treatment-escalation-20260816.png" alt="같은 하악골을 세척·약물·절제 세 가지로 다룬 세 칸 비교 그림">
+  <h2 class="v2-title">다른 약 · 임플란트 · CTX — 자주 묻는 세 가지</h2>
+  <p class="v2-sub">셋 다 결국 '약을 끊어야 하나'로 이어지는 질문입니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">MRONJ 때문에 멈추지 않는 약</div>
+    <div class="v2-body">테리파라타이드·아발로파라타이드 — MRONJ 유발 약제 아님. 랄록시펜·바제독시펜·MHT도 연관 없음(데노수맙 반동 대체약으로는 신뢰 안 함). 로모소주맙 0.03~0.05% — 알렌드로네이트(0.05%) 수준, 휴약 근거 없음.</div>
+    <div class="q-card__k">제한 없음</div>
   </div>
-  <div class="v2-figwide__cap">왼쪽 = 보존(세척·경과관찰), 가운데 = 감염 통제(항생제·최소침습), 오른쪽 = 절제. 병기가 올라갈수록 개입의 강도만 올립니다.</div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M39.5776 9.13373C34.9685 4.2778 28.5979 6.45873 25.4382 8.02853L31.524 12.4591C31.9705 12.7842 32.0689 13.4096 31.7439 13.8561C31.4188 14.3026 30.7933 14.4011 30.3469 14.076L23.5301 9.11327C23.5102 9.12665 23.5 9.13368 23.5 9.13368C17.3205 4.32394 11.9517 5.35267 7.5897 10.1647C4.87545 13.159 6.17245 17.2031 7.53963 21.466C8.36961 24.0539 9.22545 26.7224 9.22545 29.2857C9.43769 29.7555 11.5814 30.134 14.6082 30.3906C14.5024 30.7196 14.4805 31.0822 14.5653 31.4497L14.5954 31.58L17.3763 30.5789C19.0819 30.6704 20.931 30.7298 22.7962 30.7534L15.0483 33.5426L15.4477 35.2732L28.0984 30.7189C33.1092 30.5819 37.2785 30.1321 37.7601 29.2857C37.7601 27.072 38.7746 24.7492 39.8111 22.3761C41.7176 18.0109 43.6985 13.4753 39.5776 9.13373Z" fill="currentColor"/>
+<path d="M33.0954 32.92L16.2999 38.9664L15.9006 37.2358L33.4847 30.9055C33.4928 31.0833 33.4771 31.2659 33.4347 31.4497L33.0954 32.92Z" fill="currentColor"/>
+<path d="M17.0131 40.8353L32.5604 35.2383L32.0887 37.2824L19.0398 41.98C18.2259 41.8858 17.4996 41.4638 17.0131 40.8353Z" fill="currentColor"/>
+<path d="M24.8889 42H28.6135C30.0104 42 31.2225 41.0358 31.5366 39.6746L31.5537 39.6007L24.8889 42Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">임플란트 — 절대 금기가 아니다</div>
+    <div class="v2-body">2025 ONJ Taskforce: 식립 전 중단 불필요(weak rec · very low). 생존율 악화 근거 없음(실패 OR 1.77, CI 0.99~3.18). 임플란트 연관 MRONJ는 장기 BP 3/1,000(HR 4.09, 2.75~6.09), 데노수맙 0.5%. 암 용량은 금기.</div>
+    <div class="q-card__k">잘 붙는다 ≠ MRONJ 0</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">CTX 150으로 안전한 날을 못 고른다</div>
+    <div class="v2-body">Marx 가설(&lt;100 고위험 · 100~150 중간 · &gt;150 저위험)은 후향 관찰 기반. 150 컷오프 민감도 34.26%·특이도 77.08%(JADA 메타), 37.5%·57.7%(EPMA J 2019). P1NP도 예측 역치 없음. PLOS One 2025도 150 부적절 확인.</div>
+    <div class="q-card__k">예측 150 ≠ 모니터 280</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · CTX로 휴약·발치 허가를 정하지 않습니다. 임플란트 위험은 동의서에 남깁니다. 아발로파라타이드는 국내 허가 미확인(2026-08).</span><span class="v2-src">근거 · AAOMS 2022 · Endocrine ONJ Taskforce 2025(PMID 40335186) · JADA 메타 · EPMA J 2019 · PLOS One 2025</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">33 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">15 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 27 · ADJUNCT</div>
+  <div class="v2-chapter">CHAPTER 13 · 위험과 예방</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">테리파라타이드 — 유일한 RCT급 보조요법</h2>
-  <p class="v2-sub">이미 생긴 MRONJ 를 낫게 한다는 RCT 근거가 있는 약제</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>RCT 결과</b></div><div class="v2-body">N=34 · 20 μg/day 8주 → 52주 병변 해소 45.4% vs 위약 33.3%. PMID 32614699</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>왜 쓰나</b></div><div class="v2-body">골형성 촉진 — 턱뼈 미세혈류 증가, 상피 치유·괴사골 분리 촉진. 8주~6개월 이상 투여군(RCT·메타분석).</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>쓰는 자리</b></div><div class="v2-body">표준치료가 아니라, 악성종양·방사선력 없는 골다공증 환자에서 금기가 없을 때 고려하는 보조요법.</div></div>
+  <h2 class="v2-title">위험은 세 축이 겹칠 때 — 예방의 핵심은 감염 통제다</h2>
+  <p class="v2-sub">약제만 탓하지 않습니다 — 교정 가능한 축은 구강이고, 휴약보다 시술 전후 국소 관리가 중심입니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:852px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>세 축 — 약물 · 구강 · 환자</b></div><div class="v2-body"><b>약물</b>: 데노수맙 &gt; BP, 암 용량 &gt; 골다공증 용량, 순차 BP→데노수맙 OR 6.9, 항혈관신생제 병용. <b>구강</b>: 치주염·치근단감염·부적합 의치 — 발치 사유가 감염이면 OR 22.8. <b>환자</b>: 스테로이드·당뇨·CKD/투석·고령·흡연·류마티스·빈혈·면역억제·영양불량.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9591 9.2814C16.6218 6.84016 12.7792 7.98807 9.58534 11.8657C6.50278 15.6083 8.60445 22.3544 10.1153 27.2039C10.4755 28.3602 10.8022 29.4087 11.0169 30.2829C12.1324 34.8237 13.1996 37.6532 15.6331 39.701C16.8383 40.715 18.2048 38.9724 19.6465 37.1338C20.8965 35.5398 22.203 33.8737 23.5098 33.8697C24.7954 33.8658 26.0812 35.5293 27.3138 37.1239C28.7366 38.9646 30.0886 40.7135 31.2874 39.701C33.1461 38.1311 33.9903 36.9793 35.0116 33.745C36.1254 30.2179 37.9238 26 39.3536 21.138C40.3596 17.7171 40.4801 14.2345 37.5808 10.8727C33.4414 6.07315 27.704 8.55223 25.0332 10.1396L28.6508 13.2408C29.0701 13.6002 29.1187 14.2315 28.7592 14.6508C28.3998 15.0701 27.7685 15.1187 27.3492 14.7592L20.9591 9.2814Z" fill="currentColor"/>
+</svg></div><b>예방 — 휴약이 아니라 감염 통제</b></div><div class="v2-body">시작 전 치과 clearance. 비외상 발치 · 날카로운 골연 정리 · 장력 없는 연조직 피개 — 무조건 primary closure가 아니라 atraumatic coverage.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 8C12 5.79086 13.7909 4 16 4H32C34.2091 4 36 5.79086 36 8V23C35.4477 23 35 23.4477 35 24C35 24.5523 35.4477 25 36 25V40C36 42.2091 34.2091 44 32 44H16C13.7909 44 12 42.2091 12 40V25C12.5523 25 13 24.5523 13 24C13 23.4477 12.5523 23 12 23V8ZM15 25C15.5523 25 16 24.5523 16 24C16 23.4477 15.5523 23 15 23C14.4477 23 14 23.4477 14 24C14 24.5523 14.4477 25 15 25ZM19 24C19 24.5523 18.5523 25 18 25C17.4477 25 17 24.5523 17 24C17 23.4477 17.4477 23 18 23C18.5523 23 19 23.4477 19 24ZM21 25C21.5523 25 22 24.5523 22 24C22 23.4477 21.5523 23 21 23C20.4477 23 20 23.4477 20 24C20 24.5523 20.4477 25 21 25ZM25 24C25 24.5523 24.5523 25 24 25C23.4477 25 23 24.5523 23 24C23 23.4477 23.4477 23 24 23C24.5523 23 25 23.4477 25 24ZM27 25C27.5523 25 28 24.5523 28 24C28 23.4477 27.5523 23 27 23C26.4477 23 26 23.4477 26 24C26 24.5523 26.4477 25 27 25ZM31 24C31 24.5523 30.5523 25 30 25C29.4477 25 29 24.5523 29 24C29 23.4477 29.4477 23 30 23C30.5523 23 31 23.4477 31 24ZM33 25C33.5523 25 34 24.5523 34 24C34 23.4477 33.5523 23 33 23C32.4477 23 32 23.4477 32 24C32 24.5523 32.4477 25 33 25ZM22.0711 11.4142C21.29 10.6332 20.0237 10.6332 19.2426 11.4142L16.4142 14.2426C15.6332 15.0237 15.6332 16.29 16.4142 17.0711C17.1953 17.8521 18.4616 17.8521 19.2426 17.0711L22.0711 14.2426C22.8521 13.4616 22.8521 12.1953 22.0711 11.4142ZM28.2426 11.4142C29.0237 10.6332 30.29 10.6332 31.0711 11.4142C31.8521 12.1953 31.8521 13.4616 31.0711 14.2426L28.2426 17.0711C27.4616 17.8521 26.1953 17.8521 25.4142 17.0711C24.6332 16.29 24.6332 15.0237 25.4142 14.2426L28.2426 11.4142ZM22.0711 31.4142C21.29 30.6332 20.0237 30.6332 19.2426 31.4142L16.4142 34.2426C15.6332 35.0237 15.6332 36.29 16.4142 37.0711C17.1953 37.8521 18.4616 37.8521 19.2426 37.0711L22.0711 34.2426C22.8521 33.4616 22.8521 32.1953 22.0711 31.4142ZM28.2426 31.4142C29.0237 30.6332 30.29 30.6332 31.0711 31.4142C31.8521 32.1953 31.8521 33.4616 31.0711 34.2426L28.2426 37.0711C27.4616 37.8521 26.1953 37.8521 25.4142 37.0711C24.6332 36.29 24.6332 35.0237 25.4142 34.2426L28.2426 31.4142Z" fill="currentColor"/>
+</svg></div><b>항생제 · CHX — 관례이되 근거는 약함</b></div><div class="v2-body">무항생제군 57% vs 사용군 0%(PMC5331477), 소규모 코호트 8건 전원 무항생제군(p=0.012) — 관찰연구뿐. 0.12% 클로르헥시딘도 예방 RCT 없음.</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">45%</div><div class="v2-stat__cap">52주 병변 해소 45.4%<br>위약 33.3% · N=34</div></div><div class="v2-step"><i>1</i><span>MRONJ 유발 약제가 아님</span></div><div class="v2-step"><i>2</i><span>중단 불필요 · 제한 없음</span></div><div class="v2-step"><i>3</i><span>이미 생긴 MRONJ에는 보조요법</span></div>
+  <div class="v2-panel q-fig" style="left:948px;top:298px;width:268px;height:216px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/mronj-risk-convergence-20260816.png" alt="약물·구강·전신 세 갈래가 한 병변으로 모이는 그림" style="width:268px;height:216px">
   </div>
-  <div class="v2-tip">Tip · 표준치료가 아니라 보조요법입니다. 모든 MRONJ 에 쓰지 않습니다.</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 발치를 피하려고 감염을 두는 편이 더 위험합니다. 항생제는 통상 적응증으로 쓰고 MRONJ 예방약으로 설명하지 않습니다(그림은 설명용).</span><span class="v2-src">근거 · AAOMS 2022 · PMC5331477</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">34 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">16 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 28 · GUIDES</div>
+  <div class="v2-chapter">CHAPTER 14 · 가이드라인</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">가이드라인 9종 — 갈리는 축은 셋</h2>
-  <p class="v2-sub">AAOMS·ADA·AAE·SDCEP·Endocrine·AACE·ECTS·한국·아시아</p>
-  <table class="v2-table" style="left:64px;top:206px;width:1152px">
-    <thead><tr>
-      <th style="width:240px">비교 축</th>
-      <th>치과·구강외과</th>
-      <th>내분비</th>
-      <th>한국·아시아</th>
-    </tr></thead>
-    <tbody>
-      <tr><th scope="row">휴약</th><td>AAOMS·ADA 권고 안 함</td><td>AACE — 골절위험 기준</td><td>한국 2025 — 2개월</td></tr>
-      <tr><th scope="row">시점</th><td>AAOMS 3~4개월, ADA 미제시</td><td>치과 시점 제시 없음</td><td>한국·아시아 3~4개월</td></tr>
-      <tr><th scope="row">중단</th><td>SDCEP — 중단 반대</td><td>Endocrine 중단 금지</td><td>치유 뒤 신속 재투여</td></tr>
-      <tr><th scope="row">침습 시술</th><td>AAE — 외과 신중</td><td>중단 없이 가능</td><td>아시아 2026 — 가능</td></tr>
-      <tr><th scope="row">CTX</th><td>AAOMS·ADA 부정</td><td>ECTS 중단관리용</td><td>예측 부적합</td></tr>
-    </tbody>
-  </table>
-  <div class="v2-tip">Tip · 가이드라인 이름표가 근거를 강하게 만들지 않습니다.</div>
+  <h2 class="v2-title">가이드라인 9종 — 갈리는 축은 무엇을 막느냐다</h2>
+  <p class="v2-sub">AAOMS·ADA·AAE·SDCEP·Endocrine·AACE·ECTS·한국·아시아 — 같은 자료를 놓고도 목표가 다르면 결론이 갈립니다</p>
+  <table class="v2-table q-table " style="--rh:34px;left:64px;top:206px;width:1152px"><colgroup><col style="width:150px"><col style="width:334px"><col style="width:334px"><col style="width:334px"></colgroup><thead><tr><th>비교 축</th><th>치과·구강외과</th><th>내분비</th><th>한국·아시아</th></tr></thead><tbody><tr><th>휴약</th><td>AAOMS·ADA 권고 안 함</td><td>AACE — 골절위험 기준</td><td>한국 2025 — 2개월</td></tr><tr><th>시점</th><td>AAOMS 3~4개월, ADA 미제시</td><td>치과 시점 제시 없음</td><td>한국·아시아 3~4개월</td></tr><tr><th>중단</th><td>SDCEP — 중단 반대</td><td>Endocrine 중단 금지</td><td>치유 뒤 신속 재투여</td></tr><tr><th>침습 시술</th><td>AAE — 외과 신중</td><td>중단 없이 가능</td><td>아시아 2026 — 가능</td></tr><tr><th>CTX</th><td>AAOMS·ADA 부정</td><td>ECTS 중단관리용</td><td>예측 부적합</td></tr></tbody></table>
+  <div class="v2-panel q-cell" style="left:64px;top:446px;width:564px;height:160px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9591 9.2814C16.6218 6.84016 12.7792 7.98807 9.58534 11.8657C6.50278 15.6083 8.60445 22.3544 10.1153 27.2039C10.4755 28.3602 10.8022 29.4087 11.0169 30.2829C12.1324 34.8237 13.1996 37.6532 15.6331 39.701C16.8383 40.715 18.2048 38.9724 19.6465 37.1338C20.8965 35.5398 22.203 33.8737 23.5098 33.8697C24.7954 33.8658 26.0812 35.5293 27.3138 37.1239C28.7366 38.9646 30.0886 40.7135 31.2874 39.701C33.1461 38.1311 33.9903 36.9793 35.0116 33.745C36.1254 30.2179 37.9238 26 39.3536 21.138C40.3596 17.7171 40.4801 14.2345 37.5808 10.8727C33.4414 6.07315 27.704 8.55223 25.0332 10.1396L28.6508 13.2408C29.0701 13.6002 29.1187 14.2315 28.7592 14.6508C28.3998 15.0701 27.7685 15.1187 27.3492 14.7592L20.9591 9.2814Z" fill="currentColor"/>
+</svg></div><b>치과·구강외과 — 드물지만 중증인 MRONJ를 피한다</b></div><div class="v2-body">경구 BP 0.01~0.10% · 발치 OR 9.6 → 불확실성 우선, 고정 휴약 삭제.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:652px;top:446px;width:564px;height:160px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 6.24184C15.5833 6.12178 15 6.59494 15 7.22895V7.88659C15 8.43888 14.5523 8.88659 14 8.88659H13C12.4477 8.88659 12 9.33431 12 9.8866V11.7353C12 12.2876 12.4477 12.7353 13 12.7353H14C14.5523 12.7353 15 13.183 15 13.7353V14.8453C15 15.3022 15.3106 15.702 15.7544 15.8107C22.2204 17.3952 26.0763 17.396 32.2561 15.8165C32.6948 15.7043 33 15.3069 33 14.8541V13.7353C33 13.183 33.4477 12.7353 34 12.7353H35C35.5523 12.7353 36 12.2876 36 11.7353V9.8866C36 9.33431 35.5523 8.88659 35 8.88659H34C33.4477 8.88659 33 8.43888 33 7.88659V7.23211C33 6.59707 32.415 6.12369 31.7916 6.24503C25.8882 7.39417 22.1085 7.38021 16.2058 6.24184ZM19 10.0001C19 9.4478 18.5523 9.00008 18 9.00008C17.4477 9.00008 17 9.4478 17 10.0001V13.0001C17 13.5524 17.4477 14.0001 18 14.0001C18.5523 14.0001 19 13.5524 19 13.0001V10.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 18.2418C15.5833 18.1218 15 18.5949 15 19.229V19.8866C15 20.4389 14.5523 20.8866 14 20.8866H13C12.4477 20.8866 12 21.3343 12 21.8866V23.7353C12 24.2876 12.4477 24.7353 13 24.7353H14C14.5523 24.7353 15 25.183 15 25.7353V26.8453C15 27.3022 15.3106 27.702 15.7544 27.8107C22.2204 29.3952 26.0763 29.396 32.2561 27.8165C32.6948 27.7043 33 27.3069 33 26.8541V25.7353C33 25.183 33.4477 24.7353 34 24.7353H35C35.5523 24.7353 36 24.2876 36 23.7353V21.8866C36 21.3343 35.5523 20.8866 35 20.8866H34C33.4477 20.8866 33 20.4389 33 19.8866V19.2321C33 18.5971 32.415 18.1237 31.7916 18.245C25.8882 19.3942 22.1085 19.3802 16.2058 18.2418ZM19 22.0001C19 21.4478 18.5523 21.0001 18 21.0001C17.4477 21.0001 17 21.4478 17 22.0001V25.0001C17 25.5524 17.4477 26.0001 18 26.0001C18.5523 26.0001 19 25.5524 19 25.0001V22.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 30.2418C15.5833 30.1218 15 30.5949 15 31.229V31.8866C15 32.4389 14.5523 32.8866 14 32.8866H13C12.4477 32.8866 12 33.3343 12 33.8866V35.7353C12 36.2876 12.4477 36.7353 13 36.7353H14C14.5523 36.7353 15 37.183 15 37.7353V38.8453C15 39.3022 15.3106 39.702 15.7544 39.8107C22.2204 41.3952 26.0763 41.396 32.2561 39.8165C32.6948 39.7043 33 39.3069 33 38.8541V37.7353C33 37.183 33.4477 36.7353 34 36.7353H35C35.5523 36.7353 36 36.2876 36 35.7353V33.8866C36 33.3343 35.5523 32.8866 35 32.8866H34C33.4477 32.8866 33 32.4389 33 31.8866V31.2321C33 30.5971 32.415 30.1237 31.7916 30.245C25.8882 31.3942 22.1085 31.3802 16.2058 30.2418ZM19 34.0001C19 33.4478 18.5523 33.0001 18 33.0001C17.4477 33.0001 17 33.4478 17 34.0001V37.0001C17 37.5524 17.4477 38.0001 18 38.0001C18.5523 38.0001 19 37.5524 19 37.0001V34.0001Z" fill="currentColor"/>
+</svg></div><b>내분비 — 훨씬 흔한 골절을 막는다</b></div><div class="v2-body">중단 시 1.2→7.1/100인년 · 다발성 60.7% · 이전 골절 OR 3.9 → 중단·장기지연&nbsp;금지.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 가이드라인 이름표가 근거를 강하게 만들지 않습니다. 상대를 설득하지 말고 두 목표를 한 문서에 같이 적으십시오.</span><span class="v2-src">근거 · AAOMS 2022 · ADA · AAE · SDCEP · Endocrine · AACE · ECTS · 한국 2025 · 아시아 2026</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">35 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">17 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 29 · THRESHOLD</div>
+  <div class="v2-chapter">CHAPTER 15 · 급여</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">무엇을 막느냐가 다르다</h2>
-  <p class="v2-sub">같은 관찰자료를 놓고도 목표가 다르면 결론이 갈립니다</p>
-  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
-    <div class="v2-vs__col">
-      <div class="v2-vs__head">치과·구강외과는 이렇게 본다</div>
-      <div class="v2-vs__lead">드물지만 중증인 MRONJ 를 피하는 것이 목표입니다.</div>
-      <ul class="v2-vs__list">
-        <li>경구 BP 0.01~0.10% — 드묾</li>
-        <li>발치 OR 9.6 — 최대 유발인자</li>
-        <li>AAOMS·ADA 는 불확실성 우선</li>
-        <li>그래서 고정 휴약을 삭제했다</li>
-      </ul>
-    </div>
-    <div class="v2-vs__mid"></div>
-    <div class="v2-vs__col v2-vs__col--b">
-      <div class="v2-vs__head">내분비는 이렇게 본다</div>
-      <div class="v2-vs__lead">훨씬 흔한 골절을 막는 데 더 큰 가중치를 둡니다.</div>
-      <ul class="v2-vs__list">
-        <li>중단 시 1.2→7.1/100인년</li>
-        <li>다발성 척추골절 60.7%</li>
-        <li>이전 골절 시 OR 3.9</li>
-        <li>그래서 중단·장기지연 금지</li>
-      </ul>
-    </div>
+  <h2 class="v2-title">급여 기준과 임상 threshold는 다르다</h2>
+  <p class="v2-sub">고시·심사지침은 청구 규칙입니다 — 언제 위험해지는지를 정한 문서가 아닙니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:261px;height:312px">
+    <div class="q-step__tag">복지부 고시</div><div class="q-step__h">2026-42호 · 2026-03-01 시행</div><div class="v2-body">골다공증치료제 일반원칙과 테리파라타이드·데노수맙·로모소주맙·졸레드론산 5 mg 세부 인정기준 개정.</div>
   </div>
-  <div class="v2-tip">Tip · 상대를 설득하려 들지 말고 두 목표를 한 문서에 같이 적으십시오.</div>
+  <div class="q-arrow" style="left:331px;top:350px"></div>
+  <div class="v2-panel q-step" style="left:361px;top:206px;width:261px;height:312px">
+    <div class="q-step__tag">HIRA 공고</div><div class="q-step__h">2025-132호 · 2025-06-01 시행</div><div class="v2-body">허가사항에 따라 <b>6개월 투여간격 유지</b>가 원칙.</div>
+  </div>
+  <div class="q-arrow" style="left:628px;top:350px"></div>
+  <div class="v2-panel q-step" style="left:658px;top:206px;width:261px;height:312px">
+    <div class="q-step__tag">조기투여</div><div class="q-step__h">연 2회 · 최대 28일</div><div class="v2-body">장기부재·진료일정 등 불가피한 경우, 당해연도 2회·최대 28일 범위에서 조기투여 인정.</div>
+  </div>
+  <div class="q-arrow" style="left:925px;top:350px"></div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:955px;top:206px;width:261px;height:312px">
+    <div class="q-step__tag">지연</div><div class="q-step__h">급여 상한 확인 안 됨</div><div class="v2-body">지연(late) 투여의 급여 상한은 확인되지 않았다. 지연 뒤 재평가에서 T-score가 −2.5를 넘으면 급여 자격이 흔들린다.</div>
+  </div>
+  <div class="q-note" style="left:64px;top:538px;width:1112px">심사지침이 정한 것은 <b>조기투여 인정범위</b>다 — 지연을 얼마까지 해도 되는지는 임상 근거(11장)로 판단한다.</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 지연은 급여보다 골절 위험 쪽 문제입니다 — 재평가 T-score도 함께 챙기십시오.</span><span class="v2-src">근거 · 보건복지부 고시 2026-42호 · HIRA 공고 2025-132호</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">36 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">18 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 30 · INSURANCE</div>
+  <div class="v2-chapter">CHAPTER 16 · 협진</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">급여 기준과 임상 threshold 는 다르다</h2>
-  <p class="v2-sub">고시·심사지침은 청구 규칙입니다. 언제 위험해지는지를 정한 문서가 아닙니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>복지부 고시 2026-42호</b></div><div class="v2-body">2026-03-01 시행. 골다공증치료제 일반원칙과 테리파라타이드·데노수맙·로모소주맙·졸레드론산 5 mg 세부 인정기준 개정.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>HIRA 공고 2025-132호</b></div><div class="v2-body">2025-06-01 시행 — 허가사항에 따라 6개월 투여간격 유지가 원칙.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>조기투여 인정범위</b></div><div class="v2-body">장기부재·진료일정 등 불가피한 경우, 당해연도 2회·최대 28일 범위에서 조기투여 인정.</div></div>
+  <h2 class="v2-title">그대로 복사해 쓰는 협진 문장 — 그리고 치과에서 오는 세 문장</h2>
+  <p class="v2-sub">회신에는 '중단 불가'가 아니라 '언제·어떻게'를 적어야 협진이 이어집니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:540px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 31V29H19V31H17Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20 4C18.3431 4 17 5.34315 17 7H13C11.3431 7 10 8.34315 10 10V41C10 42.6569 11.3431 44 13 44H35C36.6569 44 38 42.6569 38 41V10C38 8.34315 36.6569 7 35 7H31C31 5.34315 29.6569 4 28 4H20ZM19 7C19 6.44772 19.4477 6 20 6H28C28.5523 6 29 6.44772 29 7V9C29 9.55228 28.5523 10 28 10H20C19.4477 10 19 9.55228 19 9V7ZM16 20C15.4477 20 15 20.4477 15 21C15 21.5523 15.4477 22 16 22H23C23.5523 22 24 21.5523 24 21C24 20.4477 23.5523 20 23 20H16ZM15 16C15 15.4477 15.4477 15 16 15H31.5C32.0523 15 32.5 15.4477 32.5 16C32.5 16.5523 32.0523 17 31.5 17H16C15.4477 17 15 16.5523 15 16ZM15 28C15 27.4477 15.4477 27 16 27H20C20.5523 27 21 27.4477 21 28V32C21 32.5523 20.5523 33 20 33H16C15.4477 33 15 32.5523 15 32V28ZM28 32C29.6575 32 31 30.6575 31 29C31 27.3425 29.6575 26 28 26C26.3425 26 25 27.3425 25 29C25 30.6575 26.3425 32 28 32ZM22 36.5001C22 34.3842 25.9975 33.3182 28 33.3182C30.0025 33.3182 34 34.3842 34 36.5001V38.9999H22V36.5001Z" fill="currentColor"/>
+</svg></div><b>① 내과 → 치과 의뢰서</b></div><div class="v2-body">「[약제/용량] 투여 중, 마지막 투여일 [ ], 누적 [ ]년.」<br>「약제 중단을 전제로 하지 말고 시술 시점 – 치유 – 다음 투여를 함께 정하고자&nbsp;합니다.」</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>② 중단 요청 회신</b></div><div class="v2-body">「약제별 약리가 달라 일률적 '3개월 중단'은 적절하지 않습니다. denosumab 은 특히 그렇습니다.」</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">6개월</div><div class="v2-stat__cap">심사지침이 정한 것은<br>조기투여 인정범위다</div></div><div class="v2-step"><i>1</i><span>6개월 간격 유지가 원칙</span></div><div class="v2-step"><i>2</i><span>조기투여 = 연 2회·28일</span></div><div class="v2-step"><i>3</i><span>지연(late) 급여 상한은 확인되지 않음</span></div>
-  </div>
-  <div class="v2-tip">Tip · 지연 뒤 재평가에서 T-score 가 -2.5 를 넘으면 급여 자격이 흔들립니다.</div>
+  <table class="v2-table q-table " style="--rh:82px;left:628px;top:206px;width:588px"><colgroup><col style="width:250px"><col style="width:338px"></colgroup><thead><tr><th>치과에서 오는 문장</th><th>내과의 판정</th></tr></thead><tbody><tr><th>① '3개월 끊고 오세요'</th><td>근거 부족 — 휴약 이득 없음</td></tr><tr><th>② '프롤리아라 발치 불가'</th><td>부적절 — 금기 아님</td></tr><tr><th>③ '뼈 찰 때까지 주사 금지'</th><td>점막치유 6~8주면 충분</td></tr><tr><th>공통 — 약제 계열을 안 묻는다</th><td>약제명·마지막 투여일부터</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 세 문장 모두 '약제명이 무엇입니까'로 시작합니다 — 답은 약제 계열에 따라 갈립니다.</span><span class="v2-src">근거 · 한국 2025 권고안 · AAOMS 2022</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">37 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">19 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 31 · NOTES</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">그대로 복사해 쓰는 협진 문장 2종</h2>
-  <p class="v2-sub">① 내과→치과 의뢰 ② 중단 요청 회신</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>의뢰서</b></div><div class="v2-body">「[약제/용량] 투여 중, 마지막 투여일 [ ], 누적 [ ]년.」</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>의뢰서 — 요청 문장</b></div><div class="v2-body">「약제 중단을 전제로 하지 말고 시술 시점 – 치유 – 다음 투여를 함께 정하고자 합니다.」</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>회신문</b></div><div class="v2-body">「약제별 약리가 달라 일률적 '3개월 중단'은 적절하지 않습니다. denosumab 은 특히 그렇습니다.」</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">2종</div><div class="v2-stat__cap">의뢰서 · 회신문<br>약제명·마지막 투여일·골절위험</div></div><div class="v2-step"><i>1</i><span>약제명·마지막 투여일</span></div><div class="v2-step"><i>2</i><span>골절위험</span></div><div class="v2-step"><i>3</i><span>시술 시점 함께 결정</span></div>
-  </div>
-  <div class="v2-tip">Tip · 회신에는 '중단 불가'가 아니라 '언제·어떻게'를 적어야 협진이 이어집니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">38 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 32 · VERDICT</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">치과에서 오는 세 문장 — 판정</h2>
-  <p class="v2-sub">각각에 판정을 답니다 — 답은 약제 계열에 따라 갈립니다</p>
-  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
-    <div class="v2-vs__col">
-      <div class="v2-vs__head">치과에서 오는 세 문장</div>
-      <div class="v2-vs__lead">그대로 수용하지 않습니다 — 먼저 약제명을 확인합니다.</div>
-      <ul class="v2-vs__list">
-        <li>① '3개월 끊고 오세요'</li>
-        <li>② '프롤리아라 발치 불가'</li>
-        <li>③ '뼈 찰 때까지 주사 금지'</li>
-        <li>공통 — 약제 계열을 안 묻는다</li>
-      </ul>
-    </div>
-    <div class="v2-vs__mid"></div>
-    <div class="v2-vs__col v2-vs__col--b">
-      <div class="v2-vs__head">내과의 판정</div>
-      <div class="v2-vs__lead">답은 약제 계열에 따라 갈립니다.</div>
-      <ul class="v2-vs__list">
-        <li>근거 부족 — 휴약 이득 없음</li>
-        <li>부적절 — 금기 아님</li>
-        <li>점막치유 6~8주면 충분</li>
-        <li>약제명·마지막 투여일부터</li>
-      </ul>
-    </div>
-  </div>
-  <div class="v2-tip">Tip · 세 문장 모두 '약제명이 무엇입니까'로 시작합니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">39 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 33 · CASES</div>
+  <div class="v2-chapter">CHAPTER 17 · 케이스</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">케이스 10종 + 자주 겹치는 2가지</h2>
   <p class="v2-sub">묻는 순서는 늘 같습니다 — 약제명과 마지막 투여일부터</p>
-  <table class="v2-table v2-table--list" style="left:64px;top:206px;width:1152px">
-    <thead><tr>
-      <th style="width:340px">케이스</th>
-      <th>결정</th>
-    </tr></thead>
-    <tbody>
-      <tr><th scope="row">① 알렌드로네이트 3년</th><td>휴약 불필요 — 그대로 발치</td></tr>
-      <tr><th scope="row">② 8년+당뇨</th><td>임플란트 금기 아님 — 위험인자 교정</td></tr>
-      <tr><th scope="row">③</th><td>DMB 마지막 5개월 — 지금 발치</td></tr>
-      <tr><th scope="row">④ 주사 다음주</th><td>발치 먼저 — 치유 확인 뒤 투여</td></tr>
-      <tr><th scope="row">⑤</th><td>ZOL 3년 임플란트 — 가능</td></tr>
-      <tr><th scope="row">⑥ 로모소주맙</th><td>통상 발치 — 중단 근거 없음</td></tr>
-      <tr><th scope="row">⑦ 휴약요구</th><td>근거 부족 — 약제명부터 확인</td></tr>
-      <tr><th scope="row">⑧</th><td>시술 후 재개 — 점막치유 6~8주</td></tr>
-      <tr><th scope="row">⑨ ≥7개월</th><td>더 지연 금지 — 골절예방 우선</td></tr>
-      <tr><th scope="row">⑩ 초고위험</th><td>골절예방 우선 — 지연 최소화</td></tr>
-      <tr><th scope="row">⑪ 임플 보유</th><td>약제 시작 안전 — 주위염 관리</td></tr>
-      <tr><th scope="row">⑫ 이베니티 종료</th><td>1개월 내 흡수억제제 전환</td></tr>
-    </tbody>
-  </table>
-  <div class="v2-tip">Tip · 초고위험(최근·다발 척추골절)에서는 골절 예방이 명확히 앞섭니다.</div>
+  <table class="v2-table q-table " style="--rh:56px;left:64px;top:206px;width:564px"><colgroup><col style="width:250px"><col style="width:314px"></colgroup><thead><tr><th>케이스</th><th>결정</th></tr></thead><tbody><tr><th>① 알렌드로네이트 3년</th><td>휴약 불필요 — 그대로 발치</td></tr><tr><th>② 8년 + 당뇨</th><td>임플란트 금기 아님 — 위험인자 교정</td></tr><tr><th>③ DMB 마지막 5개월</th><td>지금 발치</td></tr><tr><th>④ 주사 다음 주</th><td>발치 먼저 — 치유 확인 뒤 투여</td></tr><tr><th>⑤ ZOL 3년 · 임플란트</th><td>가능</td></tr><tr><th>⑥ 로모소주맙</th><td>통상 발치 — 중단 근거 없음</td></tr></tbody></table>
+  <table class="v2-table q-table " style="--rh:56px;left:652px;top:206px;width:564px"><colgroup><col style="width:250px"><col style="width:314px"></colgroup><thead><tr><th>케이스</th><th>결정</th></tr></thead><tbody><tr><th>⑦ 휴약 요구</th><td>근거 부족 — 약제명부터 확인</td></tr><tr><th>⑧ 시술 후 재개</th><td>점막치유 6~8주</td></tr><tr><th>⑨ ≥7개월</th><td>더 지연 금지 — 골절예방 우선</td></tr><tr><th>⑩ 초고위험</th><td>골절예방 우선 — 지연 최소화</td></tr><tr><th>⑪ 임플란트 보유</th><td>약제 시작 안전 — 주위염 관리</td></tr><tr><th>⑫ 이베니티 종료</th><td>1개월 내 흡수억제제 전환</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 초고위험(최근·다발 척추골절)에서는 골절 예방이 명확히 앞섭니다. DMB = 데노수맙.</span><span class="v2-src">근거 · 한국 2025 권고안 · AAOMS 2022</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">40 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">20 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 34 · ALGORITHM</div>
+  <div class="v2-chapter">CHAPTER 18 · 알고리즘</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">한 장 알고리즘 — 침습인가부터 묻는다</h2>
-  <p class="v2-sub">분기는 넷 — 침습 여부 · 용량 집단 · 약제 계열 · 골절위험</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>① 침습 여부</b></div><div class="v2-body">스케일링·근관치료·보철 → 약제 조정 없음. 발치·임플란트·치주 골수술·골이식·치근단절제 → 다음 분기.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>② 용량·계열</b></div><div class="v2-body">암 용량 → 종양내과·구강외과 협진, 별도 경로. 골다공증 용량 → BP / 데노수맙 / 로모·테리·SERM 세 갈래.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>③ 시점</b></div><div class="v2-body">데노수맙은 마지막 주사 3~4개월 후 시술 → 점막치유 6~8주 → 다음 투여. BP 는 그대로.</div></div>
+  <p class="v2-sub">분기는 넷 — 침습 여부 · 용량 집단 · 약제 계열 · 골절위험, 순서대로 밟는다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:261px;height:312px">
+    <div class="q-step__tag">① 침습 여부</div><div class="q-step__h">뼈를 건드리나</div><div class="v2-body">스케일링·근관치료·보철 → 약제 조정 없음. 발치·임플란트·치주 골수술·골이식·치근단절제 → 다음&nbsp;분기.</div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">4분기</div><div class="v2-stat__cap">침습 여부 → 용량 집단 → 약제 계열 → 골절위험<br>순서대로 밟는다</div></div><div class="v2-step"><i>1</i><span>비침습이면 조정 없음</span></div><div class="v2-step"><i>2</i><span>암 용량은 별도 경로</span></div><div class="v2-step"><i>3</i><span>데노수맙만 시점을 계산한다</span></div>
+  <div class="q-arrow" style="left:331px;top:350px"></div>
+  <div class="v2-panel q-step" style="left:361px;top:206px;width:261px;height:312px">
+    <div class="q-step__tag">② 용량 집단</div><div class="q-step__h">암 용량인가</div><div class="v2-body">암 용량 → 종양내과·구강외과 협진, 별도 경로. 골다공증 용량 → 다음 분기.</div>
   </div>
-  <div class="v2-tip">Tip · 감염은 시술을 미룰 이유가 아니라 적극 치료할 위험인자입니다.</div>
+  <div class="q-arrow" style="left:628px;top:350px"></div>
+  <div class="v2-panel q-step" style="left:658px;top:206px;width:261px;height:312px">
+    <div class="q-step__tag">③ 약제 계열</div><div class="q-step__h">시점은 데노수맙만</div><div class="v2-body">BP는 그대로. 데노수맙은 마지막 주사 3~4개월 후 시술 → 점막치유 6~8주 → 다음 투여. 로모·테리·SERM은 조정 없음.</div>
+  </div>
+  <div class="q-arrow" style="left:925px;top:350px"></div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:955px;top:206px;width:261px;height:312px">
+    <div class="q-step__tag">④ 골절위험</div><div class="q-step__h">초고위험이면</div><div class="v2-body">최근·다발 척추골절이면 골절 예방이 앞선다 — 지연 최소화.</div>
+  </div>
+  <div class="q-note" style="left:64px;top:538px;width:1112px">감염은 시술을 미룰 이유가 아니라 <b>적극 치료할 위험인자</b>다.</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 비침습이면 조정 없음 · 암 용량은 별도 경로 · 데노수맙만 시점을 계산합니다.</span><span class="v2-src">근거 · 한국 2025 권고안 알고리즘 · AAOMS 2022</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">41 / 43</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 35 · LIMITS</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">⚠️ 이 자료가 확인 못 한 것</h2>
-  <p class="v2-sub">여기 적힌 것은 근거가 아니라 공백입니다. 확인될 때까지 그대로 둡니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>MFDS</b></div><div class="v2-body">NEDrug 품목 허가 원문이 안정적으로 회수되지 않아, 프롤리아·이베니티·포스테오의 '치과시술/ONJ/중단' 문구를 문장 단위로 대조하지 못했습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>인종·의료체계</b></div><div class="v2-body">아시아 발생률이 서구보다 높다는 보고가 있고, 진단코드 기반 코호트는 학회 추정치보다 높게 나옵니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>핀란드 코호트 편차</b></div><div class="v2-body">N=58,367 (Sci Rep 2025) — 저용량 0.3% · 고용량 9.0% · 데노수맙이 BP 의 5배. 진단코드 기반이라 학회 추정치보다 높습니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">3건</div><div class="v2-stat__cap">미검증 3건<br>허가문구 원문 · 인종·의료체계 · 코호트 편차</div></div><div class="v2-step"><i>1</i><span>MFDS 허가문구 미검증</span></div><div class="v2-step"><i>2</i><span>인구집단이 다른 수치 직접비교 금지</span></div><div class="v2-step"><i>3</i><span>재투여 대기기간 미확립</span></div>
-  </div>
-  <div class="v2-tip">Tip · 여기 적힌 것은 '아직 확인 못 했다'이지 '아니다'가 아닙니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">42 / 43</div>
-</section><section class="slide slide--v2">
+  <div class="v2-foot v2-foot--r">21 / 22</div>
+</section>
+<section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
   <div class="v2-chapter">CLOSING</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">다시 보기 · 문의</h2>
   <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head">광교바른내과</div>
-      <div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · 031-893-4560<br>소화기내과 · 일반내과 · 5대암 검진</div></div>
-    <div class="v2-block"><div class="v2-head">이 자료의 성격</div>
-      <div class="v2-body">골다공증 약제와 침습적 치과치료에 관한 1차 진료 관점의 <b>의료진 학습자료</b>입니다. 실제 처방·시술 결정은 최신 허가사항·1차 자료와 임상 판단으로 최종 확인하십시오.</div></div>
+  <div class="v2-panel q-text q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b> · 소화기내과 · 일반내과 · 5대암 검진</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>이 자료가 확인 못 한 것 — '아니다'가 아니라 '아직'</b></div><div class="v2-body"><ul class="q-list"><li><b>MFDS 허가문구</b> — 프롤리아·이베니티·포스테오의 치과시술/ONJ/중단 문구를 원문 대조 못 함</li><li><b>인종·의료체계</b> — 아시아 발생률이 더 높다는 보고, 진단코드 기반 코호트는 학회 추정보다 높음</li><li><b>재투여 대기기간</b> — 최적 시점 미확립</li></ul></div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">1차 진료 관점의 의료진 학습자료입니다. 실제 처방·시술은 최신 허가사항·1차 자료와 임상 판단으로&nbsp;확인하십시오.</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
     <div class="qr-block">
       <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM12,2H13V3H12zM13,2H14V3H13zM15,2H16V3H15zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM12,3H13V4H12zM15,3H16V4H15zM18,3H19V4H18zM22,3H23V4H22zM24,3H25V4H24zM25,3H26V4H25zM26,3H27V4H26zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM13,4H14V5H13zM15,4H16V5H15zM20,4H21V5H20zM25,4H26V5H25zM26,4H27V5H26zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM15,5H16V6H15zM19,5H20V6H19zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM12,6H13V7H12zM15,6H16V7H15zM16,6H17V7H16zM17,6H18V7H17zM18,6H19V7H18zM19,6H20V7H19zM21,6H22V7H21zM26,6H27V7H26zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM13,7H14V8H13zM16,7H17V8H16zM21,7H22V8H21zM22,7H23V8H22zM23,7H24V8H23zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM11,9H12V10H11zM13,9H14V10H13zM14,9H15V10H14zM19,9H20V10H19zM20,9H21V10H20zM24,9H25V10H24zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM16,10H17V11H16zM18,10H19V11H18zM19,10H20V11H19zM20,10H21V11H20zM23,10H24V11H23zM25,10H26V11H25zM28,10H29V11H28zM31,10H32V11H31zM33,10H34V11H33zM34,10H35V11H34zM3,11H4V12H3zM4,11H5V12H4zM6,11H7V12H6zM9,11H10V12H9zM11,11H12V12H11zM13,11H14V12H13zM14,11H15V12H14zM15,11H16V12H15zM18,11H19V12H18zM19,11H20V12H19zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM5,12H6V13H5zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM13,12H14V13H13zM14,12H15V13H14zM15,12H16V13H15zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM23,12H24V13H23zM24,12H25V13H24zM25,12H26V13H25zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM33,12H34V13H33zM34,12H35V13H34zM3,13H4V14H3zM5,13H6V14H5zM7,13H8V14H7zM10,13H11V14H10zM11,13H12V14H11zM15,13H16V14H15zM16,13H17V14H16zM17,13H18V14H17zM22,13H23V14H22zM25,13H26V14H25zM26,13H27V14H26zM27,13H28V14H27zM29,13H30V14H29zM31,13H32V14H31zM34,13H35V14H34zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM19,14H20V15H19zM21,14H22V15H21zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM2,15H3V16H2zM3,15H4V16H3zM4,15H5V16H4zM9,15H10V16H9zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM21,15H22V16H21zM22,15H23V16H22zM26,15H27V16H26zM29,15H30V16H29zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM2,16H3V17H2zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM12,16H13V17H12zM14,16H15V17H14zM15,16H16V17H15zM16,16H17V17H16zM19,16H20V17H19zM21,16H22V17H21zM24,16H25V17H24zM26,16H27V17H26zM28,16H29V17H28zM31,16H32V17H31zM32,16H33V17H32zM2,17H3V18H2zM5,17H6V18H5zM6,17H7V18H6zM9,17H10V18H9zM10,17H11V18H10zM13,17H14V18H13zM14,17H15V18H14zM17,17H18V18H17zM20,17H21V18H20zM21,17H22V18H21zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM27,17H28V18H27zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM2,18H3V19H2zM3,18H4V19H3zM6,18H7V19H6zM8,18H9V19H8zM15,18H16V19H15zM17,18H18V19H17zM20,18H21V19H20zM21,18H22V19H21zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM27,18H28V19H27zM28,18H29V19H28zM30,18H31V19H30zM32,18H33V19H32zM2,19H3V20H2zM4,19H5V20H4zM6,19H7V20H6zM9,19H10V20H9zM11,19H12V20H11zM13,19H14V20H13zM15,19H16V20H15zM17,19H18V20H17zM19,19H20V20H19zM20,19H21V20H20zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM30,19H31V20H30zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM2,20H3V21H2zM3,20H4V21H3zM5,20H6V21H5zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM14,20H15V21H14zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM23,20H24V21H23zM24,20H25V21H24zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM2,21H3V22H2zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM9,21H10V22H9zM10,21H11V22H10zM11,21H12V22H11zM12,21H13V22H12zM15,21H16V22H15zM17,21H18V22H17zM19,21H20V22H19zM20,21H21V22H20zM22,21H23V22H22zM24,21H25V22H24zM25,21H26V22H25zM26,21H27V22H26zM27,21H28V22H27zM30,21H31V22H30zM33,21H34V22H33zM34,21H35V22H34zM4,22H5V23H4zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM14,22H15V23H14zM15,22H16V23H15zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM23,22H24V23H23zM31,22H32V23H31zM32,22H33V23H32zM2,23H3V24H2zM3,23H4V24H3zM5,23H6V24H5zM7,23H8V24H7zM10,23H11V24H10zM11,23H12V24H11zM13,23H14V24H13zM16,23H17V24H16zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM24,23H25V24H24zM25,23H26V24H25zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM4,24H5V25H4zM6,24H7V25H6zM8,24H9V25H8zM9,24H10V25H9zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM15,24H16V25H15zM18,24H19V25H18zM19,24H20V25H19zM20,24H21V25H20zM22,24H23V25H22zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM27,24H28V25H27zM28,24H29V25H28zM29,24H30V25H29zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM3,25H4V26H3zM6,25H7V26H6zM15,25H16V26H15zM17,25H18V26H17zM18,25H19V26H18zM20,25H21V26H20zM22,25H23V26H22zM24,25H25V26H24zM25,25H26V26H25zM29,25H30V26H29zM30,25H31V26H30zM33,25H34V26H33zM34,25H35V26H34zM2,26H3V27H2zM5,26H6V27H5zM8,26H9V27H8zM10,26H11V27H10zM13,26H14V27H13zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM33,26H34V27H33zM34,26H35V27H34zM10,27H11V28H10zM11,27H12V28H11zM17,27H18V28H17zM18,27H19V28H18zM21,27H22V28H21zM26,27H27V28H26zM30,27H31V28H30zM31,27H32V28H31zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM14,28H15V29H14zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM23,28H24V29H23zM24,28H25V29H24zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM11,29H12V30H11zM16,29H17V30H16zM18,29H19V30H18zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM13,30H14V31H13zM14,30H15V31H14zM15,30H16V31H15zM17,30H18V31H17zM20,30H21V31H20zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM14,31H15V32H14zM15,31H16V32H15zM17,31H18V32H17zM19,31H20V32H19zM22,31H23V32H22zM24,31H25V32H24zM29,31H30V32H29zM31,31H32V32H31zM32,31H33V32H32zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM13,32H14V33H13zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM22,32H23V33H22zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM19,33H20V34H19zM21,33H22V34H21zM24,33H25V34H24zM26,33H27V34H26zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM16,34H17V35H16zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM23,34H24V35H23zM25,34H26V35H25zM28,34H29V35H28zM30,34H31V35H30zM32,34H33V35H32z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
       <div class="qr-block__text">
@@ -817,7 +679,7 @@
     </div>
   </div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 의료진 학습자료 · ⚠️ 교육·참고용 — 실제 처방/시술 결정은 최신 1차 자료·임상 판단으로 최종 확인</div>
-  <div class="v2-foot v2-foot--r">43 / 43</div>
+  <div class="v2-foot v2-foot--r">22 / 22</div>
 </section>
 </body>
 </html>

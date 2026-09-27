@@ -22,37 +22,65 @@
 <link rel="stylesheet" href="../../../shared/clinic-slides.css">
 <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
 <style>
+ /* HQ2-redesign 2026-09-27 (원장님 49028) — 한 가지 틀(글 패널+숫자 패널)을 13장 중 10장에 반복하던 판을
+    대비 2단·표·가로 도해·카드 격자로 바꿨다. 그림칸은 원본 비율(1.241·2.357) 그대로라 잘림·레터박스가 없다. */
  body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
- .v2-cite{font-size:13px;color:var(--color-steel-deep);text-decoration:none;border-bottom:1px dotted var(--color-steel-deep);white-space:nowrap}
- .v2-noanchor{font-size:12px;color:var(--color-warning);background:var(--color-warning-bg);border-radius:4px;padding:1px 6px;white-space:nowrap}
- .v2-reflist{margin:4px 0 0 0;padding-left:18px;font-size:13px;line-height:1.75}
- .v2-reflist a{color:var(--color-steel-deep);text-decoration:none}
  section.slide--v2{margin:0 auto 28px}
- /* 본문 밀도 — 실측 넘침(패널당 14~91px)에 맞춘 조정. 슬라이드 기하는 v2 규격 그대로 둔다. */
- /* v2 규격(본문 16px/1.6·패널 24px)을 그대로 쓴다 — 넘치면 글씨가 아니라 문장을 줄인다 */
- /* 텍스트 패널만 안쪽 여백을 줄인다 — 슬라이드 기하(206/400)는 v2 규격 그대로 유지 */
- /* 2026-08-22: v2 넘침 게이트 실측 — 5·6·7·14·16 장에서 본문이 패널(398px) 밖 14~40px 넘쳐 잘렸다.
-    임상 내용·글씨 크기는 무접촉, 블록 사이 여백만 회수한다(수리 방식은 898b388 야간하지경련 덱과 동일).
-    실측: 블록 간격 = 상쇄 margin 18px + 구분선 padding 18px. margin 만 7px 로 내려 간격당 11px,
-    3블록 패널(=2간격)에서 22px 를 회수한다. */
- .v2-panel .v2-block{margin-bottom:4px}
- .v2-panel .v2-block + .v2-block{margin-top:7px}
- /* 5장(폭 640px 패널)만 18px 가 더 남았다 — 640px 폭에서 문장이 더 접히기 때문.
-    이 패널에 한해 구분선 위아래 여백(padding 18px)까지 7px 로 회수한다(간격당 11px 추가 = 22px).
-    내용·글씨·패널 기하는 무접촉. */
- .v2-panel--tight .v2-block + .v2-block{padding-top:7px}
- .v2-panel .v2-block:last-child{margin-bottom:0}
- .v2-panel .v2-step:last-child{margin-bottom:0}
- .v2-reflist{font-size:12px;line-height:1.6}
- .v2-step{margin-bottom:6px}
- .v2-panel--accent .v2-stat{margin-bottom:10px}
- /* 도해 패널 — 임상 도해는 잘리면 오독되므로 contain 고정 */
- .v2-panel--fig{display:flex;flex-direction:column;background:#FFF;border:1px solid var(--v2-line)}
- .v2-fig{display:flex;flex-direction:column;height:100%;width:100%}
- .v2-fig__img{flex:1 1 auto;width:100%;height:100%;object-fit:contain;min-height:0}
- .v2-fig__ph{flex:1 1 auto;display:flex;align-items:center;justify-content:center;
-   background:var(--v2-surface);color:var(--v2-faint);font-size:14px;border-radius:6px}
- .v2-fig__cap{flex:0 0 auto;padding-top:8px;font-size:12px;color:#64748B;line-height:1.45}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ /* 글 패널 — 블록 3개를 패널 높이에 고르게 편다(아래 빈칸 방지) */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:10px}
+ .q-text .v2-body{font-size:16px;line-height:1.6}
+ /* 그림 패널 — 그림 자체가 칸을 채운다(비율 = 원본) */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none;display:flex;align-items:center;justify-content:center}
+ .q-fig::before{content:none}
+ .q-fig .v2-fig__img{width:482px;height:388px;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:28px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+ .q-card__top .v2-chip{width:56px;height:56px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:34px;height:34px}
+ .q-card__n{font-size:56px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:23px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:16px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__why{margin-top:12px;font-size:14px;line-height:1.55;color:var(--v2-muted);word-break:keep-all}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 — 셀 글자를 한 단계 키운다(표 셀 15~16px 규칙 상단) */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;height:68px}
+ .q-table--plan tbody th, .q-table--plan tbody td{height:68px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:16px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:14px 0 14px 22px}
+ .v2-vs__list li::before{top:23px}
+ /* 시간축 라벨 — 글자는 그림이 아니라 HTML 로 */
+ .q-tl{position:absolute;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+ .q-tl__lab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;border-radius:8px;background:var(--v2-chip-navy);border-top:4px solid var(--v2-navy)}
+ .q-tl__lab b{font-size:17px;color:var(--v2-navy)}
+ .q-tl__lab span{font-size:14px;color:var(--v2-body)}
+ .q-tl__lab--on{background:var(--v2-chip-accent);border-top-color:var(--v2-accent)}
+ /* 자주 묻는 질문 */
+ .q-faq{display:flex;flex-direction:column}
+ .q-faq .v2-head b{font-size:21px}
+ .q-faq__a{font-size:22px;font-weight:800;color:var(--rule);margin:2px 0 12px}
+ .q-faq .v2-body{font-size:17px;line-height:1.7}
+ .q-faq__stat{margin-top:auto;display:flex;align-items:baseline;gap:14px;padding-top:16px;border-top:1px solid var(--v2-line)}
+ .q-faq__num{flex:none;font-size:40px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px;line-height:1}
+ .q-faq__num--word{font-size:26px;letter-spacing:0}
+ .q-faq__cap{font-size:14px;color:var(--v2-muted);line-height:1.45;word-break:keep-all}
+ /* 2x2 체크리스트 */
+ .q-four{display:flex;flex-direction:column;justify-content:center}
+ .q-four .v2-head{margin-bottom:12px}
+ .q-four .v2-head b{font-size:21px}
+ .q-four .v2-body{font-size:17px;line-height:1.65}
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:14px;line-height:1.55}
 </style>
 <!-- seo:geo2 --><meta name="description" content="골다공증 약을 드시는 분의 치과 치료 — 약을 끊는 것이 답이 아닙니다. 약 이름과 마지막 주사일이 가장 중요합니다.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/mronj-patient/">
@@ -70,260 +98,250 @@
   </div>
   <footer class="slide__footer">
     <span class="slide__source">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</span>
-    <span class="slide__page">01 / 18</span>
+    <span class="slide__page">01 / 13</span>
   </footer>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">PATIENT EDUCATION · 치과 치료</div>
+  <div class="v2-chapter">CHAPTER 01 · 결론 먼저</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">골다공증 약과 치과 시술, 약을 끊는 것이 답이 아닙니다</h2>
-  <p class="v2-sub">필요한 치과 치료를 미루는 것이 오히려 위험할 수 있습니다. 가장 중요한 것은 드시는 약의 이름과 마지막 주사 날짜입니다.</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:1152px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>이 덱에서 다루는 것</b></div></div>
-    <div class="v2-step"><i>1</i><span>약 이름</span></div>
-    <div class="v2-step"><i>2</i><span>얼마나 드문가</span></div>
-    <div class="v2-step"><i>3</i><span>발치 시점</span></div>
-    <div class="v2-step"><i>4</i><span>치과에 알릴 것</span></div>
+  <h2 class="v2-title">먼저 결론 — 세 가지만 기억하세요</h2>
+  <p class="v2-sub">골다공증 약을 쓰는 분도 대부분의 치과 치료를 그대로 받을 수 있습니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9591 9.2814C16.6218 6.84016 12.7792 7.98807 9.58534 11.8657C6.50278 15.6083 8.60445 22.3544 10.1153 27.2039C10.4755 28.3602 10.8022 29.4087 11.0169 30.2829C12.1324 34.8237 13.1996 37.6532 15.6331 39.701C16.8383 40.715 18.2048 38.9724 19.6465 37.1338C20.8965 35.5398 22.203 33.8737 23.5098 33.8697C24.7954 33.8658 26.0812 35.5293 27.3138 37.1239C28.7366 38.9646 30.0886 40.7135 31.2874 39.701C33.1461 38.1311 33.9903 36.9793 35.0116 33.745C36.1254 30.2179 37.9238 26 39.3536 21.138C40.3596 17.7171 40.4801 14.2345 37.5808 10.8727C33.4414 6.07315 27.704 8.55223 25.0332 10.1396L28.6508 13.2408C29.0701 13.6002 29.1187 14.2315 28.7592 14.6508C28.3998 15.0701 27.7685 15.1187 27.3492 14.7592L20.9591 9.2814Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">필요한 치과 치료는 받습니다</div>
+    <div class="v2-body">스케일링·충치 치료·신경 치료는 약과 상관없이 받습니다. 곪은 이를 그대로 두는 쪽이 턱뼈에는 <b>더 나쁩니다</b>.</div>
+    <div class="q-card__why">턱뼈 문제가 생긴 분들은 이미 곪은 이를 뽑은 경우가&nbsp;많았습니다.</div>
+    <div class="q-card__k">치과를 미루지 않기</div>
   </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">약은 스스로 끊지 않습니다</div>
+    <div class="v2-body">먹는 약은 두세 달 쉬어도 뼈에서 빠지지 않고, 프롤리아는 늦어지면 <b>척추 골절</b>이 몰려옵니다. 조정은 내과에서 정합니다.</div>
+    <div class="q-card__why">쉬는 동안 골절을 막는 힘만 줄어듭니다.</div>
+    <div class="q-card__k">끊기 전에 내과와 상의</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">약 이름과 마지막 주사 날짜를 알립니다</div>
+    <div class="v2-body">'골다공증약'이라는 말만으로는 치과가 판단할&nbsp;수&nbsp;없습니다. <b>약봉투나 처방전</b>을 그대로 보여 주시면 가장 정확합니다.</div>
+    <div class="q-card__why">같은 ‘주사’라도 골다공증용과 암 치료용은 전혀 다릅니다.</div>
+    <div class="q-card__k">약봉투 사진 한 장</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 치과 예약이 잡히면 내과에 먼저 알려 주세요. 약 종류에 따라 시점을 함께 맞춥니다.</span><span class="v2-src">근거 · AAOMS 2022 권고안</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">02 / 18</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 01 · START HERE</div>
+  <div class="v2-chapter">CHAPTER 02 · 치료 종류</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">골다공증약을 먹으면 치과 치료를 못 하나요?</h2>
-  <p class="v2-sub">아닙니다. 필요한 치과 치료를 미루는 것이 오히려 더 위험합니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>대부분의 치과 치료는 가능합니다</b></div><div class="v2-body">골다공증 용량으로 먹는 약이나 프롤리아를 쓰는 분에서 턱뼈 문제가 생기는 일은 <b>드뭅니다</b>. 스케일링·충치 치료·신경 치료처럼 뼈를 건드리지 않는 치료는 약을 조정할 필요도 없습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>미루면 더 위험합니다</b></div><div class="v2-body">잇몸 염증이나 뿌리 끝 감염을 그대로 두는 것이 오히려 턱뼈 문제를 키웁니다. 실제로 턱뼈 문제가 생긴 분들에서는 <b>이미 곪은 이를 뽑은 일</b>이 앞선 경우가 많았습니다. 약이 무서워 치과를 미루지 마시고, 약 이름을 들고 가십시오.</div></div>
+  <h2 class="v2-title">기준은 하나 — 그 치료가 뼈를 건드리는가</h2>
+  <p class="v2-sub">뼈를 건드리지 않는 치료는 약과 상관없이 받습니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">약 조정 없이 받는 치료</div><div class="v2-vs__lead">뼈를 건드리지 않는 치료입니다. <b>평소처럼</b> 받으십시오.</div><ul class="v2-vs__list"><li>스케일링·잇몸 관리</li><li>충치 치료·때우기</li><li>신경 치료(뿌리 치료)</li><li>틀니 조정 — 잇몸이 헐면 <b>바로</b> 고칩니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">뼈를 건드리는 치료</div><div class="v2-vs__lead">못 하는 것이 아니라 <b>계획</b>이 필요합니다. 내과에 먼저 알려 주세요.</div><ul class="v2-vs__list"><li>이 뽑기(발치)</li><li>임플란트</li><li>잇몸 뼈 수술·뼈 이식</li><li>먹는 약은 대개 그대로 · 프롤리아는 <b>주사 날짜</b>에 맞춰 계획</li></ul></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">2~5</div><div class="v2-stat__cap">먹는 골다공증약을 쓰는 1만 명 가운데 턱뼈 문제가 생기는 사람 수</div></div><div class="v2-step"><i>1</i><span>필요한 치과 치료는 받습니다</span></div><div class="v2-step"><i>2</i><span>약은 스스로 끊지 않습니다</span></div><div class="v2-step"><i>3</i><span>약 이름부터 확인합니다</span></div>
-  </div>
-  <div class="v2-tip">Tip · 치과 예약이 잡히면 먼저 내과에 알려 주십시오. 약 종류에 따라 시점을 함께 맞추면 됩니다.</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약을 끊을지 묻기 전에, 받을 치료가 뼈를 건드리는지부터 확인합니다.</span><span class="v2-src">근거 · AAOMS 2022 권고안</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">03 / 18</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 02 · WHICH DRUG</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">가장 중요한 건 '약 이름'입니다</h2>
-  <p class="v2-sub">먹는 약 · 프롤리아 · 암 치료용 주사 — 셋은 완전히 다릅니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>① 먹는 골다공증약</b></div><div class="v2-body">알렌드로네이트 같은 먹는 약입니다. 턱뼈 문제는 <b>1만 명당 2~5명</b> 수준입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>② 프롤리아(6개월 주사)</b></div><div class="v2-body"><b>1만 명당 4~30명</b>. 더 중요한 건 오래 미루면 척추가 무너질 수 있다는 점.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>③ 암 치료용 주사</b></div><div class="v2-body">100명 중 1~15명에서 생깁니다 — 골다공증 용량보다 <b>100~1,000배</b> 높습니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">3<span>가지</span></div><div class="v2-stat__cap">약 이름부터 확인합니다</div></div><div class="v2-step"><i>1</i><span>① 먹는 약</span></div><div class="v2-step"><i>2</i><span>② 프롤리아 주사</span></div><div class="v2-step"><i>3</i><span>③ 암 치료용 고용량 주사 — 다른 이야기</span></div>
-  </div>
-  <div class="v2-tip">Tip · 치과에서 물으면 약봉투나 처방전을 그대로 보여 주는 것이 가장 정확합니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">04 / 18</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 02 · WHICH DRUG</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">다른 약은 하나입니다</h2>
-  <p class="v2-sub">다섯 칸 중 턱뼈 문제가 그려진 칸은 하나뿐입니다</p>
-  <div class="v2-panel v2-panel--figwide" style="left:174px;top:206px;width:932px;height:400px">
-    <img class="v2-figwide__img" src="../../../shared/assets/generated/mronj-drug-risk-strip-20260816.png" alt="골다공증약 다섯 종을 나란히 둔 그림 — 가운데 칸에만 턱뼈 병변이 표시돼 있다">
-  </div>
-  <div class="v2-figwide__cap">왼쪽부터 ①먹는 약 ②1년에 한 번 맞는 주사 ③프롤리아 ④로모소주맙 ⑤테리파라타이드. 표시된 칸은 ③ 하나입니다. 설명용 그림입니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">05 / 18</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 03 · MRONJ</div>
+  <div class="v2-chapter">CHAPTER 03 · 턱뼈 괴사</div>
   <div class="v2-mark"></div>
   <h2 class="v2-title">턱뼈 괴사가 무엇인가요</h2>
-  <p class="v2-sub">잇몸이 아물지 않고 뼈가 드러난 상태를 말합니다</p>
-  <div class="v2-panel v2-panel--tight" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>세 가지 조건</b></div><div class="v2-body">① 골다공증약·항암 주사를 쓴 적이 있고 ② 턱뼈가 <b>8주</b> 넘게 드러나 있고 ③ 턱 방사선 치료력 없음.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>드문 일입니다</b></div><div class="v2-body">골다공증 용량에서는 드물게 생깁니다. 다만 암 치료용 고용량 주사를 맞는 분들에서는 훨씬 흔합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>이럴 때 진료</b></div><div class="v2-body">이를 뽑은 자리가 몇 주가 지나도 낫지 않거나, 턱이 계속 아프고 뼈가 만져지면 치과 진료를 받으세요.</div></div>
+  <p class="v2-sub">잇몸이 아물지 않고 턱뼈가 드러난 상태 — 이를 뽑지 않았어도 생길 수 있습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:640px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>세 가지가 모두 맞을 때</b></div><div class="v2-body">① 골다공증약이나 항암용 뼈 주사를 쓴 적이 있고 ② 턱뼈가 드러나거나 잇몸 구멍으로 뼈가 만져지는 상태가 <b>8주</b> 넘게 이어지고 ③ 턱 방사선 치료를 받은 적이 없을 때입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 36L27.9705 8.65846C28.0261 8.32969 28.0029 7.99388 27.9024 7.67403C27.802 7.35418 27.6266 7.05786 27.3884 6.80537C27.1502 6.55287 26.8548 6.35018 26.5223 6.21117C26.1899 6.07216 25.8284 6.00013 25.4625 6H8.53922C8.17317 5.99991 7.81143 6.07178 7.47881 6.21069C7.14618 6.3496 6.85054 6.55226 6.61215 6.80478C6.37376 7.0573 6.19826 7.3537 6.09769 7.67366C5.99712 7.99362 5.97386 8.32956 6.0295 8.65846L10 36V38.5C10 39.4154 10.3487 40.3011 10.9816 40.9603C11.6157 41.6209 12.4848 42 13.4 42H20.6C21.5152 42 22.3843 41.6209 23.0184 40.9603C23.6513 40.3011 24 39.4154 24 38.5V36ZM18.0917 15.3115C18.0917 14.7592 17.644 14.3115 17.0917 14.3115C16.5394 14.3115 16.0917 14.7592 16.0917 15.3115V18.8447H12.4761C11.9238 18.8447 11.4761 19.2924 11.4761 19.8447C11.4761 20.397 11.9238 20.8447 12.4761 20.8447H16.0917V24.3782C16.0917 24.9305 16.5394 25.3782 17.0917 25.3782C17.644 25.3782 18.0917 24.9305 18.0917 24.3782V20.8447H21.7069C22.2592 20.8447 22.7069 20.397 22.7069 19.8447C22.7069 19.2924 22.2592 18.8447 21.7069 18.8447H18.0917V15.3115ZM21.5757 39.5752C21.843 39.2968 22 38.9107 22 38.5V37H12V38.5C12 38.9107 12.157 39.2968 12.4243 39.5752C12.6903 39.8523 13.0422 40 13.4 40H20.6C20.9578 40 21.3097 39.8523 21.5757 39.5752Z" fill="currentColor"/>
+<path d="M42 7C42 6.44772 41.5523 6 41 6C40.4477 6 40 6.44772 40 7H34V9H40V11H34V13H40V15H34V17H40V18.9919L36.2428 23.3468C36.0862 23.5283 36 23.7602 36 24V41C36 41.5523 36.4477 42 37 42C37.5523 42 38 41.5523 38 41V24.3718L41.7572 20.0169C41.9138 19.8353 42 19.6035 42 19.3636V7Z" fill="currentColor"/>
+</svg></div><b>드문 일입니다</b></div><div class="v2-body">골다공증 용량에서는 <b>드물게</b> 생깁니다. 암 치료용 고용량 주사를 맞는 분들에서는 훨씬&nbsp;흔합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>이럴 때는 진료를 받으세요</b></div><div class="v2-body">뽑은 자리가 몇 주째 낫지 않거나, 이를 뽑지 않았어도 턱이 계속 아프고 뼈가 만져지면 치과 진료를 받으세요.</div></div>
   </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="../../../shared/assets/generated/mronj-definition-triad-20260816.png" alt="이를 뽑은 자리가 아물지 않고 잇몸 사이로 죽은 턱뼈가 드러난 모습"><div class="v2-fig__cap">이를 뽑은 자리가 아물지 않고 뼈가 드러난 모습 — 8주 넘게 이 상태가 이어지면 턱뼈 괴사로 봅니다.</div></div>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:734px;top:206px;width:482px;height:400px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/mronj-definition-triad-20260816.png" alt="이를 뽑은 자리가 아물지 않고 잇몸 사이로 턱뼈가 드러난 모습">
   </div>
-  <div class="v2-tip">Tip · 뼈가 보이지 않아도 턱이 계속 아프면 한 번 확인해 보세요.</div>
+  <div class="v2-tip"><span class="v2-tip__t">그림 · 이를 뽑은 자리가 아물지 않고 뼈가 드러난 모습 — 8주 넘게 이어지면 턱뼈 괴사로 봅니다(설명용 그림).</span><span class="v2-src">근거 · AAOMS 2022 권고안</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">06 / 18</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 04 · RISK</div>
+  <div class="v2-chapter">CHAPTER 04 · 얼마나 드문가</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">얼마나 드문가 — 1만 명을 세어 봅니다</h2>
-  <p class="v2-sub">먹는 약은 1만 명당 2~5명, 프롤리아는 4~30명으로 보고됩니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>먹는 약</b></div><div class="v2-body"><b>1만 명당 2~5명</b>입니다. 약을 쓰지 않은 분들(1만 명당 0~2명)과 겹칠 만큼 낮은 숫자입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>프롤리아</b></div><div class="v2-body"><b>1만 명당 4~30명</b>으로 먹는 약보다는 높습니다. 10년 넘게 쓴 분들을 모아 본 값이라 기간이 긴 숫자입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>이를 뽑아야 할 때는</b></div><div class="v2-body">이를 뽑는 분들만 따로 모으면 숫자가 올라갑니다. 프롤리아를 맞으며 발치한 427명 중 <b>10명(2.3%)</b>에서 턱뼈 문제가 생겼습니다. 전체 위험과는 다릅니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">2~5</div><div class="v2-stat__cap">먹는 골다공증약 1만 명당 생기는 수 · 프롤리아는 4~30명</div></div><div class="v2-step"><i>1</i><span>먹는 약 — 2~5명</span></div><div class="v2-step"><i>2</i><span>프롤리아 — 4~30명</span></div><div class="v2-step"><i>3</i><span>암 주사 — 훨씬 높음</span></div>
-  </div>
-  <div class="v2-tip">Tip · 연구마다 세는 기간과 방법이 달라, 이 숫자들끼리 곧바로 견주지는 않습니다.</div>
+  <h2 class="v2-title">약마다 턱뼈 문제의 크기가 다릅니다</h2>
+  <p class="v2-sub">골다공증 용량에서는 1만 명당 몇 명 — 암 치료용 주사만 자릿수가 다릅니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:250px"><col style="width:330px"><col style="width:250px"><col style="width:322px"></colgroup><thead><tr><th>약</th><th>어떤 약인가</th><th>턱뼈 문제가 생기는 수</th><th>치과 치료 전에</th></tr></thead><tbody><tr><th>약을 쓰지 않는 분</th><td>비교 기준</td><td>1만 명당 <b>0~2명</b></td><td>—</td></tr><tr><th>먹는 골다공증약</th><td>알렌드로네이트 등 · 매주·매달 먹는 약</td><td>1만 명당 <b>2~5명</b></td><td>대개 계속 드십니다 · 쉴지는 처방 의사가 정함</td></tr><tr><th>1년에 한 번 맞는 주사</th><td>졸레드론산 · 1년에 1회</td><td>1만 명당 <b>2명 이하</b>(자료마다 다름)</td><td>마지막 주사 날짜를 알리고, 시술 시점과 다음 주사를 함께 정함</td></tr><tr><th>프롤리아</th><td>6개월마다 맞는 주사</td><td>1만 명당 <b>4~30명</b></td><td>마지막 주사 날짜로 시점 계획</td></tr><tr><th>암 치료용 뼈 주사</th><td>4주마다 · 골다공증 용량의 수십 배</td><td><span class="v2-td--alert">100명 중 1~15명</span></td><td>암 담당 주치의와 먼저 상의</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 프롤리아를 맞으며 이를 뽑은 분만 모으면 427명 중 10명(2.3%) — 누구를 세느냐에 따라 숫자가 달라집니다.</span><span class="v2-src">근거 · AAOMS 2022 · Colella 2023</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">07 / 18</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 05 · ONCOLOGY</div>
+  <div class="v2-chapter">CHAPTER 05 · 위험을 키우는 것</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">암 치료용 주사는 다릅니다</h2>
-  <p class="v2-sub">같은 약 이름이어도 용량이 다르면 완전히 다른 이야기</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>골다공증 용량과 암 용량</b></div><div class="v2-body">골다공증에 쓰는 프롤리아는 6개월마다 <b>60mg</b>, 암 뼈전이에 쓰는 주사는 4주마다 <b>120mg</b>입니다. 누적 노출량이 <b>수십 배</b>가 됩니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>턱뼈 위험은 얼마나 다른가</b></div><div class="v2-body">암 치료를 받는 분들에서는 100명 중 1~15명입니다 — 골다공증 용량보다 <b>100~1,000배</b> 높습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>그래서 이렇게 하십시오</b></div><div class="v2-body">암 치료로 뼈 주사를 맞고 계시면 치과 치료 전에 담당 주치의와 먼저 상의하십시오.</div></div>
+  <h2 class="v2-title">위험을 키우는 것 — 약보다 '입안 감염'</h2>
+  <p class="v2-sub">곪은 이를 그대로 두는 것이 가장 큰 문제입니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:640px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9525 10.4616C19.712 9.08283 17.9626 8.17095 16 8.02165V5H14V8.13723C11.902 8.54591 10.1197 9.83753 9.05552 11.6096L6.5 10.1342L5.5 11.8662L8.26322 13.4616C8.09162 14.0881 8 14.7476 8 15.4286C8 17.4437 8.24257 19.4021 8.7001 21.2763L5.74115 22.0691L6.25879 24.001L9.25381 23.1985C10.1227 25.8074 11.4173 28.2218 13.055 30.3593L10.2929 33.1214L11.7072 34.5356L14.3403 31.9025C15.8901 33.6166 17.6783 35.111 19.6525 36.3337L18.1339 38.9639L19.866 39.9639L21.3944 37.3166C24.0239 38.662 26.9279 39.5476 30 39.8671V43H32V39.9935C32.19 39.9978 32.3804 40 32.5714 40C34.8687 40 36.9225 38.9572 38.2851 37.3191L40.9641 38.8658L41.9641 37.1338L39.3465 35.6225C39.7663 34.6917 40 33.6589 40 32.5714C40 29.8398 38.5256 27.4525 36.3292 26.162L37.8661 23.5L36.134 22.5L34.4672 25.387C33.862 25.2277 33.2266 25.1429 32.5714 25.1429C30.2491 25.1429 28.1171 24.3279 26.4458 22.9685L28.7071 20.7072L27.2928 19.293L25.0316 21.5542C23.6721 19.8829 22.8571 17.7509 22.8571 15.4286C22.8571 14.2508 22.583 13.137 22.0951 12.1475L24.5354 9.70718L23.1212 8.29297L20.9525 10.4616ZM15 15C14.4477 15 14 15.4477 14 16C14 16.5523 14.4477 17 15 17C15.5523 17 16 16.5523 16 16C16 15.4477 15.5523 15 15 15ZM12 16C12 14.3431 13.3431 13 15 13C16.6569 13 18 14.3431 18 16C18 17.6569 16.6569 19 15 19C13.3431 19 12 17.6569 12 16ZM24 29C23.4477 29 23 29.4477 23 30C23 30.5523 23.4477 31 24 31C24.5523 31 25 30.5523 25 30C25 29.4477 24.5523 29 24 29ZM21 30C21 28.3431 22.3431 27 24 27C25.6569 27 27 28.3431 27 30C27 31.6569 25.6569 33 24 33C22.3431 33 21 31.6569 21 30ZM17 26C18.1046 26 19 25.1046 19 24C19 22.8954 18.1046 22 17 22C15.8954 22 15 22.8954 15 24C15 25.1046 15.8954 26 17 26ZM34 32C34 33.1046 33.1046 34 32 34C30.8954 34 30 33.1046 30 32C30 30.8954 30.8954 30 32 30C33.1046 30 34 30.8954 34 32Z" fill="currentColor"/>
+</svg></div><b>가장 흔한 계기는 발치</b></div><div class="v2-body">턱뼈 문제가 생긴 분들을 되짚어 보면 이를 뽑은 일이 앞선 경우가 가장 많았습니다. 다만 그 이가 <b>이미 곪아 있던</b> 탓도 큽니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C7 18.5453 15.2 10.2545 24 14.1818C33 9.81822 41 18.5454 44 24C41 28.3636 32.8 36 24 36C15.2 36 7 28.3636 4 24ZM9.30929 23.5229C12.4149 22.4731 18.1843 21 24 21C29.7472 21 35.4492 22.4386 38.5799 23.4856C39.0367 23.6384 39.0113 24.2838 38.55 24.4225L38.5245 24.4302C35.5004 25.3398 29.9805 27 24 27C17.9208 27 12.3174 25.3748 9.32775 24.4265C8.88033 24.2845 8.86462 23.6732 9.30929 23.5229Z" fill="currentColor"/>
+</svg></div><b>입안에서 살펴볼 것</b></div><div class="v2-body">잇몸병(치주염) · 뿌리 끝 곪음 · 임플란트 주위 염증 · 잇몸을 계속 헐게 하는 안 맞는 틀니.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M43 29.143C43 30.743 41.68 32.0001 40 32.0001C38.32 32.0001 37 30.743 37 29.143C37 27.543 40 24.0001 40 24.0001C40 24.0001 43 27.6573 43 29.143Z" fill="currentColor"/>
+<path d="M24.1528 17.7833H41.8719C43.0472 17.7833 44 18.7361 44 19.9114C44 21.0867 43.0472 22.0395 41.8719 22.0395H41.8685C41.9544 21.8721 42.0014 21.6902 42.0012 21.5001C42.0005 20.6717 41.1046 20.0009 40 20.0018C38.8954 20.0027 38.0005 20.675 38.0012 21.5034C38.0014 21.6923 38.0481 21.8731 38.1332 22.0395H25.1111V23.1035H32C33.1046 23.1035 34 23.999 34 25.1035V25.3597C34 26.4643 33.1046 27.3597 32 27.3597H25.1111V28.4238H30.8889C31.9935 28.4238 32.8889 29.3192 32.8889 30.4238V30.6799C32.8889 31.7845 31.9935 32.6799 30.8889 32.6799H22.8889V33.7439H27C28.1046 33.7439 29 34.6394 29 35.7439V36.0001C29 37.1047 28.1046 38.0001 27 38.0001H15.4562C9.12912 38.0001 4 32.871 4 26.5439C4 21.8893 6.8162 17.6974 11.1254 15.9378L24.0124 10.6756C24.9864 10.2779 26.106 10.5891 26.735 11.4324C27.6143 12.6113 27.1815 14.301 25.8437 14.9119L23.7374 15.8737C22.76 16.32 23.0783 17.7833 24.1528 17.7833Z" fill="currentColor"/>
+</svg></div><b>몸 쪽에서 겹치는 것</b></div><div class="v2-body">스테로이드를 오래 쓰는 경우, 당뇨, 콩팥병, 흡연, 고령이 겹치면 상처가 더디 아뭅니다.</div></div>
   </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="../../../shared/assets/generated/mronj-patient-pill-vs-injection-20260816.png" alt="손바닥 위의 먹는 약과 물 한 잔, 그 옆에 팔에 놓는 주사기를 나란히 그린 그림"><div class="v2-fig__cap">먹는 약과 주사는 서로 다른 약입니다 — 치과에 가실 때 어느 쪽을 쓰는지 꼭 알려 주세요.</div></div>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:734px;top:206px;width:482px;height:400px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/mronj-risk-convergence-20260816.png" alt="약·입안 감염·몸 상태 세 갈래가 턱뼈 한 자리로 모이는 그림">
   </div>
-  <div class="v2-tip">Tip · 암 치료로 뼈 주사를 맞는 분은 이 자료의 숫자를 그대로 적용하지 마십시오.</div>
+  <div class="v2-tip"><span class="v2-tip__t">그림 · 약·입안 감염·몸 상태 세 갈래가 한 자리에서 만날 때 턱뼈 문제가 됩니다(설명용 그림).</span><span class="v2-src">근거 · AAOMS 2022 권고안</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">08 / 18</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 06 · TRIGGERS</div>
+  <div class="v2-chapter">CHAPTER 06 · 먹는 약과 주사</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">위험을 높이는 것 — 대부분 '감염'입니다</h2>
-  <p class="v2-sub">약보다 입안 상태가 더 큰 몫을 합니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>가장 큰 계기는 발치</b></div><div class="v2-body">턱뼈 문제가 생긴 분들을 되짚어 보면 이를 뽑은 일이 앞선 경우가 <b>62~82%</b>로 가장 많았습니다. 다만 이미 감염된 이였던 탓도 큽니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>입안에서 살펴볼 것</b></div><div class="v2-body">잇몸병(치주염) · 뿌리 끝 곪음 · 임플란트 주위 염증 · 안 맞는 틀니가 잇몸을 계속 헐게 하는 것.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>몸 쪽에서 겹치는 것</b></div><div class="v2-body">스테로이드를 오래 쓰는 경우, 당뇨, 콩팥병, 흡연, 고령이 겹치면 상처가 더디 아뭅니다.</div></div>
+  <h2 class="v2-title">먹는 약과 프롤리아는 반대로 움직입니다</h2>
+  <p class="v2-sub">그래서 치과 치료 앞에서 대처도 반대입니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">먹는 골다공증약</div><div class="v2-vs__lead">뼈에 달라붙어 <b>수년 동안</b> 남습니다.</div><ul class="v2-vs__list"><li>두세 달 쉬어도 뼈 안의 약은 그대로입니다</li><li>쉰 분과 계속 드신 분의 차이가 연구에서 확인되지 않았습니다</li><li>쉬는 동안 골절을 막는 힘만 줄어듭니다</li><li><b>스스로 끊지 않습니다</b> — 오래 드셨거나 위험 요인이 있으면 쉴지 여부는 처방 의사와 치과가 함께 정합니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">프롤리아(6개월 주사)</div><div class="v2-vs__lead">뼈에 쌓이지 않고 <b>몸에서 빠져나갑니다</b>.</div><ul class="v2-vs__list"><li>주사가 늦어지면 뼈가 빠르게 약해지는 ‘반동’이 옵니다</li><li>반동은 척추 골절로 나타납니다 — 다음 장</li><li>그래서 치료 시점을 주사 날짜에 맞춥니다</li><li><b>끊지 말고 시점을 맞춥니다</b></li></ul></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">감염</div><div class="v2-stat__cap">뽑는 것보다, 곪은 이를 그대로 두는 쪽이 더 문제입니다</div></div><div class="v2-step"><i>1</i><span>잇몸병·뿌리 끝 감염</span></div><div class="v2-step"><i>2</i><span>안 맞는 틀니 — 조정</span></div><div class="v2-step"><i>3</i><span>당뇨·흡연</span></div>
-  </div>
-  <div class="v2-tip">Tip · 치과 치료를 피하려고 곪은 이를 두는 것이 가장 나쁜 선택입니다.</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 치과에서 ‘몇 달 끊고 오세요’라고 하면, 약 이름부터 알려 주십시오.</span><span class="v2-src">근거 · 메타분석 8편·6,808명 · AAOMS 2022</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">09 / 18</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 07 · ORAL DRUGS</div>
+  <div class="v2-chapter">CHAPTER 07 · 프롤리아 반동</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">먹는 약은 발치 때문에 끊지 않습니다</h2>
-  <p class="v2-sub">2~3개월 쉬어도 약은 이미 뼈에 남아 있어, 끊는 이득이 확인되지 않았습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>왜 끊어도 소용이 적은가</b></div><div class="v2-body">먹는 골다공증약은 뼈에 달라붙어 <b>수년</b> 동안 남습니다. 그래서 두세 달 쉰다고 뼈 안의 약이 빠지지는 않습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>연구로 확인된 것</b></div><div class="v2-body">약을 쉰 분들과 그대로 드신 분들에서 차이가 <b>확인되지 않았습니다</b>.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>쉬는 쪽이 오히려 손해</b></div><div class="v2-body">약을 쉬는 동안 골절을 막는 힘은 줄어듭니다. 스스로 끊지 마십시오.</div></div>
+  <h2 class="v2-title">프롤리아를 오래 미루면 척추가 한꺼번에 무너질 수 있습니다</h2>
+  <p class="v2-sub">턱뼈 문제보다 흔하고, 한 번에 여러 마디가 옵니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:640px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 6.24184C15.5833 6.12178 15 6.59494 15 7.22895V7.88659C15 8.43888 14.5523 8.88659 14 8.88659H13C12.4477 8.88659 12 9.33431 12 9.8866V11.7353C12 12.2876 12.4477 12.7353 13 12.7353H14C14.5523 12.7353 15 13.183 15 13.7353V14.8453C15 15.3022 15.3106 15.702 15.7544 15.8107C22.2204 17.3952 26.0763 17.396 32.2561 15.8165C32.6948 15.7043 33 15.3069 33 14.8541V13.7353C33 13.183 33.4477 12.7353 34 12.7353H35C35.5523 12.7353 36 12.2876 36 11.7353V9.8866C36 9.33431 35.5523 8.88659 35 8.88659H34C33.4477 8.88659 33 8.43888 33 7.88659V7.23211C33 6.59707 32.415 6.12369 31.7916 6.24503C25.8882 7.39417 22.1085 7.38021 16.2058 6.24184ZM19 10.0001C19 9.4478 18.5523 9.00008 18 9.00008C17.4477 9.00008 17 9.4478 17 10.0001V13.0001C17 13.5524 17.4477 14.0001 18 14.0001C18.5523 14.0001 19 13.5524 19 13.0001V10.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 18.2418C15.5833 18.1218 15 18.5949 15 19.229V19.8866C15 20.4389 14.5523 20.8866 14 20.8866H13C12.4477 20.8866 12 21.3343 12 21.8866V23.7353C12 24.2876 12.4477 24.7353 13 24.7353H14C14.5523 24.7353 15 25.183 15 25.7353V26.8453C15 27.3022 15.3106 27.702 15.7544 27.8107C22.2204 29.3952 26.0763 29.396 32.2561 27.8165C32.6948 27.7043 33 27.3069 33 26.8541V25.7353C33 25.183 33.4477 24.7353 34 24.7353H35C35.5523 24.7353 36 24.2876 36 23.7353V21.8866C36 21.3343 35.5523 20.8866 35 20.8866H34C33.4477 20.8866 33 20.4389 33 19.8866V19.2321C33 18.5971 32.415 18.1237 31.7916 18.245C25.8882 19.3942 22.1085 19.3802 16.2058 18.2418ZM19 22.0001C19 21.4478 18.5523 21.0001 18 21.0001C17.4477 21.0001 17 21.4478 17 22.0001V25.0001C17 25.5524 17.4477 26.0001 18 26.0001C18.5523 26.0001 19 25.5524 19 25.0001V22.0001Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.2058 30.2418C15.5833 30.1218 15 30.5949 15 31.229V31.8866C15 32.4389 14.5523 32.8866 14 32.8866H13C12.4477 32.8866 12 33.3343 12 33.8866V35.7353C12 36.2876 12.4477 36.7353 13 36.7353H14C14.5523 36.7353 15 37.183 15 37.7353V38.8453C15 39.3022 15.3106 39.702 15.7544 39.8107C22.2204 41.3952 26.0763 41.396 32.2561 39.8165C32.6948 39.7043 33 39.3069 33 38.8541V37.7353C33 37.183 33.4477 36.7353 34 36.7353H35C35.5523 36.7353 36 36.2876 36 35.7353V33.8866C36 33.3343 35.5523 32.8866 35 32.8866H34C33.4477 32.8866 33 32.4389 33 31.8866V31.2321C33 30.5971 32.415 30.1237 31.7916 30.245C25.8882 31.3942 22.1085 31.3802 16.2058 30.2418ZM19 34.0001C19 33.4478 18.5523 33.0001 18 33.0001C17.4477 33.0001 17 33.4478 17 34.0001V37.0001C17 37.5524 17.4477 38.0001 18 38.0001C18.5523 38.0001 19 37.5524 19 37.0001V34.0001Z" fill="currentColor"/>
+</svg></div><b>숫자로 보면</b></div><div class="v2-body">주사를 끊으면 척추 골절이 100명당 1년에 <b>1.2건에서 7.1건</b>으로 늘었습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>여러 마디가 함께</b></div><div class="v2-body">그때 생긴 척추 골절의 <b>61%</b>가 여러 마디였습니다. 키가 줄고 등이 굽기도 합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81815 13.364C6.36628 13.8159 6.36628 14.5485 6.81815 15.0004C7.27002 15.4523 8.00264 15.4523 8.45451 15.0004L9.27321 14.1817L13.3636 18.2721L10.0909 21.5449C9.63899 21.9968 9.63899 22.7294 10.0909 23.1813C10.5427 23.6332 11.2753 23.6332 11.7272 23.1813L13.3632 21.5452L27.2727 35.455C28.9501 37.1325 31.4015 37.5646 33.4775 36.7511L34.6361 37.9097C35.242 38.5156 36.1002 38.7153 36.8724 38.5088L39.5455 41.182C39.9973 41.6339 40.7299 41.6339 41.1818 41.182C41.6337 40.7301 41.6337 39.9975 41.1818 39.5456L38.5083 36.872C38.7142 36.1001 38.5144 35.2425 37.9089 34.6369L36.7504 33.4784C37.564 31.4022 37.132 28.9506 35.4545 27.273L21.545 13.3632L23.1817 11.7265C23.6336 11.2746 23.6336 10.542 23.1817 10.0901C22.7299 9.63824 21.9972 9.63824 21.5454 10.0901L18.2726 13.3629L14.1823 9.27248L14.9999 8.4548C15.4518 8.00292 15.4518 7.27028 14.9999 6.8184C14.5481 6.36652 13.8155 6.36652 13.3636 6.8184L6.81815 13.364ZM16.8584 14.7772L12.7681 10.6867L10.6874 12.7674L14.7778 16.8579L16.8584 14.7772ZM20.1308 14.7775L14.7774 20.131L19.1834 24.5371L24.5368 19.1835L20.1308 14.7775ZM20.8197 26.1735L23.2743 28.6281C24.6878 30.0416 23.6463 29.0001 24.9107 30.2645L26.5466 31.9005C27.6463 33.0001 27.3953 32.7492 28.183 33.5369L28.6869 34.0408C29.785 35.1389 31.3899 35.4213 32.7487 34.888L34.8875 32.7492C35.4208 31.3903 35.1384 29.7854 34.0403 28.6873L26.1731 20.8199L20.8197 26.1735ZM36.5224 36.0829C36.514 36.0718 36.5047 36.0612 36.4947 36.0512L35.6706 35.227C35.601 35.3045 35.529 35.3805 35.4545 35.455C35.3799 35.5296 35.3038 35.6017 35.2262 35.6714L36.0503 36.4955C36.0605 36.5056 36.0712 36.5149 36.0823 36.5234C36.1328 36.4337 36.1963 36.3492 36.2727 36.2728C36.3489 36.1967 36.433 36.1333 36.5224 36.0829Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.81815 13.3638C6.36628 13.8156 6.36628 14.5483 6.81815 15.0001C7.27002 15.452 8.00264 15.452 8.45451 15.0001L9.27321 14.1814L13.3636 18.2719L10.0909 21.5447C9.63899 21.9965 9.63899 22.7292 10.0909 23.1811C10.5427 23.6329 11.2753 23.6329 11.7272 23.1811L13.3632 21.545L17.2858 25.4677C17.4707 25.6526 17.665 25.8223 17.8672 25.977L17.831 26.0131L21.8601 30.0423L25.1331 26.7693C25.5849 26.3174 26.3176 26.3174 26.7694 26.7693C27.2213 27.2211 27.2213 27.9538 26.7694 28.4057L23.4965 31.6787L25.1327 33.3149L28.4055 30.042C28.8574 29.5901 29.59 29.5901 30.0419 30.042C30.4937 30.4939 30.4937 31.2265 30.0419 31.6784L26.769 34.9513L27.2726 35.4549C28.9501 37.1325 31.4015 37.5645 33.4776 36.7509L34.6361 37.9095C35.242 38.5154 36.1002 38.7151 36.8724 38.5086L39.5455 41.1818C39.9973 41.6336 40.7299 41.6336 41.1818 41.1818C41.6337 40.7299 41.6337 39.9972 41.1818 39.5454L38.5083 36.8718C38.7142 36.0999 38.5144 35.2422 37.9089 34.6367L36.7503 33.4781C37.5639 31.402 37.1319 28.9505 35.4544 27.2729L26.0128 17.8311L25.9769 17.867C25.8223 17.6649 25.6525 17.4706 25.4676 17.2857L21.545 13.363L23.1817 11.7263C23.6336 11.2744 23.6336 10.5417 23.1817 10.0899C22.7299 9.63799 21.9972 9.63799 21.5454 10.0899L18.2726 13.3627L14.1823 9.27223L14.9999 8.45456C15.4518 8.00268 15.4518 7.27004 14.9999 6.81816C14.5481 6.36628 13.8155 6.36628 13.3636 6.81816L6.81815 13.3638ZM16.8584 14.7769L12.7681 10.6865L10.6874 12.7672L14.7778 16.8576L16.8584 14.7769ZM20.1308 14.7772L24.0534 18.6999C24.2403 18.8868 24.4035 19.0883 24.5431 19.3008L19.3009 24.5432C19.0884 24.4036 18.8869 24.2403 18.7 24.0535L14.7774 20.1308L20.1308 14.7772Z" fill="currentColor"/>
+</svg></div><b>특히 조심할 분</b></div><div class="v2-body">이미 척추 골절을 겪은 적이 있으면 여러 마디가 함께 무너질 위험이 <b>약 3.9배</b>였습니다.</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">수년</div><div class="v2-stat__cap">먹는 약이 뼈에 남아 있는 기간 — 그대로입니다</div></div><div class="v2-step"><i>1</i><span>먹는 약 — 계속 복용</span></div><div class="v2-step"><i>2</i><span>치과에는 약 이름 전달</span></div><div class="v2-step"><i>3</i><span>2개월 휴약 여부는 <b>의사가</b> 정합니다</span></div>
+  <div class="v2-panel v2-panel--fig q-fig" style="left:734px;top:206px;width:482px;height:400px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/mronj-rebound-vertebral-20260816.png" alt="주사를 미루기 전과 후의 척추 — 오른쪽은 여러 마디가 납작하게 내려앉았다">
   </div>
-  <div class="v2-tip">Tip · 치과에서 '몇 달 끊고 오세요' 라고 하면, 약 이름부터 알려 주십시오.</div>
+  <div class="v2-tip"><span class="v2-tip__t">그림 · 왼쪽에 견주어 오른쪽은 여러 마디가 납작하게 내려앉았습니다(설명용 그림).</span><span class="v2-src">근거 · Cummings 2018</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">10 / 18</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 08 · PROLIA</div>
+  <div class="v2-chapter">CHAPTER 08 · 발치 시점</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">프롤리아는 다릅니다 — 미루면 위험</h2>
-  <p class="v2-sub">오래 미루면 척추뼈 골절이 한꺼번에 몰려서 옵니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:640px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>먹는 약과 무엇이 다른가</b></div><div class="v2-body">프롤리아는 뼈에 쌓이지 않고 몸에서 빠져나갑니다. 그래서 주사가 늦어지면 <b>반동</b>이 옵니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>숫자로 보면</b></div><div class="v2-body">주사를 끊으면 척추 골절이 100명당 1년에 <b>1.2건에서 7.1건</b>으로 늘었습니다. 그중 61%가 여러 마디였습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>특히 조심</b></div><div class="v2-body">이미 척추 골절을 겪은 적이 있으면 여러 마디가 함께 무너질 위험이 약 <b>3.9배</b>였습니다.</div></div>
+  <h2 class="v2-title">발치는 마지막 주사 뒤 3~4개월</h2>
+  <p class="v2-sub">프롤리아를 맞는 분 — 주사와 주사 사이를 왼쪽에서 오른쪽으로 펼쳤습니다</p>
+  <div class="v2-panel v2-panel--figwide" style="left:251px;top:206px;width:778px;height:330px">
+    <img class="v2-figwide__img" src="../../../shared/assets/generated/mronj-denosumab-timeline-20260816.png" alt="주사기·발치·척추를 시간 순서로 늘어놓은 그림">
   </div>
-  <div class="v2-panel v2-panel--fig" style="left:734px;top:206px;width:484px;height:400px">
-    <div class="v2-fig"><img class="v2-fig__img" src="../../../shared/assets/generated/mronj-rebound-vertebral-20260816.png" alt="주사 전후 척추 비교 — 여러 마디의 쐐기 변형과 등이 굽은 모습"><div class="v2-fig__cap">주사를 오래 미룬 뒤의 척추 — 왼쪽에 견주어 오른쪽은 여러 마디가 납작하게 내려앉고 등이 굽었습니다. 설명용 일러스트.</div></div>
-  </div>
-  <div class="v2-tip">Tip · 프롤리아는 '끊는 약'이 아니라 '시점을 맞추는 약'입니다.</div>
+  <div class="q-tl" style="left:251px;top:548px;width:778px"><div class="q-tl__lab"><b>주사 직후</b><span>주사 힘이 가장 셀 때</span></div><div class="q-tl__lab q-tl__lab--on"><b>3~4개월 뒤</b><span>이를 뽑기 가장 무난한 때</span></div><div class="q-tl__lab"><b>너무 미루면</b><span>척추 골절 위험이 오르는 때</span></div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 5개월이 지났다면 더 기다리지 말고 내과·치과가 발치와 다음 주사 날짜를 함께 정합니다. 아프거나 곪았으면 바로 진료.</span><span class="v2-src">근거 · 한국 권고안 2025 · AAOMS 2022</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">11 / 18</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 09 · TIMING</div>
+  <div class="v2-chapter">CHAPTER 09 · 계획표</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">발치는 마지막 주사 3~4개월 뒤</h2>
-  <p class="v2-sub">계획할 수 있다면 이 구간이 가장 무난합니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>왜 이때인가</b></div><div class="v2-body">주사 힘이 한풀 꺾여 잘 아물고, 아직 반동이 올 시기는 아니기 때문입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>지났다면</b></div><div class="v2-body">마지막 주사가 이미 <b>5개월</b> 전이라면 더 기다리지 말고 지금 뽑는 편이 낫습니다. 기다릴수록 골절 쪽 시계만 갑니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>급할 때는</b></div><div class="v2-body">많이 아프거나 곪은 이라면 시점을 따지지 말고 바로 치료합니다. 감염을 두는 쪽이 더 나쁩니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">3~4</div><div class="v2-stat__cap">마지막 주사 뒤 이 구간이 가장 무난합니다</div></div><div class="v2-step"><i>1</i><span>3~4개월 뒤</span></div><div class="v2-step"><i>2</i><span>5개월 지났으면 미루지 않는다</span></div><div class="v2-step"><i>3</i><span>아프거나 곪았으면 바로</span></div>
-  </div>
-  <div class="v2-tip">Tip · 진료 때 마지막 주사 날짜를 꼭 확인해 주십시오. 그 날짜 하나로 계획이 정해집니다.</div>
+  <h2 class="v2-title">프롤리아를 맞는 분의 치과 계획표</h2>
+  <p class="v2-sub">마지막 주사 날짜 하나로 계획이 정해집니다</p>
+  <table class="v2-table q-table q-table--plan" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:330px"><col style="width:822px"></colgroup><thead><tr><th>이럴 때</th><th>이렇게 합니다</th></tr></thead><tbody><tr><th>계획해서 이를 뽑을 때</th><td>마지막 주사 뒤 <b>3~4개월</b>에 — 잘 아물고, 아직 반동이 올 시기는 아닙니다</td></tr><tr><th>마지막 주사가 5개월 넘게 지났을 때</th><td>더 기다리지 말고, 치과와 내과가 <b>발치 날짜와 다음 주사 날짜</b>를 함께 빨리 정합니다</td></tr><tr><th>많이 아프거나 곪았을 때</th><td>시점을 따지지 말고 <b>바로</b> 치료합니다 — 감염을 두는 쪽이 더 나쁩니다</td></tr><tr><th>이를 뽑은 뒤 다음 주사</th><td><b>잇몸이 아물면</b>(보통 6~8주) 맞습니다 — 뼈가 다 찰 때까지 기다리지 않습니다</td></tr><tr><th>넘기지 말 선</th><td>6개월 정시가 목표 · <b>7개월</b>은 넘기지 않기 · 권고안의 마지막 한계선은 총 <b>9개월</b></td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 치과에서 ‘뼈가 다 찰 때까지 주사 맞지 마세요’라고 하면 내과에 알려 주세요.</span><span class="v2-src">근거 · 한국 권고안 2025 · Kim 2024 · Lyu 2020</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">12 / 18</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 09 · TIMING</div>
+  <div class="v2-chapter">CHAPTER 10 · 자주 묻는 질문</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">시기가 중요합니다</h2>
-  <p class="v2-sub">주사와 주사 사이를 왼쪽에서 오른쪽으로 펼친 그림입니다</p>
-  <div class="v2-panel v2-panel--figwide" style="left:174px;top:206px;width:932px;height:400px">
-    <img class="v2-figwide__img" src="../../../shared/assets/generated/mronj-denosumab-timeline-20260816.png" alt="주사에서 발치, 그리고 척추 압박골절로 이어지는 시간 흐름 그림">
+  <h2 class="v2-title">자주 묻는 두 가지 — 임플란트와 CTX 검사</h2>
+  <p class="v2-sub">둘 다 ‘약을 끊어야 하나’로 이어지는 질문입니다</p>
+  <div class="v2-panel q-faq" style="left:64px;top:206px;width:564px;height:400px">
+    <div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M39.5776 9.13373C34.9685 4.2778 28.5979 6.45873 25.4382 8.02853L31.524 12.4591C31.9705 12.7842 32.0689 13.4096 31.7439 13.8561C31.4188 14.3026 30.7933 14.4011 30.3469 14.076L23.5301 9.11327C23.5102 9.12665 23.5 9.13368 23.5 9.13368C17.3205 4.32394 11.9517 5.35267 7.5897 10.1647C4.87545 13.159 6.17245 17.2031 7.53963 21.466C8.36961 24.0539 9.22545 26.7224 9.22545 29.2857C9.43769 29.7555 11.5814 30.134 14.6082 30.3906C14.5024 30.7196 14.4805 31.0822 14.5653 31.4497L14.5954 31.58L17.3763 30.5789C19.0819 30.6704 20.931 30.7298 22.7962 30.7534L15.0483 33.5426L15.4477 35.2732L28.0984 30.7189C33.1092 30.5819 37.2785 30.1321 37.7601 29.2857C37.7601 27.072 38.7746 24.7492 39.8111 22.3761C41.7176 18.0109 43.6985 13.4753 39.5776 9.13373Z" fill="currentColor"/>
+<path d="M33.0954 32.92L16.2999 38.9664L15.9006 37.2358L33.4847 30.9055C33.4928 31.0833 33.4771 31.2659 33.4347 31.4497L33.0954 32.92Z" fill="currentColor"/>
+<path d="M17.0131 40.8353L32.5604 35.2383L32.0887 37.2824L19.0398 41.98C18.2259 41.8858 17.4996 41.4638 17.0131 40.8353Z" fill="currentColor"/>
+<path d="M24.8889 42H28.6135C30.0104 42 31.2225 41.0358 31.5366 39.6746L31.5537 39.6007L24.8889 42Z" fill="currentColor"/>
+</svg></div><b>임플란트, 되나요?</b></div>
+    <div class="q-faq__a">대부분 가능합니다</div>
+    <div class="v2-body">골다공증 용량이라면 약을 끊지 않고도 심을 수 있다고 봅니다. 다만 위험이 얼마나 되는지는 아직 연구가 충분하지 않아, 치과와 처방 의사가 함께 판단합니다. 암 치료용 고용량 주사를 맞는 분은 이야기가 다릅니다.</div>
+    <div class="q-faq__stat"><span class="q-faq__num q-faq__num--word">시작 전 확인</span><span class="q-faq__cap">잇몸병 · 당뇨 · 스테로이드 복용 여부 — 있으면 먼저 정리합니다</span></div>
   </div>
-  <div class="v2-figwide__cap">왼쪽 = 주사를 맞은 직후, 가운데 = 이를 뽑기 좋은 시기, 오른쪽 = 너무 미뤘을 때 척추가 내려앉는 시기입니다.</div>
+  <div class="v2-panel q-faq v2-panel--accent" style="left:652px;top:206px;width:564px;height:400px">
+    <div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>CTX 피검사로 안전한 날을 정하나요?</b></div>
+    <div class="q-faq__a">아니요 — 지금은 권하지 않습니다</div>
+    <div class="v2-body">뼈가 얼마나 활발히 바뀌는지 보는 피검사입니다. 예전에 이 수치로 발치 시점을 정하자는 제안이 있었지만, 맞히는 힘이 낮았습니다. 약 이름·마지막 주사일·입안 상태가 더 중요합니다.</div>
+    <div class="q-faq__stat"><span class="q-faq__num">34%</span><span class="q-faq__cap">기준값 150으로 나눴을 때 턱뼈 문제가 생길 분을 미리 맞힌 비율</span></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 임플란트가 잘 붙는가와 턱뼈 문제가 생기는가는 서로 다른 이야기입니다.</span><span class="v2-src">근거 · 임플란트 AAOMS 2022 · CTX JADA 메타분석</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">13 / 18</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 10 · AFTER</div>
+  <div class="v2-chapter">CHAPTER 11 · 체크리스트</div>
   <div class="v2-mark"></div>
-  <h2 class="v2-title">발치 후 다음 주사는 언제 — 잇몸이 아물면</h2>
-  <p class="v2-sub">뼈가 다 찰 때까지 기다리지 않습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>기준은 잇몸</b></div><div class="v2-body">뽑은 자리를 잇몸이 안정적으로 덮으면 됩니다. 보통 <b>6~8주</b> 걸립니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M18 10a7 7 0 00-7 7 6 6 0 00-3 5.2A6 6 0 0011 28a7 7 0 007 7h1V10h-1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 10a7 7 0 017 7 6 6 0 013 5.2A6 6 0 0137 28a7 7 0 01-7 7h-1V10h1z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></div><b>왜 뼈를 기다리지 않나</b></div><div class="v2-body">뼈가 다 차려면 몇 달이 걸립니다. 그때까지 미루면 주사 간격이 너무 벌어집니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>넘기지 말 선</b></div><div class="v2-body">6개월 정시가 목표이고, <b>7개월</b>은 넘기지 않는 것이 실무 기준입니다. 권고안의 마지막 한계선은 총 <b>9개월</b>입니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">잇몸</div><div class="v2-stat__cap">다음 주사의 기준은 잇몸 — 보통 6~8주</div></div><div class="v2-step"><i>1</i><span>발치 → 잇몸 아묾</span></div><div class="v2-step"><i>2</i><span>다음 주사</span></div><div class="v2-step"><i>3</i><span>총 9개월 넘기지 않기</span></div>
-  </div>
-  <div class="v2-tip">Tip · 치과에서 '뼈가 다 찰 때까지 주사 맞지 마세요' 라고 하면 내과에 알려 주세요.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">14 / 18</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 11 · IMPLANT</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">임플란트, 되나요 — 대부분 가능합니다</h2>
-  <p class="v2-sub">골다공증 용량에서는 절대 안 되는 시술이 아닙니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>약을 끊고 해야 하나요</b></div><div class="v2-body">골다공증 용량이라면 약을 끊지 않고도 심을 수 있다고 봅니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>숫자로</b></div><div class="v2-body">먹는 약을 오래 쓴 분들에서 임플란트 뒤 턱뼈 문제는 <b>1,000명당 3명</b> 정도로 보고됐고, 프롤리아에서는 <b>0.5%</b> 정도로 보고됐습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>그래도 확인할 것</b></div><div class="v2-body">잇몸병·당뇨·스테로이드가 있으면 미리 정리하고 시작합니다. 암 치료용 고용량 주사를 맞는 분은 이야기가 다릅니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">3명</div><div class="v2-stat__cap">먹는 약 장기 복용 · 임플란트 뒤 1,000명당</div></div><div class="v2-step"><i>1</i><span>절대 금기 아님</span></div><div class="v2-step"><i>2</i><span>잇몸병·당뇨는 미리 정리</span></div><div class="v2-step"><i>3</i><span>암 치료용 고용량은 별개</span></div>
-  </div>
-  <div class="v2-tip">Tip · 임플란트가 잘 붙는가와 턱뼈 문제가 생기는가는 서로 다른 이야기입니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">15 / 18</div>
-</section><section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 12 · CTX</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">CTX 검사, 되나요</h2>
-  <p class="v2-sub">결론부터 — 아니요</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M14 12h26M14 24h26M14 36h26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="12" r="2.5" fill="currentColor"/><circle cx="8" cy="24" r="2.5" fill="currentColor"/><circle cx="8" cy="36" r="2.5" fill="currentColor"/></svg></div><b>어떤 검사인가요</b></div><div class="v2-body">뼈가 얼마나 활발히 바뀌는지 보는 피검사입니다. 예전에 이 수치로 발치 시점을 정하자는 제안이 있었습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/><path d="M24 15v13m0 0l-8 12m8-12l8 12M14 20h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>지금은 권하지 않습니다</b></div><div class="v2-body">이 수치의 정확도가 낮았습니다 — 맞힌 비율 약 <b>34%</b>.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>그럼 무엇을 보나</b></div><div class="v2-body">약 이름·마지막 주사일·입안 상태가 더 중요합니다.</div></div>
-  </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">34</div><div class="v2-stat__cap">% — 위험한 분을 맞힌 비율</div></div><div class="v2-step"><i>1</i><span>CTX 기준 — 미검증</span></div><div class="v2-step"><i>2</i><span>약 이름부터</span></div><div class="v2-step"><i>3</i><span>마지막 주사</span></div>
-  </div>
-  <div class="v2-tip">Tip · 검사 숫자 하나로 안전한 날을 정하지는 않습니다.</div>
-  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">16 / 18</div>
-</section>
-
-<section class="slide slide--v2">
-  <div class="v2-accent"></div>
-  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-  <div class="v2-chapter">CHAPTER 13 · CHECKLIST</div>
-  <div class="v2-mark"></div>
-  <h2 class="v2-title">치과에 꼭 알려 주세요 — 네 가지면 됩니다</h2>
+  <h2 class="v2-title">치과에 이 네 가지를 알려 주세요</h2>
   <p class="v2-sub">이 네 가지만 정확히 전하면 치과가 판단할 수 있습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="12" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M24 18v12" stroke="currentColor" stroke-width="2.5"/></svg></div><b>① 약 이름</b></div><div class="v2-body">'골다공증약'이라고만 하지 마시고 <b>정확한 이름</b>을 알려 주세요. 약봉투나 처방전을 그대로 보여 주시면 정확합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8l18 32H6L24 8z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 20v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34" r="1.8" fill="currentColor"/></svg></div><b>② 마지막 주사일</b></div><div class="v2-body">프롤리아처럼 6개월마다 맞는 주사는 <b>마지막 날짜</b>가 계획의 출발점입니다. 몇 월 며칠에 맞았는지 확인해 두십시오.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l9 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><b>③ 치료 기간</b></div><div class="v2-body">언제부터 얼마나 오래 드셨는지, 중간에 바꾼 약이 있는지도 함께 알려 주세요.</div></div>
+  <div class="v2-panel q-four" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>① 약 이름</b></div><div class="v2-body">‘골다공증약’이라고만 하지 마시고 정확한 이름을 알려 주세요. 약봉투나 처방전을 그대로 보여 주시면 정확합니다.</div></div>
   </div>
-  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
-    <div class="v2-stat"><div class="v2-stat__num">4가지</div><div class="v2-stat__cap">약 이름 · 마지막 주사일 · 치료 기간 · 암 치료용인지</div></div><div class="v2-step"><i>1</i><span>약 이름·제형(먹는약/주사)</span></div><div class="v2-step"><i>2</i><span>마지막 주사 날짜</span></div><div class="v2-step"><i>3</i><span>④ 암 치료용인지 골다공증용인지</span></div>
+  <div class="v2-panel q-four v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>② 마지막 주사 날짜</b></div><div class="v2-body">프롤리아처럼 6개월마다 맞는 주사는 마지막 날짜가 계획의 출발점입니다. 날짜를 달력이나 휴대폰에 적어 두세요.</div></div>
   </div>
-  <div class="v2-tip">Tip · '주사 맞아요' 만으로는 골다공증용과 암 치료용이 구분되지 않습니다.</div>
+  <div class="v2-panel q-four" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>③ 얼마나 오래 썼는지</b></div><div class="v2-body">언제부터 얼마나 오래 쓰셨는지, 중간에 바꾼 약이 있는지도 함께 알려 주세요.</div></div>
+  </div>
+  <div class="v2-panel q-four v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6 9C6 7.34315 7.34315 6 9 6H39C40.6569 6 42 7.34315 42 9V39C42 40.6569 40.6569 42 39 42H9C7.34315 42 6 40.6569 6 39V9ZM19.2792 27.1331L23.2996 32.3287L19.2792 37.4624L14.2073 33.5657L19.2792 27.1331ZM19.0936 11.6082L16.9288 14.4534C15.1969 16.7419 15.1969 19.8964 16.9288 22.123L28.99 37.4624L34 33.5657L29.1755 27.3805L23.3614 19.9582L20.8873 17.8037C21.3203 17.5563 21.8151 17.3708 22.3099 17.3708H25.9592C26.454 17.3708 26.9488 17.4945 27.3818 17.7419C27.3818 17.8037 27.4437 17.8037 27.4437 17.8037L24.9696 19.9582L28.99 25.1538L31.3404 22.1849C33.0722 19.9582 33.0722 16.8037 31.3404 14.5152L29.1137 11.6082C28.7426 11.1133 28.2477 10.6804 27.6911 10.433C27.1344 10.1237 26.5159 10 25.8974 10H22.3099C21.0729 10 19.8977 10.6185 19.0936 11.6082ZM20.0214 15.7213C20.0059 15.6904 19.9905 15.6595 19.9595 15.6286C19.2792 14.6389 19.4029 14.2782 20.0833 13.3504C20.6399 12.67 21.444 12.237 22.3099 12.237H25.8974C26.3303 12.237 26.7633 12.3607 27.1344 12.5463C27.5055 12.7319 27.8766 13.0411 28.124 13.3504C28.4333 13.7215 28.6189 14.1545 28.6807 14.5874C28.8114 15.1102 28.7273 15.1983 28.5149 15.4207C28.4257 15.5141 28.3139 15.6312 28.1859 15.8141C28.124 15.7832 28.0467 15.7368 27.9694 15.6904C27.8921 15.644 27.8148 15.5976 27.7529 15.5667C27.1963 15.2574 26.5777 15.1337 25.9592 15.1337H22.3718C21.7533 15.1337 21.1347 15.3193 20.5781 15.5667C20.3925 15.6286 20.207 15.6904 20.0833 15.8141C20.0523 15.7832 20.0369 15.7523 20.0214 15.7213Z" fill="currentColor"/>
+</svg></div><b>④ 골다공증용인지, 암 치료용인지</b></div><div class="v2-body">‘주사 맞아요’만으로는 구분되지 않습니다. 암 치료로 맞는 뼈 주사라면 꼭 말씀해 주세요.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약봉투를 휴대폰으로 찍어 두면 치과에서 바로 보여 줄 수 있습니다.</span><span class="v2-src">근거 · AAOMS 2022 권고안</span></div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">17 / 18</div>
+  <div class="v2-foot v2-foot--r">12 / 13</div>
 </section><section class="slide slide--v2">
   <div class="v2-accent"></div>
   <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
@@ -331,11 +349,15 @@
   <div class="v2-mark"></div>
   <h2 class="v2-title">다시 보기 · 문의</h2>
   <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
-  <div class="v2-panel" style="left:64px;top:206px;width:702px;height:400px">
-    <div class="v2-block"><div class="v2-head">광교바른내과</div>
-      <div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · 031-893-4560<br>소화기내과 · 일반내과 · 5대암 검진</div></div>
-    <div class="v2-block"><div class="v2-head">이 자료의 성격</div>
-      <div class="v2-body">골다공증 치료 중 치과 치료를 앞둔 분들을 위한 설명자료입니다. 숫자는 진료실에서 참고하는 자료를 바탕으로 했고, 실제 치료 시점과 약 조정은 담당 의사·치과와 상의해 정합니다.</div></div>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>소화기내과 · 일반내과 · 5대암 검진</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">골다공증 치료 중 치과 치료를 앞둔 분들을 위한 설명자료입니다. 실제 치료 시점과 약 조정은 담당 의사·치과와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body q-refs">AAOMS 2022 권고안 · 한국 권고안 2025 · Cummings 2018 · Colella 2023 · Kim 2024 · Lyu 2020 · 휴약 메타분석(8편) · JADA 메타분석</div></div>
   </div>
   <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:422px;height:400px">
     <div class="qr-block">
@@ -348,7 +370,7 @@
     </div>
   </div>
   <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
-  <div class="v2-foot v2-foot--r">18 / 18</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
 </section>
 </body>
 </html>

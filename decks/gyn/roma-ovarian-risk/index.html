@@ -24,795 +24,388 @@
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+<link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3B-redesign 2026-09-27 (원장님 49028) — v1 격자판을 v2 어휘(결론 카드·대비 2단·표·가로 도해·격자)로
+    다시 짰다. 그림칸 = 원본 그림 비율(잘림·빈 띠 없음), 본문 글자 15px 이상. */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ section.slide--cover{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ .q-text .v2-body{font-size:16px;line-height:1.6}
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none;overflow:visible}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-key{position:absolute;display:flex;align-items:center;padding:0 20px;border-radius:10px;background:var(--v2-chip-navy);border-left:4px solid var(--v2-navy);font-size:17px;line-height:1.45;font-weight:600;color:var(--v2-navy);word-break:keep-all;box-sizing:border-box}
+ .q-key--accent{background:var(--v2-chip-accent);border-left-color:var(--v2-accent)}
+ .q-card{display:flex;flex-direction:column;padding:26px 24px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule);word-break:keep-all}
+ .q-cell{display:flex;flex-direction:column;justify-content:center}
+ .q-cell .v2-head{margin-bottom:10px}
+ .q-cell .v2-head b{font-size:20px}
+ .q-cell .v2-body{font-size:16px;line-height:1.6}
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:16px;padding:10px 0 10px 22px;line-height:1.5}
+ .v2-vs__list li::before{top:19px}
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--rule,var(--v2-navy));color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+ .q-step__h{font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.35;margin-bottom:12px;word-break:keep-all}
+ .q-step .v2-body{font-size:16.5px;line-height:1.6}
+ .q-step__k{margin-top:auto;padding:10px 12px;border-radius:8px;background:var(--chip,var(--v2-chip-navy));border-left:4px solid var(--rule,var(--v2-navy));font-size:15px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-card__why{margin-top:12px;font-size:15px;line-height:1.55;color:var(--v2-muted);word-break:keep-all}
+ .q-arrow{position:absolute;width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:20px solid var(--v2-line)}
+ .q-labs{position:absolute;display:grid;gap:12px}
+ .q-lab{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:8px 14px;border-radius:8px;background:var(--v2-chip-navy);border-top:4px solid var(--v2-navy)}
+ .q-lab b{font-size:17px;color:var(--v2-navy)}
+ .q-lab span{font-size:15px;color:var(--v2-body);line-height:1.4;word-break:keep-all}
+ .q-lab--on{background:var(--v2-chip-accent);border-top-color:var(--v2-accent)}
+ .q-stat{display:flex;flex-direction:column;justify-content:center;text-align:center;padding:20px}
+ .q-stat__num{font-size:44px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px;line-height:1.05}
+ .q-stat__cap{margin-top:10px;font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-close{display:flex;flex-direction:column;justify-content:space-between}
+ .q-close .v2-block + .v2-block{margin-top:0;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+ .q-text--4{padding-top:18px;padding-bottom:16px}
+ .q-text--4 .v2-head{margin-bottom:4px}
+ .q-text--4 .v2-block + .v2-block{padding-top:10px}
+ 
+ .q-list{padding:18px 22px}
+ .q-causes{display:flex;flex-direction:column;justify-content:space-between;height:100%}
+ .q-cause{display:flex;flex-direction:column;gap:2px;padding:5px 0 5px 14px;border-left:3px solid var(--v2-accent)}
+ .q-cause b{font-size:17px;color:var(--v2-navy)}
+ .q-cause span{font-size:15px;color:var(--v2-body);line-height:1.4}
+ .q-text .v2-body{font-size:15.5px;line-height:1.5}
 
-  <!-- Local extensions (stats3 row + table + split metrics + footer-safe compact frame) -->
-  <style>
-    /* Hide decorative bg number so scrollHeight == clientHeight (validator-friendly) */
-    .slide__bg-num { display: none !important; }
-
-    /* ── footer-safe compact frame (deck-local) ───────────────────────── */
-    .slide { --slide-pad-y: 44px; }
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-
-    /* ── Three-stat row (slides 2 & 7) ────────────────────────────────── */
-    .pattern-stats3 {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-6);
-      height: 100%;
-      justify-content: space-between;
-      position: relative;
-      z-index: 1;
-    }
-    .stats3-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-      align-items: stretch;
-      justify-items: center;
-    }
-    .stats3-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-3);
-    }
-    .stats3-cell__circle {
-      width: 164px;
-      height: 164px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-canvas);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-    }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__num {
-      font-size: 2.3rem;
-      font-weight: var(--weight-black);
-      line-height: 1.04;
-      letter-spacing: var(--tracking-mega);
-    }
-    .stats3-cell__sub {
-      font-size: 1rem;
-      font-weight: var(--weight-450);
-      margin-top: var(--space-2);
-      opacity: 0.92;
-    }
-    .stats3-cell__label {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      text-align: center;
-      max-width: 270px;
-      line-height: var(--lh-snug);
-    }
-    .stats3-note {
-      padding: 18px 22px;
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: 1rem;
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: 1.45;
-    }
-
-    /* ── Split (slides 3 & 10) ─────────────────────────────────────────── */
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 0.97rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 16px 20px; }
-    .pattern-split__metric-value { font-size: 1.7rem; line-height: 1.05; }
-
-    /* ── Table (slide 6) ──────────────────────────────────────────────── */
-    /* slide 6 body: table grows to fill, note pinned below → no underfill */
-    .slide:nth-of-type(6) .slide__body { display: flex; flex-direction: column; }
-    .pattern-table { display: flex; flex-direction: column; gap: 14px; flex: 1 1 auto; justify-content: space-between; min-height: 0; }
-    .tbl-row {
-      display: grid; grid-template-columns: 1.5fr 1fr 1fr 2fr;
-      gap: var(--space-4); align-items: center;
-      padding: 20px 16px;
-      background: var(--color-canvas); border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      flex: 1 1 auto; min-height: 0;
-    }
-    .tbl-row--head {
-      background: var(--color-navy); color: var(--color-canvas);
-      border-color: var(--color-navy); font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-snug);
-    }
-    .tbl-row--accent { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .tbl-row--note { display: block; background: var(--color-canvas-warm); border-color: var(--color-border); padding: 16px 20px; }
-    .tbl__note--full { font-size: 0.97rem; color: var(--color-ink); line-height: 1.45; }
-    .tbl__label { font-weight: var(--weight-bold); color: var(--color-navy); font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label { color: var(--color-canvas); font-size: 0.94rem; }
-    .tbl__num { font-size: 1.02rem; font-weight: var(--weight-black); color: var(--color-steel-deep); text-align: center; letter-spacing: var(--tracking-tight); line-height: 1.2; }
-    .tbl-row--accent .tbl__num { color: var(--color-steel-deep); }
-    .tbl-row--head .tbl__num { color: var(--color-canvas); font-size: 0.94rem; font-weight: var(--weight-bold); }
-    .tbl__note { font-size: 0.95rem; color: var(--color-ink-soft); line-height: 1.3; }
-    .tbl-row--head .tbl__note { color: var(--color-canvas); opacity: 0.92; font-size: 0.94rem; }
-
-    /* ── Grids / tiles (slides 5, 8, 10) ──────────────────────────────── */
-    .tile { padding: 15px 18px; gap: 7px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.96rem; line-height: 1.34; }
-
-    /* ── Compare (slide 4) ────────────────────────────────────────────── */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.1rem; line-height: 1.22; }
-    .compare-col__list { padding: 14px 18px 16px; gap: 8px; justify-content: space-between; }
-    .compare-col__list li { font-size: 0.96rem; line-height: 1.3; padding-left: 22px; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-
-    /* ── Timeline (slide 9) ───────────────────────────────────────────── */
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: flex-start; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1.04rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.34; }
-
-    /* ── Alert strip ──────────────────────────────────────────────────── */
-    .alert-strip { padding: 14px 18px; min-height: 0; display: flex; align-items: center; }
-    .alert-strip__text { font-size: 0.97rem; line-height: 1.32; }
-
-    /* ── Checklist (slide 11) ─────────────────────────────────────────── */
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-    .check-item { min-height: 0; }
-
-    /* ── AI visual FULL-WIDTH COVER-STRIP (slides 3, 7, 8, 9) — image band on top / text below ──
-       RESTORE 2026-06-19 (v3, 원장 지시): the 56/44 split AND the max-height
-       "strip-shrink" (which letterboxed the image into a tiny centred band with
-       lots of empty space) are BOTH reverted. We restore the ORIGINAL good
-       "cover-strip": a full-width (width:100%) band whose <img> fills the slot
-       edge-to-edge with object-fit:cover — ZERO side gutters, ZERO top/bottom
-       letterbox. The band has a FIXED height (no proportional shrink, no centring
-       frame); cover crops a little top/bottom as needed (acceptable per 원장 — the
-       3·7·8 images keep their key content in the centre band). Text below renders
-       in its normal full-width pattern (stats3 = 3 cols, grid = original cols,
-       timeline = horizontal). Only the slide-9 triage image is regenerated to the
-       band's exact wide ratio so its branches survive cover. */
-    .slide__body--with-visual {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      min-height: 0;
-    }
-    /* full-width cover band — fixed height, img fills it completely */
-    .ai-visual.visual-strip {
-      flex: 0 0 auto;
-      width: 100%;
-      height: 198px;                      /* fixed band height (no shrink, no cap) */
-      margin: 0;
-      display: block;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: 0 2px 9px rgba(0,0,0,0.07);
-    }
-    .ai-visual.visual-strip .visual-strip__frame {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    .ai-visual.visual-strip img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;                  /* fill full-width band edge-to-edge, 0 gutter, 0 letterbox */
-      display: block;
-    }
-    /* text content below the band flexes to fill the remaining body height,
-       and shows in its normal full-width pattern */
-    .slide__body--with-visual > .pattern-stats3,
-    .slide__body--with-visual > .pattern-grid,
-    .slide__body--with-visual > .pattern-timeline,
-    .slide__body--with-visual > .pattern-split {
-      flex: 1 1 auto; min-height: 0;
-    }
-    /* slide 3 (band + split): keep split text compact under the band */
-    .slide:nth-of-type(3) .pattern-split { gap: 16px; }
-    .slide:nth-of-type(3) .pattern-split__statement { font-size: 1.18rem; line-height: 1.16; }
-    .slide:nth-of-type(3) .pattern-split__supporting { font-size: 0.88rem; line-height: 1.34; }
-    .slide:nth-of-type(3) .pattern-split__metric { padding: 11px 15px; }
-    .slide:nth-of-type(3) .pattern-split__metric-value { font-size: 1.32rem; }
-    .slide:nth-of-type(3) .pattern-split__metric-detail { font-size: 0.82rem; line-height: 1.3; }
-    /* slide 7 (band + stats3): smaller circles so the row fits under the band */
-    .slide:nth-of-type(7) .pattern-stats3 { gap: 12px; }
-    .slide:nth-of-type(7) .stats3-cell__circle { width: 96px; height: 96px; }
-    .slide:nth-of-type(7) .stats3-cell__num { font-size: 1.4rem; }
-    .slide:nth-of-type(7) .stats3-cell__sub { margin-top: 1px; font-size: 0.82rem; }
-    .slide:nth-of-type(7) .stats3-cell__label { font-size: 0.88rem; }
-    .slide:nth-of-type(7) .stats3-note { padding: 10px 15px; font-size: 0.84rem; line-height: 1.36; }
-    /* slide 8 (band + grid 3×2): compact tiles + tighter header so a full band fits */
-    .slide:nth-of-type(8) .slide__title-block { margin-bottom: 12px; }
-    .slide:nth-of-type(8) .pattern-grid { gap: 8px; }
-    .slide:nth-of-type(8) .tile { padding: 7px 11px; gap: 3px; }
-    .slide:nth-of-type(8) .tile__index { font-size: 0.7rem; }
-    .slide:nth-of-type(8) .tile__title { font-size: 0.88rem; line-height: 1.14; }
-    .slide:nth-of-type(8) .tile__body { font-size: 0.78rem; line-height: 1.24; }
-    /* slide 9 (band + timeline): horizontal timeline, compact under the band */
-    .slide:nth-of-type(9) .timeline-step__title { font-size: 0.98rem; line-height: 1.2; }
-    .slide:nth-of-type(9) .timeline-step__body { font-size: 0.85rem; line-height: 1.3; }
-
-    /* ── Closing (slide 12) ───────────────────────────────────────────── */
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; min-height: 0; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { padding: 14px 16px; gap: 8px; min-height: 0; }
-    .qr-block__code { width: 100px; height: 100px; }
-  </style>
+</style>
 <!-- seo:geo2 --><meta name="description" content="ROMA(난소암 위험도 평가) — 발견된 난소 혹이 암일 가능성을 가늠하는 위험도 분류 검사. 확진 아님 · 스크리닝 아님 · 전문병원 의뢰 판단용">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/gyn/roma-ovarian-risk/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "ROMA Ovarian Risk — Gwanggyo Barun Internal Medicine", "description": "ROMA(난소암 위험도 평가) — 발견된 난소 혹이 암일 가능성을 가늠하는 위험도 분류 검사. 확진 아님 · 스크리닝 아님 · 전문병원 의뢰 판단용", "url": "https://edu.gwanggyobarun.com/decks/gyn/roma-ovarian-risk/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · GYNECOLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">ROMA 난소암 위험도 검사,<br><em>확진이 아니라 "위험도를 가려주는" 검사입니다</em></h1>
-      <p class="slide__subtitle">ROMA (Risk of Ovarian Malignancy Algorithm) — 이미 발견된 난소 혹이 수술해서 봤을 때 암일 가능성이 높은 편인지를 미리 가늠해, 부인암 전문병원으로 보낼지 판단(triage)하는 혈액검사입니다</p>
+      <p class="slide__subtitle">이미 발견된 난소 혹이 암일 가능성이 높은 편인지 미리 가늠해, 처음부터 부인암 전문병원에서 진료받을지 정하는 데 쓰는 혈액검사입니다</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">ROMA · HE4 + CA-125 + 폐경 상태 · 위험도 분류(triage) · 확진 아님</span>
+      <span class="slide__source">ROMA · 혈액 표지자 2가지 + 폐경 상태 · 위험도 분류 검사</span>
       <span class="slide__page">광교바른내과 일반내과</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · THREE-STAT ROW — what ROMA is at a glance
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">ROMA 검사란 — 한눈에 보기</h2>
-      <p class="slide__subtitle">한 번 채혈로 두 가지 표지자와 폐경 상태를 합쳐 위험도 점수(%)를 계산합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">2<span style="font-size:1.3rem;">개</span></div>
-              <div class="stats3-cell__sub">표지자</div>
-            </div>
-            <div class="stats3-cell__label">HE4 + CA-125<br>두 혈액 표지자 측정</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">1<span style="font-size:1.3rem;">회</span></div>
-              <div class="stats3-cell__sub">채혈</div>
-            </div>
-            <div class="stats3-cell__label">정맥 채혈 1회<br>(대개 금식 불필요)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">%</div>
-              <div class="stats3-cell__sub">위험도 점수</div>
-            </div>
-            <div class="stats3-cell__label">폐경 전·후로 계산<br>→ 고위험 / 저위험 분류</div>
-          </div>
-        </div>
-        <div class="stats3-note">
-          <strong>핵심 — </strong>ROMA는 이미 발견된 난소(부속기) 종괴가 <em>"수술해서 보면 암일 가능성이 높은 편인지/낮은 편인지"</em>를 가려주는 <strong>위험도 평가 검사</strong>입니다. 암을 확정하는 검사가 아니며, 진짜 목적은 가능성이 높은 편이면 처음부터 <strong>부인암 전문병원에서 수술받도록 안내(triage)</strong>하는 것입니다. 무증상 일반인 검진(스크리닝)용이 아닙니다.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Moore RG et al., Gynecol Oncol 2009 (ROMA 개발, 12개 병원 531명)</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · SPLIT — how ROMA is computed (HE4 + CA-125 + menopause)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>PRINCIPLE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">검사 원리 — 무엇을, 어떻게 계산하나</h2>
-      <p class="slide__subtitle">HE4 · CA-125 · 폐경 상태를 수학식에 넣어 위험도 점수(%)를 산출합니다</p>
-    </div>
-    <div class="slide__body slide__body--with-visual">
-      <figure class="ai-visual visual-strip">
-        <div class="visual-strip__frame">
-          <img src="../../../shared/assets/generated/roma-principle-flow-20260619.png" alt="ROMA 검사 원리 4단계: 팔 채혈 1회 → 두 표지자 측정 → 폐경 전·후 분기 → 위험도 점수(%) 산출">
-        </div>
-      </figure>
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">팔에서 피를 한 번 뽑아 <em>HE4</em>와 <em>CA-125</em>를 측정하고, <em>폐경 전·후</em>에 따라 서로 다른 계산식에 넣어 위험도 점수(%)를 냅니다.</p>
-          <p class="pattern-split__supporting">
-            두 표지자는 서로의 약점을 보완합니다 — CA-125는 대표적인 난소암 표지자이지만 양성 질환에서도 잘 오르고, HE4는 양성 질환에 덜 흔들립니다. 그래서 둘을 함께 보고 폐경 상태까지 반영하면 단독 검사보다 양성·악성 구별이 좋아집니다. 다만 점수는 그 자체로 진단이 아니며, 반드시 초음파·CT 같은 영상과 진찰을 함께 보고 판단합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">측정 표지자</div>
-            <div class="pattern-split__metric-value">HE4 + CA-125</div>
-            <div class="pattern-split__metric-detail">두 표지자를 함께 측정해 서로의 위양성·위음성을 보완합니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">계산 분기</div>
-            <div class="pattern-split__metric-value">폐경 전 / 폐경 후</div>
-            <div class="pattern-split__metric-detail">폐경 상태별로 다른 식·기준값을 적용해 위험도 점수(%)를 산출합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ROMA 알고리즘 (HE4·CA-125 logistic regression by menopausal status)</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · COMPARISON — HE4 vs CA-125 (complementary markers)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>BIOMARKERS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">두 표지자 — CA-125와 HE4</h2>
-      <p class="slide__subtitle">각자 약점이 있어 단독으로는 부족하지만, 함께 보면 서로를 보완합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            CA-125 (MUC16 점액 단백)
-          </div>
-          <ul class="compare-col__list">
-            <li>대표적인 난소암 표지자 — 상피성 난소암의 80% 이상에서 상승</li>
-            <li>복막·흉막·자궁내막에서도 만들어집니다</li>
-            <li>월경·임신·자궁내막증·근종·골반염·복수·심부전 등에서도 오름</li>
-            <li>특히 <strong>폐경 전</strong>에는 양성 상태로 위양성이 많은 편</li>
-            <li>단독으로는 양성·악성 구별이 충분치 않음</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            HE4 (부고환 분비단백 · WFDC2)
-          </div>
-          <ul class="compare-col__list">
-            <li>양성 질환에 <strong>덜 흔들려</strong> CA-125를 보완</li>
-            <li>자궁내막증·근종 같은 양성 상태에서 비교적 안정적</li>
-            <li>단, 콩팥기능 저하·고령·흡연에서는 상승할 수 있음</li>
-            <li>임신 중에는 오히려 낮아지는 경향</li>
-            <li>HE4 역시 단독 진단은 불가 — CA-125와 함께 해석</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — HE4·CA-125 보완성: 둘을 함께 보면 양성/악성 구별 향상</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DENSITY GRID 2×2 — Indications & method (who / when / how)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>WHO &amp; HOW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">누구에게 · 언제 · 어떻게 하나</h2>
-      <p class="slide__subtitle">이미 발견된 난소 혹의 악성 가능성을 분류하기 위한 검사입니다 — 조기검진용이 아닙니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">대상 · 01</div>
-          <div class="tile__title">검사 대상 (적응증)</div>
-          <div class="tile__body">만 18세 초과 여성(폐경 전·후)으로, 난소(부속기) 종괴가 <strong>이미 발견되고 수술을 계획</strong>하며 부인암 전문의 의뢰를 앞둔 경우. 발견된 혹의 악성 가능성을 분류하기 위한 검사입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">대상 · 02</div>
-          <div class="tile__title">검사 대상이 아닌 경우</div>
-          <div class="tile__body">증상도 혹도 없는 일반 여성의 <strong>조기검진(스크리닝)용이 아닙니다.</strong> 또한 단독으로 암을 확진하거나, 치료 후 추적·재발 감시 목적으로 쓰는 검사도 아닙니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">방법 · 03</div>
-          <div class="tile__title">검사 방법</div>
-          <div class="tile__body">정맥 채혈 1회(대개 금식 불필요)로 HE4·CA-125를 측정합니다. 폐경 전·후 계산식에 넣어 ROMA 점수(%)를 산출하고, 영상·진찰과 함께 해석합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">목적 · 04</div>
-          <div class="tile__title">검사의 진짜 목적</div>
-          <div class="tile__body">난소암은 처음부터 <strong>부인암 전문병원에서 수술</strong>받을 때 경과가 좋습니다. 가능성이 높은 편이면 전문센터로 의뢰할지 판단(triage)하는 도구입니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 제조사 허가 적응증 · 부인암 전문센터 의뢰 판단(triage) 용도</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · TABLE — reading results & reagent cut-offs (Roche / Abbott)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>RESULTS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">결과 읽는 법 · 시약별 기준값(cut-off)</h2>
-      <p class="slide__subtitle">0~100% 점수에서 기준값을 넘으면 고위험 — 기준값은 장비·시약(Roche / Abbott)마다 다릅니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-table">
-        <div class="tbl-row tbl-row--head">
-          <div class="tbl__label">시약 / 장비</div>
-          <div class="tbl__num">폐경 전 고위험</div>
-          <div class="tbl__num">폐경 후 고위험</div>
-          <div class="tbl__note">설명</div>
-        </div>
-        <div class="tbl-row tbl-row--accent">
-          <div class="tbl__label">Roche Cobas / Elecsys</div>
-          <div class="tbl__num">≥ 11.4%</div>
-          <div class="tbl__num">≥ 29.9%</div>
-          <div class="tbl__note">기준값 이상이면 고위험으로 분류합니다.</div>
-        </div>
-        <div class="tbl-row tbl-row--accent">
-          <div class="tbl__label">Abbott Architect</div>
-          <div class="tbl__num">≈ 7.4%</div>
-          <div class="tbl__num">≈ 25.3%</div>
-          <div class="tbl__note">장비·시약에 따라 기준값이 다르므로 검사한 곳의 기준을 따릅니다.</div>
-        </div>
-        <div class="tbl-row">
-          <div class="tbl__label">폐경 전 기준이 더 낮은(엄격한) 이유</div>
-          <div class="tbl__num">보정</div>
-          <div class="tbl__num">—</div>
-          <div class="tbl__note">폐경 전에는 월경·자궁내막증 등으로 CA-125 위양성이 많아 기준값을 더 엄격하게 잡습니다.</div>
-        </div>
-        <div class="tbl-row tbl-row--note">
-          <div class="tbl__note tbl__note--full"><strong>주의 — </strong>기준값(cut-off)은 검사 장비·시약마다 다릅니다. 따라서 <strong>다른 병원이나 다른 시약의 점수와 단순 비교하지 마세요.</strong> 점수는 영상·진찰과 함께 종합해 판단합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Roche Cobas/Elecsys · Abbott Architect 시약별 cut-off (제조사 기준)</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · THREE-STAT ROW — risk vs diagnosis (performance range)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>RISK ≠ DIAGNOSIS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">점수가 높으면 암인가요? — 위험도 vs 확진</h2>
-      <p class="slide__subtitle">고위험이 곧 암 확진은 아니며, 저위험이 100% 안심도 아닙니다 — 성능은 범위로 봅니다</p>
-    </div>
-    <div class="slide__body slide__body--with-visual">
-      <figure class="ai-visual visual-strip">
-        <div class="visual-strip__frame">
-          <img src="../../../shared/assets/generated/roma-signal-vs-diagnosis-20260619.png" alt="점수는 신호일 뿐, 확진은 다단계: 위쪽 위험도 게이지(신호) vs 아래쪽 초음파·CT·조직검사로 이어지는 확진 과정">
-        </div>
-      </figure>
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">76~92<span style="font-size:1.3rem;">%</span></div>
-              <div class="stats3-cell__sub">민감도</div>
-            </div>
-            <div class="stats3-cell__label">암을 찾아내는 정도<br>(연구마다 범위로 나타남)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">67~93<span style="font-size:1.3rem;">%</span></div>
-              <div class="stats3-cell__sub">특이도</div>
-            </div>
-            <div class="stats3-cell__label">암이 아닌 것을 거르는 정도<br>(연구마다 범위로 나타남)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num" style="font-size:1.75rem;">85.3<span style="font-size:1.05rem;">%</span> / 82.4<span style="font-size:1.05rem;">%</span></div>
-              <div class="stats3-cell__sub" style="font-size:0.9rem;">메타 민감도 / 특이도</div>
-            </div>
-            <div class="stats3-cell__label">여러 연구를 합친 추정치<br>(AAFP 2023)</div>
-          </div>
-        </div>
-        <div class="stats3-note">
-          <strong>꼭 기억하세요 — </strong>고위험이어도 양성 혹이거나 위양성일 수 있고, <strong>저위험이어도 위음성</strong>(실제 암을 놓침)이 있을 수 있습니다. 따라서 저위험이라고 해서 추적을 중단하면 안 됩니다. 위양성·위음성이 모두 존재하므로, 점수 하나가 아니라 <strong>영상·진찰·임상 경과와 함께</strong> 해석합니다.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 민감도 76~92% · 특이도 67~93% · 메타분석 85.3% / 82.4% (AAFP 2023)</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · DENSITY GRID 3×2 — false-positive / false-negative causes
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>FALSE POSITIVES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">암이 아닌데 표지자가 오르는 경우</h2>
-      <p class="slide__subtitle">아래 상황들에서 CA-125 등이 올라 점수가 높게 나올 수 있어, 미리 알려주시면 해석에 도움이 됩니다</p>
-    </div>
-    <div class="slide__body slide__body--with-visual">
-      <figure class="ai-visual visual-strip">
-        <div class="visual-strip__frame">
-          <img src="../../../shared/assets/generated/roma-false-positive-causes-20260619.png" alt="암이 아닌데 표지자가 오르는 양성 상황들: 자궁내막증, 자궁근종, 임신 초기, 콩팥기능 저하">
-        </div>
-      </figure>
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">부인과 · 01</div>
-          <div class="tile__title">월경 · 임신 초기</div>
-          <div class="tile__body">생리 주기나 임신 초기에는 CA-125가 생리적으로 오를 수 있습니다. 검사 전 임신 가능성·생리 주기를 알려주세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">부인과 · 02</div>
-          <div class="tile__title">자궁내막증 · 근종 · 선근증</div>
-          <div class="tile__body">자궁내막증은 보통 CA-125가 100 미만으로 오르며, 근종·선근증·기능성 물혹에서도 상승할 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">부인과 · 03</div>
-          <div class="tile__title">골반염 (PID)</div>
-          <div class="tile__body">골반 내 염증이 있으면 표지자가 상승할 수 있습니다. 부인과 병력을 미리 말씀해 주세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">부인과 외 · 04</div>
-          <div class="tile__title">복막 · 흉막 자극</div>
-          <div class="tile__body">복막염·복부 수술 후·흉수·심낭 삼출 등 복막·흉막이 자극되는 상태에서도 CA-125가 오를 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">부인과 외 · 05</div>
-          <div class="tile__title">심부전 · 간경화 · 복수</div>
-          <div class="tile__body">심부전·간경화·복수가 있으면 표지자가 비특이적으로 상승할 수 있어, 점수 해석에 반드시 고려합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">HE4 · 06</div>
-          <div class="tile__title">콩팥기능 저하 · 고령 · 흡연</div>
-          <div class="tile__body">HE4는 양성 질환에 덜 흔들리지만, 콩팥기능 저하·고령·흡연에서는 오를 수 있습니다. 콩팥 질환·흡연 여부를 알려주세요.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — CA-125 비특이적 상승 원인 · HE4 콩팥기능/고령/흡연 영향</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · TIMELINE — what happens if high-risk (next steps)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>NEXT STEPS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">고위험으로 나오면 — 다음 단계</h2>
-      <p class="slide__subtitle">고위험은 "전문병원으로 보낼지 판단하는 신호"입니다 — 다음 순서로 진행합니다</p>
-    </div>
-    <div class="slide__body slide__body--with-visual">
-      <figure class="ai-visual visual-strip">
-        <div class="visual-strip__frame">
-          <img src="../../../shared/assets/generated/roma-triage-branch-20260619.png" alt="위험도 분류(triage): 발견된 난소 혹이 점수에 따라 고위험은 부인암 전문병원 의뢰, 저위험은 추적으로 갈라지는 길">
-        </div>
-      </figure>
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">부인암 전문의 의뢰</div>
-          <div class="timeline-step__body">검사의 본래 목적입니다. 가능성이 높은 편이면 처음부터 난소암을 전문으로 보는 병원에서 평가·수술받도록 안내합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">추가 영상 · 진찰</div>
-          <div class="timeline-step__body">정밀 초음파·CT·MRI 등 추가 영상과 진찰을 통해 혹의 성질을 더 자세히 평가합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">필요 시 수술 · 조직검사</div>
-          <div class="timeline-step__body">최종 진단은 결국 수술과 조직검사로 확인합니다. ROMA 점수만으로 암을 확정하지 않습니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">저위험이어도 — 추적</div>
-          <div class="timeline-step__body">저위험이라도 위음성 가능성이 있으므로, 증상·영상 소견에 따라 추적 관찰이나 추가 검사를 진행할 수 있습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 고위험 시 전문센터 의뢰 → 영상 → 수술·조직검사 확진 경로</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · SPLIT — "not a screening test" + before/after cautions
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>CAUTIONS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">스크리닝 아님 · 검사 전후 주의</h2>
-      <p class="slide__subtitle">용도를 정확히 알고, 검사 전 알릴 것과 검사 후 해석 원칙을 지키면 가장 도움이 됩니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">ROMA는 <em>무증상 일반 여성의 조기검진(스크리닝) 도구가 아닙니다.</em> 제조사·허가 모두 단독 진단·선별 용도를 금지합니다.</p>
-          <p class="pattern-split__supporting">
-            용도는 <strong>이미 발견된 혹의 위험도 분류</strong>입니다. 조기검진·단독 확진·치료 후 추적 목적이 아닙니다. 검사 전에는 임신 가능성·생리 주기·부인과 병력(자궁내막증·근종)·콩팥 질환·흡연 여부를 알려주세요. 검사 후에는 수치 하나로 판단하지 말고 영상·진찰·임상 경과와 함께 종합해 해석하며, 다른 병원/시약의 값과 단순 비교하지 않습니다. 최종 진단은 수술·조직검사로 확인합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">검사 전 — 미리 알려주세요</div>
-            <div class="pattern-split__metric-value">임신 · 생리주기</div>
-            <div class="pattern-split__metric-detail">자궁내막증·근종 병력, 콩팥 질환, 흡연 여부도 함께 고지.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">검사 후 — 해석 원칙</div>
-            <div class="pattern-split__metric-value">단독 판단 금지</div>
-            <div class="pattern-split__metric-detail">영상·진찰과 함께 종합. 타 병원/시약 값과 단순 비교 금지.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 제조사·허가 모두 단독진단/선별 금지 · 최종진단=수술·조직검사</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — 8 patient-essentials
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>KEY POINTS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">ROMA 검사를 바르게 이해하고 활용하기 위한 환자 핵심 정리</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">ROMA는 <strong>확진이 아니라 위험도 분류</strong> 검사입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text"><strong>고위험 ≠ 암 확진</strong>, <strong>저위험 ≠ 100% 안심</strong>입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">진짜 목적은 <strong>부인암 전문병원 의뢰 분류(triage)</strong>입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">무증상 일반인의 <strong>조기검진(스크리닝)용이 아닙니다</strong></div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">원리는 <strong>HE4 + CA-125 + 폐경 상태</strong>로 점수(%)를 계산</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">기준값은 <strong>시약(Roche/Abbott)마다 달라</strong> 타 병원 값과 비교 금지</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">월경·임신·자궁내막증·콩팥질환·흡연은 <strong>수치에 영향</strong> — 미리 고지</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">최종 진단은 <strong>영상·진찰과 종합, 결국 수술·조직검사</strong>로 확인</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Key takeaways — 위험도 분류 · 전문병원 의뢰 · 단독판단 금지</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — clinic note + contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">점수 하나가 아니라,<br><em>영상·진찰과 함께 안전하게 판단합니다</em></h2>
-      <p class="slide__subtitle">"이 검사는 암을 확정하는 검사가 아니라, 가능성이 높은 편이면 처음부터 난소암을 전문으로 보는 병원에서 수술받으시도록 안내하기 위한 거예요. 궁금한 점은 언제든 문의해 주세요."</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 결론 먼저</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">ROMA 검사, 세 가지만 기억하세요</h2>
+  <p class="v2-sub">암을 확정하는 검사가 아니라 ‘어디서 진료받을지’를 정하도록 돕는 검사입니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7479 12.8156C17.0072 12.8833 15.4353 13.5043 14.5944 14.3454C14.2039 14.736 13.5707 14.736 13.1802 14.3455C12.7896 13.9551 12.7895 13.3219 13.18 12.9313C14.4774 11.6337 16.5888 10.8981 18.6701 10.8171C20.765 10.7356 23.0521 11.3092 24.6538 12.9112C25.0442 13.3017 25.0442 13.9349 24.6536 14.3254C24.2631 14.7159 23.6299 14.7158 23.2394 14.3253C22.1484 13.234 20.4749 12.7484 18.7479 12.8156Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.9355 27.3841C30.8475 25.1207 32 22.1949 32 19C32 11.8203 26.1797 6 19 6C11.8203 6 6 11.8203 6 19C6 26.1797 11.8203 32 19 32C22.1949 32 25.1207 30.8475 27.3841 28.9355L27 31.1442L34.5137 38.6579L38.6579 34.5137L31.1442 27L28.9355 27.3841ZM19 29C24.5228 29 29 24.5228 29 19C29 13.4772 24.5228 9 19 9C13.4772 9 9 13.4772 9 19C9 24.5228 13.4772 29 19 29Z" fill="currentColor"/>
+<path d="M35.9279 40.0721L40.0721 35.9279L41.4278 37.2837C42.1907 38.0466 42.1907 39.2835 41.4278 40.0464L40.0464 41.4278C39.2835 42.1907 38.0466 42.1907 37.2837 41.4278L35.9279 40.0721Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">위험도를 가늠하는 검사입니다</div>
+    <div class="v2-body">점수는 혹이 암일 가능성이 <b>높은 편인지 낮은 편인지</b>를 알려 줍니다. 암이라고 확정하지는&nbsp;않습니다.</div>
+    <div class="q-card__why">고위험이어도 양성 혹일 수 있고, 저위험이어도 추적이 필요할 수 있습니다.</div>
+    <div class="q-card__k">확진은 수술·조직검사</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H9ZM10.4891 15.915C10.0046 16.3998 9.87088 16.9737 10.1503 17.4661C10.4912 18.067 10.8706 18.5927 11.2286 19.0292C10.8763 19.0809 10.565 19.2326 10.3282 19.4907C10.0699 19.7723 9.93244 20.1457 9.90679 20.5645C9.42674 20.0081 8.88947 19.2969 8.41074 18.4531C7.53681 16.9127 8.19966 15.3765 9.07455 14.5012C9.51812 14.0574 10.081 13.705 10.6779 13.5523C11.2744 13.3997 12.031 13.4264 12.6328 13.9567C13.6775 14.8774 14.1601 14.9569 14.422 14.9821C14.4667 14.9864 14.5258 14.9874 14.5972 14.9885C14.968 14.9947 15.6693 15.0062 16.3923 15.516L15.2399 17.1506C15.0474 17.0149 15.0096 17.0137 14.7805 17.0069C14.6631 17.0034 14.4953 16.9984 14.2307 16.9729C13.4387 16.8968 12.5798 16.5722 11.3266 15.4714C11.3053 15.4685 11.2584 15.4682 11.1736 15.4899C10.9828 15.5387 10.7252 15.6788 10.4891 15.915ZM11.341 15.4754C11.3407 15.4758 11.3374 15.4752 11.3317 15.4723C11.3384 15.4736 11.3412 15.475 11.341 15.4754ZM15.2854 21.0096C16.6034 22.2601 16.971 23.9692 16.1064 24.8269C15.2419 25.6847 13.4726 25.3663 12.1546 24.1158C10.8366 22.8653 10.469 21.1562 11.3336 20.2985C12.1982 19.4407 13.9674 19.7591 15.2854 21.0096ZM37.0393 15.8905C37.4842 16.367 37.6325 16.9677 37.355 17.4913C37.044 18.0782 36.699 18.5929 36.3721 19.0226C36.7203 19.0669 37.0282 19.2204 37.2598 19.4907C37.5123 19.7855 37.6412 20.1807 37.6561 20.6234C38.1221 20.0545 38.6526 19.3139 39.1221 18.4279C39.922 16.9186 39.3262 15.4092 38.5012 14.5256C38.0849 14.0798 37.5479 13.716 36.9659 13.5566C36.3757 13.395 35.6243 13.4269 35.0385 13.9796C34.0649 14.8981 33.6318 14.9612 33.4227 14.9827C33.3873 14.9864 33.3378 14.9871 33.2764 14.988C32.9376 14.9931 32.2352 15.0036 31.531 15.5351L32.7359 17.1314C32.8927 17.0131 32.904 17.0128 33.089 17.0077C33.1937 17.0048 33.3539 17.0004 33.6275 16.9722C34.3973 16.893 35.2113 16.5564 36.3714 15.4715C36.3866 15.4734 36.4082 15.4775 36.4376 15.4856C36.5914 15.5277 36.8207 15.6564 37.0393 15.8905ZM36.3421 15.4707C36.3424 15.471 36.3455 15.4711 36.351 15.4698C36.3446 15.4698 36.3419 15.4704 36.3421 15.4707ZM32.1515 21.0096C30.8335 22.2601 30.4659 23.9692 31.3304 24.8269C32.195 25.6847 33.9643 25.3663 35.2823 24.1158C36.6003 22.8653 36.9678 21.1562 36.1033 20.2985C35.2387 19.4407 33.4694 19.7591 32.1515 21.0096ZM20.0472 22.0426C17.3386 22.0426 13.2757 14 24.1101 14C34.9445 14 30.4301 22.0426 27.7215 22.0426C26.4316 22.0426 26.3323 24.9812 26.2281 28.0595C26.1509 30.344 26.071 32.7055 25.5 34C25.3212 34.4053 25.0154 34.2841 24.6755 34.1493C24.4921 34.0766 24.2987 34 24.1101 34C23.9305 34 23.7245 34.0695 23.5188 34.1389C23.1079 34.2775 22.6979 34.4158 22.5 34C21.8767 32.6904 21.7524 30.2886 21.633 27.9793C21.4753 24.9303 21.3259 22.0426 20.0472 22.0426Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">이미 혹이 발견된 분이 받습니다</div>
+    <div class="v2-body">초음파 등에서 난소 혹이 보이고 수술을 앞둔 분이 대상입니다. 혹이 없는 분의 암 검진용이&nbsp;아닙니다.</div>
+    <div class="q-card__why">무증상 여성의 검진에 쓰도록 허가된 검사가 아닙니다.</div>
+    <div class="q-card__k">대상: 난소 혹이 있는 분</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 20H20V23H16V20Z" fill="currentColor"/>
+<path d="M20 25H16V28H20V25Z" fill="currentColor"/>
+<path d="M16 30H20V33H16V30Z" fill="currentColor"/>
+<path d="M26 20H22V23H26V20Z" fill="currentColor"/>
+<path d="M22 25H26V28H22V25Z" fill="currentColor"/>
+<path d="M26 30H22V33H26V30Z" fill="currentColor"/>
+<path d="M28 20H32V23H28V20Z" fill="currentColor"/>
+<path d="M32 25H28V28H32V25Z" fill="currentColor"/>
+<path d="M28 30H32V33H28V30Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 6C31 4.89543 30.1046 4 29 4H19C17.8954 4 17 4.89543 17 6L10 6V8H12V42H9C8.44772 42 8 42.4477 8 43C8 43.5523 8.44772 44 9 44H39C39.5523 44 40 43.5523 40 43C40 42.4477 39.5523 42 39 42H36V8H38V6H31ZM29 18C30.1046 18 31 17.1046 31 16V11H34V42H31V38H32V36H16V38H17V42H14V11H17V16C17 17.1046 17.8954 18 19 18H29ZM23 42H25V38H23V42ZM34 8V9H31V8H34ZM14 9H17V8H14V9ZM20 10H23V7H25V10H28V12H25V15H23V12H20V10Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">목적은 알맞은 병원 찾기입니다</div>
+    <div class="v2-body">난소암은 처음부터 부인암 전문병원에서 수술받을 때 경과가 좋습니다. 점수가 높으면 그쪽으로 안내합니다.</div>
+    <div class="q-card__why">그래서 점수는 ‘어디서 수술받을지’를 정하는 데&nbsp;쓰입니다.</div>
+    <div class="q-card__k">높으면 전문병원 안내</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 점수 하나로 결정하지 않습니다. 초음파·CT 같은 영상과 진찰을 함께 봅니다.</span><span class="v2-src">근거 · Moore 2009 · ACOG 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 검사 원리</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">피 한 번으로 위험도 점수를 계산합니다</h2>
+  <p class="v2-sub">두 가지 혈액 표지자를 재고, 폐경 전·후에 따라 다른 계산식에 넣습니다</p>
+  <div class="v2-panel q-fig" style="left:198px;top:206px;width:883px;height:294px"><img class="q-fig__img" src="../../../shared/assets/generated/roma-principle-flow-20260619.png" alt="팔에서 채혈 → 두 가지 표지자 → 폐경 전·후 갈림 → 위험도 계기판 순서의 그림" style="width:883px;height:294px"></div>
+  <div class="q-labs" style="left:64px;top:514px;width:1152px;height:92px;grid-template-columns:repeat(4,1fr)"><div class="q-lab"><b>① 채혈 1회</b><span>팔에서 피를 한 번 뽑습니다 · 대개 금식&nbsp;불필요</span></div><div class="q-lab"><b>② 표지자 2가지</b><span>CA-125와 HE4 두 수치를 잽니다</span></div><div class="q-lab"><b>③ 폐경 전·후</b><span>폐경 여부에 따라 다른 계산식을 씁니다</span></div><div class="q-lab q-lab--on"><b>④ 위험도 점수</b><span>0~100% 점수로 높은 편·낮은 편을 나눕니다</span></div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 두 표지자는 서로의 약점을 보완합니다. 함께 볼 때 한 가지만 볼 때보다 구별이 좋아집니다.</span><span class="v2-src">근거 · Moore 2009 (Gynecol Oncol)</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 두 표지자</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">CA-125와 HE4 — 약점이 서로 다릅니다</h2>
+  <p class="v2-sub">하나만으로는 부족해서 둘을 함께 봅니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">CA-125</div><div class="v2-vs__lead">가장 널리 쓰는 <b>난소암 표지자</b>입니다.</div><ul class="v2-vs__list"><li>상피성 난소암의 80% 이상에서 올라갑니다</li><li>생리·임신·자궁내막증·근종·골반염에서도 오릅니다</li><li>그래서 폐경 전에는 <b>암이 아닌데 높게</b> 나오는 일이 많은 편입니다</li><li>혼자서는 양성·악성을 충분히 구별하지 못합니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">HE4</div><div class="v2-vs__lead">CA-125를 <b>보완하는 표지자</b>입니다.</div><ul class="v2-vs__list"><li>자궁내막증·근종 같은 양성 상태에서는 비교적 덜 오릅니다</li><li>콩팥 기능이 떨어졌거나 나이가 많거나 흡연하면 오를 수 있습니다</li><li>임신 중에는 오히려 낮아지는 경향이 있습니다</li><li>역시 혼자서는 진단하지 못해 CA-125와 함께 봅니다</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 두 수치 모두 ‘오를 수 있는 다른 이유’가 있어 검사 전에 몸 상태를 알려 주시면 해석이 정확해집니다.</span><span class="v2-src">근거 · ACOG 2016 · Bolstad 2012</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 누구에게</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">누가 · 어떻게 받는 검사인가요</h2>
+  <p class="v2-sub">이미 발견된 난소 혹의 성격을 가늠하기 위한 검사입니다</p>
+  <div class="v2-panel q-cell" style="left:64px;top:206px;width:564px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.5 8.5C28.5 10.9853 26.4853 13 24 13C21.5148 13 19.5 10.9853 19.5 8.5C19.5 6.01472 21.5148 4 24 4C26.4853 4 28.5 6.01472 28.5 8.5ZM18.5 21C18.5 23.5306 16.1642 32.0452 15.309 35.0778C15.146 35.6558 15.5244 36.2471 16.1183 36.3364C22.1054 37.2369 25.899 37.2073 31.8856 36.3305C32.4782 36.2438 32.8601 35.6592 32.7021 35.0815C31.8565 31.9898 29.5025 23.1876 29.5 21.0034L29.5 21L29.5 19.4948C29.8976 19.9955 30.2688 20.7401 30.4968 21.5452L30.5188 21.6225C30.6579 22.1136 30.7102 22.2982 30.7594 22.4837C30.789 22.5955 30.8175 22.7075 30.8632 22.887C30.9918 23.3925 31.2565 24.4331 32.0659 27.509C32.347 28.5772 33.4408 29.2153 34.509 28.9341C35.5772 28.653 36.2153 27.5592 35.9342 26.491C35.1642 23.5651 34.8904 22.4916 34.7497 21.94L34.7497 21.9399L34.7497 21.9399C34.6054 21.3744 34.6011 21.3576 34.3454 20.4548C34.0007 19.2383 33.4136 17.986 32.6211 16.993C31.8733 16.0559 30.648 15 29 15H24C24 15 24 15 24 15C24 15 24 15 24 15H19C17.352 15 16.1268 16.0559 15.3789 16.993C14.5864 17.986 13.9993 19.2383 13.6547 20.4548C13.3989 21.3576 13.3946 21.3744 13.2504 21.9399C13.1097 22.4915 12.8359 23.5649 12.0659 26.491C11.7847 27.5592 12.4228 28.653 13.491 28.9341C14.5592 29.2153 15.653 28.5772 15.9342 27.509C16.7436 24.4331 17.0083 23.3925 17.1369 22.887C17.1825 22.7075 17.211 22.5954 17.2407 22.4837C17.2898 22.2983 17.3422 22.1136 17.4813 21.6226L17.4813 21.6224L17.4814 21.6222L17.5032 21.5452C17.7313 20.7401 18.1024 19.9954 18.5 19.4948L18.5 21ZM18.5 42.3877V38.5704C19.9095 38.7792 21.2135 38.9111 22.4875 38.9679L21.4472 42.7824C21.2495 43.5074 20.5458 43.9742 19.8009 43.8745C19.0561 43.7747 18.5 43.1392 18.5 42.3877ZM26.5529 42.7824L25.5108 38.9616C26.7854 38.8998 28.09 38.7642 29.5 38.5566V42.3877C29.5 43.1392 28.944 43.7747 28.1991 43.8745C27.4543 43.9742 26.7506 43.5074 26.5529 42.7824Z" fill="currentColor"/>
+</svg></div><b>이런 분이 받습니다</b></div><div class="v2-body">난소 혹이 발견돼 수술이 계획된 만 18세 넘은 여성(폐경 전·후)으로, 아직 부인암 전문의에게 의뢰되지 않은 분입니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:652px;top:206px;width:564px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24ZM16.2218 31.7782C15.8313 31.3877 15.8313 30.7546 16.2218 30.364L22.5858 24.0001L16.2218 17.6361C15.8313 17.2455 15.8313 16.6124 16.2218 16.2218C16.6123 15.8313 17.2455 15.8313 17.636 16.2218L24 22.5858L30.364 16.2219C30.7545 15.8314 31.3877 15.8314 31.7782 16.2219C32.1687 16.6124 32.1687 17.2456 31.7782 17.6361L25.4142 24.0001L31.7782 30.364C32.1687 30.7545 32.1687 31.3877 31.7782 31.7782C31.3876 32.1687 30.7545 32.1687 30.364 31.7782L24 25.4143L17.6361 31.7782C17.2455 32.1688 16.6124 32.1688 16.2218 31.7782Z" fill="currentColor"/>
+</svg></div><b>이런 용도는 아닙니다</b></div><div class="v2-body">증상도 혹도 없는 분의 <b>암 검진(스크리닝)</b>, 혼자서 암을 확정하는 일, 치료 뒤 재발을 지켜보는 일에는 쓰지 않습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:64px;top:416px;width:564px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>검사 방법</b></div><div class="v2-body">정맥에서 피를 한 번 뽑습니다. 대개 금식은 필요 없습니다. 두 수치와 폐경 상태로 점수를 계산합니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell" style="left:652px;top:416px;width:564px;height:190px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 20H20V23H16V20Z" fill="currentColor"/>
+<path d="M20 25H16V28H20V25Z" fill="currentColor"/>
+<path d="M16 30H20V33H16V30Z" fill="currentColor"/>
+<path d="M26 20H22V23H26V20Z" fill="currentColor"/>
+<path d="M22 25H26V28H22V25Z" fill="currentColor"/>
+<path d="M26 30H22V33H26V30Z" fill="currentColor"/>
+<path d="M28 20H32V23H28V20Z" fill="currentColor"/>
+<path d="M32 25H28V28H32V25Z" fill="currentColor"/>
+<path d="M28 30H32V33H28V30Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 6C31 4.89543 30.1046 4 29 4H19C17.8954 4 17 4.89543 17 6L10 6V8H12V42H9C8.44772 42 8 42.4477 8 43C8 43.5523 8.44772 44 9 44H39C39.5523 44 40 43.5523 40 43C40 42.4477 39.5523 42 39 42H36V8H38V6H31ZM29 18C30.1046 18 31 17.1046 31 16V11H34V42H31V38H32V36H16V38H17V42H14V11H17V16C17 17.1046 17.8954 18 19 18H29ZM23 42H25V38H23V42ZM34 8V9H31V8H34ZM14 9H17V8H14V9ZM20 10H23V7H25V10H28V12H25V15H23V12H20V10Z" fill="currentColor"/>
+</svg></div><b>검사하는 이유</b></div><div class="v2-body">점수가 높은 편이면 처음부터 난소암을 전문으로 보는 병원에서 평가·수술받도록 안내하기 위해서입니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 검진 목적으로 받고 싶다면 이 검사보다 먼저 담당 의사와 어떤 검사가 맞는지 상의하세요.</span><span class="v2-src">근거 · 제조사 허가 사용 목적 · ACOG 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 결과 읽기</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">기준값을 넘으면 ‘고위험’으로 분류합니다</h2>
+  <p class="v2-sub">기준값은 검사 장비·시약마다 다릅니다 — 검사한 곳의 기준을 따릅니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:360px"><col style="width:250px"><col style="width:250px"><col style="width:292px"></colgroup><thead><tr><th>검사 장비·시약</th><th>폐경 전 고위험</th><th>폐경 후 고위험</th><th>읽는 법</th></tr></thead><tbody><tr><th style="height:82px">Roche(Cobas · Elecsys)</th><td style="height:82px"><b>11.4%</b> 이상</td><td style="height:82px"><b>29.9%</b> 이상</td><td style="height:82px">기준값 이상이면 고위험</td></tr><tr><th style="height:82px">Abbott(Architect)</th><td style="height:82px">약 <b>7.4%</b> 이상</td><td style="height:82px">약 <b>25.3%</b> 이상</td><td style="height:82px">장비마다 기준이 다름</td></tr></tbody></table>
+  <div class="v2-panel q-cell" style="left:64px;top:440px;width:564px;height:166px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>폐경 전 기준이 더 낮은 이유</b></div><div class="v2-body">폐경 전에는 생리·자궁내막증 때문에 CA-125가 암이 아닌데도 오르는 일이 많아, 기준을 따로 잡습니다.</div></div>
+  </div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:652px;top:440px;width:564px;height:166px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>다른 병원 점수와 비교하지 마세요</b></div><div class="v2-body">장비·시약이 다르면 같은 숫자도 뜻이 달라집니다. 이전 결과가 있으면 어디서 검사했는지 함께 알려 주세요.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 점수는 영상·진찰과 함께 종합해 판단합니다.</span><span class="v2-src">근거 · Roche·Abbott 제조사 기준값</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 위험도와 확진</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">점수가 높으면 암인가요?</h2>
+  <p class="v2-sub">고위험이 곧 암은 아니고, 저위험이 100% 안심도 아닙니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>고위험으로 나와도</b></div><div class="v2-body">양성 혹이거나 다른 이유로 수치가 오른 <b>위양성</b>일 수 있습니다. 전문병원에서 영상·진찰로 더 자세히 봅니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.7903 26.7461L8 35.3472V40H42V42H7C6.44772 42 6 41.5523 6 41V7H8V32.1195L13.3297 25.3686C13.1189 24.9583 13 24.493 13 24C13 22.3431 14.3431 21 16 21C17.6387 21 18.9706 22.3139 18.9995 23.9457L25.6328 26.1568C26.1818 25.4528 27.038 25 28 25C28.3668 25 28.7182 25.0658 29.043 25.1863L35.4207 17.5331C35.1535 17.0844 35 16.5601 35 16C35 14.3431 36.3431 13 38 13C39.6569 13 41 14.3431 41 16C41 17.6569 39.6569 19 38 19C37.6332 19 37.2818 18.9342 36.957 18.8137L30.5793 26.4669C30.8465 26.9156 31 27.4399 31 28C31 29.6569 29.6569 31 28 31C26.3613 31 25.0294 29.6861 25.0005 28.0543L18.3672 25.8432C17.8182 26.5472 16.962 27 16 27C15.5696 27 15.1603 26.9094 14.7903 26.7461Z" fill="currentColor"/>
+</svg></div><b>저위험으로 나와도</b></div><div class="v2-body">실제 암을 놓치는 <b>위음성</b>이 있을 수 있습니다. 그래서 저위험이라고 추적을 그만두지&nbsp;않습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7479 12.8156C17.0072 12.8833 15.4353 13.5043 14.5944 14.3454C14.2039 14.736 13.5707 14.736 13.1802 14.3455C12.7896 13.9551 12.7895 13.3219 13.18 12.9313C14.4774 11.6337 16.5888 10.8981 18.6701 10.8171C20.765 10.7356 23.0521 11.3092 24.6538 12.9112C25.0442 13.3017 25.0442 13.9349 24.6536 14.3254C24.2631 14.7159 23.6299 14.7158 23.2394 14.3253C22.1484 13.234 20.4749 12.7484 18.7479 12.8156Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.9355 27.3841C30.8475 25.1207 32 22.1949 32 19C32 11.8203 26.1797 6 19 6C11.8203 6 6 11.8203 6 19C6 26.1797 11.8203 32 19 32C22.1949 32 25.1207 30.8475 27.3841 28.9355L27 31.1442L34.5137 38.6579L38.6579 34.5137L31.1442 27L28.9355 27.3841ZM19 29C24.5228 29 29 24.5228 29 19C29 13.4772 24.5228 9 19 9C13.4772 9 9 13.4772 9 19C9 24.5228 13.4772 29 19 29Z" fill="currentColor"/>
+<path d="M35.9279 40.0721L40.0721 35.9279L41.4278 37.2837C42.1907 38.0466 42.1907 39.2835 41.4278 40.0464L40.0464 41.4278C39.2835 42.1907 38.0466 42.1907 37.2837 41.4278L35.9279 40.0721Z" fill="currentColor"/>
+</svg></div><b>성능은 범위로 봅니다</b></div><div class="v2-body">연구마다 민감도 76~92%, 특이도 67~93%로 나타났습니다. 점수는 판단을 돕는 한 가지 자료입니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:187px"><img class="q-fig__img" src="../../../shared/assets/generated/roma-signal-vs-diagnosis-20260619.png" alt="위험도 계기판과 초음파·CT·현미경으로 이어지는 확진 과정 그림" style="width:560px;height:187px"></div>
+  <div class="v2-panel q-stat" style="left:656px;top:407px;width:272px;height:199px">
+    <div class="q-stat__num">85.3%</div><div class="q-stat__cap">민감도 — 암을 찾아내는 정도<br>(여러 연구를 합친 추정치)</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:944px;top:407px;width:272px;height:199px">
+    <div class="q-stat__num">82.4%</div><div class="q-stat__cap">특이도 — 암이 아닌 것을 거르는&nbsp;정도<br>(여러 연구를 합친 추정치)</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 최종 진단은 수술로 떼어 낸 조직을 현미경으로 보는 조직검사로 확인합니다.</span><span class="v2-src">근거 · Wang 2014 메타분석(AAFP 2023 인용) · Moore 2009</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 암이 아닌데 오를 때</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">암이 아닌데 수치가 오르는 경우</h2>
+  <p class="v2-sub">이런 상황에서는 점수가 높게 나올 수 있어 미리 알려 주시면 해석에 도움이 됩니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:187px"><img class="q-fig__img" src="../../../shared/assets/generated/roma-false-positive-causes-20260619.png" alt="자궁내막증·자궁근종·임신·콩팥을 나타낸 원형 그림 네 개" style="width:560px;height:187px"></div>
+  <div class="v2-panel q-cell v2-panel--accent" style="left:64px;top:407px;width:560px;height:199px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>검사 전에 알려 주세요</b></div><div class="v2-body">생리 주기와 임신 가능성, 자궁내막증·근종 같은 부인과 병력, 콩팥 질환, 흡연 여부를 말씀해 주세요.</div></div>
+  </div>
+  <div class="v2-panel q-list" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="q-causes"><div class="q-cause"><b>생리 · 임신 초기</b><span>CA-125가 자연스럽게 오를 수 있습니다</span></div><div class="q-cause"><b>자궁내막증 · 근종 · 선근증</b><span>자궁내막증은 보통 100 미만으로 오릅니다</span></div><div class="q-cause"><b>골반 염증(골반염)</b><span>염증이 있으면 수치가 오를 수 있습니다</span></div><div class="q-cause"><b>복막 · 흉막 자극</b><span>복부 수술 뒤·복막염·흉수 등</span></div><div class="q-cause"><b>심부전 · 간경화 · 복수</b><span>암과 관계없이 수치가 오를 수 있습니다</span></div><div class="q-cause"><b>콩팥 기능 저하 · 고령 · 흡연</b><span>HE4가 오를 수 있습니다</span></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 이런 이유가 있으면 담당 의사가 점수를 더 조심스럽게 해석합니다.</span><span class="v2-src">근거 · ACOG 2016 · Bolstad 2012</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 결과 뒤 다음 단계</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">고위험으로 나오면 이렇게 진행합니다</h2>
+  <p class="v2-sub">‘전문병원에서 볼지’ 정하는 신호입니다 — 이 순서로 진행합니다</p>
+  <div class="v2-panel q-text q-text--4" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 20H20V23H16V20Z" fill="currentColor"/>
+<path d="M20 25H16V28H20V25Z" fill="currentColor"/>
+<path d="M16 30H20V33H16V30Z" fill="currentColor"/>
+<path d="M26 20H22V23H26V20Z" fill="currentColor"/>
+<path d="M22 25H26V28H22V25Z" fill="currentColor"/>
+<path d="M26 30H22V33H26V30Z" fill="currentColor"/>
+<path d="M28 20H32V23H28V20Z" fill="currentColor"/>
+<path d="M32 25H28V28H32V25Z" fill="currentColor"/>
+<path d="M28 30H32V33H28V30Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 6C31 4.89543 30.1046 4 29 4H19C17.8954 4 17 4.89543 17 6L10 6V8H12V42H9C8.44772 42 8 42.4477 8 43C8 43.5523 8.44772 44 9 44H39C39.5523 44 40 43.5523 40 43C40 42.4477 39.5523 42 39 42H36V8H38V6H31ZM29 18C30.1046 18 31 17.1046 31 16V11H34V42H31V38H32V36H16V38H17V42H14V11H17V16C17 17.1046 17.8954 18 19 18H29ZM23 42H25V38H23V42ZM34 8V9H31V8H34ZM14 9H17V8H14V9ZM20 10H23V7H25V10H28V12H25V15H23V12H20V10Z" fill="currentColor"/>
+</svg></div><b>① 부인암 전문의에게 의뢰</b></div><div class="v2-body">가능성이 높은 편이면 난소암을 전문으로 보는 병원에서 평가·수술받도록 안내합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.9778 8.35429C18.7472 5.21452 29.2538 5.21526 39.0227 8.3564C41.5056 9.15478 42.6029 11.9037 41.6666 14.2306L35.3047 30.0405C35.2816 30.0977 35.2585 30.1559 35.235 30.2147C35.0075 30.7852 34.754 31.421 34.3671 31.908C33.8635 32.5419 33.1826 32.8943 32.2547 32.9942C31.7056 33.0534 31.2125 32.6562 31.1534 32.1071C31.0942 31.558 31.4914 31.0649 32.0405 31.0058C32.5172 30.9544 32.6778 30.8192 32.8012 30.664C32.9974 30.4169 33.1434 30.054 33.432 29.3369L39.8112 13.484C40.3543 12.1343 39.6886 10.6714 38.4105 10.2604C29.0396 7.24723 18.9611 7.24652 9.58975 10.2584C8.31157 10.6692 7.64567 12.132 8.18857 13.4817L14.5691 29.3444C14.8552 30.0556 15.0002 30.4163 15.1954 30.6626C15.3184 30.8177 15.4784 30.9528 15.9542 31.0045C16.5032 31.0641 16.9 31.5576 16.8403 32.1066C16.7807 32.6557 16.2872 33.0524 15.7382 32.9928C14.8107 32.892 14.1307 32.539 13.6281 31.905C13.2428 31.4189 12.9901 30.7846 12.7634 30.2156C12.7396 30.1559 12.7161 30.0969 12.6928 30.0389L6.33305 14.2281C5.39705 11.9011 6.49473 9.15232 8.9778 8.35429Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.9999 26.5L18.4999 28.5L19.9999 31.5V37L23.4999 40L27.9999 37.5V31.5L29.9999 28.5V26.5L23.9999 25L17.9999 26.5ZM24.9999 32C24.9999 31.4477 24.5522 31 23.9999 31C23.4477 31 22.9999 31.4477 22.9999 32V36C22.9999 36.5523 23.4477 37 23.9999 37C24.5522 37 24.9999 36.5523 24.9999 36V32Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.9999 23.0639V24.8708C19.0485 24.8517 19.0981 24.8327 19.1488 24.8137C20.2534 24.3995 21.8721 24 23.9999 24C26.1278 24 27.7465 24.3995 28.8511 24.8137C28.9018 24.8327 28.9514 24.8517 28.9999 24.8708V23.0639C28.7943 22.9557 28.5106 22.822 28.1488 22.6863C27.2534 22.3505 25.8721 22 23.9999 22C22.1278 22 20.7465 22.3505 19.8511 22.6863C19.4893 22.822 19.2056 22.9557 18.9999 23.0639ZM29.4063 23.3047L29.4046 23.3035L29.4063 23.3047ZM29.9999 22.5L30.5999 21.7C30.8518 21.8889 30.9999 22.1852 30.9999 22.5V26.4899C31 26.4971 31 26.5044 30.9999 26.5116V26.7889C30.9999 27.776 30.7078 28.7411 30.1602 29.5624L29.5038 30.547C29.1753 31.0398 28.9999 31.6188 28.9999 32.2111V35.9792C28.9999 37.2038 28.5506 38.3858 27.737 39.301C26.9856 40.1464 26.0191 40.6723 24.9999 40.8789V41C24.9999 41.7693 25.8374 42.246 26.4989 41.8533L28.6167 40.5958C30.6801 39.3707 33.3449 40.0275 34.6026 42.0713L34.8516 42.4759C35.1411 42.9463 34.9944 43.5622 34.524 43.8517C34.0537 44.1411 33.4377 43.9945 33.1483 43.5241L32.8993 43.1195C32.214 42.0059 30.7621 41.648 29.6377 42.3155L27.52 43.573C25.5253 44.7573 22.9999 43.3198 22.9999 41V40.8789C21.9808 40.6723 21.0143 40.1464 20.2629 39.301C19.4493 38.3858 18.9999 37.2038 18.9999 35.9792V32.2111C18.9999 31.6188 18.8246 31.0398 18.4961 30.547L17.8397 29.5624C17.2921 28.7411 16.9999 27.776 16.9999 26.7889V26.5116C16.9999 26.5044 16.9999 26.4971 16.9999 26.4899V22.5C16.9999 22.1852 17.1481 21.8889 17.3999 21.7L17.9999 22.5C17.3999 21.7 17.3999 21.7 17.3999 21.7L17.4015 21.6988L17.4033 21.6975L17.4075 21.6944L17.418 21.6867C17.4261 21.6808 17.4361 21.6736 17.4482 21.6651C17.4724 21.6481 17.5047 21.626 17.545 21.5995C17.6258 21.5465 17.739 21.476 17.8847 21.394C18.1761 21.2301 18.5975 21.0204 19.1488 20.8137C20.2534 20.3995 21.8721 20 23.9999 20C26.1278 20 27.7465 20.3995 28.8511 20.8137C29.4024 21.0204 29.8238 21.2301 30.1152 21.394C30.2609 21.476 30.3741 21.5465 30.4549 21.5995C30.4952 21.626 30.5275 21.6481 30.5517 21.6651C30.5638 21.6736 30.5738 21.6808 30.5819 21.6867L30.5924 21.6944L30.5966 21.6975L30.5984 21.6988L30.5999 21.7C30.5999 21.7 30.5999 21.7 29.9999 22.5ZM18.5943 27.3042L18.5954 27.3034L18.5973 27.302L18.5985 27.3011M18.5943 27.3042C18.5943 27.3042 18.5965 27.3025 18.5985 27.3011C18.6056 27.2961 18.6202 27.2861 18.6424 27.2716C18.6866 27.2426 18.7609 27.1959 18.8652 27.1372C18.9089 27.1126 18.9578 27.086 19.012 27.0576C19.0567 27.5551 19.2252 28.035 19.5038 28.453L20.1602 29.4376C20.7078 30.2589 20.9999 31.224 20.9999 32.2111V35.9792C20.9999 36.7139 21.2696 37.4231 21.7577 37.9723C22.9511 39.3148 25.0488 39.3148 26.2422 37.9723C26.7303 37.4231 26.9999 36.7139 26.9999 35.9792V32.2111C26.9999 31.224 27.2921 30.2589 27.8397 29.4376L28.4961 28.453C28.7747 28.035 28.9432 27.5551 28.9879 27.0576C29.0421 27.086 29.091 27.1126 29.1347 27.1372C29.239 27.1959 29.3133 27.2426 29.3575 27.2716C29.3797 27.2861 29.3943 27.2962 29.4013 27.3012C29.4034 27.3026 29.4056 27.3042 29.4056 27.3042L29.4045 27.3034L29.4026 27.302L29.4013 27.3012C29.4013 27.3012 29.4 27.3001 29.7833 26.7889C29.845 26.7066 29.9167 26.611 29.9999 26.5M28.9879 27.0576C28.7832 26.9505 28.5035 26.8193 28.1488 26.6863C27.2534 26.3505 25.8721 26 23.9999 26C22.1278 26 20.7465 26.3505 19.8511 26.6863C19.4964 26.8193 19.2167 26.9505 19.012 27.0576" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.0097 16.9927C19.7437 15.6955 21.8519 14.9962 24.0174 15C26.1829 15.0038 28.2887 15.7104 30.0181 17.0136C30.4592 17.346 30.5473 17.973 30.2149 18.4141C29.8825 18.8552 29.2555 18.9433 28.8145 18.6109C27.4309 17.5683 25.7463 17.003 24.0139 17C22.2815 16.997 20.5949 17.5564 19.2078 18.5941C18.7655 18.925 18.1388 18.8347 17.808 18.3924C17.4772 17.9502 17.5675 17.3235 18.0097 16.9927Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.6424 12.0657C20.3409 11.3621 22.1614 11 23.9999 11C25.8385 11 27.659 11.3621 29.3575 12.0657C31.0561 12.7693 32.5994 13.8005 33.8994 15.1005C34.29 15.491 34.29 16.1242 33.8994 16.5147C33.5089 16.9052 32.8758 16.9052 32.4852 16.5147C31.3709 15.4004 30.0481 14.5165 28.5921 13.9134C27.1362 13.3104 25.5758 13 23.9999 13C22.4241 13 20.8637 13.3104 19.4077 13.9134C17.9518 14.5165 16.629 15.4004 15.5147 16.5147C15.1241 16.9052 14.491 16.9052 14.1005 16.5147C13.7099 16.1242 13.7099 15.491 14.1005 15.1005C15.4005 13.8005 16.9438 12.7693 18.6424 12.0657Z" fill="currentColor"/>
+</svg></div><b>② 추가 영상·진찰</b></div><div class="v2-body">정밀 초음파·CT·MRI로 혹의 성질을 더 자세히 봅니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.1108 6L41.9966 12.8856L39.5852 15.2969C39.9402 15.6579 40.1592 16.153 40.1592 16.6992C40.1592 17.8038 39.2637 18.6992 38.1592 18.6992C37.6129 18.6992 37.1178 18.4802 36.7569 18.1252L36.0619 18.8202C34.3038 20.5782 31.5357 20.7108 29.6253 19.2178L14.6293 34.2138C15.1534 34.5538 15.5 35.1434 15.5 35.8138C15.5 36.4906 15.1468 37.085 14.6145 37.4234C14.8219 37.8454 14.9384 38.32 14.9384 38.8218C14.9384 40.5771 13.5129 42 11.7544 42C10.4865 42 9.39173 41.2604 8.8795 40.1898C8.5954 40.357 8.26415 40.453 7.91045 40.453C6.85534 40.453 6 39.5992 6 38.546C6 38.2956 6.04838 38.0564 6.13631 37.8373C6.06267 37.5996 6.02301 37.347 6.02301 37.0851C6.02301 35.9082 6.82419 34.918 7.91187 34.6283C7.91092 34.5998 7.91045 34.5713 7.91045 34.5426C7.91045 33.1383 9.0509 32 10.4577 32C11.4213 32 12.26 32.5341 12.6928 33.3219L28.33 17.6847C27.337 15.8407 27.6191 13.4916 29.1761 11.9346L30.1676 10.9431C29.6421 10.5827 29.2974 9.97784 29.2974 9.29248C29.2974 8.18791 30.1928 7.29248 31.2974 7.29248C31.9827 7.29248 32.5876 7.63723 32.948 8.16278L35.1108 6ZM11.5156 34.6839C11.3908 34.2598 10.9981 33.9502 10.5329 33.9502C9.96738 33.9502 9.50892 34.4078 9.50892 34.9723C9.50892 35.5368 9.96738 35.9944 10.5329 35.9944C11.0067 35.9944 11.4054 35.6732 11.5222 35.237C11.4682 35.0571 11.466 34.8649 11.5156 34.6839ZM33.6937 11.4747C34.0843 11.0842 34.7174 11.0842 35.108 11.4747L36.5222 12.8889C36.9127 13.2794 36.9127 13.9125 36.5222 14.3031L35.8151 15.0102L32.9866 12.1818L33.6937 11.4747ZM11.774 39.8445C12.3395 39.8445 12.798 39.3869 12.798 38.8224C12.798 38.2579 12.3395 37.8003 11.774 37.8003C11.2084 37.8003 10.75 38.2579 10.75 38.8224C10.75 39.3869 11.2084 39.8445 11.774 39.8445Z" fill="currentColor"/>
+<path d="M38.8209 6.88093C38.4304 6.49041 37.7972 6.49041 37.4067 6.88093L36.6995 7.58802L40.4042 11.2926L41.1113 10.5855C41.5018 10.195 41.5018 9.5618 41.1113 9.17128L38.8209 6.88093Z" fill="currentColor"/>
+</svg></div><b>③ 필요하면 수술·조직검사</b></div><div class="v2-body">최종 진단은 수술과 조직검사로 확인합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>저위험이어도 추적합니다</b></div><div class="v2-body">증상과 영상 소견에 따라 추적 관찰이나 추가 검사를 합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:251px"><img class="q-fig__img" src="../../../shared/assets/generated/roma-triage-branch-20260619.png" alt="난소 혹에서 갈라진 길 — 한쪽은 전문병원, 한쪽은 추적 관찰로 이어지는 그림" style="width:560px;height:251px"></div>
+  <div class="q-key q-key--accent" style="left:656px;top:471px;width:560px;height:135px">점수만으로 암을 확정하지 않습니다 — 영상·진찰·조직검사가 함께 갑니다</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 저위험 결과를 받았어도 증상이 새로 생기거나 심해지면 진료를 받으세요.</span><span class="v2-src">근거 · ACOG 2016 · Moore 2009</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 검사 날</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">검사부터 결과 설명까지 네 단계</h2>
+  <p class="v2-sub">검사 전에 알릴 것과 결과를 들을 때 기억할 것을 순서대로 모았습니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:261px;height:316px"><div class="q-step__n">1</div><div class="q-step__h">알리기</div><div class="v2-body">임신 가능성·생리 주기, 자궁내막증·근종 병력, 콩팥 질환, 흡연 여부를 먼저 말씀해 주세요.</div><div class="q-step__k">수치를 올리는 이유 미리 확인</div></div>
+  <div class="q-arrow" style="left:331px;top:352px"></div>
+  <div class="v2-panel q-step" style="left:361px;top:206px;width:261px;height:316px"><div class="q-step__n">2</div><div class="q-step__h">채혈</div><div class="v2-body">팔에서 피를 한 번 뽑습니다. 대개 금식은 필요 없습니다.</div><div class="q-step__k">대개 금식 불필요</div></div>
+  <div class="q-arrow" style="left:628px;top:352px"></div>
+  <div class="v2-panel q-step" style="left:658px;top:206px;width:261px;height:316px"><div class="q-step__n">3</div><div class="q-step__h">점수 계산</div><div class="v2-body">두 수치와 폐경 상태로 점수를 내고, 검사한 곳의 기준값으로 높은 편·낮은 편을 나눕니다.</div><div class="q-step__k">기준값은 장비·시약마다 다름</div></div>
+  <div class="q-arrow" style="left:925px;top:352px"></div>
+  <div class="v2-panel q-step q-step--accent" style="left:955px;top:206px;width:261px;height:316px"><div class="q-step__n">4</div><div class="q-step__h">결과 설명</div><div class="v2-body">점수만이 아니라 영상·진찰 소견과 함께 설명을 듣고 다음 단계를 정합니다.</div><div class="q-step__k">영상·진찰과 함께 판단</div></div>
+  <div class="q-key" style="left:64px;top:538px;width:1152px;height:68px">다른 병원의 점수와 단순 비교하지 않고, 수치 하나로 결론 내리지 않습니다</div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 궁금한 점은 결과를 들을 때 바로 물어보세요.</span><span class="v2-src">근거 · Moore 2009 · 제조사 사용 설명</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 한 장 요약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">ROMA 검사를 한 장으로 정리하면</h2>
+  <p class="v2-sub">무엇을 · 누가 · 어떻게 · 결과 뒤에 무엇을 하는지</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:220px"><col style="width:932px"></colgroup><thead><tr><th>질문</th><th>답</th></tr></thead><tbody><tr><th style="height:68px">무엇인가요</th><td style="height:68px">난소 혹이 암일 가능성이 <b>높은 편인지</b> 가늠하는 혈액검사입니다</td></tr><tr><th style="height:68px">누가 받나요</th><td style="height:68px">난소 혹이 발견돼 수술이 계획됐고, 아직 부인암 전문의에게 의뢰되지 않은 만 18세 넘은 여성</td></tr><tr><th style="height:68px">어떻게 하나요</th><td style="height:68px">채혈 1회 → 두 표지자 + 폐경 상태로 점수 계산</td></tr><tr><th style="height:68px">결과는</th><td style="height:68px">기준값 이상이면 고위험 · 기준값은 장비·시약마다 다름</td></tr><tr><th style="height:68px">그다음은</th><td style="height:68px">고위험이면 전문병원 의뢰와 추가 영상 · 저위험이어도 필요하면 추적</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 최종 진단은 수술과 조직검사로 확인합니다.</span><span class="v2-src">근거 · Moore 2009 · ACOG 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.9135 23.7587C15.9528 23.238 12 21.7771 12 18.4633C12 14.0565 17.3781 8 17.3781 8C17.3781 8 19.1294 5 24.0547 5C28.9801 5 31.4975 8 31.4975 8C31.4975 8 35 11.9266 35 18.4633C35 21.8311 33.0243 23.1983 31.1087 23.7325C29.5532 25.5835 27.1541 26.7561 24.5 26.7561C21.8585 26.7561 19.4695 25.5946 17.9135 23.7587ZM18.4952 20.9173C19.4188 23.1409 21.727 24.7561 24.5 24.7561C25.6398 24.7561 26.701 24.4832 27.6199 24.0074C27.5789 24.0029 27.5572 24 27.5572 24C27.5572 24 33.5348 18.2316 28.5 11C27.9527 9.98305 19.6219 12.5 18.5 14C17.8264 14.9006 18.1383 18.3247 18.4952 20.9173Z" fill="currentColor"/>
+<path d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9178 28.8624 17.9215 28.8698 17.9252 28.8771C17.9507 28.9281 17.9756 28.9774 18 29.0237H22.0639C22.9727 29.0235 23.4254 29.0236 23.8797 29.0237H23.898C24.3428 29.0238 24.7957 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416Z" fill="currentColor"/>
+<path d="M16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">난소 혹이 발견돼 ROMA 검사를 앞둔 분을 위한 설명자료입니다. 검사와 치료 결정은 담당 의료진과 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">Moore RG 등, Gynecol Oncol 2009(ROMA 개발) · ACOG Practice Bulletin 174(2016, 부속기 종괴) · Wang 등 2014 메타분석(AAFP 2023 인용) · Bolstad 2012(HE4 기준치) · Roche·Abbott 제조사 기준값</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM23,3H24V4H23zM24,3H25V4H24zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM14,5H15V6H14zM16,5H17V6H16zM18,5H19V6H18zM19,5H20V6H19zM24,5H25V6H24zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM15,6H16V7H15zM17,6H18V7H17zM21,6H22V7H21zM23,6H24V7H23zM25,6H26V7H25zM26,6H27V7H26zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM13,7H14V8H13zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM20,7H21V8H20zM24,7H25V8H24zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM11,9H12V10H11zM12,9H13V10H12zM13,9H14V10H13zM14,9H15V10H14zM16,9H17V10H16zM17,9H18V10H17zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM13,10H14V11H13zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM2,11H3V12H2zM4,11H5V12H4zM5,11H6V12H5zM7,11H8V12H7zM11,11H12V12H11zM12,11H13V12H12zM13,11H14V12H13zM18,11H19V12H18zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM2,12H3V13H2zM5,12H6V13H5zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM11,12H12V13H11zM14,12H15V13H14zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM22,12H23V13H22zM24,12H25V13H24zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM6,13H7V14H6zM9,13H10V14H9zM11,13H12V14H11zM13,13H14V14H13zM14,13H15V14H14zM16,13H17V14H16zM18,13H19V14H18zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM3,14H4V15H3zM4,14H5V15H4zM5,14H6V15H5zM6,14H7V15H6zM8,14H9V15H8zM9,14H10V15H9zM11,14H12V15H11zM13,14H14V15H13zM19,14H20V15H19zM21,14H22V15H21zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM2,15H3V16H2zM3,15H4V16H3zM5,15H6V16H5zM6,15H7V16H6zM9,15H10V16H9zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM24,15H25V16H24zM25,15H26V16H25zM28,15H29V16H28zM33,15H34V16H33zM34,15H35V16H34zM2,16H3V17H2zM4,16H5V17H4zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM13,16H14V17H13zM15,16H16V17H15zM16,16H17V17H16zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM27,16H28V17H27zM28,16H29V17H28zM31,16H32V17H31zM33,16H34V17H33zM3,17H4V18H3zM4,17H5V18H4zM6,17H7V18H6zM10,17H11V18H10zM11,17H12V18H11zM16,17H17V18H16zM18,17H19V18H18zM20,17H21V18H20zM23,17H24V18H23zM24,17H25V18H24zM27,17H28V18H27zM28,17H29V18H28zM29,17H30V18H29zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM3,18H4V19H3zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM14,18H15V19H14zM16,18H17V19H16zM19,18H20V19H19zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM34,18H35V19H34zM2,19H3V20H2zM3,19H4V20H3zM5,19H6V20H5zM10,19H11V20H10zM11,19H12V20H11zM13,19H14V20H13zM14,19H15V20H14zM16,19H17V20H16zM18,19H19V20H18zM19,19H20V20H19zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM25,19H26V20H25zM26,19H27V20H26zM28,19H29V20H28zM29,19H30V20H29zM31,19H32V20H31zM32,19H33V20H32zM34,19H35V20H34zM2,20H3V21H2zM6,20H7V21H6zM8,20H9V21H8zM10,20H11V21H10zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM17,20H18V21H17zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM2,21H3V22H2zM5,21H6V22H5zM6,21H7V22H6zM10,21H11V22H10zM11,21H12V22H11zM12,21H13V22H12zM15,21H16V22H15zM16,21H17V22H16zM23,21H24V22H23zM27,21H28V22H27zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM2,22H3V23H2zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM12,22H13V23H12zM13,22H14V23H13zM15,22H16V23H15zM17,22H18V23H17zM19,22H20V23H19zM21,22H22V23H21zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM2,23H3V24H2zM4,23H5V24H4zM7,23H8V24H7zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM13,23H14V24H13zM17,23H18V24H17zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM2,24H3V25H2zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM22,24H23V25H22zM24,24H25V25H24zM27,24H28V25H27zM30,24H31V25H30zM31,24H32V25H31zM33,24H34V25H33zM2,25H3V26H2zM4,25H5V26H4zM6,25H7V26H6zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM14,25H15V26H14zM18,25H19V26H18zM23,25H24V26H23zM25,25H26V26H25zM27,25H28V26H27zM32,25H33V26H32zM34,25H35V26H34zM2,26H3V27H2zM4,26H5V27H4zM6,26H7V27H6zM8,26H9V27H8zM13,26H14V27H13zM14,26H15V27H14zM19,26H20V27H19zM21,26H22V27H21zM22,26H23V27H22zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM34,26H35V27H34zM10,27H11V28H10zM12,27H13V28H12zM15,27H16V28H15zM16,27H17V28H16zM18,27H19V28H18zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM32,27H33V28H32zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM12,28H13V29H12zM13,28H14V29H13zM17,28H18V29H17zM19,28H20V29H19zM20,28H21V29H20zM22,28H23V29H22zM23,28H24V29H23zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM11,29H12V30H11zM12,29H13V30H12zM14,29H15V30H14zM16,29H17V30H16zM18,29H19V30H18zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM10,30H11V31H10zM11,30H12V31H11zM15,30H16V31H15zM19,30H20V31H19zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM14,31H15V32H14zM16,31H17V32H16zM19,31H20V32H19zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM24,31H25V32H24zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM31,31H32V32H31zM33,31H34V32H33zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM13,32H14V33H13zM15,32H16V33H15zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM20,33H21V34H20zM21,33H22V34H21zM23,33H24V34H23zM24,33H25V34H24zM30,33H31V34H30zM31,33H32V34H31zM32,33H33V34H32zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM13,34H14V35H13zM19,34H20V35H19zM20,34H21V35H20zM24,34H25V35H24zM25,34H26V35H25zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -820,96 +413,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">본 자료는 환자 교육용 일반 정보이며 개별 진단·치료를 대신하지 않습니다 · 광교바른내과</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단과 치료는 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>
