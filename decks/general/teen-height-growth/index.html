@@ -20,325 +20,115 @@
 
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-
-  <style>
-    /* Local type-scale tokens — body text floor raised to >=0.82rem */
-    .deck { --fs-label: 0.82rem; --fs-body: 0.86rem; --fs-emph: 0.92rem; --fs-90: 0.9rem; --fs-92: 0.92rem; --fs-94: 0.94rem; --fs-95: 0.95rem; --fs-96: 0.96rem; --fs-97: 0.97rem; --fs-98: 0.98rem; --fs-foot: 12px; }
-    .slide__bg-num { display: none !important; }
-
-    /* ====== SLIDE 2 · TL;DR 3 hero stats ====== */
-    .pattern-stats3 { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; min-height: 0; justify-content: space-between; }
-    .stats3-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); align-items: center; }
-    .stats3-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); }
-    .stats3-cell__circle { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-canvas); text-align: center; box-shadow: 0 10px 20px rgba(0,51,102,0.16); }
-    .stats3-cell__circle--navy { background: linear-gradient(135deg, var(--color-navy), var(--color-navy-mid)); }
-    .stats3-cell__circle--steel { background: linear-gradient(135deg, var(--color-steel), var(--color-steel-deep)); }
-    .stats3-cell__circle--amber { background: linear-gradient(135deg, var(--color-navy-mid), var(--color-steel-deep)); }
-    .stats3-cell__num { font-size: 2.0rem; font-weight: var(--weight-black); line-height: 1.02; letter-spacing: var(--tracking-tight); }
-    .stats3-cell__num small { display: block; font-size: var(--fs-body); font-weight: var(--weight-540); margin-top: 6px; opacity: 0.92; }
-    .stats3-cell__label { font-size: var(--fs-emph); font-weight: var(--weight-540); color: var(--color-navy); text-align: center; max-width: 260px; line-height: var(--lh-snug); }
-    .stats3-note { padding: var(--space-3) var(--space-4); background: var(--color-canvas-warm); border-left: 4px solid var(--color-steel); border-radius: var(--radius-md); font-size: var(--fs-emph); color: var(--color-ink); line-height: var(--lh-relaxed); }
-
-    /* ====== SLIDE 3 · Anatomy split ====== */
-    .anatomy-split { display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-5); height: 100%; min-height: 0; }
-    .anatomy-visual { display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; }
-    .anatomy-visual .ai-visual { flex: 1; min-height: 0; }
-    .anatomy-cap { padding: var(--space-2) var(--space-3); background: var(--color-canvas-warm); border-left: 4px solid var(--color-navy); border-radius: var(--radius-md); font-size: var(--fs-label); line-height: var(--lh-snug); color: var(--color-ink); }
-    .anatomy-cap strong { color: var(--color-navy); }
-    .anatomy-side { display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; }
-    .anatomy-card { background: var(--color-canvas); border: 1px solid var(--color-border); border-left: 4px solid var(--color-steel); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); }
-    .anatomy-card__when { font-size: var(--fs-label); font-weight: var(--weight-bold); color: var(--color-steel-deep); letter-spacing: 0.06em; text-transform: uppercase; }
-    .anatomy-card__title { font-size: 1.02rem; font-weight: var(--weight-bold); color: var(--color-navy); margin-top: 2px; }
-    .anatomy-card__body { font-size: var(--fs-label); color: var(--color-ink); line-height: var(--lh-snug); margin-top: 4px; }
-
-    /* ====== SLIDE 4 · 5 nutrient table ====== */
-    .pattern-table { display: flex; flex-direction: column; gap: 6px; height: 100%; }
-    .ntbl-row { display: grid; grid-template-columns: 1.1fr 1.4fr 1.4fr 0.9fr 0.9fr; gap: var(--space-3); align-items: center; padding: 8px var(--space-3); background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
-    .ntbl-row--head { background: var(--color-navy); color: var(--color-canvas); border-color: var(--color-navy); font-weight: var(--weight-bold); }
-    .ntbl-row--top { background: var(--color-success-bg); border-color: var(--color-success); }
-    .ntbl__name { font-weight: var(--weight-bold); color: var(--color-navy); font-size: 1.0rem; }
-    .ntbl-row--head .ntbl__name { color: var(--color-canvas); font-size: var(--fs-body); }
-    .ntbl-row--top .ntbl__name { color: var(--color-success); }
-    .ntbl__note { font-size: var(--fs-label); color: var(--color-ink); line-height: var(--lh-snug); }
-    .ntbl-row--head .ntbl__note { color: var(--color-canvas); opacity: 0.92; }
-    .ntbl__dose { font-size: var(--fs-label); font-weight: var(--weight-540); color: var(--color-navy); text-align: center; }
-    .ntbl-row--head .ntbl__dose { color: var(--color-canvas); }
-    .ntbl__stars { color: var(--color-steel-deep); letter-spacing: 0.08em; text-align: center; font-size: 1.0em; }
-
-    /* ====== SLIDE 5 · 1st priority — VitD + Calcium ====== */
-    .priority-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); height: 100%; min-height: 0; }
-    .priority-card { background: var(--color-canvas); border: 1px solid var(--color-border); border-top: 5px solid var(--color-steel); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; overflow: hidden; }
-    .priority-card--vitd { border-top-color: var(--color-steel-deep); }
-    .priority-card--ca { border-top-color: var(--color-navy); }
-    .priority-card__rank { display: inline-block; font-size: var(--fs-label); font-weight: var(--weight-bold); color: var(--color-canvas); background: var(--color-navy); padding: 3px 8px; border-radius: 999px; letter-spacing: 0.06em; align-self: flex-start; }
-    .priority-card__title { font-size: 1.3rem; font-weight: var(--weight-black); color: var(--color-navy); letter-spacing: var(--tracking-tight); line-height: 1.05; }
-    .priority-card__hero { display: flex; align-items: baseline; gap: 8px; padding: 6px var(--space-3); background: var(--color-canvas-warm); border-radius: var(--radius-md); }
-    .priority-card__hero-num { font-size: 1.8rem; font-weight: var(--weight-black); color: var(--color-steel-deep); letter-spacing: var(--tracking-tight); line-height: 1; }
-    .priority-card--ca .priority-card__hero-num { color: var(--color-navy); }
-    .priority-card__hero-lbl { font-size: var(--fs-label); color: var(--color-ink-soft); font-weight: var(--weight-540); }
-    .priority-list { list-style: none; padding: 0; margin: 0; }
-    .priority-list li { padding: 5px 0; border-bottom: 1px solid var(--color-border-soft); font-size: var(--fs-body); line-height: var(--lh-snug); color: var(--color-ink); }
-    .priority-list li:last-child { border-bottom: 0; }
-    .priority-list li strong { color: var(--color-navy); }
-
-    /* ====== SLIDE 6 · 2nd priority — Zinc + HT042 ====== */
-    .pattern-grid { display: grid; gap: var(--space-4); height: 100%; }
-    .pattern-grid--2 { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
-    .tile { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
-    .tile--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .tile--steel .tile__title { color: var(--color-steel-deep); }
-    .tile__index { font-size: var(--fs-label); font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.06em; text-transform: uppercase; }
-    .tile__title { font-size: 1.45rem; font-weight: var(--weight-black); color: var(--color-navy); line-height: var(--lh-snug); letter-spacing: var(--tracking-tight); }
-    .tile__body { font-size: var(--text-body); color: var(--color-ink); line-height: var(--lh-relaxed); }
-    .tile__body strong { color: var(--color-navy); }
-    .tile__hero { font-size: 1.5rem; font-weight: var(--weight-black); color: var(--color-steel-deep); letter-spacing: var(--tracking-tight); }
-    .tile__hero small { font-size: var(--fs-body); font-weight: var(--weight-540); color: var(--color-ink-soft); margin-left: 6px; }
-    .stars { color: var(--color-steel-deep); letter-spacing: 0.12em; font-size: 1.1em; }
-
-    /* ====== SLIDE 7 · Diet — food plate visualization ====== */
-    .diet-split { display: grid; grid-template-columns: 1fr 1.05fr; gap: var(--space-4); height: 100%; min-height: 0; align-items: stretch; }
-    .diet-visual { display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; }
-    .diet-visual .ai-visual { flex: 1; min-height: 0; }
-    .diet-side { display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; }
-    .diet-headline { padding: 6px var(--space-3); background: var(--color-canvas-warm); border-left: 4px solid var(--color-steel); border-radius: var(--radius-md); font-size: var(--fs-body); line-height: var(--lh-relaxed); color: var(--color-ink); font-weight: var(--weight-540); }
-    .diet-headline strong { color: var(--color-steel-deep); }
-    .diet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .diet-item { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 6px var(--space-3); display: flex; flex-direction: column; gap: 2px; }
-    .diet-item__name { font-size: var(--fs-body); font-weight: var(--weight-bold); color: var(--color-navy); }
-    .diet-item__why { font-size: var(--fs-label); color: var(--color-ink-soft); line-height: var(--lh-snug); }
-    .diet-warn { padding: 6px var(--space-3); background: var(--color-danger-bg); border-left: 4px solid var(--color-danger); border-radius: var(--radius-md); font-size: var(--fs-label); color: var(--color-ink); line-height: var(--lh-snug); }
-    .diet-warn strong { color: var(--color-danger); }
-
-    /* ====== SLIDE 8 · Sleep — GH peak graph ====== */
-    .sleep-split { display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-4); height: 100%; min-height: 0; }
-    .sleep-visual { display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; }
-    .sleep-visual .ai-visual { flex: 1; min-height: 0; }
-    .sleep-side { display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; justify-content: center; }
-    .sleep-hero { padding: var(--space-3) var(--space-4); background: linear-gradient(135deg, var(--color-navy), var(--color-navy-mid)); color: var(--color-canvas); border-radius: var(--radius-md); }
-    .sleep-hero__num { font-size: 1.8rem; font-weight: var(--weight-black); letter-spacing: var(--tracking-tight); line-height: 1; }
-    .sleep-hero__num small { font-size: var(--fs-body); font-weight: var(--weight-540); margin-left: 6px; opacity: 0.85; }
-    .sleep-hero__lbl { font-size: var(--fs-body); margin-top: 4px; font-weight: var(--weight-540); opacity: 0.92; }
-    .sleep-rules { display: flex; flex-direction: column; gap: 6px; }
-    .sleep-rule { display: flex; gap: var(--space-2); padding: 6px var(--space-3); background: var(--color-canvas); border: 1px solid var(--color-border); border-left: 4px solid var(--color-steel); border-radius: var(--radius-md); align-items: center; }
-    .sleep-rule__icon { font-size: 1.1rem; }
-    .sleep-rule__text { font-size: var(--fs-label); color: var(--color-ink); line-height: var(--lh-snug); }
-    .sleep-rule__text strong { color: var(--color-navy); }
-
-    /* ====== SLIDE 9 · Outdoor activity + jumping sports ====== */
-    .sport-split { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: var(--space-5); height: 100%; }
-    .sport-visual { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; }
-    .sport-visual .ai-visual { flex: 1; min-height: 0; }
-    .sport-side { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; }
-    .sport-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-3); }
-    .sport-card { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); align-items: stretch; }
-    .sport-card__hero { aspect-ratio: 1 / 1; background: linear-gradient(135deg, var(--color-steel), var(--color-steel-deep)); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; color: var(--color-canvas); max-height: 70px; }
-    .sport-card--alt .sport-card__hero { background: linear-gradient(135deg, var(--color-navy), var(--color-navy-mid)); }
-    .sport-card__name { font-size: 1.02rem; font-weight: var(--weight-bold); color: var(--color-navy); text-align: center; }
-    .sport-card__why { font-size: var(--fs-label); color: var(--color-ink); line-height: var(--lh-snug); }
-    .sport-card__why strong { color: var(--color-navy); }
-    .sport-banner { padding: var(--space-3) var(--space-4); background: var(--color-success-bg); border-left: 4px solid var(--color-success); border-radius: var(--radius-md); font-size: var(--fs-body); color: var(--color-ink); line-height: var(--lh-relaxed); }
-    .sport-banner strong { color: var(--color-success); }
-
-    /* ====== SLIDE 10 · 6 common mistakes ====== */
-    .mistakes-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-auto-rows: 1fr; gap: var(--space-3); height: 100%; }
-    .mistake { background: var(--color-canvas); border: 1px solid var(--color-border); border-left: 4px solid var(--color-warning); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
-    .mistake__num { font-size: 1.6rem; font-weight: var(--weight-black); color: var(--color-warning); line-height: 1; }
-    .mistake__title { font-size: 1.05rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: var(--lh-snug); }
-    .mistake__body { font-size: var(--fs-emph); color: var(--color-ink); line-height: var(--lh-snug); }
-    .mistake__body strong { color: var(--color-warning); }
-
-    /* ====== SLIDE 11 · 6-step priority ====== */
-    .pattern-timeline { display: grid; grid-template-columns: repeat(6, 1fr); --timeline-gap: var(--space-3); height: 100%; align-items: stretch; }
-    .step-card { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-3); display: flex; flex-direction: column; gap: 6px; position: relative; }
-    .step-card--alt { background: linear-gradient(180deg, var(--color-canvas-warm) 0%, var(--color-canvas) 60%); border-color: var(--color-steel); }
-    .step-card__num { font-size: 1.7rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; }
-    .step-card--alt .step-card__num { color: var(--color-navy); }
-    .step-card__when { font-size: var(--fs-label); font-weight: var(--weight-bold); color: var(--color-navy); letter-spacing: 0.06em; text-transform: uppercase; }
-    .step-card__title { font-size: 1.02rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: var(--lh-snug); }
-    .step-card__body { font-size: var(--fs-body); color: var(--color-ink); line-height: var(--lh-snug); }
-    .step-card__body strong { color: var(--color-navy); }
-
-    /* ====== SLIDE 12 · TAKE-HOME closing ====== */
-    .closing-split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: var(--space-5); height: 100%; min-height: 0; }
-    .closing-left { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; }
-    .closing-right { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; }
-    .takehome-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
-    .takehome-card { background: var(--color-navy); color: var(--color-canvas); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); display: flex; gap: var(--space-3); align-items: flex-start; }
-    .takehome-card__num { font-size: 1.5rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; flex-shrink: 0; min-width: 28px; }
-    .takehome-card__text { font-size: var(--fs-emph); line-height: var(--lh-snug); font-weight: var(--weight-540); }
-    .takehome-card__text strong { color: var(--color-steel); }
-
-    .closing-motivation { flex: 1; min-height: 0; }
-    .closing-motivation .ai-visual { width: 100%; height: 100%; }
-    .closing-grid { display: grid; grid-template-columns: 1fr 0.55fr; gap: var(--space-3); align-items: stretch; }
-    .closing-grid__contact { background: linear-gradient(135deg, var(--color-navy), var(--color-navy-mid)); color: var(--color-canvas); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-    .closing-grid__contact-label { font-size: var(--fs-label); opacity: 0.75; letter-spacing: 0.12em; text-transform: uppercase; }
-    .closing-grid__contact-name { font-size: 1.2rem; font-weight: var(--weight-black); letter-spacing: var(--tracking-tight); }
-    .closing-grid__contact-meta { font-size: var(--fs-label); opacity: 0.9; margin-top: 2px; line-height: var(--lh-snug); }
-    .qr-block { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: var(--space-2); }
-    .qr-block__code svg { width: 28mm; height: 28mm; display: block; }
-    .qr-block__caption { font-size: var(--fs-label); color: var(--color-ink-soft); text-align: center; }
-
-    .ai-visual { width: 100%; height: 100%; background: var(--color-canvas); border-radius: var(--radius-lg); overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 0; border: 1px solid var(--color-border); position: relative; }
-    .ai-visual img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .ai-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--color-slate); font-size: var(--fs-emph); text-align: center; padding: var(--space-5); line-height: var(--lh-snug); background: repeating-linear-gradient(45deg, var(--color-canvas-warm), var(--color-canvas-warm) 12px, var(--color-canvas) 12px, var(--color-canvas) 24px); }
-
-    .slide--closing .slide__body { display: flex; flex-direction: column; gap: var(--space-4); }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: var(--fs-95); line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: var(--fs-94); line-height: 1.35; }
-    .split__note { font-size: var(--fs-95); line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: var(--fs-94); line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: var(--fs-95); line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: var(--fs-97); line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: var(--fs-98); line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: var(--fs-98); line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: var(--fs-94); }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: var(--fs-95); }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: var(--fs-98); line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: var(--fs-foot); }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: var(--fs-96); line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: var(--fs-95); line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: var(--fs-92); line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: var(--fs-94); line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: var(--fs-94); line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: var(--fs-95); line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: var(--fs-95); line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: var(--fs-90); line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: var(--fs-96); line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: var(--fs-94); line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: var(--fs-96); line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: var(--fs-94); line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(5) .priority-card { height: 100%; justify-content: space-between; }
-    .slide:nth-of-type(5) .priority-list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .slide:nth-of-type(6) .pattern-grid { height: 100%; align-items: stretch; }
-    .slide:nth-of-type(6) .tile { min-height: 340px; justify-content: space-between; }
-    .slide:nth-of-type(6) .tile__body { margin-top: auto; }
-    .slide:nth-of-type(7) .diet-side { height: 100%; display: flex; flex-direction: column; }
-    .slide:nth-of-type(7) .diet-grid { flex: 1; align-content: space-between; }
-    .slide:nth-of-type(7) .diet-warn { margin-top: auto; }
-    .slide:nth-of-type(9) .sport-side { height: 100%; display: flex; flex-direction: column; }
-    .slide:nth-of-type(9) .sport-grid { flex: 1; align-content: space-between; }
-    .slide:nth-of-type(9) .sport-banner { margin-top: auto; }
-    .slide:nth-of-type(10) .mistake { justify-content: space-between; }
-    .slide:nth-of-type(11) .step-card { justify-content: center; }
-    /* fix: restore closing motivation illustration squeezed by 2026-06 layout-sweep */
-    .slide--closing .closing-grid { height: auto; align-items: stretch; }
-    .slide--closing .closing-grid > .qr-block { height: auto; }
-    .slide--closing .closing-motivation { flex: 1 1 0; min-height: 0; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3A-redesign 2026-09-27 (원장님 49028) — v1 12장(작은 글자·빈칸·그림칸 비율 불일치)을 v2 로.
+    결론 카드·수치 기둥·글+그림·표·대비 2단·3x2 카드·가로 단계를 섞고, 그림칸은 원본 비율 그대로. */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto;font-size:15px}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:10px}
+ .q-text .v2-body{font-size:16px;line-height:1.6}
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none;border-radius:12px}
+ .q-fig::before{content:none}
+ .q-fig .v2-fig__img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+ .q-note{position:absolute;margin:0;font-size:15px;line-height:1.6;color:var(--v2-body);word-break:keep-all}
+ .q-note b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:28px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+ .q-card__top .v2-chip{width:56px;height:56px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:34px;height:34px}
+ .q-card__n{font-size:56px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:23px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:16px}
+ .q-card .v2-body{font-size:18px;line-height:1.6}
+ .q-card__why{margin-top:12px;font-size:15px;line-height:1.55;color:var(--v2-muted);word-break:keep-all}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 수치 기둥 */
+ .q-stat{display:flex;align-items:center;gap:20px;padding:18px 24px}
+ .q-stat__num{flex:none;min-width:150px;font-size:48px;font-weight:800;color:var(--v2-navy);letter-spacing:-1.5px;line-height:1}
+ .q-stat__num span{font-size:22px;font-weight:700;color:var(--v2-accent);margin-left:2px}
+ .v2-panel--accent .q-stat__num{color:var(--v2-accent)}
+ .v2-panel--accent .q-stat__num span{color:var(--v2-navy)}
+ .q-stat__cap{font-size:17px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ /* 표 */
+ .q-table thead th{font-size:16px}
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:17px;height:68px}
+ /* 대비 2단 — 비타민D·칼슘은 맞서는 게 아니라 함께 → 가운데 표식 '+' */
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:18px;padding:16px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:18px;line-height:1.55;padding:14px 0 14px 22px}
+ .v2-vs__list li::before{top:23px}
+ .q-li__k{display:inline-block;min-width:62px;margin-right:6px;font-size:16px;font-weight:700;color:var(--rule)}
+ .q-nw{white-space:nowrap}
+ .q-plus .v2-vs__list li{font-size:17px;padding:12px 0 12px 22px;display:grid;grid-template-columns:62px 1fr;column-gap:8px}
+ .q-plus .q-li__k{min-width:0;margin:0}
+ .q-plus .v2-vs__mid::after{content:"+";font-size:26px;font-weight:700}
+ /* 식판 목록 */
+ .q-foodp{display:flex;flex-direction:column}
+ .q-foodp .v2-block{height:100%}
+ .q-food{height:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:14px 16px}
+ .q-food__it{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:12px 14px;border-radius:8px;background:var(--v2-chip-navy);border-left:4px solid var(--v2-accent)}
+ .q-food__it b{font-size:17px}
+ .q-food__it span{font-size:16px;line-height:1.5}
+ /* 아연·HT042 */
+ .q-opt{display:flex;flex-direction:column}
+ .q-opt .v2-head b{font-size:22px}
+ .q-opt__lead{font-size:19px;font-weight:700;color:var(--rule);margin:0 0 10px}
+ .q-opt__rows{display:flex;flex-direction:column}
+ .q-opt__row{display:grid;grid-template-columns:76px 1fr;gap:12px;padding:9px 0;border-top:1px dashed var(--v2-line)}
+ .q-opt__row b{font-size:16px}
+ .q-opt__row span{font-size:16px;line-height:1.55}
+ .q-opt__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 수면 */
+ .q-sleep{display:flex;flex-direction:column}
+ .q-sleep__stat{display:flex;align-items:center;gap:20px;padding:4px 0 18px;border-bottom:1px solid var(--v2-line)}
+ .q-sleep__stat .q-stat__num{min-width:0}
+ .q-steps{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}
+ .q-step{display:flex;align-items:flex-start;gap:12px;font-size:17px;line-height:1.55;color:var(--v2-ink)}
+ .q-step i{flex:none;width:28px;height:28px;margin-top:1px;border-radius:8px;background:var(--v2-chip-accent);color:var(--v2-navy);font-size:15px;font-weight:800;font-style:normal;display:flex;align-items:center;justify-content:center}
+ .q-step b{color:var(--v2-navy)}
+ /* 3x2 실수 카드 */
+ .q-six{padding:20px 22px;display:flex;flex-direction:column;justify-content:center}
+ .q-six .v2-head{margin-bottom:8px}
+ .q-six .v2-head{margin-bottom:10px}
+ .q-six .v2-head b{font-size:20px}
+ .q-six .v2-body{font-size:17px;line-height:1.6}
+ .q-fix{margin-top:10px;padding:6px 12px;border-radius:6px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;word-break:keep-all}
+ .q-n{display:inline-block;margin-right:8px;color:var(--v2-accent);font-weight:800}
+ /* 가로 단계 */
+ .q-tl{display:flex;flex-direction:column;padding:24px 18px}
+ .q-tl__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-tl__n{font-size:44px;font-weight:800;line-height:1;color:var(--rule)}
+ .q-why{padding:14px 24px;display:flex;flex-direction:column;justify-content:center}
+ .q-why .v2-head{margin-bottom:8px}
+ .q-why .v2-body{font-size:17px}
+ .q-tl__h{font-size:20px;font-weight:700;color:var(--v2-navy);line-height:1.35;margin-bottom:10px;word-break:keep-all}
+ .q-tl .v2-body{font-size:17px;line-height:1.6}
+ .q-tl__tag{padding:5px 12px;border-radius:999px;background:var(--chip);color:var(--v2-navy);font-size:15px;font-weight:700}
+ /* 클로징 */
+ .q-close{display:flex;flex-direction:column}
+ .q-close .v2-block{height:100%}
+ .q-take{height:100%;display:flex;flex-direction:column;justify-content:space-between}
+ .q-take__it{display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:8px;background:var(--v2-chip-navy)}
+ .q-take__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-take__it b{display:block;font-size:18px;color:var(--v2-navy);margin-bottom:2px}
+ .q-take__it span{font-size:16px;line-height:1.55}
+ .q-qr{padding:14px;display:flex;align-items:center;justify-content:center}
+ .q-qr .qr-block{padding:8px 16px;border:0;background:transparent;gap:10px}
+ .q-qr .qr-block__caption{font-size:15px}
+</style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ===================== SLIDE 01 · COVER ===================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>TEEN HEALTH</strong> · GROWTH · 중학생 가이드</div>
@@ -349,565 +139,335 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">근거 — KNHANES (국민건강영양조사) · 한국식약처(MFDS) HT042 인증 · 대한소아내분비학회 · WHO 청소년 성장기준</span>
-      <span class="slide__page"><span class="stars">★★★★☆</span></span>
+      <span class="slide__page">01 / 13</span>
     </footer>
   </section>
-
-  <!-- ===================== SLIDE 02 · TL;DR — 3 hero stats ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>왜 지금이 결정적인가</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">3가지 숫자로 보는 한국 청소년</h2>
-      <p class="slide__subtitle">키는 유전이 60–80%, 영양·환경이 32%. 그런데 한국 청소년 대부분이 핵심 영양소 결핍 상태로 사춘기를 통과한다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--amber">
-              <div class="stats3-cell__num">98.9<small>% 비타민D 결핍</small></div>
-            </div>
-            <div class="stats3-cell__label">한국 청소년 100명 중 99명<br>비타민D 부족·결핍 (KNHANES)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">90<small>% 칼슘 부족</small></div>
-            </div>
-            <div class="stats3-cell__label">10명 중 9명이<br>권장 칼슘 미만 섭취</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">32<small>% 영양·환경</small></div>
-            </div>
-            <div class="stats3-cell__label">유전 60–80% 외에<br>바꿀 수 있는 변수 32%</div>
-          </div>
-        </div>
-        <div class="stats3-note">
-          <strong>핵심 메시지 — </strong>유전은 못 바꾸지만 <em>나머지 1/3</em>은 100% 바꿀 수 있다. 사춘기 성장급등기(중1~중3)는 평생 키의 <strong>약 20–25 cm</strong>가 결정되는 시기. 지금 비타민D·칼슘·수면·운동을 잡으면 유전 키(MPH·중간부모키)의 <strong>상한선까지</strong> 도달 가능. 놓치면 다시는 안 온다.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">KNHANES 2020–2023 · 대한소아내분비학회 성장 가이드 · WHO Growth Reference</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 03 · ANATOMY — Growth spurt ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>성장급등기 해부학</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">키가 자라는 시기 — 성장판이 열려 있는 동안</h2>
-      <p class="slide__subtitle">남학생은 평균 13세 전후 사춘기 성장급등(peak height velocity) 시작. 1년에 8–12 cm 자라는 '인생 최고 속도' 구간이 약 2년간 지속.</p>
-    </div>
-    <div class="slide__body">
-      <div class="anatomy-split">
-        <div class="anatomy-visual">
-          <figure class="ai-visual">
-            <img src="../../../shared/assets/generated/teen-growth-anatomy.png" alt="사춘기 남학생 + 성장판 anatomy + femur 단면" style="width:100%;height:100%;object-fit:contain;">
-          </figure>
-          <div class="anatomy-cap">
-            <strong>성장판(epiphyseal plate) — </strong>긴뼈 끝의 연골판. 성장호르몬·IGF-1이 새 뼈를 만들고, 사춘기 후반 성호르몬으로 <em>점차 닫히며</em> 키가 멈춘다. 여학생은 <strong>초경 후</strong>에도 평균 <strong>2-3년 잔여 성장</strong>이 남는다 — 정체 시 주치의 상의.
-          </div>
-        </div>
-        <div class="anatomy-side">
-          <div class="anatomy-card">
-            <div class="anatomy-card__when">STAGE 1 · 10–12세</div>
-            <div class="anatomy-card__title">사춘기 직전 (Tanner 1–2)</div>
-            <p class="anatomy-card__body">연 4–6 cm. 비타민D·칼슘 저장기. 성장판 개방, 호르몬 변화 시작.</p>
-          </div>
-          <div class="anatomy-card" style="border-left-color: var(--color-steel-deep);">
-            <div class="anatomy-card__when" style="color:var(--color-steel-deep);">STAGE 2 · 13–15세 ★ 결정적</div>
-            <div class="anatomy-card__title">성장급등기 (Tanner 3–4)</div>
-            <p class="anatomy-card__body">연 <strong>8–12 cm</strong>. 평생 키의 20–25% 결정. <em>지금이 골든 타임</em>. 영양·수면·운동 모두 효과 극대화.</p>
-          </div>
-          <div class="anatomy-card">
-            <div class="anatomy-card__when">STAGE 3 · 16–18세</div>
-            <div class="anatomy-card__title">감속기 (Tanner 5)</div>
-            <p class="anatomy-card__body">연 2–4 cm. 성장판 닫힘 시작 → 이후 키 성장 한계. 영양·운동 효과 급감.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">대한소아내분비학회 · Tanner Stages · Peak Height Velocity 표준</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 04 · 5 nutrient comparison table ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>영양제 5종 한눈에</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">키 성장 영양제 5종 비교</h2>
-      <p class="slide__subtitle">기전·근거·권장 용량을 한눈에. 별점은 한국 청소년 결핍 정도와 임상 근거를 종합한 우선순위.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-table">
-        <div class="ntbl-row ntbl-row--head">
-          <div class="ntbl__name">성분</div>
-          <div class="ntbl__note">기전 (어떻게 도와주나)</div>
-          <div class="ntbl__note">근거 (왜 효과가 있나)</div>
-          <div class="ntbl__dose">권장 용량</div>
-          <div class="ntbl__dose">★ 우선순위</div>
-        </div>
-        <div class="ntbl-row ntbl-row--top">
-          <div class="ntbl__name">☀️ 비타민 D</div>
-          <div class="ntbl__note">칼슘 흡수 ↑ + 성장판 연골세포 분화 촉진</div>
-          <div class="ntbl__note">한국 청소년 98.9% 결핍 (KNHANES). 결핍 시 구루병·키 손실 명확</div>
-          <div class="ntbl__dose">600–1,000 IU/일</div>
-          <div class="ntbl__stars">★★★★☆</div>
-        </div>
-        <div class="ntbl-row ntbl-row--top">
-          <div class="ntbl__name">🦴 칼슘 (Ca)</div>
-          <div class="ntbl__note">뼈 구성 성분. 골밀도·골량 직접 결정</div>
-          <div class="ntbl__note">10명 중 9명 권장 미달. 사춘기에 평생 골량 50% 축적</div>
-          <div class="ntbl__dose">500–600 mg 보충 (총 1,000–1,200)</div>
-          <div class="ntbl__stars">★★★★☆</div>
-        </div>
-        <div class="ntbl-row">
-          <div class="ntbl__name">🧬 아연 (Zn)</div>
-          <div class="ntbl__note">성장호르몬(GH) 수용체·IGF-1 합성에 필수</div>
-          <div class="ntbl__note">메타분석에서 키·체중 효과 확인. 편식 청소년에 특히 도움</div>
-          <div class="ntbl__dose">5–10 mg/일</div>
-          <div class="ntbl__stars">★★★☆☆</div>
-        </div>
-        <div class="ntbl-row">
-          <div class="ntbl__name">🌿 HT042</div>
-          <div class="ntbl__note">황기+개나리+가시오갈피 복합. IGF-1 상향</div>
-          <div class="ntbl__note">한국 식약처(MFDS) <strong>키 성장 기능성 유일 인증</strong></div>
-          <div class="ntbl__dose">제품 라벨 기준</div>
-          <div class="ntbl__stars">★★★☆☆</div>
-        </div>
-        <div class="ntbl-row">
-          <div class="ntbl__name">💎 마그네슘 (Mg)</div>
-          <div class="ntbl__note">칼슘 대사 보조 · 골밀도 유지</div>
-          <div class="ntbl__note">단독 효과 약함. 비타민D·칼슘 보조 역할</div>
-          <div class="ntbl__dose">200–300 mg/일</div>
-          <div class="ntbl__stars">★★☆☆☆</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">KNHANES · 한국식약처 건강기능식품 인증 · Cochrane 아연 메타분석 · 대한영양학회 권장량</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 05 · 1st priority — VitD + Calcium ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>1순위 보충</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">먼저 챙겨야 할 두 가지 — 비타민D + 칼슘</h2>
-      <p class="slide__subtitle">한국 청소년 대다수가 결핍 상태. 다른 영양제보다 <em>이 둘이 우선</em>. 함께 먹어야 흡수율 극대화.</p>
-    </div>
-    <div class="slide__body">
-      <div class="priority-split">
-        <div class="priority-card priority-card--vitd">
-          <span class="priority-card__rank">★ PRIORITY 1</span>
-          <h3 class="priority-card__title">☀️ 비타민 D</h3>
-          <div class="priority-card__hero">
-            <span class="priority-card__hero-num">98.9%</span>
-            <span class="priority-card__hero-lbl">한국 청소년 결핍률 (KNHANES)</span>
-          </div>
-          <ul class="priority-list">
-            <li><strong>왜 필요한가</strong> — 칼슘이 장에서 흡수되려면 비타민D가 있어야 함. 비타민D 없으면 칼슘 먹어도 소변으로 빠짐</li>
-            <li><strong>성장판 작용</strong> — 연골세포 분화·증식 직접 자극</li>
-            <li><strong>용량</strong> — 하루 <strong>600–1,000 IU</strong> (D3 형태 권장)</li>
-            <li><strong>먹는 법</strong> — 식사 직후 (지용성 → 기름과 함께 흡수 ↑)</li>
-            <li><strong>혈액검사</strong> — 25(OH)D 30 ng/mL 이상 목표</li>
-          </ul>
-        </div>
-        <div class="priority-card priority-card--ca">
-          <span class="priority-card__rank">★ PRIORITY 2</span>
-          <h3 class="priority-card__title">🦴 칼슘</h3>
-          <div class="priority-card__hero">
-            <span class="priority-card__hero-num">90%</span>
-            <span class="priority-card__hero-lbl">한국 청소년 권장량 미달</span>
-          </div>
-          <ul class="priority-list">
-            <li><strong>왜 필요한가</strong> — 뼈의 주성분. <em>평생 골량의 50%가 사춘기에 축적</em></li>
-            <li><strong>성장판 작용</strong> — 새 뼈 형성의 원재료</li>
-            <li><strong>총 권장</strong> — 하루 <strong>1,000–1,200 mg</strong>. 음식으로 600 + 보충제 500–600</li>
-            <li><strong>먹는 법</strong> — 한 번에 500 mg 이하로 나눠서 (한 번에 흡수 한도)</li>
-            <li><strong>주의</strong> — 시금치·콜라와 함께 X (흡수 방해)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">KNHANES 2020–2023 · 대한영양학회 한국인 영양섭취기준 · 미국 IOM · 대한소아과학회</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 06 · 2nd priority — Zinc + HT042 ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>2순위 보충 (선택적)</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">선택적으로 — 아연 + HT042</h2>
-      <p class="slide__subtitle">편식이 있거나(아연) 경증 저신장이 걱정될 때(HT042) 추가 검토. 1순위 부족한데 2순위만 챙기는 건 순서 잘못된 것.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--steel">
-          <div class="tile__index">PRIORITY 2 · 01 · 아연</div>
-          <h3 class="tile__title">🧬 아연 (Zinc) <span class="stars" style="font-size:var(--fs-label);">★★★☆☆</span></h3>
-          <p class="tile__hero">5–10 <small>mg/일</small></p>
-          <p class="tile__body">
-            <strong>기전 — </strong>성장호르몬(GH) 수용체 활성 + IGF-1 합성에 필수. 결핍 시 GH 신호 전달 약해짐.<br><br>
-            <strong>대상 — </strong>편식·소식 청소년. 채식 위주, 굴·고기 적게 먹는 경우. 메타분석에서 키 0.5–1 cm/년 추가 효과.<br><br>
-            <strong>주의 — </strong>30 mg/일 초과 시 구리 결핍 위험. 종합비타민 안 아연 양 확인.
-          </p>
-        </div>
-        <div class="tile tile--steel">
-          <div class="tile__index">PRIORITY 2 · 02 · HT042</div>
-          <h3 class="tile__title">🌿 HT042 <span class="stars" style="font-size:var(--fs-label);">★★★☆☆</span></h3>
-          <p class="tile__hero">MFDS <small>인증 키 성장 기능성</small></p>
-          <p class="tile__body">
-            <strong>구성 — </strong>황기 + 개나리 + 가시오갈피 복합 추출. 한국 <em>유일</em> 식약처 인증 키 성장 기능성 원료.<br><br>
-            <strong>기전 — </strong>임상에서 IGF-1 (성장 매개 호르몬) 상향 확인. 키 증가 효과 데이터 보고.<br><br>
-            <strong>대상 — </strong>경증 저신장(또래 25 percentile 미만), 12주 이상 복용 시 임상 효과. 1순위(비타민D·칼슘) 부족 보충 후에 검토.
-          </p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">한국식약처(MFDS) 건강기능식품 인증 · Cochrane Zinc Supplementation Meta-analysis · 대한가정의학회</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 07 · DIET — Food plate (more important than supplements!) ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>식이 — 영양제보다 중요</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진짜는 식판 위에 있다 — 단백질 파우더 X</h2>
-      <p class="slide__subtitle">영양제는 부족분 채우는 보조. 진짜 키 결정은 매일 식판에서. 달걀·고기·우유·콩으로 시작.</p>
-    </div>
-    <div class="slide__body">
-      <div class="diet-split">
-        <div class="diet-visual">
-          <figure class="ai-visual">
-            <img src="../../../shared/assets/generated/teen-growth-foodplate.png" alt="달걀·살코기·콩·채소 식판 + 우유·치즈·연어·호두" style="width:100%;height:100%;object-fit:contain;">
-          </figure>
-        </div>
-        <div class="diet-side">
-          <div class="diet-headline">
-            <strong>1순위는 단백질·칼슘 — 하루 단백질 1.0-1.2g/kg.</strong> 매일 달걀 2개 + 우유 2잔 + 살코기 100 g + 콩·두부 한 끼면 충분, 영양제 절반은 불필요.
-          </div>
-          <div class="diet-grid">
-            <div class="diet-item">
-              <div class="diet-item__name">🥚 달걀 (매일 2개)</div>
-              <div class="diet-item__why">완전 단백질 + 비타민D + 콜린. 흰자·노른자 모두</div>
-            </div>
-            <div class="diet-item">
-              <div class="diet-item__name">🥩 살코기 (매일 100 g)</div>
-              <div class="diet-item__why">단백질 + 철분 + 아연. 닭가슴살·소고기 우둔살</div>
-            </div>
-            <div class="diet-item">
-              <div class="diet-item__name">🥛 우유·치즈 (2잔 분량)</div>
-              <div class="diet-item__why">칼슘 + 비타민D 강화 제품 권장</div>
-            </div>
-            <div class="diet-item">
-              <div class="diet-item__name">🌱 콩·두부 (매끼 1회)</div>
-              <div class="diet-item__why">식물성 단백질 + 마그네슘. 검은콩·두유 OK</div>
-            </div>
-            <div class="diet-item">
-              <div class="diet-item__name">🐟 등푸른생선 (주 2회)</div>
-              <div class="diet-item__why">비타민D + 오메가-3. 고등어·연어</div>
-            </div>
-            <div class="diet-item">
-              <div class="diet-item__name">🥦 녹색채소 (매끼 1회)</div>
-              <div class="diet-item__why">비타민K + 마그네슘. 시금치는 칼슘과 따로</div>
-            </div>
-          </div>
-          <div class="diet-warn">
-            <strong>피할 것 — </strong>탄산음료(콜라 — 인산이 칼슘 배출), 과한 카페인(에너지드링크), 짠 음식(나트륨 → 칼슘 손실). 단백질 파우더는 식사 충분하면 불필요.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">대한영양학회 청소년 영양섭취기준 · KNHANES 영양 분석 · WHO Child Growth Standards</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 08 · SLEEP — GH peak ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>수면이 1순위인 이유</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">성장호르몬은 밤 10시–12시에 폭발한다</h2>
-      <p class="slide__subtitle">영양제 다 먹어도 늦게 자면 효과 절반 이하. 잠든 후 깊은 수면(N3) 단계에서 성장호르몬(GH) 분비 피크.</p>
-    </div>
-    <div class="slide__body">
-      <div class="sleep-split">
-        <div class="sleep-visual">
-          <figure class="ai-visual">
-            <img src="../../../shared/assets/generated/teen-growth-gh-curve.png" alt="GH 분비 그래프 — 밤 10-12시 피크" style="width:100%;height:100%;object-fit:contain;">
-          </figure>
-        </div>
-        <div class="sleep-side">
-          <div class="sleep-hero">
-            <div class="sleep-hero__num">8–10<small>시간</small></div>
-            <div class="sleep-hero__lbl">청소년 권장 수면 8-10시간. 11시 이전 취침 필수.</div>
-          </div>
-          <div class="sleep-rules">
-            <div class="sleep-rule">
-              <span class="sleep-rule__icon">🌙</span>
-              <span class="sleep-rule__text"><strong>밤 10시~12시</strong> — GH 분비 피크. 이 시간에 깊이 자고 있어야 함</span>
-            </div>
-            <div class="sleep-rule">
-              <span class="sleep-rule__icon">📱</span>
-              <span class="sleep-rule__text"><strong>취침 1시간 전 스마트폰 X</strong> — 블루라이트가 멜라토닌 차단 → 잠들기 어려워짐</span>
-            </div>
-            <div class="sleep-rule">
-              <span class="sleep-rule__icon">☕</span>
-              <span class="sleep-rule__text"><strong>오후 3시 이후 카페인 X</strong> — 콜라·에너지드링크·녹차도 포함</span>
-            </div>
-            <div class="sleep-rule">
-              <span class="sleep-rule__icon">🥗</span>
-              <span class="sleep-rule__text"><strong>야식 X</strong> — 위 부담이 깊은 수면 방해. 저녁 7시 이전 마무리</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">National Sleep Foundation · 대한수면학회 · Endocrine Society GH Secretion 표준</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 09 · OUTDOOR + JUMPING SPORTS ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>야외 활동 + 점프 운동</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">밖에서 뛰어라 — 햇빛 + 자극 두 번 챙기기</h2>
-      <p class="slide__subtitle">야외 활동 2시간/일이면 성장 속도 ↑ + 비타민D 자가 합성. 점프 동작이 성장판을 직접 자극.</p>
-    </div>
-    <div class="slide__body">
-      <div class="sport-split">
-        <div class="sport-visual">
-          <figure class="ai-visual">
-            <img src="../../../shared/assets/generated/teen-growth-jump-sports.png" alt="세로 자극 운동 — 농구·수영·배구·줄넘기" style="width:100%;height:100%;object-fit:contain;">
-          </figure>
-        </div>
-        <div class="sport-side">
-          <div class="sport-grid">
-            <div class="sport-card sport-card--alt">
-              <div class="sport-card__hero">🏊</div>
-              <div class="sport-card__name">수영</div>
-              <div class="sport-card__why"><strong>전신 스트레칭 + 척추 신장.</strong> 무릎·발목 부담 없이 키 자극.</div>
-            </div>
-            <div class="sport-card">
-              <div class="sport-card__hero">🏀</div>
-              <div class="sport-card__name">농구</div>
-              <div class="sport-card__why"><strong>점프 동작이 핵심.</strong> 슛·리바운드가 성장판에 반복 자극.</div>
-            </div>
-            <div class="sport-card">
-              <div class="sport-card__hero">🏐</div>
-              <div class="sport-card__name">배구·줄넘기</div>
-              <div class="sport-card__why"><strong>최대 점프 횟수.</strong> 척추 신장 + 어깨·팔 라인.</div>
-            </div>
-          </div>
-          <div class="sport-banner">
-            <strong>핵심 원리 — </strong>점프·달리기 같은 <em>체중부하(weight-bearing) 운동</em>의 축성 충격(axial load)이 성장판 연골세포 증식을 자극. 야외 햇빛 2시간/일이면 UVB로 비타민D 자가 합성. <em>실내 게임만으로는 절반 효과</em>. 고중량 스쿼트·데드리프트는 성장판 압박 가능 → 자유체중·점프 위주.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">대한스포츠의학회 청소년 운동 권고 · AAP (American Academy of Pediatrics) · UVB 비타민D 합성 표준</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 10 · 6 COMMON MISTAKES ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>흔한 실수 6가지</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">키 안 크는 이유 — 부모님이 모르는 실수</h2>
-      <p class="slide__subtitle">영양제만 잘 먹어도 안 됨. 잘못된 습관 하나가 모든 노력을 무력화한다.</p>
-    </div>
-    <div class="slide__body">
-      <div class="mistakes-grid">
-        <div class="mistake">
-          <div class="mistake__num">①</div>
-          <div class="mistake__title">영양제만 의존</div>
-          <p class="mistake__body">식사·수면·운동 무시한 채 영양제만 산더미. 시중 키 성장 영양제는 <strong>근거 부족</strong>·<strong>FDA 식약처 허가 X</strong>가 많아 주치의 상의 후 선택. <strong>보장 광고</strong>·과장 표현 주의.</p>
-        </div>
-        <div class="mistake">
-          <div class="mistake__num">②</div>
-          <div class="mistake__title">늦게 잠</div>
-          <p class="mistake__body">밤 12시 넘게 게임·유튜브. <strong>GH 피크 (10–12시)</strong> 놓치면 영양제 다 먹어도 무효.</p>
-        </div>
-        <div class="mistake">
-          <div class="mistake__num">③</div>
-          <div class="mistake__title">실내 활동만</div>
-          <p class="mistake__body">학원·집·핸드폰. 햇빛 노출 거의 0. <strong>비타민D 자가 합성 불가</strong> → 영양제 의존도 ↑.</p>
-        </div>
-        <div class="mistake">
-          <div class="mistake__num">④</div>
-          <div class="mistake__title">편식</div>
-          <p class="mistake__body">고기·계란만 좋아하고 채소·콩 거부. <strong>아연·마그네슘·비타민K 결핍</strong>. 균형 깨짐.</p>
-        </div>
-        <div class="mistake">
-          <div class="mistake__num">⑤</div>
-          <div class="mistake__title">과잉 복용</div>
-          <p class="mistake__body">비타민D 5,000 IU·아연 30 mg 등 고용량 장기 과용. <strong>독성·부작용</strong>. 권장량 준수 필수.</p>
-        </div>
-        <div class="mistake">
-          <div class="mistake__num">⑥</div>
-          <div class="mistake__title">자가 진단</div>
-          <p class="mistake__body">또래보다 작다고 무작정 영양제 시작 X. <strong>성조숙증</strong>·갑상선 평가와 <strong>성장판 X-ray</strong>(골연령) 확인이 먼저. 성장호르몬은 의학적 적응증이 있을 때만 소아내분비에서 판단.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">대한소아내분비학회 임상 가이드 · 대한가정의학회 · 한국 영양섭취기준 권장량</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 11 · 6-STEP PRIORITY ROADMAP ===================== -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>실전 우선순위 6단계</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한국 중학생 실전 — 1번부터 차례로</h2>
-      <p class="slide__subtitle">순서가 중요. 6번부터 시작하면 효과 안 나옴. 1번부터 차근차근.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="step-card step-card--alt">
-          <div class="step-card__num">1</div>
-          <div class="step-card__when">STEP 1</div>
-          <div class="step-card__title">혈액 검사</div>
-          <p class="step-card__body"><strong>비타민D · 아연 · 칼슘</strong> 수치 확인. 내과 진료 후 결정.</p>
-        </div>
-        <div class="step-card step-card--alt">
-          <div class="step-card__num">2</div>
-          <div class="step-card__when">STEP 2</div>
-          <div class="step-card__title">1순위 보충</div>
-          <p class="step-card__body"><strong>비타민D + 칼슘</strong>. 결핍 확인되면 즉시 시작.</p>
-        </div>
-        <div class="step-card step-card--alt">
-          <div class="step-card__num">3</div>
-          <div class="step-card__when">STEP 3</div>
-          <div class="step-card__title">아연 (편식 시)</div>
-          <p class="step-card__body">고기·해산물 적게 먹으면 <strong>5–10 mg/일</strong>.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-card__num">4</div>
-          <div class="step-card__when">STEP 4</div>
-          <div class="step-card__title">HT042 (선택)</div>
-          <p class="step-card__body">또래 25 percentile 미만 시 <strong>12주+</strong> 검토.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-card__num">5</div>
-          <div class="step-card__when">STEP 5</div>
-          <div class="step-card__title">식사 관리</div>
-          <p class="step-card__body">달걀 · 살코기 · 우유 · 콩 매일. <strong>탄산음료 X</strong>.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-card__num">6</div>
-          <div class="step-card__when">STEP 6</div>
-          <div class="step-card__title">수면 · 운동</div>
-          <p class="step-card__body"><strong>11시 취침</strong> + 야외 2시간 + 점프 운동.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 임상 권고 · 대한소아내분비학회 · KNHANES 한국 청소년 기준</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-  <!-- ===================== SLIDE 12 · TAKE-HOME closing ===================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">12 · <strong>TAKE-HOME · 핵심 정리</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">키는 자라는 시기에 결정된다</h2>
-      <p class="slide__subtitle">중1~중3 성장급등기는 평생 한 번. 지금 시작하면 유전의 상한선까지 도달.</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-split">
-        <div class="closing-left">
-          <div class="takehome-grid">
-            <div class="takehome-card">
-              <div class="takehome-card__num">1</div>
-              <div class="takehome-card__text"><strong>혈액검사 먼저</strong> — 비타민D·아연·칼슘 수치 확인 후 부족분만 보충. 무작정 영양제 X</div>
-            </div>
-            <div class="takehome-card">
-              <div class="takehome-card__num">2</div>
-              <div class="takehome-card__text">1순위는 <strong>비타민D + 칼슘</strong>. 한국 청소년 98.9% 결핍, 90% 미달. 가장 효과 큼</div>
-            </div>
-            <div class="takehome-card">
-              <div class="takehome-card__num">3</div>
-              <div class="takehome-card__text">진짜 비밀은 <strong>수면 (11시 취침) + 야외 활동 2시간 + 점프 운동</strong>. 영양제보다 우선</div>
-            </div>
-            <div class="takehome-card">
-              <div class="takehome-card__num">4</div>
-              <div class="takehome-card__text"><strong>탄산음료·늦은 밤 스마트폰·실내 게임 OUT</strong>. 잘못된 습관 하나가 모든 노력 무력화</div>
-            </div>
-          </div>
-        </div>
-        <div class="closing-right">
-          <div class="closing-motivation">
-            <figure class="ai-visual">
-              <img src="../../../shared/assets/generated/teen-growth-motivation.png" alt="키 성장 동기부여 — 사춘기는 평생 한 번의 기회" style="width:100%;height:100%;object-fit:contain;">
-            </figure>
-          </div>
-          <div class="closing-grid closing-grid--qr-only">
-            <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 결론 먼저</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">먼저 결론 — 세 가지만 기억하세요</h2>
+  <p class="v2-sub">키 성장은 영양제 하나가 아니라 검사·잠·운동·식사가 함께 만듭니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">검사 먼저, 부족한 것만 채웁니다</div>
+    <div class="v2-body">영양제를 무작정 시작하지 말고 혈액검사로 비타민D·아연·칼슘 수치를 확인한 뒤 <b>부족한&nbsp;것만</b> 보충합니다.</div>
+    <div class="q-card__why">또래보다 많이 작다면 영양제보다 성장 평가가 먼저입니다.</div>
+    <div class="q-card__k">1순위는 비타민D + 칼슘</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.5 13C32.9853 13 35 10.9853 35 8.5C35 6.01472 32.9853 4 30.5 4C28.0147 4 26 6.01472 26 8.5C26 10.9853 28.0147 13 30.5 13Z" fill="currentColor"/>
+<path d="M21.4601 17.2823C20.2126 17.5915 19.3619 18.0579 18.6751 18.6362C17.6443 19.5043 16.8134 20.7569 15.6892 22.7241C15.1412 23.6831 13.9195 24.0163 12.9605 23.4683C12.0014 22.9202 11.6683 21.6985 12.2163 20.7395C13.3348 18.7822 14.4662 16.9512 16.0985 15.5766C17.8028 14.1414 19.8883 13.3288 22.7024 13.016C23.8781 12.8854 25.1713 12.9117 26.3846 13.4532C27.6583 14.0218 28.5876 15.0406 29.2217 16.4023C30.0755 18.2358 30.7107 19.3274 31.2195 19.9595C31.4641 20.2633 31.6352 20.4042 31.7318 20.4673C31.8089 20.5176 31.8413 20.5214 31.8538 20.5228L31.8552 20.523C31.9423 20.5336 32.2236 20.5226 33.0524 20.1563C33.413 19.9969 33.8075 19.8042 34.289 19.5689L34.4042 19.5126C34.9254 19.2581 35.522 18.9686 36.1882 18.6724C37.1976 18.2238 38.3795 18.6784 38.8281 19.6878C39.2767 20.6971 38.8222 21.879 37.8128 22.3277C37.2175 22.5922 36.6766 22.8544 36.1596 23.1069L36.0289 23.1708C35.5679 23.3961 35.1041 23.6228 34.6695 23.8149C33.7688 24.213 32.6181 24.6454 31.3717 24.4937C30.0562 24.3335 29.0417 23.5914 28.2073 22.5941L25.4735 27.8666L29.2532 32.7853C29.4787 33.0786 29.6183 33.4288 29.6567 33.7968L30.4893 41.793C30.6037 42.8916 29.8058 43.875 28.7072 43.9893C27.6085 44.1038 26.6252 43.3059 26.5108 42.2072L25.7368 34.7739L23.441 31.7864L23.4218 31.8235L23.3373 31.6515L19.0949 26.1307C18.6709 25.579 18.5641 24.8467 18.8129 24.197L21.4601 17.2823Z" fill="currentColor"/>
+<path d="M18.4321 29.0071L16.9603 32.9676L11.1591 32.5063C10.058 32.4187 9.09445 33.2404 9.00689 34.3414C8.91932 35.4425 9.74095 36.4061 10.842 36.4937L18.15 37.0748C19.0415 37.1457 19.8717 36.6161 20.1833 35.7778L21.3084 32.7501L18.4321 29.0071Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">잠과 바깥 활동이 먼저입니다</div>
+    <div class="v2-body">성장호르몬은 <b>잠든 뒤 첫 깊은 잠</b>에서 많이 나옵니다. 햇빛 아래 뛰면 비타민D도 몸에서 만들어집니다.</div>
+    <div class="q-card__why">영양제보다 수면·운동이 우선입니다.</div>
+    <div class="q-card__k">11시 전 취침 · 야외 활동</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 28.0001C4.44772 28.0001 4 28.4478 4 29.0001C4 29.5524 4.44772 30.0001 5 30.0001H8C8 34.4184 11.5817 38.0001 16 38.0001H32C36.4183 38.0001 40 34.4184 40 30.0001H43C43.5523 30.0001 44 29.5524 44 29.0001C44 28.4478 43.5523 28.0001 43 28.0001H5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1053 10.0535C23.1053 10.0535 23.1056 10.0529 24 10.5001C24.8944 10.9473 24.8947 10.9468 24.8947 10.9468L24.893 10.9502L24.8812 10.9749C24.87 10.9983 24.8526 11.0355 24.8305 11.0849C24.7861 11.184 24.7229 11.3312 24.6521 11.5153C24.5094 11.8864 24.3413 12.3927 24.2306 12.9462C23.9948 14.125 24.0825 15.1684 24.7071 15.793C26.0825 17.1684 25.9948 19.125 25.7306 20.4462C25.5913 21.1427 25.3844 21.7614 25.2146 22.2028C25.1292 22.425 25.0517 22.6058 24.9945 22.7334C24.9659 22.7972 24.9423 22.848 24.9251 22.8841L24.9044 22.9271L24.898 22.9402L24.8958 22.9445L24.895 22.9461C24.895 22.9461 24.8944 22.9473 24 22.5001C23.1056 22.0529 23.1053 22.0534 23.1053 22.0534L23.107 22.05L23.1188 22.0253C23.13 22.0019 23.1474 21.9647 23.1695 21.9153C23.2139 21.8162 23.2771 21.669 23.3479 21.4849C23.4906 21.1138 23.6587 20.6075 23.7694 20.054C24.0052 18.8752 23.9175 17.8318 23.2929 17.2072C21.9175 15.8318 22.0052 13.8752 22.2694 12.554C22.4087 11.8575 22.6156 11.2388 22.7854 10.7974C22.8708 10.5752 22.9483 10.3944 23.0055 10.2668C23.0341 10.203 23.0577 10.1523 23.0749 10.1162L23.0956 10.0731L23.102 10.0601L23.1042 10.0557L23.1053 10.0535ZM24.8951 10.9459L24.8947 10.9468L24.8951 10.9459Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.1707 12.4412C15.1707 12.4412 15.1712 12.4406 16 13.0001C16.8288 13.5596 16.8292 13.5591 16.8292 13.5591L16.83 13.5579L16.8292 13.5591L16.8169 13.5781C16.8054 13.596 16.787 13.6252 16.7632 13.6643C16.7157 13.7429 16.6475 13.8606 16.5711 14.0078C16.416 14.3066 16.2377 14.7062 16.1217 15.1358C15.8808 16.028 15.9674 16.7315 16.5952 17.1966C18.2174 18.3982 18.1308 20.1947 17.8092 21.3858C17.6439 21.9979 17.4003 22.5357 17.2039 22.914C17.1046 23.1054 17.0145 23.2612 16.9478 23.3714C16.9144 23.4266 16.8867 23.4707 16.8663 23.5024C16.8561 23.5183 16.8478 23.5311 16.8415 23.5406L16.8335 23.5526L16.8308 23.5567L16.8297 23.5583C16.8297 23.5583 16.8288 23.5596 16 23.0001C15.1712 22.4406 15.1708 22.4412 15.1708 22.4412L15.1831 22.4221C15.1946 22.4042 15.213 22.3751 15.2368 22.3359C15.2843 22.2573 15.3525 22.1397 15.4289 21.9924C15.584 21.6937 15.7623 21.294 15.8783 20.8644C16.1192 19.9722 16.0326 19.2687 15.4048 18.8037C13.7826 17.602 13.8692 15.8055 14.1908 14.6144C14.3561 14.0024 14.5997 13.4645 14.7961 13.0862C14.8954 12.8949 14.9855 12.7391 15.0522 12.6288C15.0856 12.5736 15.1133 12.5295 15.1337 12.4978C15.1439 12.482 15.1522 12.4692 15.1585 12.4596L15.1665 12.4476L15.1692 12.4435L15.1707 12.4412Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32.1707 12.4412C32.1707 12.4412 32.1712 12.4406 33 13.0001C33.8288 13.5596 33.8292 13.5591 33.8292 13.5591L33.83 13.5579L33.8292 13.5591L33.8169 13.5781C33.8054 13.596 33.787 13.6252 33.7632 13.6643C33.7157 13.7429 33.6475 13.8606 33.5711 14.0078C33.416 14.3066 33.2377 14.7062 33.1217 15.1358C32.8808 16.028 32.9674 16.7315 33.5952 17.1966C35.2174 18.3982 35.1308 20.1947 34.8092 21.3858C34.6439 21.9979 34.4003 22.5357 34.2039 22.914C34.1046 23.1054 34.0145 23.2612 33.9478 23.3714C33.9144 23.4266 33.8867 23.4707 33.8663 23.5024C33.8561 23.5183 33.8478 23.5311 33.8415 23.5406L33.8335 23.5526L33.8308 23.5567L33.8297 23.5583C33.8297 23.5583 33.8288 23.5596 33 23.0001C32.1712 22.4406 32.1708 22.4412 32.1708 22.4412L32.1831 22.4221C32.1946 22.4042 32.213 22.3751 32.2367 22.3359C32.2843 22.2573 32.3525 22.1397 32.4289 21.9924C32.584 21.6937 32.7623 21.294 32.8783 20.8644C33.1192 19.9722 33.0326 19.2687 32.4048 18.8037C30.7826 17.602 30.8692 15.8055 31.1908 14.6144C31.3561 14.0024 31.5997 13.4645 31.7961 13.0862C31.8954 12.8949 31.9855 12.7391 32.0522 12.6288C32.0856 12.5736 32.1133 12.5295 32.1337 12.4978C32.1439 12.482 32.1522 12.4692 32.1585 12.4596L32.1665 12.4476L32.1692 12.4435L32.1707 12.4412Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">식판이 기본, 영양제는 보조입니다</div>
+    <div class="v2-body">달걀·살코기·우유·콩을 매일 챙기면 필요한 영양 대부분이 채워집니다. 영양제는 <b>부족분을 메우는</b> 역할입니다.</div>
+    <div class="q-card__why">탄산음료와 늦은 밤 스마트폰은 줄입니다.</div>
+    <div class="q-card__k">매일 달걀·우유·살코기·콩</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 영양제는 보조입니다. 잠과 바깥 활동을 먼저 챙기세요.</span><span class="v2-src">근거 · 대한소아내분비학회 · 대한영양학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 숫자로 보기</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">숫자로 보는 한국 청소년</h2>
+  <p class="v2-sub">키는 유전 영향이 크지만, 나머지는 우리가 바꿀 수 있는 환경입니다</p>
+  <div class="v2-panel q-stat" style="left:64px;top:206px;width:400px;height:124px">
+    <div class="q-stat__num">98.9<span>%</span></div><div class="q-stat__cap">비타민D 부족·결핍 — 한국 청소년 100명 중 99명</div>
+  </div>
+  <div class="v2-panel q-stat" style="left:64px;top:344px;width:400px;height:124px">
+    <div class="q-stat__num">90<span>%</span></div><div class="q-stat__cap">칼슘 권장량 미달 — 청소년 10명 중 9명</div>
+  </div>
+  <div class="v2-panel q-stat v2-panel--accent" style="left:64px;top:482px;width:400px;height:124px">
+    <div class="q-stat__num">60–80<span>%</span></div><div class="q-stat__cap">키에 대한 유전의 몫 — 나머지는 영양·수면·운동 등 환경</div>
+  </div>
+  <div class="v2-panel q-text" style="left:492px;top:206px;width:724px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35 9.22967V6H33V9H15V6H13V9.22967C13 14.6524 15.5895 19.6466 19.8037 22.7875C20.4275 22.3933 21.0782 22.0334 21.7536 21.7107C19.8831 20.4891 18.329 18.8727 17.1851 17H30.8149C29.2395 19.5789 26.8863 21.6719 24 22.9172C23.9947 22.9194 23.9894 22.9217 23.9841 22.924C23.8665 22.9746 23.748 23.0238 23.6286 23.0715C22.9531 23.3417 22.302 23.6524 21.6777 24C16.8813 26.6708 13.6672 31.5245 13.0925 37H13V38.7703V39V42H15V39H33V42H35V39V38.7703V37H34.9075C34.4113 32.2723 31.9474 28.0082 28.1963 25.2125C27.5725 25.6067 26.9218 25.9666 26.2464 26.2893C28.1169 27.5109 29.671 29.1273 30.8149 31H17.1851C18.7605 28.4211 21.1137 26.3281 24 25.0828C24.0053 25.0806 24.0106 25.0783 24.0159 25.076C24.1335 25.0254 24.252 24.9762 24.3714 24.9285C25.0469 24.6583 25.698 24.3476 26.3223 24C31.63 21.0445 35 15.4159 35 9.22967ZM31.8385 33H16.1615C15.6308 34.2636 15.2711 35.608 15.1051 37H32.8949C32.7289 35.608 32.3692 34.2636 31.8385 33ZM16.1615 15H31.8385C32.3692 13.7364 32.7289 12.392 32.8949 11H15.1051C15.2711 12.392 15.6308 13.7364 16.1615 15Z" fill="currentColor"/>
+</svg></div><b>유전이 전부는 아닙니다</b></div><div class="v2-body">키는 부모에게 물려받는 몫이 <b>60–80%</b>입니다. 나머지는 영양·수면·운동 같은 <b>환경</b>이 채우고, 이 부분은 지금부터 바꿀 수 있습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M35.5 3.58569L39.7071 7.7928C40.0976 8.18332 40.0976 8.81649 39.7071 9.20701C39.3166 9.59754 38.6834 9.59754 38.2929 9.20701L36.5 7.41412V44H34.5V7.41412L32.7071 9.20701C32.3166 9.59754 31.6834 9.59754 31.2929 9.20701C30.9024 8.81649 30.9024 8.18332 31.2929 7.7928L35.5 3.58569Z" fill="currentColor"/>
+<path d="M27.9999 8C27.9999 10.2091 26.2091 12 23.9999 12C21.7908 12 19.9999 10.2091 19.9999 8C19.9999 5.79086 21.7908 4 23.9999 4C26.2091 4 27.9999 5.79086 27.9999 8Z" fill="currentColor"/>
+<path d="M29.9999 28.8007C30.6279 28.4964 31.0751 27.8728 31.1244 27.133L31.8293 16.5597C31.9159 15.2602 30.7574 14.2218 29.4702 14.4196C27.6892 14.6933 25.3845 15 23.9999 15C22.6154 15 20.3107 14.6933 18.5297 14.4196C17.2425 14.2218 16.084 15.2602 16.1706 16.5597L16.8755 27.133C16.9248 27.8728 17.372 28.4964 17.9999 28.8007V42C17.9999 43.0747 18.8493 43.9573 19.9232 43.9985C20.9971 44.0398 21.9116 43.2249 21.994 42.1534L22.994 29.1534C22.998 29.1022 22.9999 29.051 22.9999 29H24.9999C24.9999 29.051 25.0019 29.1022 25.0058 29.1534L26.0058 42.1534C26.0883 43.2249 27.0028 44.0398 28.0767 43.9985C29.1506 43.9573 29.9999 43.0747 29.9999 42V28.8007Z" fill="currentColor"/>
+</svg></div><b>사춘기는 가장 빨리 자라는 때</b></div><div class="v2-body">중1~중3 무렵 성장급등기에 <b>약 20–25 cm</b>가 자랍니다. 이때 영양·수면·운동을 챙기면 타고난 키만큼 자라는 데 도움이 됩니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>그런데 영양이 모자란 채 지나갑니다</b></div><div class="v2-body">한국 청소년 대부분이 비타민D가 부족하고, 칼슘도 권장량보다 적게 먹습니다. 가장 먼저 채울 두 가지입니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 유전은 못 바꾸지만 식사·잠·운동은 오늘부터 바꿀 수 있습니다.</span><span class="v2-src">근거 · 국민건강영양조사 2020–2023 · 대한소아내분비학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 성장급등기</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">키가 자라는 시기 — 성장판이 열려 있는 동안</h2>
+  <p class="v2-sub">남학생은 평균 13세 전후에 가장 빨리 자라는 때(성장급등기)가 시작됩니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:640px;height:323px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/teen-growth-anatomy.png" alt="자라는 남학생과 긴뼈 끝 성장판의 단면 그림">
+  </div>
+  <p class="q-note" style="left:64px;top:541px;width:640px"><b>성장판</b>은 긴뼈 끝의 연골판입니다. 성장호르몬과 IGF-1(성장을 돕는 호르몬)이 새 뼈를 만들고, 사춘기 후반에 닫히면 키가 멈춥니다.</p>
+  <div class="v2-panel q-text" style="left:734px;top:206px;width:482px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18 18.5C18 17.6716 18.6716 17 19.5 17H28.5C29.3284 17 30 17.6716 30 18.5C30 18.6753 29.9699 18.8436 29.9146 19H30V19.0336C32.25 19.3376 34 21.669 34 24.5C34 27.331 32.25 29.6624 30 29.9664V40C30 41.0616 29.1706 41.9382 28.1106 41.9969C27.0506 42.0556 26.1295 41.276 26.0122 40.2209L25.2099 33H22.8906L21.9846 40.2481C21.8535 41.2962 20.93 42.0618 19.8757 41.9961C18.8215 41.9305 18 41.0563 18 40V29.9664C15.75 29.6624 14 27.331 14 24.5C14 21.669 15.75 19.3376 18 19.0336V19H18.0854C18.0301 18.8436 18 18.6753 18 18.5ZM20.331 23.6795C20.8089 22.6927 20.9929 21.1497 20.9929 19H22.9929C22.9929 21.158 22.8266 23.115 22.1311 24.5512C21.77 25.2968 21.2541 25.93 20.5303 26.3677C19.8106 26.803 18.9598 27 18 27V25C18.6863 25 19.1577 24.8605 19.4953 24.6563C19.8288 24.4546 20.1054 24.1455 20.331 23.6795ZM27.0071 19C27.0071 21.1497 27.1911 22.6927 27.669 23.6795C27.8946 24.1455 28.1712 24.4546 28.5047 24.6563C28.8423 24.8605 29.3137 25 30 25V27C29.0402 27 28.1894 26.803 27.4697 26.3677C26.7459 25.93 26.23 25.2968 25.8689 24.5512C25.1734 23.115 25.0071 21.158 25.0071 19H27.0071Z" fill="currentColor"/>
+<path d="M28.5 10.5C28.5 12.9853 26.4853 15 24 15C21.5147 15 19.5 12.9853 19.5 10.5C19.5 8.01472 21.5147 6 24 6C26.4853 6 28.5 8.01472 28.5 10.5Z" fill="currentColor"/>
+</svg></div><b>10–12세 · 사춘기 직전</b></div><div class="v2-body">1년에 <b>4–6 cm</b>. 성장판이 열려 있고 호르몬 변화가 시작됩니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M35.5 3.58569L39.7071 7.7928C40.0976 8.18332 40.0976 8.81649 39.7071 9.20701C39.3166 9.59754 38.6834 9.59754 38.2929 9.20701L36.5 7.41412V44H34.5V7.41412L32.7071 9.20701C32.3166 9.59754 31.6834 9.59754 31.2929 9.20701C30.9024 8.81649 30.9024 8.18332 31.2929 7.7928L35.5 3.58569Z" fill="currentColor"/>
+<path d="M27.9999 8C27.9999 10.2091 26.2091 12 23.9999 12C21.7908 12 19.9999 10.2091 19.9999 8C19.9999 5.79086 21.7908 4 23.9999 4C26.2091 4 27.9999 5.79086 27.9999 8Z" fill="currentColor"/>
+<path d="M29.9999 28.8007C30.6279 28.4964 31.0751 27.8728 31.1244 27.133L31.8293 16.5597C31.9159 15.2602 30.7574 14.2218 29.4702 14.4196C27.6892 14.6933 25.3845 15 23.9999 15C22.6154 15 20.3107 14.6933 18.5297 14.4196C17.2425 14.2218 16.084 15.2602 16.1706 16.5597L16.8755 27.133C16.9248 27.8728 17.372 28.4964 17.9999 28.8007V42C17.9999 43.0747 18.8493 43.9573 19.9232 43.9985C20.9971 44.0398 21.9116 43.2249 21.994 42.1534L22.994 29.1534C22.998 29.1022 22.9999 29.051 22.9999 29H24.9999C24.9999 29.051 25.0019 29.1022 25.0058 29.1534L26.0058 42.1534C26.0883 43.2249 27.0028 44.0398 28.0767 43.9985C29.1506 43.9573 29.9999 43.0747 29.9999 42V28.8007Z" fill="currentColor"/>
+</svg></div><b>13–15세 · 성장급등기</b></div><div class="v2-body">1년에 <b>8–12 cm</b>씩 약 2년. 가장 빨리 자라는 때라 영양·수면·운동이 특히 중요합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M23 14C23 15.1046 22.1046 16 21 16C19.8954 16 19 15.1046 19 14C19 12.8954 19.8954 12 21 12C22.1046 12 23 12.8954 23 14Z" fill="currentColor"/>
+<path d="M27 16C28.1046 16 29 15.1046 29 14C29 12.8954 28.1046 12 27 12C25.8954 12 25 12.8954 25 14C25 15.1046 25.8954 16 27 16Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.6154 17.3476C16.6154 19.3825 18 19.8347 18.4615 19.8347C18.9231 19.8347 19.0769 21.1912 19.0769 22.0956C19.0769 22.8707 20.998 22.9815 23 22.9974V24.5H16.5C13.6079 24.5 12.2324 26.6465 11.6175 28.4229C11.3047 29.3265 11.1523 30.2159 11.0769 30.8698C11.0389 31.1992 11.0197 31.4751 11.01 31.6713C11.0052 31.7695 11.0027 31.8482 11.0014 31.9039C11.0007 31.9318 11.0004 31.9541 11.0002 31.9702L11 31.9898L11 31.9961L11 31.9983V32C11 32.5523 11.4477 33 12 33C12.5521 33 12.9997 32.5526 13 32.0006L13.0001 31.9925L13.0005 31.9669L13.0008 31.9501C13.0017 31.9106 13.0036 31.8496 13.0076 31.7701C13.0154 31.6108 13.0314 31.3789 13.0637 31.099C13.1289 30.5341 13.2578 29.7985 13.5075 29.0771C14.0176 27.6035 14.8921 26.5 16.5 26.5H23V27.7089C22.1658 27.7564 21.3506 27.8647 20.6352 28.0389C20.1357 28.1605 19.6558 28.3212 19.2429 28.5336C18.842 28.7397 18.4234 29.0359 18.152 29.4701C17.8593 29.9384 18.0017 30.5554 18.47 30.8481C18.9383 31.1408 19.5552 30.9985 19.8479 30.5302C19.8479 30.5302 19.8634 30.5066 19.914 30.4654C19.9662 30.4227 20.0449 30.3701 20.1576 30.3121C20.3861 30.1946 20.7047 30.0804 21.1083 29.9821C21.6562 29.8487 22.3075 29.7574 23 29.7126V31.7089C22.1658 31.7564 21.3506 31.8647 20.6352 32.0389C20.1357 32.1605 19.6558 32.3212 19.2429 32.5336C18.842 32.7397 18.4234 33.0359 18.152 33.4701C17.8593 33.9384 18.0017 34.5554 18.47 34.8481C18.9383 35.1408 19.5552 34.9985 19.8479 34.5302C19.8479 34.5302 19.8634 34.5066 19.914 34.4654C19.9662 34.4227 20.0449 34.3701 20.1576 34.3121C20.3861 34.1946 20.7047 34.0804 21.1083 33.9821C21.6562 33.8487 22.3075 33.7574 23 33.7126V36H19C17.8923 36 17.0611 36.5273 16.487 37.2397C15.9384 37.9204 15.6113 38.7783 15.4074 39.5601C14.9999 41.122 15 42.7235 15 42.9957L15 43C15 43.5523 15.4477 44 16 44C16.5523 44 17 43.5523 17 43C17 42.759 17.0023 41.3695 17.3426 40.0649C17.5137 39.4092 17.7491 38.8609 18.0442 38.4947C18.3139 38.1602 18.6077 38 19 38H29C29.3923 38 29.6861 38.1602 29.9558 38.4947C30.2509 38.8609 30.4863 39.4092 30.6574 40.0649C30.9977 41.3695 31 42.759 31 43C31 43.5523 31.4477 44 32 44C32.5523 44 33 43.5523 33 43V42.9957C33 42.7235 33.0001 41.122 32.5926 39.5601C32.3887 38.7783 32.0616 37.9204 31.513 37.2397C30.9389 36.5273 30.1077 36 29 36H25V33.7126C25.6925 33.7574 26.3438 33.8487 26.8917 33.9821C27.2953 34.0804 27.6139 34.1946 27.8424 34.3121C27.9551 34.3701 28.0338 34.4227 28.086 34.4654C28.1366 34.5066 28.152 34.5301 28.152 34.5301C28.4447 34.9984 29.0617 35.1408 29.53 34.8481C29.9983 34.5554 30.1407 33.9384 29.848 33.4701C29.5766 33.0359 29.158 32.7397 28.7571 32.5336C28.3442 32.3212 27.8643 32.1605 27.3648 32.0389C26.6495 31.8647 25.8342 31.7564 25 31.7089V29.7126C25.6925 29.7574 26.3438 29.8487 26.8917 29.9821C27.2953 30.0804 27.6139 30.1946 27.8424 30.3121C27.9551 30.3701 28.0338 30.4227 28.086 30.4654C28.1366 30.5066 28.152 30.5301 28.152 30.5301C28.4447 30.9984 29.0617 31.1408 29.53 30.8481C29.9983 30.5554 30.1407 29.9384 29.848 29.4701C29.5766 29.0359 29.158 28.7397 28.7571 28.5336C28.3442 28.3212 27.8643 28.1605 27.3648 28.0389C26.6495 27.8647 25.8342 27.7564 25 27.7089V26.5H31.5C33.1079 26.5 33.9824 27.6035 34.4925 29.0771C34.7422 29.7985 34.8711 30.5341 34.9363 31.099C34.9686 31.3789 34.9846 31.6108 34.9924 31.7701C34.9964 31.8496 34.9983 31.9106 34.9992 31.9501C34.9996 31.9698 34.9998 31.9841 34.9999 31.9925L35 32V32.0013C35.0007 32.553 35.4482 33 36 33C36.5523 33 37 32.5523 37 32H36C37 32 37 31.9983 37 31.9983L37 31.9961L37 31.9898L36.9998 31.9702L36.999 31.919L36.9986 31.9039C36.9973 31.8482 36.9948 31.7695 36.99 31.6713C36.9803 31.4751 36.9611 31.1992 36.9231 30.8698C36.8477 30.2159 36.6953 29.3265 36.3825 28.4229C35.7676 26.6465 34.3921 24.5 31.5 24.5H25V22.9974C27.002 22.9815 28.9231 22.8707 28.9231 22.0956C28.9231 21.1912 29.5 19.8347 29.5385 19.8347C29.5769 19.8347 31.3846 19.3825 31.3846 17.3476C31.3846 16.5425 31.6375 16.1622 31.9431 15.7024C32.41 15.0001 33 14.1125 33 11.243C33 1.58566 15 1.58566 15 11.243C15 14.1125 15.59 15.0001 16.0569 15.7024C16.3625 16.1622 16.6154 16.5425 16.6154 17.3476ZM18.6944 17.8459C18.6914 17.8399 18.6882 17.8329 18.6849 17.8248C18.6623 17.7707 18.6154 17.6272 18.6154 17.3476C18.6154 15.8638 17.9578 14.9175 17.6472 14.4705C17.5959 14.3966 17.554 14.3364 17.5262 14.2896C17.3526 13.9981 17 13.3589 17 11.243C17 9.54155 17.7561 8.31012 18.9761 7.4374C20.2554 6.52225 22.0739 6 24 6C25.9261 6 27.7446 6.52225 29.0239 7.4374C30.2439 8.31011 31 9.54155 31 11.243C31 13.3589 30.6474 13.9981 30.4738 14.2896C30.446 14.3364 30.4041 14.3966 30.3528 14.4704C30.0422 14.9174 29.3846 15.8638 29.3846 17.3476C29.3846 17.548 29.3431 17.641 29.3254 17.6752C29.3039 17.7168 29.2721 17.7559 29.2224 17.7958C29.1685 17.8392 29.1078 17.8716 29.0621 17.891L29.0558 17.8937C28.6558 17.9932 28.3971 18.1892 28.3236 18.2452C28.1647 18.3664 28.0596 18.4847 28.0136 18.5384C27.9154 18.6532 27.8512 18.755 27.8285 18.7913C27.7731 18.8801 27.7324 18.9598 27.7126 18.9993C27.6662 19.092 27.6217 19.1923 27.5828 19.2847C27.5021 19.4764 27.4077 19.7243 27.3169 19.9999C27.2377 20.2402 27.1431 20.5546 27.0664 20.9038C26.2706 20.9969 25.1836 21 24 21C22.8542 21 21.7989 20.9971 21.0107 20.9125C20.9837 20.6761 20.947 20.438 20.8986 20.21C20.8347 19.9096 20.7214 19.4825 20.4964 19.0817C20.3246 18.7757 19.7743 17.9517 18.6944 17.8459Z" fill="currentColor"/>
+</svg></div><b>16–18세 · 느려지는 때</b></div><div class="v2-body">1년에 <b>2–4 cm</b>. 성장판이 닫히기 시작하면 키 성장도 끝나 갑니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 성장 속도가 갑자기 느려지거나 또래보다 많이 작으면 진료로 확인합니다.</span><span class="v2-src">근거 · 대한소아내분비학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 영양제 한눈에</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">키 성장 영양제 다섯 가지 비교</h2>
+  <p class="v2-sub">우선순위는 한국 청소년의 부족 정도와 연구 근거를 함께 본 것입니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:150px"><col style="width:300px"><col style="width:352px"><col style="width:200px"><col style="width:150px"></colgroup><thead><tr><th>성분</th><th>어떻게 돕나</th><th>왜 챙기나</th><th>하루 권장량</th><th>우선순위</th></tr></thead><tbody><tr><th>비타민D</th><td>칼슘 흡수를 돕고 성장판 연골세포에 작용</td><td>한국 청소년 <b>98.9%</b>가 부족·결핍 · 심하면 구루병</td><td>600–1,000 IU</td><td><b>1순위</b></td></tr><tr><th>칼슘</th><td>뼈를 이루는 성분 · 골밀도를 결정</td><td>10명 중 9명 권장량 미달 · 평생 골량의 50%가 사춘기에 쌓임</td><td>보충 500–600 mg<br>(음식 포함 1,000–1,200)</td><td><b>1순위</b></td></tr><tr><th>아연</th><td>성장호르몬 신호·IGF-1 합성에 필요</td><td>고기·해산물을 적게 먹는 편식 청소년에게 도움</td><td>5–10 mg</td><td>2순위 · 편식 시</td></tr><tr><th>HT042</th><td>황기·한속단·가시오갈피 복합 추출물</td><td>식약처가 키 성장 기능성으로 인정한 원료</td><td>제품 라벨대로</td><td>2순위 · 선택</td></tr><tr><th>마그네슘</th><td>칼슘 대사를 보조</td><td>혼자서는 효과가 약함 · 비타민D·칼슘의 보조</td><td>200–300 mg</td><td>보조</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 여러 제품을 겹쳐 먹으면 같은 성분이 과해질 수 있습니다. 성분표를 확인하세요.</span><span class="v2-src">근거 · 국민건강영양조사 · 식약처 건강기능식품 인증 · 대한영양학회 권장량</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 1순위 보충</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">먼저 챙길 두 가지 — 비타민D와 칼슘</h2>
+  <p class="v2-sub">둘은 함께 갑니다 — 비타민D가 있어야 칼슘이 잘 흡수됩니다</p>
+  <div class="v2-vs q-plus" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">비타민D · 1순위</div><div class="v2-vs__lead">한국 청소년 <b>98.9%</b>가 부족·결핍입니다.</div><ul class="v2-vs__list"><li><span class="q-li__k">흡수</span><span>비타민D가 부족하면 칼슘이 장에서 <b>잘 흡수되지 않습니다</b></span></li><li><span class="q-li__k">용량</span><span>하루 <b>600–1,000 IU</b> — D3 형태를 권합니다</span></li><li><span class="q-li__k">먹는 법</span><span>기름기 있는 식사 직후에 먹으면 흡수가 잘 됩니다</span></li><li><span class="q-li__k">검사</span><span>혈액검사(25(OH)D) <b>30 ng/mL 이상</b>을 목표로 합니다</span></li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">칼슘 · 1순위</div><div class="v2-vs__lead">10명 중 9명이 <b>권장량보다 적게</b> 먹습니다.</div><ul class="v2-vs__list"><li><span class="q-li__k">역할</span><span>뼈의 주성분 — 평생 골량의 50%가 사춘기에 쌓입니다</span></li><li><span class="q-li__k">용량</span><span>하루 총 <b>1,000–1,200 mg</b> — 음식 600 + <span class="q-nw">보충제 500–600</span></span></li><li><span class="q-li__k">먹는 법</span><span>한 번에 <b>500 mg 이하</b>로 나눠 먹습니다</span></li><li><span class="q-li__k">주의</span><span>시금치·콜라와는 따로 먹습니다 — 흡수를 방해합니다</span></li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 비타민D는 햇빛을 받으면 피부에서도 만들어집니다 — 바깥 활동이 함께 필요한 이유입니다.</span><span class="v2-src">근거 · 대한영양학회 한국인 영양섭취기준 · 미국 IOM · 대한소아과학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 식사</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">키는 식판 위에서 자랍니다 — 영양제는 보조</h2>
+  <p class="v2-sub">하루 단백질은 체중 1 kg당 1.0–1.2 g — 달걀·살코기·우유·콩으로 채웁니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:577px;height:400px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/teen-growth-foodplate.png" alt="달걀·살코기·두부·콩·채소를 담은 식판과 우유·치즈·생선">
+  </div>
+  <div class="v2-panel q-foodp" style="left:665px;top:206px;width:551px;height:400px">
+    <div class="v2-block"><div class="v2-body q-food"><div class="q-food__it"><b>달걀 · 매일 2개</b><span>단백질·비타민D·콜린. 흰자·노른자 모두</span></div><div class="q-food__it"><b>살코기 · 매일 100 g</b><span>단백질·철분·아연. 닭가슴살·우둔살</span></div><div class="q-food__it"><b>우유·치즈 · 2잔 분량</b><span>칼슘. 비타민D 강화 제품 권장</span></div><div class="q-food__it"><b>콩·두부 · 매끼 한 번</b><span>식물성 단백질·마그네슘</span></div><div class="q-food__it"><b>등푸른생선 · 주 2회</b><span>비타민D·오메가-3. 고등어·연어</span></div><div class="q-food__it"><b>녹색채소 · 매끼 한 번</b><span>비타민K·마그네슘. 시금치는 칼슘과 따로</span></div></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">줄일 것 · 탄산음료, 에너지드링크 같은 카페인, 짠 음식. 식사가 충분하면 단백질 파우더는 필요 없습니다.</span><span class="v2-src">근거 · 대한영양학회 청소년 영양섭취기준 · 국민건강영양조사</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 2순위 보충</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">필요할 때만 — 아연과 HT042</h2>
+  <p class="v2-sub">편식이 심하거나(아연) 키가 또래보다 작을 때(HT042) 더해 볼 수 있습니다</p>
+  <div class="v2-panel q-opt" style="left:64px;top:206px;width:564px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>아연</b></div><div class="q-opt__lead">편식하는 청소년에게 · 하루 5–10 mg</div><div class="v2-body q-opt__rows"><div class="q-opt__row"><b>하는 일</b><span>성장호르몬 신호 전달과 IGF-1 합성에 필요합니다.</span></div><div class="q-opt__row"><b>누구에게</b><span>고기·굴·해산물을 적게 먹는 편식·소식 청소년. 결핍이 있을 때 키에 작은 도움이 된다는 메타분석이 있습니다.</span></div><div class="q-opt__row"><b>주의</b><span>하루 <b>30 mg</b>을 넘기면 구리 결핍 위험. 종합비타민 속 아연도 셉니다.</span></div></div></div>
+    <div class="q-opt__k">비타민D·칼슘을 먼저 채운 뒤에</div>
+  </div>
+  <div class="v2-panel q-opt v2-panel--accent" style="left:652px;top:206px;width:564px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10 7V37C10 38.6569 11.3431 40 13 40H26V36.4649C24.8044 35.7733 24 34.4806 24 33C24 30.7909 25.7909 29 28 29C30.2091 29 32 30.7909 32 33C32 34.4806 31.1956 35.7733 30 36.4649V40H35C36.6569 40 38 38.6569 38 37V7C38 5.34315 36.6569 4 35 4H13C11.3431 4 10 5.34315 10 7ZM28 35C29.1046 35 30 34.1046 30 33C30 31.8954 29.1046 31 28 31C26.8954 31 26 31.8954 26 33C26 34.1046 26.8954 35 28 35ZM18 11C18 10.4477 18.4477 10 19 10L29 10C29.5523 10 30 10.4477 30 11C30 11.5523 29.5523 12 29 12L19 12C18.4477 12 18 11.5523 18 11ZM15 16C14.4477 16 14 16.4477 14 17C14 17.5523 14.4477 18 15 18H33C33.5523 18 34 17.5523 34 17C34 16.4477 33.5523 16 33 16H15ZM14 21C14 20.4477 14.4477 20 15 20H33C33.5523 20 34 20.4477 34 21C34 21.5523 33.5523 22 33 22H15C14.4477 22 14 21.5523 14 21ZM15 24C14.4477 24 14 24.4477 14 25C14 25.5523 14.4477 26 15 26H33C33.5523 26 34 25.5523 34 25C34 24.4477 33.5523 24 33 24H15Z" fill="currentColor"/>
+<path d="M26 44V40H30V44L28 42.5L26 44Z" fill="currentColor"/>
+</svg></div><b>HT042</b></div><div class="q-opt__lead">키가 또래보다 작을 때 · 선택</div><div class="v2-body q-opt__rows"><div class="q-opt__row"><b>무엇인가</b><span>황기·한속단·가시오갈피 복합 추출물. 식약처가 키 성장 기능성으로 인정한 원료입니다.</span></div><div class="q-opt__row"><b>연구</b><span>어린 저신장 아이 연구에서 작은 키 증가가 보고됐지만, 중학생 효과는 확인되지 않았습니다.</span></div><div class="q-opt__row"><b>누구에게</b><span>또래 25 백분위수 미만의 가벼운 저신장. 진료로 원인부터 확인합니다.</span></div></div></div>
+    <div class="q-opt__k">용량은 제품 라벨대로</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 1순위(비타민D·칼슘)가 부족한데 2순위만 챙기는 건 순서가 바뀐 것입니다.</span><span class="v2-src">근거 · 식약처 건강기능식품 인증 · Cochrane 아연 메타분석 · 대한가정의학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 수면</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">성장호르몬은 잠든 뒤 첫 깊은 잠에서 가장 많이 나옵니다</h2>
+  <p class="v2-sub">몇 시냐보다 깊이 잠드는 것이 중요합니다 — 일찍, 규칙적으로 주무세요</p>
+  <div class="v2-panel q-sleep" style="left:64px;top:206px;width:594px;height:400px">
+    <div class="q-sleep__stat"><div class="q-stat__num">8–10<span>시간</span></div><div class="q-stat__cap">청소년 권장 수면 · 밤 11시 전에 잠자리에</div></div><div class="v2-body q-steps"><div class="q-step"><i>1</i><span>잠든 뒤 <b>첫 깊은 잠</b>에서 성장호르몬이 가장 많이 나옵니다</span></div><div class="q-step"><i>2</i><span>잠들기 1시간 전 스마트폰 끄기 — 화면 빛이 잠을 늦춥니다</span></div><div class="q-step"><i>3</i><span>오후 3시 이후 카페인 피하기 — 콜라·에너지드링크·녹차 포함</span></div><div class="q-step"><i>4</i><span>야식 피하기 — 저녁 7시 전에 식사 마무리</span></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:686px;top:206px;width:530px;height:320px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/teen-growth-gh-curve.png" alt="잠든 청소년에서 성장호르몬이 물결처럼 나와 성장판으로 가는 그림">
+  </div>
+  <p class="q-note" style="left:686px;top:538px;width:530px">그림 · 깊이 잠든 동안 성장호르몬이 여러 번 나와 성장판에 닿습니다(설명용 그림).</p>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 영양제를 다 챙겨도 잠이 부족하면 효과를 보기 어렵습니다.</span><span class="v2-src">근거 · 미국 수면재단 · 대한수면학회 · 미국 내분비학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 바깥 활동과 운동</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">밖에서 뛰세요 — 햇빛과 점프를 함께</h2>
+  <p class="v2-sub">바깥 활동은 비타민D를 만들고, 뛰는 운동은 뼈와 성장판에 자극을 줍니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:400px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/teen-growth-jump-sports.png" alt="수영·농구·배구·줄넘기를 하는 청소년">
+  </div>
+  <div class="v2-panel q-text" style="left:652px;top:206px;width:564px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28.3495 27.6061C28.4731 27.8577 28.3706 28.1619 28.1198 28.2873L27.4483 28.6231C26.4431 29.1256 25.26 29.1256 24.2549 28.6231L22.9118 27.9515C22.1938 27.5925 21.3487 27.5925 20.6308 27.9515L19.2876 28.6231C18.2825 29.1256 17.0994 29.1256 16.0943 28.6231L13.5391 27.3455L8.61026 28.3309C8.34322 28.3843 8.08135 28.2185 8.0154 27.9543C7.94946 27.69 8.10272 27.4206 8.36353 27.3423L15.3192 25.2528L15.274 25.1986C13.8213 23.4417 13.1907 21.5532 13.0911 19.7508C12.9254 16.752 14.2938 14.1065 14.8321 13.0656L14.8398 13.0508C14.9014 12.9317 14.9484 12.8406 14.9823 12.771C15.7359 11.2213 17.6278 10.5728 19.204 11.294C20.7881 12.0188 21.483 13.8664 20.725 15.4251C20.655 15.5691 20.5824 15.7149 20.5101 15.8602C19.9298 17.0264 19.3688 18.1782 19.4373 19.4176C19.4691 19.9935 19.6519 20.6209 20.2222 21.3106C20.8243 22.0388 21.9667 22.9626 24.1249 23.8752C25.9961 24.6665 27.4944 25.8664 28.3495 27.6061Z" fill="currentColor"/>
+<path d="M34.012 16.6099C36.8289 16.6099 39.1124 18.8935 39.1124 21.7103C39.1124 24.5272 36.8289 26.8107 34.012 26.8107C31.1951 26.8107 28.9116 24.5272 28.9116 21.7103C28.9116 18.8935 31.1951 16.6099 34.012 16.6099Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.22184 37.379C4.57365 36.9462 5.21874 36.8734 5.66269 37.2164L7.28501 38.4698C8.18692 39.1667 9.47586 39.1159 10.3171 38.3503L10.4064 38.2691C12.0381 36.7843 14.5701 36.7843 16.2017 38.2691C17.0452 39.0366 18.3541 39.0366 19.1976 38.2691C20.8293 36.7843 23.3612 36.7843 24.9929 38.2691C25.8287 39.0297 27.1568 39.0262 28.008 38.2516C29.6105 36.7933 32.1282 36.7622 33.7461 38.2345L33.8162 38.2983C34.6201 39.0298 35.874 39.0088 36.6515 38.2506C38.1635 36.7765 40.5845 36.6859 42.208 38.0426L43.6418 39.2408C44.0719 39.6003 44.1217 40.2315 43.7531 40.6509C43.3844 41.0702 42.7369 41.1187 42.3069 40.7593L40.873 39.5611C40.0634 38.8845 38.856 38.9297 38.102 39.6648C36.5428 41.185 34.0286 41.2273 32.4166 39.7604L32.3465 39.6966C31.532 38.9555 30.2374 38.9586 29.4076 39.7137C27.7837 41.1915 25.2325 41.2229 23.5932 39.7311C22.7497 38.9636 21.4408 38.9636 20.5973 39.7311C18.9656 41.2159 16.4337 41.2159 14.802 39.7311C13.9585 38.9636 12.6496 38.9636 11.8061 39.7311L11.7168 39.8124C10.1337 41.253 7.70818 41.3486 6.011 40.0373L4.38867 38.7838C3.94473 38.4408 3.87003 37.8119 4.22184 37.379Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.22184 31.379C4.57365 30.9462 5.21874 30.8734 5.66269 31.2164L7.28501 32.4698C8.18692 33.1667 9.47586 33.1159 10.3171 32.3503L10.4064 32.2691C12.0381 30.7843 14.5701 30.7843 16.2017 32.2691C17.0452 33.0366 18.3541 33.0366 19.1976 32.2691C20.8293 30.7843 23.3612 30.7843 24.9929 32.2691C25.8287 33.0297 27.1568 33.0262 28.008 32.2516C29.6105 30.7933 32.1282 30.7622 33.7461 32.2345L33.8162 32.2983C34.6201 33.0298 35.874 33.0088 36.6515 32.2506C38.1635 30.7765 40.5845 30.6859 42.208 32.0426L43.6418 33.2408C44.0719 33.6003 44.1217 34.2315 43.7531 34.6509C43.3844 35.0702 42.7369 35.1187 42.3069 34.7593L40.873 33.5611C40.0634 32.8845 38.856 32.9297 38.102 33.6648C36.5428 35.185 34.0286 35.2273 32.4166 33.7604L32.3465 33.6966C31.532 32.9555 30.2374 32.9586 29.4076 33.7137C27.7837 35.1915 25.2325 35.2229 23.5932 33.7311C22.7497 32.9636 21.4408 32.9636 20.5973 33.7311C18.9656 35.2159 16.4337 35.2159 14.802 33.7311C13.9585 32.9636 12.6496 32.9636 11.8061 33.7311L11.7168 33.8124C10.1337 35.253 7.70818 35.3486 6.011 34.0373L4.38867 32.7838C3.94473 32.4408 3.87003 31.8119 4.22184 31.379Z" fill="currentColor"/>
+</svg></div><b>수영</b></div><div class="v2-body">온몸을 쭉 펴는 운동입니다. 무릎·발목 부담이 적습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.5 13C32.9853 13 35 10.9853 35 8.5C35 6.01472 32.9853 4 30.5 4C28.0147 4 26 6.01472 26 8.5C26 10.9853 28.0147 13 30.5 13Z" fill="currentColor"/>
+<path d="M21.4601 17.2823C20.2126 17.5915 19.3619 18.0579 18.6751 18.6362C17.6443 19.5043 16.8134 20.7569 15.6892 22.7241C15.1412 23.6831 13.9195 24.0163 12.9605 23.4683C12.0014 22.9202 11.6683 21.6985 12.2163 20.7395C13.3348 18.7822 14.4662 16.9512 16.0985 15.5766C17.8028 14.1414 19.8883 13.3288 22.7024 13.016C23.8781 12.8854 25.1713 12.9117 26.3846 13.4532C27.6583 14.0218 28.5876 15.0406 29.2217 16.4023C30.0755 18.2358 30.7107 19.3274 31.2195 19.9595C31.4641 20.2633 31.6352 20.4042 31.7318 20.4673C31.8089 20.5176 31.8413 20.5214 31.8538 20.5228L31.8552 20.523C31.9423 20.5336 32.2236 20.5226 33.0524 20.1563C33.413 19.9969 33.8075 19.8042 34.289 19.5689L34.4042 19.5126C34.9254 19.2581 35.522 18.9686 36.1882 18.6724C37.1976 18.2238 38.3795 18.6784 38.8281 19.6878C39.2767 20.6971 38.8222 21.879 37.8128 22.3277C37.2175 22.5922 36.6766 22.8544 36.1596 23.1069L36.0289 23.1708C35.5679 23.3961 35.1041 23.6228 34.6695 23.8149C33.7688 24.213 32.6181 24.6454 31.3717 24.4937C30.0562 24.3335 29.0417 23.5914 28.2073 22.5941L25.4735 27.8666L29.2532 32.7853C29.4787 33.0786 29.6183 33.4288 29.6567 33.7968L30.4893 41.793C30.6037 42.8916 29.8058 43.875 28.7072 43.9893C27.6085 44.1038 26.6252 43.3059 26.5108 42.2072L25.7368 34.7739L23.441 31.7864L23.4218 31.8235L23.3373 31.6515L19.0949 26.1307C18.6709 25.579 18.5641 24.8467 18.8129 24.197L21.4601 17.2823Z" fill="currentColor"/>
+<path d="M18.4321 29.0071L16.9603 32.9676L11.1591 32.5063C10.058 32.4187 9.09445 33.2404 9.00689 34.3414C8.91932 35.4425 9.74095 36.4061 10.842 36.4937L18.15 37.0748C19.0415 37.1457 19.8717 36.6161 20.1833 35.7778L21.3084 32.7501L18.4321 29.0071Z" fill="currentColor"/>
+</svg></div><b>농구 · 배구 · 줄넘기</b></div><div class="v2-body">슛·리바운드·점프를 반복합니다. 체중이 실리는 점프가 뼈를 자극합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.0848 6.97254C10.0381 6.42223 9.55409 6.01402 9.00378 6.06078L7.01096 6.23008C6.46066 6.27683 6.05245 6.76084 6.0992 7.31114L6.42786 11.1797C6.11157 11.4006 5.93883 11.7952 6.01989 12.1976C6.08486 12.52 6.29816 12.7747 6.57443 12.9049L6.92464 17.0273C6.97139 17.5776 7.4554 17.9858 8.0057 17.939L9.99853 17.7697C10.5488 17.723 10.957 17.239 10.9103 16.6887L10.5411 12.3427C11.05 12.2518 11.5506 12.1655 12.0439 12.0838C12.1496 13.7323 12.4533 16.5319 13.0166 19.168C13.3755 20.848 13.8683 22.6022 14.5519 23.9818C14.8928 24.6698 15.3339 25.3744 15.9189 25.9303C16.4366 26.4222 17.1359 26.8571 18.0002 26.971V31.3027C17.8912 31.2638 17.7826 31.225 17.6746 31.1863L17.4516 31.1063L17.4515 31.1063C16.4466 30.7459 15.4254 30.3797 14.6457 30.1829C14.267 30.0874 13.694 29.9619 13.1325 30.0116C12.8469 30.0369 12.3115 30.1265 11.8177 30.5282C11.2302 31.0061 11.0002 31.6749 11.0002 32.2632C11.0002 33.0863 11.2812 35.2025 11.5198 36.8944C11.6459 37.7886 11.7718 38.6411 11.8661 39.2694C11.9133 39.5837 11.9526 39.8424 11.9802 40.0228L12.0123 40.2319L12.0208 40.2871L12.023 40.3014L12.0236 40.3052L12.0238 40.3062L12.0238 40.3065C12.0238 40.3065 12.0238 40.3066 14.0002 40.0001L12.0238 40.3066C12.1798 41.3122 13.066 42.0403 14.0827 41.9983C15.0995 41.9563 15.9226 41.1576 15.9951 40.1425L16.3649 34.966C17.4757 35.3638 18.7725 35.8234 20.0528 36.1833C21.3259 36.5411 22.7235 36.8422 24.0002 36.8422C25.2769 36.8422 26.6745 36.541 27.9476 36.1833C29.2173 35.8264 30.5031 35.3714 31.6078 34.9759L32.0061 40.1534C32.084 41.166 32.9083 41.9594 33.9231 41.9986C34.9379 42.0377 35.8209 41.3101 35.9766 40.3066L34.0002 40.0001C35.9766 40.3066 35.9766 40.3065 35.9766 40.3065L35.9766 40.3062L35.9768 40.3052L35.9774 40.3014L35.9796 40.2871L35.9881 40.2319L36.0202 40.0228C36.0478 39.8424 36.0871 39.5837 36.1343 39.2694C36.2286 38.6411 36.3545 37.7887 36.4806 36.8944C36.7192 35.2025 37.0002 33.0863 37.0002 32.2632C37.0002 31.6749 36.7703 31.0061 36.1827 30.5282C35.6889 30.1265 35.1535 30.0369 34.8679 30.0116C34.3064 29.9619 33.7334 30.0874 33.3547 30.1829C32.5749 30.3797 31.5537 30.7459 30.5488 31.1063L30.3258 31.1863C30.2177 31.225 30.1092 31.2638 30.0002 31.3027V26.9756C31.8893 26.765 33.035 25.2333 33.6667 24.0137C34.398 22.602 34.8755 20.8167 35.2003 19.1277C35.7077 16.4893 35.9088 13.7175 35.9738 12.096C36.461 12.1761 36.9558 12.2606 37.4587 12.3496L37.0901 16.6887C37.0434 17.239 37.4516 17.723 38.0019 17.7697L39.9947 17.939C40.545 17.9858 41.029 17.5776 41.0757 17.0273L41.426 12.9049C41.7029 12.7744 41.9165 12.5187 41.9809 12.1954C42.061 11.7936 41.8882 11.4002 41.5725 11.1797L41.9012 7.31114C41.9479 6.76084 41.5397 6.27683 40.9894 6.23008L38.9966 6.06078C38.4463 6.01402 37.9623 6.42223 37.9155 6.97254L37.6287 10.3489C36.991 10.237 36.3659 10.1322 35.752 10.0344C35.4114 9.4177 34.7546 9.00005 34.0002 9.00005C33.4504 9.00005 32.9524 9.22189 32.5909 9.58094C26.5142 8.81404 21.3695 8.81549 15.3986 9.57022C15.038 9.21748 14.5445 9.00005 14.0002 9.00005C13.2503 9.00005 12.5968 9.41273 12.2545 10.0234C11.638 10.1223 11.0107 10.2284 10.3711 10.3417L10.0848 6.97254ZM16.9283 18.3321C16.3555 15.6518 16.0828 12.8008 16.0165 11.5084C21.5472 10.835 26.3616 10.8349 31.9914 11.5215C31.9537 12.8536 31.7832 15.7155 31.2723 18.3724C30.9721 19.9334 30.5815 21.2731 30.1149 22.1739C29.7974 22.7868 29.5795 22.9588 29.5072 23.0001H29.4874H29.4646H29.4418H29.419H29.3962H29.3735H29.3507H29.3279H29.3051H29.2823H29.2595H29.2368H29.214H29.1912H29.1684H29.1456H29.1228H29.1001H29.0773H29.0545H29.0317H29.0089H28.9862H28.9634H28.9406H28.9178H28.895H28.8723H28.8495H28.8267H28.8039H28.7812H28.7584H28.7356H28.7129H28.6901H28.6673H28.6446H28.6218H28.599H28.5763H28.5535H28.5307H28.508H28.4852H28.4625H28.4397H28.4169H28.3942H28.3714H28.3487H28.3259H28.3032H28.2804H28.2577H28.2349H28.2122H28.1895H28.1667H28.144H28.1212H28.0985H28.0758H28.053H28.0303H28.0076H27.9848H27.9621H27.9394H27.9167H27.8939H27.8712H27.8485H27.8258H27.8031H27.7804H27.7577H27.735H27.7122H27.6895H27.6668H27.6441H27.6214H27.5987H27.5761H27.5534H27.5307H27.508H27.4853H27.4626H27.4399H27.4173H27.3946H27.3719H27.3492H27.3266H27.3039H27.2812H27.2586H27.2359H27.2133H27.1906H27.168H27.1453H27.1227H27.1H27.0774H27.0547H27.0321H27.0095H26.9869H26.9642H26.9416H26.919H26.8964H26.8737H26.8511H26.8285H26.8059H26.7833H26.7607H26.7381H26.7155H26.6929H26.6703H26.6478H26.6252H26.6026H26.58H26.5575H26.5349H26.5123H26.4898H26.4672H26.4446H26.4221H26.3995H26.377H26.3545H26.3319H26.3094H26.2869H26.2643H26.2418H26.2193H26.1968H26.1743H26.1518H26.1292H26.1067H26.0842H26.0618H26.0393H26.0168H25.9943H25.9718H25.9493H25.9269H25.9044H25.8819H25.8595H25.837H25.8146H25.7921H25.7697H25.7473H25.7248H25.7024H25.68H25.6575H25.6351H25.6127H25.5903H25.5679H25.5455H25.5231H25.5007H25.4783H25.4559H25.4336H25.4112H25.3888H25.3665H25.3441H25.3218H25.2994H25.2771H25.2547H25.2324H25.21H25.1877H25.1654H25.1431H25.1208H25.0985H25.0762H25.0539H25.0316H25.0093H24.987H24.9647H24.9425H24.9202H24.8979H24.8757H24.8534H24.8312H24.8089H24.7867H24.7645H24.7422H24.72H24.6978H24.6756H24.6534H24.6312H24.609H24.5868H24.5646H24.5424H24.5203H24.4981H24.4759H24.4538H24.4316H24.4095H24.3874H24.3652H24.3431H24.321H24.2989H24.2768H24.2547H24.2326H24.2105H24.1884H24.1663H24.1442H24.1222H24.1001H24.078H24.056H24.0339H24.0119H23.9899H23.9678H23.9458H23.9238H23.9018H23.8798H23.8578H23.8358H23.8138H23.7919H23.7699H23.7479H23.726H23.704H23.6821H23.6601H23.6382H23.6163H23.5944H23.5725H23.5506H23.5287H23.5068H23.4849H23.463H23.4411H23.4193H23.3974H23.3756H23.3537H23.3319H23.31H23.2882H23.2664H23.2446H23.2228H23.201H23.1792H23.1574H23.1357H23.1139H23.0921H23.0704H23.0486H23.0269H23.0052H22.9834H22.9617H22.94H22.9183H22.8966H22.8749H22.8532H22.8316H22.8099H22.7882H22.7666H22.745H22.7233H22.7017H22.6801H22.6585H22.6369H22.6153H22.5937H22.5721H22.5505H22.5289H22.5074H22.4858H22.4643H22.4428H22.4212H22.3997H22.3782H22.3567H22.3352H22.3137H22.2922H22.2708H22.2493H22.2279H22.2064H22.185H22.1635H22.1421H22.1207H22.0993H22.0779H22.0565H22.0351H22.0138H21.9924H21.971H21.9497H21.9284H21.907H21.8857H21.8644H21.8431H21.8218H21.8005H21.7792H21.758H21.7367H21.7154H21.6942H21.673H21.6517H21.6305H21.6093H21.5881H21.5669H21.5457H21.5246H21.5034H21.4823H21.4611H21.44H21.4188H21.3977H21.3766H21.3555H21.3344H21.3133H21.2923H21.2712H21.2502H21.2291H21.2081H21.187H21.166H21.145H21.124H21.103H21.0821H21.0611H21.0401H21.0192H20.9982H20.9773H20.9564H20.9355H20.9146H20.8937H20.8728H20.8519H20.8311H20.8102H20.7894H20.7685H20.7477H20.7269H20.7061H20.6853H20.6645H20.6437H20.623H20.6022H20.5815H20.5607H20.54H20.5193H20.4986H20.4779H20.4572H20.4365H20.4159H20.3952H20.3746H20.3539H20.3333H20.3127H20.2921H20.2715H20.2509H20.2304H20.2098H20.1893H20.1687H20.1482H20.1277H20.1072H20.0867H20.0662H20.0457H20.0252H20.0048H19.9844H19.9639H19.9435H19.9231H19.9027H19.8823H19.8619H19.8416H19.8212H19.8009H19.7805H19.7602H19.7399H19.7196H19.6993H19.679H19.6588H19.6385H19.6183H19.598H19.5778H19.5576H19.5374H19.5172H19.497H19.4769H19.4567H19.4366H19.4164H19.3963H19.3762H19.3561H19.336H19.316H19.2959H19.2759H19.2558H19.2358H19.2158H19.1958H19.1758H19.1558H19.1358H19.1159H19.0959H19.076H19.0561H19.0362H19.0163H18.9964H18.9765H18.9567H18.9368H18.917H18.8972H18.8774H18.8576H18.8378H18.818H18.7982H18.7785H18.7587H18.739H18.7193H18.6996H18.6799H18.6602H18.6436C18.5275 22.8787 18.3483 22.6342 18.136 22.2058C17.6738 21.2729 17.2637 19.9021 16.9283 18.3321ZM28.5002 16.5001C28.5002 18.9853 26.4855 21.0001 24.0002 21.0001C21.5149 21.0001 19.5002 18.9853 19.5002 16.5001C19.5002 14.0148 21.5149 12.0001 24.0002 12.0001C26.4855 12.0001 28.5002 14.0148 28.5002 16.5001Z" fill="currentColor"/>
+</svg></div><b>조심할 것</b></div><div class="v2-body">무거운 스쿼트·데드리프트보다 맨몸·점프 위주로. 실내 게임만으로는 햇빛을 못&nbsp;받습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 하루 2시간 햇빛 아래 활동이 목표 — 피부에서 비타민D가 만들어집니다.</span><span class="v2-src">근거 · 대한스포츠의학회 청소년 운동 권고 · 미국소아과학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 흔한 실수</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">키가 안 크는 이유 — 흔히 하는 실수 여섯 가지</h2>
+  <p class="v2-sub">잘못된 습관 하나가 다른 노력을 깎아 먹습니다</p>
+  <div class="v2-panel q-six" style="left:64px;top:206px;width:368px;height:192px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b><span class="q-n">1</span>영양제만 믿기</b></div><div class="v2-body">식사·잠·운동 없이 영양제만 늘립니다. 키를 장담하는 광고는 조심합니다.</div></div><div class="q-fix">대신 · 영양제는 주치의와 상의해 고르기</div>
+  </div>
+  <div class="v2-panel q-six" style="left:456px;top:206px;width:368px;height:192px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.9665 7.00504C12.9637 5.34818 14.3047 4.00284 15.9615 4.00013L31.9337 3.97397C33.5906 3.97125 34.9359 5.3122 34.9386 6.96905L34.9943 40.9559C34.997 42.6128 33.6561 43.9581 31.9992 43.9608L16.027 43.987C14.3702 43.9897 13.0248 42.6488 13.0221 40.9919L12.9665 7.00504ZM14.9656 8.00168C14.9638 6.89711 15.8577 6.00021 16.9623 5.9984L30.9395 5.97551C32.0441 5.9737 32.941 6.86766 32.9428 7.97223L32.987 34.9621C32.9888 36.0666 32.0949 36.9635 30.9903 36.9653L17.0131 36.9882C15.9085 36.99 15.0116 36.0961 15.0098 34.9915L14.9656 8.00168ZM24.0099 41.9745C25.1131 41.9727 26.0059 41.0761 26.0041 39.9719C26.0023 38.8677 25.1065 37.974 24.0033 37.9758C22.9002 37.9776 22.0073 38.8742 22.0091 39.9784C22.0109 41.0826 22.9067 41.9763 24.0099 41.9745Z" fill="currentColor"/>
+<path d="M23.1923 27.5397L23.1921 27.5395C21.6033 26.2237 20.297 25.1418 19.3858 24.1243C18.4764 23.1088 17.9766 22.1747 17.9758 21.1568C17.9745 19.5006 19.3937 18.2 21.2042 18.1985C22.2283 18.1977 23.2141 18.6337 23.8572 19.3235L23.9744 19.4492L24.0914 19.3233C24.7334 18.6325 25.7184 18.1948 26.7426 18.194C28.553 18.1925 29.9744 19.4907 29.9758 21.147C29.9766 22.1648 29.4785 23.0998 28.5707 24.1175C27.6642 25.1337 26.3654 26.2153 24.7861 27.5305L24.7702 27.5437L24.7699 27.544L23.982 28.1963L23.1923 27.5397Z" fill="currentColor"/>
+</svg></div><b><span class="q-n">2</span>늦게 자기</b></div><div class="v2-body">밤늦게 게임·유튜브. 깊은 잠이 줄면 영양제를 챙겨도 효과를 보기 어렵습니다.</div></div><div class="q-fix">대신 · 밤 11시 전에 잠자리에</div>
+  </div>
+  <div class="v2-panel q-six" style="left:848px;top:206px;width:368px;height:192px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M31.2502 8C31.2502 10.2091 29.4594 12 27.2502 12C25.0411 12 23.2502 10.2091 23.2502 8C23.2502 5.79086 25.0411 4 27.2502 4C29.4594 4 31.2502 5.79086 31.2502 8Z" fill="currentColor"/>
+<path d="M25.6928 28.3968L30.8857 33.5207C31.0849 33.7172 31.2405 33.9533 31.3427 34.2137L34.112 41.2693C34.5155 42.2975 34.0091 43.4582 32.9809 43.8617C31.9527 44.2653 30.7921 43.7589 30.3885 42.7307L27.7743 36.07L18.8455 27.2598C18.4087 26.8288 18.1939 26.2211 18.2629 25.6113L18.9781 19.2919C17.2542 21.0046 15.9244 23.4143 14.9053 26.607C14.5695 27.6592 13.4442 28.24 12.3919 27.9041C11.3396 27.5682 10.7589 26.4429 11.0948 25.3907C12.965 19.5312 16.0701 15.1454 21.2797 13.1341L21.3034 13.1251C22.6301 12.6321 24.0105 12.6718 25.2398 13.3074C26.4214 13.9182 27.2624 14.9731 27.8131 16.1554C28.0449 16.6532 28.2594 17.1184 28.4607 17.5551C28.9485 18.6129 29.3594 19.5041 29.7535 20.2873C30.3073 21.3877 30.7523 22.1161 31.1921 22.6285C31.5998 23.1034 32.0055 23.3952 32.5225 23.597C33.0782 23.8141 33.8572 23.9636 35.06 23.9997C36.1641 24.0328 37.0323 24.9547 36.9992 26.0588C36.966 27.1628 36.0442 28.031 34.9401 27.9979C33.4952 27.9546 32.2121 27.77 31.0673 27.323C29.8838 26.8608 28.9506 26.1584 28.157 25.2339C27.6565 24.6508 27.2176 23.9859 26.8062 23.2621L25.6928 28.3968Z" fill="currentColor"/>
+<path d="M18.2627 30.2198L21.5778 33.3994L20.0524 38.547C19.9343 38.9453 19.6952 39.297 19.3681 39.5531L14.2335 43.5755C13.364 44.2566 12.1069 44.1039 11.4257 43.2344C10.7445 42.3649 10.8972 41.1078 11.7668 40.4266L16.3987 36.7981L17.7944 32.0881L18.2627 30.2198Z" fill="currentColor"/>
+</svg></div><b><span class="q-n">3</span>실내에만 있기</b></div><div class="v2-body">학원·집·휴대폰. 햇빛을 거의 못 받아 비타민D를 스스로 만들지 못합니다.</div></div><div class="q-fix">대신 · 하루 2시간 바깥 활동</div>
+  </div>
+  <div class="v2-panel q-six" style="left:64px;top:414px;width:368px;height:192px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.9645 9.16263C21.8055 8.05919 20.1386 7.51048 17.9672 8.04371C17.5014 7.41474 16.8092 6.77117 15.8899 6.37651C14.5542 5.8031 12.8769 5.815 10.9856 6.90161C9.0077 7.82463 8.05482 9.18247 7.79227 10.6063C7.61382 11.5741 7.76893 12.4919 8.02385 13.2165C6.34565 14.6843 5.84115 16.36 6.08212 17.9391C6.29052 19.3048 7.03706 20.472 7.76902 21.2642C7.64293 21.8429 7.62641 22.4092 7.73113 22.9423C8.04139 22.7211 8.18808 22.6205 8.52484 22.4831C9.07459 22.2587 9.52484 22.2333 10.0248 22.2333C11.5998 22.2333 12.511 22.4158 14.0129 22.8327C14.8986 23.0786 15.6186 23.3808 16.2798 23.7481C16.335 23.7787 16.3898 23.8098 16.4442 23.8414L16.7282 23.7186C17.0853 23.5642 17.4796 23.5173 17.863 23.5834L21.3761 24.1897C21.3246 23.916 21.2818 23.6403 21.2475 23.3687C21.1866 22.8868 21.1523 22.4175 21.1433 21.9934C21.115 20.6556 21.3701 19.3269 21.892 18.0946C22.4139 16.8622 23.1908 15.7541 24.1717 14.8428C24.4339 14.5992 24.7092 14.3711 24.9959 14.1595C25.2316 13.9856 25.475 13.8227 25.7254 13.6715C25.8698 13.5842 26.0165 13.5008 26.1654 13.4214C25.7816 13.0105 25.2933 12.6855 24.7267 12.4487C24.4961 11.3958 23.966 10.1161 22.9645 9.16263ZM13.1391 10.2801C13.6341 10.0356 14.2339 10.2383 14.4787 10.7328L15.2704 12.3325L16.8829 10.6061C17.2597 10.2027 17.8925 10.1808 18.2963 10.5572C18.7001 10.9336 18.722 11.5657 18.3452 11.9691L16.2179 14.2467L17.0206 15.8684L18.352 14.6585C18.7605 14.2872 19.393 14.3171 19.7646 14.7252C20.1362 15.1333 20.1063 15.7651 19.6978 16.1364L17.9427 17.7314L18.9987 19.865C19.2435 20.3596 19.0406 20.9587 18.5455 21.2032C18.0505 21.4478 17.4507 21.2451 17.2059 20.7505L16.1106 18.5376L14.1466 18.9347C13.6053 19.0441 13.0777 18.6945 12.9681 18.1537C12.8586 17.613 13.2086 17.0859 13.7499 16.9765L15.1935 16.6846L14.3982 15.0778L11.359 15.5351C10.8128 15.6173 10.3034 15.2416 10.2212 14.696C10.1389 14.1505 10.515 13.6416 11.0611 13.5594L13.4674 13.1974L12.6859 11.6184C12.4411 11.1238 12.644 10.5246 13.1391 10.2801Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.1363 24.6951C23.9386 24.6562 23.7677 24.623 23.6285 24.5961C23.4483 24.1014 23.3154 23.5918 23.2338 23.0733L23.2187 23.0121C23.1167 22.5961 23.0488 22.2287 23.0429 21.9532C23.0202 20.883 23.2243 19.82 23.6418 18.8341C24.0594 17.8482 24.6809 16.9617 25.4656 16.2327C25.5272 16.1755 25.5897 16.1255 25.653 16.0818C27.6684 14.2827 30.4862 13.969 32.6678 15.7554C32.6426 13.3026 33.6388 10.907 36.0482 9.51735L36.8927 10.9786C34.852 12.1556 34.0931 14.3584 34.431 16.7135C39.086 15.1835 42.709 19.5865 41.3494 24.6555C40.9207 26.2537 40.0143 27.6088 38.8016 28.6326C38.6055 28.5638 38.402 28.4927 38.1925 28.42C36.3851 27.7926 34.1097 27.0345 32.2913 26.5327C30.5241 26.0452 28.2486 25.5404 26.4286 25.1598C25.5156 24.9689 24.7119 24.8082 24.1363 24.6951ZM37.5538 19.9861C38.096 19.8811 38.6207 20.2352 38.7258 20.7768C39.0901 22.6554 38.4106 24.5203 36.9228 25.7254C36.4938 26.0729 35.8641 26.0072 35.5162 25.5786C35.1684 25.1501 35.2342 24.521 35.6632 24.1735C36.5773 23.4331 36.9861 22.311 36.7623 21.1568C36.6572 20.6152 37.0116 20.091 37.5538 19.9861Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.2356 41.9984C13.2354 41.8312 15.0922 40.9782 16.2365 39.7291C16.6912 40.3391 17.4545 40.6927 18.2797 40.5629C19.1258 40.4298 20.1689 40.255 21.3779 40.0319V35.3473H23.6072V39.6011C26.4277 39.0317 29.8589 38.2479 33.6392 37.1948V34.2338H35.8685V36.5536C37.3921 36.1013 38.9612 35.6065 40.5601 35.0658C42.48 34.4166 42.48 31.8239 40.5601 31.1747C36.4875 29.7976 32.6087 28.7178 29.1805 27.8817V34.2338L26.9512 34.2338L26.9512 27.3568C23.2611 26.5188 20.241 25.9862 18.2797 25.6776C17.4544 25.5478 16.6911 25.9015 16.2365 26.5115C15.0922 25.2624 13.2353 24.4094 10.2356 24.2423C9.62092 24.208 9.11458 24.7124 9.12342 25.3273C9.14947 27.1402 9.25973 28.5801 9.63771 29.7034C8.41338 30.167 7.25745 31.1032 6.2022 32.512C5.9326 32.8719 5.9326 33.3687 6.2022 33.7286C7.24888 35.126 8.39461 36.0584 9.60789 36.5259C9.28585 37.6167 9.15814 39.0452 9.12544 40.9104C9.11467 41.5253 9.62092 42.0326 10.2356 41.9984ZM12.4346 31.0259L10.4279 31.7858C9.87237 31.9962 9.24764 32.4074 8.58864 33.1203C9.24067 33.8257 9.85918 34.2358 10.4101 34.448L12.3275 35.1868L11.7462 37.1558C11.5747 37.7367 11.4602 38.5299 11.3992 39.6442C13.5484 39.3131 14.4568 38.5174 14.9264 37.792C15.6014 36.7492 15.8044 35.2273 15.8044 33.1203C15.8044 31.0133 15.6014 29.4915 14.9264 28.4487C14.4563 27.7226 13.5467 26.926 11.393 26.5955C11.4498 27.6754 11.5623 28.4334 11.7508 28.9938L12.4346 31.0259Z" fill="currentColor"/>
+</svg></div><b><span class="q-n">4</span>편식</b></div><div class="v2-body">고기만 먹고 채소·콩을 거부하면 아연·마그네슘·비타민K가 모자랍니다.</div></div><div class="q-fix">대신 · 콩·녹색채소를 매끼 한 번</div>
+  </div>
+  <div class="v2-panel q-six" style="left:456px;top:414px;width:368px;height:192px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><b><span class="q-n">5</span>너무 많이 먹기</b></div><div class="v2-body">비타민D 5,000 IU·아연 30 mg 같은 고용량을 오래 먹으면 부작용이 생깁니다.</div></div><div class="q-fix">대신 · 권장량 지키기</div>
+  </div>
+  <div class="v2-panel q-six v2-panel--accent" style="left:848px;top:414px;width:368px;height:192px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.5 8.5C28.5 10.9853 26.4853 13 24 13C21.5147 13 19.5 10.9853 19.5 8.5C19.5 6.01472 21.5147 4 24 4C26.4853 4 28.5 6.01472 28.5 8.5ZM30 34H25.2645L26.0082 42.1811C26.105 43.246 27.0224 44.0464 28.0906 43.998C29.1589 43.9495 30 43.0693 30 42V34ZM22.7355 34H18V42C18 43.0693 18.8412 43.9495 19.9094 43.998C20.9776 44.0464 21.895 43.246 21.9918 42.1811L22.7355 34ZM35.9555 14H36.0463C36.0161 13.9993 35.9859 13.9993 35.9555 14ZM11.954 14C11.9839 13.9993 12.0138 13.9993 12.0438 14H11.954Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11 15C10.4477 15 10 15.4477 10 16V31C10 31.5523 10.4477 32 11 32H37C37.5523 32 38 31.5523 38 31V16C38 15.4477 37.5523 15 37 15H11ZM23 17V18.5H22.5C21.5691 18.5 20.5591 18.8008 19.8458 19.0602C19.4755 19.1948 19.1567 19.3291 18.9298 19.4299C18.816 19.4805 18.7245 19.5231 18.6601 19.5536C18.6279 19.5689 18.6025 19.5812 18.5844 19.59L18.5629 19.6006L18.5564 19.6038L18.5542 19.6049L18.5531 19.6054C18.5529 19.6055 18.5528 19.6056 19 20.5C19.4472 21.3944 19.4471 21.3945 19.447 21.3945L19.4487 21.3937L19.4613 21.3875C19.4732 21.3817 19.4922 21.3725 19.5176 21.3605C19.5685 21.3363 19.6449 21.3007 19.7421 21.2576C19.937 21.1709 20.212 21.0552 20.5292 20.9398C21.1909 20.6992 21.9309 20.5 22.5 20.5H23V22.5H22.2C21.0027 22.5 19.7465 23.1358 18.9067 23.6448C18.4612 23.9148 18.0788 24.1833 17.8079 24.3839C17.6719 24.4847 17.5627 24.5693 17.4863 24.6297C17.448 24.66 17.4179 24.6843 17.3966 24.7016L17.3713 24.7223L17.3638 24.7285L17.3614 24.7305L17.3605 24.7312C17.3603 24.7314 17.3598 24.7318 18 25.5C18.6402 26.2682 18.6401 26.2683 18.6399 26.2684L18.6426 26.2663L18.6582 26.2535C18.673 26.2415 18.6961 26.2228 18.727 26.1984C18.7888 26.1495 18.8812 26.0778 18.9984 25.9911C19.2337 25.8167 19.5638 25.5852 19.9433 25.3552C20.7535 24.8642 21.5973 24.5 22.2 24.5H23V26.6678C22.2986 26.865 21.6252 27.2103 21.0794 27.6016C20.6796 27.8883 20.3086 28.2276 20.0276 28.6006C19.7591 28.9572 19.5 29.4424 19.5 30H21.5C21.5 30.0043 21.4999 30.008 21.4998 30.0109C21.4997 30.0135 21.4995 30.0155 21.4995 30.0171C21.4993 30.0192 21.4993 30.0204 21.4994 30.0204C21.4995 30.0204 21.4999 30.0193 21.5007 30.0171C21.5059 30.0015 21.5297 29.9307 21.6252 29.8038C21.7556 29.6307 21.9657 29.4272 22.2449 29.227C22.8052 28.8252 23.4877 28.5464 24.032 28.5004C24.4937 28.5117 25.1478 28.7645 25.7243 29.1837C26.0071 29.3894 26.2259 29.6033 26.3641 29.7875C26.4653 29.9224 26.4921 29.9988 26.4987 30.0174L26.4995 30.0198C26.5 30.0212 26.5003 30.0219 26.5005 30.0219C26.501 30.0218 26.5 30.0145 26.5 30H28.5C28.5 29.4379 28.2324 28.9452 27.9641 28.5875C27.6803 28.2092 27.3054 27.8606 26.9007 27.5663C26.3675 27.1785 25.6989 26.8257 25 26.6391V24.5H26.1C26.8489 24.5 27.6186 24.8663 28.2631 25.3186C28.5735 25.5364 28.8285 25.7556 29.0048 25.9197C29.0925 26.0012 29.1594 26.0679 29.2026 26.1122C29.2241 26.1343 29.2397 26.1507 29.2488 26.1605L29.2571 26.1694C29.2569 26.1692 29.2567 26.169 30 25.5C30.7433 24.831 30.7431 24.8308 30.7429 24.8306L30.7414 24.829L30.7389 24.8262L30.7318 24.8184L30.7097 24.7946C30.6915 24.7751 30.6663 24.7485 30.6346 24.716C30.5711 24.6509 30.4809 24.5613 30.367 24.4553C30.1403 24.2444 29.814 23.9636 29.4119 23.6814C28.6314 23.1337 27.4511 22.5 26.1 22.5H25V20.5H25.75C26.4443 20.5 27.1193 20.7011 27.6432 20.9216C27.9003 21.0299 28.1092 21.1378 28.2509 21.2169C28.3215 21.2564 28.3747 21.2882 28.408 21.3087C28.4247 21.3189 28.4363 21.3263 28.4427 21.3304L28.4457 21.3323C28.4455 21.3322 28.4453 21.3321 29 20.5C29.5547 19.6679 29.5545 19.6678 29.5542 19.6676L29.5527 19.6666L29.5501 19.6649L29.5432 19.6604L29.5228 19.6472C29.5063 19.6366 29.484 19.6225 29.4562 19.6054C29.4007 19.5712 29.323 19.5249 29.2256 19.4706C29.0315 19.3622 28.7559 19.2201 28.4193 19.0784C27.7557 18.7989 26.8057 18.5 25.75 18.5H25.0009L25 17H23Z" fill="currentColor"/>
+</svg></div><b><span class="q-n">6</span>혼자 판단하기</b></div><div class="v2-body">작다고 영양제부터 시작하지 마세요. 성조숙증·갑상선 검사와 골연령 사진이 먼저입니다.</div></div><div class="q-fix">대신 · 진료로 성장 평가 먼저</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 성장호르몬 주사는 의학적으로 필요할 때만 소아내분비 전문의가 판단합니다.</span><span class="v2-src">근거 · 대한소아내분비학회 임상 가이드 · 대한가정의학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 11 · 실전 순서</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">실전 순서 — 1번부터 차례로</h2>
+  <p class="v2-sub">뒤 단계부터 시작하면 효과를 보기 어렵습니다 — 검사부터 차근차근</p>
+  <div class="v2-panel q-tl" style="left:64px;top:206px;width:177px;height:262px">
+    <div class="q-tl__top"><span class="q-tl__n">1</span><span class="q-tl__tag">검사</span></div><div class="q-tl__h">혈액검사</div><div class="v2-body">비타민D·아연·칼슘 수치 확인. 내과 진료 뒤 결정합니다.</div>
+  </div>
+  <div class="v2-panel q-tl v2-panel--accent" style="left:259px;top:206px;width:177px;height:262px">
+    <div class="q-tl__top"><span class="q-tl__n">2</span><span class="q-tl__tag">1순위</span></div><div class="q-tl__h">비타민D + 칼슘</div><div class="v2-body">부족이 확인되면 먼저 시작합니다.</div>
+  </div>
+  <div class="v2-panel q-tl" style="left:454px;top:206px;width:177px;height:262px">
+    <div class="q-tl__top"><span class="q-tl__n">3</span><span class="q-tl__tag">편식 시</span></div><div class="q-tl__h">아연</div><div class="v2-body">고기·해산물을 적게 먹으면 <span class="q-nw">하루 5–10 mg</span>.</div>
+  </div>
+  <div class="v2-panel q-tl" style="left:649px;top:206px;width:177px;height:262px">
+    <div class="q-tl__top"><span class="q-tl__n">4</span><span class="q-tl__tag">선택</span></div><div class="q-tl__h">HT042</div><div class="v2-body">키가 또래보다 많이 작으면 진료로 원인부터 확인한&nbsp;뒤&nbsp;검토.</div>
+  </div>
+  <div class="v2-panel q-tl" style="left:844px;top:206px;width:177px;height:262px">
+    <div class="q-tl__top"><span class="q-tl__n">5</span><span class="q-tl__tag">매일</span></div><div class="q-tl__h">식사 관리</div><div class="v2-body">달걀·살코기·우유·콩은 매일, 탄산음료는 조금만.</div>
+  </div>
+  <div class="v2-panel q-tl v2-panel--accent" style="left:1039px;top:206px;width:177px;height:262px">
+    <div class="q-tl__top"><span class="q-tl__n">6</span><span class="q-tl__tag">매일</span></div><div class="q-tl__h">잠 · 운동</div><div class="v2-body">11시 전 취침 · 야외 2시간 · 점프 운동.</div>
+  </div>
+  <div class="v2-panel q-why" style="left:64px;top:490px;width:1152px;height:116px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>순서가 중요한 이유</b></div><div class="v2-body">검사로 부족한 것을 확인해야 필요한 것만 먹습니다. 1·2단계를 건너뛰고 3·4단계부터 챙기면 순서가 바뀐 것입니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 5·6단계(식사·잠·운동)는 검사 결과와 상관없이 오늘부터 시작합니다.</span><span class="v2-src">근거 · 광교바른내과 임상 권고 · 대한소아내분비학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">핵심 정리 — 자라는 시기에 챙기세요</h2>
+  <p class="v2-sub">중1~중3 성장급등기 — 지금 챙기면 타고난 키만큼 자라는 데 도움이 됩니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-body q-take"><div class="q-take__it"><span class="q-take__n">1</span><div><b>혈액검사 먼저</b><span>비타민D·아연·칼슘 수치를 확인하고 부족한 것만 보충합니다.</span></div></div><div class="q-take__it"><span class="q-take__n">2</span><div><b>1순위는 비타민D + 칼슘</b><span>한국 청소년 98.9%가 비타민D 부족, 90%가 칼슘 권장량 미달입니다.</span></div></div><div class="q-take__it"><span class="q-take__n">3</span><div><b>잠과 바깥 활동이 먼저</b><span>11시 전 취침 · 야외 활동 2시간 · 점프 운동이 영양제보다 우선입니다.</span></div></div><div class="q-take__it"><span class="q-take__n">4</span><div><b>줄일 것</b><span>탄산음료 · 늦은 밤 스마트폰 · 실내 게임만 하는 생활.</span></div></div></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:816px;top:206px;width:380px;height:155px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/teen-growth-motivation.png" alt="검사·식사·수면·운동을 거쳐 길을 걸어가는 청소년">
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:377px;width:420px;height:229px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM13,2H14V3H13zM15,2H16V3H15zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM23,2H24V3H23zM24,2H25V3H24zM26,2H27V3H26zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM14,3H15V4H14zM15,3H16V4H15zM17,3H18V4H17zM19,3H20V4H19zM20,3H21V4H20zM22,3H23V4H22zM23,3H24V4H23zM24,3H25V4H24zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM16,4H17V5H16zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM14,5H15V6H14zM15,5H16V6H15zM20,5H21V6H20zM21,5H22V6H21zM24,5H25V6H24zM25,5H26V6H25zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM14,6H15V7H14zM16,6H17V7H16zM18,6H19V7H18zM23,6H24V7H23zM25,6H26V7H25zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM12,7H13V8H12zM15,7H16V8H15zM16,7H17V8H16zM20,7H21V8H20zM21,7H22V8H21zM23,7H24V8H23zM24,7H25V8H24zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM13,9H14V10H13zM16,9H17V10H16zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM28,9H29V10H28zM29,9H30V10H29zM30,9H31V10H30zM2,10H3V11H2zM6,10H7V11H6zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM20,10H21V11H20zM21,10H22V11H21zM24,10H25V11H24zM26,10H27V11H26zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM38,10H39V11H38zM5,11H6V12H5zM6,11H7V12H6zM10,11H11V12H10zM11,11H12V12H11zM14,11H15V12H14zM18,11H19V12H18zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM27,11H28V12H27zM29,11H30V12H29zM30,11H31V12H30zM34,11H35V12H34zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM7,12H8V13H7zM8,12H9V13H8zM12,12H13V13H12zM14,12H15V13H14zM15,12H16V13H15zM18,12H19V13H18zM22,12H23V13H22zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM33,12H34V13H33zM35,12H36V13H35zM36,12H37V13H36zM3,13H4V14H3zM5,13H6V14H5zM6,13H7V14H6zM9,13H10V14H9zM12,13H13V14H12zM13,13H14V14H13zM15,13H16V14H15zM16,13H17V14H16zM19,13H20V14H19zM20,13H21V14H20zM23,13H24V14H23zM24,13H25V14H24zM26,13H27V14H26zM28,13H29V14H28zM33,13H34V14H33zM36,13H37V14H36zM37,13H38V14H37zM3,14H4V15H3zM5,14H6V15H5zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM13,14H14V15H13zM17,14H18V15H17zM19,14H20V15H19zM20,14H21V15H20zM21,14H22V15H21zM22,14H23V15H22zM23,14H24V15H23zM24,14H25V15H24zM25,14H26V15H25zM31,14H32V15H31zM32,14H33V15H32zM33,14H34V15H33zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM5,15H6V16H5zM6,15H7V16H6zM9,15H10V16H9zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM25,15H26V16H25zM27,15H28V16H27zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM3,16H4V17H3zM4,16H5V17H4zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM14,16H15V17H14zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM25,16H26V17H25zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM2,17H3V18H2zM3,17H4V18H3zM4,17H5V18H4zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM12,17H13V18H12zM13,17H14V18H13zM15,17H16V18H15zM18,17H19V18H18zM22,17H23V18H22zM23,17H24V18H23zM28,17H29V18H28zM33,17H34V18H33zM34,17H35V18H34zM36,17H37V18H36zM38,17H39V18H38zM3,18H4V19H3zM6,18H7V19H6zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM18,18H19V19H18zM21,18H22V19H21zM22,18H23V19H22zM31,18H32V19H31zM32,18H33V19H32zM33,18H34V19H33zM35,18H36V19H35zM36,18H37V19H36zM37,18H38V19H37zM2,19H3V20H2zM5,19H6V20H5zM6,19H7V20H6zM9,19H10V20H9zM11,19H12V20H11zM12,19H13V20H12zM13,19H14V20H13zM14,19H15V20H14zM16,19H17V20H16zM19,19H20V20H19zM20,19H21V20H20zM21,19H22V20H21zM24,19H25V20H24zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM30,19H31V20H30zM34,19H35V20H34zM35,19H36V20H35zM37,19H38V20H37zM2,20H3V21H2zM3,20H4V21H3zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM14,20H15V21H14zM16,20H17V21H16zM17,20H18V21H17zM20,20H21V21H20zM21,20H22V21H21zM24,20H25V21H24zM25,20H26V21H25zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM36,20H37V21H36zM2,21H3V22H2zM3,21H4V22H3zM4,21H5V22H4zM6,21H7V22H6zM7,21H8V22H7zM10,21H11V22H10zM12,21H13V22H12zM13,21H14V22H13zM15,21H16V22H15zM16,21H17V22H16zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM21,21H22V22H21zM22,21H23V22H22zM23,21H24V22H23zM25,21H26V22H25zM28,21H29V22H28zM29,21H30V22H29zM31,21H32V22H31zM34,21H35V22H34zM36,21H37V22H36zM37,21H38V22H37zM2,22H3V23H2zM4,22H5V23H4zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM18,22H19V23H18zM19,22H20V23H19zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM36,22H37V23H36zM2,23H3V24H2zM3,23H4V24H3zM4,23H5V24H4zM5,23H6V24H5zM7,23H8V24H7zM10,23H11V24H10zM11,23H12V24H11zM13,23H14V24H13zM15,23H16V24H15zM17,23H18V24H17zM18,23H19V24H18zM20,23H21V24H20zM23,23H24V24H23zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM30,23H31V24H30zM31,23H32V24H31zM33,23H34V24H33zM34,23H35V24H34zM2,24H3V25H2zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM11,24H12V25H11zM15,24H16V25H15zM17,24H18V25H17zM19,24H20V25H19zM25,24H26V25H25zM26,24H27V25H26zM28,24H29V25H28zM29,24H30V25H29zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM36,24H37V25H36zM37,24H38V25H37zM3,25H4V26H3zM4,25H5V26H4zM6,25H7V26H6zM11,25H12V26H11zM12,25H13V26H12zM14,25H15V26H14zM16,25H17V26H16zM17,25H18V26H17zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM24,25H25V26H24zM25,25H26V26H25zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM36,25H37V26H36zM37,25H38V26H37zM2,26H3V27H2zM3,26H4V27H3zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM20,26H21V27H20zM21,26H22V27H21zM24,26H25V27H24zM26,26H27V27H26zM31,26H32V27H31zM32,26H33V27H32zM33,26H34V27H33zM35,26H36V27H35zM36,26H37V27H36zM37,26H38V27H37zM2,27H3V28H2zM4,27H5V28H4zM6,27H7V28H6zM7,27H8V28H7zM9,27H10V28H9zM11,27H12V28H11zM12,27H13V28H12zM14,27H15V28H14zM16,27H17V28H16zM18,27H19V28H18zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM28,27H29V28H28zM29,27H30V28H29zM34,27H35V28H34zM35,27H36V28H35zM4,28H5V29H4zM5,28H6V29H5zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM12,28H13V29H12zM13,28H14V29H13zM15,28H16V29H15zM18,28H19V29H18zM20,28H21V29H20zM22,28H23V29H22zM29,28H30V29H29zM30,28H31V29H30zM33,28H34V29H33zM36,28H37V29H36zM5,29H6V30H5zM6,29H7V30H6zM10,29H11V30H10zM16,29H17V30H16zM19,29H20V30H19zM20,29H21V30H20zM23,29H24V30H23zM26,29H27V30H26zM28,29H29V30H28zM29,29H30V30H29zM33,29H34V30H33zM34,29H35V30H34zM36,29H37V30H36zM38,29H39V30H38zM2,30H3V31H2zM3,30H4V31H3zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM10,30H11V31H10zM11,30H12V31H11zM12,30H13V31H12zM14,30H15V31H14zM15,30H16V31H15zM16,30H17V31H16zM17,30H18V31H17zM19,30H20V31H19zM21,30H22V31H21zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM12,31H13V32H12zM13,31H14V32H13zM15,31H16V32H15zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM25,31H26V32H25zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM13,32H14V33H13zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM23,32H24V33H23zM24,32H25V33H24zM25,32H26V33H25zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM12,33H13V34H12zM14,33H15V34H14zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM36,33H37V34H36zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM13,34H14V35H13zM14,34H15V35H14zM16,34H17V35H16zM17,34H18V35H17zM18,34H19V35H18zM22,34H23V35H22zM26,34H27V35H26zM28,34H29V35H28zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM12,35H13V36H12zM20,35H21V36H20zM21,35H22V36H21zM23,35H24V36H23zM24,35H25V36H24zM26,35H27V36H26zM28,35H29V36H28zM30,35H31V36H30zM32,35H33V36H32zM33,35H34V36H33zM35,35H36V36H35zM36,35H37V36H36zM37,35H38V36H37zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM11,36H12V37H11zM12,36H13V37H12zM14,36H15V37H14zM16,36H17V37H16zM17,36H18V37H17zM19,36H20V37H19zM20,36H21V37H20zM21,36H22V37H21zM23,36H24V37H23zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM28,36H29V37H28zM31,36H32V37H31zM32,36H33V37H32zM35,36H36V37H35zM37,36H38V37H37zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM15,37H16V38H15zM16,37H17V38H16zM17,37H18V38H17zM18,37H19V38H18zM19,37H20V38H19zM20,37H21V38H20zM21,37H22V38H21zM22,37H23V38H22zM23,37H24V38H23zM26,37H27V38H26zM28,37H29V38H28zM31,37H32V38H31zM32,37H33V38H32zM34,37H35V38H34zM35,37H36V38H35zM36,37H37V38H36zM37,37H38V38H37zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM12,38H13V39H12zM13,38H14V39H13zM15,38H16V39H15zM16,38H17V39H16zM19,38H20V39H19zM22,38H23V39H22zM23,38H24V39H23zM25,38H26V39H25zM26,38H27V39H26zM29,38H30V39H29zM32,38H33V39H32zM33,38H34V39H33zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__caption">다시 보기 — 슬라이드 링크 QR</div>
         </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — KNHANES · MFDS · 대한소아내분비학회 · 대한영양학회 · WHO · © 2026 광교바른내과</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">다시 보기 · QR을 스캔하면 휴대폰에서 이 자료를 다시 열 수 있습니다.</span><span class="v2-src">근거 · 국민건강영양조사 · 식약처 · 대한소아내분비학회 · 대한영양학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
+</section>
 
 <!-- Presenting mode toggle -->
 <div class="deck-nav">
@@ -970,6 +530,5 @@
     });
   })();
 </script>
-
 </body>
 </html>

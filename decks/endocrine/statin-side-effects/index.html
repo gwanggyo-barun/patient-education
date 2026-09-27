@@ -24,533 +24,347 @@
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3A-redesign 2026-09-27 (원장님 49028) — 카드 격자만 되풀이하던 v1 판을 표·글+그림·큰 숫자·단계·
+    가로 도해·대비 2단·2x2·목록으로 바꿨다. 그림칸 = 그림 원본 비율(1.5·1.333·2.872). */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px;font-size:14px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:10px}
+ .q-text .v2-body{font-size:17px;line-height:1.6}
+ /* 그림칸 — 박스 = 그림(비율 동일) */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none;border-radius:12px}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+ /* 숫자 목록 */
+ .q-facts{display:flex;flex-direction:column;justify-content:space-between;padding:18px 24px}
+ .q-fact{display:grid;grid-template-columns:136px 1fr;gap:18px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--v2-line)}
+ .q-fact:last-child{border-bottom:0}
+ .q-fact__n{font-size:30px;font-weight:800;color:var(--v2-navy);letter-spacing:-.5px;line-height:1.1}
+ .q-fact__n--sm{font-size:23px}
+ .q-fact__t b{display:block;font-size:18px;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-fact__t span{display:block;font-size:16px;line-height:1.55;color:var(--v2-body);word-break:keep-all}
+ .q-facts--3 .q-fact{padding:18px 0}
+ .q-facts--3 .q-fact__t span{font-size:17px}
+ /* 표 */
+ .q-table thead th{height:48px;font-size:16px}
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px}
+ .q-table--six tbody th, .q-table--six tbody td{height:58px;padding:8px 16px}
+ .q-stars{font-size:18px;letter-spacing:2px;color:var(--v2-accent)}
+ .q-stars i{font-style:normal;color:var(--v2-line)}
+ .q-stars--alert{color:var(--v2-alert)}
+ /* 큰 숫자 */
+ .q-big{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:32px}
+ .q-big__note{order:-1;font-size:16px;color:var(--v2-muted);margin-bottom:14px;word-break:keep-all}
+ .q-big__num{font-size:112px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-4px}
+ .q-big__num span{font-size:48px;color:var(--v2-accent);letter-spacing:0}
+ .q-big__cap{margin-top:18px;font-size:19px;font-weight:700;color:var(--v2-ink);line-height:1.5;word-break:keep-all}
+ /* 단계 */
+ .q-step{display:flex;flex-direction:column;padding:26px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--rule);color:#FFF;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+ .q-step__h{font-size:21px;font-weight:700;color:var(--v2-navy);margin-bottom:12px;word-break:keep-all}
+ .q-step .v2-body{font-size:18px;line-height:1.65}
+ .q-key{display:flex;align-items:center;gap:20px;padding:16px 28px;background:var(--v2-chip-navy)}
+ .q-key .v2-chip{width:56px;height:56px}
+ .q-key .v2-chip svg{width:34px;height:34px}
+ .q-key b{display:block;font-size:21px;color:var(--v2-navy);margin-bottom:4px}
+ .q-key span{display:block;font-size:17px;color:var(--v2-body);word-break:keep-all}
+ /* 가로 도해 라벨 — 글자는 그림이 아니라 HTML 로 */
+ .q-tl{position:absolute;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+ .q-tl__lab{display:flex;align-items:center;justify-content:center;height:44px;border-radius:8px;background:var(--v2-chip-navy);border-top:4px solid var(--v2-navy)}
+ .q-tl__lab b{font-size:17px;color:var(--v2-navy)}
+ .q-tl__lab--on{background:var(--v2-chip-accent);border-top-color:var(--v2-accent)}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:16px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:16px 0 16px 22px}
+ .v2-vs__list li::before{top:26px}
+ /* 2x2 오해 */
+ .q-four{display:flex;flex-direction:column;justify-content:center;padding:22px 26px}
+ .q-myth__tag{position:absolute;right:22px;top:20px;font-size:15px;font-weight:700;color:var(--v2-faint);letter-spacing:.5px}
+ .q-four .v2-head{margin-bottom:12px;padding-right:48px}
+ .q-four .v2-head b{font-size:20px}
+ .q-four .v2-body{font-size:17px;line-height:1.6}
+ /* 체크리스트 */
+ .q-listpanel{padding:18px 28px}
+ .q-list{margin:0;padding:0;list-style:none;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+ .q-list li{display:flex;align-items:center;gap:16px;padding:9px 0;border-bottom:1px dashed var(--v2-line);font-size:17px;color:var(--v2-ink);word-break:keep-all}
+ .q-list li:last-child{border-bottom:0}
+ .q-list li i{flex:none;font-style:normal;font-size:17px;font-weight:800;color:var(--v2-accent);width:28px}
+ .q-list b{color:var(--v2-navy)}
+ .q-promise{display:flex;flex-direction:column;justify-content:center;gap:20px;padding:32px 30px}
+ .q-promise .v2-chip{width:64px;height:64px;border-radius:16px}
+ .q-promise .v2-chip svg{width:38px;height:38px}
+ .q-promise__h{font-size:26px;font-weight:800;color:var(--v2-navy);line-height:1.4;word-break:keep-all}
+ .q-promise .v2-body{font-size:17px;line-height:1.65}
+ .q-close .v2-block + .v2-block{margin-top:14px;padding-top:14px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-close .v2-body{font-size:16px}
+ .q-refs{font-size:15px !important;line-height:1.5}
+</style>
 <!-- seo:geo2 --><meta name="description" content="근육통·간수치·당뇨 — 무엇을 걱정하고 무엇을 안심해도 되는지 근거로 정리합니다">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/statin-side-effects/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Statin Side Effects — Gwanggyo Barun Internal Medicine", "description": "근육통·간수치·당뇨 — 무엇을 걱정하고 무엇을 안심해도 되는지 근거로 정리합니다", "url": "https://edu.gwanggyobarun.com/decks/endocrine/statin-side-effects/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
 <div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">스타틴 부작용,<br><em>걱정과 진실 사이</em></h1>
-      <p class="slide__subtitle">근거로 보는 스타틴 안전성 (Statin Safety) — 무엇을 걱정하고, 무엇을 안심해도 되는가</p>
+      <p class="slide__subtitle">근거로 보는 스타틴 안전성 — 무엇을 걱정하고, 무엇을 안심해도 되는가</p>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">SAMSON · StatinWISE · CTT · Sattar 2010 · FDA 2012</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__page">01 / 13</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · DENSITY GRID 3×2 — Key findings (concern levels at a glance)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">무엇을 얼마나 걱정해야 하나</h2>
-      <p class="slide__subtitle">근거 기반 걱정 수준 — ★(낮음) … ★★★★★(가장 중요). 진짜 위험은 부작용이 아니라 <span style="white-space:nowrap">'안 먹는 것'</span>입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">근육 증상 (SAMS) · ★★☆☆☆</div>
-          <div class="tile__title">근육통</div>
-          <div class="tile__body">통증은 진짜지만, 원인의 약 90%는 약 성분이 아니라 '약을 먹는다'는 사실(노세보)에서 옵니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">횡문근융해증 · ★☆☆☆☆</div>
-          <div class="tile__title">근육 파괴 (rhabdomyolysis)</div>
-          <div class="tile__body">아주 드뭅니다 (수만 명 중 1명꼴). 주로 약물 상호작용·고용량에서만 발생합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">간효소 상승 · ★☆☆☆☆</div>
-          <div class="tile__title">간 수치 (transaminitis)</div>
-          <div class="tile__body">무증상 간수치 상승은 흔하나 의미 있는 간손상은 매우 드뭅니다. 정기 간검사도 필요 없습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">신규 당뇨 (NODM) · ★★☆☆☆</div>
-          <div class="tile__title">혈당 상승</div>
-          <div class="tile__body">상대위험 약 9% 증가하지만, 심근경색·뇌졸중을 막는 심혈관 이익이 명백히 더 큽니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">약물 상호작용 · ★★★☆☆</div>
-          <div class="tile__title">특수군 · 병용약물</div>
-          <div class="tile__body">일부 스타틴은 특정 약(항진균제·일부 항생제·자몽주스)과 함께 먹으면 농도가 올라갑니다. 아시아인은 로수바스타틴을 저용량부터.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">미복용 · 중단 · ★★★★★</div>
-          <div class="tile__title">가장 중요한 위험</div>
-          <div class="tile__body">중단이 진짜 위험입니다. 심근경색(AMI) 후 스타틴을 끊으면 1년 사망 위험이 88% 올라갑니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — EAS 2015 · NLA 2022 · CTT 2022 · Sattar 2010 (Lancet)</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · VISUAL-FOCUS (grid 2×2 + muscle anatomy) — SAMS occurrence
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>MUSCLE (SAMS)</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">근육 증상 — 통증은 진짜, 약 때문은 드뭅니다</h2>
-      <p class="slide__subtitle">실제로 호소하는 근육증상과, 약을 모르게 비교했을 때의 '진짜 차이'는 약 5배나 벌어집니다 (SAMS · 스타틴 연관 근육 증상)</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">실제 진료에서 보고 · 7 – 29%</div>
-          <div class="tile__title">관찰연구</div>
-          <div class="tile__body">실제 진료에서 근육증상을 호소하는 비율. 일부 연구는 30%까지 보고합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">약 모르게 비교 시 · 1 – 5%</div>
-          <div class="tile__title">위약 대비 진짜 차이</div>
-          <div class="tile__body">약을 모르게 비교하면 초과분은 1~5%, 진짜 약 때문인 경우는 약 0.5%에 불과합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">CTT 2022 · 15건 중 14건</div>
-          <div class="tile__title">대부분은 오해</div>
-          <div class="tile__body">근육증상 보고 15건 중 14건은 스타틴 때문이 아니었습니다 (오귀인 · misattribution).</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">위험 시점 · 첫 1년</div>
-          <div class="tile__title">초과 위험은 초기에</div>
-          <div class="tile__body">스타틴에 의한 진짜 초과 위험은 주로 치료 첫 1년에 국한됩니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/statin-side-effects-muscle-anatomy-20260621.png" alt="종아리·허벅지 골격근 해부 — 근육 증상이 나타나는 부위 설명 이미지">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — EAS 2015 · NLA 2022 · CTT 2022 (Lancet)</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · HERO NUMBER — Nocebo 90% (SAMSON 2020)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>NOCEBO EFFECT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">근육통의 약 90%는 '약 성분'이 아닙니다</h2>
-      <p class="slide__subtitle">노세보(nocebo) 효과 — 약을 먹는다는 생각만으로도 같은 증상이 생깁니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>90</em>%</div>
-          <div class="pattern-hero-number__caption">맹검 시험에서 스타틴이 유발한 근육증상의 약 90%가 위약(가짜약)에서도 똑같이 나타났습니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">SAMSON 2020 · n-of-1 (NEJM)</div>
-          <div class="pattern-hero-number__detail-text">
-            환자가 진짜 약인지 가짜약인지 모르게 비교하자, 두 그룹의 근육증상 차이가 통계적으로 의미 없을 만큼 작았습니다. '스타틴이 안 맞는다'며 끊었던 환자의 약 절반이 이 시험 후 다시 복용에 성공했습니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — SAMSON 2020 (NEJM) · 보조 — StatinWISE 2021 · ASCOT-LLA 2017</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · TIMELINE 4-step — What to do if muscle symptoms appear
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>MANAGEMENT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">근육 증상이 있으면 — 즉시 중단이 아니라 <span style="white-space:nowrap">단계적 재평가</span></h2>
-      <p class="slide__subtitle">바로 그래서 — 스스로 끊지 마세요. 대부분 용량 조정·약제 전환으로 다시 잘 복용할 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">시간 관계 확인</div>
-          <div class="timeline-step__body">증상이 복용 시작 후 비교적 이른 시기에 생겼는지, 중단하면 호전되는지 확인합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">다른 원인 배제</div>
-          <div class="timeline-step__body">운동, 갑상선기능저하, 비타민D 부족, 병용약물 등을 함께 점검합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">재도전 (Rechallenge)</div>
-          <div class="timeline-step__body">잠시 중단 후 같은/다른 스타틴을 저용량·간헐(주 1~3회)로 다시 시작합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">약제 전환·병용</div>
-          <div class="timeline-step__body">그래도 어려우면 에제티미브나 주사형 약(PCSK9 억제제)을 더합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 2018 ACC/AHA Cholesterol Guideline · EAS 2015 SAMS 관리 알고리즘</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · VISUAL-FOCUS (grid 2×2 + liver anatomy) — Transaminitis
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>LIVER</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">간 수치 — 정기 간검사는 더 이상 필요 없습니다</h2>
-      <p class="slide__subtitle">무증상 간수치 상승은 흔하지만, 의미 있는 간손상은 매우 드뭅니다 (간효소 상승 · transaminitis)</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">무증상 간수치 상승 · 0.5 – 3%</div>
-          <div class="tile__title">대개 저절로 회복</div>
-          <div class="tile__body">용량 의존적이고 주로 첫 3개월에 나타나며, 약 70%는 복용을 이어가도 사라집니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">의미 있는 간손상 · 약 1/17,000</div>
-          <div class="tile__title">매우 드묾</div>
-          <div class="tile__body">임상적으로 의미 있는 간손상은 매우 드뭅니다 (Björnsson 2012).</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">FDA 2012 · 정기검사 폐지</div>
-          <div class="tile__title">시작 전 1회면 충분</div>
-          <div class="tile__body">미국 FDA가 2012년 정기 간검사 권고를 없앴습니다. 시작 전 1회 + 증상이 있거나 필요할 때만 검사합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">지방간 (MASLD)</div>
-          <div class="tile__title">오히려 이로움</div>
-          <div class="tile__body">지방간에서도 안전하고 간수치를 개선합니다. 활동성 간질환·비대상성 간경변만 금기입니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/statin-side-effects-liver-anatomy-20260621.png" alt="간 해부 모식도 — 간효소 상승과 간 건강 설명 이미지">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — FDA 2012 라벨 변경 · Björnsson 2012 · AASLD MASLD 가이드라인</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · ASYMMETRIC SPLIT — New-onset diabetes (benefit > harm)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>DIABETES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">당뇨가 약간 늘 수 있지만, 이익이 훨씬 큽니다</h2>
-      <p class="slide__subtitle">신규 당뇨 (NODM · New-Onset Diabetes Mellitus) — 위험은 작고, 심혈관 이익은 명백합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">당뇨 위험은 소폭(상대위험 <em>약 9% 증가</em>)이지만, 심근경색·뇌졸중을 막는 이익이 이를 명백히 초과합니다.</p>
-          <p class="pattern-split__supporting">
-            여러 대규모 연구(9만여 명)에서 확인된 결과입니다. 고용량일수록·당뇨전단계일수록 위험이 조금 더 올라갑니다. 중요한 점은, 당뇨가 생기더라도 스타틴의 심혈관 이익은 그대로 유지된다는 것입니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Absolute risk</div>
-            <div class="pattern-split__metric-value">255명당 1명</div>
-            <div class="pattern-split__metric-detail">13개 RCT 9만여 명 메타분석 — 4년 치료 시 255명당 1명꼴로 당뇨가 추가됩니다. 고용량일수록 조금 더 높습니다 (Sattar 2010 · Preiss 2011).</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Benefit vs harm</div>
-            <div class="pattern-split__metric-value">예방 134 vs 당뇨 54</div>
-            <div class="pattern-split__metric-detail">당뇨 고위험군에서 신규 당뇨 54건이 느는 동안, 심혈관사건·사망 134건을 예방합니다 (JUPITER). 당뇨가 생겨도 심혈관 이익은 그대로입니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Sattar 2010 (Lancet) · Preiss 2011 (JAMA) · JUPITER 2012</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · COMPARISON — Drug interactions (CYP3A4 vs non-CYP3A4)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>INTERACTIONS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">약물 상호작용 — 알면 대부분 안전하게 관리됩니다</h2>
-      <p class="slide__subtitle">아시아인은 로수바스타틴 혈중농도가 약 2배 → 5mg 저용량 시작 권고 (FDA)</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">!</span>
-            농도 오르기 쉬움 — 일부 약·음식과 병용 시
-          </div>
-          <ul class="compare-col__list">
-            <li>심바스타틴 (simvastatin)</li>
-            <li>로바스타틴 (lovastatin)</li>
-            <li>아토르바스타틴 — 일부만 대사 (영향 적음)</li>
-            <li>자몽주스 — 심바스타틴 농도 3~4배</li>
-            <li>아졸계 항진균제 (이트라코나졸 등)</li>
-            <li>마크로라이드 (클래리스로마이신)</li>
-            <li>베라파밀 · 딜티아젬 · 사이클로스포린</li>
-            <li>HIV 단백분해효소억제제 — 심바·로바 금기</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            상호작용 적음 — 비교적 안심
-          </div>
-          <ul class="compare-col__list">
-            <li>로수바스타틴 (rosuvastatin)</li>
-            <li>프라바스타틴 (pravastatin)</li>
-            <li>피타바스타틴 (pitavastatin)</li>
-            <li>플루바스타틴 (fluvastatin)</li>
-            <li>프라바스타틴은 간 효소(CYP) 대사 안 함</li>
-            <li>피브레이트는 페노피브레이트 선호</li>
-            <li>아지스로마이신은 비교적 안전</li>
-            <li>새 약을 시작하면 미리 알려 주세요</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 2016 AHA 약물상호작용 성명 (Circulation) · FDA 로수바스타틴 라벨</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · VISUAL-FOCUS (grid 2×2 + artery comparison) — Cost of stopping
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>THE REAL RISK</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진짜 위험은 부작용이 아니라 '안 먹는 것'입니다</h2>
-      <p class="slide__subtitle">지금까지는 부작용 이야기였습니다 — 그런데 진짜 위험은 다른 곳에 있습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">LDL 약 39 mg/dL 감소</div>
-          <div class="tile__title">심혈관 사건 21%↓</div>
-          <div class="tile__body">나쁜 콜레스테롤을 낮추면 주요 혈관사건이 약 1/5 줄고, 낮출수록 더 줄어듭니다 (역치 없음).</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">이차예방</div>
-          <div class="tile__title">1,000명당 48건↓</div>
-          <div class="tile__body">이미 관상동맥질환이 있는 분에서 이익이 가장 큽니다 (CTT 2010).</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">심근경색 후 중단</div>
-          <div class="tile__title">1년 사망 88%↑</div>
-          <div class="tile__body">심근경색 후 스타틴을 끊으면 1년 사망 위험이 거의 2배가 됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">부작용 vs 미복용</div>
-          <div class="tile__title">가역 vs 비가역</div>
-          <div class="tile__body">부작용은 대부분 되돌릴 수 있지만, 한번 생긴 심근경색·뇌졸중은 그렇지 않습니다.</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/statin-side-effects-artery-comparison-20260621.png" alt="정상 동맥과 콜레스테롤 플라크로 좁아진 동맥 비교 단면 이미지">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — CTT 2010 (Lancet) · Daskalopoulou 2008 · 2018 ACC/AHA</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · DENSITY GRID 2×2 — Common myths corrected
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>MYTH vs FACT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">흔한 오해 바로잡기</h2>
-      <p class="slide__subtitle">자주 듣는 걱정 네 가지 — 사실은 이렇습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">오해 · 01</div>
-          <div class="tile__title">"간 수치 때문에 검사를 계속해야 한다"</div>
-          <div class="tile__body"><strong>사실 —</strong> 2012년부터 정기 간검사는 불필요합니다. 시작 전 1회 + 증상이 있거나 필요할 때만.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">오해 · 02</div>
-          <div class="tile__title">"당뇨를 일으키니 위험하다"</div>
-          <div class="tile__body"><strong>사실 —</strong> 위험은 작고(4년 255명당 1명), 심혈관 이익이 훨씬 큽니다. 당뇨가 생겨도 이익은 유지됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">오해 · 03</div>
-          <div class="tile__title">"지방간이면 스타틴 금지"</div>
-          <div class="tile__body"><strong>사실 —</strong> 지방간(MASLD)에서는 오히려 이롭습니다. 활동성 간질환·비대상성 간경변만 금기입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">오해 · 04</div>
-          <div class="tile__title">"평생 먹어야 하니 부담이다"</div>
-          <div class="tile__body"><strong>사실 —</strong> 중단의 위험(심근경색 후 1년 사망 88%↑)이 훨씬 큽니다. 불편하면 끊지 말고 함께 조정합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — FDA 2012 · JUPITER 2012 · AASLD · Daskalopoulou 2008</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — 7 patient actions
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>YOUR CHECKLIST</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">환자분이 기억할 7가지</h2>
-      <p class="slide__subtitle">스타틴을 안전하게, 그리고 끝까지 잘 복용하기 위한 실천 항목</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">근육통·불편함이 있어도 <strong>스스로 끊지 말고</strong> 먼저 연락 주세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">새 증상은 복용 시작과 <strong>시기가 맞는지</strong>, 중단 시 호전되는지 함께 확인</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">정기 간·근육 검사를 매번 받지 않아도 돼요 — <strong>시작 전 1회</strong>, 그리고 증상이 있을 때만</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">자몽주스·새 항생제·항진균제를 시작하면 <strong>미리 알려</strong> 주세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">당뇨 위험요인이 있으면 <strong>혈당도 함께 챙기겠다고</strong> 말씀해 주세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">식사·운동·금연으로 <strong>약 효과를 극대화</strong>하세요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">임의 중단은 심근경색·뇌졸중 위험 → <strong>조정은 함께</strong> 합니다</div>
-        </div>
-        <div class="check-item" style="border-bottom: none;">
-          <div class="check-item__num" style="color: var(--color-navy);">→</div>
-          <div class="check-item__text" style="color: var(--color-slate);">불편하면 끊지 마시고, 같이 방법을 찾겠습니다</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 2018 ACC/AHA · KSoLA 2022 이상지질혈증 진료지침</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — contact + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">부작용은 되돌릴 수 있지만<br><em>심근경색은 되돌릴 수 없습니다</em></h2>
-      <p class="slide__subtitle">불편한 점이 생기면 끊지 마시고 언제든 말씀해 주세요 — 함께 조정하겠습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 한눈에 보기</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">무엇을 얼마나 걱정해야 하나</h2>
+  <p class="v2-sub">별이 많을수록 더 신경 쓸 일입니다 — 진짜 위험은 부작용이 아니라 ‘안 먹는 것’입니다</p>
+  <table class="v2-table q-table q-table--six" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:290px"><col style="width:170px"><col style="width:692px"></colgroup><thead><tr><th>걱정거리</th><th>걱정할 정도</th><th>한 줄 요약</th></tr></thead><tbody><tr><th>근육통</th><td><span class="q-stars">★★<i>★★★</i></span></td><td>통증은 진짜지만, 한 시험에서 증상 강도의 약 <b>90%</b>는 가짜약을 먹을 때도 똑같이 나타났습니다(노세보)</td></tr><tr><th>근육이 녹는 병(횡문근융해증)</th><td><span class="q-stars">★<i>★★★★</i></span></td><td>수만 명 중 1명꼴로 아주 드뭅니다. 주로 약물 상호작용·고용량에서 생깁니다</td></tr><tr><th>간 수치 상승</th><td><span class="q-stars">★<i>★★★★</i></span></td><td>증상 없는 간 수치 상승은 흔하지만, 의미 있는 간 손상은 매우 드뭅니다</td></tr><tr><th>새로 생기는 당뇨</th><td><span class="q-stars">★★<i>★★★</i></span></td><td>상대위험이 약 9% 늘지만, 심근경색·뇌졸중을 막는 이익이 더 큽니다</td></tr><tr><th>약물 상호작용</th><td><span class="q-stars">★★★<i>★★</i></span></td><td>일부 스타틴은 특정 약이나 자몽주스와 함께 먹으면 혈중 농도가 오릅니다</td></tr><tr><th>약을 안 먹거나 끊는 것</th><td><span class="q-stars q-stars--alert">★★★★★<i></i></span></td><td><span class="v2-td--alert">가장 중요한 위험</span> — 심근경색 후 끊으면 1년 사망 위험이 <b>88%</b> 오릅니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 불편한 점이 있으면 끊기 전에 먼저 말씀해 주세요. 대부분 조정으로 해결됩니다.</span><span class="v2-src">근거 · EAS 2015 · NLA 2022 · CTT 2022 · Sattar 2010</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 근육 증상</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">근육 증상 — 통증은 진짜, 약 때문은 드뭅니다</h2>
+  <p class="v2-sub">실제로 느끼는 근육통과, 약을 모르게 비교했을 때의 진짜 차이는 크게 다릅니다</p>
+  <div class="v2-panel q-facts" style="left:64px;top:206px;width:524px;height:400px">
+    <div class="q-fact"><div class="q-fact__n">7–29%</div><div class="q-fact__t"><b>실제 진료에서 호소하는 비율</b><span class="v2-body">일부 연구는 30%까지 보고합니다.</span></div></div><div class="q-fact"><div class="q-fact__n">1–5%</div><div class="q-fact__t"><b>가짜약과 비교한 진짜 차이</b><span class="v2-body">진짜 약 때문인 경우는 약 0.5%입니다.</span></div></div><div class="q-fact"><div class="q-fact__n q-fact__n--sm">15건 중<br>14건</div><div class="q-fact__t"><b>스타틴 탓이 아니었던 근육 증상</b><span class="v2-body">대부분은 다른 원인을 약 탓으로 오해한 것입니다.</span></div></div><div class="q-fact"><div class="q-fact__n">첫 1년</div><div class="q-fact__t"><b>진짜 위험이 몰리는 때</b><span class="v2-body">약 때문인 초과 위험은 주로 치료 첫 1년에 있습니다.</span></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:616px;top:206px;width:600px;height:400px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/statin-side-effects-muscle-anatomy-20260621.png" alt="종아리 근육을 드러낸 다리 해부 그림">
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 근육통이 생겨도 스스로 끊지 마세요. 먼저 연락 주시면 원인을 함께 확인합니다.</span><span class="v2-src">근거 · EAS 2015 · NLA 2022 · CTT 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 노세보 효과</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">스타틴 탓이라 여긴 근육 증상, 상당 부분은 ‘약 성분’ 때문이 아닙니다</h2>
+  <p class="v2-sub">노세보 효과 — 약을 먹는다는 생각만으로도 같은 증상이 생깁니다</p>
+  <div class="v2-panel v2-panel--accent q-big" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-big__num">90<span>%</span></div>
+    <div class="q-big__cap">스타틴 때문이라 여긴 근육 증상의 강도 가운데 가짜약을 먹을 때도 나타난 몫</div>
+    <div class="q-big__note">증상 점수로 비교한 시험 결과</div>
+  </div>
+  <div class="v2-panel q-text" style="left:460px;top:206px;width:756px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44ZM31.6631 12.3027C33.6894 13.8676 35 16.2296 35 19.2903C35 22.8107 33.0456 25.2437 30.8102 26.7355C29.2829 27.7547 27.5519 28.395 26 28.7291V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V27C22 25.9444 22.8203 25.0706 23.8738 25.004C25.1758 24.9217 27.0744 24.4196 28.5898 23.4083C30.0544 22.4309 31 21.1102 31 19.2903C31 17.4962 30.2856 16.2929 29.2181 15.4684C28.0852 14.5934 26.4424 14.0721 24.6041 14.0069C22.7734 13.9419 20.9308 14.3379 19.5007 15.0879C18.0704 15.838 17.2151 16.8431 16.9415 17.9496C16.6765 19.0219 15.5923 19.6763 14.52 19.4112C13.4478 19.1462 12.7934 18.062 13.0584 16.9897C13.6849 14.4553 15.5296 12.6538 17.643 11.5455C19.7567 10.4369 22.3015 9.92266 24.7459 10.0094C27.1825 10.0958 29.7023 10.7882 31.6631 12.3027ZM22 36C22 34.8954 22.8954 34 24 34C25.1045 34 26 34.8954 26 36C26 37.1046 25.1045 38 24 38C22.8954 38 22 37.1046 22 36Z" fill="currentColor"/>
+</svg></div><b>어떻게 시험했나</b></div><div class="v2-body">한 사람이 진짜 약과 가짜약을 <b>어느 쪽인지 모르는 채</b> 번갈아 먹으며 근육 증상을 기록했습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.1338 19.672L21.3303 4.79C21.4293 4.32915 21.8367 4 22.308 4H32.8652C33.4674 4 33.9345 4.52795 33.8141 5.118C32.2655 12.7051 25 20.8205 25 20.8205L26.281 22.9751C27.0763 24.313 27.4642 25.8539 27.397 27.4089L27 36.5897L28.8435 38.8508C29.555 39.7234 29.7258 40.9179 29.2873 41.9549L29.2317 42.0866C28.5688 43.6545 26.707 44.3203 25.2002 43.5283C24.4231 43.1199 23.5305 42.9872 22.6682 43.152L18.6861 43.9132C18.5623 43.9368 18.4366 43.9487 18.3106 43.9487H15C13.8954 43.9487 13 43.0533 13 41.9487V40.7949H16L22.5 38.1667L18.301 25.4141C18.1016 24.8086 18 24.1751 18 23.5376V20.932C18 20.5084 18.0448 20.0861 18.1338 19.672Z" fill="currentColor"/>
+</svg></div><b>결과</b></div><div class="v2-body">진짜 약을 먹을 때와 가짜약을 먹을 때의 근육 증상 차이는 <b>통계적으로 의미 없을 만큼</b> 작았습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>그 뒤</b></div><div class="v2-body">‘스타틴이 안 맞는다’며 끊었던 분의 <b>약 절반</b>이 이 시험 뒤 다시 복용에 성공했습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 근육통이 ‘가짜’라는 뜻이 아닙니다. 통증은 진짜이고, 원인이 약 성분이 아닌 경우가 많다는 뜻입니다.</span><span class="v2-src">근거 · SAMSON 2020 · StatinWISE 2021</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 대처 순서</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">근육 증상이 있으면 — 즉시 중단이 아니라 단계적 재평가</h2>
+  <p class="v2-sub">근육 증상이 생겼을 때 진료실에서 밟는 네 단계입니다</p>
+  <div class="v2-panel q-step" style="left:64px;top:206px;width:270px;height:262px">
+    <div class="q-step__n">1</div><div class="q-step__h">시간 관계 확인</div><div class="v2-body">복용을 시작하고 비교적 이른 시기에 생겼는지, 끊으면 나아지는지 봅니다.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:358px;top:206px;width:270px;height:262px">
+    <div class="q-step__n">2</div><div class="q-step__h">다른 원인 확인</div><div class="v2-body">운동, 갑상선 기능 저하, 비타민D 부족, 함께 먹는 약을 점검합니다.</div>
+  </div>
+  <div class="v2-panel q-step" style="left:652px;top:206px;width:270px;height:262px">
+    <div class="q-step__n">3</div><div class="q-step__h">다시 시작해 보기</div><div class="v2-body">잠시 쉬었다가 같은 약이나 다른 스타틴을 적은 용량으로, 또는 주 1~3회로 다시 시작합니다.</div>
+  </div>
+  <div class="v2-panel q-step v2-panel--accent" style="left:946px;top:206px;width:270px;height:262px">
+    <div class="q-step__n">4</div><div class="q-step__h">약 바꾸기·더하기</div><div class="v2-body">그래도 어려우면 에제티미브나 주사형 약(PCSK9 억제제)을 더합니다.</div>
+  </div>
+  <div class="v2-panel q-key" style="left:64px;top:492px;width:1152px;height:114px">
+    <div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><div><b>바로 끊지 마세요</b><span>대부분 용량 조정이나 약 바꾸기로 다시 잘 드실 수 있습니다. 진료실에서 이 순서로 함께 확인합니다.</span></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 증상이 언제 시작됐는지, 새로 먹기 시작한 약이 있는지 적어 오시면 도움이 됩니다.</span><span class="v2-src">근거 · 2018 ACC/AHA 콜레스테롤 지침 · EAS 2015</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 간 수치</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">간 수치 — 정기 간검사는 더 이상 필요 없습니다</h2>
+  <p class="v2-sub">증상 없는 간 수치 상승은 흔하지만, 의미 있는 간 손상은 매우 드뭅니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:600px;height:400px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/statin-side-effects-liver-anatomy-20260621.png" alt="간과 간세포 확대 그림">
+  </div>
+  <div class="v2-panel q-facts q-facts--3" style="left:692px;top:206px;width:524px;height:400px">
+    <div class="q-fact"><div class="q-fact__n">0.5–3%</div><div class="q-fact__t"><b>증상 없는 간 수치 상승</b><span class="v2-body">주로 첫 3개월에 나타나고, 약 70%는 계속 먹어도 사라집니다.</span></div></div><div class="q-fact"><div class="q-fact__n q-fact__n--sm">1/17,000</div><div class="q-fact__t"><b>의미 있는 간 손상</b><span class="v2-body">1만 7천 명 중 1명꼴로 매우 드뭅니다.</span></div></div><div class="q-fact"><div class="q-fact__n">1회</div><div class="q-fact__t"><b>시작 전 간 검사</b><span class="v2-body">2012년 미국 FDA가 정기 간검사 권고를 없앴습니다. 그 뒤로는 증상이 있을 때만 봅니다.</span></div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 지방간이 있어도 안전하고 오히려 간 수치가 좋아집니다. 활동성 간질환·비대상성 간경변만 금기입니다.</span><span class="v2-src">근거 · FDA 2012 · Björnsson 2012 · AASLD</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 검사 시점</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">간 검사는 시작 전 한 번 — 그다음은 필요할 때만</h2>
+  <p class="v2-sub">달력에 정기 간검사 날짜를 적어 둘 필요는 없습니다</p>
+  <div class="v2-panel v2-panel--figwide" style="left:140px;top:206px;width:1000px;height:348px">
+    <img class="v2-figwide__img v2-fig__img" src="../../../shared/assets/generated/statin-myths-facts-month-check-20260924.png" alt="약을 먹는 손·달력·피검사를 차례로 늘어놓은 그림">
+  </div>
+  <div class="q-tl" style="left:140px;top:562px;width:1000px"><div class="q-tl__lab"><b>① 약은 매일 꾸준히</b></div><div class="q-tl__lab q-tl__lab--on"><b>② 정기 간검사 날짜는 따로 없음</b></div><div class="q-tl__lab"><b>③ 증상이 있을 때만 피검사</b></div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 피곤함이 심하거나 소변 색이 짙어지는 등 몸이 이상하면, 다음 진료를 기다리지 말고 연락 주세요.</span><span class="v2-src">근거 · FDA 2012 라벨 변경</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 혈당</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">당뇨가 약간 늘 수 있지만, 이익이 훨씬 큽니다</h2>
+  <p class="v2-sub">새로 생기는 당뇨 — 위험은 작고, 심장·혈관을 지키는 이익은 분명합니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">새로 생길 수 있는 당뇨</div><div class="v2-vs__lead">위험은 <b>작습니다</b>.</div><ul class="v2-vs__list"><li>상대위험이 약 <b>9%</b> 늘어납니다 — 13개 연구, 9만여 명</li><li>4년 동안 먹으면 <b>255명당 1명</b>꼴로 당뇨가 더 생깁니다</li><li>고용량일수록, 당뇨 전단계일수록 조금 더 오릅니다</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">막아 주는 심근경색·뇌졸중</div><div class="v2-vs__lead">이익이 <b>훨씬 큽니다</b>.</div><ul class="v2-vs__list"><li>당뇨 고위험군에서 당뇨가 54건 느는 동안<br>심혈관 사건·사망 <b>134건</b>을 막았습니다</li><li>당뇨가 생겨도 스타틴의 심혈관 이익은 <b>그대로</b>입니다</li><li>당뇨 위험 요인이 있으면 혈당도 함께 챙깁니다</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 당뇨 전단계라는 말을 들은 적이 있으면 알려 주세요. 혈당 검사를 함께 챙깁니다.</span><span class="v2-src">근거 · Sattar 2010 · Preiss 2011 · JUPITER 2012</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 약물 상호작용</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">약물 상호작용 — 알면 대부분 안전하게 관리됩니다</h2>
+  <p class="v2-sub">스타틴 종류에 따라 영향이 다릅니다 — 새 약을 시작하면 미리 알려 주세요</p>
+  <table class="v2-table q-table q-table--six" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:270px"><col style="width:882px"></colgroup><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><th>농도가 오르기 쉬운 스타틴</th><td><b>심바스타틴 · 로바스타틴</b> — 아토르바스타틴은 일부만 영향을 받아 덜합니다</td></tr><tr><th>영향이 적은 스타틴</th><td>로수바스타틴 · 프라바스타틴 · 피타바스타틴 · 플루바스타틴</td></tr><tr><th>조심할 음식</th><td>자몽주스 — 심바스타틴 농도가 <b>3~4배</b> 오릅니다</td></tr><tr><th>조심할 약</th><td>곰팡이 약(이트라코나졸 등) · 클래리스로마이신 항생제 · 베라파밀 · 딜티아젬 · 사이클로스포린<br>HIV 약 — 심바·로바스타틴과는 <b>함께 쓰지 않습니다</b></td></tr><tr><th>비교적 안심</th><td>항생제는 아지스로마이신 · 중성지방 약은 페노피브레이트</td></tr><tr><th>아시아인</th><td>로수바스타틴 혈중 농도가 약 <b>2배</b> — <b>5mg</b> 저용량부터 시작합니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 다른 병원에서 새 약을 받으면 ‘스타틴을 먹고 있다’고 꼭 말씀해 주세요.</span><span class="v2-src">근거 · 2016 AHA 약물상호작용 성명 · FDA 로수바스타틴 라벨</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 진짜 위험</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진짜 위험은 부작용이 아니라 ‘안 먹는 것’입니다</h2>
+  <p class="v2-sub">지금까지는 부작용 이야기였습니다 — 막아 주는 쪽의 숫자를 보세요</p>
+  <div class="v2-panel q-facts q-facts--3" style="left:64px;top:206px;width:591px;height:400px">
+    <div class="q-fact"><div class="q-fact__n">21%↓</div><div class="q-fact__t"><b>주요 혈관 사건</b><span class="v2-body">나쁜 콜레스테롤(LDL)을 약 39 mg/dL 낮추면 약 1/5 줄고, 낮출수록 더 줄어듭니다.</span></div></div><div class="q-fact"><div class="q-fact__n">48건↓</div><div class="q-fact__t"><b>이미 관상동맥질환이 있는 분</b><span class="v2-body">1,000명당 48건을 막아 이익이 가장 큽니다.</span></div></div><div class="q-fact"><div class="q-fact__n">88%↑</div><div class="q-fact__t"><b>심근경색 후 끊었을 때</b><span class="v2-body">1년 사망 위험이 거의 2배가 됩니다.</span></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:683px;top:206px;width:533px;height:400px">
+    <img class="v2-fig__img q-fig__img" src="../../../shared/assets/generated/statin-side-effects-artery-comparison-20260621.png" alt="깨끗한 혈관과 기름때가 쌓여 좁아진 혈관을 나란히 놓은 그림">
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 부작용은 대부분 되돌릴 수 있지만, 한번 생긴 심근경색·뇌졸중은 되돌릴 수 없습니다.</span><span class="v2-src">근거 · CTT 2010 · Daskalopoulou 2008 · 2018 ACC/AHA</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 오해와 사실</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">흔한 오해 바로잡기</h2>
+  <p class="v2-sub">자주 듣는 걱정 네 가지 — 사실은 이렇습니다</p>
+  <div class="v2-panel q-four" style="left:64px;top:206px;width:564px;height:176px">
+    <div class="q-myth__tag">오해 1</div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.2157 10.0607C22.5621 11.0012 22.112 11.962 21.8034 12.8418C21.446 13.8608 21.2754 14.777 21.1939 15.4417C21.153 15.7748 21.1342 16.047 21.1257 16.2402C21.1214 16.3368 21.1197 16.4139 21.1192 16.4692C21.1189 16.4969 21.1189 16.5191 21.1189 16.5356L21.1191 16.556L21.1192 16.563L21.1193 16.5656L21.1193 16.5667C21.1193 16.5667 21.1193 16.5677 22.1191 16.5479C23.1189 16.528 23.1189 16.5288 23.1189 16.5288L23.1189 16.5255L23.1189 16.5227L23.1191 16.4903C23.1194 16.4562 23.1205 16.4015 23.1238 16.3282C23.1302 16.1815 23.1451 15.9615 23.179 15.6853C23.247 15.1312 23.3904 14.3599 23.6907 13.5039C24.0603 12.4502 24.6632 11.2773 25.6539 10.2157C27.9787 10.4791 28.8525 11.0046 29.5758 11.4395C30.2149 11.8238 30.7364 12.1374 32.0374 12.1374C33.3805 12.1374 35.2609 11.7362 37.1413 11.335C39.9619 10.7332 42.7825 10.1315 43.7898 10.8837C45.4687 12.1374 40.432 21.3314 35.3952 21.3314C32.8027 21.3314 31.2481 23.1899 29.7392 24.9937C28.3166 26.6944 26.9347 28.3464 24.762 28.3464C22.6699 28.3464 21.311 29.0047 20 29.7061V23.0479C20 22.6526 20.195 22.2841 20.5335 21.9879C20.8909 21.6752 21.2902 21.5479 21.5 21.5479V19.5479C20.7098 19.5479 19.8591 19.9205 19.2165 20.4828C18.5727 21.0461 18.0298 21.8962 18.0012 22.9597H12.9072C10.5179 22.9597 7.65082 24.0112 10.5179 26.1135C12.5977 27.6385 16.186 26.4249 18 25.6433V30.707C17.0781 31.0885 16.0352 31.3613 14.6885 31.3613C12.8526 31.3613 12.2458 32.8297 11.6009 34.3903C10.8697 36.1599 10.0895 38.0479 7.41312 38.0479C2.37634 38.0479 3.61914 22.5479 6.61916 16.5479C9.61919 10.5479 13.7245 10.0479 22.1192 10.0479C22.5059 10.0479 22.8709 10.0523 23.2157 10.0607Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18 40.0479V30.707L20 29.7061V40.0479H18Z" fill="currentColor"/>
+</svg></div><b>“간 수치 때문에 검사를 계속해야 한다”</b></div><div class="v2-body"><b>사실</b> — 2012년부터 정기 간검사는 필요 없습니다. 시작 전 1회, 그다음은 증상이 있거나 필요할 때만.</div></div>
+  </div>
+  <div class="v2-panel q-four v2-panel--accent" style="left:652px;top:206px;width:564px;height:176px">
+    <div class="q-myth__tag">오해 2</div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M43 29.143C43 30.743 41.68 32.0001 40 32.0001C38.32 32.0001 37 30.743 37 29.143C37 27.543 40 24.0001 40 24.0001C40 24.0001 43 27.6573 43 29.143Z" fill="currentColor"/>
+<path d="M24.1528 17.7833H41.8719C43.0472 17.7833 44 18.7361 44 19.9114C44 21.0867 43.0472 22.0395 41.8719 22.0395H41.8685C41.9544 21.8721 42.0014 21.6902 42.0012 21.5001C42.0005 20.6717 41.1046 20.0009 40 20.0018C38.8954 20.0027 38.0005 20.675 38.0012 21.5034C38.0014 21.6923 38.0481 21.8731 38.1332 22.0395H25.1111V23.1035H32C33.1046 23.1035 34 23.999 34 25.1035V25.3597C34 26.4643 33.1046 27.3597 32 27.3597H25.1111V28.4238H30.8889C31.9935 28.4238 32.8889 29.3192 32.8889 30.4238V30.6799C32.8889 31.7845 31.9935 32.6799 30.8889 32.6799H22.8889V33.7439H27C28.1046 33.7439 29 34.6394 29 35.7439V36.0001C29 37.1047 28.1046 38.0001 27 38.0001H15.4562C9.12912 38.0001 4 32.871 4 26.5439C4 21.8893 6.8162 17.6974 11.1254 15.9378L24.0124 10.6756C24.9864 10.2779 26.106 10.5891 26.735 11.4324C27.6143 12.6113 27.1815 14.301 25.8437 14.9119L23.7374 15.8737C22.76 16.32 23.0783 17.7833 24.1528 17.7833Z" fill="currentColor"/>
+</svg></div><b>“당뇨를 일으키니 위험하다”</b></div><div class="v2-body"><b>사실</b> — 위험은 작고(4년에 255명당 1명), 심혈관 이익이 훨씬 큽니다. 당뇨가 생겨도 이익은 그대로입니다.</div></div>
+  </div>
+  <div class="v2-panel q-four" style="left:64px;top:406px;width:564px;height:176px">
+    <div class="q-myth__tag">오해 3</div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.2157 10.0607C22.5621 11.0012 22.112 11.962 21.8034 12.8418C21.446 13.8608 21.2754 14.777 21.1939 15.4417C21.153 15.7748 21.1342 16.047 21.1257 16.2402C21.1214 16.3368 21.1197 16.4139 21.1192 16.4692C21.1189 16.4969 21.1189 16.5191 21.1189 16.5356L21.1191 16.556L21.1192 16.563L21.1193 16.5656L21.1193 16.5667C21.1193 16.5667 21.1193 16.5677 22.1191 16.5479C23.1189 16.528 23.1189 16.5288 23.1189 16.5288L23.1189 16.5255L23.1189 16.5227L23.1191 16.4903C23.1194 16.4562 23.1205 16.4015 23.1238 16.3282C23.1302 16.1815 23.1451 15.9615 23.179 15.6853C23.247 15.1312 23.3904 14.3599 23.6907 13.5039C24.0603 12.4502 24.6632 11.2773 25.6539 10.2157C27.9787 10.4791 28.8525 11.0046 29.5758 11.4395C30.2149 11.8238 30.7364 12.1374 32.0374 12.1374C33.3805 12.1374 35.2609 11.7362 37.1413 11.335C39.9619 10.7332 42.7825 10.1315 43.7898 10.8837C45.4687 12.1374 40.432 21.3314 35.3952 21.3314C32.8027 21.3314 31.2481 23.1899 29.7392 24.9937C28.3166 26.6944 26.9347 28.3464 24.762 28.3464C22.6699 28.3464 21.311 29.0047 20 29.7061V23.0479C20 22.6526 20.195 22.2841 20.5335 21.9879C20.8909 21.6752 21.2902 21.5479 21.5 21.5479V19.5479C20.7098 19.5479 19.8591 19.9205 19.2165 20.4828C18.5727 21.0461 18.0298 21.8962 18.0012 22.9597H12.9072C10.5179 22.9597 7.65082 24.0112 10.5179 26.1135C12.5977 27.6385 16.186 26.4249 18 25.6433V30.707C17.0781 31.0885 16.0352 31.3613 14.6885 31.3613C12.8526 31.3613 12.2458 32.8297 11.6009 34.3903C10.8697 36.1599 10.0895 38.0479 7.41312 38.0479C2.37634 38.0479 3.61914 22.5479 6.61916 16.5479C9.61919 10.5479 13.7245 10.0479 22.1192 10.0479C22.5059 10.0479 22.8709 10.0523 23.2157 10.0607Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18 40.0479V30.707L20 29.7061V40.0479H18Z" fill="currentColor"/>
+</svg></div><b>“지방간이면 스타틴 금지”</b></div><div class="v2-body"><b>사실</b> — 지방간에서는 오히려 이롭습니다. 활동성 간질환·비대상성 간경변만&nbsp;금기입니다.</div></div>
+  </div>
+  <div class="v2-panel q-four v2-panel--accent" style="left:652px;top:406px;width:564px;height:176px">
+    <div class="q-myth__tag">오해 4</div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18.7241C6 12.6409 10.0359 7 15.5625 7C19.3976 7 22.2434 9.53088 24 13.1211C25.7565 9.53111 28.6022 7 32.4375 7C37.9647 7 42 12.6419 42 18.7241C42 31.7444 24 41 24 41C24 41 6 32.3045 6 18.7241Z" fill="currentColor"/>
+</svg></div><b>“평생 먹어야 하니 부담이다”</b></div><div class="v2-body"><b>사실</b> — 끊는 위험(심근경색 후 1년 사망 88%↑)이 훨씬 큽니다. 불편하면 끊지 말고 함께 조정합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 인터넷에서 본 걱정이 있으면 진료 때 그대로 물어봐 주세요.</span><span class="v2-src">근거 · FDA 2012 · JUPITER 2012 · AASLD · Daskalopoulou 2008</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 체크리스트</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">환자분이 기억할 7가지</h2>
+  <p class="v2-sub">스타틴을 안전하게, 그리고 끝까지 잘 드시기 위한 실천 항목</p>
+  <div class="v2-panel q-listpanel" style="left:64px;top:206px;width:764px;height:400px">
+    <ol class="q-list"><li><i>01</i><span>근육통·불편함이 있어도 <b>스스로 끊지 말고</b> 먼저 연락 주세요</span></li><li><i>02</i><span>새 증상이 복용 시작과 시기가 맞는지, 끊으면 나아지는지 함께 봅니다</span></li><li><i>03</i><span>간·근육 검사는 <b>시작 전 1회</b>, 그리고 증상이 있을 때만</span></li><li><i>04</i><span>자몽주스·새 항생제·곰팡이 약을 시작하면 <b>미리 알려</b> 주세요</span></li><li><i>05</i><span>당뇨 위험 요인이 있으면 알려 주세요 — 혈당도 함께 챙깁니다</span></li><li><i>06</i><span>식사·운동·금연으로 약 효과를 더 키우세요</span></li><li><i>07</i><span>임의로 끊으면 심근경색·뇌졸중 위험이 커집니다 — <b>조정은 함께</b></span></li></ol>
+  </div>
+  <div class="v2-panel v2-panel--accent q-promise" style="left:856px;top:206px;width:360px;height:400px">
+    <div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div>
+    <div class="q-promise__h">불편하면 끊지 마시고, 같이 방법을 찾겠습니다</div>
+    <div class="v2-body">용량을 줄이거나, 다른 스타틴으로 바꾸거나, 다른 약을 더하는 방법이 있습니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 이 장을 사진으로 찍어 두시면 다음 진료 때 확인하기 좋습니다.</span><span class="v2-src">근거 · 2018 ACC/AHA · KSoLA 2022 이상지질혈증 진료지침</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">부작용은 되돌릴 수 있지만, 심근경색은 되돌릴 수 없습니다</h2>
+  <p class="v2-sub">불편한 점이 생기면 끊지 마시고 언제든 말씀해 주세요 — 함께 조정하겠습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">부작용 걱정을 근거로 정리한 설명자료입니다. 약 조정은 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body q-refs">SAMSON 2020 · StatinWISE 2021 · CTT 2010·2022 · Sattar 2010 · Preiss 2011 · JUPITER 2012 · FDA 2012 · Björnsson 2012 · EAS 2015 · NLA 2022 · 2018 ACC/AHA · KSoLA 2022 · Daskalopoulou 2008</div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM17,2H18V3H17zM18,2H19V3H18zM19,2H20V3H19zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM11,3H12V4H11zM12,3H13V4H12zM13,3H14V4H13zM16,3H17V4H16zM19,3H20V4H19zM20,3H21V4H20zM21,3H22V4H21zM23,3H24V4H23zM24,3H25V4H24zM25,3H26V4H25zM26,3H27V4H26zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM15,4H16V5H15zM17,4H18V5H17zM19,4H20V5H19zM20,4H21V5H20zM23,4H24V5H23zM24,4H25V5H24zM26,4H27V5H26zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM15,5H16V6H15zM16,5H17V6H16zM18,5H19V6H18zM20,5H21V6H20zM24,5H25V6H24zM27,5H28V6H27zM28,5H29V6H28zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM14,6H15V7H14zM17,6H18V7H17zM18,6H19V7H18zM19,6H20V7H19zM25,6H26V7H25zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM18,7H19V8H18zM19,7H20V8H19zM21,7H22V8H21zM27,7H28V8H27zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM14,9H15V10H14zM18,9H19V10H18zM21,9H22V10H21zM23,9H24V10H23zM25,9H26V10H25zM26,9H27V10H26zM28,9H29V10H28zM29,9H30V10H29zM30,9H31V10H30zM2,10H3V11H2zM6,10H7V11H6zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM15,10H16V11H15zM16,10H17V11H16zM18,10H19V11H18zM21,10H22V11H21zM22,10H23V11H22zM26,10H27V11H26zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM38,10H39V11H38zM2,11H3V12H2zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM13,11H14V12H13zM14,11H15V12H14zM16,11H17V12H16zM20,11H21V12H20zM21,11H22V12H21zM23,11H24V12H23zM24,11H25V12H24zM26,11H27V12H26zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM34,11H35V12H34zM35,11H36V12H35zM37,11H38V12H37zM2,12H3V13H2zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM12,12H13V13H12zM14,12H15V13H14zM15,12H16V13H15zM17,12H18V13H17zM21,12H22V13H21zM25,12H26V13H25zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM33,12H34V13H33zM36,12H37V13H36zM5,13H6V14H5zM7,13H8V14H7zM9,13H10V14H9zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM16,13H17V14H16zM17,13H18V14H17zM18,13H19V14H18zM19,13H20V14H19zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM24,13H25V14H24zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM37,13H38V14H37zM2,14H3V15H2zM4,14H5V15H4zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM12,14H13V15H12zM14,14H15V15H14zM16,14H17V15H16zM18,14H19V15H18zM19,14H20V15H19zM20,14H21V15H20zM22,14H23V15H22zM23,14H24V15H23zM24,14H25V15H24zM25,14H26V15H25zM31,14H32V15H31zM32,14H33V15H32zM33,14H34V15H33zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM3,15H4V16H3zM6,15H7V16H6zM12,15H13V16H12zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM23,15H24V16H23zM25,15H26V16H25zM27,15H28V16H27zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM34,15H35V16H34zM35,15H36V16H35zM2,16H3V17H2zM3,16H4V17H3zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM13,16H14V17H13zM16,16H17V17H16zM17,16H18V17H17zM19,16H20V17H19zM22,16H23V17H22zM25,16H26V17H25zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM2,17H3V18H2zM4,17H5V18H4zM10,17H11V18H10zM11,17H12V18H11zM13,17H14V18H13zM14,17H15V18H14zM15,17H16V18H15zM18,17H19V18H18zM19,17H20V18H19zM20,17H21V18H20zM22,17H23V18H22zM24,17H25V18H24zM31,17H32V18H31zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM36,17H37V18H36zM37,17H38V18H37zM38,17H39V18H38zM3,18H4V19H3zM4,18H5V19H4zM8,18H9V19H8zM10,18H11V19H10zM11,18H12V19H11zM15,18H16V19H15zM20,18H21V19H20zM21,18H22V19H21zM24,18H25V19H24zM26,18H27V19H26zM32,18H33V19H32zM33,18H34V19H33zM35,18H36V19H35zM36,18H37V19H36zM37,18H38V19H37zM3,19H4V20H3zM4,19H5V20H4zM9,19H10V20H9zM12,19H13V20H12zM14,19H15V20H14zM18,19H19V20H18zM19,19H20V20H19zM21,19H22V20H21zM22,19H23V20H22zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM28,19H29V20H28zM29,19H30V20H29zM30,19H31V20H30zM34,19H35V20H34zM35,19H36V20H35zM36,19H37V20H36zM37,19H38V20H37zM3,20H4V21H3zM4,20H5V21H4zM5,20H6V21H5zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM13,20H14V21H13zM14,20H15V21H14zM16,20H17V21H16zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM25,20H26V21H25zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM3,21H4V22H3zM4,21H5V22H4zM13,21H14V22H13zM14,21H15V22H14zM15,21H16V22H15zM16,21H17V22H16zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM28,21H29V22H28zM29,21H30V22H29zM31,21H32V22H31zM33,21H34V22H33zM36,21H37V22H36zM37,21H38V22H37zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM12,22H13V23H12zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM17,22H18V23H17zM19,22H20V23H19zM21,22H22V23H21zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM35,22H36V23H35zM36,22H37V23H36zM2,23H3V24H2zM3,23H4V24H3zM4,23H5V24H4zM5,23H6V24H5zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM12,23H13V24H12zM15,23H16V24H15zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM19,23H20V24H19zM20,23H21V24H20zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM30,23H31V24H30zM31,23H32V24H31zM33,23H34V24H33zM34,23H35V24H34zM5,24H6V25H5zM6,24H7V25H6zM8,24H9V25H8zM9,24H10V25H9zM13,24H14V25H13zM14,24H15V25H14zM15,24H16V25H15zM16,24H17V25H16zM17,24H18V25H17zM20,24H21V25H20zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM28,24H29V25H28zM29,24H30V25H29zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM36,24H37V25H36zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM6,25H7V26H6zM11,25H12V26H11zM13,25H14V26H13zM14,25H15V26H14zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM33,25H34V26H33zM34,25H35V26H34zM36,25H37V26H36zM3,26H4V27H3zM4,26H5V27H4zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM10,26H11V27H10zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM18,26H19V27H18zM21,26H22V27H21zM22,26H23V27H22zM31,26H32V27H31zM32,26H33V27H32zM35,26H36V27H35zM36,26H37V27H36zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM5,27H6V28H5zM7,27H8V28H7zM12,27H13V28H12zM16,27H17V28H16zM20,27H21V28H20zM21,27H22V28H21zM23,27H24V28H23zM24,27H25V28H24zM25,27H26V28H25zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM34,27H35V28H34zM4,28H5V29H4zM7,28H8V29H7zM8,28H9V29H8zM9,28H10V29H9zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM16,28H17V29H16zM17,28H18V29H17zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM25,28H26V29H25zM29,28H30V29H29zM33,28H34V29H33zM5,29H6V30H5zM9,29H10V30H9zM10,29H11V30H10zM11,29H12V30H11zM12,29H13V30H12zM13,29H14V30H13zM16,29H17V30H16zM17,29H18V30H17zM18,29H19V30H18zM19,29H20V30H19zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM26,29H27V30H26zM28,29H29V30H28zM29,29H30V30H29zM30,29H31V30H30zM36,29H37V30H36zM37,29H38V30H37zM38,29H39V30H38zM2,30H3V31H2zM3,30H4V31H3zM4,30H5V31H4zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM10,30H11V31H10zM13,30H14V31H13zM19,30H20V31H19zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM14,31H15V32H14zM17,31H18V32H17zM18,31H19V32H18zM20,31H21V32H20zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM12,32H13V33H12zM13,32H14V33H13zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM22,32H23V33H22zM25,32H26V33H25zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM17,33H18V34H17zM19,33H20V34H19zM20,33H21V34H20zM21,33H22V34H21zM22,33H23V34H22zM24,33H25V34H24zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM36,33H37V34H36zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM14,34H15V35H14zM15,34H16V35H15zM20,34H21V35H20zM24,34H25V35H24zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM13,35H14V36H13zM15,35H16V36H15zM18,35H19V36H18zM19,35H20V36H19zM21,35H22V36H21zM22,35H23V36H22zM23,35H24V36H23zM25,35H26V36H25zM28,35H29V36H28zM30,35H31V36H30zM32,35H33V36H32zM33,35H34V36H33zM35,35H36V36H35zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM11,36H12V37H11zM12,36H13V37H12zM15,36H16V37H15zM16,36H17V37H16zM18,36H19V37H18zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM28,36H29V37H28zM31,36H32V37H31zM32,36H33V37H32zM35,36H36V37H35zM36,36H37V37H36zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM13,37H14V38H13zM14,37H15V38H14zM19,37H20V38H19zM23,37H24V38H23zM28,37H29V38H28zM29,37H30V38H29zM31,37H32V38H31zM34,37H35V38H34zM36,37H37V38H36zM37,37H38V38H37zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM15,38H16V39H15zM17,38H18V39H17zM19,38H20V39H19zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM26,38H27V39H26zM29,38H30V39H29zM31,38H32V39H31zM33,38H34V39H33zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -558,14 +372,11 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다.</span><span class="v2-src">근거 · 광교바른내과</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
+</section>
 </div>
 <!-- Presenting mode toggle -->
 <div class="deck-nav">
@@ -628,6 +439,5 @@
     });
   })();
 </script>
-
 </body>
 </html>

@@ -24,933 +24,429 @@
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
 
-  <!-- Local extensions for this deck (3-stat row + alert-stack + checklist 8-up) -->
   <style>
-    /* Three-stat row (slide 2) — single row of 3 large circular stats + supporting card */
-    .pattern-stats3 {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-5);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .stats3-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-      align-items: center;
-      justify-items: center;
-    }
-    .stats3-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .stats3-cell__circle {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-canvas);
-      text-align: center;
-      letter-spacing: var(--tracking-tight);
-    }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__num {
-      font-size: 2.5rem;
-      font-weight: var(--weight-black);
-      line-height: 1;
-      letter-spacing: var(--tracking-mega);
-    }
-    .stats3-cell__unit {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      margin-top: var(--space-2);
-      opacity: 0.92;
-    }
-    .stats3-cell__label {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-540);
-      color: var(--color-navy);
-      letter-spacing: var(--tracking-snug);
-      text-align: center;
-      max-width: 240px;
-      line-height: var(--lh-snug);
-    }
-    .stats3-note {
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-
-    /* Vertical alert stack — single column, alert rows */
-    .pattern-alert-stack {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: 1fr;
-      gap: var(--space-3);
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-    .alert-row {
-      display: flex;
-      gap: var(--space-4);
-      align-items: flex-start;
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-danger-bg);
-      border: 1px solid var(--color-danger);
-      border-radius: var(--radius-lg);
-      min-height: 0;
-      overflow: hidden;
-    }
-    .alert-row__icon {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--color-canvas);
-      color: var(--color-danger);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--text-h3);
-      font-weight: var(--weight-bold);
-      border: 1px solid var(--color-danger);
-    }
-    .alert-row__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
-    .alert-row__title {
-      font-size: var(--text-body-lg);
-      font-weight: var(--weight-bold);
-      color: var(--color-danger);
-      letter-spacing: var(--tracking-snug);
-      line-height: var(--lh-tight);
-    }
-    .alert-row__text {
-      font-size: var(--text-body);
-      font-weight: var(--weight-450);
-      color: var(--color-ink);
-      line-height: var(--lh-snug);
-    }
-
-    /* Checklist with 8 items — keep 4 rows × 2 cols layout */
-    .pattern-checklist--8 { grid-template-columns: 1fr 1fr; }
-    .pattern-checklist--8 .check-item { padding: var(--space-2) 0; }
-
-    /* Deck-specific overlap repairs */
-    .slide--pathogenesis .pattern-split {
-      gap: var(--space-8);
-    }
-    .slide--pathogenesis .pattern-split__primary {
-      gap: var(--space-4);
-    }
-    .slide--pathogenesis .pattern-split__statement {
-      font-size: 2.05rem;
-    }
-    .slide--pathogenesis .pattern-split__supporting {
-      font-size: var(--text-body);
-      line-height: var(--lh-relaxed);
-    }
-    .slide--pathogenesis .pattern-split__detail {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 150px minmax(0, 1fr);
-      gap: var(--space-3);
-    }
-    .slide--pathogenesis .ai-visual {
-      grid-column: 1 / -1;
-      height: 100%;
-    }
-    .slide--pathogenesis .pattern-split__metric {
-      padding: var(--space-3);
-      gap: 4px;
-      min-height: 0;
-    }
-    .slide--pathogenesis .pattern-split__metric-value {
-      font-size: var(--text-body-lg);
-    }
-    .slide--pathogenesis .pattern-split__metric-detail {
-      margin-top: 0;
-      font-size: var(--text-xs);
-      line-height: var(--lh-snug);
-    }
-
-    .slide--timeline-alert .slide__body--visual-focus {
-      grid-template-rows: minmax(0, 1fr) auto;
-      gap: var(--space-3) var(--space-4);
-    }
-    .slide--timeline-alert .slide__body--visual-focus > .pattern-timeline {
-      grid-row: 1;
-      height: 100%;
-    }
-    .slide--timeline-alert .slide__body--visual-focus > .alert-strip {
-      grid-row: 2;
-      margin-top: 0;
-      padding: var(--space-3) var(--space-4);
-      font-size: var(--text-sm);
-      line-height: var(--lh-snug);
-    }
-    .slide--timeline-alert .slide__body--visual-focus > .ai-visual--focus {
-      grid-row: 1 / 3;
-    }
-    .slide--timeline-alert .timeline-step {
-      padding: var(--space-3);
-      gap: var(--space-1);
-    }
-    .slide--timeline-alert .timeline-step__node {
-      width: 32px;
-      height: 32px;
-      font-size: var(--text-sm);
-    }
-    .slide--timeline-alert .timeline-step__title {
-      font-size: var(--text-body);
-      line-height: var(--lh-snug);
-    }
-    .slide--timeline-alert .timeline-step__body {
-      font-size: var(--text-xs);
-      line-height: var(--lh-snug);
-    }
-
-    .slide--nsaid-step .slide__body {
-      display: grid;
-      grid-template-rows: minmax(0, 1fr) auto;
-      gap: var(--space-3);
-    }
-    .slide--nsaid-step .pattern-grid {
-      height: 100%;
-      min-height: 0;
-      gap: var(--space-3);
-    }
-    .slide--nsaid-step .tile {
-      padding: var(--space-4) var(--space-5);
-      gap: var(--space-2);
-    }
-    .slide--nsaid-step .tile__title {
-      font-size: var(--text-body-lg);
-    }
-    .slide--nsaid-step .tile__body {
-      margin-top: 0;
-      font-size: var(--text-sm);
-      line-height: var(--lh-snug);
-    }
-    .slide--nsaid-step .alert-strip {
-      margin-top: 0;
-      padding: var(--space-3) var(--space-4);
-      font-size: var(--text-sm);
-      line-height: var(--lh-snug);
-    }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(3) .pattern-split__detail { height: 100%; justify-content: space-between; align-items: stretch; }
-    .slide:nth-of-type(3) .pattern-split__metric { height: 100%; min-height: 136px; display: flex; flex-direction: column; justify-content: space-between; }
-  </style>
+ /* HQ3A-redesign 2026-09-27 (원장님 49028) — 같은 글 카드 틀을 되풀이하던 판을 숫자 카드·가로 도해·2x2·
+    글+그림 2단·표·대비 2단·단계 줄·경고 목록·체크 격자로 바꿨다. 그림칸 비율 = 그림 원본 비율(잘림 없음). */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px;font-size:14px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ /* 그림 — 칸 = 그림(비율 동일) */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none;border-radius:12px}
+ .q-fig::before{content:none}
+ .v2-fig__img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+ /* 숫자 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px 24px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;gap:14px}
+ .q-card__top .v2-chip{width:48px;height:48px;border-radius:13px}
+ .q-card__top .v2-chip svg{width:30px;height:30px}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-card__num{margin:20px 0 14px;font-size:68px;font-weight:800;line-height:1;color:var(--v2-navy);letter-spacing:-2px}
+ .q-card__num span{font-size:30px;font-weight:700;color:var(--v2-accent);margin-left:4px;letter-spacing:0}
+ .q-card .v2-body{font-size:17px;line-height:1.65}
+ .q-card__why{margin-top:12px;padding-top:12px;border-top:1px dashed var(--v2-line);font-size:16px;line-height:1.55;color:var(--v2-muted);word-break:keep-all}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 옆 글 · 작은 카드 */
+ .q-side{display:flex;flex-direction:column;justify-content:center}
+ .q-side .v2-body{font-size:18px;line-height:1.7}
+ .q-mini{padding:18px 22px}
+ .q-mini .v2-head{margin-bottom:8px}
+ .q-mini .v2-head b{font-size:18px}
+ .q-mini .v2-chip{width:34px;height:34px}
+ .q-mini .v2-chip svg{width:20px;height:20px}
+ .q-mini .v2-body{font-size:16px;line-height:1.55}
+ .q-sym{padding:24px 22px 22px}
+ .q-sym__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+ .q-sym__top .v2-chip{width:48px;height:48px;border-radius:13px}
+ .q-sym__top .v2-chip svg{width:30px;height:30px}
+ .q-sym__pct{font-size:30px;font-weight:800;color:var(--rule);letter-spacing:-.5px}
+ .q-sym__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;margin-bottom:14px;word-break:keep-all}
+ .q-sym__h span{color:var(--rule);margin-right:8px}
+ .q-sym .v2-body{font-size:18px;line-height:1.75}
+ /* 2x2 */
+ .q-four{display:flex;flex-direction:column;justify-content:center}
+ .q-four .v2-head{margin-bottom:10px}
+ .q-four .v2-head b{font-size:22px}
+ .q-four .v2-body{font-size:18px;line-height:1.65}
+ /* 단계 목록 */
+ .q-steps{display:flex;flex-direction:column;justify-content:space-between;padding:22px 24px}
+ .q-step{display:flex;gap:16px;align-items:flex-start}
+ .q-step + .q-step{padding-top:10px;border-top:1px dashed var(--v2-line)}
+ .q-step__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#FFF;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-step--on .q-step__n{background:var(--v2-accent)}
+ .q-step b{display:block;font-size:18px;line-height:26px;color:var(--v2-navy);margin:4px 0 2px}
+ .q-step p{margin:0;font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:flex;flex-direction:column;justify-content:center;padding:20px 24px}
+ .q-note .v2-head{margin-bottom:10px}
+ .q-note .v2-body{font-size:17px;line-height:1.6}
+ .q-note6 b{display:block;font-size:18px;color:var(--v2-navy);margin-bottom:8px;word-break:keep-all}
+ .q-note6 p{margin:0;font-size:16px;line-height:1.55;color:var(--v2-body);word-break:keep-all}
+ /* 표 */
+ .q-table tbody th{font-size:18px}
+ .q-table tbody td{font-size:17px;height:68px;line-height:1.5}
+ .q-table--diag tbody th,.q-table--diag tbody td{height:86px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:18px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:17px;padding:9px 0 9px 22px}
+ .v2-vs__list li::before{top:18px}
+ /* 스테로이드 단계 줄 */
+ .q-tp{display:flex;flex-direction:column;padding:22px 20px}
+ .q-tp__h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+ .q-tp__h b{font-size:18px;color:var(--v2-navy);word-break:keep-all}
+ .q-tp .q-step__n{width:30px;height:30px;font-size:15px}
+ .q-tp.v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-tp p{margin:0;font-size:17px;line-height:1.6;color:var(--v2-body);word-break:keep-all}
+ /* 경고 목록 */
+ .q-flag{position:absolute;display:flex;align-items:center;gap:20px;padding:0 26px;border:1px solid var(--color-danger-border);border-left:6px solid var(--v2-alert);border-radius:10px;background:#FEF2F2}
+ .q-flag--soft{border-color:var(--v2-line);border-left-color:var(--v2-accent);background:var(--v2-chip-accent)}
+ .q-flag__i{flex:none;width:38px;height:38px;border-radius:50%;background:var(--v2-alert);color:#FFF;font-size:21px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-flag--soft .q-flag__i{background:var(--v2-accent)}
+ .q-flag b{display:block;font-size:19px;color:#B91C1C;margin-bottom:4px}
+ .q-flag--soft b{color:var(--v2-navy)}
+ .q-flag p{margin:0;font-size:17px;line-height:1.5;color:var(--v2-ink);word-break:keep-all}
+ .q-flag p b{display:inline;font-size:17px;color:inherit;font-weight:700}
+ /* 체크 격자 */
+ .q-ck{display:flex;align-items:center;gap:18px;padding:0 24px}
+ .q-ck__n{flex:none;font-size:22px;font-weight:800;color:var(--rule);width:34px}
+ .q-ck p{margin:0;font-size:18px;line-height:1.5;color:var(--v2-ink);word-break:keep-all}
+ .q-ck p b{color:var(--v2-navy)}
+ /* 클로징 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-body{font-size:16px;line-height:1.6}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+ .q-qr .qr-block{border:0;background:transparent;box-shadow:none}
+</style>
 <!-- seo:geo2 --><meta name="description" content="바이러스 감염 후 발생하는 자기 한정적 갑상선 염증, 4단계 자연경과와 단계별 치료법">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/subacute-thyroiditis/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Subacute Thyroiditis — Gwanggyo Barun Internal Medicine", "description": "바이러스 감염 후 발생하는 자기 한정적 갑상선 염증, 4단계 자연경과와 단계별 치료법", "url": "https://edu.gwanggyobarun.com/decks/endocrine/subacute-thyroiditis/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER (dark gradient — the deck's only "dramatic gesture")
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · ENDOCRINOLOGY</div>
+      <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · 내분비</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">아급성 갑상선염,<br><em>이해하고 끝까지 치료하기</em></h1>
-      <p class="slide__subtitle">바이러스 감염 후 갑상선에 생기는 통증성 염증 — 4단계 자연경과와 단계별 치료법을 알아봅니다</p>
+      <p class="slide__subtitle">바이러스 감염 후 갑상선에 생기는 통증성 염증 — 4단계 자연경과와 단계별 치료법을&nbsp;알아봅니다</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Subacute Thyroiditis (de Quervain's Thyroiditis) · Post-viral · Self-limited</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__source">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</span>
+      <span class="slide__page">01 / 12</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · STATS3 — three core epidemiology numbers
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>OVERVIEW</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">아급성 갑상선염 (Subacute Thyroiditis, de Quervain's)</h2>
-      <p class="slide__subtitle">바이러스 감염 후 2~8주 뒤 발생하는 자기 한정적 갑상선 염증 — 성인 갑상선 통증의 가장 흔한 원인</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">96<span style="font-size:1.4rem;">%</span></div>
-              <div class="stats3-cell__unit">painful neck</div>
-            </div>
-            <div class="stats3-cell__label">환자가 경부 통증을 경험</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">4–5<span style="font-size:1.4rem;">:1</span></div>
-              <div class="stats3-cell__unit">F : M ratio</div>
-            </div>
-            <div class="stats3-cell__label">30~50세 여성에게 호발</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">85–95<span style="font-size:1.4rem;">%</span></div>
-              <div class="stats3-cell__unit">full recovery</div>
-            </div>
-            <div class="stats3-cell__label">12~18개월 내 완전 회복</div>
-          </div>
-        </div>
-        <div class="stats3-note">
-          감기 등 바이러스 감염 후 2~8주 뒤 갑상선에 염증이 시작됩니다. 여름~초가을(엔테로바이러스 유행기)에 더 흔하며, 대부분 자기 한정적이지만 5~15%에서 영구적 갑상선기능저하증이 남을 수 있어 적절한 치료와 경과 관찰이 필요합니다.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 Thyroid Guideline · Stasiak M et al. J Clin Med 2020</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · ASYMMETRIC SPLIT — Pathogenesis (post-viral + HLA-B*35)
-       ======================================================================== -->
-  <section class="slide slide--pathogenesis">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>PATHOGENESIS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">왜 생길까요? — 바이러스 감염이 방아쇠</h2>
-      <p class="slide__subtitle">바이러스가 직접 갑상선을 공격하거나, 면역 반응이 과도하게 활성화되어 갑상선 세포가 파괴됩니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split pattern-split--with-visual">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">감기 등 <em>바이러스 감염 후 2~8주</em> 뒤에 갑상선에 통증과 염증이 시작됩니다.</p>
-          <p class="pattern-split__supporting">
-            콕사키 바이러스(Coxsackie), 아데노바이러스, 볼거리 바이러스(mumps), EBV, 코로나19 등 다양한 바이러스가 원인이 됩니다. 바이러스가 갑상선 여포 세포를 직접 손상시키거나, 면역 반응이 과도하게 활성화되어 여포가 파괴됩니다. 파괴된 세포에서 저장돼 있던 갑상선 호르몬이 한꺼번에 혈중으로 유출되면서 갑상선중독 증상이 나타납니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <figure class="ai-visual ai-visual--split ai-visual--fill">
-            <img src="../../../shared/assets/generated/subacute-thyroiditis-inflamed-thyroid-fullbleed-20260530.jpg" alt="Inflamed thyroid after viral infection">
-          </figure>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Genetic susceptibility</div>
-            <div class="pattern-split__metric-value">HLA-B*35 양성</div>
-            <div class="pattern-split__metric-detail">환자의 약 70%에서 이 유전자 표지가 양성 — 가족 중 갑상선 질환력이 있다면 주의가 필요합니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">Seasonal pattern</div>
-            <div class="pattern-split__metric-value">여름~초가을</div>
-            <div class="pattern-split__metric-detail">엔테로바이러스 유행기와 일치 — 코로나19 이후 발생 빈도가 증가했다는 보고도 있습니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Stasiak M et al. J Clin Med 2020;9:534 · ATA 2016</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · DENSITY GRID 2×2 — Four key symptoms
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>SYMPTOMS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">주요 증상 — 4가지 핵심 신호</h2>
-      <p class="slide__subtitle">환자의 96%가 경부 통증을 경험하며, 약 50%에서 갑상선중독 증상이 동반됩니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 01 · 96%</div>
-          <div class="tile__title">목 앞쪽 통증 (Neck Pain)</div>
-          <div class="tile__body">갑상선 부위(목 앞쪽)에 심한 통증과 압통. 턱·귀·뒷머리로 방사되며, 한쪽에서 시작해 반대쪽으로 옮겨가기도 합니다. 삼킬 때 통증이 심해질 수 있습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 02</div>
-          <div class="tile__title">발열과 전신 증상 (Fever)</div>
-          <div class="tile__body">38~40도의 발열, 몸살, 피로감이 동반됩니다. 감기 후에 시작되므로 처음에는 감기가 계속되는 것으로 오해하기 쉽습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 03 · 50%</div>
-          <div class="tile__title">갑상선중독 증상 (Thyrotoxicosis)</div>
-          <div class="tile__body">갑상선 세포 파괴로 저장된 호르몬이 한꺼번에 유출되어 빈맥(심장 빨리 뜀), 손 떨림, 체중 감소, 더위를 잘 타는 증상이 나타납니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SYMPTOM · 04</div>
-          <div class="tile__title">갑상선 종대 (Goiter)</div>
-          <div class="tile__body">목 앞쪽 갑상선이 커지고 만지면 단단하고 아픕니다. 한쪽 엽이 다른 쪽보다 더 부어 보이기도 합니다. 림프절은 보통 정상입니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Fatourechi V et al. Mayo Clin Proc · ATA 2016</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · TIMELINE — Natural history (4 phases)
-       ======================================================================== -->
-  <section class="slide slide--timeline-alert">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>NATURAL HISTORY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">자연경과 — 4단계 패턴</h2>
-      <p class="slide__subtitle">대부분 6~18개월에 걸쳐 단계적으로 회복됩니다 (Hyperthyroid → Euthyroid → Hypothyroid → Recovery)</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <figure class="ai-visual ai-visual--focus ai-visual--fill">
-        <img src="../../../shared/assets/generated/subacute-thyroiditis-natural-course-fullbleed-20260530-slot-20260601.jpg" alt="Natural course of subacute thyroiditis">
-      </figure>
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">갑상선중독기 · 3~6주</div>
-          <div class="timeline-step__body">파괴된 세포에서 저장된 호르몬이 유출. 빈맥·체중감소·심한 목 통증, ESR/CRP 현저히 상승.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">정상 회복기 · Euthyroid</div>
-          <div class="timeline-step__body">호르몬 수치가 일시적으로 정상화. 통증이 호전되며 ESR/CRP도 점차 떨어집니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">기능저하기 · 수주~수개월</div>
-          <div class="timeline-step__body">호르몬 저장 고갈로 약 30~50%에서 일시적 기능저하. 피로·체중증가·추위 민감.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">완전 회복 · 12~18개월</div>
-          <div class="timeline-step__body">갑상선이 재생되어 기능 정상화. 85~95% 완전 회복, 5~15%에서만 영구적 기능저하.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">참고</span>
-        <span class="alert-strip__text">3단계를 모두 거치는 환자는 약 30%이며, 중독기만 거치고 바로 회복하는 경우도 많습니다. 영구적 기능저하(5~15%)는 정기 검사로 조기 발견하면 호르몬 보충으로 정상 생활이 가능합니다.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 · Sweeney LB et al. Am Fam Physician</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DENSITY GRID 2×2 — Diagnosis (blood + imaging)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>DIAGNOSIS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진단은 어떻게 하나요?</h2>
-      <p class="slide__subtitle">혈액검사(ESR/CRP·갑상선 기능)와 영상검사(초음파·RAIU)를 종합하여 진단합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <figure class="ai-visual ai-visual--focus ai-visual--fill">
-        <img src="../../../shared/assets/generated/subacute-thyroiditis-diagnosis-tools-fullbleed-20260530-slot-20260601.jpg" alt="Diagnosis tools for subacute thyroiditis">
-      </figure>
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">LAB · 01</div>
-          <div class="tile__title">염증 수치 (ESR / CRP)</div>
-          <div class="tile__body">ESR(적혈구 침강속도) > 50 mm/h로 현저히 상승. CRP(C-반응 단백)도 크게 상승하여 다른 갑상선 질환과 구별되는 핵심 단서입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">LAB · 02</div>
-          <div class="tile__title">갑상선 기능 (TSH·FT4)</div>
-          <div class="tile__body">중독기에 TSH 억제, FT4/FT3 상승. TRAb(자가항체) 음성으로 그레이브스병을 배제하고, Anti-TPO도 대개 음성입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">IMAGING · 03</div>
-          <div class="tile__title">방사성요오드 섭취율 (RAIU)</div>
-          <div class="tile__body">2~5% 미만으로 거의 측정 불가 수준 — 그레이브스병(>35%)과 구별되는 핵심 소견입니다. 갑상선 세포 파괴를 직접 반영합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">IMAGING · 04</div>
-          <div class="tile__title">갑상선 초음파 (Ultrasound)</div>
-          <div class="tile__body">경계 불명확한 저에코 영역, 도플러상 혈류 감소. 악성종양과 비슷해 보일 수 있어 회복 후 추적 초음파를 권장합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 Diagnostic Workup · KTA 갑상선 가이드라인</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · COMPARISON — vs Graves' / vs Hashimoto's (differential)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>DIFFERENTIAL DIAGNOSIS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">비슷한 질환과 어떻게 구별하나요?</h2>
-      <p class="slide__subtitle">통증 유무·ESR/CRP·RAIU 섭취율이 그레이브스병/하시모토 갑상선염과의 핵심 감별점입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">!</span>
-            아급성 갑상선염 (de Quervain's)
-          </div>
-          <ul class="compare-col__list">
-            <li>심한 경부 통증 (96%) — 핵심 단서</li>
-            <li>ESR/CRP 현저히 상승</li>
-            <li>TRAb 음성 · Anti-TPO 음성</li>
-            <li>RAIU 매우 낮음 (&lt; 5%)</li>
-            <li>초음파 혈류 감소</li>
-            <li>치료 — NSAIDs / 스테로이드</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            그레이브스병 / 하시모토 갑상선염
-          </div>
-          <ul class="compare-col__list">
-            <li>통증 없음 (Graves'·Hashimoto 모두)</li>
-            <li>ESR/CRP 정상</li>
-            <li>Graves' — TRAb 양성 (~95%)</li>
-            <li>Graves' — RAIU 높음 (&gt; 35%)</li>
-            <li>초음파 혈류 — Graves'에서 현저히 증가</li>
-            <li>치료 — 항갑상선제(MMI) 또는 경과 관찰</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 Differential · Painless vs Painful Thyroiditis</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · DENSITY GRID 2×2 — Treatment Step 1 (NSAIDs + propranolol)
-       ======================================================================== -->
-  <section class="slide slide--nsaid-step">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>TREATMENT STEP 1</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">치료 1단계 — NSAIDs와 베타차단제</h2>
-      <p class="slide__subtitle">경증~중등도는 NSAIDs로 통증을, 베타차단제로 빈맥·손떨림 등 갑상선중독 증상을 조절합니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile">
-          <div class="tile__index">DRUG · 01 · 1차 선택</div>
-          <div class="tile__title">NSAIDs (소염진통제)</div>
-          <div class="tile__body">이부프로펜 400~800mg 또는 록소프로펜 60mg, 하루 3회. 경증 통증의 1차 약제이며, 위장 보호를 위해 PPI와 병용합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 02 · 심장 증상</div>
-          <div class="tile__title">Propranolol (베타차단제)</div>
-          <div class="tile__body">프로프라놀롤 10~40mg 하루 3회. 빈맥·손떨림·두근거림을 조절하며, 중독기(2~6주) 동안만 복용합니다. 천식 환자는 다른 약제로 대체.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 03 · 위장 보호</div>
-          <div class="tile__title">PPI (위장약 병용)</div>
-          <div class="tile__body">NSAIDs 장기 복용 시 위염·위궤양 예방을 위해 오메프라졸·란소프라졸 등을 식전 30분에 함께 복용합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">DRUG · 04 · 효과 평가</div>
-          <div class="tile__title">2~3일 후 재평가</div>
-          <div class="tile__body">2~3일 복용 후 통증이 호전되지 않으면 스테로이드(프레드니솔론)로 전환합니다. 항갑상선제(MMI/PTU)는 효과가 없습니다.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">중요</span>
-        <span class="alert-strip__text">항갑상선제(메티마졸/PTU)는 사용하지 않습니다 — 호르몬이 새로 합성되는 것이 아니라, 파괴된 세포에서 저장돼 있던 호르몬이 유출되는 것이기 때문입니다.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 Subacute Thyroiditis Treatment</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 09 · TIMELINE — Steroid taper protocol (4 stages, 6-8 wks)
-       ======================================================================== -->
-  <section class="slide slide--timeline-alert">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>STEROID TAPER</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">치료 2단계 — 스테로이드 감량 프로토콜</h2>
-      <p class="slide__subtitle">NSAIDs 효과 부족 시 프레드니솔론 사용 — 천천히 줄여야 재발(약 12%)을 예방할 수 있습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <figure class="ai-visual ai-visual--focus ai-visual--fill">
-        <img src="../../../shared/assets/generated/subacute-thyroiditis-treatment-followup-fullbleed-20260530-slot-20260601.jpg" alt="Treatment taper and follow up for subacute thyroiditis">
-      </figure>
-      <div class="pattern-timeline">
-        <div class="timeline-step">
-          <div class="timeline-step__node">1</div>
-          <div class="timeline-step__title">1~2주차 · 시작 용량</div>
-          <div class="timeline-step__body">프레드니솔론 20~30 mg/일 (소론도정 4~6정). 48~72시간 내 통증 호전 확인.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">2</div>
-          <div class="timeline-step__title">3~4주차 · 1차 감량</div>
-          <div class="timeline-step__body">10~15 mg/일 (2~3정). 증상 호전 확인 후 단계적으로 감량합니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">3</div>
-          <div class="timeline-step__title">5~6주차 · 최소 유지</div>
-          <div class="timeline-step__body">5 mg/일 (1정). 최소 유지 용량 — 재발 여부를 가장 잘 관찰해야 하는 시기입니다.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__node">4</div>
-          <div class="timeline-step__title">7~8주차 · 중단</div>
-          <div class="timeline-step__body">격일 복용 후 중단. 재발 없으면 완전 중단, 재발 시 이전 용량으로 되돌립니다.</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">감량 원칙</span>
-        <span class="alert-strip__text">5mg까지 줄이는 데 4주 미만이면 재발 위험이 높아집니다 (비재발군 44.3일 vs 재발군 19.0일). 절대 임의로 중단하지 마세요 — 급격한 중단은 부신 위기를 유발할 수 있습니다.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 · Sato J et al. Endocr J 2017</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 10 · ALERT STACK — 4 critical warnings
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>RED FLAGS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">반드시 즉시 알려야 할 위험 신호</h2>
-      <p class="slide__subtitle">치료 중 다음 증상이 나타나면 처방을 임의로 조절하지 말고 바로 진료를 받으세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-alert-stack">
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">갑상선 폭풍 의심 — 응급 상황</div>
-            <div class="alert-row__text">고열(39도 이상)·심한 빈맥(분당 130회 이상)·의식 혼돈·구토가 동반되면 갑상선 폭풍(thyroid storm) 가능성 — 즉시 응급실로 가야 합니다.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">스테로이드 임의 중단 시 부신 위기</div>
-            <div class="alert-row__text">증상이 좋아졌다고 혼자 판단해 끊으면 부신 위기(심한 저혈압·쇼크) 위험. 반드시 의사 지시에 따라 천천히 감량하세요.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">48~72시간 내 통증 호전 없음</div>
-            <div class="alert-row__text">스테로이드 복용 후 2~3일 이내에 통증이 뚜렷이 줄지 않으면 진단이 맞는지 재평가가 필요합니다 — 즉시 재진하세요.</div>
-          </div>
-        </div>
-        <div class="alert-row">
-          <div class="alert-row__icon">!</div>
-          <div class="alert-row__body">
-            <div class="alert-row__title">영구적 갑상선기능저하증 (5~15%)</div>
-            <div class="alert-row__text">회복 후에도 6~12개월간 TSH 정기 검사 필수. 피로·추위 민감·체중 증가가 지속되면 호르몬 보충(레보티록신)이 필요합니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ATA 2016 Emergency Differentials · KTA 갑상선기능저하증 권고안</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 11 · CHECKLIST — 8 essentials
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>ACTION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 핵심 8가지</h2>
-      <p class="slide__subtitle">대부분 완전히 회복됩니다 — 꾸준한 복약·경과 관찰이 회복의 핵심입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist pattern-checklist--8">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">바이러스 감염 후 발생하는 <strong>자기 한정적 질환</strong> — 12~18개월 내 85~95% 완전 회복</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">목 앞쪽 통증이 핵심 증상 — <strong>그레이브스병과 다름</strong> (그레이브스병은 통증 없음)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">경증 — <strong>NSAIDs(부루펜·록소닌) + PPI(위장약)</strong> 병용</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">빈맥·손떨림 — <strong>프로프라놀롤(인데랄)</strong> 로 조절</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">중등도~중증 — <strong>프레드니솔론 6~8주 단계 감량</strong> (절대 임의 중단 금지)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">06</div>
-          <div class="check-item__text">2~3일 내 통증 호전 없으면 <strong>즉시 재진</strong> — 진단 재평가 필요</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">07</div>
-          <div class="check-item__text">갑상선 기능검사(TSH)를 <strong>6~8주 간격</strong> 정기적으로 받기</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">08</div>
-          <div class="check-item__text">피로·추위 민감·체중 증가 등 <strong>기능저하 증상</strong> 나타나면 알리기</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Daily action plan — adhere to therapy, monitor recovery, prevent relapse</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 12 · CLOSING — soft canvas, contact card + QR
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">함께 치료하면<br><em>반드시 회복됩니다</em></h2>
-      <p class="slide__subtitle">궁금한 점이 있으시면 언제든지 상담해 주세요 — 정기 검사로 끝까지 함께하겠습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Hours</div>
-            <div class="contact-card__value">평일 08:30~18:30<br>토요일 08:30~13:30</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 한눈에 보기</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">아급성 갑상선염 — 세 숫자로 먼저 봅니다</h2>
+  <p class="v2-sub">바이러스 감염 뒤 갑상선에 생기는 염증 — 성인 갑상선 통증의 가장 흔한 원인입니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.7141 43.1989C18.1642 43.1483 17.7594 42.6614 17.81 42.1114L18.6126 33.3949L22.6576 35.5348L23.5882 29.9414C23.6789 29.3966 24.194 29.0284 24.7388 29.1191C25.2836 29.2097 25.6517 29.7248 25.5611 30.2696L24.1751 38.6002L20.3291 36.5656L19.8016 42.2948C19.751 42.8448 19.2641 43.2496 18.7141 43.1989Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.70634 29.7527C4.43692 29.2706 4.60934 28.6613 5.09145 28.3919L13.0341 23.9533L13.5827 28.7104L19.0257 26.1708C19.5262 25.9373 20.1212 26.1538 20.3548 26.6542C20.5883 27.1547 20.3718 27.7498 19.8714 27.9833L11.9138 31.696L11.391 27.1626L6.06711 30.1378C5.585 30.4072 4.97576 30.2348 4.70634 29.7527Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9.35468 9.55172C9.64123 9.07958 10.2563 8.92914 10.7284 9.21569L18.6951 14.0509L14.7177 16.9542L19.7859 20.5613C20.2359 20.8816 20.341 21.506 20.0208 21.9559C19.7006 22.4059 19.0762 22.511 18.6262 22.1908L11.2973 16.9746L15.0929 14.2042L9.69071 10.9254C9.21858 10.6389 9.06813 10.0238 9.35468 9.55172Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.2567 5.33763C31.8005 5.43354 32.1637 5.9522 32.0678 6.49609L30.565 15.0183L26.7623 12.5846L25.3965 17.9879C25.2611 18.5233 24.7173 18.8477 24.1819 18.7123C23.6465 18.577 23.3221 18.0332 23.4575 17.4978L25.5034 9.40427L29.1164 11.7166L30.0982 6.14877C30.1941 5.60488 30.7128 5.24172 31.2567 5.33763Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M43.8544 19.3631C44.12 19.8474 43.9428 20.4552 43.4585 20.7208L35.8435 24.8977L35.3596 20.3894L30.2626 22.7187C29.7603 22.9482 29.167 22.7271 28.9374 22.2248C28.7079 21.7225 28.929 21.1292 29.4313 20.8996L37.0521 17.417L37.512 21.7015L42.4967 18.9673C42.9809 18.7017 43.5888 18.8789 43.8544 19.3631Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M38.6643 37.4888C38.3778 37.9609 37.7627 38.1113 37.2906 37.8248L29.7723 33.2617L33.489 30.5488L28.8366 27.2376C28.3866 26.9173 28.2815 26.2929 28.6017 25.843C28.922 25.393 29.5463 25.2879 29.9963 25.6081L36.9094 30.5283L33.3745 33.1085L38.3283 36.1151C38.8004 36.4016 38.9509 37.0166 38.6643 37.4888Z" fill="currentColor"/>
+</svg></div><span class="q-card__h">목 앞쪽이 아픕니다</span></div>
+    <div class="q-card__num">96<span>%</span></div>
+    <div class="v2-body">환자 거의 모두가 목 앞쪽 통증을 겪습니다. 턱·귀·뒷머리로 뻗치기도 합니다.</div>
+    <div class="q-card__why">한쪽에서 시작해 반대쪽으로 옮겨 가기도 합니다.</div>
+    <div class="q-card__k">통증이 가장 큰 단서</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M33.5 13C35.433 13 37 11.433 37 9.5C37 7.567 35.433 6 33.5 6C31.567 6 30 7.567 30 9.5C30 11.433 31.567 13 33.5 13ZM38.6486 20C38.6984 20.3524 38.7424 20.7287 38.7806 21.1216C38.9992 23.3666 39 25.8009 39 26.4998C39 27.3282 39.6716 27.9998 40.5 27.9998C41.3284 27.9998 42 27.3282 42 26.4998V26.493C42 25.7857 42 23.2288 41.7665 20.8308C41.6507 19.6418 41.4698 18.4015 41.1696 17.4252C41.0223 16.9462 40.8147 16.4227 40.499 15.9892C40.1824 15.5547 39.59 15 38.6886 15H28.3114C27.41 15 26.8176 15.5547 26.501 15.9892C26.1853 16.4227 25.9777 16.9462 25.8304 17.4252C25.5302 18.4015 25.3492 19.6418 25.2335 20.8308C25 23.2288 25 25.7857 25 26.493V26.4998C25 27.3282 25.6716 27.9998 26.5 27.9998C27.3284 27.9998 28 27.3282 28 26.4998C28 25.8009 28.0008 23.3666 28.2194 21.1216C28.2576 20.7287 28.3016 20.3524 28.3514 20H29L29 40.4999C29 41.305 29.6356 41.9666 30.4401 41.9987C31.2446 42.0308 31.931 41.4221 31.9952 40.6195L32.8448 30H34.1552L35.0048 40.6196C35.069 41.4222 35.7554 42.0309 36.5599 41.9988C37.3644 41.9667 38 41.3051 38 40.5V20H38.6486Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18 9.5C18 11.433 16.433 13 14.5 13C12.567 13 11 11.433 11 9.5C11 7.567 12.567 6 14.5 6C16.433 6 18 7.567 18 9.5ZM18.8665 15.046C18.7467 15.0158 18.6236 15.0005 18.5 15.0005H13.0002C12.9869 15.0005 12.9733 15.0007 12.9601 15.001L12.4377 15.0009C11.6259 15.0008 10.7493 15.0008 10.4979 15.0012C10.375 15.0014 10.2526 15.0166 10.1335 15.0467C9.01975 15.3273 8.27154 16.0056 7.80063 16.9324C7.38842 17.7436 7.18744 18.7524 7.0204 19.7546L6.0204 25.7546C5.88421 26.5718 6.43624 27.3446 7.25339 27.4808C8.07055 27.617 8.84339 27.065 8.97958 26.2478L9.97958 20.2478C10.0724 19.6907 10.1579 19.2663 10.2448 18.9388L10.5 22.0002C10.4999 23.8697 8.80604 32.4085 8.20691 35.3703C8.09424 35.9273 8.46802 36.4634 9.03011 36.5471C13.1517 37.1615 15.8484 37.1418 19.9689 36.5426C20.5314 36.4608 20.9081 35.9272 20.7979 35.3696C20.2031 32.3609 18.5 23.6064 18.5 22L18.7552 18.9382C18.8421 19.2657 18.9276 19.6901 19.0204 20.2471L20.0204 26.2471C20.1566 27.0642 20.9294 27.6163 21.7466 27.4801C22.5638 27.3439 23.1158 26.5711 22.9796 25.7539L21.9796 19.7539C21.8126 18.7517 21.6116 17.7429 21.1994 16.9317C20.7285 16.0049 19.9802 15.3266 18.8665 15.046ZM11.0077 41.1241L10.6311 38.1115C11.6905 38.2418 12.6981 38.3256 13.6899 38.3637L12.9701 41.2426C12.8534 41.7097 12.4203 42.0273 11.9397 41.9982C11.4591 41.9692 11.0674 41.6018 11.0077 41.1241ZM16.0299 41.2421L15.3156 38.3853C16.3129 38.3733 17.3141 38.3149 18.3564 38.2111L17.9923 41.1236C17.9326 41.6014 17.5409 41.9687 17.0603 41.9977C16.5797 42.0268 16.1466 41.7092 16.0299 41.2421Z" fill="currentColor"/>
+</svg></div><span class="q-card__h">여성에게 더 많습니다</span></div>
+    <div class="q-card__num">4~5<span>배</span></div>
+    <div class="v2-body">여성이 남성보다 4~5배 많고, 30~50세 여성에게 흔합니다.</div>
+    <div class="q-card__why">여름~초가을, 장바이러스가 돌 때 더 흔합니다.</div>
+    <div class="q-card__k">감기 뒤 목이 아프면 의심</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.5843 10.0874L21.5782 10.0928C21.574 10.0194 21.5698 9.94163 21.5654 9.85905L21.557 9.70141C21.521 9.04058 21.4654 8.0406 21.0591 7.25051C20.8385 6.8214 20.4962 6.41208 19.9757 6.15329C19.4613 5.89747 18.8729 5.83854 18.245 5.925C17.6883 6.00166 17.1945 6.22589 16.8047 6.60348C16.4226 6.97362 16.1957 7.43726 16.0709 7.91064C15.8285 8.8293 15.9314 9.92695 16.1818 10.9837C16.6881 13.1199 17.9194 15.5841 19.3039 17.2603C19.8366 17.9052 20.0001 18.877 20.0001 19.2956L20.0001 21.5L22.0001 22V20.685C22.8827 20.357 23.4789 20.207 24.038 20.1955C24.5799 20.1844 25.1584 20.3035 26.0001 20.6513V22L28.0001 21.5L28.0001 19.2956C28.0001 18.877 28.1636 17.9052 28.6963 17.2603C30.0715 15.5953 31.3642 13.1422 31.9358 11.0123C32.2179 9.96102 32.3592 8.86383 32.1474 7.94184C32.0381 7.46562 31.8243 6.99328 31.4453 6.61447C31.0583 6.22759 30.5621 6.00178 30.0045 5.925C29.3767 5.83854 28.7883 5.89747 28.2738 6.15329C27.7534 6.41208 27.4111 6.8214 27.1904 7.25051C26.7842 8.0406 26.7286 9.04058 26.6926 9.70141L26.6841 9.85903C26.6798 9.94162 26.6756 10.0194 26.6714 10.0928L26.6653 10.0874C26.1879 9.66212 25.5561 9.51729 25.1302 9.45488C24.8041 9.4071 24.4873 9.39377 24.2495 9.39006V9.38864L24.2369 9.38864C24.2036 9.38863 24.1661 9.38863 24.1248 9.38883C24.0835 9.38863 24.0459 9.38863 24.0126 9.38864L24.0001 9.38864V9.39006C23.7623 9.39377 23.4454 9.4071 23.1193 9.45488C22.6935 9.51729 22.0617 9.66212 21.5843 10.0874ZM22.9147 11.5807C22.9153 11.5802 22.9236 11.5734 22.9436 11.5624C22.9579 11.5544 22.9766 11.5453 23 11.5355V16H25V11.462C25.0782 11.4785 25.1466 11.4974 25.2044 11.518C25.2502 11.5345 25.2834 11.5499 25.306 11.5624C25.326 11.5735 25.3344 11.5803 25.335 11.5809C25.7583 11.9579 26.188 12.2759 26.6192 12.4201C26.8509 12.4977 27.1459 12.5466 27.4634 12.4691C27.7982 12.3874 28.0479 12.1922 28.2164 11.9732C28.5014 11.6029 28.578 11.1307 28.6142 10.8471C28.6499 10.5673 28.6668 10.2448 28.6821 9.95223L28.6896 9.81013C28.7302 9.06395 28.7917 8.51011 28.9691 8.16501C29.0403 8.02653 29.1064 7.97291 29.1644 7.9441C29.2283 7.91232 29.3881 7.85899 29.7317 7.9063C29.9126 7.93121 29.99 7.98762 30.0314 8.02894C30.0808 8.07833 30.1501 8.18017 30.1982 8.38958C30.3014 8.83886 30.2551 9.55868 30.0042 10.4939C29.5096 12.3368 28.3539 14.5343 27.1543 15.9867C26.4846 16.7974 26.183 17.7918 26.0652 18.5403C25.3509 18.3021 24.6867 18.1818 23.9969 18.1959C23.3165 18.2099 22.6534 18.355 21.9421 18.586C21.8294 17.8326 21.5293 16.814 20.8459 15.9867C19.6556 14.5455 18.5632 12.3591 18.1279 10.5225C17.9076 9.59276 17.8853 8.87338 18.0047 8.42078C18.0607 8.20854 18.1364 8.09799 18.1963 8.03993C18.2486 7.98932 18.3361 7.93133 18.5179 7.9063C18.8614 7.85899 19.0213 7.91232 19.0852 7.9441C19.1432 7.97291 19.2093 8.02653 19.2805 8.16501C19.4579 8.51011 19.5193 9.06395 19.5599 9.81013L19.5675 9.95218C19.5828 10.2447 19.5997 10.5673 19.6354 10.8471C19.6715 11.1307 19.7482 11.6029 20.0331 11.9732C20.2017 12.1922 20.4514 12.3874 20.7862 12.4691C21.1037 12.5466 21.3987 12.4977 21.6304 12.4201C22.0616 12.2759 22.4914 11.9578 22.9147 11.5807Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M26.0001 35.3149C25.1174 35.643 24.5212 35.793 23.962 35.8045C23.4202 35.8156 22.8417 35.6965 22.0001 35.3488V33.6667L20.0001 35.8334L20.0001 38C20.0001 40.2091 21.7909 42 24 42C26.2091 42 27.9999 40.2092 28 38.0001L28.0001 35.8333L26.0001 33.6667L26.0001 35.3149ZM24 40C22.8955 40 22.0001 39.1046 22 38.0001L22.0001 37.4811C22.6897 37.7052 23.3344 37.8178 24.0031 37.8041C24.6651 37.7905 25.3106 37.6528 26.0001 37.4326V38C26.0001 39.1046 25.1046 40 24 40Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.3616 11.4564C13.3531 12.0825 14.1689 13.2191 14.7737 14.725C14.9275 15.1079 15.0778 15.5207 15.2352 15.9525C15.7537 17.3761 16.348 19.0077 17.3924 20.4676C18.6864 22.2764 20.6362 23.7381 24 23.7381C27.3638 23.7381 29.3136 22.2764 30.6076 20.4676C31.652 19.0077 32.2463 17.3761 32.7648 15.9526C32.9222 15.5207 33.0725 15.1079 33.2263 14.725C33.8311 13.2191 34.6469 12.0825 35.6384 11.4564C36.6834 10.7965 37.8663 10.7501 38.9189 11.3558C39.9103 11.9262 40.672 13.0052 41.1835 14.3775C41.7012 15.7664 42 17.5493 42 19.6819V29.8691C42 30.7182 41.8359 32.6845 40.883 34.4771C39.8932 36.3389 38.045 38.0002 34.8462 38.0002C33.251 38.0002 32.0601 37.5494 31.0936 36.849C30.2289 36.2225 29.5679 35.4071 28.9943 34.6994L28.878 34.5561C28.2484 33.7817 27.6901 33.1275 26.9608 32.6456C26.2611 32.1833 25.354 31.8504 24 31.8504C22.646 31.8504 21.7389 32.1833 21.0392 32.6456C20.3099 33.1275 19.7516 33.7817 19.122 34.5561L19.0057 34.6995C18.4321 35.4071 17.7711 36.2225 16.9064 36.849C15.9399 37.5494 14.749 38.0002 13.1538 38.0002C9.95499 38.0002 8.10675 36.3389 7.11703 34.4771C6.16409 32.6845 6 30.7182 6 29.8691V19.6819C6 17.5493 6.29877 15.7664 6.81647 14.3775C7.32798 13.0052 8.08973 11.9262 9.08109 11.3558C10.1337 10.7501 11.3166 10.7965 12.3616 11.4564ZM12 18C12 18.5523 11.5523 19 11 19C10.4477 19 10 18.5523 10 18C10 17.4477 10.4477 17 11 17C11.5523 17 12 17.4477 12 18ZM13 23C13.5523 23 14 22.5523 14 22C14 21.4477 13.5523 21 13 21C12.4477 21 12 21.4477 12 22C12 22.5523 12.4477 23 13 23ZM12 26C12 26.5523 11.5523 27 11 27C10.4477 27 10 26.5523 10 26C10 25.4477 10.4477 25 11 25C11.5523 25 12 25.4477 12 26ZM16 32C16.5523 32 17 31.5523 17 31C17 30.4477 16.5523 30 16 30C15.4477 30 15 30.4477 15 31C15 31.5523 15.4477 32 16 32ZM13 31C13 31.5523 12.5523 32 12 32C11.4477 32 11 31.5523 11 31C11 30.4477 11.4477 30 12 30C12.5523 30 13 30.4477 13 31ZM16 28C16.5523 28 17 27.5523 17 27C17 26.4477 16.5523 26 16 26C15.4477 26 15 26.4477 15 27C15 27.5523 15.4477 28 16 28ZM21 28C21 28.5523 20.5523 29 20 29C19.4477 29 19 28.5523 19 28C19 27.4477 19.4477 27 20 27C20.5523 27 21 27.4477 21 28ZM37 19C36.4477 19 36 18.5523 36 18C36 17.4477 36.4477 17 37 17C37.5523 17 38 17.4477 38 18C38 18.5523 37.5523 19 37 19ZM34 22C34 22.5523 34.4477 23 35 23C35.5523 23 36 22.5523 36 22C36 21.4477 35.5523 21 35 21C34.4477 21 34 21.4477 34 22ZM37 27C36.4477 27 36 26.5523 36 26C36 25.4477 36.4477 25 37 25C37.5523 25 38 25.4477 38 26C38 26.5523 37.5523 27 37 27ZM31 31C31 31.5523 31.4477 32 32 32C32.5523 32 33 31.5523 33 31C33 30.4477 32.5523 30 32 30C31.4477 30 31 30.4477 31 31ZM36 32C35.4477 32 35 31.5523 35 31C35 30.4477 35.4477 30 36 30C36.5523 30 37 30.4477 37 31C37 31.5523 36.5523 32 36 32ZM31 27C31 27.5523 31.4477 28 32 28C32.5523 28 33 27.5523 33 27C33 26.4477 32.5523 26 32 26C31.4477 26 31 26.4477 31 27ZM28 29C27.4477 29 27 28.5523 27 28C27 27.4477 27.4477 27 28 27C28.5523 27 29 27.4477 29 28C29 28.5523 28.5523 29 28 29ZM25 28C25 28.5523 24.5523 29 24 29C23.4477 29 23 28.5523 23 28C23 27.4477 23.4477 27 24 27C24.5523 27 25 27.4477 25 28Z" fill="currentColor"/>
+</svg></div><span class="q-card__h">대부분 회복됩니다</span></div>
+    <div class="q-card__num">85~95<span>%</span></div>
+    <div class="v2-body">12~18개월 안에 기능이 돌아옵니다. 다만 <b>5~15%</b>는 기능저하가 남을 수 있습니다.</div>
+    <div class="q-card__why">기능저하가 남아도 호르몬 약으로 정상 생활을 할&nbsp;수&nbsp;있습니다.</div>
+    <div class="q-card__k">회복까지 정기 검사</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 감기 등 바이러스 감염 2~8주 뒤에 시작되고, 여름~초가을에 더 흔합니다.</span><span class="v2-src">근거 · ATA 2016 권고안 · Stasiak 2020</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 왜 생기나</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">왜 생길까요? — 바이러스 감염이 방아쇠입니다</h2>
+  <p class="v2-sub">바이러스가 갑상선을 직접 공격하거나 면역 반응이 지나쳐 갑상선 세포가 깨집니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:740px;height:229px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/subacute-thyroiditis-inflamed-thyroid-fullbleed-20260530.jpg" alt="바이러스가 갑상선에 염증을 일으키고, 목 앞쪽 통증이 귀 쪽으로 뻗치는 모습">
+  </div>
+  <div class="v2-panel q-side" style="left:828px;top:206px;width:388px;height:229px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.5843 10.0874L21.5782 10.0928C21.574 10.0194 21.5698 9.94163 21.5654 9.85905L21.557 9.70141C21.521 9.04058 21.4654 8.0406 21.0591 7.25051C20.8385 6.8214 20.4962 6.41208 19.9757 6.15329C19.4613 5.89747 18.8729 5.83854 18.245 5.925C17.6883 6.00166 17.1945 6.22589 16.8047 6.60348C16.4226 6.97362 16.1957 7.43726 16.0709 7.91064C15.8285 8.8293 15.9314 9.92695 16.1818 10.9837C16.6881 13.1199 17.9194 15.5841 19.3039 17.2603C19.8366 17.9052 20.0001 18.877 20.0001 19.2956L20.0001 21.5L22.0001 22V20.685C22.8827 20.357 23.4789 20.207 24.038 20.1955C24.5799 20.1844 25.1584 20.3035 26.0001 20.6513V22L28.0001 21.5L28.0001 19.2956C28.0001 18.877 28.1636 17.9052 28.6963 17.2603C30.0715 15.5953 31.3642 13.1422 31.9358 11.0123C32.2179 9.96102 32.3592 8.86383 32.1474 7.94184C32.0381 7.46562 31.8243 6.99328 31.4453 6.61447C31.0583 6.22759 30.5621 6.00178 30.0045 5.925C29.3767 5.83854 28.7883 5.89747 28.2738 6.15329C27.7534 6.41208 27.4111 6.8214 27.1904 7.25051C26.7842 8.0406 26.7286 9.04058 26.6926 9.70141L26.6841 9.85903C26.6798 9.94162 26.6756 10.0194 26.6714 10.0928L26.6653 10.0874C26.1879 9.66212 25.5561 9.51729 25.1302 9.45488C24.8041 9.4071 24.4873 9.39377 24.2495 9.39006V9.38864L24.2369 9.38864C24.2036 9.38863 24.1661 9.38863 24.1248 9.38883C24.0835 9.38863 24.0459 9.38863 24.0126 9.38864L24.0001 9.38864V9.39006C23.7623 9.39377 23.4454 9.4071 23.1193 9.45488C22.6935 9.51729 22.0617 9.66212 21.5843 10.0874ZM22.9147 11.5807C22.9153 11.5802 22.9236 11.5734 22.9436 11.5624C22.9579 11.5544 22.9766 11.5453 23 11.5355V16H25V11.462C25.0782 11.4785 25.1466 11.4974 25.2044 11.518C25.2502 11.5345 25.2834 11.5499 25.306 11.5624C25.326 11.5735 25.3344 11.5803 25.335 11.5809C25.7583 11.9579 26.188 12.2759 26.6192 12.4201C26.8509 12.4977 27.1459 12.5466 27.4634 12.4691C27.7982 12.3874 28.0479 12.1922 28.2164 11.9732C28.5014 11.6029 28.578 11.1307 28.6142 10.8471C28.6499 10.5673 28.6668 10.2448 28.6821 9.95223L28.6896 9.81013C28.7302 9.06395 28.7917 8.51011 28.9691 8.16501C29.0403 8.02653 29.1064 7.97291 29.1644 7.9441C29.2283 7.91232 29.3881 7.85899 29.7317 7.9063C29.9126 7.93121 29.99 7.98762 30.0314 8.02894C30.0808 8.07833 30.1501 8.18017 30.1982 8.38958C30.3014 8.83886 30.2551 9.55868 30.0042 10.4939C29.5096 12.3368 28.3539 14.5343 27.1543 15.9867C26.4846 16.7974 26.183 17.7918 26.0652 18.5403C25.3509 18.3021 24.6867 18.1818 23.9969 18.1959C23.3165 18.2099 22.6534 18.355 21.9421 18.586C21.8294 17.8326 21.5293 16.814 20.8459 15.9867C19.6556 14.5455 18.5632 12.3591 18.1279 10.5225C17.9076 9.59276 17.8853 8.87338 18.0047 8.42078C18.0607 8.20854 18.1364 8.09799 18.1963 8.03993C18.2486 7.98932 18.3361 7.93133 18.5179 7.9063C18.8614 7.85899 19.0213 7.91232 19.0852 7.9441C19.1432 7.97291 19.2093 8.02653 19.2805 8.16501C19.4579 8.51011 19.5193 9.06395 19.5599 9.81013L19.5675 9.95218C19.5828 10.2447 19.5997 10.5673 19.6354 10.8471C19.6715 11.1307 19.7482 11.6029 20.0331 11.9732C20.2017 12.1922 20.4514 12.3874 20.7862 12.4691C21.1037 12.5466 21.3987 12.4977 21.6304 12.4201C22.0616 12.2759 22.4914 11.9578 22.9147 11.5807Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M26.0001 35.3149C25.1174 35.643 24.5212 35.793 23.962 35.8045C23.4202 35.8156 22.8417 35.6965 22.0001 35.3488V33.6667L20.0001 35.8334L20.0001 38C20.0001 40.2091 21.7909 42 24 42C26.2091 42 27.9999 40.2092 28 38.0001L28.0001 35.8333L26.0001 33.6667L26.0001 35.3149ZM24 40C22.8955 40 22.0001 39.1046 22 38.0001L22.0001 37.4811C22.6897 37.7052 23.3344 37.8178 24.0031 37.8041C24.6651 37.7905 25.3106 37.6528 26.0001 37.4326V38C26.0001 39.1046 25.1046 40 24 40Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.3616 11.4564C13.3531 12.0825 14.1689 13.2191 14.7737 14.725C14.9275 15.1079 15.0778 15.5207 15.2352 15.9525C15.7537 17.3761 16.348 19.0077 17.3924 20.4676C18.6864 22.2764 20.6362 23.7381 24 23.7381C27.3638 23.7381 29.3136 22.2764 30.6076 20.4676C31.652 19.0077 32.2463 17.3761 32.7648 15.9526C32.9222 15.5207 33.0725 15.1079 33.2263 14.725C33.8311 13.2191 34.6469 12.0825 35.6384 11.4564C36.6834 10.7965 37.8663 10.7501 38.9189 11.3558C39.9103 11.9262 40.672 13.0052 41.1835 14.3775C41.7012 15.7664 42 17.5493 42 19.6819V29.8691C42 30.7182 41.8359 32.6845 40.883 34.4771C39.8932 36.3389 38.045 38.0002 34.8462 38.0002C33.251 38.0002 32.0601 37.5494 31.0936 36.849C30.2289 36.2225 29.5679 35.4071 28.9943 34.6994L28.878 34.5561C28.2484 33.7817 27.6901 33.1275 26.9608 32.6456C26.2611 32.1833 25.354 31.8504 24 31.8504C22.646 31.8504 21.7389 32.1833 21.0392 32.6456C20.3099 33.1275 19.7516 33.7817 19.122 34.5561L19.0057 34.6995C18.4321 35.4071 17.7711 36.2225 16.9064 36.849C15.9399 37.5494 14.749 38.0002 13.1538 38.0002C9.95499 38.0002 8.10675 36.3389 7.11703 34.4771C6.16409 32.6845 6 30.7182 6 29.8691V19.6819C6 17.5493 6.29877 15.7664 6.81647 14.3775C7.32798 13.0052 8.08973 11.9262 9.08109 11.3558C10.1337 10.7501 11.3166 10.7965 12.3616 11.4564ZM12 18C12 18.5523 11.5523 19 11 19C10.4477 19 10 18.5523 10 18C10 17.4477 10.4477 17 11 17C11.5523 17 12 17.4477 12 18ZM13 23C13.5523 23 14 22.5523 14 22C14 21.4477 13.5523 21 13 21C12.4477 21 12 21.4477 12 22C12 22.5523 12.4477 23 13 23ZM12 26C12 26.5523 11.5523 27 11 27C10.4477 27 10 26.5523 10 26C10 25.4477 10.4477 25 11 25C11.5523 25 12 25.4477 12 26ZM16 32C16.5523 32 17 31.5523 17 31C17 30.4477 16.5523 30 16 30C15.4477 30 15 30.4477 15 31C15 31.5523 15.4477 32 16 32ZM13 31C13 31.5523 12.5523 32 12 32C11.4477 32 11 31.5523 11 31C11 30.4477 11.4477 30 12 30C12.5523 30 13 30.4477 13 31ZM16 28C16.5523 28 17 27.5523 17 27C17 26.4477 16.5523 26 16 26C15.4477 26 15 26.4477 15 27C15 27.5523 15.4477 28 16 28ZM21 28C21 28.5523 20.5523 29 20 29C19.4477 29 19 28.5523 19 28C19 27.4477 19.4477 27 20 27C20.5523 27 21 27.4477 21 28ZM37 19C36.4477 19 36 18.5523 36 18C36 17.4477 36.4477 17 37 17C37.5523 17 38 17.4477 38 18C38 18.5523 37.5523 19 37 19ZM34 22C34 22.5523 34.4477 23 35 23C35.5523 23 36 22.5523 36 22C36 21.4477 35.5523 21 35 21C34.4477 21 34 21.4477 34 22ZM37 27C36.4477 27 36 26.5523 36 26C36 25.4477 36.4477 25 37 25C37.5523 25 38 25.4477 38 26C38 26.5523 37.5523 27 37 27ZM31 31C31 31.5523 31.4477 32 32 32C32.5523 32 33 31.5523 33 31C33 30.4477 32.5523 30 32 30C31.4477 30 31 30.4477 31 31ZM36 32C35.4477 32 35 31.5523 35 31C35 30.4477 35.4477 30 36 30C36.5523 30 37 30.4477 37 31C37 31.5523 36.5523 32 36 32ZM31 27C31 27.5523 31.4477 28 32 28C32.5523 28 33 27.5523 33 27C33 26.4477 32.5523 26 32 26C31.4477 26 31 26.4477 31 27ZM28 29C27.4477 29 27 28.5523 27 28C27 27.4477 27.4477 27 28 27C28.5523 27 29 27.4477 29 28C29 28.5523 28.5523 29 28 29ZM25 28C25 28.5523 24.5523 29 24 29C23.4477 29 23 28.5523 23 28C23 27.4477 23.4477 27 24 27C24.5523 27 25 27.4477 25 28Z" fill="currentColor"/>
+</svg></div><b>이렇게 시작됩니다</b></div><div class="v2-body">감기 등을 앓고 <b>2~8주 뒤</b> 목 앞쪽이 아프기 시작합니다. 바이러스가 갑상선 세포를 직접 다치게 하거나, 면역 반응이 지나쳐 세포가&nbsp;깨집니다.</div></div>
+  </div>
+  <div class="v2-panel q-mini" style="left:64px;top:455px;width:368px;height:151px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14 4C13.4477 4 13 4.44772 13 5V8C13 8.55228 13.4477 9 14 9H15V11.2729C14.4174 11.4788 14 12.0344 14 12.6875V39C14 41.7614 16.2386 44 19 44C21.1445 44 22.9737 42.6499 23.684 40.7533C21.4357 38.9196 20 36.1275 20 33C20 29.7284 21.5711 26.8237 24 24.9993V12.6875C24 12.0344 23.5826 11.4788 23 11.2729V9H24C24.5523 9 25 8.55228 25 8V5C25 4.44772 24.5523 4 24 4H14ZM17 11.6875V9H21V11.6875C21 12.3406 21.4174 12.8962 22 13.1021V18H16V13.1021C16.5826 12.8962 17 12.3406 17 11.6875ZM32.7574 37.1716C32.2326 37.5192 31.6384 37.7704 31 37.9V39C31.5523 39 32 39.4477 32 40C32 40.5523 31.5523 41 31 41H29C28.4477 41 28 40.5523 28 40C28 39.4477 28.4477 39 29 39V37.9C28.3616 37.7704 27.7674 37.5192 27.2426 37.1716L26.4142 38.0001C26.8047 38.3906 26.8047 39.0238 26.4142 39.4143C26.0236 39.8048 25.3905 39.8048 25 39.4143L23.5857 38.0001C23.1952 37.6096 23.1952 36.9764 23.5857 36.5859C23.9763 36.1953 24.6094 36.1953 25 36.5859L25.8284 35.7574C25.4808 35.2326 25.2296 34.6384 25.1 34H24C24 34.5523 23.5523 35 23 35C22.4477 35 22 34.5523 22 34V32C22 31.4477 22.4477 31 23 31C23.5523 31 24 31.4477 24 32H25.1C25.2296 31.3616 25.4808 30.7674 25.8284 30.2426L25 29.4143C24.6095 29.8048 23.9764 29.8048 23.5858 29.4143C23.1953 29.0238 23.1953 28.3906 23.5858 28.0001L24.2836 27.3024C24.2866 27.2992 24.2898 27.296 24.2929 27.2929C24.296 27.2898 24.2992 27.2866 24.3024 27.2835L25 26.5859C25.3906 26.1953 26.0237 26.1953 26.4143 26.5859C26.8048 26.9764 26.8048 27.6096 26.4143 28.0001L27.2426 28.8284C27.7674 28.4808 28.3616 28.2296 29 28.1V27C28.4477 27 28 26.5523 28 26C28 25.4477 28.4477 25 29 25H31C31.5523 25 32 25.4477 32 26C32 26.5523 31.5523 27 31 27V28.1C31.6384 28.2296 32.2326 28.4808 32.7574 28.8284L33.5858 27.9999C33.1953 27.6094 33.1953 26.9762 33.5858 26.5857C33.9764 26.1952 34.6095 26.1952 35 26.5857L36.4143 27.9999C36.8048 28.3904 36.8048 29.0236 36.4143 29.4141C36.0237 29.8047 35.3906 29.8047 35 29.4141L34.1716 30.2426C34.5192 30.7674 34.7704 31.3616 34.9 32H36C36 31.4477 36.4477 31 37 31C37.5523 31 38 31.4477 38 32V34C38 34.5523 37.5523 35 37 35C36.4477 35 36 34.5523 36 34H34.9C34.7704 34.6384 34.5192 35.2326 34.1716 35.7574L35 36.5859C35.3906 36.1953 36.0237 36.1953 36.4143 36.5859C36.8048 36.9764 36.8048 37.6096 36.4143 38.0001L35 39.4143C34.6095 39.8048 33.9764 39.8048 33.5858 39.4143C33.1953 39.0238 33.1953 38.3906 33.5858 38.0001L32.7574 37.1716Z" fill="currentColor"/>
+</svg></div><b>원인이 되는 바이러스</b></div><div class="v2-body">콕사키·아데노·볼거리·EB 바이러스·코로나19 등 여러 가지입니다.</div></div>
+  </div>
+  <div class="v2-panel q-mini v2-panel--accent" style="left:456px;top:455px;width:368px;height:151px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35 9.22967V6H33V9H15V6H13V9.22967C13 14.6524 15.5895 19.6466 19.8037 22.7875C20.4275 22.3933 21.0782 22.0334 21.7536 21.7107C19.8831 20.4891 18.329 18.8727 17.1851 17H30.8149C29.2395 19.5789 26.8863 21.6719 24 22.9172C23.9947 22.9194 23.9894 22.9217 23.9841 22.924C23.8665 22.9746 23.748 23.0238 23.6286 23.0715C22.9531 23.3417 22.302 23.6524 21.6777 24C16.8813 26.6708 13.6672 31.5245 13.0925 37H13V38.7703V39V42H15V39H33V42H35V39V38.7703V37H34.9075C34.4113 32.2723 31.9474 28.0082 28.1963 25.2125C27.5725 25.6067 26.9218 25.9666 26.2464 26.2893C28.1169 27.5109 29.671 29.1273 30.8149 31H17.1851C18.7605 28.4211 21.1137 26.3281 24 25.0828C24.0053 25.0806 24.0106 25.0783 24.0159 25.076C24.1335 25.0254 24.252 24.9762 24.3714 24.9285C25.0469 24.6583 25.698 24.3476 26.3223 24C31.63 21.0445 35 15.4159 35 9.22967ZM31.8385 33H16.1615C15.6308 34.2636 15.2711 35.608 15.1051 37H32.8949C32.7289 35.608 32.3692 34.2636 31.8385 33ZM16.1615 15H31.8385C32.3692 13.7364 32.7289 12.392 32.8949 11H15.1051C15.2711 12.392 15.6308 13.7364 16.1615 15Z" fill="currentColor"/>
+</svg></div><b>타고난 체질</b></div><div class="v2-body">특정 유전 표지(HLA-B35)가 환자의 약 <b>70%</b>에서 양성으로 나옵니다.</div></div>
+  </div>
+  <div class="v2-panel q-mini" style="left:848px;top:455px;width:368px;height:151px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>흔한 계절</b></div><div class="v2-body">장바이러스가 도는 <b>여름~초가을</b>에 많고, 코로나19 뒤 늘었다는 보고도 있습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">그림 · 깨진 세포에 저장돼 있던 갑상선 호르몬이 한꺼번에 피로 새어 나와 두근거림 같은 증상이 생깁니다(설명용 그림).</span><span class="v2-src">근거 · Stasiak 2020 · ATA 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 증상</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">주요 증상 — 네 가지 신호</h2>
+  <p class="v2-sub">환자의 96%가 목 앞쪽 통증을 겪고, 약 절반은 두근거림 같은 호르몬 과다 증상이 함께 옵니다</p>
+  <div class="v2-panel q-card q-sym" style="left:64px;top:206px;width:270px;height:400px">
+    <div class="q-sym__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.7141 43.1989C18.1642 43.1483 17.7594 42.6614 17.81 42.1114L18.6126 33.3949L22.6576 35.5348L23.5882 29.9414C23.6789 29.3966 24.194 29.0284 24.7388 29.1191C25.2836 29.2097 25.6517 29.7248 25.5611 30.2696L24.1751 38.6002L20.3291 36.5656L19.8016 42.2948C19.751 42.8448 19.2641 43.2496 18.7141 43.1989Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.70634 29.7527C4.43692 29.2706 4.60934 28.6613 5.09145 28.3919L13.0341 23.9533L13.5827 28.7104L19.0257 26.1708C19.5262 25.9373 20.1212 26.1538 20.3548 26.6542C20.5883 27.1547 20.3718 27.7498 19.8714 27.9833L11.9138 31.696L11.391 27.1626L6.06711 30.1378C5.585 30.4072 4.97576 30.2348 4.70634 29.7527Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9.35468 9.55172C9.64123 9.07958 10.2563 8.92914 10.7284 9.21569L18.6951 14.0509L14.7177 16.9542L19.7859 20.5613C20.2359 20.8816 20.341 21.506 20.0208 21.9559C19.7006 22.4059 19.0762 22.511 18.6262 22.1908L11.2973 16.9746L15.0929 14.2042L9.69071 10.9254C9.21858 10.6389 9.06813 10.0238 9.35468 9.55172Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.2567 5.33763C31.8005 5.43354 32.1637 5.9522 32.0678 6.49609L30.565 15.0183L26.7623 12.5846L25.3965 17.9879C25.2611 18.5233 24.7173 18.8477 24.1819 18.7123C23.6465 18.577 23.3221 18.0332 23.4575 17.4978L25.5034 9.40427L29.1164 11.7166L30.0982 6.14877C30.1941 5.60488 30.7128 5.24172 31.2567 5.33763Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M43.8544 19.3631C44.12 19.8474 43.9428 20.4552 43.4585 20.7208L35.8435 24.8977L35.3596 20.3894L30.2626 22.7187C29.7603 22.9482 29.167 22.7271 28.9374 22.2248C28.7079 21.7225 28.929 21.1292 29.4313 20.8996L37.0521 17.417L37.512 21.7015L42.4967 18.9673C42.9809 18.7017 43.5888 18.8789 43.8544 19.3631Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M38.6643 37.4888C38.3778 37.9609 37.7627 38.1113 37.2906 37.8248L29.7723 33.2617L33.489 30.5488L28.8366 27.2376C28.3866 26.9173 28.2815 26.2929 28.6017 25.843C28.922 25.393 29.5463 25.2879 29.9963 25.6081L36.9094 30.5283L33.3745 33.1085L38.3283 36.1151C38.8004 36.4016 38.9509 37.0166 38.6643 37.4888Z" fill="currentColor"/>
+</svg></div><span class="q-sym__pct">96%</span></div>
+    <div class="q-sym__h"><span>1</span>목 앞쪽 통증</div>
+    <div class="v2-body">갑상선 부위가 심하게 아프고 누르면 아픕니다. 턱·귀·뒷머리로 뻗치고, 한쪽에서 반대쪽으로 옮겨 가기도 합니다.</div>
+    <div class="q-card__k">삼킬 때 더 아플 수 있습니다</div>
+  </div>
+  <div class="v2-panel q-card q-sym q-card--accent" style="left:358px;top:206px;width:270px;height:400px">
+    <div class="q-sym__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.5 10.5C26.5 12.9853 24.4853 15 22 15C19.5147 15 17.5 12.9853 17.5 10.5C17.5 8.01472 19.5147 6 22 6C24.4853 6 26.5 8.01472 26.5 10.5Z" fill="currentColor"/>
+<path d="M14.1671 17.3509C14.438 16.5613 15.1697 16.0251 16 16.0009L16.0588 16H27.9412L28 16.0009C28.8303 16.0251 29.562 16.5613 29.8329 17.3509L31.8917 23.3509C32.163 24.1416 31.9105 24.988 31.3148 25.5077L31.1838 25.5514C30.7875 25.6835 30.2322 25.9276 29.6674 26.1758L29.5199 26.2407C29.0403 26.4512 28.534 26.6716 28.0367 26.8686L28 26.8831C27.8431 26.9449 27.6871 27.0043 27.5333 27.0603C26.8611 27.3047 26.3186 27.4486 25.9551 27.4706C25.9274 27.4723 25.9028 27.4731 25.8811 27.4733C25.6764 26.8104 25.5316 26.0799 25.6162 25.4447C25.6609 25.1099 25.7664 24.8261 25.9425 24.5897C26.1162 24.3567 26.3963 24.1186 26.8714 23.9285L27.7999 23.5571L27.0571 21.7002L26.1286 22.0716C25.3537 22.3815 24.7588 22.831 24.3388 23.3948C23.9211 23.9553 23.7142 24.5777 23.6338 25.1804C23.4775 26.3522 23.79 27.5322 24.0513 28.3163C24.2113 28.7963 24.5529 29.1289 24.9687 29.3065C25.3435 29.4665 25.7418 29.4872 26.0761 29.467C26.6759 29.4306 27.3581 29.2406 28 29.017L28 40C28 41.0616 27.1706 41.9382 26.1106 41.9969C25.0506 42.0556 24.1295 41.276 24.0122 40.2209L23.0122 31.2209C23.004 31.1471 23 31.0734 23 31H21C21 31.0734 20.996 31.1471 20.9878 31.2209L19.9878 40.2209C19.8705 41.276 18.9494 42.0556 17.8894 41.9969C16.8294 41.9382 16 41.0616 16 40L16 29.0071C16.7784 29.2397 17.5887 29.4322 18.2769 29.4675C18.6423 29.4862 19.0586 29.4664 19.4418 29.325C19.8591 29.171 20.2692 28.8549 20.4487 28.3163C20.7432 27.4329 20.9041 26.2281 20.5913 25.0549C20.2652 23.8323 19.433 22.6962 17.8714 22.0716L16.9429 21.7002L16.2002 23.5571L17.1286 23.9285C18.067 24.3039 18.4848 24.9178 18.6588 25.5702C18.8249 26.1931 18.7734 26.8897 18.616 27.4695C18.5584 27.4737 18.4807 27.4753 18.3794 27.4701C17.8988 27.4455 17.215 27.2892 16.4191 27.0443C16.2804 27.0016 16.1405 26.9569 16 26.9108V26.8823L13.3 25.8735C12.285 25.4943 11.7566 24.3757 12.1083 23.3509L14.1671 17.3509Z" fill="currentColor"/>
+<path d="M11 18C10.0698 18 9.25903 18.5053 8.72146 19.0429C8.20169 19.5627 7.71429 20.3384 7.71429 21.1429C7.71429 21.6834 7.97834 22.114 8.18214 22.3857C8.38619 22.6578 8.64375 22.9152 8.84228 23.1136L8.86432 23.1357C9.0146 23.286 9.13514 23.4077 9.23129 23.5153C9.0571 23.6014 8.85102 23.6904 8.60682 23.7959L8.60563 23.7964L8.60446 23.7969C8.51293 23.8364 8.41605 23.8783 8.31347 23.9231C7.88962 24.1086 7.36699 24.3475 6.94654 24.654C6.54617 24.946 6 25.4739 6 26.2857C6 26.9559 6.31691 27.4446 6.6732 27.7786C6.97773 28.0641 7.35622 28.2766 7.61518 28.422L7.6526 28.443C7.96517 28.6188 8.13561 28.7211 8.24463 28.8233C8.26611 28.8434 8.27871 28.8579 8.28562 28.8668C8.28248 29.0267 8.19783 29.1737 7.72146 29.65L7.66346 29.7077C7.27502 30.093 6.57143 30.7908 6.57143 31.8571C6.57143 33.0263 7.42843 33.8241 8.12065 34.258C8.83825 34.7078 9.7344 35 10.4286 35H11.4286V33H10.4286C10.1942 33 9.66175 32.8636 9.18292 32.5634C8.67871 32.2474 8.57143 31.9737 8.57143 31.8571C8.57143 31.6933 8.64977 31.5502 9.13568 31.0643L9.19368 31.0066C9.58213 30.6213 10.2857 29.9235 10.2857 28.8571C10.2857 28.187 9.9688 27.6982 9.61251 27.3642C9.30798 27.0787 8.92948 26.8662 8.67053 26.7209L8.63312 26.6999C8.32923 26.5289 8.15968 26.4275 8.05031 26.3281C8.07023 26.3114 8.09478 26.292 8.12489 26.2701C8.3473 26.1079 8.6818 25.945 9.1151 25.7554C9.18736 25.7238 9.26393 25.6909 9.34313 25.6568C9.6847 25.5097 10.0755 25.3415 10.3831 25.1685C10.5764 25.0597 10.8061 24.9125 10.9976 24.7158C11.191 24.5173 11.4286 24.18 11.4286 23.7143C11.4286 23.1737 11.1645 22.7432 10.9607 22.4714C10.7567 22.1994 10.4991 21.9419 10.3006 21.7435L10.2785 21.7215C10.0512 21.4941 9.89188 21.332 9.78214 21.1857C9.75302 21.1469 9.73416 21.1178 9.72227 21.0977C9.72364 21.0921 9.72526 21.086 9.72715 21.0794C9.73981 21.0351 9.76223 20.9766 9.79847 20.9067C9.87199 20.765 9.98704 20.6057 10.1357 20.4571C10.4553 20.1375 10.7873 20 11 20H12V18H11Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.9786 19.15C35.593 18.636 34.9052 18 34 18H33V20H33.987C33.9972 20.0032 34.0262 20.014 34.0748 20.0463C34.1616 20.1042 34.27 20.2052 34.3786 20.35C34.6102 20.6588 34.7105 20.9821 34.7142 21.1343C34.7119 21.1437 34.6994 21.193 34.6418 21.2955C34.5595 21.4418 34.4413 21.6021 34.2714 21.8286L34.2554 21.85C34.1057 22.0494 33.9111 22.3088 33.7579 22.5812C33.599 22.8636 33.4286 23.2542 33.4286 23.7143C33.4286 24.4499 33.9692 24.901 34.2304 25.0969C34.4772 25.282 34.7927 25.463 35.0489 25.61C35.0597 25.6161 35.0703 25.6222 35.0808 25.6283C35.1264 25.6544 35.1699 25.6794 35.2104 25.7031C35.532 25.8906 35.7567 26.0386 35.9011 26.179C35.9665 26.2426 35.9916 26.2812 36.0001 26.2983C36.001 26.3731 35.9973 26.4306 35.5429 26.7714L35.4906 26.8104C35.09 27.1081 34.2857 27.706 34.2857 28.8571C34.2857 29.837 34.7849 30.5004 35.0954 30.913L35.1286 30.9571C35.4649 31.4055 35.5714 31.587 35.5714 31.8571C35.5714 32.0734 35.433 32.3525 35.0859 32.6328C34.9243 32.7633 34.7503 32.8651 34.6008 32.9311C34.497 32.9769 34.4349 32.9925 34.4143 32.9977L34.4086 32.9992C34.4072 32.9996 34.4066 32.9998 34.4066 33H33.4286V35H34.4286C34.7725 35 35.126 34.8854 35.4081 34.7609C35.714 34.6259 36.0399 34.4331 36.3426 34.1887C36.9242 33.7189 37.5714 32.9266 37.5714 31.8571C37.5714 30.8773 37.0722 30.2139 36.7618 29.8013L36.7286 29.7571C36.3923 29.3088 36.2857 29.1272 36.2857 28.8571L36.2856 28.8467C36.2847 28.7708 36.284 28.7155 36.7429 28.3714L36.7952 28.3324C37.1957 28.0347 38 27.4368 38 26.2857C38 25.5941 37.644 25.0841 37.2953 24.7451C36.9576 24.4167 36.5395 24.1629 36.2182 23.9755C36.1343 23.9266 36.0572 23.8822 35.986 23.8412C35.7859 23.7259 35.6325 23.6376 35.5068 23.5515C35.5889 23.4079 35.7055 23.2498 35.8714 23.0286L35.8875 23.0072C36.0371 22.8077 36.2318 22.5483 36.385 22.276C36.5438 21.9936 36.7143 21.603 36.7143 21.1429C36.7143 20.434 36.3853 19.6924 35.9786 19.15ZM35.3317 23.4112C35.3311 23.4112 35.3348 23.416 35.3446 23.4257C35.3373 23.4161 35.3324 23.4113 35.3317 23.4112ZM36.0039 26.3087C36.0041 26.3088 36.0041 26.308 36.0035 26.3063L36.0028 26.3042L36.0013 26.3007C36.0023 26.306 36.0035 26.3087 36.0039 26.3087Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36 8.5C36 7.11929 37.1193 6 38.5 6C39.8807 6 41 7.11929 41 8.5V13.0505C41.6186 13.6818 42 14.5463 42 15.5C42 17.433 40.433 19 38.5 19C36.567 19 35 17.433 35 15.5C35 14.5463 35.3814 13.6818 36 13.0505V8.5ZM38 13.8671L37.4285 14.4503C37.1614 14.7229 37 15.0906 37 15.5C37 16.3284 37.6716 17 38.5 17C39.3284 17 40 16.3284 40 15.5C40 15.0906 39.8386 14.7229 39.5715 14.4503L39 13.8671V12H38V13.8671ZM38.5 8C38.7761 8 39 8.22386 39 8.5V10H38V8.5C38 8.22386 38.2239 8 38.5 8Z" fill="currentColor"/>
+</svg></div></div>
+    <div class="q-sym__h"><span>2</span>열과 몸살</div>
+    <div class="v2-body">38~40도의 열, 몸살, 피로가 함께 옵니다. 감기 뒤에 시작해 처음에는 감기가 오래가는 줄로 알기 쉽습니다.</div>
+    <div class="q-card__k">감기와 헷갈리기 쉽습니다</div>
+  </div>
+  <div class="v2-panel q-card q-sym" style="left:652px;top:206px;width:270px;height:400px">
+    <div class="q-sym__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.5416 11.149C26.6969 10.5038 27.2577 10.0373 27.9203 10.0021C28.583 9.96686 29.1901 10.3712 29.4129 10.9963L33.514 22.5C34.9753 22.4982 35.9022 22.2277 36.8838 21.492C37.1714 21.135 37.5191 20.8285 37.9116 20.5878C37.9409 20.5589 37.9703 20.5296 38 20.5V20.5351C38.5883 20.1948 39.2714 20 40 20C42.2091 20 44 21.7908 44 24C44 26.2091 42.2091 28 40 28C39.2714 28 38.5883 27.8052 38 27.4649V27.5C37.9702 27.4702 37.9406 27.4409 37.9112 27.412C37.5409 27.1848 37.2104 26.899 36.9326 26.5675C36.0227 25.9086 35.168 25.6826 33.9019 25.6463H32.5085C31.8742 25.6463 31.3086 25.2474 31.0956 24.65L28.2792 16.7501L23.4414 36.851C23.2857 37.4979 22.7224 37.965 22.0578 37.9981C21.3932 38.0313 20.7862 37.6227 20.5669 36.9944L14.9181 20.8157L13.3964 24.6942C13.171 25.2685 12.617 25.6463 12 25.6463H4V22.6463H10.9772L13.6036 15.9521C13.8328 15.3681 14.4012 14.9883 15.0285 15.0003C15.6558 15.0122 16.2094 15.4132 16.4162 16.0055L21.7181 31.1906L26.5416 11.149Z" fill="currentColor"/>
+</svg></div><span class="q-sym__pct">약 50%</span></div>
+    <div class="q-sym__h"><span>3</span>두근거림·손 떨림</div>
+    <div class="v2-body">깨진 세포에서 호르몬이 한꺼번에 새어 나와 심장이 빨리 뛰고, 손이 떨리고, 살이 빠지고, 더위를 탑니다.</div>
+    <div class="q-card__k">베타차단제로 다스립니다</div>
+  </div>
+  <div class="v2-panel q-card q-sym q-card--accent" style="left:946px;top:206px;width:270px;height:400px">
+    <div class="q-sym__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.5843 10.0874L21.5782 10.0928C21.574 10.0194 21.5698 9.94163 21.5654 9.85905L21.557 9.70141C21.521 9.04058 21.4654 8.0406 21.0591 7.25051C20.8385 6.8214 20.4962 6.41208 19.9757 6.15329C19.4613 5.89747 18.8729 5.83854 18.245 5.925C17.6883 6.00166 17.1945 6.22589 16.8047 6.60348C16.4226 6.97362 16.1957 7.43726 16.0709 7.91064C15.8285 8.8293 15.9314 9.92695 16.1818 10.9837C16.6881 13.1199 17.9194 15.5841 19.3039 17.2603C19.8366 17.9052 20.0001 18.877 20.0001 19.2956L20.0001 21.5L22.0001 22V20.685C22.8827 20.357 23.4789 20.207 24.038 20.1955C24.5799 20.1844 25.1584 20.3035 26.0001 20.6513V22L28.0001 21.5L28.0001 19.2956C28.0001 18.877 28.1636 17.9052 28.6963 17.2603C30.0715 15.5953 31.3642 13.1422 31.9358 11.0123C32.2179 9.96102 32.3592 8.86383 32.1474 7.94184C32.0381 7.46562 31.8243 6.99328 31.4453 6.61447C31.0583 6.22759 30.5621 6.00178 30.0045 5.925C29.3767 5.83854 28.7883 5.89747 28.2738 6.15329C27.7534 6.41208 27.4111 6.8214 27.1904 7.25051C26.7842 8.0406 26.7286 9.04058 26.6926 9.70141L26.6841 9.85903C26.6798 9.94162 26.6756 10.0194 26.6714 10.0928L26.6653 10.0874C26.1879 9.66212 25.5561 9.51729 25.1302 9.45488C24.8041 9.4071 24.4873 9.39377 24.2495 9.39006V9.38864L24.2369 9.38864C24.2036 9.38863 24.1661 9.38863 24.1248 9.38883C24.0835 9.38863 24.0459 9.38863 24.0126 9.38864L24.0001 9.38864V9.39006C23.7623 9.39377 23.4454 9.4071 23.1193 9.45488C22.6935 9.51729 22.0617 9.66212 21.5843 10.0874ZM22.9147 11.5807C22.9153 11.5802 22.9236 11.5734 22.9436 11.5624C22.9579 11.5544 22.9766 11.5453 23 11.5355V16H25V11.462C25.0782 11.4785 25.1466 11.4974 25.2044 11.518C25.2502 11.5345 25.2834 11.5499 25.306 11.5624C25.326 11.5735 25.3344 11.5803 25.335 11.5809C25.7583 11.9579 26.188 12.2759 26.6192 12.4201C26.8509 12.4977 27.1459 12.5466 27.4634 12.4691C27.7982 12.3874 28.0479 12.1922 28.2164 11.9732C28.5014 11.6029 28.578 11.1307 28.6142 10.8471C28.6499 10.5673 28.6668 10.2448 28.6821 9.95223L28.6896 9.81013C28.7302 9.06395 28.7917 8.51011 28.9691 8.16501C29.0403 8.02653 29.1064 7.97291 29.1644 7.9441C29.2283 7.91232 29.3881 7.85899 29.7317 7.9063C29.9126 7.93121 29.99 7.98762 30.0314 8.02894C30.0808 8.07833 30.1501 8.18017 30.1982 8.38958C30.3014 8.83886 30.2551 9.55868 30.0042 10.4939C29.5096 12.3368 28.3539 14.5343 27.1543 15.9867C26.4846 16.7974 26.183 17.7918 26.0652 18.5403C25.3509 18.3021 24.6867 18.1818 23.9969 18.1959C23.3165 18.2099 22.6534 18.355 21.9421 18.586C21.8294 17.8326 21.5293 16.814 20.8459 15.9867C19.6556 14.5455 18.5632 12.3591 18.1279 10.5225C17.9076 9.59276 17.8853 8.87338 18.0047 8.42078C18.0607 8.20854 18.1364 8.09799 18.1963 8.03993C18.2486 7.98932 18.3361 7.93133 18.5179 7.9063C18.8614 7.85899 19.0213 7.91232 19.0852 7.9441C19.1432 7.97291 19.2093 8.02653 19.2805 8.16501C19.4579 8.51011 19.5193 9.06395 19.5599 9.81013L19.5675 9.95218C19.5828 10.2447 19.5997 10.5673 19.6354 10.8471C19.6715 11.1307 19.7482 11.6029 20.0331 11.9732C20.2017 12.1922 20.4514 12.3874 20.7862 12.4691C21.1037 12.5466 21.3987 12.4977 21.6304 12.4201C22.0616 12.2759 22.4914 11.9578 22.9147 11.5807Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M26.0001 35.3149C25.1174 35.643 24.5212 35.793 23.962 35.8045C23.4202 35.8156 22.8417 35.6965 22.0001 35.3488V33.6667L20.0001 35.8334L20.0001 38C20.0001 40.2091 21.7909 42 24 42C26.2091 42 27.9999 40.2092 28 38.0001L28.0001 35.8333L26.0001 33.6667L26.0001 35.3149ZM24 40C22.8955 40 22.0001 39.1046 22 38.0001L22.0001 37.4811C22.6897 37.7052 23.3344 37.8178 24.0031 37.8041C24.6651 37.7905 25.3106 37.6528 26.0001 37.4326V38C26.0001 39.1046 25.1046 40 24 40Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.3616 11.4564C13.3531 12.0825 14.1689 13.2191 14.7737 14.725C14.9275 15.1079 15.0778 15.5207 15.2352 15.9525C15.7537 17.3761 16.348 19.0077 17.3924 20.4676C18.6864 22.2764 20.6362 23.7381 24 23.7381C27.3638 23.7381 29.3136 22.2764 30.6076 20.4676C31.652 19.0077 32.2463 17.3761 32.7648 15.9526C32.9222 15.5207 33.0725 15.1079 33.2263 14.725C33.8311 13.2191 34.6469 12.0825 35.6384 11.4564C36.6834 10.7965 37.8663 10.7501 38.9189 11.3558C39.9103 11.9262 40.672 13.0052 41.1835 14.3775C41.7012 15.7664 42 17.5493 42 19.6819V29.8691C42 30.7182 41.8359 32.6845 40.883 34.4771C39.8932 36.3389 38.045 38.0002 34.8462 38.0002C33.251 38.0002 32.0601 37.5494 31.0936 36.849C30.2289 36.2225 29.5679 35.4071 28.9943 34.6994L28.878 34.5561C28.2484 33.7817 27.6901 33.1275 26.9608 32.6456C26.2611 32.1833 25.354 31.8504 24 31.8504C22.646 31.8504 21.7389 32.1833 21.0392 32.6456C20.3099 33.1275 19.7516 33.7817 19.122 34.5561L19.0057 34.6995C18.4321 35.4071 17.7711 36.2225 16.9064 36.849C15.9399 37.5494 14.749 38.0002 13.1538 38.0002C9.95499 38.0002 8.10675 36.3389 7.11703 34.4771C6.16409 32.6845 6 30.7182 6 29.8691V19.6819C6 17.5493 6.29877 15.7664 6.81647 14.3775C7.32798 13.0052 8.08973 11.9262 9.08109 11.3558C10.1337 10.7501 11.3166 10.7965 12.3616 11.4564ZM12 18C12 18.5523 11.5523 19 11 19C10.4477 19 10 18.5523 10 18C10 17.4477 10.4477 17 11 17C11.5523 17 12 17.4477 12 18ZM13 23C13.5523 23 14 22.5523 14 22C14 21.4477 13.5523 21 13 21C12.4477 21 12 21.4477 12 22C12 22.5523 12.4477 23 13 23ZM12 26C12 26.5523 11.5523 27 11 27C10.4477 27 10 26.5523 10 26C10 25.4477 10.4477 25 11 25C11.5523 25 12 25.4477 12 26ZM16 32C16.5523 32 17 31.5523 17 31C17 30.4477 16.5523 30 16 30C15.4477 30 15 30.4477 15 31C15 31.5523 15.4477 32 16 32ZM13 31C13 31.5523 12.5523 32 12 32C11.4477 32 11 31.5523 11 31C11 30.4477 11.4477 30 12 30C12.5523 30 13 30.4477 13 31ZM16 28C16.5523 28 17 27.5523 17 27C17 26.4477 16.5523 26 16 26C15.4477 26 15 26.4477 15 27C15 27.5523 15.4477 28 16 28ZM21 28C21 28.5523 20.5523 29 20 29C19.4477 29 19 28.5523 19 28C19 27.4477 19.4477 27 20 27C20.5523 27 21 27.4477 21 28ZM37 19C36.4477 19 36 18.5523 36 18C36 17.4477 36.4477 17 37 17C37.5523 17 38 17.4477 38 18C38 18.5523 37.5523 19 37 19ZM34 22C34 22.5523 34.4477 23 35 23C35.5523 23 36 22.5523 36 22C36 21.4477 35.5523 21 35 21C34.4477 21 34 21.4477 34 22ZM37 27C36.4477 27 36 26.5523 36 26C36 25.4477 36.4477 25 37 25C37.5523 25 38 25.4477 38 26C38 26.5523 37.5523 27 37 27ZM31 31C31 31.5523 31.4477 32 32 32C32.5523 32 33 31.5523 33 31C33 30.4477 32.5523 30 32 30C31.4477 30 31 30.4477 31 31ZM36 32C35.4477 32 35 31.5523 35 31C35 30.4477 35.4477 30 36 30C36.5523 30 37 30.4477 37 31C37 31.5523 36.5523 32 36 32ZM31 27C31 27.5523 31.4477 28 32 28C32.5523 28 33 27.5523 33 27C33 26.4477 32.5523 26 32 26C31.4477 26 31 26.4477 31 27ZM28 29C27.4477 29 27 28.5523 27 28C27 27.4477 27.4477 27 28 27C28.5523 27 29 27.4477 29 28C29 28.5523 28.5523 29 28 29ZM25 28C25 28.5523 24.5523 29 24 29C23.4477 29 23 28.5523 23 28C23 27.4477 23.4477 27 24 27C24.5523 27 25 27.4477 25 28Z" fill="currentColor"/>
+</svg></div></div>
+    <div class="q-sym__h"><span>4</span>갑상선이 붓습니다</div>
+    <div class="v2-body">목 앞쪽 갑상선이 커지고 만지면 단단하고 아픕니다. 한쪽이 더 부어 보이기도 합니다.</div>
+    <div class="q-card__k">림프절은 대개 정상입니다</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 감기가 나은 뒤에도 목 앞쪽이 아프고 열이 이어지면 진료를 받아 보세요.</span><span class="v2-src">근거 · Fatourechi · Mayo Clin Proc · ATA 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 자연경과</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">자연경과 — 네 단계로 지나갑니다</h2>
+  <p class="v2-sub">대부분 6~18개월에 걸쳐 단계적으로 회복됩니다</p>
+  <div class="v2-panel q-steps" style="left:64px;top:206px;width:640px;height:400px">
+    <div class="q-step"><span class="q-step__n">1</span><div><b>갑상선중독기 · 3~6주</b><p>깨진 세포에서 호르몬이 새어 나옵니다. 두근거림·체중 감소·심한 목 통증이 오고 염증 수치가 크게 오릅니다.</p></div></div><div class="q-step"><span class="q-step__n">2</span><div><b>일시 정상기</b><p>호르몬 수치가 잠시 정상이 됩니다. 통증이 나아지고 염증 수치도 차츰 내려갑니다.</p></div></div><div class="q-step"><span class="q-step__n">3</span><div><b>기능저하기 · 수주~수개월</b><p>저장된 호르몬이 바닥나 약 30~50%에서 잠시 기능이 떨어집니다. 피로·체중 증가·추위를 탑니다.</p></div></div><div class="q-step q-step--on"><span class="q-step__n">4</span><div><b>회복 · 12~18개월</b><p>갑상선이 되살아나 기능이 정상이 됩니다. 85~95%는 완전히 회복하고, 5~15%는 기능저하가 남습니다.</p></div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:728px;top:206px;width:488px;height:200px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/subacute-thyroiditis-natural-course-fullbleed-20260530-slot-20260601.jpg" alt="진료실 상담 장면과, 염증기·회복기를 색으로 나눠 보여 주는 갑상선 그림">
+  </div>
+  <div class="v2-panel q-note v2-panel--accent" style="left:728px;top:422px;width:488px;height:184px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>모든 단계를 다 거치지는 않습니다</b></div><div class="v2-body">세 단계를 모두 거치는 분은 약 30%이고, 중독기만 지나고 바로 회복하는 경우도 많습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 기능저하가 남아도 정기 검사로 일찍 찾으면 호르몬 약으로 정상 생활을 할 수 있습니다.</span><span class="v2-src">근거 · ATA 2016 · Sweeney · Am Fam Physician</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 진단</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">진단은 어떻게 하나요?</h2>
+  <p class="v2-sub">피검사(염증 수치·갑상선 기능)와 영상검사(초음파·방사성 요오드 섭취 검사)를 함께 봅니다</p>
+  <table class="v2-table q-table q-table--diag" style="left:64px;top:206px;width:804px"><colgroup><col style="width:206px"><col style="width:598px"></colgroup><thead><tr><th>검사</th><th>이 병에서 보이는 모습</th></tr></thead><tbody><tr><th>염증 수치</th><td>적혈구 침강 속도(ESR)가 <b>50 mm/h 넘게</b> 크게 오르고 C-반응 단백(CRP)도 오릅니다 — 다른 갑상선 병과 가르는 핵심 단서</td></tr><tr><th>갑상선 기능 피검사</th><td>중독기에는 갑상선 호르몬이 오르고 갑상선 자극 호르몬(TSH)은 눌립니다. 갑상선 자극 항체 검사는 <b>음성</b>입니다</td></tr><tr><th>방사성 요오드 섭취 검사</th><td><b>2~5% 미만</b>으로 거의 잡히지 않습니다 — 35%를 넘는 그레이브스병과 갈립니다</td></tr><tr><th>갑상선 초음파</th><td>경계가 흐린 어두운 부분과 혈류 감소 — 암과 비슷해 보일 수 있어 <b>회복 뒤 다시</b> 봅니다</td></tr></tbody></table>
+  <div class="v2-panel q-fig" style="left:892px;top:206px;width:324px;height:240px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/subacute-thyroiditis-diagnosis-tools-fullbleed-20260530-slot-20260601.jpg" alt="갑상선 초음파 검사와 채혈 검사 장면">
+  </div>
+  <div class="v2-panel q-note v2-panel--accent" style="left:892px;top:462px;width:324px;height:144px">
+    <div class="q-note6"><b>피검사와 영상검사를 함께 봅니다</b><p>한 가지 검사만으로 정하지 않습니다.</p></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 갑상선 자극 항체가 음성이면 그레이브스병보다 아급성 갑상선염 쪽으로 봅니다.</span><span class="v2-src">근거 · ATA 2016 진단 · KTA 갑상선 가이드라인</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 비슷한 병과 구별</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">비슷한 병과 어떻게 구별하나요?</h2>
+  <p class="v2-sub">통증이 있는지, 염증 수치, 방사성 요오드 섭취 검사가 그레이브스병·하시모토 갑상선염과 가르는 기준입니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">아급성 갑상선염</div><div class="v2-vs__lead">목이 <b>아프고</b> 염증 수치가 오릅니다.</div><ul class="v2-vs__list"><li>심한 목 앞쪽 통증(96%) — 핵심 단서</li><li>염증 수치(ESR·CRP) 크게 상승</li><li>갑상선 자극 항체·갑상선 자가항체 모두 음성</li><li>방사성 요오드 섭취 매우 낮음(5% 미만)</li><li>초음파에서 혈류 감소</li><li>치료 — 소염진통제·스테로이드</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">그레이브스병 · 하시모토 갑상선염</div><div class="v2-vs__lead">목이 <b>아프지 않습니다</b>.</div><ul class="v2-vs__list"><li>두 병 모두 통증 없음</li><li>염증 수치 정상</li><li>그레이브스병 — 갑상선 자극 항체 양성(약 95%)</li><li>그레이브스병 — 섭취 높음(35% 넘음)</li><li>초음파 혈류 — 그레이브스병에서 크게 늘어남</li><li>치료 — 항갑상선제(메티마졸) 또는 경과 관찰</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 두근거림은 같아도 치료가 반대입니다. 그래서 통증과 검사로 먼저 가릅니다.</span><span class="v2-src">근거 · ATA 2016 감별 · 통증성·무통성 갑상선염</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 치료 1단계</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">치료 1단계 — 소염진통제와 베타차단제</h2>
+  <p class="v2-sub">가볍거나 중간 정도면 소염진통제로 통증을, 베타차단제로 두근거림·손 떨림을 다스립니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:250px"><col style="width:430px"><col style="width:472px"></colgroup><thead><tr><th>약</th><th>어떻게 먹나요</th><th>왜 · 주의할 점</th></tr></thead><tbody><tr><th>소염진통제</th><td>이부프로펜 400~800mg 또는 록소프로펜 60mg, <b>하루&nbsp;3회</b></td><td>가벼운~중간 통증에 먼저 쓰는 약</td></tr><tr><th>베타차단제(프로프라놀롤)</th><td>10~40mg, 하루 3회 · 중독기(2~6주) <b>동안만</b></td><td>두근거림·손 떨림 조절 · 천식이 있으면 다른 약으로 바꿉니다</td></tr><tr><th>위 보호제</th><td>위장 출혈 위험이 높은 분은 <b>함께 쓸 수 있습니다</b></td><td>모든 분이 같이 먹는 약은 아닙니다 — 위험을 보고 정합니다</td></tr><tr><th>2~3일 뒤 다시 평가</th><td>먹고 2~3일이 지나도 통증이 그대로면</td><td>스테로이드(프레드니솔론)로 바꿉니다</td></tr><tr><th>쓰지 않는 약</th><td><span class="v2-td--alert">항갑상선제(메티마졸·PTU)</span></td><td>호르몬이 새로 만들어지는 게 아니라 깨진 세포에서 새어 나오는&nbsp;것이라 효과가 없습니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 약을 먹어도 통증이 줄지 않으면 참지 말고 2~3일 안에 다시 오세요.</span><span class="v2-src">근거 · ATA 2016 치료 권고</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 치료 2단계</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">치료 2단계 — 스테로이드는 천천히 줄입니다</h2>
+  <p class="v2-sub">소염진통제로 부족하면 프레드니솔론을 씁니다 — 천천히 줄여야 재발(약 12%)을 막습니다</p>
+  <div class="v2-panel q-tp" style="left:64px;top:206px;width:270px;height:172px"><div class="q-tp__h"><span class="q-step__n">1</span><b>1~2주차 · 시작</b></div><p>프레드니솔론 20~30mg/일(소론도정 4~6정). 2~3일 안에 통증이 나아지는지 봅니다.</p></div>
+  <div class="v2-panel q-tp" style="left:358px;top:206px;width:270px;height:172px"><div class="q-tp__h"><span class="q-step__n">2</span><b>3~4주차 · 1차 감량</b></div><p>10~15mg/일(2~3정). 증상이 나아진 것을 보고 차례로 줄입니다.</p></div>
+  <div class="v2-panel q-tp" style="left:652px;top:206px;width:270px;height:172px"><div class="q-tp__h"><span class="q-step__n">3</span><b>5~6주차 · 최소 유지</b></div><p>5mg/일(1정). 재발하는지 가장 잘 살펴야 하는 때입니다.</p></div>
+  <div class="v2-panel q-tp v2-panel--accent" style="left:946px;top:206px;width:270px;height:172px"><div class="q-tp__h"><span class="q-step__n">4</span><b>7~8주차 · 중단</b></div><p>하루걸러 먹다가 끊습니다. 재발하면 이전 용량으로 돌아갑니다.</p></div>
+  <div class="v2-panel q-fig" style="left:64px;top:398px;width:506px;height:208px">
+    <img class="v2-fig__img" src="../../../shared/assets/generated/subacute-thyroiditis-treatment-followup-fullbleed-20260530-slot-20260601.jpg" alt="의사가 환자에게 설명하고, 탁자 위 알약이 점점 작아지는 모습">
+  </div>
+  <div class="v2-panel q-note v2-panel--accent" style="left:594px;top:398px;width:622px;height:208px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>천천히 줄이는 게 원칙입니다</b></div><div class="v2-body">5mg까지 줄이는 데 4주가 안 걸리면 재발이 잦습니다(재발 없던 분 44.3일 · 재발한 분 19.0일). 좋아졌다고 <b>혼자 끊지 마세요</b> — 갑자기 끊으면 부신 위기가 올&nbsp;수&nbsp;있습니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">그림 · 용량을 한 단계씩 줄여 가는 모습(설명용 그림) — 줄이는 속도는 담당 의사가 정합니다.</span><span class="v2-src">근거 · ATA 2016 · Sato · Endocr J 2017</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 위험 신호</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">바로 알려야 할 위험 신호</h2>
+  <p class="v2-sub">치료 중 아래 증상이 나타나면 약을 임의로 조절하지 말고 바로 진료를 받으세요</p>
+  <div class="q-flag" style="left:64px;top:206px;width:1152px;height:88px"><span class="q-flag__i">!</span><div><b>갑상선 폭풍 의심 — 응급 상황</b><p>39도 이상 고열 · 분당 130회 넘는 맥박 · 의식이 흐려짐 · 구토가 함께 오면 <b>바로 응급실</b>로 가세요.</p></div></div>
+  <div class="q-flag" style="left:64px;top:310px;width:1152px;height:88px"><span class="q-flag__i">!</span><div><b>스테로이드를 혼자 끊었을 때</b><p>좋아졌다고 혼자 끊으면 부신 위기(심한 저혈압·쇼크)가 올 수 있습니다. 의사 지시대로 천천히 줄이세요.</p></div></div>
+  <div class="q-flag" style="left:64px;top:414px;width:1152px;height:88px"><span class="q-flag__i">!</span><div><b>스테로이드 2~3일에도 통증이 그대로</b><p>먹고 48~72시간 안에 통증이 뚜렷이 줄지 않으면 진단을 다시 봐야 합니다 — <b>바로 다시 오세요</b>.</p></div></div>
+  <div class="q-flag q-flag--soft" style="left:64px;top:518px;width:1152px;height:88px"><span class="q-flag__i">!</span><div><b>회복 뒤 기능저하가 남을 때(5~15%)</b><p>회복 뒤에도 6~12개월간 갑상선 기능검사를 받으세요. 피로·추위 탐·체중 증가가 이어지면 호르몬 약(레보티록신)이 필요합니다.</p></div></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 밤이나 주말이라도 첫 번째 줄의 증상이면 기다리지 말고 응급실로 가세요.</span><span class="v2-src">근거 · ATA 2016 응급 감별 · KTA 갑상선기능저하증 권고안</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 꼭 기억할 것</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">오늘 꼭 기억할 여덟 가지</h2>
+  <p class="v2-sub">대부분 회복됩니다 — 꾸준한 복약과 경과 관찰이 회복의 핵심입니다</p>
+  <div class="v2-panel q-ck" style="left:64px;top:206px;width:564px;height:88px"><span class="q-ck__n">01</span><p>바이러스 감염 뒤 생기는 염증 — <b>85~95%</b>는 12~18개월 안에&nbsp;회복합니다</p></div>
+  <div class="v2-panel q-ck" style="left:652px;top:206px;width:564px;height:88px"><span class="q-ck__n">02</span><p>목 앞쪽 통증이 핵심 — 그레이브스병은 아프지 않습니다</p></div>
+  <div class="v2-panel q-ck v2-panel--accent" style="left:64px;top:310px;width:564px;height:88px"><span class="q-ck__n">03</span><p>가벼운 통증은 소염진통제(부루펜·록소닌) — 위장 출혈 위험이 높으면 위 보호제를 함께</p></div>
+  <div class="v2-panel q-ck v2-panel--accent" style="left:652px;top:310px;width:564px;height:88px"><span class="q-ck__n">04</span><p>두근거림·손 떨림은 프로프라놀롤(인데랄)로 다스립니다</p></div>
+  <div class="v2-panel q-ck" style="left:64px;top:414px;width:564px;height:88px"><span class="q-ck__n">05</span><p>중간~심한 통증은 프레드니솔론을 6~8주에 걸쳐 줄입니다 — <b>혼자 끊지 않기</b></p></div>
+  <div class="v2-panel q-ck" style="left:652px;top:414px;width:564px;height:88px"><span class="q-ck__n">06</span><p>2~3일 안에 통증이 안 줄면 <b>바로 다시 진료</b> — 진단을 다시 봅니다</p></div>
+  <div class="v2-panel q-ck v2-panel--accent" style="left:64px;top:518px;width:564px;height:88px"><span class="q-ck__n">07</span><p>갑상선 기능검사(TSH)를 6~8주 간격으로 받습니다</p></div>
+  <div class="v2-panel q-ck v2-panel--accent" style="left:652px;top:518px;width:564px;height:88px"><span class="q-ck__n">08</span><p>피로·추위 탐·체중 증가가 생기면 알려 주세요</p></div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 이 장을 사진으로 찍어 두고, 다음 진료 때 궁금한 번호를 말씀해 주세요.</span><span class="v2-src">근거 · ATA 2016 권고안</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">대부분 회복됩니다 — 정기 검사로 끝까지 함께합니다</h2>
+  <p class="v2-sub">궁금한 점이 있으시면 언제든지 상담해 주세요 — QR로 같은 자료를 휴대폰에서 다시 볼 수 있습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.5843 10.0874L21.5782 10.0928C21.574 10.0194 21.5698 9.94163 21.5654 9.85905L21.557 9.70141C21.521 9.04058 21.4654 8.0406 21.0591 7.25051C20.8385 6.8214 20.4962 6.41208 19.9757 6.15329C19.4613 5.89747 18.8729 5.83854 18.245 5.925C17.6883 6.00166 17.1945 6.22589 16.8047 6.60348C16.4226 6.97362 16.1957 7.43726 16.0709 7.91064C15.8285 8.8293 15.9314 9.92695 16.1818 10.9837C16.6881 13.1199 17.9194 15.5841 19.3039 17.2603C19.8366 17.9052 20.0001 18.877 20.0001 19.2956L20.0001 21.5L22.0001 22V20.685C22.8827 20.357 23.4789 20.207 24.038 20.1955C24.5799 20.1844 25.1584 20.3035 26.0001 20.6513V22L28.0001 21.5L28.0001 19.2956C28.0001 18.877 28.1636 17.9052 28.6963 17.2603C30.0715 15.5953 31.3642 13.1422 31.9358 11.0123C32.2179 9.96102 32.3592 8.86383 32.1474 7.94184C32.0381 7.46562 31.8243 6.99328 31.4453 6.61447C31.0583 6.22759 30.5621 6.00178 30.0045 5.925C29.3767 5.83854 28.7883 5.89747 28.2738 6.15329C27.7534 6.41208 27.4111 6.8214 27.1904 7.25051C26.7842 8.0406 26.7286 9.04058 26.6926 9.70141L26.6841 9.85903C26.6798 9.94162 26.6756 10.0194 26.6714 10.0928L26.6653 10.0874C26.1879 9.66212 25.5561 9.51729 25.1302 9.45488C24.8041 9.4071 24.4873 9.39377 24.2495 9.39006V9.38864L24.2369 9.38864C24.2036 9.38863 24.1661 9.38863 24.1248 9.38883C24.0835 9.38863 24.0459 9.38863 24.0126 9.38864L24.0001 9.38864V9.39006C23.7623 9.39377 23.4454 9.4071 23.1193 9.45488C22.6935 9.51729 22.0617 9.66212 21.5843 10.0874ZM22.9147 11.5807C22.9153 11.5802 22.9236 11.5734 22.9436 11.5624C22.9579 11.5544 22.9766 11.5453 23 11.5355V16H25V11.462C25.0782 11.4785 25.1466 11.4974 25.2044 11.518C25.2502 11.5345 25.2834 11.5499 25.306 11.5624C25.326 11.5735 25.3344 11.5803 25.335 11.5809C25.7583 11.9579 26.188 12.2759 26.6192 12.4201C26.8509 12.4977 27.1459 12.5466 27.4634 12.4691C27.7982 12.3874 28.0479 12.1922 28.2164 11.9732C28.5014 11.6029 28.578 11.1307 28.6142 10.8471C28.6499 10.5673 28.6668 10.2448 28.6821 9.95223L28.6896 9.81013C28.7302 9.06395 28.7917 8.51011 28.9691 8.16501C29.0403 8.02653 29.1064 7.97291 29.1644 7.9441C29.2283 7.91232 29.3881 7.85899 29.7317 7.9063C29.9126 7.93121 29.99 7.98762 30.0314 8.02894C30.0808 8.07833 30.1501 8.18017 30.1982 8.38958C30.3014 8.83886 30.2551 9.55868 30.0042 10.4939C29.5096 12.3368 28.3539 14.5343 27.1543 15.9867C26.4846 16.7974 26.183 17.7918 26.0652 18.5403C25.3509 18.3021 24.6867 18.1818 23.9969 18.1959C23.3165 18.2099 22.6534 18.355 21.9421 18.586C21.8294 17.8326 21.5293 16.814 20.8459 15.9867C19.6556 14.5455 18.5632 12.3591 18.1279 10.5225C17.9076 9.59276 17.8853 8.87338 18.0047 8.42078C18.0607 8.20854 18.1364 8.09799 18.1963 8.03993C18.2486 7.98932 18.3361 7.93133 18.5179 7.9063C18.8614 7.85899 19.0213 7.91232 19.0852 7.9441C19.1432 7.97291 19.2093 8.02653 19.2805 8.16501C19.4579 8.51011 19.5193 9.06395 19.5599 9.81013L19.5675 9.95218C19.5828 10.2447 19.5997 10.5673 19.6354 10.8471C19.6715 11.1307 19.7482 11.6029 20.0331 11.9732C20.2017 12.1922 20.4514 12.3874 20.7862 12.4691C21.1037 12.5466 21.3987 12.4977 21.6304 12.4201C22.0616 12.2759 22.4914 11.9578 22.9147 11.5807Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M26.0001 35.3149C25.1174 35.643 24.5212 35.793 23.962 35.8045C23.4202 35.8156 22.8417 35.6965 22.0001 35.3488V33.6667L20.0001 35.8334L20.0001 38C20.0001 40.2091 21.7909 42 24 42C26.2091 42 27.9999 40.2092 28 38.0001L28.0001 35.8333L26.0001 33.6667L26.0001 35.3149ZM24 40C22.8955 40 22.0001 39.1046 22 38.0001L22.0001 37.4811C22.6897 37.7052 23.3344 37.8178 24.0031 37.8041C24.6651 37.7905 25.3106 37.6528 26.0001 37.4326V38C26.0001 39.1046 25.1046 40 24 40Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.3616 11.4564C13.3531 12.0825 14.1689 13.2191 14.7737 14.725C14.9275 15.1079 15.0778 15.5207 15.2352 15.9525C15.7537 17.3761 16.348 19.0077 17.3924 20.4676C18.6864 22.2764 20.6362 23.7381 24 23.7381C27.3638 23.7381 29.3136 22.2764 30.6076 20.4676C31.652 19.0077 32.2463 17.3761 32.7648 15.9526C32.9222 15.5207 33.0725 15.1079 33.2263 14.725C33.8311 13.2191 34.6469 12.0825 35.6384 11.4564C36.6834 10.7965 37.8663 10.7501 38.9189 11.3558C39.9103 11.9262 40.672 13.0052 41.1835 14.3775C41.7012 15.7664 42 17.5493 42 19.6819V29.8691C42 30.7182 41.8359 32.6845 40.883 34.4771C39.8932 36.3389 38.045 38.0002 34.8462 38.0002C33.251 38.0002 32.0601 37.5494 31.0936 36.849C30.2289 36.2225 29.5679 35.4071 28.9943 34.6994L28.878 34.5561C28.2484 33.7817 27.6901 33.1275 26.9608 32.6456C26.2611 32.1833 25.354 31.8504 24 31.8504C22.646 31.8504 21.7389 32.1833 21.0392 32.6456C20.3099 33.1275 19.7516 33.7817 19.122 34.5561L19.0057 34.6995C18.4321 35.4071 17.7711 36.2225 16.9064 36.849C15.9399 37.5494 14.749 38.0002 13.1538 38.0002C9.95499 38.0002 8.10675 36.3389 7.11703 34.4771C6.16409 32.6845 6 30.7182 6 29.8691V19.6819C6 17.5493 6.29877 15.7664 6.81647 14.3775C7.32798 13.0052 8.08973 11.9262 9.08109 11.3558C10.1337 10.7501 11.3166 10.7965 12.3616 11.4564ZM12 18C12 18.5523 11.5523 19 11 19C10.4477 19 10 18.5523 10 18C10 17.4477 10.4477 17 11 17C11.5523 17 12 17.4477 12 18ZM13 23C13.5523 23 14 22.5523 14 22C14 21.4477 13.5523 21 13 21C12.4477 21 12 21.4477 12 22C12 22.5523 12.4477 23 13 23ZM12 26C12 26.5523 11.5523 27 11 27C10.4477 27 10 26.5523 10 26C10 25.4477 10.4477 25 11 25C11.5523 25 12 25.4477 12 26ZM16 32C16.5523 32 17 31.5523 17 31C17 30.4477 16.5523 30 16 30C15.4477 30 15 30.4477 15 31C15 31.5523 15.4477 32 16 32ZM13 31C13 31.5523 12.5523 32 12 32C11.4477 32 11 31.5523 11 31C11 30.4477 11.4477 30 12 30C12.5523 30 13 30.4477 13 31ZM16 28C16.5523 28 17 27.5523 17 27C17 26.4477 16.5523 26 16 26C15.4477 26 15 26.4477 15 27C15 27.5523 15.4477 28 16 28ZM21 28C21 28.5523 20.5523 29 20 29C19.4477 29 19 28.5523 19 28C19 27.4477 19.4477 27 20 27C20.5523 27 21 27.4477 21 28ZM37 19C36.4477 19 36 18.5523 36 18C36 17.4477 36.4477 17 37 17C37.5523 17 38 17.4477 38 18C38 18.5523 37.5523 19 37 19ZM34 22C34 22.5523 34.4477 23 35 23C35.5523 23 36 22.5523 36 22C36 21.4477 35.5523 21 35 21C34.4477 21 34 21.4477 34 22ZM37 27C36.4477 27 36 26.5523 36 26C36 25.4477 36.4477 25 37 25C37.5523 25 38 25.4477 38 26C38 26.5523 37.5523 27 37 27ZM31 31C31 31.5523 31.4477 32 32 32C32.5523 32 33 31.5523 33 31C33 30.4477 32.5523 30 32 30C31.4477 30 31 30.4477 31 31ZM36 32C35.4477 32 35 31.5523 35 31C35 30.4477 35.4477 30 36 30C36.5523 30 37 30.4477 37 31C37 31.5523 36.5523 32 36 32ZM31 27C31 27.5523 31.4477 28 32 28C32.5523 28 33 27.5523 33 27C33 26.4477 32.5523 26 32 26C31.4477 26 31 26.4477 31 27ZM28 29C27.4477 29 27 28.5523 27 28C27 27.4477 27.4477 27 28 27C28.5523 27 29 27.4477 29 28C29 28.5523 28.5523 29 28 29ZM25 28C25 28.5523 24.5523 29 24 29C23.4477 29 23 28.5523 23 28C23 27.4477 23.4477 27 24 27C24.5523 27 25 27.4477 25 28Z" fill="currentColor"/>
+</svg></div><b>회복 뒤에도 검사는 이어집니다</b></div><div class="v2-body">대부분 회복되지만 일부(5~15%)는 갑상선 기능저하가 남아 약이 필요할 수 있습니다. 정기 검사로 끝까지 함께 확인합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">아급성 갑상선염을 진단받은 분을 위한 설명자료입니다. 실제 약과 용량은 담당 의사와 상의해 정합니다.</div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM15,2H16V3H15zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM22,2H23V3H22zM26,2H27V3H26zM27,2H28V3H27zM28,2H29V3H28zM30,2H31V3H30zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM16,3H17V4H16zM17,3H18V4H17zM18,3H19V4H18zM21,3H22V4H21zM22,3H23V4H22zM23,3H24V4H23zM24,3H25V4H24zM25,3H26V4H25zM26,3H27V4H26zM27,3H28V4H27zM30,3H31V4H30zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM12,4H13V5H12zM13,4H14V5H13zM17,4H18V5H17zM20,4H21V5H20zM22,4H23V5H22zM24,4H25V5H24zM25,4H26V5H25zM26,4H27V5H26zM27,4H28V5H27zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM13,5H14V6H13zM14,5H15V6H14zM16,5H17V6H16zM17,5H18V6H17zM19,5H20V6H19zM21,5H22V6H21zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM12,6H13V7H12zM13,6H14V7H13zM16,6H17V7H16zM17,6H18V7H17zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM23,6H24V7H23zM26,6H27V7H26zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM18,7H19V8H18zM21,7H22V8H21zM22,7H23V8H22zM23,7H24V8H23zM26,7H27V8H26zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM14,9H15V10H14zM15,9H16V10H15zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM25,9H26V10H25zM26,9H27V10H26zM28,9H29V10H28zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM14,10H15V11H14zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM21,10H22V11H21zM22,10H23V11H22zM28,10H29V11H28zM32,10H33V11H32zM35,10H36V11H35zM37,10H38V11H37zM38,10H39V11H38zM2,11H3V12H2zM6,11H7V12H6zM7,11H8V12H7zM9,11H10V12H9zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM13,11H14V12H13zM14,11H15V12H14zM17,11H18V12H17zM18,11H19V12H18zM25,11H26V12H25zM26,11H27V12H26zM30,11H31V12H30zM31,11H32V12H31zM33,11H34V12H33zM37,11H38V12H37zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM5,12H6V13H5zM8,12H9V13H8zM12,12H13V13H12zM15,12H16V13H15zM16,12H17V13H16zM17,12H18V13H17zM23,12H24V13H23zM24,12H25V13H24zM25,12H26V13H25zM26,12H27V13H26zM27,12H28V13H27zM33,12H34V13H33zM35,12H36V13H35zM3,13H4V14H3zM5,13H6V14H5zM6,13H7V14H6zM11,13H12V14H11zM14,13H15V14H14zM15,13H16V14H15zM17,13H18V14H17zM20,13H21V14H20zM21,13H22V14H21zM24,13H25V14H24zM25,13H26V14H25zM27,13H28V14H27zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM33,13H34V14H33zM36,13H37V14H36zM3,14H4V15H3zM4,14H5V15H4zM5,14H6V15H5zM8,14H9V15H8zM10,14H11V15H10zM13,14H14V15H13zM15,14H16V15H15zM16,14H17V15H16zM18,14H19V15H18zM19,14H20V15H19zM20,14H21V15H20zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM4,15H5V16H4zM5,15H6V16H5zM7,15H8V16H7zM10,15H11V16H10zM12,15H13V16H12zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM17,15H18V16H17zM18,15H19V16H18zM21,15H22V16H21zM26,15H27V16H26zM27,15H28V16H27zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM31,15H32V16H31zM32,15H33V16H32zM33,15H34V16H33zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM38,15H39V16H38zM5,16H6V17H5zM8,16H9V17H8zM11,16H12V17H11zM15,16H16V17H15zM16,16H17V17H16zM19,16H20V17H19zM20,16H21V17H20zM21,16H22V17H21zM22,16H23V17H22zM24,16H25V17H24zM28,16H29V17H28zM31,16H32V17H31zM34,16H35V17H34zM36,16H37V17H36zM37,16H38V17H37zM2,17H3V18H2zM4,17H5V18H4zM5,17H6V18H5zM10,17H11V18H10zM13,17H14V18H13zM15,17H16V18H15zM16,17H17V18H16zM19,17H20V18H19zM20,17H21V18H20zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM2,18H3V19H2zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM11,18H12V19H11zM12,18H13V19H12zM14,18H15V19H14zM15,18H16V19H15zM18,18H19V19H18zM19,18H20V19H19zM20,18H21V19H20zM22,18H23V19H22zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM35,18H36V19H35zM36,18H37V19H36zM38,18H39V19H38zM2,19H3V20H2zM3,19H4V20H3zM4,19H5V20H4zM9,19H10V20H9zM10,19H11V20H10zM11,19H12V20H11zM12,19H13V20H12zM15,19H16V20H15zM16,19H17V20H16zM18,19H19V20H18zM19,19H20V20H19zM21,19H22V20H21zM22,19H23V20H22zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM31,19H32V20H31zM32,19H33V20H32zM35,19H36V20H35zM37,19H38V20H37zM38,19H39V20H38zM3,20H4V21H3zM4,20H5V21H4zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM19,20H20V21H19zM21,20H22V21H21zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM36,20H37V21H36zM37,20H38V21H37zM38,20H39V21H38zM2,21H3V22H2zM5,21H6V22H5zM6,21H7V22H6zM10,21H11V22H10zM11,21H12V22H11zM14,21H15V22H14zM15,21H16V22H15zM16,21H17V22H16zM19,21H20V22H19zM20,21H21V22H20zM21,21H22V22H21zM24,21H25V22H24zM25,21H26V22H25zM30,21H31V22H30zM31,21H32V22H31zM34,21H35V22H34zM35,21H36V22H35zM37,21H38V22H37zM2,22H3V23H2zM4,22H5V23H4zM6,22H7V23H6zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM16,22H17V23H16zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM23,22H24V23H23zM25,22H26V23H25zM26,22H27V23H26zM28,22H29V23H28zM31,22H32V23H31zM33,22H34V23H33zM34,22H35V23H34zM35,22H36V23H35zM38,22H39V23H38zM3,23H4V24H3zM4,23H5V24H4zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM13,23H14V24H13zM14,23H15V24H14zM16,23H17V24H16zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM27,23H28V24H27zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM3,24H4V25H3zM4,24H5V25H4zM8,24H9V25H8zM9,24H10V25H9zM10,24H11V25H10zM13,24H14V25H13zM18,24H19V25H18zM19,24H20V25H19zM22,24H23V25H22zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM28,24H29V25H28zM30,24H31V25H30zM33,24H34V25H33zM2,25H3V26H2zM3,25H4V26H3zM4,25H5V26H4zM5,25H6V26H5zM10,25H11V26H10zM11,25H12V26H11zM17,25H18V26H17zM20,25H21V26H20zM21,25H22V26H21zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM27,25H28V26H27zM28,25H29V26H28zM29,25H30V26H29zM34,25H35V26H34zM35,25H36V26H35zM36,25H37V26H36zM37,25H38V26H37zM2,26H3V27H2zM5,26H6V27H5zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM13,26H14V27H13zM14,26H15V27H14zM20,26H21V27H20zM22,26H23V27H22zM23,26H24V27H23zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM32,26H33V27H32zM34,26H35V27H34zM36,26H37V27H36zM4,27H5V28H4zM7,27H8V28H7zM9,27H10V28H9zM10,27H11V28H10zM11,27H12V28H11zM12,27H13V28H12zM15,27H16V28H15zM18,27H19V28H18zM19,27H20V28H19zM20,27H21V28H20zM22,27H23V28H22zM23,27H24V28H23zM26,27H27V28H26zM27,27H28V28H27zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM31,27H32V28H31zM32,27H33V28H32zM33,27H34V28H33zM34,27H35V28H34zM37,27H38V28H37zM38,27H39V28H38zM3,28H4V29H3zM4,28H5V29H4zM8,28H9V29H8zM9,28H10V29H9zM11,28H12V29H11zM15,28H16V29H15zM17,28H18V29H17zM18,28H19V29H18zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM23,28H24V29H23zM27,28H28V29H27zM31,28H32V29H31zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM2,29H3V30H2zM5,29H6V30H5zM6,29H7V30H6zM11,29H12V30H11zM12,29H13V30H12zM16,29H17V30H16zM18,29H19V30H18zM23,29H24V30H23zM24,29H25V30H24zM28,29H29V30H28zM29,29H30V30H29zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM37,29H38V30H37zM4,30H5V31H4zM5,30H6V31H5zM7,30H8V31H7zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM14,30H15V31H14zM16,30H17V31H16zM17,30H18V31H17zM20,30H21V31H20zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM25,30H26V31H25zM27,30H28V31H27zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM13,31H14V32H13zM17,31H18V32H17zM19,31H20V32H19zM22,31H23V32H22zM24,31H25V32H24zM25,31H26V32H25zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM34,31H35V32H34zM36,31H37V32H36zM38,31H39V32H38zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM13,32H14V33H13zM14,32H15V33H14zM15,32H16V33H15zM17,32H18V33H17zM19,32H20V33H19zM22,32H23V33H22zM23,32H24V33H23zM26,32H27V33H26zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM15,33H16V34H15zM18,33H19V34H18zM21,33H22V34H21zM24,33H25V34H24zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM11,34H12V35H11zM13,34H14V35H13zM20,34H21V35H20zM24,34H25V35H24zM26,34H27V35H26zM28,34H29V35H28zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM12,35H13V36H12zM13,35H14V36H13zM14,35H15V36H14zM17,35H18V36H17zM19,35H20V36H19zM20,35H21V36H20zM22,35H23V36H22zM24,35H25V36H24zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM11,36H12V37H11zM14,36H15V37H14zM15,36H16V37H15zM18,36H19V37H18zM20,36H21V37H20zM21,36H22V37H21zM22,36H23V37H22zM24,36H25V37H24zM25,36H26V37H25zM26,36H27V37H26zM27,36H28V37H27zM29,36H30V37H29zM30,36H31V37H30zM31,36H32V37H31zM32,36H33V37H32zM34,36H35V37H34zM35,36H36V37H35zM2,37H3V38H2zM8,37H9V38H8zM12,37H13V38H12zM13,37H14V38H13zM14,37H15V38H14zM16,37H17V38H16zM18,37H19V38H18zM22,37H23V38H22zM27,37H28V38H27zM28,37H29V38H28zM31,37H32V38H31zM33,37H34V38H33zM34,37H35V38H34zM35,37H36V38H35zM36,37H37V38H36zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM12,38H13V39H12zM14,38H15V39H14zM15,38H16V39H15zM16,38H17V39H16zM17,38H18V39H17zM19,38H20V39H19zM21,38H22V39H21zM25,38H26V39H25zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM29,38H30V39H29zM31,38H32V39H31zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
-            <div class="qr-block__label">SCAN TO REVISIT</div>
+            <div class="qr-block__label">QR 코드</div>
             <div class="qr-block__heading">집에서 다시 보기</div>
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 치료가 끝난 뒤에도 피로·추위 탐·체중 증가가 생기면 알려 주세요.</span><span class="v2-src">근거 · ATA 2016 · KTA 갑상선기능저하증 권고안</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 
 <!-- Presenting mode toggle -->
 <div class="deck-nav">

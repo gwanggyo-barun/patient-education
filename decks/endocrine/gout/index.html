@@ -21,143 +21,84 @@
 
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
 
   <style>
-    .slide__bg-num { display: none !important; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    /* rescope 2026-08-09: 갭 분배 금지(Gotcha 20·21) — 타일의 '제목 + 설명'을 한 묶음으로
-       모은다. 공용 .tile__body 의 margin-top:auto 가 둘을 위아래로 갈라 빈 띠를 만들었다. */
-    .tile { justify-content: center; }
-    .tile__body { margin-top: 0; }
-    .pattern-hero-number__numeric { justify-content: center; }
+ /* HQ3A-redesign 2026-09-27 (원장님 49028) — v1 타일 6칸 반복(작은 글자 37%)을 v2 카드·표·2x2·
+    글+그림·가로 도해·대비 2단으로 바꿨다. 그림칸 = 원본 비율(1.777·1.778·3.226) 그대로, 잘림 없음. */
+ .slide__bg-num { display: none !important; }
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2, section.slide--cover{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12px;color:var(--v2-muted);white-space:nowrap}
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ .q-text .v2-body{font-size:16px;line-height:1.6}
+ .q-fig{background:transparent}
+ .q-fig .v2-figwide__img{border-radius:10px}
+ .q-notep{display:flex;align-items:center;padding:20px 24px}
+ .q-note{font-size:16px;line-height:1.6}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 22px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+ .q-card__top .v2-chip{width:56px;height:56px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:34px;height:34px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:18px;line-height:1.7}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ .q-card__why{margin-top:12px;font-size:16px;line-height:1.55;color:var(--v2-muted);word-break:keep-all}
+ .q-sub{display:block;font-size:16px;font-weight:400;color:var(--v2-body);line-height:1.45;margin-top:2px}
+ .q-sub b{font-weight:400}
+ /* 그림 아래 두 라벨 */
+ .q-lab2{position:absolute;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .q-lab{display:flex;flex-direction:column;gap:3px;padding:10px 14px;border-radius:8px;background:var(--v2-chip-navy);border-top:4px solid var(--v2-navy)}
+ .q-lab b{font-size:17px;color:var(--v2-navy)}
+ .q-lab span{font-size:15px;color:var(--v2-body);word-break:keep-all}
+ .q-lab--on{background:var(--v2-chip-accent);border-top-color:var(--v2-accent)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;height:68px}
+ .q-table--tall tbody th, .q-table--tall tbody td{height:85px}
+ .q-table--tall tbody td, .q-table--xl tbody td{font-size:17px;line-height:1.6}
+ .q-table--xl tbody th, .q-table--xl tbody td{height:114px;line-height:1.55}
+ /* 2x2 */
+ .q-four{display:flex;flex-direction:column;justify-content:center}
+ .q-four .v2-head{margin-bottom:12px}
+ .q-four .v2-head b{font-size:20px}
+ .q-four .v2-body{font-size:18px;line-height:1.65}
+ /* 숫자 칸 */
+ .q-statp{display:flex;align-items:center;justify-content:center}
+ .q-stat{text-align:center}
+ .q-stat__num{font-size:64px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-2px}
+ .q-stat__num span{font-size:26px;font-weight:700;color:var(--v2-accent);letter-spacing:0;margin-left:4px}
+ .q-stat__cap{margin-top:14px;font-size:16px;line-height:1.55;color:var(--v2-body);word-break:keep-all}
+ .q-stat--sm .q-stat__num{font-size:46px}
+ .q-stat--sm .q-stat__num span{font-size:18px}
+ .q-stat--sm .q-stat__cap{font-size:15.5px;margin-top:10px;line-height:1.5}
+ .q-statp.q-panel-sm{padding:18px}
+ .q-half{padding:20px 24px}
+ .q-half .v2-head{margin-bottom:8px}
+ .q-half .v2-body{font-size:16px;line-height:1.6}
+ /* 대비 2단 — 식사 */
+ .q-vs .v2-vs__head{font-size:20px}
+ .q-vs .v2-vs__list{display:grid;grid-template-columns:1fr 1fr;column-gap:22px;align-content:space-evenly}
+ .q-vs .v2-vs__list li{font-size:17px;line-height:1.45;padding:10px 0 10px 22px}
+ .q-vs .v2-vs__list li:nth-last-child(2){border-bottom:0}
+ .q-vs .v2-vs__list li b{font-size:17px}
+ .q-vs .v2-vs__list li::before{top:17px}
+ /* 클로징 */
+ .q-close{display:flex;flex-direction:column;justify-content:space-between}
+ .q-close .v2-block + .v2-block{margin-top:0;padding-top:14px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+ .q-qr .qr-block{display:flex;flex-direction:column;align-items:center;gap:14px}
+ .q-qr .qr-block__code{width:230px;height:230px;padding:10px}
+ .q-qr .qr-block__label{font-size:16px;color:var(--v2-navy);font-weight:700}
   </style>
 <!-- seo:geo2 --><meta name="description" content="통풍 (Gout) — 발작 치료·요산 강하·식이·약물 관리까지 한눈에 (ACR 2020, KCR 2024)">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/endocrine/gout/">
@@ -167,8 +108,7 @@
 
 <div class="deck">
 
-  <!-- SLIDE 01 · COVER -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · METABOLIC</div>
@@ -178,526 +118,339 @@
       <p class="slide__subtitle">발작이 왔을 때 무엇을 하고, 요산 약은 언제 시작해 얼마나 오래 먹는지 —<br>가장 많이 묻는 순서로</p>
     </div>
     <footer class="slide__footer">
-      <span class="slide__source">Gout · Acute Flare · Urate-Lowering Therapy · Diet · Follow-up</span>
-      <span class="slide__page">광교바른내과 일반내과</span>
+      <span class="slide__source">통풍 · 급성 발작 · 요산 낮추는 약 · 식사 · 추적 관리</span>
+      <span class="slide__page">01 / 13</span>
     </footer>
   </section>
 
-
-  <!-- SLIDE 02 · ASYMMETRIC SPLIT — 지금 아플 때 (ch01) -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHEN IT HURTS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">지금 아플 때 — 먼저 이 네 가지</h2>
-      <p class="slide__subtitle">빨리 알리고 · 관절을 쉬게 하고 · 냉찜질하고 · 드시던 요산약은 그대로</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split pattern-split--with-visual">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">발작이 시작되면 <em>최대한 빨리 알리고</em>, 다치지 않게 관절을 쉬게 하세요.</p>
-          <p class="pattern-split__supporting">
-            통증을 가라앉히는 <strong>불끄기 약</strong>과 몸속 요산을 녹여내는 <strong>청소 약</strong>은 하는 일이 다릅니다. 그래서 기존에 드시던 요산 약은 그대로 드시면서, 급성 통증을 조절하는 약을 함께 복용합니다. 발작이 왔다고 요산 약을 끊으면 혈중 요산이 출렁이면서 통증이 오히려 오래갑니다. 아픈 부위에 핫팩이나 온찜질을 하면 혈관이 넓어져 염증이 더 심해지므로 냉찜질을 하세요. 통증이 심할 때 잰 요산 수치만으로는 통풍이 아니라고 단정할 수 없어, 통증이 완전히 가라앉은 뒤 다시 검사해 정확한 수치를 확인합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <figure class="ai-visual ai-visual--split ai-visual--fill">
-            <img src="../../../shared/assets/generated/gout-urate-crystals-fullbleed-20260530.jpg" alt="Urate crystals inside an inflamed toe joint">
-          </figure>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">찜질</div>
-            <div class="pattern-split__metric-value">냉찜질</div>
-            <div class="pattern-split__metric-detail">온찜질·핫팩은 염증을 더 키웁니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">드시던 요산 약</div>
-            <div class="pattern-split__metric-value">그대로 복용</div>
-            <div class="pattern-split__metric-detail">발작이 와도 스스로 끊지 않습니다.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020 · EULAR 2016 · 대한류마티스학회(KCR) · 4엔진 딥리서치 확정본</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 03 · DENSITY GRID 3×2 — 급성기 약 3가지 (ch02) -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>FLARE MEDICATION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">급성기 약은 세 가지 — 몸 상태를 보고 고릅니다</h2>
-      <p class="slide__subtitle">콜히친 · 소염진통제 · 스테로이드. 콩팥·위장·당뇨·심장 상태에 따라<br>가장 안전한 약을 선택합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <figure class="ai-visual ai-visual--focus ai-visual--fill">
-        <img src="../../../shared/assets/generated/gout-flare-three-options-fullbleed-20260809.png" alt="Three acute gout treatment options side by side">
-      </figure>
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--accent">
-          <div class="tile__index">선택 · 01</div>
-          <div class="tile__title">세 약의 효과는 대등합니다</div>
-          <div class="tile__body">어느 약이 더 센가가 아니라, <strong>지금 내 몸에 가장 안전한 약</strong>이 무엇인가로 정합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">약 · 02</div>
-          <div class="tile__title">콜히친 — 저용량으로</div>
-          <div class="tile__body">고용량과 효과는 비슷하고 부작용은 적습니다. 같이 먹으면 안 되는 약이 있어 복용 중인 약을 알려주세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">약 · 03</div>
-          <div class="tile__title">소염진통제 (NSAID)</div>
-          <div class="tile__body">콩팥에 부담을 줄 수 있어 피하는 경우가 많습니다. 위장관 출혈·부종·혈압 상승도 주의합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">약 · 04</div>
-          <div class="tile__title">스테로이드</div>
-          <div class="tile__body">콩팥이 나쁘거나 위장이 약하거나 피 묽게 하는 약을 드실 때 씁니다. 먹는 약·주사 모두 가능합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">주의 · 05</div>
-          <div class="tile__title">당뇨가 있으면 미리 말씀해&nbsp;주세요</div>
-          <div class="tile__body">스테로이드는 혈당을 일시적으로 올립니다. 복용 기간에는 혈당을 재 보셔야 합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">주의 · 06</div>
-          <div class="tile__title">두 가지를 같이 쓸 때</div>
-          <div class="tile__body">함께 쓰면 부작용도 겹칠 수 있어 신중히 정합니다. 셋 다 어려우면 전문의 진료를&nbsp;권합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020 · EULAR 2016 · APLAR 2021 · 대한류마티스학회(KCR)</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 04 · DENSITY GRID 3×2 — 불끄기 약 vs 청소 약 (ch03) -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>TWO KINDS OF DRUGS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">불끄기 약과 청소 약은 다릅니다</h2>
-      <p class="slide__subtitle">요산 약(청소 약)은 조건이 맞으면 시작해 오래 유지합니다 —<br>누가 언제 시작하는지 정리합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <figure class="ai-visual ai-visual--focus ai-visual--fill">
-        <img src="../../../shared/assets/generated/gout-firefight-vs-cleanup-fullbleed-20260809.png" alt="Fire-extinguishing action versus dissolving and clearing urate crystals">
-      </figure>
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--accent">
-          <div class="tile__index">구분 · 01</div>
-          <div class="tile__title">두 약은 하는 일이 다릅니다</div>
-          <div class="tile__body">통증을 가라앉히는 약과 요산을 녹여내는 약은 별개입니다. 요산 약은 <strong>고혈압 약처럼 오래</strong> 유지합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">시작 · 02</div>
-          <div class="tile__title">꼭 시작하는 경우</div>
-          <div class="tile__body">통풍결절이 만져지거나, 뼈 손상이 있거나, 발작이 1년에 두 번 이상이면 강하게 권고됩니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">시작 · 03</div>
-          <div class="tile__title">상의해서 정하는 경우</div>
-          <div class="tile__body">콩팥병 3기 이상, 요산 9 mg/dL 초과, 요로결석, 첫 발작이지만 위험 요인이 겹칠 때입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">시점 · 04</div>
-          <div class="tile__title">언제 시작하나</div>
-          <div class="tile__body">발작이 가라앉고 2~4주 뒤 시작하는 방법이 널리 쓰입니다. 학회마다 권고가 조금씩 다릅니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">유지 · 05</div>
-          <div class="tile__title">발작이 와도 끊지 않습니다</div>
-          <div class="tile__body">이상반응이 없으면 발작 중에도 그대로 드세요. 끊으면 요산이 출렁여 통증이 오히려 오래갑니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">예외 · 06</div>
-          <div class="tile__title">증상 없이 요산만 높을 때</div>
-          <div class="tile__body">대개 약보다 생활 관리로 봅니다. 요산결석이나 실제 통풍이 있으면 그 이유로 치료합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020 · EULAR 2016 · NICE NG219 2022 · 대한류마티스학회(KCR) 2022</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 05 · DENSITY GRID 2×2 — 요산약 ① (ch04) -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>URATE-LOWERING · 1</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">요산 약 ① — 알로푸리놀과 페북소스타트</h2>
-      <p class="slide__subtitle">알로푸리놀이 1차약입니다. 낮은 용량으로 시작해 요산을 재면서 목표까지 천천히 올립니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--accent">
-          <div class="tile__index">1차 · 01</div>
-          <div class="tile__title">알로푸리놀 — 첫 번째 약</div>
-          <div class="tile__body">요산을 낮추는 1차약입니다. 콩팥 기능이 떨어진 분에게도 1차로 강하게 권고되며, 이때는 시작 용량을 더 낮게 잡습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">용량 · 02</div>
-          <div class="tile__title">낮게 시작해 천천히 올립니다</div>
-          <div class="tile__body">처음부터 요산이 급하게 떨어지면 오히려 발작이 생기고 과민반응 위험도 올라갑니다. 2~5주 간격으로 요산을 재며 목표까지 증량합니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">검사 · 03</div>
-          <div class="tile__title">시작 전 유전자 검사</div>
-          <div class="tile__body">한국인은 시작 전 <strong>HLA-B*58:01</strong> 검사를 권합니다. 이 유전자를 가진 비율이 서양인보다 높습니다. 양성이면 알로푸리놀을 피하고 다른 약으로 바꿉니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">2차 · 04</div>
-          <div class="tile__title">페북소스타트</div>
-          <div class="tile__body">알로푸리놀이 맞지 않거나 효과가 부족할 때 씁니다. 심장에 대한 위험은 연구마다 결과가 달라 논쟁 중이니, 심장병이 있으면 상의해 정합니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020 · EULAR 2016 · CPIC (HLA-B*58:01 Level A) · 대한류마티스학회(KCR)</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 06 · DENSITY GRID 2×2 — 요산약 ②③ (ch05 + ch06) -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>URATE-LOWERING · 2·3</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">요산 약 ②③ — 배설을 돕는 약,<br>잘 듣지 않을 때의 약</h2>
-      <p class="slide__subtitle">소변으로 요산을 내보내는 약과, 표준 치료로 목표에 닿지 않는 중증에서만 쓰는 주사약이&nbsp;있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--accent">
-          <div class="tile__index">배설 · 01</div>
-          <div class="tile__title">벤즈브로마론 — 소변으로 내보내기</div>
-          <div class="tile__body">소변으로 요산을 내보내는 약으로, 국내에서 실제로 쓸 수 있는 배설촉진제입니다. 1차약이 맞지 않거나 부족할 때 단독 또는 함께 씁니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">주의 · 02</div>
-          <div class="tile__title">간과 결석은 꼭 확인합니다</div>
-          <div class="tile__body">드물지만 중대한 간 손상이 있을 수 있어 간기능 검사를 정기적으로 합니다. 요로결석이 있던 분에게는 쓰지 않고, 쓸 때는 물을 충분히 드셔야 합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">불응성 · 03</div>
-          <div class="tile__title">페글로티카제 — 잘 듣지 않을 때</div>
-          <div class="tile__body">표준 요산 약으로 목표에 닿지 못한 중증 결절 통풍에 쓰는 정맥주사약입니다. 국내에는 아직 도입되지 않아 전문센터 의뢰가 원칙입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">구분 · 04</div>
-          <div class="tile__title">헷갈리기 쉬운 약</div>
-          <div class="tile__body">라스부리카제는 이름이 비슷하지만 통풍 약이 아니라 암 치료 중 특수한 상황에만 쓰는 약입니다. 두 약 모두 G6PD 결핍이 있으면 쓸 수 없습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020 · EULAR 2016 · 국내 허가·급여 현황은 처방 시점에 다시 확인합니다</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 07 · VISUAL FOCUS + GRID 3×2 — 약 부작용 신호 (ch07) -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>SIDE-EFFECT SIGNALS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">약 부작용은 '느껴지는 신호'로 기억하세요</h2>
-      <p class="slide__subtitle">아래 신호가 있으면 약을 멈추고 바로 오세요 — 혼자 참지 마시고 알려주시면 됩니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <figure class="ai-visual ai-visual--focus ai-visual--fill">
-        <img src="../../../shared/assets/generated/gout-drug-sideeffect-signals-fullbleed-20260809.png" alt="Felt side-effect signals: rash, fever, mouth sores, red eyes, facial swelling">
-      </figure>
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--alert">
-          <div class="tile__index">즉시 · 01</div>
-          <div class="tile__title">알로푸리놀 · 페북소스타트</div>
-          <div class="tile__body">원인 모를 열, 피부 발진, 입안 짓무름, 눈 충혈, 얼굴 부종 — 즉시 중단하고 오세요.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">즉시 · 02</div>
-          <div class="tile__title">콜히친</div>
-          <div class="tile__body">멈추지 않는 심한 설사, 쥐가 나는 듯한 복통, 근육 통증은 독성 신호입니다.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">즉시 · 03</div>
-          <div class="tile__title">소염진통제 · 스테로이드</div>
-          <div class="tile__body">검은 변·토혈, 소변량이 갑자기 줄고 붓는&nbsp;것, 열과 함께 온몸이 쳐지는 느낌.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">검사 · 04</div>
-          <div class="tile__title">왜 유전자 검사를 하나</div>
-          <div class="tile__body">아주 드물게 심한 열과 함께 전신 피부가 벗겨지는 부작용이 있어, 미리 위험을&nbsp;줄입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">검사 · 05</div>
-          <div class="tile__title">음성이어도 방심하지 않습니다</div>
-          <div class="tile__body">검사가 음성이라고 위험이 완전히 없어지지는 않아, 시작 초기에 발진을 함께 지켜봅니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">원칙 · 06</div>
-          <div class="tile__title">참지 말고 알려주세요</div>
-          <div class="tile__body">알려주시면 용량을 조절하거나 약을 바꿉니다. 정해진 날짜에 꾸준히 재진받으세요.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020 · CPIC (HLA-B*58:01) · 대한류마티스학회(KCR) 약물 이상반응 권고</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 08 · HERO NUMBER — 시작 초기 발작 · 예방투여 (ch08) -->
-  <section class="slide">
-    <div class="slide__bg-num">08</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>EARLY FLARES</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">요산 약을 시작하면 처음엔 발작이 늘 수 있습니다</h2>
-      <p class="slide__subtitle">그래서 요산 약과 함께 '발작을 막는 약'을 최소 3~6개월 같이 씁니다 —<br>실패가 아니라 예정된 과정입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>3~6</em>개월</div>
-          <div class="pattern-hero-number__caption">요산 약을 시작하거나 용량을 올릴 때, 발작을 막는 약(저용량 콜히친 또는 저용량 소염진통제)을 최소 3~6개월 함께 씁니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">왜 같이 쓰나</div>
-          <div class="pattern-hero-number__detail-text">
-            요산이 초기에 급하게 내려가면 <strong>오히려 발작이 생길 수 있습니다</strong>. 그래서 약을 낮은 용량부터 시작하고, 발작을 막는 약을 처음부터 같이 넣습니다. 결절이 있거나 발작이 이어지면 기간을 더 늘리고, 목표 수치에 닿고 발작이 없는 것을 확인한 뒤에 이 예방약만 중단합니다. 급하게 살을 빼려고 굶거나 극단적인 저탄수화물·고지방 식사를 하면 오히려 발작이 생기므로, 체중은 천천히 줄이셔야 합니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020(최소 3~6개월) · EULAR 2016(6개월) · 대한류마티스학회(KCR) 조건부 권고</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 09 · DENSITY GRID 3×2 — 콩팥 · 심장 (ch09) -->
-  <section class="slide">
-    <div class="slide__bg-num">09</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>KIDNEY · HEART</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">콩팥·심장이 안 좋으면 무엇이 달라지나</h2>
-      <p class="slide__subtitle">약을 못 쓰는 것이 아니라, 고르는 약과 시작 용량이 달라집니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile">
-          <div class="tile__index">콩팥 · 01</div>
-          <div class="tile__title">급성기에는 소염진통제 대신</div>
-          <div class="tile__body">콩팥에 부담을 줄 수 있어 피하는 경우가 많습니다. 대신 스테로이드를 먹는 약·주사로 씁니다.</div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">콩팥 · 02</div>
-          <div class="tile__title">요산 약은 그대로 씁니다</div>
-          <div class="tile__body">알로푸리놀은 콩팥이 나쁜 분에게도 1차약입니다. 시작 용량만 더 낮추고 재면서 올립니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">심장 · 03</div>
-          <div class="tile__title">심장병이 있을 때</div>
-          <div class="tile__body">페북소스타트는 심장병이 있는 분에서 위험이 논쟁 중입니다. 알로푸리놀을 먼저 고려합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">심장 · 04</div>
-          <div class="tile__title">임의 중단이 더 위험할 수 있습니다</div>
-          <div class="tile__body">스스로 끊으면 오히려 위험이 커질 수 있다는 자료가 있습니다. 끊기 전에 먼저 상의해 주세요.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">주의 · 05</div>
-          <div class="tile__title">특히 조심해야 하는 분</div>
-          <div class="tile__body">고령, 콩팥병·심부전, 피 묽게 하는 약 복용, 위장관 출혈을 겪은 적이 있는 경우입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">예외 · 06</div>
-          <div class="tile__title">증상 없이 요산만 높을 때</div>
-          <div class="tile__body">요산 약이 콩팥병 진행을 늦춘다는 근거가 부족해 일상적으로 약을 쓰지 않습니다.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020 · KDIGO · EULAR 2016 · 페북소스타트 심혈관 안전성 연구는 결과가 엇갈립니다</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 10 · VISUAL FOCUS + COMPARE — 식이 (ch10) -->
-  <section class="slide">
-    <div class="slide__bg-num">10</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>DIET</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">식이 — 무엇을 줄이고, 무엇은 그대로 드셔도 되나</h2>
-      <p class="slide__subtitle">동물성 퓨린과 술·단 음료는 줄이고, 콩·두부·버섯 같은 식물성 퓨린은 제한하지 않습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <figure class="ai-visual ai-visual--focus ai-visual--fill">
-        <img src="../../../shared/assets/generated/gout-low-purine-hydration-fullbleed-20260530.jpg" alt="Low purine meal and hydration guidance">
-      </figure>
-      <div class="pattern-compare">
-        <div class="compare-col compare-col--prefer">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">+</span>
-            <span>그대로 드셔도 되는 것</span>
-          </div>
-          <ul class="compare-col__list">
-            <li><strong>콩·두부·버섯·시금치</strong> — 식물성 퓨린은 발작을 늘리지 않습니다</li>
-            <li><strong>저지방 우유·요구르트</strong> — 오히려 도움이&nbsp;됩니다</li>
-            <li><strong>커피</strong> — 위험을 낮춘다는 연구가 있습니다</li>
-            <li><strong>살코기 위주로 적정량</strong> — 완전히 끊지&nbsp;마세요</li>
-            <li><strong>등푸른생선·해산물</strong> — 적당한 양으로</li>
-            <li><strong>천천히 체중 감량</strong> — 굶는 다이어트는&nbsp;금물</li>
-          </ul>
-        </div>
-        <div class="compare-col compare-col--avoid">
-          <div class="compare-col__header">
-            <span class="compare-col__marker">−</span>
-            <span>줄여야 하는 것</span>
-          </div>
-          <ul class="compare-col__list">
-            <li><strong>맥주</strong> — 술 중에서 위험이 가장 큽니다</li>
-            <li><strong>소주·양주</strong> — 독주도 요산과 발작을 늘립니다</li>
-            <li><strong>와인</strong> — 위험은 낮지만 총량을 줄이세요</li>
-            <li><strong>콜라·주스·에너지드링크</strong> — 단 음료를 줄이세요</li>
-            <li><strong>곱창·간 등 내장류</strong> · 진하게 우린 곰탕&nbsp;국물</li>
-            <li><strong>체리·비타민 C 보충제로 약 대신하기</strong> — 근거가 약합니다</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — 대규모 코호트·메타분석(식물성 퓨린·커피·유제품) · ACR 2020(비타민 C 조건부 미권고)</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 11 · VISUAL FOCUS + GRID 3×2 — 목표 수치 · 기간 · 즉시 내원 (ch11) -->
-  <section class="slide">
-    <div class="slide__bg-num">11</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>TARGET · FOLLOW-UP</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">목표 수치와 기간, 그리고 바로 오셔야 하는 때</h2>
-      <p class="slide__subtitle">목표는 6 mg/dL 미만, 결절이 있으면 더 낮게. 목표에 닿아도 약은 계속 유지합니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <figure class="ai-visual ai-visual--focus ai-visual--fill">
-        <img src="../../../shared/assets/generated/gout-treat-to-target-fullbleed-20260530.jpg" alt="Uric acid treat to target concept">
-      </figure>
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--accent">
-          <div class="tile__index">목표 · 01</div>
-          <div class="tile__title">6 mg/dL 미만</div>
-          <div class="tile__body">일반적인 목표 요산 수치입니다. 국내 지침도 국제 표준과 같은 기준을 씁니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">목표 · 02</div>
-          <div class="tile__title">결절이 있으면 더 낮게</div>
-          <div class="tile__body">통풍결절이 있거나 중증이면 5 mg/dL 미만을 목표로 두기도 합니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">추적 · 03</div>
-          <div class="tile__title">얼마나 자주 재나</div>
-          <div class="tile__body">시작·증량 중에는 2~5주 간격, 안정되면 약 6개월 간격으로 콩팥·간기능과 함께&nbsp;봅니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">기간 · 04</div>
-          <div class="tile__title">얼마나 오래 먹나</div>
-          <div class="tile__body">목표에 닿아도 대개 장기 복용합니다. 결정은 서서히 녹아 일찍 끊으면 다시&nbsp;쌓입니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">주의 · 05</div>
-          <div class="tile__title">임의로 끊으면</div>
-          <div class="tile__body">요산이 급격히 변해 관절에 쌓인 결정이 흔들리고 통증이 훨씬 오래갑니다. 상의해 정합니다.</div>
-        </div>
-        <div class="tile tile--alert">
-          <div class="tile__index">즉시 · 06</div>
-          <div class="tile__title">바로 오셔야 하는 때</div>
-          <div class="tile__body">열이 나며 여러 관절이 한꺼번에 아프거나, 한 관절이 갑자기 심해지고 온몸이 쳐질 때.</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — ACR 2020(&lt; 6 mg/dL 강한 권고) · EULAR 2016 · NICE NG219 2022 · 대한류마티스학회(KCR) 2022</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-
-  <!-- SLIDE 12 · CLOSING -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter"><strong>광교바른내과</strong> · 일반내과 · 5대암 검진</div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">불끄기 약으로 통증을 잡고, 청소 약으로 요산을 낮춥니다</h2>
-      <p class="slide__subtitle">목표는 6 mg/dL 미만 — 꾸준히 유지하면 결절도, 콩팥도, 심장도 함께 지킬 수 있습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__label">광교바른내과 진료 안내</div>
-          <div class="contact-card__main">평일 08:30~18:30 · 토 08:30~13:30</div>
-          <div class="contact-card__addr">경기 용인 수지구 광교중앙로 298, 4층</div>
-          <div class="contact-card__phone">☏ 031-893-4560</div>
-          <div class="contact-card__meta">소화기내과 · 일반내과 · 5대암 검진</div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 01 · 지금 아플 때</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">지금 아플 때 — 먼저 이 네 가지</h2>
+  <p class="v2-sub">빨리 알리고 · 관절을 쉬게 하고 · 냉찜질하고 · 드시던 요산 약은 그대로</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.24 21.58C16.12 27.24 20.76 31.86 26.42 34.76L30.82 30.36C31.36 29.82 32.16 29.64 32.86 29.88C35.1 30.62 37.52 31.02 40 31.02C41.1 31.02 42 31.92 42 33.02V40C42 41.1 41.1 42 40 42C21.22 42 6 26.78 6 8C6 6.9 6.9 6 8 6H15C16.1 6 17 6.9 17 8C17 10.5 17.4 12.9 18.14 15.14C18.36 15.84 18.2 16.62 17.64 17.18L13.24 21.58Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">1</span></div>
+    <div class="q-card__h">최대한 빨리 알립니다</div>
+    <div class="v2-body">발작이 시작되면 <b>빨리</b> 알려 주세요. 통증을 가라앉히는 <b>불끄기 약</b>을 함께 씁니다.</div>
+    <div class="q-card__why">드시던 요산 약에 급성 통증 약을 더하는 것입니다.</div>
+    <div class="q-card__k">시작되면 바로 연락</div>
+  </div>
+  <div class="v2-panel q-card" style="left:358px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19 4C19.5523 4 20 4.44772 20 5L20 13.3432C20 14.404 19.5786 15.4214 18.8284 16.1716L18.3246 16.6755C17.0407 17.9593 17.0407 20.0408 18.3246 21.3246C19.3251 22.3251 20.8537 22.5732 22.1193 21.9404L22.3617 21.8192C23.393 21.3035 24.607 21.3035 25.6383 21.8192L25.8807 21.9404C27.1463 22.5732 28.6749 22.3251 29.6754 21.3246C30.9593 20.0408 30.9593 17.9593 29.6754 16.6755L29.1716 16.1716C28.4214 15.4214 28 14.404 28 13.3432L28 5C28 4.44772 28.4477 4 29 4C29.5523 4 30 4.44772 30 5V7.02425C36.9912 9.49527 42 16.1627 42 24C42 31.8373 36.9912 38.5048 30 40.9758V43C30 43.5523 29.5523 44 29 44C28.4477 44 28 43.5523 28 43L28 34.6569C28 33.596 28.4214 32.5786 29.1716 31.8284L29.6754 31.3246C30.9593 30.0408 30.9593 27.9593 29.6754 26.6755C28.6749 25.6749 27.1463 25.4268 25.8807 26.0597L25.6383 26.1809C24.607 26.6965 23.393 26.6965 22.3617 26.1809L22.1193 26.0597C20.8537 25.4268 19.3251 25.6749 18.3246 26.6755C17.0407 27.9593 17.0407 30.0407 18.3246 31.3246L18.8284 31.8284C19.5786 32.5786 20 33.596 20 34.6569L20 43C20 43.5523 19.5523 44 19 44C18.4477 44 18 43.5523 18 43V40.9758C11.0088 38.5048 6 31.8373 6 24C6 16.1627 11.0088 9.49527 18 7.02425V5C18 4.44772 18.4477 4 19 4Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">2</span></div>
+    <div class="q-card__h">관절을 쉬게 합니다</div>
+    <div class="v2-body">발작이 오면 다치지 않도록 아픈 관절을 <b>쉬게</b> 하세요.</div>
+    <div class="q-card__why">아픈 관절에 무리를 주지 않는 것이 먼저입니다.</div>
+    <div class="q-card__k">아픈 관절은 쉬기</div>
+  </div>
+  <div class="v2-panel q-card" style="left:652px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.9829 29.739L18.9814 27.9604L18.9763 21.7487L18.9662 9.3415C18.9638 6.38283 21.2004 3.98253 23.9618 3.98026C26.7232 3.978 28.9638 6.37464 28.9662 9.33331L28.9763 21.7405L28.9814 27.9527L28.9829 29.7308C30.813 31.1954 31.9859 33.4473 31.988 35.9737C31.9916 40.392 28.4128 43.9766 23.9945 43.9803C19.5763 43.9839 15.9916 40.4051 15.988 35.9868C15.9859 33.4604 17.1552 31.2066 18.9829 29.739ZM22.9584 21.4023C24.1541 21.7114 25.5195 22.0644 26.9766 22.0388L26.9749 19.9538L24.9749 19.9554C24.4226 19.9558 23.9745 19.5085 23.9741 18.9562C23.9736 18.4039 24.421 17.9558 24.9732 17.9554L26.9732 17.9538L26.9716 15.9538L24.9716 15.9554C24.4193 15.9558 23.9712 15.5085 23.9708 14.9562C23.9703 14.4039 24.4177 13.9558 24.97 13.9554L26.97 13.9538L26.9683 11.9538L24.9683 11.9554C24.416 11.9558 23.968 11.5085 23.9675 10.9562C23.9671 10.4039 24.4144 9.95585 24.9667 9.9554L26.9667 9.95376L26.9662 9.33495C26.9647 7.55975 25.6204 6.12176 23.9635 6.12312C22.3067 6.12448 20.9647 7.56466 20.9662 9.33986L20.9757 20.9813C21.5615 21.0412 22.2283 21.2136 22.9584 21.4023Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">3</span></div>
+    <div class="q-card__h">찜질은 차갑게 합니다</div>
+    <div class="v2-body">아픈 부위는 <b>냉찜질</b>을 하세요.</div>
+    <div class="q-card__why">핫팩·온찜질은 혈관을 넓혀 염증을 더 키웁니다.</div>
+    <div class="q-card__k">온찜질 대신 냉찜질</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:946px;top:206px;width:270px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">4</span></div>
+    <div class="q-card__h">드시던 요산 약은 그대로</div>
+    <div class="v2-body">발작이 와도 요산 약은 <b>그대로</b> 드세요. 스스로 끊지 않습니다.</div>
+    <div class="q-card__why">끊으면 요산이 출렁여 통증이 오히려 오래갑니다.</div>
+    <div class="q-card__k">스스로 끊지 않기</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 아플 때 잰 요산 수치만으로 통풍이 아니라고 단정할 수 없어, 가라앉은 뒤 다시 잽니다.</span><span class="v2-src">근거 · ACR 2020 · EULAR 2016 · 대한류마티스학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 02 · 발작 때 쓰는 약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">급성기 약은 세 가지 — 몸 상태를 보고 고릅니다</h2>
+  <p class="v2-sub">콩팥·위장·당뇨·심장 상태에 따라 가장 안전한 약을 선택합니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:640px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>콜히친 — 저용량으로</b></div><div class="v2-body">고용량과 효과는 비슷하고 부작용은 적습니다. 같이 먹으면 안 되는 약이 있어 복용 중인 약을 <b>알려 주세요</b>.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><b>소염진통제</b></div><div class="v2-body">콩팥에 부담을 줄 수 있어 피하는 경우가 많습니다. 위장 출혈·부종·혈압 상승도 주의합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><b>스테로이드</b></div><div class="v2-body">콩팥이 나쁘거나 위장이 약하거나 피 묽게 하는 약을 드실 때 씁니다. 먹는 약·주사 모두 가능합니다. 혈당을 올리므로 <b>당뇨가 있으면</b> 미리 알려 주세요.</div></div>
+  </div>
+  <div class="v2-panel v2-panel--figwide q-fig" style="left:734px;top:206px;width:482px;height:271px">
+    <img class="v2-figwide__img v2-fig__img" src="../../../shared/assets/generated/gout-flare-three-options-fullbleed-20260809.png" alt="먹는 알약 · 캡슐 · 주사 병 세 가지 급성기 약을 나란히 놓은 그림">
+  </div>
+  <div class="v2-panel v2-panel--accent q-notep" style="left:734px;top:493px;width:482px;height:113px">
+    <div class="v2-body q-note"><b>세 약의 효과는 비슷합니다.</b> 어느 약이 센가가 아니라, 지금 내 몸에 가장 안전한 약으로 정합니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 두 가지를 함께 쓰면 부작용도 겹칠 수 있어 신중히 정합니다. 셋 다 어려우면 전문의 진료를 권합니다.</span><span class="v2-src">근거 · ACR 2020 · EULAR 2016 · APLAR 2021 · 대한류마티스학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 03 · 두 종류의 약</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">불끄기 약과 청소 약은 다릅니다</h2>
+  <p class="v2-sub">통증을 끄는 약과 요산을 치우는 약 — 하는 일이 달라 함께 씁니다</p>
+  <div class="v2-panel v2-panel--figwide q-fig" style="left:64px;top:206px;width:560px;height:315px">
+    <img class="v2-figwide__img v2-fig__img" src="../../../shared/assets/generated/gout-firefight-vs-cleanup-fullbleed-20260809.png" alt="왼쪽은 불붙은 관절에 물을 뿌리는 모습, 오른쪽은 관절 속 결정이 씻겨 나가는 모습">
+  </div>
+  <div class="q-lab2" style="left:64px;top:533px;width:560px"><div class="q-lab"><b>불끄기 약</b><span>발작의 통증과 염증을 가라앉힙니다</span></div><div class="q-lab q-lab--on"><b>청소 약(요산 약)</b><span>쌓인 요산 결정을 녹여 냅니다</span></div></div>
+  <div class="v2-panel q-text" style="left:654px;top:206px;width:562px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42 14C42 18.4183 38.4183 22 34 22C29.5817 22 26 18.4183 26 14C26 9.58172 29.5817 6 34 6C38.4183 6 42 9.58172 42 14ZM38.2823 14.9847C38.1586 15.523 37.6219 15.859 37.0837 15.7352L30.468 14.2143C29.9298 14.0906 29.5938 13.5539 29.7175 13.0157C29.8413 12.4775 30.3779 12.1414 30.9161 12.2652L37.5318 13.7861C38.07 13.9098 38.4061 14.4465 38.2823 14.9847Z" fill="currentColor"/>
+<path d="M16.7782 9.24516C16.1307 7.71335 13.9653 7.55884 13.0955 8.98238L6.29281 20.1148C5.50809 21.399 6.38547 23.0385 7.9159 23.1477L19.7823 23.9944C21.3127 24.1036 22.4261 22.6062 21.842 21.2243L16.7782 9.24516Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.3849 36.3592C38.3881 34.9588 39.6875 31.3889 38.287 28.3856C36.8866 25.3824 33.3167 24.0831 30.3135 25.4835L19.4378 30.5549C16.4345 31.9554 15.1352 35.5252 16.5356 38.5285C17.9361 41.5317 21.5059 42.8311 24.5092 41.4306L35.3849 36.3592ZM29.9426 36.6902L34.5396 34.5466C36.5418 33.613 37.408 31.233 36.4744 29.2309C35.5408 27.2287 33.1609 26.3625 31.1587 27.2961L26.5617 29.4397L29.9426 36.6902Z" fill="currentColor"/>
+</svg></div><b>두 약은 하는 일이 다릅니다</b></div><div class="v2-body">통증을 가라앉히는 약과 요산을 녹여내는 약은 <b>별개</b>입니다. 발작 때는 두 약을 함께&nbsp;씁니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>청소 약은 오래 유지합니다</b></div><div class="v2-body">요산 약은 조건이 맞으면 시작해 <b>고혈압 약처럼</b> 오래 드십니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>발작이 와도 끊지 않습니다</b></div><div class="v2-body">이상반응이 없으면 발작 중에도 그대로 드세요. 끊으면 요산이 출렁여 통증이 오히려 오래갑니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 불끄기 약은 지금의 통증을, 청소 약은 다음 발작을 줄이는 일을 맡습니다.</span><span class="v2-src">근거 · ACR 2020 · EULAR 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 04 · 언제 시작하나</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">요산 약 — 누가, 언제 시작하나</h2>
+  <p class="v2-sub">조건이 맞으면 시작해 오래 유지합니다 — 경우별로 정리했습니다</p>
+  <table class="v2-table q-table q-table--tall" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:250px"><col style="width:560px"><col style="width:342px"></colgroup><thead><tr><th>경우</th><th>이럴 때</th><th>어떻게</th></tr></thead><tbody><tr><th>꼭 시작합니다</th><td>통풍결절이 만져질 때 · 뼈 손상이 있을 때 · 발작이 <b>1년에 두 번 이상</b>일 때</td><td>강하게 권고됩니다</td></tr><tr><th>상의해서 정합니다</th><td>콩팥병 3기 이상 · 요산 <b>9 mg/dL</b> 초과 · 요로결석 · 첫 발작이지만 위험 요인이 겹칠 때</td><td>의료진과 함께 정합니다</td></tr><tr><th>시작하는 때</th><td>발작이 가라앉고 <b>2~4주 뒤</b> 시작하는 방법이 널리 쓰입니다</td><td>학회마다 권고가 조금씩 다릅니다</td></tr><tr><th>증상 없이 요산만 높을 때</th><td>대개 약보다 <b>생활 관리</b>로 봅니다</td><td>요산결석이나 실제 통풍이 있으면 그 이유로 치료합니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 요산 약을 시작할지는 수치 하나가 아니라 결절·발작 횟수·콩팥 상태를 함께 보고 정합니다.</span><span class="v2-src">근거 · ACR 2020 · EULAR 2016 · NICE NG219 2022 · 대한류마티스학회 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 05 · 요산 약 ①</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">요산 약 ① — 알로푸리놀과 페북소스타트</h2>
+  <p class="v2-sub">알로푸리놀이 1차약입니다 — 낮은 용량으로 시작해 목표까지 천천히 올립니다</p>
+  <div class="v2-panel q-four" style="left:64px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>알로푸리놀 — 첫 번째 약</b></div><div class="v2-body">요산을 낮추는 1차약입니다. 콩팥 기능이 떨어진 분에게도 1차로 강하게 권고되며, 이때는 시작 용량을 더 낮게 잡습니다.</div></div>
+  </div>
+  <div class="v2-panel q-four v2-panel--accent" style="left:652px;top:206px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>낮게 시작해 천천히 올립니다</b></div><div class="v2-body">요산이 급하게 떨어지면 오히려 발작이 생기고 과민반응 위험도 올라갑니다. <b>2~5주</b> 간격으로 요산을 재며 목표까지 올립니다.</div></div>
+  </div>
+  <div class="v2-panel q-four" style="left:64px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35 9.22967V6H33V9H15V6H13V9.22967C13 14.6524 15.5895 19.6466 19.8037 22.7875C20.4275 22.3933 21.0782 22.0334 21.7536 21.7107C19.8831 20.4891 18.329 18.8727 17.1851 17H30.8149C29.2395 19.5789 26.8863 21.6719 24 22.9172C23.9947 22.9194 23.9894 22.9217 23.9841 22.924C23.8665 22.9746 23.748 23.0238 23.6286 23.0715C22.9531 23.3417 22.302 23.6524 21.6777 24C16.8813 26.6708 13.6672 31.5245 13.0925 37H13V38.7703V39V42H15V39H33V42H35V39V38.7703V37H34.9075C34.4113 32.2723 31.9474 28.0082 28.1963 25.2125C27.5725 25.6067 26.9218 25.9666 26.2464 26.2893C28.1169 27.5109 29.671 29.1273 30.8149 31H17.1851C18.7605 28.4211 21.1137 26.3281 24 25.0828C24.0053 25.0806 24.0106 25.0783 24.0159 25.076C24.1335 25.0254 24.252 24.9762 24.3714 24.9285C25.0469 24.6583 25.698 24.3476 26.3223 24C31.63 21.0445 35 15.4159 35 9.22967ZM31.8385 33H16.1615C15.6308 34.2636 15.2711 35.608 15.1051 37H32.8949C32.7289 35.608 32.3692 34.2636 31.8385 33ZM16.1615 15H31.8385C32.3692 13.7364 32.7289 12.392 32.8949 11H15.1051C15.2711 12.392 15.6308 13.7364 16.1615 15Z" fill="currentColor"/>
+</svg></div><b>시작 전 유전자 검사</b></div><div class="v2-body">한국인은 시작 전 HLA-B*58:01 유전자 검사를 권합니다. 이 유전자를 가진 비율이 서양인보다 높아, 양성이면 다른 약으로 바꿉니다.</div></div>
+  </div>
+  <div class="v2-panel q-four v2-panel--accent" style="left:652px;top:418px;width:564px;height:188px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><b>페북소스타트 — 두 번째 약</b></div><div class="v2-body">알로푸리놀이 맞지 않거나 효과가 부족할 때 씁니다. 심장 위험은 연구마다 결과가 달라, 심장병이 있으면 상의해 정합니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 처음부터 높은 용량으로 시작하지 않는 것은 발작과 부작용을 줄이기 위해서입니다.</span><span class="v2-src">근거 · ACR 2020 · EULAR 2016 · CPIC · 대한류마티스학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 06 · 요산 약 ②③</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">요산 약 ②③ — 배설을 돕는 약, 잘 듣지 않을 때의 약</h2>
+  <p class="v2-sub">소변으로 요산을 내보내는 약과, 표준 치료로 목표에 닿지 않는 중증에만 쓰는 주사약</p>
+  <table class="v2-table q-table q-table--xl" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:230px"><col style="width:480px"><col style="width:442px"></colgroup><thead><tr><th>약</th><th>어떤 약인가</th><th>꼭 확인할 것</th></tr></thead><tbody><tr><th>벤즈브로마론</th><td>소변으로 요산을 내보내는 약으로, 국내에서 실제로 쓸 수 있는 배설 촉진제입니다. 1차약이 맞지 않거나 부족할 때 단독 또는 함께&nbsp;씁니다.</td><td>드물지만 중대한 <b>간 손상</b>이 있어 간기능을 정기적으로 봅니다 · 요로결석이 있던 분은 쓰지 않고, 쓸 때는 물을 충분히</td></tr><tr><th>페글로티카제</th><td>표준 요산 약으로 목표에 닿지 못한 <b>중증 결절 통풍</b>에 쓰는 정맥주사약입니다.</td><td>국내에는 아직 도입되지 않아 <b>전문센터 의뢰</b>가 원칙입니다</td></tr><tr><th>라스부리카제</th><td>이름이 비슷하지만 <b>통풍 약이 아닙니다</b>. 암 치료 중 특수한 상황에만&nbsp;씁니다.</td><td>페글로티카제와 함께, 적혈구 효소(G6PD)가 부족한 분은 쓸&nbsp;수&nbsp;없습니다</td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 국내 허가·급여 현황은 처방 시점에 다시 확인합니다.</span><span class="v2-src">근거 · ACR 2020 · EULAR 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 07 · 부작용 신호</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">약 부작용은 ‘느껴지는 신호’로 기억하세요</h2>
+  <p class="v2-sub">아래 신호가 있으면 약을 멈추고 바로 오세요 — 혼자 참지 마세요</p>
+  <div class="v2-panel q-text v2-panel--accent" style="left:64px;top:206px;width:640px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M30 4C27.2386 4 25 6.39847 25 9.35714V29.7546C23.1711 31.2208 22 33.4736 22 36C22 40.4183 25.5817 44 30 44C34.4183 44 38 40.4183 38 36C38 33.4736 36.8289 31.2208 35 29.7546V9.35714C35 6.39847 32.7614 4 30 4ZM33 22.061C31.5429 22.0854 30.1778 21.7313 28.9824 21.4212C28.2524 21.2319 27.5858 21.0589 27 20.9986V9.35714C27 7.58194 28.3431 6.14286 30 6.14286C31.6569 6.14286 33 7.58194 33 9.35714V9.97595H31C30.4477 9.97595 30 10.4237 30 10.976C30 11.5282 30.4477 11.976 31 11.976H33V13.976H31C30.4477 13.976 30 14.4237 30 14.976C30 15.5282 30.4477 15.976 31 15.976H33V17.976H31C30.4477 17.976 30 18.4237 30 18.976C30 19.5282 30.4477 19.976 31 19.976H33V22.061Z" fill="currentColor"/>
+<path d="M15.8122 10.5263C15.4512 9.82456 14.5488 9.82456 14.1878 10.5263L10.127 18.4211C9.76608 19.1228 10.2173 20 10.9392 20H14L14 29H16L16 20H19.0608C19.7827 20 20.2339 19.1228 19.873 18.4211L15.8122 10.5263Z" fill="currentColor"/>
+</svg></div><b>알로푸리놀 · 페북소스타트</b></div><div class="v2-body">원인 모를 열, 피부 발진, 입안 짓무름, 눈 충혈, 얼굴 부종 — <b>즉시 중단</b>하고 오세요.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.4799 10.1333H28.8423C28.1289 10.1333 27.4452 10.411 26.9441 10.9042C25.8321 11.9989 23.9889 11.9169 22.9845 10.7282L22.608 10.2826C22.1412 9.73016 21.8845 9.0384 21.8812 8.32372L21.875 7H17.0909V9.00169C17.0909 10.6663 17.5426 12.3014 18.4005 13.7424L18.4538 13.8318C18.9954 14.7416 19.6989 15.5508 20.5315 16.2221L22.89 18.1235C24.7668 19.6366 25.3295 22.2031 24.2503 24.3277C23.5983 25.6114 22.4227 26.5712 21.0088 26.9744L20.4728 27.1272C19.6799 27.3533 18.8439 27.4308 18.0211 27.3569C15.059 27.0907 12.2452 28.7495 11.1461 31.4348L10.6115 32.7408C10.2075 33.7278 10 34.7802 10 35.8423V41H14.7727V35.5733C14.7727 34.7134 15.1102 33.8859 15.7165 33.2593C16.7737 32.1665 18.446 31.8814 19.8231 32.5592L21.842 33.5529C22.7527 34.0011 23.7593 34.2347 24.7802 34.2347H28.1961C29.598 34.2347 30.9871 33.9754 32.2892 33.4707C34.5482 32.5952 36.4465 31.0197 37.6896 28.9889L38.3088 27.9773C39.4157 26.1688 40 24.1038 40 21.9998C40 20.0399 39.493 18.1114 38.5256 16.3915L37.5421 14.6431C36.9156 13.5294 36.045 12.563 34.9917 11.8122L34.3749 11.3726C33.2454 10.5674 31.8809 10.1333 30.4799 10.1333Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.0757 6H22.9092C22.9145 7.13643 22.6059 8.69965 23.4029 9.64336C25.1513 11.7135 28.0586 9.12802 30.4682 9.12802C34.7986 9.12802 37.4738 12.4809 39.397 15.9016C41.5916 19.8049 41.499 24.6855 39.1616 28.506C37.5612 31.1218 35.5853 33.2743 32.6479 34.4134C28.2951 36.1013 23.4348 35.4651 19.3769 33.4669C17.8285 32.7045 15.827 33.785 15.827 35.5539V42H9V35.8224C9 34.6285 9.23317 33.446 9.68655 32.3378C11.8303 27.0982 15.3228 27.5239 20.1984 26.1331C23.3756 25.2268 25.2665 21.3699 22.2451 18.9329C20.5059 17.53 18.6909 16.2402 17.5268 14.2842C15.9834 11.6906 16.0757 8.89733 16.0757 6Z" fill="currentColor"/>
+</svg></div><b>콜히친</b></div><div class="v2-body">멈추지 않는 심한 설사, 쥐가 나는 듯한 복통, 근육 통증은 <b>독성 신호</b>입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>소염진통제 · 스테로이드</b></div><div class="v2-body">검은 변·토혈, 소변량이 갑자기 줄고 붓는 것, 열과 함께 온몸이 쳐지는 느낌.</div></div>
+  </div>
+  <div class="v2-panel v2-panel--figwide q-fig" style="left:734px;top:206px;width:482px;height:271px">
+    <img class="v2-figwide__img v2-fig__img" src="../../../shared/assets/generated/gout-drug-sideeffect-signals-fullbleed-20260809.png" alt="열을 재는 환자의 얼굴에 눈 충혈 · 입술 짓무름 · 목의 발진이 보이는 그림">
+  </div>
+  <div class="v2-panel q-notep" style="left:734px;top:493px;width:482px;height:113px">
+    <div class="v2-body q-note"><b>유전자 검사가 음성이어도</b> 위험이 완전히 없지는 않아, 시작 초기에 발진을 함께 지켜봅니다.</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 알려 주시면 용량을 조절하거나 약을 바꿉니다. 정해진 날짜에 꾸준히 재진받으세요.</span><span class="v2-src">근거 · ACR 2020 · CPIC · 대한류마티스학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 08 · 처음 몇 달</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">요산 약을 시작하면 처음엔 발작이 늘 수 있습니다</h2>
+  <p class="v2-sub">실패가 아니라 예정된 과정 — 그래서 ‘발작을 막는 약’을 같이 씁니다</p>
+  <div class="v2-panel v2-panel--figwide q-fig" style="left:64px;top:206px;width:740px;height:229px">
+    <img class="v2-figwide__img v2-fig__img" src="../../../shared/assets/generated/gout-urate-crystals-fullbleed-20260530.jpg" alt="엄지발가락 관절 속 뾰족한 요산 결정과 염증 세포를 확대한 그림">
+  </div>
+  <div class="v2-panel v2-panel--accent q-statp" style="left:828px;top:206px;width:388px;height:229px">
+    <div class="q-stat"><div class="q-stat__num">3~6<span>개월</span></div><div class="q-stat__cap">요산 약을 시작하거나 올릴 때, 발작을 막는 약(저용량 콜히친 또는 저용량 소염진통제)을 함께 쓰는 최소 기간</div></div>
+  </div>
+  <div class="v2-panel q-half" style="left:64px;top:455px;width:564px;height:151px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>왜 같이 쓰나</b></div><div class="v2-body">요산이 초기에 급하게 내려가면 오히려 발작이 생길 수 있어, 낮은 용량부터 시작하고 예방약을 처음부터 같이 씁니다.</div></div>
+  </div>
+  <div class="v2-panel q-half v2-panel--accent" style="left:652px;top:455px;width:564px;height:151px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>언제 멈추나</b></div><div class="v2-body">결절이 있거나 발작이 이어지면 더 늘립니다. 목표 수치에 닿고 발작이 없으면 <b>예방약만</b> 멈춥니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 굶거나 극단적인 저탄수화물·고지방 식사는 오히려 발작을 부릅니다. 체중은 천천히 줄이세요.</span><span class="v2-src">근거 · ACR 2020 · EULAR 2016 · 대한류마티스학회</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">09 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 09 · 콩팥 · 심장</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">콩팥·심장이 안 좋으면 무엇이 달라지나</h2>
+  <p class="v2-sub">약을 못 쓰는 것이 아니라, 고르는 약과 시작 용량이 달라집니다</p>
+  <table class="v2-table q-table" style="left:64px;top:206px;width:1152px"><colgroup><col style="width:300px"><col style="width:852px"></colgroup><thead><tr><th>이럴 때</th><th>이렇게 달라집니다</th></tr></thead><tbody><tr><th>콩팥이 안 좋을 때 · 발작</th><td>소염진통제 대신 <b>스테로이드</b><span class="q-sub">소염진통제는 콩팥에 부담을 줄 수 있어 피하는 경우가 많고, 스테로이드를 먹는 약·주사로 씁니다</span></td></tr><tr><th>콩팥이 안 좋을 때 · 요산 약</th><td>알로푸리놀은 그대로 <b>1차약</b><span class="q-sub">시작 용량만 더 낮추고, 요산을 재면서 올립니다</span></td></tr><tr><th>심장병이 있을 때</th><td><b>알로푸리놀</b>을 먼저 고려<span class="q-sub">페북소스타트는 심장병이 있는 분에서 위험이 논쟁 중입니다</span></td></tr><tr><th>스스로 끊고 싶을 때</th><td>끊기 전에 <b>먼저 상의</b><span class="q-sub">임의로 끊으면 오히려 위험이 커질 수 있다는 자료가 있습니다</span></td></tr><tr><th>증상 없이 요산만 높을 때</th><td>대개 <b>약을 쓰지 않습니다</b><span class="q-sub">요산 약이 콩팥병 진행을 늦춘다는 근거가 부족합니다</span></td></tr></tbody></table>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 특히 조심할 분 — 고령, 콩팥병·심부전, 피 묽게 하는 약 복용, 위장관 출혈을 겪은 적이 있는 경우.</span><span class="v2-src">근거 · ACR 2020 · KDIGO · EULAR 2016</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">10 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 10 · 식사</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">식사 — 무엇을 줄이고, 무엇은 그대로 드셔도 되나</h2>
+  <p class="v2-sub">동물성 퓨린과 술·단 음료는 줄이고, 콩·두부·버섯 같은 식물성 퓨린은 제한하지 않습니다</p>
+  <div class="v2-vs q-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">그대로 드셔도 되는 것</div><ul class="v2-vs__list"><li><b>콩·두부·버섯·시금치</b><span class="q-sub">식물성 퓨린은 발작을 늘리지&nbsp;않습니다</span></li><li><b>저지방 우유·요구르트</b><span class="q-sub">오히려 도움이 됩니다</span></li><li><b>커피</b><span class="q-sub">위험을 낮춘다는 연구가 있습니다</span></li><li><b>살코기 위주로 적정량</b><span class="q-sub">완전히 끊지 마세요</span></li><li><b>등푸른생선·해산물</b><span class="q-sub">적당한 양으로</span></li><li><b>천천히 체중 감량</b><span class="q-sub">굶는 다이어트는 금물</span></li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">줄여야 하는 것</div><ul class="v2-vs__list"><li><b>맥주</b><span class="q-sub">술 중에서 위험이 가장 큽니다</span></li><li><b>소주·양주</b><span class="q-sub">독주도 요산과 발작을 늘립니다</span></li><li><b>와인</b><span class="q-sub">위험은 낮지만 총량을 줄이세요</span></li><li><b>콜라·주스·에너지드링크</b><span class="q-sub">단 음료를 줄이세요</span></li><li><b>곱창·간 등 내장류</b><span class="q-sub">진하게 우린 곰탕 국물도 줄이세요</span></li><li><b>체리·비타민 C 보충제로 약 대신하기</b><span class="q-sub">근거가 약합니다</span></li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">Tip · 식사 조절은 약을 대신하지 않습니다 — 요산 약과 함께 갑니다.</span><span class="v2-src">근거 · 대규모 코호트·메타분석 · ACR 2020</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">11 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CHAPTER 11 · 목표와 추적</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">목표 수치와 기간, 그리고 바로 오셔야 하는 때</h2>
+  <p class="v2-sub">목표에 닿아도 약은 계속 유지합니다 — 콩팥·간기능도 함께 봅니다</p>
+  <div class="v2-panel v2-panel--figwide q-fig" style="left:64px;top:206px;width:640px;height:198px">
+    <img class="v2-figwide__img v2-fig__img" src="../../../shared/assets/generated/gout-treat-to-target-fullbleed-20260530.jpg" alt="피검사 · 결정이 녹는 모습 · 약과 물 · 달력 · 건강한 발가락을 화살표로 이은 그림">
+  </div>
+  <div class="v2-panel q-statp" style="left:64px;top:424px;width:200px;height:182px">
+    <div class="q-stat q-stat--sm"><div class="q-stat__num">6<span>mg/dL 미만</span></div><div class="q-stat__cap">일반적인 목표 — 국내 지침도 같은 기준입니다</div></div>
+  </div>
+  <div class="v2-panel q-statp v2-panel--accent" style="left:284px;top:424px;width:200px;height:182px">
+    <div class="q-stat q-stat--sm"><div class="q-stat__num">5<span>mg/dL 미만</span></div><div class="q-stat__cap">통풍결절이 있거나 중증이면 더 낮게 두기도 합니다</div></div>
+  </div>
+  <div class="v2-panel q-statp" style="left:504px;top:424px;width:200px;height:182px">
+    <div class="q-stat q-stat--sm"><div class="q-stat__num">2~5<span>주</span></div><div class="q-stat__cap">시작·증량 중 검사 간격 — 안정되면 6개월쯤마다</div></div>
+  </div>
+  <div class="v2-panel q-text" style="left:734px;top:206px;width:482px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><b>얼마나 오래 먹나</b></div><div class="v2-body">목표에 닿아도 대개 <b>오래</b> 드십니다. 결정은 서서히 녹아, 일찍 끊으면 다시 쌓입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM20.3037 15.3083C20.8143 15.0978 21.0576 14.5133 20.8472 14.0027C20.6368 13.492 20.0522 13.2487 19.5416 13.4591L11.6964 16.6922C11.1858 16.9026 10.9424 17.4872 11.1529 17.9978C11.3633 18.5084 11.9478 18.7518 12.4585 18.5413L20.3037 15.3083Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M32 42C37.5228 42 42 37.5228 42 32C42 26.4772 37.5228 22 32 22C26.4772 22 22 26.4772 22 32C22 37.5228 26.4772 42 32 42ZM35.9107 33.9252C36.449 34.0489 36.9856 33.7129 37.1093 33.1746C37.2331 32.6364 36.8971 32.0998 36.3588 31.976L28.0893 30.0749C27.551 29.9511 27.0144 30.2871 26.8906 30.8254C26.7669 31.3636 27.1029 31.9003 27.6412 32.024L35.9107 33.9252Z" fill="currentColor"/>
+</svg></div><b>임의로 끊으면</b></div><div class="v2-body">요산이 급격히 변해 관절에 쌓인 결정이 흔들리고 통증이 훨씬 오래갑니다. 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>바로 오셔야 하는 때</b></div><div class="v2-body">열이 나며 여러 관절이 한꺼번에 아프거나, 한 관절이 갑자기 심해지고 온몸이 쳐질 때.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">그림 · 요산 재기 → 결정 녹이기 → 꾸준히 복용 → 정기 검사 → 관절 지키기.</span><span class="v2-src">근거 · ACR 2020 · EULAR 2016 · NICE NG219 2022 · 대한류마티스학회 2022</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">12 / 13</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">불끄기 약으로 통증을 잡고, 청소 약으로 요산을 낮춥니다</h2>
+  <p class="v2-sub">목표는 6 mg/dL 미만 — 꾸준히 유지하면 결절과 발작을 줄일 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토 08:30~13:30<br>소화기내과 · 일반내과 · 5대암 검진</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">통풍으로 치료 중인 분을 위한 일반 설명자료입니다. 약의 선택과 용량은 담당 의사와 상의해 정합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body q-refs">미국류마티스학회(ACR) 2020 · 유럽류마티스학회(EULAR) 2016 · 대한류마티스학회 2022 · 영국 NICE NG219 2022 · 아시아태평양류마티스학회(APLAR) 2021 · CPIC 유전자 지침 · KDIGO</div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM14,2H15V3H14zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM12,3H13V4H12zM13,3H14V4H13zM17,3H18V4H17zM18,3H19V4H18zM20,3H21V4H20zM23,3H24V4H23zM24,3H25V4H24zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM13,4H14V5H13zM14,4H15V5H14zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM23,4H24V5H23zM24,4H25V5H24zM25,4H26V5H25zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM20,5H21V6H20zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM15,6H16V7H15zM16,6H17V7H16zM17,6H18V7H17zM18,6H19V7H18zM22,6H23V7H22zM23,6H24V7H23zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM12,7H13V8H12zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM20,7H21V8H20zM21,7H22V8H21zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM11,9H12V10H11zM12,9H13V10H12zM14,9H15V10H14zM16,9H17V10H16zM18,9H19V10H18zM21,9H22V10H21zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM12,10H13V11H12zM13,10H14V11H13zM15,10H16V11H15zM16,10H17V11H16zM19,10H20V11H19zM21,10H22V11H21zM24,10H25V11H24zM25,10H26V11H25zM26,10H27V11H26zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM13,11H14V12H13zM15,11H16V12H15zM18,11H19V12H18zM19,11H20V12H19zM21,11H22V12H21zM22,11H23V12H22zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM5,12H6V13H5zM8,12H9V13H8zM11,12H12V13H11zM14,12H15V13H14zM15,12H16V13H15zM16,12H17V13H16zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM22,12H23V13H22zM24,12H25V13H24zM26,12H27V13H26zM27,12H28V13H27zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM2,13H3V14H2zM3,13H4V14H3zM6,13H7V14H6zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM14,13H15V14H14zM15,13H16V14H15zM18,13H19V14H18zM19,13H20V14H19zM20,13H21V14H20zM21,13H22V14H21zM22,13H23V14H22zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM16,14H17V15H16zM18,14H19V15H18zM21,14H22V15H21zM24,14H25V15H24zM25,14H26V15H25zM26,14H27V15H26zM27,14H28V15H27zM29,14H30V15H29zM30,14H31V15H30zM31,14H32V15H31zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM11,15H12V16H11zM13,15H14V16H13zM17,15H18V16H17zM20,15H21V16H20zM23,15H24V16H23zM25,15H26V16H25zM28,15H29V16H28zM33,15H34V16H33zM34,15H35V16H34zM2,16H3V17H2zM3,16H4V17H3zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM13,16H14V17H13zM14,16H15V17H14zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM31,16H32V17H31zM33,16H34V17H33zM4,17H5V18H4zM12,17H13V18H12zM13,17H14V18H13zM15,17H16V18H15zM17,17H18V18H17zM20,17H21V18H20zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM27,17H28V18H27zM28,17H29V18H28zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM2,18H3V19H2zM3,18H4V19H3zM4,18H5V19H4zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM13,18H14V19H13zM15,18H16V19H15zM17,18H18V19H17zM19,18H20V19H19zM21,18H22V19H21zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM34,18H35V19H34zM2,19H3V20H2zM4,19H5V20H4zM6,19H7V20H6zM11,19H12V20H11zM16,19H17V20H16zM18,19H19V20H18zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM25,19H26V20H25zM26,19H27V20H26zM28,19H29V20H28zM29,19H30V20H29zM31,19H32V20H31zM32,19H33V20H32zM34,19H35V20H34zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM2,21H3V22H2zM3,21H4V22H3zM6,21H7V22H6zM10,21H11V22H10zM11,21H12V22H11zM13,21H14V22H13zM14,21H15V22H14zM23,21H24V22H23zM24,21H25V22H24zM27,21H28V22H27zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM6,22H7V23H6zM8,22H9V23H8zM10,22H11V23H10zM14,22H15V23H14zM16,22H17V23H16zM17,22H18V23H17zM20,22H21V23H20zM21,22H22V23H21zM24,22H25V23H24zM26,22H27V23H26zM27,22H28V23H27zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM2,23H3V24H2zM3,23H4V24H3zM4,23H5V24H4zM6,23H7V24H6zM9,23H10V24H9zM11,23H12V24H11zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM21,23H22V24H21zM25,23H26V24H25zM28,23H29V24H28zM32,23H33V24H32zM34,23H35V24H34zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM8,24H9V25H8zM11,24H12V25H11zM24,24H25V25H24zM26,24H27V25H26zM27,24H28V25H27zM31,24H32V25H31zM33,24H34V25H33zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM7,25H8V26H7zM10,25H11V26H10zM11,25H12V26H11zM18,25H19V26H18zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM26,25H27V26H26zM27,25H28V26H27zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM2,26H3V27H2zM4,26H5V27H4zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM19,26H20V27H19zM22,26H23V27H22zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM10,27H11V28H10zM11,27H12V28H11zM15,27H16V28H15zM18,27H19V28H18zM19,27H20V28H19zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM32,27H33V28H32zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM16,28H17V29H16zM17,28H18V29H17zM19,28H20V29H19zM22,28H23V29H22zM24,28H25V29H24zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM14,29H15V30H14zM16,29H17V30H16zM18,29H19V30H18zM19,29H20V30H19zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM10,30H11V31H10zM12,30H13V31H12zM15,30H16V31H15zM16,30H17V31H16zM18,30H19V31H18zM22,30H23V31H22zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM17,31H18V32H17zM19,31H20V32H19zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM24,31H25V32H24zM26,31H27V32H26zM27,31H28V32H27zM30,31H31V32H30zM31,31H32V32H31zM33,31H34V32H33zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM12,32H13V33H12zM13,32H14V33H13zM14,32H15V33H14zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM22,32H23V33H22zM24,32H25V33H24zM25,32H26V33H25zM26,32H27V33H26zM28,32H29V33H28zM29,32H30V33H29zM31,32H32V33H31zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM15,33H16V34H15zM17,33H18V34H17zM20,33H21V34H20zM22,33H23V34H22zM23,33H24V34H23zM24,33H25V34H24zM25,33H26V34H25zM30,33H31V34H30zM31,33H32V34H31zM32,33H33V34H32zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM12,34H13V35H12zM17,34H18V35H17zM19,34H20V35H19zM20,34H21V35H20zM24,34H25V35H24zM25,34H26V35H25zM26,34H27V35H26zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__label">다시 보기 · 카톡 공유</div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">© 2026 광교바른내과 · 본 자료는 일반 정보 제공 목적이며 개별 진료를 대체하지 않습니다</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">13 / 13</div>
+</section>
 
 </div>
 
