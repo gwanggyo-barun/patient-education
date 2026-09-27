@@ -15,200 +15,53 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <link rel="stylesheet" href="../../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
-  <style>
-    .slide__bg-num { display: none !important; }
-    .slide__subtitle { max-width: 1080px; }
-    .stars { color: var(--color-warning); letter-spacing: 0.12em; font-size: 1.15em; }
-    .slide--cover .slide__subtitle { max-width: 1060px; }
-
-    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); height: 100%; }
-    .stat-card { border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--space-5); display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); background: var(--color-canvas); min-height: 0; }
-    .stat-card--navy { background: var(--color-navy); color: var(--color-canvas); border-color: var(--color-navy); }
-    .stat-card--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .stat-card--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .stat-card--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .stat-card--danger { background: #fef2f2; border-color: var(--color-danger-border); }
-    .stat-card__label { font-size: 0.82rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.07em; text-transform: uppercase; }
-    .stat-card--navy .stat-card__label { color: var(--color-sky); }
-    .stat-card__value { font-size: 2.65rem; font-weight: var(--weight-black); color: var(--color-navy); line-height: 1; letter-spacing: var(--tracking-tight); }
-    .stat-card--navy .stat-card__value { color: var(--color-canvas); }
-    .stat-card--good .stat-card__value { color: var(--color-success); }
-    .stat-card--warn .stat-card__value { color: var(--color-warning); }
-    .stat-card--danger .stat-card__value { color: #b91c1c; }
-    .stat-card__body { font-size: 1rem; line-height: 1.45; color: var(--color-ink); }
-    .stat-card--navy .stat-card__body { color: rgba(255,255,255,0.9); }
-
-    .note { margin-top: var(--space-4); padding: var(--space-4) var(--space-5); border-radius: var(--radius-lg); background: var(--color-canvas-warm); border-left: 5px solid var(--color-steel); font-size: 1rem; line-height: 1.5; color: var(--color-ink); }
-    .slide__body--visual-focus .stat-grid { align-content: stretch; }
-    .slide__body--visual-focus .stat-card { min-height: 86px; }
-    .note strong { color: var(--color-navy); }
-    .note--good { background: var(--color-success-bg); border-left-color: var(--color-success); }
-    .note--warn { background: #fff7ed; border-left-color: var(--color-warning); }
-    .note--danger { background: #fef2f2; border-left-color: var(--color-danger); }
-
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); height: 100%; }
-    .split-col { min-height: 0; display: flex; flex-direction: column; }
-    .split-col__title { font-size: 1.28rem; font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: var(--space-3); line-height: 1.2; }
-    .line-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0; }
-    .line-list li { padding: 9px 0; border-bottom: 1px solid var(--color-border-soft); font-size: 0.98rem; line-height: 1.35; }
-    .line-list li strong { color: var(--color-navy); }
-    .line-list li:last-child { border-bottom: 0; }
-
-    .card-grid { display: grid; gap: var(--space-3); height: 100%; }
-    .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
-    .card-grid--3 { grid-template-columns: repeat(3, 1fr); }
-    .card-grid--6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
-    .review-card { border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-canvas); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); min-height: 0; overflow: hidden; }
-    .review-card--navy { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-canvas); }
-    .review-card--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .review-card--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .review-card--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .review-card--danger { background: #fef2f2; border-color: var(--color-danger-border); }
-    .review-card__kicker { font-size: 0.72rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.08em; text-transform: uppercase; }
-    .review-card__title { font-size: 1.08rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.22; }
-    .review-card--navy .review-card__title { color: var(--color-canvas); }
-    .review-card--good .review-card__title { color: var(--color-success); }
-    .review-card--warn .review-card__title { color: var(--color-warning); }
-    .review-card--danger .review-card__title { color: #b91c1c; }
-    .review-card__body { font-size: 0.95rem; line-height: 1.45; color: var(--color-ink); }
-    .review-card--navy .review-card__body { color: rgba(255,255,255,0.9); }
-    .review-card__metric { margin-top: auto; font-size: 1.7rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; letter-spacing: var(--tracking-tight); }
-
-    .table-wrap { display: flex; flex-direction: column; gap: 8px; height: 100%; justify-content: stretch; }
-    .table-wrap .tbl-row { flex: 1 1 0; }
-    .tbl-row { display: grid; gap: var(--space-3); align-items: center; padding: 9px var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: var(--color-canvas); }
-    .tbl-row--4 { grid-template-columns: 1.1fr 1fr 1fr 1.35fr; }
-    .tbl-row--5 { grid-template-columns: 1.05fr 0.9fr 0.9fr 0.9fr 1.25fr; }
-    .tbl-row--head { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-canvas); font-weight: var(--weight-bold); }
-    .tbl-row--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tbl-row--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .tbl-row--danger { background: #fef2f2; border-color: var(--color-danger-border); }
-    .tbl-cell { font-size: 1rem; line-height: 1.4; color: var(--color-ink); }
-    .tbl-row--head .tbl-cell { color: var(--color-canvas); font-size: 0.9rem; }
-    .tbl-cell strong { color: var(--color-navy); }
-    .tbl-row--head .tbl-cell strong { color: var(--color-canvas); }
-
-    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); height: 100%; }
-    .step { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); }
-    .step--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .step--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .step--danger { background: #fef2f2; border-color: var(--color-danger-border); }
-    .step__num { font-size: 1.6rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; }
-    .step__title { font-size: 1.02rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.25; }
-    .step__body { font-size: 0.95rem; line-height: 1.45; color: var(--color-ink); }
-
-    .bar-wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: var(--space-5); height: 100%; align-items: stretch; }
-    .bars { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); }
-    .bar-row { display: grid; grid-template-columns: 150px 1fr 90px; gap: var(--space-3); align-items: center; }
-    .bar-row__label { font-size: 0.9rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.2; }
-    .bar-track { height: 28px; background: var(--color-border); border-radius: 14px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 14px; background: linear-gradient(90deg, var(--color-steel), var(--color-navy)); }
-    .bar-fill--good { background: linear-gradient(90deg, var(--color-success), var(--color-success)); }
-    .bar-fill--warn { background: linear-gradient(90deg, var(--color-warning), var(--color-warning)); }
-    .bar-fill--danger { background: linear-gradient(90deg, var(--color-danger-bg), #b91c1c); }
-    .bar-row__value { font-size: 1rem; font-weight: var(--weight-black); color: var(--color-navy); text-align: right; }
-
-    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); height: 100%; align-items: stretch; }
-    .flow-card { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); justify-content: center; }
-    .flow-card--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .flow-card--warn { background: #fff7ed; border-color: var(--color-warning); }
-    .flow-card--danger { background: #fef2f2; border-color: var(--color-danger-border); }
-    .flow-card__label { font-size: 0.72rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.08em; text-transform: uppercase; }
-    .flow-card__title { font-size: 1rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.22; }
-    .flow-card__body { font-size: 0.95rem; line-height: 1.42; color: var(--color-ink); }
-
-    .takehome-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); height: 100%; }
-    .takehome-card { background: var(--color-navy); color: var(--color-canvas); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; gap: var(--space-3); align-items: flex-start; min-height: 0; }
-    .takehome-card__num { color: var(--color-steel); font-size: 2rem; line-height: 1; font-weight: var(--weight-black); min-width: 42px; }
-    .takehome-card__text { font-size: 0.95rem; line-height: 1.42; font-weight: var(--weight-540); }
-    .takehome-card__text strong { color: var(--color-sky); }
-
-    .slide--closing { grid-template-rows: auto auto 1fr auto; }
-    .slide--closing .slide__title { margin-top: 0; }
-    .slide--closing .slide__body { gap: var(--space-4); justify-content: flex-start; }
-    .slide--closing .takehome-grid { flex: 1 1 auto; min-height: 0; }
-    .slide--closing .takehome-card { align-items: center; }
-    .slide--closing .closing-grid { flex: 0 0 auto; }
-    .closing-grid { display: grid; grid-template-columns: 2.15fr 1fr; gap: var(--space-3); align-items: stretch; }
-    .closing-contact { background: var(--color-canvas-warm); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-    .closing-contact__label { font-size: 0.72rem; color: var(--color-steel); font-weight: var(--weight-bold); letter-spacing: 0.08em; text-transform: uppercase; }
-    .closing-contact__title { font-size: 1.08rem; color: var(--color-navy); font-weight: var(--weight-bold); }
-    .closing-contact__body { font-size: 0.82rem; line-height: 1.38; color: var(--color-ink-soft); }
-    .qr-block { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-3); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; background: var(--color-canvas); }
-    .qr-block__code { width: 86px; height: 86px; display: flex; align-items: center; justify-content: center; }
-    .qr-block__code svg { width: 86px !important; height: 86px !important; }
-    .qr-block__caption { font-size: 0.68rem; color: var(--color-slate); line-height: 1.2; text-align: center; }
-
-    /* ── visual-focus 황금비율 룰 (2026-06-06, 코덱스 감수) — 가독 폰트 스케일 + 박스 세로중앙 + 거터 28px. reference/deck-design-proportions.md ── */
-    .slide__body--visual-focus { grid-template-columns: minmax(0, 1fr) minmax(380px, 0.72fr); gap: 36px; }
-    .slide__body--visual-focus > .paper-visual { position: relative; align-self: stretch; height: 100%; min-height: 0; aspect-ratio: auto; overflow: visible; border: none; box-shadow: none; background: transparent; }
-    .slide__body--visual-focus > .paper-visual img { width: 100%; height: 100%; display: block; border-radius: 12px; box-shadow: 0 3px 10px rgba(0, 51, 102, 0.10); }
-    .paper-visual img { object-fit: cover; filter: saturate(0.95); }
-    .paper-visual .ai-visual__caption { position: absolute; left: 14px; right: 14px; bottom: 12px; padding: 8px 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.88); color: var(--color-navy); font-size: 0.82rem; line-height: 1.3; font-weight: var(--weight-semibold); box-shadow: 0 8px 18px rgba(0, 51, 102, 0.10); }
-    .slide__body--visual-focus .stat-grid { grid-template-columns: 1fr; gap: 12px; }
-    .slide__body--visual-focus .stat-card { padding: 9px 18px; gap: 3px; justify-content: center; }
-    .slide__body--visual-focus .stat-card__label { font-size: 0.82rem; }
-    .slide__body--visual-focus .stat-card__value { font-size: 1.32rem; line-height: 1.05; }
-    .slide__body--visual-focus .stat-card__body { font-size: 0.95rem; line-height: 1.38; }
-    .slide__body--visual-focus .card-grid { gap: 14px; }
-    .slide__body--visual-focus .card-grid--6 { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
-    .slide__body--visual-focus .review-card { padding: 14px 18px; gap: 7px; border-radius: 12px; justify-content: center; }
-    .slide__body--visual-focus .card-grid--6 .review-card { padding: 11px 16px; gap: 6px; }
-    .slide__body--visual-focus .card-grid--6 .review-card__title { line-height: 1.2; }
-    .slide__body--visual-focus .card-grid--6 .review-card__body { line-height: 1.38; }
-    .slide__body--visual-focus .review-card__kicker { font-size: 0.72rem; }
-    .slide__body--visual-focus .review-card__title { font-size: 1.0625rem; line-height: 1.25; }
-    .slide__body--visual-focus .review-card__body { font-size: 1rem; line-height: 1.45; }
-    .slide__body--visual-focus .review-card__metric { font-size: 1.4rem; }
-    .slide__body--visual-focus .split { gap: 16px; }
-    .slide__body--visual-focus .split-col__title { font-size: 1.1rem; margin-bottom: 9px; }
-    .slide__body--visual-focus .line-list li { padding: 8px 0; font-size: 1rem; line-height: 1.4; }
-    .slide__body--visual-focus .timeline { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 14px; }
-    .slide__body--visual-focus .step { padding: 14px 18px; gap: 7px; justify-content: center; }
-    .slide__body--visual-focus .step__num { font-size: 1.5rem; }
-    .slide__body--visual-focus .step__title { font-size: 1.0625rem; line-height: 1.25; }
-    .slide__body--visual-focus .step__body { font-size: 1rem; line-height: 1.45; }
-    .slide__body--visual-focus .bar-wrap { grid-template-columns: 1fr; gap: 14px; }
-    .slide__body--visual-focus .bars { padding: 18px; gap: 14px; justify-content: center; }
-    .slide__body--visual-focus .bar-row { grid-template-columns: 130px 1fr 64px; gap: 12px; }
-    .slide__body--visual-focus .bar-row__label { font-size: 0.95rem; }
-    .slide__body--visual-focus .bar-row__value { font-size: 1rem; }
-    .slide__body--visual-focus .bar-track { height: 24px; }
-    .slide__body--visual-focus .table-wrap { gap: 9px; justify-content: stretch; }
-    .slide__body--visual-focus .tbl-row { gap: 10px; padding: 10px 14px; border-radius: 10px; }
-    .slide__body--visual-focus .tbl-cell { font-size: 1rem; line-height: 1.4; }
-    .slide__body--visual-focus .tbl-row--head .tbl-cell { font-size: 0.9rem; }
-    .slide__body--visual-focus .flow { grid-template-columns: repeat(2, 1fr); gap: 11px; }
-    .slide__body--visual-focus .flow-card { padding: 11px 16px; gap: 5px; justify-content: center; }
-    .slide__body--visual-focus .flow-card__label { font-size: 0.72rem; }
-    .slide__body--visual-focus .flow-card__title { font-size: 1.0625rem; }
-    .slide__body--visual-focus .flow-card__body { font-size: 1rem; line-height: 1.4; }
-    .slide__body--visual-focus .note { margin-top: 12px; padding: 14px 18px; font-size: 1rem; line-height: 1.45; border-left-width: 5px; border-radius: 10px; }
-
-    /* v2 sparse_box 보강 (코덱스 B): 콘텐츠 시각 리듬 확대 */
-    .slide:nth-of-type(8) .timeline .step { padding: 20px 22px; gap: 10px; }
-    .slide:nth-of-type(8) .step__num { font-size: 2.5rem; }
-    .slide:nth-of-type(8) .step__title { font-size: 1.18rem; margin-bottom: 2px; }
-    .slide:nth-of-type(8) .step__body { font-size: 1.05rem; line-height: 1.6; }
-    .slide:nth-of-type(4) .bar-wrap .review-card { padding: 20px 24px; gap: 10px; }
-    .slide:nth-of-type(4) .bar-wrap .review-card__kicker { font-size: 0.82rem; }
-    .slide:nth-of-type(4) .bar-wrap .review-card__title { font-size: 1.22rem; }
-    .slide:nth-of-type(4) .bar-wrap .review-card__body { font-size: 1.05rem; line-height: 1.6; }
-    .slide:nth-of-type(4) .bars { padding: 22px 26px; gap: 18px; }
-    .slide:nth-of-type(4) .bar-row { grid-template-columns: 200px 1fr 90px; }
-    .slide:nth-of-type(4) .bar-track { height: 30px; }
-    /* v2 C: 콘텐츠 적은 단일행 레이아웃 — 컨테이너 높이 캡 + 본문 중앙배치 */
-    .slide:nth-of-type(8) .slide__body { justify-content: center; }
-    .slide:nth-of-type(8) .timeline { height: 300px; flex: 0 0 auto; }
-    .slide:nth-of-type(4) .slide__body { justify-content: center; }
-    .slide:nth-of-type(4) .bar-wrap { height: 320px; flex: 0 0 auto; }
-  </style>
+    <link rel="stylesheet" href="../../../../shared/deck-look-v2.css">
+<style>
+/* HQ5L 2026-09-27: SKILL.md 393-409, 423-473, 484-551, 618-711. */
+body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+section.slide--v2{margin:0 auto 28px}
+.v2-tip{justify-content:space-between;gap:14px}
+.v2-tip__t{flex:1 1 auto;font-size:14px;line-height:1.35}
+.hq-source{flex:0 1 54%;font-size:12px;line-height:1.25;color:var(--v2-muted);text-align:right;white-space:normal}
+.hq-card{display:flex;flex-direction:column;justify-content:center;padding:20px 25px;overflow:hidden}
+.hq-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+.hq-card__head{font-size:19px;font-weight:750;line-height:1.32;color:var(--v2-navy);word-break:keep-all;margin-bottom:9px}
+.hq-card__line{font-size:16px;line-height:1.4;color:var(--v2-body);word-break:keep-all;text-wrap:balance;margin:1px 0}
+.hq-card__line b{color:var(--v2-navy)}
+.hq-card--accent .hq-card__head{color:var(--v2-accent)}
+.hq-card--compact{padding:14px 18px}
+.hq-card--compact .hq-card__head{font-size:17px;margin-bottom:5px}
+.hq-card--compact .hq-card__line{font-size:15.2px;line-height:1.33}
+.hq-card--tiny .hq-card__line{font-size:16px;line-height:1.35}
+.hq-copy{padding:22px 25px;display:flex;align-items:center}
+.hq-copy__body{font-size:16px;line-height:1.43;word-break:keep-all;text-wrap:balance;color:var(--v2-body);margin:0}
+.hq-copy--dense .hq-copy__body{columns:2;column-gap:22px;font-size:15.8px;line-height:1.38}
+.hq-figure{padding:0;border:0;background:transparent;box-shadow:none;overflow:hidden}
+.hq-figure::before{content:none}
+.hq-figure img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+.hq-caption{display:flex;align-items:center;justify-content:center;padding:7px 15px;font-size:15.5px;line-height:1.35;color:var(--v2-body);text-align:center}
+.hq-closing{display:flex;flex-direction:column;justify-content:space-evenly}
+.hq-closing .hq-card__line{font-size:17px}
+.hq-qr{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hq-qr .qr-block{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.hq-qr .qr-block__code{width:148px;height:148px}
+.hq-qr .qr-block__code svg,.hq-qr .qr-block__code img,.hq-qr .qr-block__code canvas{width:148px!important;height:148px!important}
+.hq-qr .qr-block__caption{font-size:16px;line-height:1.45;text-align:center}
+.hq-table{position:absolute;left:64px;top:206px;width:1152px;table-layout:fixed}
+.hq-table th,.hq-table td{font-size:16px;line-height:1.38;word-break:keep-all;padding:10px 17px}
+.hq-table thead th{font-size:16px}
+.hq-table tbody th{width:270px;font-size:17px}
+.hq-table--four th,.hq-table--four td{font-size:16px;padding:8px 10px}
+.hq-table--four tbody th{width:auto;font-size:16px}
+.hq-table--bar{width:760px}
+.hq-table--bar th,.hq-table--bar td{font-size:15px}
+.hq-table--illustrated th,.hq-table--illustrated td{font-size:16px;line-height:1.35;padding:6px 8px}
+.hq-table tfoot td{font-size:16px;line-height:1.35;background:var(--v2-chip-accent)}
+</style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
-<div class="deck">
-
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
 
     <header class="slide__header">
       <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
@@ -220,643 +73,120 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">Ciudin et al. Nature Medicine 2026 · EASO living framework update</span>
-      <span class="slide__page"><span class="stars">★★★★★</span></span>
+      <span class="slide__page">01 / 13</span></span>
     </footer>
   </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>TL;DR</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">한 문단·세 숫자로 요약</h2>
-      <p class="slide__subtitle">이제 비만약 선택은 '어느 약이 더 세냐'가 아니라 '목표와 합병증이 무엇인가'다.</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-
-      <div class="stat-grid">
-
-        <div class="stat-card stat-card--navy">
-          <div class="stat-card__label">EVIDENCE BASE</div>
-          <div class="stat-card__value">62 RCT</div>
-          <div class="stat-card__body">2025.11.21까지의 새 근거를 반영한 living guidance 업데이트.</div>
-        </div>
-        <div class="stat-card stat-card--good">
-          <div class="stat-card__label">SURMOUNT-5</div>
-          <div class="stat-card__value">20.2% vs 13.7%</div>
-          <div class="stat-card__body">Tirzepatide vs semaglutide 72주 평균 체중감량.</div>
-        </div>
-        <div class="stat-card stat-card--steel">
-          <div class="stat-card__label">MASH FIBROSIS</div>
-          <div class="stat-card__value">Semaglutide</div>
-          <div class="stat-card__body">2026 업데이트에서 fibrosis stage improvement 근거는 semaglutide가 더 강함.</div>
-        </div>
-      </div>
-      <div class="note note--warn"><strong>중요한 단서 — </strong>EASO는 알고리즘을 universal ranking이나 처방 순서로 읽지 말라고 명시했다. 환자 특성, 선호, 비용, 안전성을 함께 본다.</div>
-
-      <figure class="ai-visual ai-visual--focus ai-visual--fill paper-visual">
-        <img src="../../../../shared/assets/generated/easo-obesity-goal-planning-20260531.jpg" alt="비만 환자와 의료진이 체중감량 목표 그래프를 함께 보는 파란색 상담 일러스트">
-      </figure>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">Nature Medicine 2026 · EASO update · SURMOUNT-5 NEJM 2025</span>
-      <span class="slide__page">02 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>WHAT CHANGED</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">2026 업데이트에서 달라진 포인트</h2>
-      <p class="slide__subtitle">체중감량 주목표와 MASH 영역에서 근거 분리가 더 선명해졌다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="card-grid card-grid--6">
-
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">Tirzepatide 우위 명확화</div>
-          <div class="review-card__body">합병증 없는 비만에서 체중감량 자체가 주목표일 때 근거가 더 강해졌다.</div>
-          
-        </div>
-        <div class="review-card review-card--navy">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">SURMOUNT-5 반영</div>
-          <div class="review-card__body">직접 비교 RCT로 tirzepatide의 평균 감량 폭과 목표 달성률 우위 확인.</div>
-          
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">03</div>
-          <div class="review-card__title">MASH update</div>
-          <div class="review-card__body">MASH remission은 semaglutide 또는 tirzepatide, fibrosis stage improvement는 semaglutide 근거가 더 강함.</div>
-          
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">04</div>
-          <div class="review-card__title">Not a ranking</div>
-          <div class="review-card__body">알고리즘은 처방 순서표가 아니라 합병증-목표 기반 의사결정 도구.</div>
-          
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">05</div>
-          <div class="review-card__title">Safety domain 예정</div>
-          <div class="review-card__body">향후 업데이트에서 중단율·이상반응 등 benefit-risk 영역이 강화될 전망.</div>
-          
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">06</div>
-          <div class="review-card__title">Living guidance</div>
-          <div class="review-card__body">새 약제·경구제·장기 outcome이 나오면 계속 바뀌는 구조.</div>
-          
-        </div>
-      </div>
-      
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">EASO press release 2026-05-12 · Nature Medicine 2026</span>
-      <span class="slide__page">03 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>SURMOUNT-5</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">직접 비교: tirzepatide가 평균 감량 폭에서 우위</h2>
-      <p class="slide__subtitle">환자에게 '몇 kg'보다 '목표 감량률 달성 가능성'으로 설명하면 명확하다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="bar-wrap">
-        <div class="bars">
-
-          <div class="bar-row">
-            <div class="bar-row__label">평균 감량 Tirzepatide</div>
-            <div class="bar-track"><div class="bar-fill bar-fill--good" style="width:81%"></div></div>
-            <div class="bar-row__value">−20.2%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-row__label">평균 감량 Semaglutide</div>
-            <div class="bar-track"><div class="bar-fill bar-fill--steel" style="width:55%"></div></div>
-            <div class="bar-row__value">−13.7%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-row__label">≥20% 달성 Tirzepatide</div>
-            <div class="bar-track"><div class="bar-fill bar-fill--good" style="width:48%"></div></div>
-            <div class="bar-row__value">48.4%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-row__label">≥20% 달성 Semaglutide</div>
-            <div class="bar-track"><div class="bar-fill bar-fill--steel" style="width:27%"></div></div>
-            <div class="bar-row__value">27.3%</div>
-          </div>
-        </div>
-        <div>
-      <div class="card-grid card-grid--2">
-
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">해석</div>
-          <div class="review-card__body">평균 차이 6.5%p. BMI 35 이상 또는 20% 이상 감량이 필요한 군에서 임상적으로 크다.</div>
-          
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">주의</div>
-          <div class="review-card__body">Open-label trial이며 안전성 비교에 powered 된 연구는 아니다.</div>
-          
-        </div>
-      </div>
-      </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">Aronne et al. NEJM 2025;393:26-36 · Lilly release 2025-05-11</span>
-      <span class="slide__page">04 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>TARGET-FIRST</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">목표 감량률로 먼저 나누기</h2>
-      <p class="slide__subtitle">환자에게 먼저 물을 질문은 '얼마나 빼야 합병증이 좋아지는가'다.</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-
-      <div class="flow">
-
-        <div class="flow-card flow-card--steel">
-          <div class="flow-card__label">5-10%</div>
-          <div class="flow-card__title">초기 대사 개선</div>
-          <div class="flow-card__body">혈당·혈압·지질 개선 목적. 생활요법+약물 선택 폭 넓음.</div>
-        </div>
-        <div class="flow-card flow-card--good">
-          <div class="flow-card__label">10-15%</div>
-          <div class="flow-card__title">Semaglutide zone</div>
-          <div class="flow-card__body">GLP-1RA 단독으로 충분한 목표. CV 보호 근거도 고려.</div>
-        </div>
-        <div class="flow-card flow-card--warn">
-          <div class="flow-card__label">15-20%</div>
-          <div class="flow-card__title">공유 의사결정</div>
-          <div class="flow-card__body">tirzepatide 우선 검토. 비용·부작용·선호도 함께 평가.</div>
-        </div>
-        <div class="flow-card flow-card--good">
-          <div class="flow-card__label">≥20%</div>
-          <div class="flow-card__title">Tirzepatide zone</div>
-          <div class="flow-card__body">고도비만·OSA·큰 기계적 부담이 있으면 우선 고려.</div>
-        </div>
-        <div class="flow-card flow-card--navy">
-          <div class="flow-card__label">Bariatric</div>
-          <div class="flow-card__title">수술/다학제</div>
-          <div class="flow-card__body">약물만으로 부족한 BMI·합병증은 수술 포함 평가.</div>
-        </div>
-      </div>
-      
-
-      <figure class="ai-visual ai-visual--focus ai-visual--fill paper-visual">
-        <img src="../../../../shared/assets/generated/easo-obesity-drug-paths-20260606.jpg" alt="두 가지 주사 펜 경로가 서로 다른 체중감량 목표로 이어지는 파란색 의사결정 일러스트">
-      </figure>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">EASO 2026 framework · SURMOUNT-5</span>
-      <span class="slide__page">05 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>COMPLICATIONS</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">합병증별 약물 선택 프레임</h2>
-      <p class="slide__subtitle">체중감량률만 보지 말고, 어떤 합병증을 함께 치료하려는지 본다.</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-
-      <div class="table-wrap">
-<div class="tbl-row tbl-row--4 tbl-row--head"><div class="tbl-cell">합병증/목표</div><div class="tbl-cell">Tirzepatide</div><div class="tbl-cell">Semaglutide</div><div class="tbl-cell">실무 포인트</div></div><div class="tbl-row tbl-row--4 tbl-row--good"><div class="tbl-cell"><strong>체중감량 주목표</strong></div><div class="tbl-cell">근거 더 강함</div><div class="tbl-cell">강함</div><div class="tbl-cell">큰 감량 필요 시 tirzepatide 우선 검토</div></div><div class="tbl-row tbl-row--4 tbl-row--steel"><div class="tbl-cell"><strong>심혈관 보호</strong></div><div class="tbl-cell">outcome 진행 중/제한</div><div class="tbl-cell">SELECT 등 근거</div><div class="tbl-cell">ASCVD 동반이면 semaglutide 근거가 강점</div></div><div class="tbl-row tbl-row--4 tbl-row--good"><div class="tbl-cell"><strong>OSA + 비만</strong></div><div class="tbl-cell">강점</div><div class="tbl-cell">자료 제한</div><div class="tbl-cell">기계적 감량 효과가 중요</div></div><div class="tbl-row tbl-row--4 tbl-row--steel"><div class="tbl-cell"><strong>MASH remission</strong></div><div class="tbl-cell">가능</div><div class="tbl-cell">가능</div><div class="tbl-cell">둘 다 고려 가능</div></div><div class="tbl-row tbl-row--4 tbl-row--warn"><div class="tbl-cell"><strong>MASH fibrosis</strong></div><div class="tbl-cell">덜 성숙</div><div class="tbl-cell">근거 더 강함</div><div class="tbl-cell">fibrosis 개선 목표면 semaglutide 쪽 근거 확인</div></div>
-      </div>
-
-      <figure class="ai-visual ai-visual--focus ai-visual--fill paper-visual">
-        <img src="../../../../shared/assets/generated/easo-obesity-complications-map-20260606.jpg" alt="비만 환자 실루엣 주변에 심장, 간, 수면, 관절 합병증이 배치된 파란색 지도형 일러스트">
-      </figure>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">EASO 2026 update · Nature Medicine</span>
-      <span class="slide__page">06 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>NOT A RANKING</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">알고리즘을 '순위표'로 읽지 않는다</h2>
-      <p class="slide__subtitle">EASO가 직접 강조한 부분이다. 환자별 맥락이 처방을 바꾼다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="split">
-
-        <div class="split-col">
-          <h3 class="split-col__title">순위표가 아닌 이유</h3>
-          <ul class="line-list"><li><strong>직접 비교는 일부</strong> — 많은 비교는 NMA와 별도 RCT 기반</li><li><strong>합병증별 endpoint</strong> — 체중, MACE, OSA, MASH가 서로 다름</li><li><strong>부작용과 중단율</strong> — efficacy만으로 결정 불가</li><li><strong>가격·접근성</strong> — 실제 치료 지속 가능성을 좌우</li></ul>
-        </div>
-
-        <div class="split-col">
-          <h3 class="split-col__title">진료실에서 묻는 질문</h3>
-          <ul class="line-list"><li><strong>목표 감량률</strong> — 10%, 15%, 20% 중 어디인가</li><li><strong>동반질환</strong> — T2D, ASCVD, OSA, MASH, 관절염</li><li><strong>이전 경험</strong> — GLP-1RA 부작용·중단 이력</li><li><strong>비용/선호</strong> — 주사제 수용성과 장기 비용</li></ul>
-        </div>
-      </div>
-      <div class="note note--good"><strong>상담 문장 — </strong>'더 잘 빠지는 약' 하나로 끝내지 말고, 목표와 동반질환에 맞는 약을 고른다.</div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">EASO 2026 press release</span>
-      <span class="slide__page">07 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>FIRST VISIT</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">비만약 첫 상담 4단계</h2>
-      <p class="slide__subtitle">약제명을 고르기 전에 목표와 위험을 고정한다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="timeline">
-
-        <div class="step step--navy">
-          <div class="step__num">01</div>
-          <div class="step__title">Baseline phenotype</div>
-          <div class="step__body">BMI, 허리둘레, 혈압, A1c, 지질, 간수치, 수면무호흡 증상.</div>
-        </div>
-        <div class="step step--good">
-          <div class="step__num">02</div>
-          <div class="step__title">Target setting</div>
-          <div class="step__body">3개월·6개월·12개월 목표 감량률과 합병증 목표를 수치화.</div>
-        </div>
-        <div class="step step--steel">
-          <div class="step__num">03</div>
-          <div class="step__title">Drug fit</div>
-          <div class="step__body">tirzepatide/semaglutide/기타 약물, 금기, 비용, 선호도 검토.</div>
-        </div>
-        <div class="step step--warn">
-          <div class="step__num">04</div>
-          <div class="step__title">Follow-up rule</div>
-          <div class="step__body">용량 증량, 위장관 부작용, 근손실 예방, 중단 기준을 사전 설명.</div>
-        </div>
-      </div>
-      
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">EASO 2026 framework · clinic algorithm draft</span>
-      <span class="slide__page">08 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>SAFETY</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">효과만큼 중요한 지속 가능성</h2>
-      <p class="slide__subtitle">감량 폭이 커도 중단하면 만성질환 치료가 아니다.</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-
-      <div class="card-grid card-grid--6">
-
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">위장관 부작용</div>
-          <div class="review-card__body">오심·구토·변비·설사. 증량 속도와 식사 패턴 조정이 핵심.</div>
-          
-        </div>
-        <div class="review-card review-card--danger">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">담낭/췌장</div>
-          <div class="review-card__body">담석·췌장염 증상 교육. 심한 지속 복통은 즉시 평가.</div>
-          
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">03</div>
-          <div class="review-card__title">근손실</div>
-          <div class="review-card__body">단백질·저항운동 없으면 체중은 줄어도 기능은 떨어질 수 있음.</div>
-          
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">04</div>
-          <div class="review-card__title">비용</div>
-          <div class="review-card__body">장기 지속 비용을 시작 전에 확인. 중단 후 재증가 가능성 설명.</div>
-          
-        </div>
-        <div class="review-card review-card--danger">
-          <div class="review-card__kicker">05</div>
-          <div class="review-card__title">금기</div>
-          <div class="review-card__body">MTC/MEN2 병력, 임신 계획, 중증 위장관 질환 등 확인.</div>
-          
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">06</div>
-          <div class="review-card__title">추적</div>
-          <div class="review-card__body">체중·허리둘레·A1c·간수치·증상 지표를 같은 방식으로 반복 측정.</div>
-          
-        </div>
-      </div>
-      
-
-      <figure class="ai-visual ai-visual--focus ai-visual--fill paper-visual">
-        <img src="../../../../shared/assets/generated/easo-obesity-sustainability-20260606.jpg" alt="주사 펜, 식사, 운동, 달력이 순환 화살표로 연결된 장기 비만 치료 일러스트">
-      </figure>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">SURMOUNT-5 NEJM 2025 · EASO 2026 update</span>
-      <span class="slide__page">09 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>DRUG SELECTION</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">Tirzepatide vs Semaglutide: 실무적 분기</h2>
-      <p class="slide__subtitle">공식 권고를 과장하지 않고, 근거의 강점을 진료실 언어로 바꾼다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="split">
-
-        <div class="split-col">
-          <h3 class="split-col__title">Tirzepatide를 먼저 떠올릴 때</h3>
-          <ul class="line-list"><li><strong>≥20% 감량 목표</strong> 또는 BMI 35 이상 고도비만</li><li><strong>OSA·관절부하</strong> 등 기계적 체중 부담이 핵심</li><li><strong>기존 GLP-1RA 반응 부족</strong> 또는 목표 미달</li><li><strong>큰 허리둘레 감소</strong>가 필요한 대사위험군</li></ul>
-        </div>
-
-        <div class="split-col">
-          <h3 class="split-col__title">Semaglutide가 더 설득력 있을 때</h3>
-          <ul class="line-list"><li><strong>10-15% 목표</strong>로 충분한 환자</li><li><strong>ASCVD 위험</strong>에서 CV outcome 근거를 중시</li><li><strong>MASH fibrosis</strong> 개선 근거를 우선 고려</li><li><strong>약제 접근성·비용</strong>에서 현실성이 높은 경우</li></ul>
-        </div>
-      </div>
-      <div class="note note--steel"><strong>중립 문장 — </strong>'체중 감량 폭은 tirzepatide가 더 크지만, 심혈관·간질환 등 목표에 따라 semaglutide 근거가 더 중요할 수 있습니다.'</div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">EASO 2026 update · SURMOUNT-5 NEJM 2025</span>
-      <span class="slide__page">10 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>KOREA CLINIC</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">한국 외래에서 바로 쓰는 선택표</h2>
-      <p class="slide__subtitle">환자 질문은 대개 '삭센다/위고비/마운자로 중 뭐가 좋나'로 들어온다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="table-wrap">
-<div class="tbl-row tbl-row--4 tbl-row--head"><div class="tbl-cell">환자상</div><div class="tbl-cell">우선 질문</div><div class="tbl-cell">약물 방향</div><div class="tbl-cell">추적 지표</div></div><div class="tbl-row tbl-row--4 tbl-row--steel"><div class="tbl-cell"><strong>BMI 30-34</strong></div><div class="tbl-cell">목표 10-15%?</div><div class="tbl-cell">semaglutide 또는 tirzepatide</div><div class="tbl-cell">체중·허리·A1c</div></div><div class="tbl-row tbl-row--4 tbl-row--good"><div class="tbl-cell"><strong>BMI ≥35</strong></div><div class="tbl-cell">20% 이상 필요?</div><div class="tbl-cell">tirzepatide 우선 검토</div><div class="tbl-cell">OSA·관절·지방간</div></div><div class="tbl-row tbl-row--4 tbl-row--steel"><div class="tbl-cell"><strong>ASCVD 동반</strong></div><div class="tbl-cell">CV 보호가 핵심?</div><div class="tbl-cell">semaglutide 근거 강조</div><div class="tbl-cell">MACE risk·BP·LDL</div></div><div class="tbl-row tbl-row--4 tbl-row--warn"><div class="tbl-cell"><strong>MASH/fibrosis</strong></div><div class="tbl-cell">섬유화 개선 목표?</div><div class="tbl-cell">semaglutide 근거 확인</div><div class="tbl-cell">FIB-4·FibroScan·ALT</div></div><div class="tbl-row tbl-row--4 tbl-row--warn"><div class="tbl-cell"><strong>비용 민감</strong></div><div class="tbl-cell">지속 가능?</div><div class="tbl-cell">저비용 약제/생활요법 병행</div><div class="tbl-cell">중단 위험·재증가</div></div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">Clinic implementation draft based on EASO 2026</span>
-      <span class="slide__page">11 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 11 · <strong>PITFALLS</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">피해야 할 설명</h2>
-      <p class="slide__subtitle">약물 선택을 단순 경쟁 구도로 만들면 장기 치료 설계가 깨진다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="card-grid card-grid--6">
-
-        <div class="review-card review-card--danger">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">무조건 tirzepatide</div>
-          <div class="review-card__body">체중감량 우위는 명확하지만, 모든 합병증에서 universal first-line이라는 뜻은 아니다.</div>
-          
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">Semaglutide는 약하다</div>
-          <div class="review-card__body">ASCVD outcome과 MASH fibrosis 영역에서 중요한 근거가 있다.</div>
-          
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">03</div>
-          <div class="review-card__title">목표 없는 시작</div>
-          <div class="review-card__body">몇 % 감량을 목표로 하는지 정하지 않으면 약제 평가가 불가능.</div>
-          
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">04</div>
-          <div class="review-card__title">부작용 늦게 설명</div>
-          <div class="review-card__body">오심·변비·담낭·췌장 증상은 시작 전 교육해야 중단을 줄인다.</div>
-          
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">05</div>
-          <div class="review-card__title">운동 생략</div>
-          <div class="review-card__body">근손실 예방 없이는 체중감량의 질이 떨어진다.</div>
-          
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">06</div>
-          <div class="review-card__title">중단 계획 없음</div>
-          <div class="review-card__body">비만은 만성질환. 중단 후 재증가와 유지 전략을 사전에 논의.</div>
-          
-        </div>
-      </div>
-      
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">EASO 2026 update</span>
-      <span class="slide__page">12 / 13</span>
-    </footer>
-  </section>
-
-  <section class="slide slide--closing">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 12 · <strong>TAKE HOME</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">진료실 결론</h2>
-      <p class="slide__subtitle">2026 EASO 업데이트의 핵심은 약제 서열이 아니라 목표 기반 선택이다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="takehome-grid">
-
-        <div class="takehome-card">
-          <div class="takehome-card__num">01</div>
-          <div class="takehome-card__text"><strong>큰 감량 목표</strong> — ≥20% 감량이 필요하면 tirzepatide 근거가 가장 설득력 있다.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">02</div>
-          <div class="takehome-card__text"><strong>합병증 목표</strong> — ASCVD·MASH fibrosis 등은 semaglutide 근거가 선택을 바꿀 수 있다.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">03</div>
-          <div class="takehome-card__text"><strong>알고리즘은 순위표가 아니다</strong> — 환자 특성·선호·비용·부작용을 함께 본다.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">04</div>
-          <div class="takehome-card__text"><strong>장기 치료로 설명</strong> — 증량, 부작용, 근손실 예방, 중단 후 유지까지 시작 전에 말한다.</div>
-        </div>
-      </div>
-      <div class="closing-grid">
-        <div class="closing-contact">
-          <div class="closing-contact__label">CLINIC NOTE</div>
-          <div class="closing-contact__title">광교바른내과 · 의료진 논문 리뷰</div>
-          <div class="closing-contact__body">국내 허가, 공급, 급여, 약가는 시점에 따라 바뀔 수 있어 실제 처방 전 최신 정보를 확인해야 합니다.</div>
-        </div>
-        <div class="qr-block">
-          <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM26,2H27V3H26zM27,2H28V3H27zM30,2H31V3H30zM31,2H32V3H31zM33,2H34V3H33zM34,2H35V3H34zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM13,3H14V4H13zM15,3H16V4H15zM20,3H21V4H20zM24,3H25V4H24zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM34,3H35V4H34zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM26,4H27V5H26zM28,4H29V5H28zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM15,5H16V6H15zM16,5H17V6H16zM17,5H18V6H17zM18,5H19V6H18zM20,5H21V6H20zM23,5H24V6H23zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM29,5H30V6H29zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM14,6H15V7H14zM17,6H18V7H17zM18,6H19V7H18zM21,6H22V7H21zM25,6H26V7H25zM30,6H31V7H30zM33,6H34V7H33zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM22,7H23V8H22zM23,7H24V8H23zM26,7H27V8H26zM27,7H28V8H27zM28,7H29V8H28zM29,7H30V8H29zM30,7H31V8H30zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM10,9H11V10H10zM11,9H12V10H11zM14,9H15V10H14zM18,9H19V10H18zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM26,9H27V10H26zM28,9H29V10H28zM29,9H30V10H29zM30,9H31V10H30zM33,9H34V10H33zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM14,10H15V11H14zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM22,10H23V11H22zM24,10H25V11H24zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM36,10H37V11H36zM37,10H38V11H37zM38,10H39V11H38zM39,10H40V11H39zM40,10H41V11H40zM3,11H4V12H3zM7,11H8V12H7zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM14,11H15V12H14zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM30,11H31V12H30zM31,11H32V12H31zM32,11H33V12H32zM33,11H34V12H33zM34,11H35V12H34zM36,11H37V12H36zM38,11H39V12H38zM40,11H41V12H40zM42,11H43V12H42zM4,12H5V13H4zM5,12H6V13H5zM8,12H9V13H8zM11,12H12V13H11zM12,12H13V13H12zM15,12H16V13H15zM16,12H17V13H16zM23,12H24V13H23zM27,12H28V13H27zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM34,12H35V13H34zM35,12H36V13H35zM37,12H38V13H37zM2,13H3V14H2zM3,13H4V14H3zM5,13H6V14H5zM7,13H8V14H7zM10,13H11V14H10zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM17,13H18V14H17zM18,13H19V14H18zM21,13H22V14H21zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM30,13H31V14H30zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM38,13H39V14H38zM39,13H40V14H39zM42,13H43V14H42zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM15,14H16V15H15zM18,14H19V15H18zM19,14H20V15H19zM20,14H21V15H20zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM33,14H34V15H33zM39,14H40V15H39zM40,14H41V15H40zM42,14H43V15H42zM2,15H3V16H2zM4,15H5V16H4zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM12,15H13V16H12zM13,15H14V16H13zM15,15H16V16H15zM16,15H17V16H16zM19,15H20V16H19zM22,15H23V16H22zM24,15H25V16H24zM26,15H27V16H26zM32,15H33V16H32zM33,15H34V16H33zM35,15H36V16H35zM36,15H37V16H36zM37,15H38V16H37zM38,15H39V16H38zM39,15H40V16H39zM40,15H41V16H40zM42,15H43V16H42zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM11,16H12V17H11zM12,16H13V17H12zM13,16H14V17H13zM17,16H18V17H17zM18,16H19V17H18zM21,16H22V17H21zM23,16H24V17H23zM24,16H25V17H24zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM32,16H33V17H32zM34,16H35V17H34zM35,16H36V17H35zM38,16H39V17H38zM39,16H40V17H39zM40,16H41V17H40zM41,16H42V17H41zM2,17H3V18H2zM3,17H4V18H3zM4,17H5V18H4zM6,17H7V18H6zM7,17H8V18H7zM9,17H10V18H9zM13,17H14V18H13zM16,17H17V18H16zM17,17H18V18H17zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM36,17H37V18H36zM37,17H38V18H37zM38,17H39V18H38zM39,17H40V18H39zM41,17H42V18H41zM42,17H43V18H42zM4,18H5V19H4zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM13,18H14V19H13zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM19,18H20V19H19zM21,18H22V19H21zM22,18H23V19H22zM24,18H25V19H24zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM31,18H32V19H31zM33,18H34V19H33zM35,18H36V19H35zM37,18H38V19H37zM40,18H41V19H40zM41,18H42V19H41zM2,19H3V20H2zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM14,19H15V20H14zM19,19H20V20H19zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM30,19H31V20H30zM32,19H33V20H32zM33,19H34V20H33zM34,19H35V20H34zM36,19H37V20H36zM37,19H38V20H37zM38,19H39V20H38zM39,19H40V20H39zM41,19H42V20H41zM42,19H43V20H42zM2,20H3V21H2zM6,20H7V21H6zM8,20H9V21H8zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM19,20H20V21H19zM22,20H23V21H22zM23,20H24V21H23zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM38,20H39V21H38zM40,20H41V21H40zM3,21H4V22H3zM4,21H5V22H4zM7,21H8V22H7zM9,21H10V22H9zM12,21H13V22H12zM13,21H14V22H13zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM24,21H25V22H24zM27,21H28V22H27zM30,21H31V22H30zM32,21H33V22H32zM34,21H35V22H34zM38,21H39V22H38zM42,21H43V22H42zM2,22H3V23H2zM3,22H4V23H3zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM14,22H15V23H14zM18,22H19V23H18zM22,22H23V23H22zM23,22H24V23H23zM28,22H29V23H28zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM37,22H38V23H37zM39,22H40V23H39zM40,22H41V23H40zM41,22H42V23H41zM2,23H3V24H2zM4,23H5V24H4zM7,23H8V24H7zM9,23H10V24H9zM10,23H11V24H10zM15,23H16V24H15zM18,23H19V24H18zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM24,23H25V24H24zM25,23H26V24H25zM30,23H31V24H30zM33,23H34V24H33zM34,23H35V24H34zM35,23H36V24H35zM36,23H37V24H36zM37,23H38V24H37zM38,23H39V24H38zM39,23H40V24H39zM41,23H42V24H41zM42,23H43V24H42zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM11,24H12V25H11zM16,24H17V25H16zM19,24H20V25H19zM24,24H25V25H24zM29,24H30V25H29zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM4,25H5V26H4zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM13,25H14V26H13zM14,25H15V26H14zM17,25H18V26H17zM18,25H19V26H18zM20,25H21V26H20zM21,25H22V26H21zM23,25H24V26H23zM24,25H25V26H24zM25,25H26V26H25zM28,25H29V26H28zM30,25H31V26H30zM32,25H33V26H32zM33,25H34V26H33zM35,25H36V26H35zM37,25H38V26H37zM38,25H39V26H38zM39,25H40V26H39zM41,25H42V26H41zM42,25H43V26H42zM2,26H3V27H2zM3,26H4V27H3zM7,26H8V27H7zM8,26H9V27H8zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM16,26H17V27H16zM19,26H20V27H19zM20,26H21V27H20zM22,26H23V27H22zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM31,26H32V27H31zM33,26H34V27H33zM35,26H36V27H35zM37,26H38V27H37zM40,26H41V27H40zM42,26H43V27H42zM2,27H3V28H2zM4,27H5V28H4zM11,27H12V28H11zM14,27H15V28H14zM15,27H16V28H15zM17,27H18V28H17zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM30,27H31V28H30zM33,27H34V28H33zM35,27H36V28H35zM36,27H37V28H36zM38,27H39V28H38zM39,27H40V28H39zM41,27H42V28H41zM42,27H43V28H42zM3,28H4V29H3zM8,28H9V29H8zM15,28H16V29H15zM16,28H17V29H16zM19,28H20V29H19zM20,28H21V29H20zM22,28H23V29H22zM23,28H24V29H23zM29,28H30V29H29zM31,28H32V29H31zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM5,29H6V30H5zM6,29H7V30H6zM7,29H8V30H7zM11,29H12V30H11zM13,29H14V30H13zM17,29H18V30H17zM20,29H21V30H20zM23,29H24V30H23zM25,29H26V30H25zM28,29H29V30H28zM30,29H31V30H30zM33,29H34V30H33zM34,29H35V30H34zM37,29H38V30H37zM38,29H39V30H38zM39,29H40V30H39zM42,29H43V30H42zM3,30H4V31H3zM4,30H5V31H4zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM15,30H16V31H15zM16,30H17V31H16zM18,30H19V31H18zM19,30H20V31H19zM20,30H21V31H20zM22,30H23V31H22zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM34,30H35V31H34zM39,30H40V31H39zM40,30H41V31H40zM41,30H42V31H41zM2,31H3V32H2zM3,31H4V32H3zM7,31H8V32H7zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM14,31H15V32H14zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM23,31H24V32H23zM31,31H32V32H31zM32,31H33V32H32zM33,31H34V32H33zM34,31H35V32H34zM36,31H37V32H36zM37,31H38V32H37zM38,31H39V32H38zM39,31H40V32H39zM40,31H41V32H40zM42,31H43V32H42zM2,32H3V33H2zM5,32H6V33H5zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM13,32H14V33H13zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM20,32H21V33H20zM22,32H23V33H22zM23,32H24V33H23zM25,32H26V33H25zM26,32H27V33H26zM27,32H28V33H27zM29,32H30V33H29zM31,32H32V33H31zM35,32H36V33H35zM36,32H37V33H36zM37,32H38V33H37zM39,32H40V33H39zM41,32H42V33H41zM2,33H3V34H2zM4,33H5V34H4zM13,33H14V34H13zM14,33H15V34H14zM17,33H18V34H17zM23,33H24V34H23zM25,33H26V34H25zM28,33H29V34H28zM35,33H36V34H35zM36,33H37V34H36zM37,33H38V34H37zM41,33H42V34H41zM2,34H3V35H2zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM13,34H14V35H13zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM24,34H25V35H24zM25,34H26V35H25zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM31,34H32V35H31zM32,34H33V35H32zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM40,34H41V35H40zM41,34H42V35H41zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM13,35H14V36H13zM14,35H15V36H14zM16,35H17V36H16zM17,35H18V36H17zM20,35H21V36H20zM21,35H22V36H21zM22,35H23V36H22zM25,35H26V36H25zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM41,35H42V36H41zM42,35H43V36H42zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM12,36H13V37H12zM13,36H14V37H13zM14,36H15V37H14zM18,36H19V37H18zM20,36H21V37H20zM24,36H25V37H24zM29,36H30V37H29zM30,36H31V37H30zM32,36H33V37H32zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM11,37H12V38H11zM13,37H14V38H13zM14,37H15V38H14zM15,37H16V38H15zM16,37H17V38H16zM17,37H18V38H17zM26,37H27V38H26zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM33,37H34V38H33zM34,37H35V38H34zM38,37H39V38H38zM41,37H42V38H41zM42,37H43V38H42zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM13,38H14V39H13zM14,38H15V39H14zM15,38H16V39H15zM20,38H21V39H20zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM24,38H25V39H24zM25,38H26V39H25zM26,38H27V39H26zM31,38H32V39H31zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM39,38H40V39H39zM40,38H41V39H40zM42,38H43V39H42zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM17,39H18V40H17zM18,39H19V40H18zM21,39H22V40H21zM22,39H23V40H22zM23,39H24V40H23zM25,39H26V40H25zM26,39H27V40H26zM27,39H28V40H27zM28,39H29V40H28zM30,39H31V40H30zM33,39H34V40H33zM34,39H35V40H34zM35,39H36V40H35zM37,39H38V40H37zM40,39H41V40H40zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM10,40H11V41H10zM12,40H13V41H12zM15,40H16V41H15zM16,40H17V41H16zM17,40H18V41H17zM19,40H20V41H19zM22,40H23V41H22zM26,40H27V41H26zM27,40H28V41H27zM28,40H29V41H28zM29,40H30V41H29zM30,40H31V41H30zM33,40H34V41H33zM34,40H35V41H34zM35,40H36V41H35zM36,40H37V41H36zM37,40H38V41H37zM38,40H39V41H38zM2,41H3V42H2zM8,41H9V42H8zM11,41H12V42H11zM12,41H13V42H12zM13,41H14V42H13zM15,41H16V42H15zM18,41H19V42H18zM22,41H23V42H22zM23,41H24V42H23zM29,41H30V42H29zM30,41H31V42H30zM34,41H35V42H34zM35,41H36V42H35zM38,41H39V42H38zM39,41H40V42H39zM41,41H42V42H41zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM12,42H13V43H12zM13,42H14V43H13zM15,42H16V43H15zM16,42H17V43H16zM18,42H19V43H18zM19,42H20V43H19zM20,42H21V43H20zM24,42H25V43H24zM25,42H26V43H25zM26,42H27V43H26zM27,42H28V43H27zM28,42H29V43H28zM29,42H30V43H29zM31,42H32V43H31zM32,42H33V43H32zM33,42H34V43H33zM36,42H37V43H36zM37,42H38V43H37zM38,42H39V43H38zM40,42H41V43H40z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
-          <div class="qr-block__caption">온라인 슬라이드<br>QR 스캔</div>
-        </div>
-      </div>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">Nature Medicine 2026 · EASO 2026 update · SURMOUNT-5 NEJM 2025</span>
-      <span class="slide__page">13 / 13</span>
-    </footer>
-  </section>
-
-</div>
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 01 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">한 문단·세 숫자로 요약</h2><p class="v2-sub">이제 비만약 선택은 '어느 약이 더 세냐'가 아니라 '목표와 합병증이 무엇인가'다.</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">EVIDENCE BASE</div><p class="hq-card__line v2-body">62 RCT · 2025.11.21까지의 새 근거를 반영한 living guidance 업데이트.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">SURMOUNT-5</div><p class="hq-card__line v2-body">20.2% vs 13.7% · Tirzepatide vs semaglutide 72주 평균 체중감량.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">MASH FIBROSIS</div><p class="hq-card__line v2-body">Semaglutide · 2026 업데이트에서 fibrosis stage improvement 근거는 semaglutide가 더 강함.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:64px;top:416px;width:760px;height:190px"><div class="v2-block"><div class="hq-card__head">중요한 단서 —</div><p class="hq-card__line v2-body">EASO는 알고리즘을 universal ranking이나 처방 순서로 읽지 말라고 명시했다. 환자 특성, 선호, 비용, 안전성을 함께 본다.</p></div></div>
+<div class="v2-panel hq-figure" style="left:916px;top:416px;width:227.56px;height:128px"><img class="v2-fig__img" src="../../../../shared/assets/generated/easo-obesity-goal-planning-20260531.jpg" alt="비만 환자와 의료진이 체중감량 목표 그래프를 함께 보는 파란색 상담 일러스트"></div>
+<div class="v2-panel hq-caption" style="left:844px;top:545px;width:372px;height:61px;font-size:16px">비만 환자와 의료진이 체중감량 목표 그래프를 함께 보는 파란색 상담&nbsp;일러스트</div>
+<div class="v2-tip"><span class="v2-tip__t">한 문단·세 숫자로 요약</span><span class="hq-source">근거 · Nature Medicine 2026 · EASO update · SURMOUNT-5 NEJM 2025</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">02 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 02 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">2026 업데이트에서 달라진 포인트</h2><p class="v2-sub">체중감량 주목표와 MASH 영역에서 근거 분리가 더 선명해졌다.</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Tirzepatide 우위 명확화</div><p class="hq-card__line v2-body">합병증 없는 비만에서 체중감량 자체가 주목표일 때 근거가 더 강해졌다.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">SURMOUNT-5 반영</div><p class="hq-card__line v2-body">직접 비교 RCT로 tirzepatide의 평균 감량 폭과 목표 달성률 우위 확인.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">MASH update</div><p class="hq-card__line v2-body">MASH remission은 semaglutide 또는 tirzepatide, fibrosis stage improvement는 semaglutide 근거가 더 강함.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Not a ranking</div><p class="hq-card__line v2-body">알고리즘은 처방 순서표가 아니라 합병증-목표 기반 의사결정 도구.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Safety domain 예정</div><p class="hq-card__line v2-body">향후 업데이트에서 중단율·이상반응 등 benefit-risk 영역이 강화될 전망.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:844px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Living guidance</div><p class="hq-card__line v2-body">새 약제·경구제·장기 outcome이 나오면 계속 바뀌는 구조.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">2026 업데이트에서 달라진 포인트</span><span class="hq-source">근거 · EASO press release 2026-05-12 · Nature Medicine 2026</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">03 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 03 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">직접 비교: tirzepatide가 평균 감량 폭에서 우위</h2><p class="v2-sub">환자에게 '몇 kg'보다 '목표 감량률 달성 가능성'으로 설명하면 명확하다.</p>
+<table class="v2-table hq-table hq-table--bar" style="width:760px"><thead><tr><th>핵심 항목</th><th>값</th></tr></thead><tbody><tr><th class="v2-body">평균 감량 Tirzepatide</th><td class="v2-body">−20.2%</td></tr><tr><th class="v2-body">평균 감량 Semaglutide</th><td class="v2-body">−13.7%</td></tr><tr><th class="v2-body">≥20% 달성 Tirzepatide</th><td class="v2-body">48.4%</td></tr><tr><th class="v2-body">≥20% 달성 Semaglutide</th><td class="v2-body">27.3%</td></tr></tbody></table><div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:372px;height:195px"><div class="v2-block"><div class="hq-card__head">결과 해석</div><p class="hq-card__line v2-body">평균 차이 6.5%p. BMI 35 이상 또는 20% 이상 감량이 필요한 군에서 임상적으로 크다.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:411px;width:372px;height:195px"><div class="v2-block"><div class="hq-card__head">연구 주의점</div><p class="hq-card__line v2-body">Open-label trial이며 안전성 비교에 powered 된 연구는 아니다.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">직접 비교: tirzepatide가 평균 감량 폭에서 우위</span><span class="hq-source">근거 · Aronne et al. NEJM 2025;393:26-36 · Lilly release 2025-05-11</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">04 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 04 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">목표 감량률로 먼저 나누기</h2><p class="v2-sub">환자에게 먼저 물을 질문은 '얼마나 빼야 합병증이 좋아지는가'다.</p>
+<div class="v2-panel hq-copy" style="left:64px;top:206px;width:748px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">5-10% · 초기 대사 개선 · 혈당·혈압·지질 개선 목적. 생활요법+약물 선택 폭 넓음. · 10-15% · Semaglutide zone · GLP-1RA 단독으로 충분한 목표. CV 보호 근거도 고려. · 15-20% · 공유 의사결정 · tirzepatide 우선 검토. 비용·부작용·선호도 함께 평가. · ≥20% · Tirzepatide zone · 고도비만·OSA·큰 기계적 부담이 있으면 우선 고려. · BARIATRIC · 수술/다학제 · 약물만으로 부족한 BMI·합병증은 수술 포함 평가.</p></div></div>
+<div class="v2-panel hq-figure" style="left:836px;top:206px;width:380px;height:285px"><img class="v2-fig__img" src="../../../../shared/assets/generated/easo-obesity-drug-paths-20260606.jpg" alt="두 가지 주사 펜 경로가 서로 다른 체중감량 목표로 이어지는 파란색 의사결정 일러스트"></div>
+<div class="v2-panel hq-caption" style="left:836px;top:503px;width:380px;height:103px">두 가지 주사 펜 경로가 서로 다른 체중감량 목표로 이어지는 파란색 의사결정 일러스트</div>
+<div class="v2-tip"><span class="v2-tip__t">목표 감량률로 먼저 나누기</span><span class="hq-source">근거 · EASO 2026 framework · SURMOUNT-5</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">05 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 05 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">합병증별 약물 선택 프레임</h2><p class="v2-sub">체중감량률만 보지 말고, 어떤 합병증을 함께 치료하려는지 본다.</p>
+<table class="v2-table hq-table hq-table--four hq-table--illustrated" style="width:760px"><thead><tr><th>합병증/목표</th><th>Tirzepatide</th><th>Semaglutide</th><th>실무 포인트</th></tr></thead><tbody><tr><th class="v2-body">체중감량 주목표</th><td class="v2-body">근거 우위</td><td class="v2-body">강함</td><td class="v2-body">큰 감량 필요 시 tirzepatide 우선 검토</td></tr><tr><th class="v2-body">심혈관 보호</th><td class="v2-body">outcome 진행 중/제한</td><td class="v2-body">SELECT 등 근거</td><td class="v2-body">ASCVD 동반이면 semaglutide 근거가 강점</td></tr><tr><th class="v2-body">OSA + 비만</th><td class="v2-body">강점</td><td class="v2-body">자료 제한</td><td class="v2-body">기계적 감량 효과가 중요</td></tr><tr><th class="v2-body">MASH remission</th><td class="v2-body">가능</td><td class="v2-body">사용 가능</td><td class="v2-body">둘 다 고려 가능</td></tr><tr><th class="v2-body">MASH fibrosis</th><td class="v2-body">덜 성숙</td><td class="v2-body">근거 더 강함</td><td class="v2-body">fibrosis 개선 목표면 semaglutide 쪽 근거&nbsp;확인</td></tr></tbody></table>
+<div class="v2-panel hq-figure" style="left:844px;top:206px;width:372px;height:279px"><img class="v2-fig__img" src="../../../../shared/assets/generated/easo-obesity-complications-map-20260606.jpg" alt="비만 환자 실루엣 주변에 심장, 간, 수면, 관절 합병증이 배치된 파란색 지도형 일러스트"></div>
+<div class="v2-panel hq-caption" style="left:844px;top:497px;width:372px;height:109px">비만 환자 실루엣 주변에 심장, 간, 수면, 관절 합병증이 배치된 파란색 지도형 일러스트</div>
+<div class="v2-tip"><span class="v2-tip__t">합병증별 약물 선택 프레임</span><span class="hq-source">근거 · EASO 2026 update · Nature Medicine</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">06 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 06 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">알고리즘을 '순위표'로 읽지 않는다</h2><p class="v2-sub">EASO가 직접 강조한 부분이다. 환자별 맥락이 처방을 바꾼다.</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">순위표가 아닌 이유</div><p class="hq-card__line v2-body">직접 비교는 일부 — 많은 비교는 NMA와 별도 RCT 기반 · 합병증별 endpoint — 체중, MACE, OSA, MASH가 서로 다름 · 부작용과 중단율 — efficacy만으로 결정 불가 · 가격·접근성 — 실제 치료 지속 가능성을 좌우</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">진료실에서 묻는 질문</div><p class="hq-card__line v2-body">목표 감량률 — 10%, 15%, 20% 중 어디인가 · 동반질환 — T2D, ASCVD, OSA, MASH, 관절염 · 이전 경험 — GLP-1RA 부작용·중단 이력 · 비용/선호 — 주사제 수용성과 장기 비용 · 상담 문장 —&#x27;더 잘 빠지는 약&#x27; 하나로 끝내지 말고, 목표와 동반질환에 맞는 약을 고른다.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">알고리즘을 '순위표'로 읽지 않는다</span><span class="hq-source">근거 · EASO 2026 press release</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">07 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 07 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">비만약 첫 상담 4단계</h2><p class="v2-sub">약제명을 고르기 전에 목표와 위험을 고정한다.</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">Baseline phenotype</div><p class="hq-card__line v2-body">BMI, 허리둘레, 혈압, A1c, 지질, 간수치, 수면무호흡 증상.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">Target setting</div><p class="hq-card__line v2-body">3개월·6개월·12개월 목표 감량률과 합병증 목표를 수치화.</p></div></div>
+<div class="v2-panel hq-card" style="left:64px;top:416px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">Drug fit</div><p class="hq-card__line v2-body">tirzepatide/semaglutide/기타 약물, 금기, 비용, 선호도 검토.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:416px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">Follow-up rule</div><p class="hq-card__line v2-body">용량 증량, 위장관 부작용, 근손실 예방, 중단 기준을 사전 설명.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">비만약 첫 상담 4단계</span><span class="hq-source">근거 · EASO 2026 framework · clinic algorithm draft</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">08 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 08 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">효과만큼 중요한 지속 가능성</h2><p class="v2-sub">감량 폭이 커도 중단하면 만성질환 치료가 아니다.</p>
+<div class="v2-panel hq-copy" style="left:64px;top:206px;width:748px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">01 · 위장관 부작용 · 오심·구토·변비·설사. 증량 속도와 식사 패턴 조정이 핵심. · 02 · 담낭/췌장 · 담석·췌장염 증상 교육. 심한 지속 복통은 즉시 평가. · 03 · 근손실 · 단백질·저항운동 없으면 체중은 줄어도 기능은 떨어질 수 있음. · 04 · 비용 · 장기 지속 비용을 시작 전에 확인. 중단 후 재증가 가능성 설명. · 05 · 금기 · MTC/MEN2 병력, 임신 계획, 중증 위장관 질환 등 확인. · 06 · 추적 · 체중·허리둘레·A1c·간수치·증상 지표를 같은 방식으로 반복 측정.</p></div></div>
+<div class="v2-panel hq-figure" style="left:836px;top:206px;width:380px;height:285px"><img class="v2-fig__img" src="../../../../shared/assets/generated/easo-obesity-sustainability-20260606.jpg" alt="주사 펜, 식사, 운동, 달력이 순환 화살표로 연결된 장기 비만 치료 일러스트"></div>
+<div class="v2-panel hq-caption" style="left:836px;top:503px;width:380px;height:103px">주사 펜, 식사, 운동, 달력이 순환 화살표로 연결된 장기 비만 치료 일러스트</div>
+<div class="v2-tip"><span class="v2-tip__t">효과만큼 중요한 지속 가능성</span><span class="hq-source">근거 · SURMOUNT-5 NEJM 2025 · EASO 2026 update</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">09 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 09 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">Tirzepatide vs Semaglutide: 실무적 분기</h2><p class="v2-sub">공식 권고를 과장하지 않고, 근거의 강점을 진료실 언어로 바꾼다.</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">Tirzepatide를 먼저 떠올릴 때</div><p class="hq-card__line v2-body">≥20% 감량 목표 또는 BMI 35 이상 고도비만 · OSA·관절부하 등 기계적 체중 부담이 핵심 · 기존 GLP-1RA 반응 부족 또는 목표 미달 · 큰 허리둘레 감소가 필요한 대사위험군</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">Semaglutide가 더 설득력 있을 때</div><p class="hq-card__line v2-body">10-15% 목표로 충분한 환자 · ASCVD 위험에서 CV outcome 근거를 중시 · MASH fibrosis 개선 근거를 우선 고려 · 약제 접근성·비용에서 현실성이 높은 경우 · 중립 문장 —&#x27;체중 감량 폭은 tirzepatide가 더 크지만, 심혈관·간질환 등 목표에 따라 semaglutide 근거가 더 중요할 수 있습니다.&#x27;</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">Tirzepatide vs Semaglutide: 실무적 분기</span><span class="hq-source">근거 · EASO 2026 update · SURMOUNT-5 NEJM 2025</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">10 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 10 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">한국 외래에서 바로 쓰는 선택표</h2><p class="v2-sub">환자 질문은 대개 '삭센다/위고비/마운자로 중 뭐가 좋나'로 들어온다.</p>
+<table class="v2-table hq-table hq-table--four" style="width:1152px"><thead><tr><th>환자상</th><th>우선 질문</th><th>약물 방향</th><th>추적 지표</th></tr></thead><tbody><tr><th class="v2-body">BMI 30-34</th><td class="v2-body">목표 10-15%?</td><td class="v2-body">semaglutide 또는 tirzepatide</td><td class="v2-body">체중·허리·A1c</td></tr><tr><th class="v2-body">BMI ≥35</th><td class="v2-body">20% 이상 필요?</td><td class="v2-body">tirzepatide 우선 검토</td><td class="v2-body">OSA·관절·지방간</td></tr><tr><th class="v2-body">ASCVD 동반</th><td class="v2-body">CV 보호가 핵심?</td><td class="v2-body">semaglutide 근거 강조</td><td class="v2-body">MACE risk·BP·LDL</td></tr><tr><th class="v2-body">MASH/fibrosis</th><td class="v2-body">섬유화 개선 목표?</td><td class="v2-body">semaglutide 근거 확인</td><td class="v2-body">FIB-4·FibroScan·ALT</td></tr><tr><th class="v2-body">비용 민감</th><td class="v2-body">지속 가능?</td><td class="v2-body">저비용 약제/생활요법 병행</td><td class="v2-body">중단 위험·재증가</td></tr></tbody></table>
+<div class="v2-tip"><span class="v2-tip__t">한국 외래에서 바로 쓰는 선택표</span><span class="hq-source">근거 · Clinic implementation draft based on EASO 2026</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">11 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 11 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">피해야 할 설명</h2><p class="v2-sub">약물 선택을 단순 경쟁 구도로 만들면 장기 치료 설계가 깨진다.</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">무조건 tirzepatide</div><p class="hq-card__line v2-body">체중감량 우위는 명확하지만, 모든 합병증에서 universal first-line이라는 뜻은 아니다.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Semaglutide는 약하다</div><p class="hq-card__line v2-body">ASCVD outcome과 MASH fibrosis 영역에서 중요한 근거가 있다.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">목표 없는 시작</div><p class="hq-card__line v2-body">몇 % 감량을 목표로 하는지 정하지&nbsp;않으면 약제 평가가 불가능.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">부작용 늦게 설명</div><p class="hq-card__line v2-body">오심·변비·담낭·췌장 증상은 시작 전 교육해야 중단을 줄인다.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">운동 생략</div><p class="hq-card__line v2-body">근손실 예방 없이는 체중감량의 질이 떨어진다.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:844px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">중단 계획 없음</div><p class="hq-card__line v2-body">비만은 만성질환. 중단 후 재증가와 유지 전략을 사전에 논의.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">피해야 할 설명</span><span class="hq-source">근거 · EASO 2026 update</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">12 / 13</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CLOSING · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">진료실 결론</h2><p class="v2-sub">핵심 결과와 한계를 함께 확인합니다.</p>
+<div class="v2-panel hq-copy hq-copy--dense" style="left:64px;top:206px;width:714px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">01 · 큰 감량 목표 — ≥20% 감량이 필요하면 tirzepatide 근거가 가장 설득력 있다. · 02 · 합병증 목표 — ASCVD·MASH fibrosis 등은 semaglutide 근거가 선택을 바꿀 수 있다. · 03 · 알고리즘은 순위표가 아니다 — 환자 특성·선호·비용·부작용을 함께 본다. · 04 · 장기 치료로 설명 — 증량, 부작용, 근손실 예방, 중단 후 유지까지 시작 전에 말한다. · CLINIC NOTE · 광교바른내과 · 의료진 논문 리뷰 · 국내 허가, 공급, 급여, 약가는 시점에 따라 바뀔&nbsp;수&nbsp;있어 실제 처방 전 최신 정보를 확인해야 합니다. · 온라인 슬라이드 · QR 스캔</p></div></div>
+<div class="v2-panel hq-qr v2-panel--accent" style="left:802px;top:206px;width:414px;height:400px"><div class="qr-block"><div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM16,2H17V3H16zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM26,2H27V3H26zM27,2H28V3H27zM30,2H31V3H30zM31,2H32V3H31zM33,2H34V3H33zM34,2H35V3H34zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM13,3H14V4H13zM15,3H16V4H15zM20,3H21V4H20zM24,3H25V4H24zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM34,3H35V4H34zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM12,4H13V5H12zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM26,4H27V5H26zM28,4H29V5H28zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM12,5H13V6H12zM15,5H16V6H15zM16,5H17V6H16zM17,5H18V6H17zM18,5H19V6H18zM20,5H21V6H20zM23,5H24V6H23zM24,5H25V6H24zM25,5H26V6H25zM26,5H27V6H26zM29,5H30V6H29zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM14,6H15V7H14zM17,6H18V7H17zM18,6H19V7H18zM21,6H22V7H21zM25,6H26V7H25zM30,6H31V7H30zM33,6H34V7H33zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM22,7H23V8H22zM23,7H24V8H23zM26,7H27V8H26zM27,7H28V8H27zM28,7H29V8H28zM29,7H30V8H29zM30,7H31V8H30zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM10,9H11V10H10zM11,9H12V10H11zM14,9H15V10H14zM18,9H19V10H18zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM26,9H27V10H26zM28,9H29V10H28zM29,9H30V10H29zM30,9H31V10H30zM33,9H34V10H33zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM14,10H15V11H14zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM22,10H23V11H22zM24,10H25V11H24zM27,10H28V11H27zM28,10H29V11H28zM29,10H30V11H29zM30,10H31V11H30zM31,10H32V11H31zM36,10H37V11H36zM37,10H38V11H37zM38,10H39V11H38zM39,10H40V11H39zM40,10H41V11H40zM3,11H4V12H3zM7,11H8V12H7zM10,11H11V12H10zM11,11H12V12H11zM12,11H13V12H12zM14,11H15V12H14zM18,11H19V12H18zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM25,11H26V12H25zM30,11H31V12H30zM31,11H32V12H31zM32,11H33V12H32zM33,11H34V12H33zM34,11H35V12H34zM36,11H37V12H36zM38,11H39V12H38zM40,11H41V12H40zM42,11H43V12H42zM4,12H5V13H4zM5,12H6V13H5zM8,12H9V13H8zM11,12H12V13H11zM12,12H13V13H12zM15,12H16V13H15zM16,12H17V13H16zM23,12H24V13H23zM27,12H28V13H27zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM34,12H35V13H34zM35,12H36V13H35zM37,12H38V13H37zM2,13H3V14H2zM3,13H4V14H3zM5,13H6V14H5zM7,13H8V14H7zM10,13H11V14H10zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM17,13H18V14H17zM18,13H19V14H18zM21,13H22V14H21zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM30,13H31V14H30zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM36,13H37V14H36zM38,13H39V14H38zM39,13H40V14H39zM42,13H43V14H42zM5,14H6V15H5zM7,14H8V15H7zM8,14H9V15H8zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM14,14H15V15H14zM15,14H16V15H15zM18,14H19V15H18zM19,14H20V15H19zM20,14H21V15H20zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM33,14H34V15H33zM39,14H40V15H39zM40,14H41V15H40zM42,14H43V15H42zM2,15H3V16H2zM4,15H5V16H4zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM12,15H13V16H12zM13,15H14V16H13zM15,15H16V16H15zM16,15H17V16H16zM19,15H20V16H19zM22,15H23V16H22zM24,15H25V16H24zM26,15H27V16H26zM32,15H33V16H32zM33,15H34V16H33zM35,15H36V16H35zM36,15H37V16H36zM37,15H38V16H37zM38,15H39V16H38zM39,15H40V16H39zM40,15H41V16H40zM42,15H43V16H42zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM11,16H12V17H11zM12,16H13V17H12zM13,16H14V17H13zM17,16H18V17H17zM18,16H19V17H18zM21,16H22V17H21zM23,16H24V17H23zM24,16H25V17H24zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM32,16H33V17H32zM34,16H35V17H34zM35,16H36V17H35zM38,16H39V17H38zM39,16H40V17H39zM40,16H41V17H40zM41,16H42V17H41zM2,17H3V18H2zM3,17H4V18H3zM4,17H5V18H4zM6,17H7V18H6zM7,17H8V18H7zM9,17H10V18H9zM13,17H14V18H13zM16,17H17V18H16zM17,17H18V18H17zM21,17H22V18H21zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM36,17H37V18H36zM37,17H38V18H37zM38,17H39V18H38zM39,17H40V18H39zM41,17H42V18H41zM42,17H43V18H42zM4,18H5V19H4zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM13,18H14V19H13zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM19,18H20V19H19zM21,18H22V19H21zM22,18H23V19H22zM24,18H25V19H24zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM31,18H32V19H31zM33,18H34V19H33zM35,18H36V19H35zM37,18H38V19H37zM40,18H41V19H40zM41,18H42V19H41zM2,19H3V20H2zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM14,19H15V20H14zM19,19H20V20H19zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM30,19H31V20H30zM32,19H33V20H32zM33,19H34V20H33zM34,19H35V20H34zM36,19H37V20H36zM37,19H38V20H37zM38,19H39V20H38zM39,19H40V20H39zM41,19H42V20H41zM42,19H43V20H42zM2,20H3V21H2zM6,20H7V21H6zM8,20H9V21H8zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM13,20H14V21H13zM19,20H20V21H19zM22,20H23V21H22zM23,20H24V21H23zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM38,20H39V21H38zM40,20H41V21H40zM3,21H4V22H3zM4,21H5V22H4zM7,21H8V22H7zM9,21H10V22H9zM12,21H13V22H12zM13,21H14V22H13zM19,21H20V22H19zM20,21H21V22H20zM23,21H24V22H23zM24,21H25V22H24zM27,21H28V22H27zM30,21H31V22H30zM32,21H33V22H32zM34,21H35V22H34zM38,21H39V22H38zM42,21H43V22H42zM2,22H3V23H2zM3,22H4V23H3zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM14,22H15V23H14zM18,22H19V23H18zM22,22H23V23H22zM23,22H24V23H23zM28,22H29V23H28zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM37,22H38V23H37zM39,22H40V23H39zM40,22H41V23H40zM41,22H42V23H41zM2,23H3V24H2zM4,23H5V24H4zM7,23H8V24H7zM9,23H10V24H9zM10,23H11V24H10zM15,23H16V24H15zM18,23H19V24H18zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM24,23H25V24H24zM25,23H26V24H25zM30,23H31V24H30zM33,23H34V24H33zM34,23H35V24H34zM35,23H36V24H35zM36,23H37V24H36zM37,23H38V24H37zM38,23H39V24H38zM39,23H40V24H39zM41,23H42V24H41zM42,23H43V24H42zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM9,24H10V25H9zM11,24H12V25H11zM16,24H17V25H16zM19,24H20V25H19zM24,24H25V25H24zM29,24H30V25H29zM34,24H35V25H34zM35,24H36V25H35zM37,24H38V25H37zM38,24H39V25H38zM4,25H5V26H4zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM13,25H14V26H13zM14,25H15V26H14zM17,25H18V26H17zM18,25H19V26H18zM20,25H21V26H20zM21,25H22V26H21zM23,25H24V26H23zM24,25H25V26H24zM25,25H26V26H25zM28,25H29V26H28zM30,25H31V26H30zM32,25H33V26H32zM33,25H34V26H33zM35,25H36V26H35zM37,25H38V26H37zM38,25H39V26H38zM39,25H40V26H39zM41,25H42V26H41zM42,25H43V26H42zM2,26H3V27H2zM3,26H4V27H3zM7,26H8V27H7zM8,26H9V27H8zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM16,26H17V27H16zM19,26H20V27H19zM20,26H21V27H20zM22,26H23V27H22zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM31,26H32V27H31zM33,26H34V27H33zM35,26H36V27H35zM37,26H38V27H37zM40,26H41V27H40zM42,26H43V27H42zM2,27H3V28H2zM4,27H5V28H4zM11,27H12V28H11zM14,27H15V28H14zM15,27H16V28H15zM17,27H18V28H17zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM30,27H31V28H30zM33,27H34V28H33zM35,27H36V28H35zM36,27H37V28H36zM38,27H39V28H38zM39,27H40V28H39zM41,27H42V28H41zM42,27H43V28H42zM3,28H4V29H3zM8,28H9V29H8zM15,28H16V29H15zM16,28H17V29H16zM19,28H20V29H19zM20,28H21V29H20zM22,28H23V29H22zM23,28H24V29H23zM29,28H30V29H29zM31,28H32V29H31zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM5,29H6V30H5zM6,29H7V30H6zM7,29H8V30H7zM11,29H12V30H11zM13,29H14V30H13zM17,29H18V30H17zM20,29H21V30H20zM23,29H24V30H23zM25,29H26V30H25zM28,29H29V30H28zM30,29H31V30H30zM33,29H34V30H33zM34,29H35V30H34zM37,29H38V30H37zM38,29H39V30H38zM39,29H40V30H39zM42,29H43V30H42zM3,30H4V31H3zM4,30H5V31H4zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM10,30H11V31H10zM15,30H16V31H15zM16,30H17V31H16zM18,30H19V31H18zM19,30H20V31H19zM20,30H21V31H20zM22,30H23V31H22zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM34,30H35V31H34zM39,30H40V31H39zM40,30H41V31H40zM41,30H42V31H41zM2,31H3V32H2zM3,31H4V32H3zM7,31H8V32H7zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM13,31H14V32H13zM14,31H15V32H14zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM23,31H24V32H23zM31,31H32V32H31zM32,31H33V32H32zM33,31H34V32H33zM34,31H35V32H34zM36,31H37V32H36zM37,31H38V32H37zM38,31H39V32H38zM39,31H40V32H39zM40,31H41V32H40zM42,31H43V32H42zM2,32H3V33H2zM5,32H6V33H5zM7,32H8V33H7zM8,32H9V33H8zM11,32H12V33H11zM13,32H14V33H13zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM20,32H21V33H20zM22,32H23V33H22zM23,32H24V33H23zM25,32H26V33H25zM26,32H27V33H26zM27,32H28V33H27zM29,32H30V33H29zM31,32H32V33H31zM35,32H36V33H35zM36,32H37V33H36zM37,32H38V33H37zM39,32H40V33H39zM41,32H42V33H41zM2,33H3V34H2zM4,33H5V34H4zM13,33H14V34H13zM14,33H15V34H14zM17,33H18V34H17zM23,33H24V34H23zM25,33H26V34H25zM28,33H29V34H28zM35,33H36V34H35zM36,33H37V34H36zM37,33H38V34H37zM41,33H42V34H41zM2,34H3V35H2zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM13,34H14V35H13zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM24,34H25V35H24zM25,34H26V35H25zM27,34H28V35H27zM28,34H29V35H28zM29,34H30V35H29zM31,34H32V35H31zM32,34H33V35H32zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM40,34H41V35H40zM41,34H42V35H41zM10,35H11V36H10zM11,35H12V36H11zM12,35H13V36H12zM13,35H14V36H13zM14,35H15V36H14zM16,35H17V36H16zM17,35H18V36H17zM20,35H21V36H20zM21,35H22V36H21zM22,35H23V36H22zM25,35H26V36H25zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM38,35H39V36H38zM41,35H42V36H41zM42,35H43V36H42zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM12,36H13V37H12zM13,36H14V37H13zM14,36H15V37H14zM18,36H19V37H18zM20,36H21V37H20zM24,36H25V37H24zM29,36H30V37H29zM30,36H31V37H30zM32,36H33V37H32zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM11,37H12V38H11zM13,37H14V38H13zM14,37H15V38H14zM15,37H16V38H15zM16,37H17V38H16zM17,37H18V38H17zM26,37H27V38H26zM28,37H29V38H28zM29,37H30V38H29zM30,37H31V38H30zM32,37H33V38H32zM33,37H34V38H33zM34,37H35V38H34zM38,37H39V38H38zM41,37H42V38H41zM42,37H43V38H42zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM13,38H14V39H13zM14,38H15V39H14zM15,38H16V39H15zM20,38H21V39H20zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM24,38H25V39H24zM25,38H26V39H25zM26,38H27V39H26zM31,38H32V39H31zM32,38H33V39H32zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM39,38H40V39H39zM40,38H41V39H40zM42,38H43V39H42zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM17,39H18V40H17zM18,39H19V40H18zM21,39H22V40H21zM22,39H23V40H22zM23,39H24V40H23zM25,39H26V40H25zM26,39H27V40H26zM27,39H28V40H27zM28,39H29V40H28zM30,39H31V40H30zM33,39H34V40H33zM34,39H35V40H34zM35,39H36V40H35zM37,39H38V40H37zM40,39H41V40H40zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM10,40H11V41H10zM12,40H13V41H12zM15,40H16V41H15zM16,40H17V41H16zM17,40H18V41H17zM19,40H20V41H19zM22,40H23V41H22zM26,40H27V41H26zM27,40H28V41H27zM28,40H29V41H28zM29,40H30V41H29zM30,40H31V41H30zM33,40H34V41H33zM34,40H35V41H34zM35,40H36V41H35zM36,40H37V41H36zM37,40H38V41H37zM38,40H39V41H38zM2,41H3V42H2zM8,41H9V42H8zM11,41H12V42H11zM12,41H13V42H12zM13,41H14V42H13zM15,41H16V42H15zM18,41H19V42H18zM22,41H23V42H22zM23,41H24V42H23zM29,41H30V42H29zM30,41H31V42H30zM34,41H35V42H34zM35,41H36V42H35zM38,41H39V42H38zM39,41H40V42H39zM41,41H42V42H41zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM12,42H13V43H12zM13,42H14V43H13zM15,42H16V43H15zM16,42H17V43H16zM18,42H19V43H18zM19,42H20V43H19zM20,42H21V43H20zM24,42H25V43H24zM25,42H26V43H25zM26,42H27V43H26zM27,42H28V43H27zM28,42H29V43H28zM29,42H30V43H29zM31,42H32V43H31zM32,42H33V43H32zM33,42H34V43H33zM36,42H37V43H36zM37,42H38V43H37zM38,42H39V43H38zM40,42H41V43H40z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div><div class="qr-block__caption">이 자료 다시 보기<br>광교바른내과 · 의료진 참고자료</div></div></div>
+<div class="v2-tip"><span class="v2-tip__t">논문 결과는 환자 특성과 최신 지침에 맞춰 해석합니다.</span><span class="hq-source">근거 · Nature Medicine 2026 · EASO 2026 update · SURMOUNT-5 NEJM 2025</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">13 / 13</div>
+</section>
 </body>
 </html>

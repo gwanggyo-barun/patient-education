@@ -21,807 +21,174 @@
   <link rel="stylesheet" href="../../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
 
-  <style>
-    .slide__bg-num { display: none !important; }
-
-    .pattern-stats3 { display: flex; flex-direction: column; gap: var(--space-6); height: 100%; }
-    .stats3-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-5); align-items: center; }
-    .stats3-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
-    .stats3-cell__circle { width: 220px; height: 220px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-canvas); text-align: center; }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__circle--good { background: linear-gradient(135deg, var(--color-success), var(--color-success)); }
-    .stats3-cell__num { font-size: 2.4rem; font-weight: var(--weight-black); line-height: 1.05; letter-spacing: var(--tracking-tight); }
-    .stats3-cell__num small { display: block; font-size: 1.05rem; font-weight: var(--weight-540); margin-top: 6px; opacity: 0.88; }
-    .stats3-cell__label { font-size: var(--text-body-lg); font-weight: var(--weight-540); color: var(--color-navy); text-align: center; max-width: 280px; line-height: var(--lh-snug); }
-    .stats3-note { padding: var(--space-5) var(--space-6); background: var(--color-canvas-warm); border-left: 4px solid var(--color-steel); border-radius: var(--radius-lg); font-size: var(--text-body-lg); color: var(--color-ink); line-height: var(--lh-relaxed); }
-    .stats3-note--good { border-left-color: var(--color-success); background: var(--color-success-bg); }
-
-    .pattern-table { display: flex; flex-direction: column; gap: var(--space-3); }
-    .tbl-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.6fr; gap: var(--space-4); align-items: center; padding: var(--space-3) var(--space-5); background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
-    .tbl-row--head { background: var(--color-navy); color: var(--color-canvas); border-color: var(--color-navy); font-weight: var(--weight-bold); }
-    .tbl-row--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tbl-row--neutral { background: var(--color-canvas-warm); }
-    .tbl__label { font-weight: var(--weight-bold); color: var(--color-navy); font-size: var(--text-body-lg); }
-    .tbl-row--head .tbl__label { color: var(--color-canvas); font-size: var(--text-body); }
-    .tbl__num { font-size: var(--text-body-lg); font-weight: var(--weight-black); color: var(--color-steel); text-align: center; letter-spacing: var(--tracking-tight); }
-    .tbl-row--head .tbl__num { color: var(--color-canvas); font-size: var(--text-body); font-weight: var(--weight-bold); }
-    .tbl-row--good .tbl__num { color: var(--color-success); }
-    .tbl__note { font-size: var(--text-body); color: var(--color-ink-soft); line-height: var(--lh-snug); }
-    .tbl-row--head .tbl__note { color: var(--color-canvas); opacity: 0.92; }
-
-    .pattern-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); height: 100%; }
-    .split__heading { font-size: var(--text-h3); font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: var(--space-4); }
-    .split__list { list-style: none; padding: 0; }
-    .split__list li { padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-body-lg); line-height: var(--lh-snug); }
-    .split__list li:last-child { border-bottom: 0; }
-    .split__list li strong { color: var(--color-navy); }
-    .split__note { margin-top: var(--space-4); padding: var(--space-4); background: var(--color-success-bg); border-left: 4px solid var(--color-success); border-radius: var(--radius-md); font-size: var(--text-body); line-height: var(--lh-relaxed); }
-    .split__note--warn { background: var(--color-warning-bg); border-left-color: var(--color-warning); }
-
-    .metric-stack { display: flex; flex-direction: column; gap: var(--space-3); }
-    .metric-card { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); border-left: 4px solid var(--color-steel); }
-    .metric-card--good { border-left-color: var(--color-success); }
-    .metric-card--alt { border-left-color: var(--color-navy); }
-    .metric-card__label { font-size: 0.95rem; color: var(--color-ink-soft); font-weight: var(--weight-540); }
-    .metric-card__value { font-size: 1.9rem; font-weight: var(--weight-black); color: var(--color-navy); line-height: 1.05; margin-top: 4px; letter-spacing: var(--tracking-tight); }
-    .metric-card__value small { display: inline-block; font-size: 0.95rem; font-weight: var(--weight-540); margin-left: 6px; color: var(--color-steel); }
-    .metric-card__hint { font-size: 0.88rem; color: var(--color-ink-soft); margin-top: 6px; line-height: var(--lh-snug); }
-
-    .pattern-grid { display: grid; gap: var(--space-4); height: 100%; }
-    .pattern-grid--3 { grid-template-columns: 1fr 1fr 1fr; grid-auto-rows: 1fr; }
-    .pattern-grid--2 { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
-    .tile { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
-    .tile__index { font-size: 0.78rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.05em; text-transform: uppercase; }
-    .tile__title { font-size: var(--text-h4); font-weight: var(--weight-bold); color: var(--color-navy); line-height: var(--lh-snug); }
-    .tile__body { font-size: var(--text-body); color: var(--color-ink); line-height: var(--lh-relaxed); }
-    .tile--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tile--good .tile__title { color: var(--color-success); }
-    .tile--warn { background: var(--color-warning-bg); border-color: var(--color-warning); }
-    .tile--warn .tile__title { color: var(--color-warning); }
-
-    .pattern-timeline { display: grid; grid-template-columns: repeat(4, 1fr); --timeline-gap: var(--space-3); height: 100%; align-items: stretch; }
-    .timeline-step { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
-    .timeline-step--alt { background: var(--color-success-bg); border-color: var(--color-success); }
-    .timeline-step__num { font-size: 1.6rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; }
-    .timeline-step--alt .timeline-step__num { color: var(--color-success); }
-    .timeline-step__when { font-size: 0.85rem; font-weight: var(--weight-bold); color: var(--color-navy); letter-spacing: 0.05em; text-transform: uppercase; }
-    .timeline-step__title { font-size: 1.05rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: var(--lh-snug); }
-    .timeline-step__body { font-size: 0.92rem; color: var(--color-ink); line-height: var(--lh-snug); }
-
-    .pattern-checklist { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-6); }
-    .check-item { display: flex; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-body-lg); align-items: flex-start; line-height: var(--lh-snug); }
-    .check-item__icon { color: var(--color-success); font-weight: var(--weight-black); flex-shrink: 0; font-size: 1.3em; line-height: 1; min-width: 22px; }
-    .check-item__icon--warn { color: var(--color-warning); }
-    .check-item__text strong { color: var(--color-navy); }
-
-    .takehome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); height: 100%; }
-    .takehome-card { background: var(--color-navy); color: var(--color-canvas); padding: var(--space-5); border-radius: var(--radius-lg); display: flex; gap: var(--space-4); align-items: flex-start; }
-    .takehome-card__num { font-size: 2.6rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; flex-shrink: 0; min-width: 50px; }
-    .takehome-card__text { font-size: var(--text-body-lg); line-height: var(--lh-snug); font-weight: var(--weight-540); }
-    .takehome-card__text strong { color: var(--color-steel); }
-
-    .ai-visual { width: 100%; height: 100%; background: var(--color-canvas); border-radius: var(--radius-lg); overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 0; border: 1px solid var(--color-border); position: relative; }
-    .ai-visual img { width: 100%; height: 100%; object-fit: contain; display: block; }
-
-    .bg-image-split { display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-5); height: 100%; }
-    .bg-image-split__visual { display: flex; flex-direction: column; gap: var(--space-3); }
-    .bg-image-split__visual .ai-visual { flex: 1; min-height: 0; }
-    .bg-image-split__caption { padding: var(--space-3) var(--space-4); background: var(--color-canvas-warm); border-left: 4px solid var(--color-navy); border-radius: var(--radius-md); font-size: 0.92rem; line-height: var(--lh-snug); color: var(--color-ink); }
-    .bg-image-split__caption strong { color: var(--color-navy); }
-
-    .stars { color: var(--color-warning); letter-spacing: 0.12em; font-size: 1.25em; }
-
-    .slide--closing .slide__body { display: flex; flex-direction: column; gap: var(--space-5); }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(3) .split__list li { padding: 7px 0; font-size: 1rem; line-height: 1.24; }
-    .slide:nth-of-type(3) .split__note { margin-top: 8px; padding: 9px 12px; font-size: 0.9rem; line-height: 1.24; max-height: none; }
-    .slide:nth-of-type(5) .pattern-table { height: 100%; justify-content: space-between; }
-    .slide:nth-of-type(5) .tbl-row { min-height: 66px; padding-top: 6px; padding-bottom: 6px; }
-    .slide:nth-of-type(10) .pattern-split { align-items: stretch; }
-    .slide:nth-of-type(10) .pattern-split > div { display: flex; flex-direction: column; min-height: 100%; }
-    .slide:nth-of-type(10) .split__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .slide:nth-of-type(10) .split__note { margin-top: auto; }
-  </style>
+    <link rel="stylesheet" href="../../../../shared/deck-look-v2.css">
+<style>
+/* HQ5L 2026-09-27: SKILL.md 393-409, 423-473, 484-551, 618-711. */
+body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+section.slide--v2{margin:0 auto 28px}
+.v2-tip{justify-content:space-between;gap:14px}
+.v2-tip__t{flex:1 1 auto;font-size:14px;line-height:1.35}
+.hq-source{flex:0 1 54%;font-size:12px;line-height:1.25;color:var(--v2-muted);text-align:right;white-space:normal}
+.hq-card{display:flex;flex-direction:column;justify-content:center;padding:20px 25px;overflow:hidden}
+.hq-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+.hq-card__when{display:inline-block;width:max-content;margin-bottom:7px;padding:4px 10px;border-radius:999px;background:var(--v2-chip-accent);color:var(--v2-navy);font-size:15.5px;font-weight:700;line-height:1.2}
+.hq-card__head{font-size:19px;font-weight:750;line-height:1.32;color:var(--v2-navy);word-break:keep-all;margin-bottom:9px}
+.hq-card__line{font-size:16px;line-height:1.4;color:var(--v2-body);word-break:keep-all;text-wrap:balance;margin:1px 0}
+.hq-card__line b{color:var(--v2-navy)}
+.hq-card--accent .hq-card__head{color:var(--v2-accent)}
+.hq-card--compact{padding:14px 18px}
+.hq-card--compact .hq-card__head{font-size:17px;margin-bottom:5px}
+.hq-card--compact .hq-card__line{font-size:15.2px;line-height:1.33}
+.hq-card--tiny .hq-card__line{font-size:16px;line-height:1.35}
+.hq-copy{padding:22px 25px;display:flex;align-items:center}
+.hq-copy__body{font-size:16px;line-height:1.43;word-break:keep-all;text-wrap:balance;color:var(--v2-body);margin:0}
+.hq-copy--dense .hq-copy__body{columns:2;column-gap:22px;font-size:15.8px;line-height:1.38}
+.hq-figure{padding:0;border:0;background:transparent;box-shadow:none;overflow:hidden}
+.hq-figure::before{content:none}
+.hq-figure img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+.hq-caption{display:flex;align-items:center;justify-content:center;padding:7px 15px;font-size:15.5px;line-height:1.35;color:var(--v2-body);text-align:center}
+.hq-closing{display:flex;flex-direction:column;justify-content:space-evenly}
+.hq-closing .hq-card__line{font-size:17px}
+.hq-qr{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hq-qr .qr-block{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.hq-qr .qr-block__code{width:148px;height:148px}
+.hq-qr .qr-block__code svg,.hq-qr .qr-block__code img,.hq-qr .qr-block__code canvas{width:148px!important;height:148px!important}
+.hq-qr .qr-block__caption{font-size:16px;line-height:1.45;text-align:center}
+.hq-table{position:absolute;left:64px;top:206px;width:1152px;table-layout:fixed}
+.hq-table th,.hq-table td{font-size:16px;line-height:1.38;word-break:keep-all;padding:10px 17px}
+.hq-table thead th{font-size:16px}
+.hq-table tbody th{width:270px;font-size:17px}
+.hq-table--four th,.hq-table--four td{font-size:16px;padding:8px 10px}
+.hq-table--four tbody th{width:auto;font-size:16px}
+.hq-table--bar{width:760px}
+.hq-table--bar th,.hq-table--bar td{font-size:15px}
+.hq-table--illustrated th,.hq-table--illustrated td{font-size:16px;line-height:1.35;padding:6px 8px}
+.hq-table tfoot td{font-size:16px;line-height:1.35;background:var(--v2-chip-accent)}
+.slide--v2:nth-of-type(9) .hq-table--illustrated{width:840px!important}
+.slide--v2:nth-of-type(9) .hq-table--illustrated th,.slide--v2:nth-of-type(9) .hq-table--illustrated td{font-size:15.5px;line-height:1.3;padding:5px 7px}
+.slide--v2:nth-of-type(9) .hq-figure{left:940px!important;width:276px!important;height:155px!important}
+.slide--v2:nth-of-type(9) .hq-caption{left:940px!important;top:373px!important;width:276px!important;height:120px!important}
+</style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- SLIDE 01 · COVER -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PAPER REVIEW</strong> · ENDOCRINOLOGY · CARDIOLOGY</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">SGLT-2i + GLP-1RA 병용,<br><em>심혈관·신장 30% 개선</em></h1>
-      <p class="slide__subtitle">Cardiovascular Diabetology 메타분석 — 18 코호트, 100만+ 명. 제2형 당뇨에서 단독 대비 MACE·중대 신장 사건·전체 사망 일관 감소. ASCVD·CKD·HF 동반 시 병용 권고 update.</p>
+      <p class="slide__subtitle">Cardiovascular Diabetology 메타분석 — 18 코호트, 100만+ 명. 제2형 당뇨에서 단독 대비 MACE·중대 신장 사건·전체 사망 일관 감소. ASCVD·CKD·HF 동반 시 병용 권고&nbsp;update.</p>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">Cardiovascular Diabetology 2026 · 18 cohort meta-analysis · &gt;1M T2DM patients</span>
-      <span class="slide__page"><span class="stars">★★★★★</span></span>
+      <span class="slide__page">01 / 12</span></span>
     </footer>
   </section>
-
-  <!-- SLIDE 02 · TL;DR (3 hard numbers) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>TL;DR</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한 문단·세 숫자로 요약</h2>
-      <p class="slide__subtitle">SGLT-2i + GLP-1RA 병용은 단독 대비 심혈관·신장 결과를 추가로 개선 — 시너지 근거</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--good">
-              <div class="stats3-cell__num">−30<small>% MACE</small></div>
-            </div>
-            <div class="stats3-cell__label">주요 심혈관 사건<br>(단독 대비 HR ~0.70)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">−30<small>% 신장</small></div>
-            </div>
-            <div class="stats3-cell__label">중대 신장 사건<br>(ESRD·alb 진행·creat 2배)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">−20<small>% 사망</small></div>
-            </div>
-            <div class="stats3-cell__label">전체 사망<br>(단독 대비, 일관성 ↑)</div>
-          </div>
-        </div>
-        <div class="stats3-note stats3-note--good">
-          <strong>핵심 메시지 — </strong>ADA 2024·KDA 2023 가이드라인은 ASCVD·HFpEF/HFrEF·CKD 동반 T2DM에 SGLT-2i <em>또는</em> GLP-1RA 우선 권고. 본 메타분석은 "둘 다 쓰면?"이라는 임상 질문에 답한다. <strong>병용 시 MACE·신장 30%·사망 20% 추가 감소</strong>, HbA1c·체중·혈압 모두 단독 대비 추가 개선. Metformin + 둘 다 → 3제 표준 진료 update 근거.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Cardiovascular Diabetology meta-analysis 2026 · 1차 endpoint</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 03 · BACKGROUND (image + split) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>BACKGROUND</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">왜 병용을 묻는가</h2>
-      <p class="slide__subtitle">SGLT-2i와 GLP-1RA는 작용 기전이 다르고 보호 효과도 다른 장기에 집중 — 상호보완 가설</p>
-    </div>
-    <div class="slide__body">
-      <div class="bg-image-split">
-        <div class="bg-image-split__visual">
-          <figure class="ai-visual" style="min-height: 420px;">
-            <img src="../../../../shared/assets/generated/sglt2-glp1-triangle-20260524.png" alt="심장·신장·대사 보호 — SGLT-2i + GLP-1RA 병용">
-          </figure>
-          <div class="bg-image-split__caption">
-            <strong>3장기 동시 보호 모델 — </strong>심장(MACE·HF), 신장(eGFR·alb), 대사(체중·HbA1c·혈압). 단독으로도 효과 있지만 작용점·효과 분포가 달라 병용 시 시너지 — 본 메타분석의 핵심 가설.
-          </div>
-        </div>
-        <div>
-          <h3 class="split__heading">두 약물의 상호보완성</h3>
-          <ul class="split__list">
-            <li><strong>SGLT-2i</strong> — 신장 (proximal tubule) 작용 · 혈량 ↓ · 신장·HF 보호 최강</li>
-            <li><strong>GLP-1RA</strong> — incretin 경로 · 체중·HbA1c·죽상경화 · ASCVD 보호 최강</li>
-            <li><strong>대사 시너지</strong> — HbA1c 추가 감소, 체중 추가 감량, 혈압 추가 강하</li>
-            <li><strong>저혈당 위험 낮음</strong> — 두 약 모두 저혈당 거의 X (인슐린 분비 비의존)</li>
-            <li><strong>가이드라인 권고</strong> — 단독 권고만 명시, 병용은 실무 영역</li>
-            <li><strong>본 연구 동기</strong> — 임상 현장 병용 처방 증가에 대한 근거 정립 필요</li>
-          </ul>
-          <div class="split__note">
-            ⭐ <strong>임상적 함의 — </strong>둘 다 OK인 환자에서 "한쪽만 vs 둘 다"의 답이 그동안 모호. 본 메타분석으로 <em>병용이 더 좋다</em>가 확인됨.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">ADA 2024 Standards of Care · KDA 2023 진료지침 · EMPA-REG·LEADER·DAPA-CKD 단독 trial 근거</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 04 · STUDY DESIGN -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>STUDY DESIGN</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">메타분석 — 18 코호트, 100만+ 명</h2>
-      <p class="slide__subtitle">Real-world cohort 메타분석. RCT보다 인과성 약하지만 일반화 가능성·외적 타당도 ↑</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>설계</strong> Systematic review + meta-analysis (real-world cohorts) — PRISMA 가이드라인 준수</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>대상</strong> 18개 cohort (북미·EU·아시아 일부) · 제2형 당뇨 환자 1,000,000+ 명</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>중재 비교</strong> ① SGLT-2i + GLP-1RA 병용 ② SGLT-2i 단독 ③ GLP-1RA 단독</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>1차 endpoint</strong> MACE (심근경색·뇌졸중·심혈관 사망) · 중대 신장 사건 (ESRD·creat 2배·신부전 사망)</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>2차 endpoint</strong> 전체 사망 · 심부전 입원 · HbA1c · 체중 · 혈압 · 알부민뇨</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>보정</strong> Propensity score matching · multivariable regression · age·BMI·HbA1c·CKD stage·HF·ASCVD</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>이질성</strong> I² statistic + sensitivity analysis (cohort별·국가별·약제별 subgroup)</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>한계 인지</strong> 관찰연구 → 잔여 confounding 가능, RCT 인과성 추론 한계</div></div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Cardiovascular Diabetology 2026 · 18 cohorts · &gt;1M T2DM patients</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 05 · EFFICACY 1 — Cardiovascular & Renal -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>EFFICACY ①</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">심혈관·신장 결과 — 단독 대비 30% 추가 개선</h2>
-      <p class="slide__subtitle">병용군이 모든 endpoint에서 일관된 추가 이득 — 우연 일치 가능성 낮음 (heterogeneity 낮음)</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-table">
-        <div class="tbl-row tbl-row--head">
-          <div class="tbl__label">Endpoint</div>
-          <div class="tbl__num">HR (병용 vs 단독)</div>
-          <div class="tbl__num">절대 감소</div>
-          <div class="tbl__note">임상 의의</div>
-        </div>
-        <div class="tbl-row tbl-row--good">
-          <div class="tbl__label">🫀 MACE (3-point)</div>
-          <div class="tbl__num">0.70 (0.65–0.75)</div>
-          <div class="tbl__num">−30%</div>
-          <div class="tbl__note">심근경색·뇌졸중·심혈관 사망 종합. 단독 대비 큰 폭 감소</div>
-        </div>
-        <div class="tbl-row tbl-row--good">
-          <div class="tbl__label">🩺 심부전 입원</div>
-          <div class="tbl__num">0.65–0.75</div>
-          <div class="tbl__num">−25~35%</div>
-          <div class="tbl__note">HFpEF·HFrEF 모두 효과. SGLT-2i 단독 효과 + GLP-1RA 추가</div>
-        </div>
-        <div class="tbl-row tbl-row--good">
-          <div class="tbl__label">🩺 중대 신장 사건</div>
-          <div class="tbl__num">0.65–0.70</div>
-          <div class="tbl__num">−30~35%</div>
-          <div class="tbl__note">ESRD·creat 2배·신부전 사망. CKD 동반 시 가장 큰 이득</div>
-        </div>
-        <div class="tbl-row tbl-row--good">
-          <div class="tbl__label">⚰️ 전체 사망</div>
-          <div class="tbl__num">~0.80</div>
-          <div class="tbl__num">−20%</div>
-          <div class="tbl__note">모든 원인 사망 — 가장 강력한 임상 endpoint</div>
-        </div>
-      </div>
-      <div class="stats3-note stats3-note--good" style="margin-top: var(--space-4);">
-        <strong>NNT 추정 — </strong>5년 MACE 예방 NNT 약 25명 (병용 vs 단독). 다른 만성질환 예방 약물(스타틴·아스피린) 대비 매우 효율적. 비용 대비 효과 분석에 강점.
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Comparison">
-        <img src="../../../../shared/assets/generated/general-papers-20260524-sglt2-glp1-combo-s05-comparison-metabolic-2a7aafec-20260530-raster-20260531.jpg" alt="심혈관·신장 결과 — 단독 대비 30% 추가 개선 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">Cardiovascular Diabetology meta-analysis · 1차 endpoint · 5년 추적 평균</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 06 · EFFICACY 2 — Metabolic -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>EFFICACY ②</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">대사 결과 — HbA1c·체중·혈압 모두 추가 개선</h2>
-      <p class="slide__subtitle">병용 시 단독 대비 모든 대사 지표 추가 강하 — 비만·고혈압 동반 T2DM에 최적</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--good">
-          <div class="tile__index">METABOLIC · 01</div>
-          <h3 class="tile__title">📊 HbA1c</h3>
-          <p class="tile__body">병용 시 단독 대비 추가 <strong>−0.5 ~ −0.8%</strong>. 기존 metformin + 한 약 → 둘 추가로 평균 −1% 추가 도달. 미달성 환자에 강력한 옵션.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">METABOLIC · 02</div>
-          <h3 class="tile__title">⚖️ 체중</h3>
-          <p class="tile__body">병용 시 단독 대비 추가 <strong>−2 ~ −4 kg</strong>. GLP-1RA 단독 −5kg + SGLT-2i 추가로 합산 −7~9kg 가능. 비만 T2DM에 임상적 의미 큼.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">METABOLIC · 03</div>
-          <h3 class="tile__title">💉 수축기혈압</h3>
-          <p class="tile__body">병용 시 단독 대비 추가 <strong>−3 ~ −5 mmHg</strong>. RAAS 약제와 독립 효과. 고혈압 동반 환자에서 강압제 용량 감량 가능.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">METABOLIC · 04</div>
-          <h3 class="tile__title">🩺 알부민뇨</h3>
-          <p class="tile__body">uACR 유의 감소 (병용 시 더 큼). uACR &gt;30 환자에서 신장 진행 차단 효과. CKD 동반 T2DM에 최대 이득.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Cardiovascular Diabetology · 2차 endpoint · subgroup 메타분석</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 07 · MECHANISM SYNERGY (split) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>MECHANISM SYNERGY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">두 약물 시너지 기전</h2>
-      <p class="slide__subtitle">서로 다른 작용점·표적 장기 → 합산 효과 + 일부 시너지 (1+1 = 2.5)</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-split">
-        <div>
-          <h3 class="split__heading">🫀 SGLT-2i 핵심 기전</h3>
-          <ul class="split__list">
-            <li><strong>위치</strong> — 신장 근위세뇨관 (proximal tubule)</li>
-            <li><strong>작용</strong> — Glucose·Na 재흡수 차단 → glycosuria + 혈량 감소</li>
-            <li><strong>심장</strong> — Preload·afterload 감소 + 케톤체 대사로 심근 에너지 효율 ↑</li>
-            <li><strong>신장</strong> — Tubuloglomerular feedback 정상화 → hyperfiltration 해소</li>
-            <li><strong>대표 약</strong> — empagliflozin · dapagliflozin · 한국 보험 적용</li>
-          </ul>
-          <div class="split__note">
-            ⭐ <strong>강점 — </strong>심부전 예방·신장 보호 효과 가장 큰 약. EMPA-REG·DAPA-HF·DAPA-CKD trial 근거 견고.
-          </div>
-        </div>
-        <div>
-          <h3 class="split__heading">💉 GLP-1RA 핵심 기전</h3>
-          <ul class="split__list">
-            <li><strong>위치</strong> — 췌장 β-세포 + 뇌·위장관·심장</li>
-            <li><strong>작용</strong> — Glucose-dependent insulin 분비 + glucagon 억제</li>
-            <li><strong>체중</strong> — 위 배출 지연 + 중추 식욕 억제 → 체중 감량 5–15%</li>
-            <li><strong>혈관</strong> — 죽상경화 진행 억제 (LEADER·SUSTAIN-6 근거)</li>
-            <li><strong>대표 약</strong> — semaglutide (Ozempic·Wegovy) · liraglutide · tirzepatide (GIP/GLP-1)</li>
-          </ul>
-          <div class="split__note">
-            ⭐ <strong>강점 — </strong>ASCVD 예방·체중·HbA1c 동시 강하. 비만 T2DM·심혈관 질환자 1순위.
-          </div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Mechanism">
-        <img src="../../../../shared/assets/generated/general-papers-20260524-sglt2-glp1-combo-s07-mechanism-metabolic-465201fa-20260530-raster-20260531.jpg" alt="두 약물 시너지 기전 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">EMPA-REG OUTCOME · LEADER · SUSTAIN-6 · DAPA-CKD · DAPA-HF trial pharmacology</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 08 · SUBGROUP — Best candidates -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>SUBGROUP</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">병용 효과가 큰 4가지 환자군</h2>
-      <p class="slide__subtitle">ASCVD·CKD·HF·고도비만 동반 T2DM — 모든 군에서 일관된 큰 이득</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--good">
-          <div class="tile__index">SUBGROUP · 01 · 최대 이득</div>
-          <h3 class="tile__title">🫀 ASCVD 동반</h3>
-          <p class="tile__body">관상동맥질환·뇌졸중·말초혈관질환 병력. <strong>MACE 감소 효과 가장 큼</strong>. GLP-1RA의 죽상경화 보호 + SGLT-2i의 심장 보호 시너지.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">SUBGROUP · 02 · 신장 보호</div>
-          <h3 class="tile__title">🩺 CKD (eGFR 30–60)</h3>
-          <p class="tile__body">알부민뇨 동반 CKD G3a-G3b. <strong>신장 사건 −35% 가장 큰 폭</strong>. SGLT-2i 단독 vs 병용 차이 명확.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">SUBGROUP · 03 · HF 보호</div>
-          <h3 class="tile__title">💗 심부전 (HFpEF·HFrEF)</h3>
-          <p class="tile__body">EF 무관 — preserved·reduced 모두. <strong>HF 입원 −30%</strong>. SGLT-2i의 강력한 HF 효과 + GLP-1RA 부가 효과.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">SUBGROUP · 04 · 비만·대사</div>
-          <h3 class="tile__title">⚖️ BMI ≥35 + HbA1c ≥8%</h3>
-          <p class="tile__body">고도비만·미조절 당뇨. <strong>체중 −7~9 kg + HbA1c −1.5~2%</strong>. GLP-1RA 우월 + SGLT-2i 추가 강하.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Cardiovascular Diabetology subgroup analysis · ADA·KDA 권고 적응증</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 09 · SAFETY -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>SAFETY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">안전성 — 단독과 거의 동일</h2>
-      <p class="slide__subtitle">병용 시 부작용 추가 증가 거의 없음. 두 약 부작용 프로필 합산 수준 — 저혈당 위험 ↑ 없음</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-table">
-        <div class="tbl-row tbl-row--head">
-          <div class="tbl__label">부작용</div>
-          <div class="tbl__num">병용 vs 단독</div>
-          <div class="tbl__num">빈도</div>
-          <div class="tbl__note">기전·관리</div>
-        </div>
-        <div class="tbl-row tbl-row--good">
-          <div class="tbl__label">⚠️ 저혈당</div>
-          <div class="tbl__num">차이 없음</div>
-          <div class="tbl__num">&lt;2%</div>
-          <div class="tbl__note">두 약 모두 글루코스 의존 — 저혈당 위험 매우 낮음. 인슐린·SU 병용 시만 주의</div>
-        </div>
-        <div class="tbl-row">
-          <div class="tbl__label">⚠️ 위장관 (GLP-1RA)</div>
-          <div class="tbl__num">단독과 동일</div>
-          <div class="tbl__num">초기 20–30%</div>
-          <div class="tbl__note">오심·구토 — 시작 시·증량 시 일시적. 4–8주 적응. 저용량 시작</div>
-        </div>
-        <div class="tbl-row">
-          <div class="tbl__label">⚠️ 비뇨생식기 감염 (SGLT-2i)</div>
-          <div class="tbl__num">단독과 동일</div>
-          <div class="tbl__num">5–10%</div>
-          <div class="tbl__note">진균성 외음부염·요로감염. 위생 안내 + 재발 시 약 교체 검토</div>
-        </div>
-        <div class="tbl-row">
-          <div class="tbl__label">⚠️ DKA (SGLT-2i)</div>
-          <div class="tbl__num">단독과 동일</div>
-          <div class="tbl__num">희귀</div>
-          <div class="tbl__note">Euglycemic DKA. 수술·금식·중증 감염 시 일시 중단. 환자 인지 교육 필수</div>
-        </div>
-        <div class="tbl-row">
-          <div class="tbl__label">⚠️ 췌장염 (GLP-1RA)</div>
-          <div class="tbl__num">단독과 동일</div>
-          <div class="tbl__num">희귀</div>
-          <div class="tbl__note">신호 약함. 급성 췌장염 병력 환자 회피. 복통 호소 시 즉시 평가</div>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Risk">
-        <img src="../../../../shared/assets/generated/general-papers-20260524-sglt2-glp1-combo-s09-risk-metabolic-7cb276dd-20260530-raster-20260531.jpg" alt="안전성 — 단독과 거의 동일 설명 이미지">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">Cardiovascular Diabetology safety analysis · FDA labeling · 한국 식약처 허가사항</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 10 · WHO TO COMBINE -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>WHO TO COMBINE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">병용 1순위 환자 + 한국 보험 적용</h2>
-      <p class="slide__subtitle">ASCVD·CKD·HF·비만 동반 T2DM. 한국에서 두 약 동시 인정 여부는 약제별 확인 필요.</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div>
-          <h3 class="split__heading">🎯 병용 1순위 (강한 권고)</h3>
-          <ul class="split__list">
-            <li><strong>ASCVD 동반 T2DM</strong> — 관상동맥·뇌졸중·말초혈관질환 병력</li>
-            <li><strong>CKD eGFR 30–60</strong> — uACR &gt;30 동반 시 더 강력 권고</li>
-            <li><strong>HF (HFpEF·HFrEF)</strong> — EF 무관, NYHA II-IV</li>
-            <li><strong>비만 + 미조절</strong> — BMI ≥35 + HbA1c ≥8%</li>
-            <li><strong>다발성 위험</strong> — 위 4가지 중 2+ 동반 시 강력 권고</li>
-          </ul>
-          <div class="split__note">
-            ⭐ <strong>실무 — </strong>Metformin + 둘 다 = 새로운 표준. SU·DPP-4i 대체 검토 가능.
-          </div>
-        </div>
-        <div>
-          <h3 class="split__heading">🇰🇷 한국 보험·실무</h3>
-          <ul class="split__list">
-            <li><strong>SGLT-2i 단독</strong> — HbA1c ≥7% + metformin 실패 시 급여</li>
-            <li><strong>GLP-1RA 단독</strong> — 보험 적용 좁음 (BMI·HbA1c 기준), 일부 비급여</li>
-            <li><strong>둘 다 동시 급여</strong> — 약제별 확인 필요 (HIRA 고시)</li>
-            <li><strong>본인부담</strong> — ₩10–30만/월 추정 (비급여 GLP-1RA 시 ↑)</li>
-            <li><strong>KDA 2026 update</strong> — 본 메타분석 반영 권고 예상</li>
-          </ul>
-          <div class="split__note split__note--warn">
-            ⚠️ <strong>주의 — </strong>비용·순응도 부담 큰 환자에서 우선순위 정하기: ASCVD 우선이면 GLP-1RA, CKD·HF 우선이면 SGLT-2i 먼저.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">ADA 2024 · KDA 2023 · HIRA 약제급여 고시 · KDA 2026 update 예상</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 11 · HOW TO START (timeline) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>HOW TO START</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">단계적 추가 전략 4단계</h2>
-      <p class="slide__subtitle">기존 약 유지 + 한 약 추가 → 안정화 → 다른 약 추가. 동시 시작 X (부작용 발생 시 원인 모호)</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-timeline">
-        <div class="timeline-step timeline-step--alt">
-          <div class="timeline-step__num">1</div>
-          <div class="timeline-step__when">Week 0</div>
-          <div class="timeline-step__title">현황 평가</div>
-          <p class="timeline-step__body">HbA1c·eGFR·uACR·체중·BP. ASCVD·CKD·HF 동반 확인. 현재 약제 + 환자 선호 + 비용 안내. 우선순위 결정.</p>
-        </div>
-        <div class="timeline-step timeline-step--alt">
-          <div class="timeline-step__num">2</div>
-          <div class="timeline-step__when">Week 0–4</div>
-          <div class="timeline-step__title">첫 약 추가</div>
-          <p class="timeline-step__body">ASCVD 우선 → GLP-1RA / CKD·HF 우선 → SGLT-2i. 저용량 시작. 4주 후 부작용·효과 확인.</p>
-        </div>
-        <div class="timeline-step timeline-step--alt">
-          <div class="timeline-step__num">3</div>
-          <div class="timeline-step__when">Week 4–12</div>
-          <div class="timeline-step__title">두 번째 약 추가</div>
-          <p class="timeline-step__body">첫 약 안정화 후 다른 약 추가. SU·DPP-4i 사용 중이면 단계적 감량·중단 검토. HbA1c·체중·BP 추적.</p>
-        </div>
-        <div class="timeline-step">
-          <div class="timeline-step__num">4</div>
-          <div class="timeline-step__when">3개월~</div>
-          <div class="timeline-step__title">정기 평가</div>
-          <p class="timeline-step__body">3개월마다 HbA1c·신기능·uACR. 매년 심전도·LVH 평가. 효과 부족 시 용량 증량 또는 인슐린 추가.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">ADA 2024 step-up algorithm · KDA 2023 · Cardiovascular Diabetology 임상 적용</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 12 · TAKE-HOME -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">12 · <strong>TAKE-HOME</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">1차 진료 Take-home — 4가지 핵심</h2>
-      <p class="slide__subtitle">제2형 당뇨 진료 패턴 즉시 update 가능한 요약</p>
-    </div>
-    <div class="slide__body">
-      <div class="takehome-grid">
-        <div class="takehome-card">
-          <div class="takehome-card__num">1</div>
-          <div class="takehome-card__text">ASCVD·CKD·HF 동반 T2DM은 <strong>SGLT-2i + GLP-1RA 병용</strong> 검토 — MACE·신장 30%·사망 20% 추가 감소</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">2</div>
-          <div class="takehome-card__text">Metformin + 둘 다 = <strong>새로운 3제 표준</strong>. SU·DPP-4i 단계적 감량 검토</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">3</div>
-          <div class="takehome-card__text">단계적 추가 (4단계): 현황 평가 → 첫 약 → 안정화 → 두 번째. <strong>동시 시작 X</strong></div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">4</div>
-          <div class="takehome-card__text">한국 보험 동시 인정 약제별 확인. 비용·순응도 부담 시 <strong>ASCVD→GLP-1RA / CKD·HF→SGLT-2i</strong> 우선</div>
-        </div>
-      </div>
-      <div class="closing-grid closing-grid--qr-only">
-        <div class="qr-block">
-          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM17,2H18V3H17zM19,2H20V3H19zM20,2H21V3H20zM22,2H23V3H22zM23,2H24V3H23zM25,2H26V3H25zM29,2H30V3H29zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM13,3H14V4H13zM16,3H17V4H16zM19,3H20V4H19zM20,3H21V4H20zM21,3H22V4H21zM23,3H24V4H23zM24,3H25V4H24zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM12,4H13V5H12zM13,4H14V5H13zM16,4H17V5H16zM18,4H19V5H18zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM26,4H27V5H26zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM13,5H14V6H13zM17,5H18V6H17zM20,5H21V6H20zM21,5H22V6H21zM24,5H25V6H24zM25,5H26V6H25zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM18,6H19V7H18zM19,6H20V7H19zM23,6H24V7H23zM25,6H26V7H25zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM16,7H17V8H16zM18,7H19V8H18zM19,7H20V8H19zM21,7H22V8H21zM24,7H25V8H24zM27,7H28V8H27zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM16,9H17V10H16zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM29,9H30V10H29zM30,9H31V10H30zM2,10H3V11H2zM6,10H7V11H6zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM14,10H15V11H14zM17,10H18V11H17zM20,10H21V11H20zM21,10H22V11H21zM22,10H23V11H22zM23,10H24V11H23zM24,10H25V11H24zM26,10H27V11H26zM28,10H29V11H28zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM38,10H39V11H38zM3,11H4V12H3zM4,11H5V12H4zM6,11H7V12H6zM7,11H8V12H7zM9,11H10V12H9zM10,11H11V12H10zM12,11H13V12H12zM13,11H14V12H13zM14,11H15V12H14zM15,11H16V12H15zM16,11H17V12H16zM18,11H19V12H18zM20,11H21V12H20zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM33,11H34V12H33zM34,11H35V12H34zM37,11H38V12H37zM2,12H3V13H2zM4,12H5V13H4zM5,12H6V13H5zM8,12H9V13H8zM10,12H11V13H10zM12,12H13V13H12zM16,12H17V13H16zM18,12H19V13H18zM25,12H26V13H25zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM33,12H34V13H33zM35,12H36V13H35zM36,12H37V13H36zM2,13H3V14H2zM5,13H6V14H5zM7,13H8V14H7zM9,13H10V14H9zM11,13H12V14H11zM16,13H17V14H16zM19,13H20V14H19zM20,13H21V14H20zM21,13H22V14H21zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM33,13H34V14H33zM34,13H35V14H34zM36,13H37V14H36zM37,13H38V14H37zM4,14H5V15H4zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM11,14H12V15H11zM12,14H13V15H12zM14,14H15V15H14zM17,14H18V15H17zM19,14H20V15H19zM20,14H21V15H20zM21,14H22V15H21zM22,14H23V15H22zM23,14H24V15H23zM24,14H25V15H24zM25,14H26V15H25zM31,14H32V15H31zM32,14H33V15H32zM33,14H34V15H33zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM25,15H26V16H25zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM2,16H3V17H2zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM10,16H11V17H10zM13,16H14V17H13zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM25,16H26V17H25zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM3,17H4V18H3zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM13,17H14V18H13zM15,17H16V18H15zM16,17H17V18H16zM18,17H19V18H18zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM28,17H29V18H28zM31,17H32V18H31zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM36,17H37V18H36zM38,17H39V18H38zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM13,18H14V19H13zM14,18H15V19H14zM18,18H19V19H18zM21,18H22V19H21zM22,18H23V19H22zM23,18H24V19H23zM26,18H27V19H26zM30,18H31V19H30zM32,18H33V19H32zM33,18H34V19H33zM35,18H36V19H35zM36,18H37V19H36zM37,18H38V19H37zM3,19H4V20H3zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM10,19H11V20H10zM11,19H12V20H11zM12,19H13V20H12zM13,19H14V20H13zM14,19H15V20H14zM19,19H20V20H19zM20,19H21V20H20zM24,19H25V20H24zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM37,19H38V20H37zM2,20H3V21H2zM3,20H4V21H3zM4,20H5V21H4zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM15,20H16V21H15zM17,20H18V21H17zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM25,20H26V21H25zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM33,20H34V21H33zM34,20H35V21H34zM36,20H37V21H36zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM9,21H10V22H9zM10,21H11V22H10zM11,21H12V22H11zM14,21H15V22H14zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM22,21H23V22H22zM23,21H24V22H23zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM36,21H37V22H36zM37,21H38V22H37zM2,22H3V23H2zM4,22H5V23H4zM5,22H6V23H5zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM13,22H14V23H13zM14,22H15V23H14zM15,22H16V23H15zM16,22H17V23H16zM18,22H19V23H18zM19,22H20V23H19zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM35,22H36V23H35zM36,22H37V23H36zM4,23H5V24H4zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM11,23H12V24H11zM13,23H14V24H13zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM20,23H21V24H20zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM30,23H31V24H30zM31,23H32V24H31zM33,23H34V24H33zM34,23H35V24H34zM2,24H3V25H2zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM12,24H13V25H12zM15,24H16V25H15zM17,24H18V25H17zM19,24H20V25H19zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM29,24H30V25H29zM31,24H32V25H31zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM36,24H37V25H36zM37,24H38V25H37zM4,25H5V26H4zM6,25H7V26H6zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM28,25H29V26H28zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM36,25H37V26H36zM37,25H38V26H37zM3,26H4V27H3zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM20,26H21V27H20zM21,26H22V27H21zM22,26H23V27H22zM23,26H24V27H23zM30,26H31V27H30zM32,26H33V27H32zM35,26H36V27H35zM36,26H37V27H36zM37,26H38V27H37zM2,27H3V28H2zM9,27H10V28H9zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM18,27H19V28H18zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM31,27H32V28H31zM34,27H35V28H34zM4,28H5V29H4zM5,28H6V29H5zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM14,28H15V29H14zM15,28H16V29H15zM18,28H19V29H18zM20,28H21V29H20zM22,28H23V29H22zM25,28H26V29H25zM29,28H30V29H29zM30,28H31V29H30zM34,28H35V29H34zM35,28H36V29H35zM36,28H37V29H36zM5,29H6V30H5zM7,29H8V30H7zM10,29H11V30H10zM16,29H17V30H16zM19,29H20V30H19zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM26,29H27V30H26zM28,29H29V30H28zM36,29H37V30H36zM2,30H3V31H2zM3,30H4V31H3zM5,30H6V31H5zM8,30H9V31H8zM9,30H10V31H9zM11,30H12V31H11zM12,30H13V31H12zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM17,31H18V32H17zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM12,32H13V33H12zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM23,32H24V33H23zM25,32H26V33H25zM27,32H28V33H27zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM36,33H37V34H36zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM14,34H15V35H14zM17,34H18V35H17zM18,34H19V35H18zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM11,35H12V36H11zM15,35H16V36H15zM20,35H21V36H20zM23,35H24V36H23zM25,35H26V36H25zM28,35H29V36H28zM30,35H31V36H30zM32,35H33V36H32zM33,35H34V36H33zM35,35H36V36H35zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM11,36H12V37H11zM12,36H13V37H12zM13,36H14V37H13zM14,36H15V37H14zM15,36H16V37H15zM17,36H18V37H17zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM25,36H26V37H25zM27,36H28V37H27zM28,36H29V37H28zM31,36H32V37H31zM32,36H33V37H32zM36,36H37V37H36zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM13,37H14V38H13zM15,37H16V38H15zM17,37H18V38H17zM18,37H19V38H18zM19,37H20V38H19zM20,37H21V38H20zM21,37H22V38H21zM23,37H24V38H23zM25,37H26V38H25zM26,37H27V38H26zM28,37H29V38H28zM31,37H32V38H31zM34,37H35V38H34zM36,37H37V38H36zM37,37H38V38H37zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM13,38H14V39H13zM14,38H15V39H14zM19,38H20V39H19zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM25,38H26V39H25zM26,38H27V39H26zM33,38H34V39H33zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
-          <div class="qr-block__caption">다시 보기 — 슬라이드 링크 QR</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Cardiovascular Diabetology 2026 meta-analysis · ADA 2024 · KDA 2023 · &gt;1M T2DM cohort</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 01 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">한 문단·세 숫자로 요약</h2><p class="v2-sub">SGLT-2i + GLP-1RA 병용은 단독 대비 심혈관·신장 결과를 추가로 개선 — 시너지 근거</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">−30% MACE</div><p class="hq-card__line v2-body">주요 심혈관 사건(단독 대비 HR ~0.70)</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">−30% 신장</div><p class="hq-card__line v2-body">중대 신장 사건(ESRD·alb 진행·creat 2배)</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">−20% 사망</div><p class="hq-card__line v2-body">전체 사망(단독 대비, 일관성 ↑)</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:64px;top:416px;width:1152px;height:190px"><div class="v2-block"><div class="hq-card__head">핵심 메시지 —</div><p class="hq-card__line v2-body">ADA 2024·KDA 2023 가이드라인은 ASCVD·HFpEF/HFrEF·CKD 동반 T2DM에 SGLT-2i 또는 GLP-1RA 우선 권고. 본 메타분석은 &quot;둘 다 쓰면?&quot;이라는 임상 질문에 답한다. 병용 시 MACE·신장 30%·사망 20% 추가 감소, HbA1c·체중·혈압 모두 단독 대비 추가 개선. 메트포르민에 두 약을 병용하는 선택을 검토할 근거를 보탠다. 관찰 코호트만으로 새 표준이라 단정할 수 없다.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">한 문단·세 숫자로 요약</span><span class="hq-source">근거 · Cardiovascular Diabetology meta-analysis 2026 · 1차 endpoint</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 02 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">왜 병용을 묻는가</h2><p class="v2-sub">SGLT-2i와 GLP-1RA는 작용 기전이 다르고 보호 효과도 다른 장기에 집중 — 상호보완 가설</p>
+<div class="v2-panel hq-copy hq-copy--dense" style="left:64px;top:206px;width:748px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">3장기 동시 보호 모델 — 심장(MACE·HF), 신장(eGFR·alb), 대사(체중·HbA1c·혈압). 단독으로도 효과 있지만 작용점·효과 분포가 달라 병용 시 시너지 — 본 메타분석의 핵심 가설. · 두 약물의 상호보완성 · SGLT-2i — 신장 (proximal tubule) 작용 · 혈량 ↓ · 신장·HF 보호 최강 · GLP-1RA — incretin 경로 · 체중·HbA1c·죽상경화 · ASCVD 보호 최강 · 대사 시너지 — HbA1c 추가 감소, 체중 추가 감량, 혈압 추가 강하 · 저혈당 위험 낮음 — 두 약 단독 사용의 저혈당 위험은 낮다. GLP-1 수용체 작용제는 포도당 의존적으로 인슐린 분비를 촉진한다 · 가이드라인 권고 — 단독 권고만 명시, 병용은 실무 영역 · 본 연구 동기 — 임상 현장 병용 처방 증가에 대한 근거 정립 필요 · ⭐ 임상적 함의 — 둘 다 OK인 환자에서 &quot;한쪽만 vs 둘 다&quot;의 답이 그동안 모호. 관찰 코호트 메타분석은 병용의 유리한 연관성을 보여주지만 인과관계는 확정하지 못함.</p></div></div>
+<div class="v2-panel hq-figure" style="left:836px;top:206px;width:380px;height:280px"><img class="v2-fig__img" src="../../../../shared/assets/generated/sglt2-glp1-triangle-20260524.png" alt="심장·신장·대사 보호 — SGLT-2i + GLP-1RA 병용"></div>
+<div class="v2-panel hq-caption" style="left:836px;top:498px;width:380px;height:108px">심장·신장·대사 보호 — SGLT-2i + GLP-1RA 병용</div>
+<div class="v2-tip"><span class="v2-tip__t">왜 병용을 묻는가</span><span class="hq-source">근거 · ADA 2024 Standards of Care · KDA 2023 진료지침 · EMPA-REG·LEADER·DAPA-CKD 단독 trial 근거</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 03 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">메타분석 — 18 코호트, 100만+ 명</h2><p class="v2-sub">Real-world cohort 메타분석. RCT보다 인과성 약하지만 일반화 가능성·외적 타당도 ↑</p>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:64px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">연구 설계</div><p class="hq-card__line v2-body">Systematic review + meta-analysis (real-world cohorts) — PRISMA 가이드라인 준수</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact hq-card--tiny" style="left:357px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">연구 대상</div><p class="hq-card__line v2-body">18개 cohort (북미·EU·아시아 일부) · 제2형 당뇨 환자 1,000,000+ 명</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:650px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">중재 비교</div><p class="hq-card__line v2-body">① SGLT-2i + GLP-1RA 병용 ② SGLT-2i 단독 ③ GLP-1RA 단독</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:943px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">1차 endpoint</div><p class="hq-card__line v2-body">MACE (심근경색·뇌졸중·심혈관 사망) · 중대 신장 사건 (ESRD·creat 2배·신부전 사망)</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:64px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">2차 endpoint</div><p class="hq-card__line v2-body">전체 사망 · 심부전 입원 · HbA1c · 체중 · 혈압 · 알부민뇨</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:357px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">보정 방법</div><p class="hq-card__line v2-body">Propensity score matching · multivariable regression · age·BMI·HbA1c·CKD stage·HF·ASCVD</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:650px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">연구 이질성</div><p class="hq-card__line v2-body">I² statistic + sensitivity analysis (cohort별·국가별·약제별 subgroup)</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact hq-card--tiny" style="left:943px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">한계 인지</div><p class="hq-card__line v2-body">관찰연구 → 잔여 confounding 가능, RCT 인과성 추론 한계</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">메타분석 — 18 코호트, 100만+ 명</span><span class="hq-source">근거 · Cardiovascular Diabetology 2026 · 18 cohorts · &gt;1M T2DM patients</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 04 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">심혈관·신장 결과 — 단독 대비 30% 추가 개선</h2><p class="v2-sub">병용군이 모든 endpoint에서 일관된 추가 이득 — 우연 일치 가능성 낮음 (heterogeneity 낮음)</p>
+<table class="v2-table hq-table hq-table--four hq-table--illustrated" style="width:760px"><thead><tr><th>Endpoint</th><th>HR (병용 vs 단독)</th><th>절대 감소</th><th>임상 의의</th></tr></thead><tbody><tr><th class="v2-body">🫀 MACE (3-point)</th><td class="v2-body">0.70 (0.65–0.75)</td><td class="v2-body">−30%</td><td class="v2-body">심근경색·뇌졸중·심혈관 사망 종합. 단독 대비 큰 폭 감소</td></tr><tr><th class="v2-body">🩺 심부전 입원</th><td class="v2-body">0.65–0.75</td><td class="v2-body">−25~35%</td><td class="v2-body">HFpEF·HFrEF 모두 효과. SGLT-2i 단독 효과 + GLP-1RA 추가</td></tr><tr><th class="v2-body">🩺 중대 신장 사건</th><td class="v2-body">0.65–0.70</td><td class="v2-body">−30~35%</td><td class="v2-body">ESRD·creat 2배·신부전 사망. CKD 동반 시 가장 큰&nbsp;이득</td></tr><tr><th class="v2-body">⚰️ 전체 사망</th><td class="v2-body">~0.80</td><td class="v2-body">−20%</td><td class="v2-body">모든 원인 사망 — 가장 강력한 임상 endpoint</td></tr></tbody><tfoot><tr><td class="v2-body" colspan="4">NNT 추정 —5년 MACE 예방 NNT 약 25명 (병용 vs 단독). 다른 만성질환 예방 약물(스타틴·아스피린) 대비 매우 효율적. 비용 대비 효과 분석에 강점.</td></tr></tfoot></table>
+<div class="v2-panel hq-figure" style="left:844px;top:206px;width:372px;height:209.25px"><img class="v2-fig__img" src="../../../../shared/assets/generated/general-papers-20260524-sglt2-glp1-combo-s05-comparison-metabolic-2a7aafec-20260530-raster-20260531.jpg" alt="심혈관·신장 결과 — 단독 대비 30% 추가 개선 설명 이미지"></div>
+<div class="v2-panel hq-caption" style="left:844px;top:427px;width:372px;height:179px">심혈관·신장 결과 — 단독 대비 30% 추가 개선 설명 이미지</div>
+<div class="v2-tip"><span class="v2-tip__t">심혈관·신장 결과 — 단독 대비 30% 추가 개선</span><span class="hq-source">근거 · Cardiovascular Diabetology meta-analysis · 1차 endpoint · 5년 추적 평균</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 05 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">대사 결과 — HbA1c·체중·혈압 모두 추가 개선</h2><p class="v2-sub">병용 시 단독 대비 모든 대사 지표 추가 강하 — 비만·고혈압 동반 T2DM에 최적</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">📊 HbA1c</div><p class="hq-card__line v2-body">병용 시 단독 대비 추가 −0.5 ~ −0.8%. 기존 metformin + 한 약 → 둘 추가로 평균 −1% 추가 도달. 미달성 환자에 강력한 옵션.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">⚖️ 체중</div><p class="hq-card__line v2-body">병용 시 단독 대비 추가 −2 ~ −4 kg. GLP-1RA 단독 −5kg + SGLT-2i 추가로 합산 −7~9kg 가능. 비만 T2DM에 임상적 의미 큼.</p></div></div>
+<div class="v2-panel hq-card" style="left:64px;top:416px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">💉 수축기혈압</div><p class="hq-card__line v2-body">병용 시 단독 대비 추가 −3 ~ −5 mmHg. RAAS 약제와 독립 효과. 고혈압 동반 환자에서 강압제 용량 감량 가능.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:416px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">🩺 알부민뇨</div><p class="hq-card__line v2-body">uACR 유의 감소 (병용 시 더 큼). uACR &gt;30 환자에서 신장 진행 차단 효과. CKD 동반 T2DM에 최대 이득.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">대사 결과 — HbA1c·체중·혈압 모두 추가 개선</span><span class="hq-source">근거 · Cardiovascular Diabetology · 2차 endpoint · subgroup 메타분석</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 06 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">두 약물 시너지 기전</h2><p class="v2-sub">서로 다른 작용점·표적 장기 → 합산 효과 + 일부 시너지 (1+1 = 2.5)</p>
+<div class="v2-panel hq-copy hq-copy--dense" style="left:64px;top:206px;width:688px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">🫀 SGLT-2i 핵심 기전 · 위치 — 신장 근위세뇨관 (proximal tubule) · 작용 — Glucose·Na 재흡수 차단 → glycosuria + 혈량 감소 · 심장 — Preload·afterload 감소 + 케톤체 대사로 심근 에너지 효율 ↑ · 신장 — Tubuloglomerular feedback 정상화 → hyperfiltration 해소 · 대표 약 — empagliflozin · dapagliflozin · 한국 보험 적용 · ⭐ 강점 — 심부전 예방·신장 보호 효과 가장 큰 약. EMPA-REG·DAPA-HF·DAPA-CKD trial 근거 견고. · 💉 GLP-1RA 핵심 기전 · 위치 — 췌장 β-세포 + 뇌·위장관·심장 · 작용 — Glucose-dependent insulin 분비 + glucagon 억제 · 체중 — 위 배출 지연 + 중추 식욕 억제 → 체중 감량 5–15% · 혈관 — 죽상경화 진행 억제 (LEADER·SUSTAIN-6 근거) · 대표 약 — semaglutide (Ozempic·Wegovy) · liraglutide · tirzepatide (GIP/GLP-1) · ⭐ 강점 — ASCVD 예방·체중·HbA1c 동시 강하. 비만 T2DM·심혈관 질환자 1순위.</p></div></div>
+<div class="v2-panel hq-figure" style="left:776px;top:206px;width:440px;height:248px"><img class="v2-fig__img" src="../../../../shared/assets/generated/general-papers-20260524-sglt2-glp1-combo-s07-mechanism-metabolic-465201fa-20260530-raster-20260531.jpg" alt="두 약물 시너지 기전 설명 이미지"></div>
+<div class="v2-panel hq-caption" style="left:776px;top:466px;width:440px;height:140px">두 약물 시너지 기전 설명 이미지</div>
+<div class="v2-tip"><span class="v2-tip__t">두 약물 시너지 기전</span><span class="hq-source">근거 · EMPA-REG OUTCOME · LEADER · SUSTAIN-6 · DAPA-CKD · DAPA-HF trial pharmacology</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 07 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">병용 효과가 큰 4가지 환자군</h2><p class="v2-sub">ASCVD·CKD·HF·고도비만 동반 T2DM — 모든 군에서 일관된 큰 이득</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">🫀 ASCVD 동반</div><p class="hq-card__line v2-body">관상동맥질환·뇌졸중·말초혈관질환 병력. MACE 감소 효과 가장 큼. GLP-1RA의 죽상경화 보호 + SGLT-2i의 심장 보호 시너지.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">🩺 CKD (eGFR 30–60)</div><p class="hq-card__line v2-body">알부민뇨 동반 CKD G3a-G3b. 신장 사건 −35% 가장 큰 폭. SGLT-2i 단독 vs 병용 차이 명확.</p></div></div>
+<div class="v2-panel hq-card" style="left:64px;top:416px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">💗 심부전 (HFpEF·HFrEF)</div><p class="hq-card__line v2-body">EF 무관 — preserved·reduced 모두. HF 입원 −30%. SGLT-2i의 강력한 HF 효과 + GLP-1RA 부가 효과.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:416px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__head">⚖️ BMI ≥35 + HbA1c ≥8%</div><p class="hq-card__line v2-body">고도비만·미조절 당뇨. 체중 −7~9 kg + HbA1c −1.5~2%. GLP-1RA 우월 + SGLT-2i 추가 강하.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">병용 효과가 큰 4가지 환자군</span><span class="hq-source">근거 · Cardiovascular Diabetology subgroup analysis · ADA·KDA 권고 적응증</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 08 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">안전성 — 병용 시 두 약의 부작용을 함께 확인</h2><p class="v2-sub">병용 시 두 약 각각의 부작용과 저혈당 위험을 함께 확인한다</p>
+<table class="v2-table hq-table hq-table--four hq-table--illustrated" style="width:760px"><thead><tr><th>부작용</th><th>병용 vs 단독</th><th>빈도</th><th>기전·관리</th></tr></thead><tbody><tr><th class="v2-body">⚠️ 저혈당</th><td class="v2-body">차이 없음</td><td class="v2-body">&lt;2%</td><td class="v2-body">두 약 모두 글루코스 의존 — 저혈당 위험 매우 낮음. 인슐린·SU 병용 시만 주의</td></tr><tr><th class="v2-body">⚠️ 위장관 (GLP-1RA)</th><td class="v2-body">단독과 동일</td><td class="v2-body">초기 20–30%</td><td class="v2-body">오심·구토 — 시작 시·증량 시 일시적. 4–8주 적응. 저용량&nbsp;시작</td></tr><tr><th class="v2-body">⚠️ 비뇨생식기 감염 <span style="white-space:nowrap">(SGLT-2i)</span></th><td class="v2-body">단독과 동일</td><td class="v2-body">5–10%</td><td class="v2-body">진균성 외음부염·요로감염. 위생 안내 + 재발 시 약 교체&nbsp;검토</td></tr><tr><th class="v2-body">⚠️ DKA (SGLT-2i)</th><td class="v2-body">단독과 동일</td><td class="v2-body">희귀</td><td class="v2-body">Euglycemic DKA. 수술·금식·중증 감염 시 일시 중단. 환자 인지 교육 필수</td></tr><tr><th class="v2-body">⚠️ 췌장염 (GLP-1RA)</th><td class="v2-body">단독과 동일</td><td class="v2-body">희귀</td><td class="v2-body">신호 약함. 급성 췌장염 병력 환자 회피. 복통 호소 시 즉시&nbsp;평가</td></tr></tbody></table><div class="v2-panel hq-figure" style="left:844px;top:206px;width:372px;height:209px"><img class="v2-fig__img" src="../../../../shared/assets/generated/general-papers-20260524-sglt2-glp1-combo-s09-risk-metabolic-7cb276dd-20260530-raster-20260531.jpg" alt="병용 안전성: 두 약의 부작용을 함께 확인"></div><div class="v2-panel hq-caption" style="left:844px;top:427px;width:372px;height:179px">병용 안전성: 두 약의 부작용을 함께 확인</div>
+<div class="v2-tip"><span class="v2-tip__t">안전성 — 병용 시 두 약의 부작용을 함께 확인</span><span class="hq-source">근거 · Cardiovascular Diabetology safety analysis · FDA labeling · 한국 식약처 허가사항</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 09 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">병용 1순위 환자 + 한국 보험 적용</h2><p class="v2-sub">ASCVD·CKD·HF·비만 동반 T2DM. 한국에서 두 약 동시 인정 여부는 약제별 확인 필요.</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">🎯 고위험 환자에서 병용 검토</div><p class="hq-card__line v2-body">ASCVD 동반 T2DM — 관상동맥·뇌졸중·말초혈관질환 병력 · CKD eGFR 30–60 — uACR &gt;30 동반 시 병용 검토 · HF (HFpEF·HFrEF) — EF 무관, NYHA II-IV · 비만 + 미조절 — BMI ≥35 + HbA1c ≥8% · 다발성 위험 — 위 4가지 중 2+ 동반 시 병용 검토 · ⭐ 실무 —Metformin에 두 약 병용을 검토할 수 있음. SU·DPP-4i 대체 검토 가능.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">🇰🇷 한국 보험·실무</div><p class="hq-card__line v2-body">SGLT-2i 단독 — HbA1c ≥7% + metformin 실패 시 급여 · GLP-1RA 단독 — 보험 적용 좁음 (BMI·HbA1c 기준), 일부 비급여 · 둘 다 동시 급여 — 약제별 확인 필요 (HIRA 고시) · 본인부담 — ₩10–30만/월 추정 (비급여 GLP-1RA 시 ↑) · KDA 2026 update — 본 메타분석 반영 권고 예상 · ⚠️ 주의 —비용·순응도 부담 큰 환자에서 우선순위 정하기: ASCVD 우선이면 GLP-1RA, CKD·HF 우선이면 SGLT-2i 먼저.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">병용 1순위 환자 + 한국 보험 적용</span><span class="hq-source">근거 · ADA 2024 · KDA 2023 · HIRA 약제급여 고시 · KDA 2026 update 예상</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 10 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">단계적 추가 전략 4단계</h2><p class="v2-sub">기존 약 유지 + 한 약 추가 → 안정화 → 다른 약 추가. 동시 시작 X (부작용 발생 시 원인 모호)</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__when">Week 0</div><div class="hq-card__head">현황 평가</div><p class="hq-card__line v2-body">HbA1c·eGFR·uACR·체중·BP. ASCVD·CKD·HF 동반 확인. 현재 약제 + 환자 선호 + 비용 안내. 우선순위 결정.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__when">Week 0–4</div><div class="hq-card__head">첫 약 추가</div><p class="hq-card__line v2-body">ASCVD 우선 → GLP-1RA / CKD·HF 우선 → SGLT-2i. 저용량 시작. 4주 후 부작용·효과 확인.</p></div></div>
+<div class="v2-panel hq-card" style="left:64px;top:416px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__when">Week 4–12</div><div class="hq-card__head">두 번째 약 추가</div><p class="hq-card__line v2-body">첫 약 안정화 후 다른 약 추가. SU·DPP-4i 사용 중이면 단계적 감량·중단 검토. HbA1c·체중·BP 추적.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:416px;width:566px;height:190px"><div class="v2-block"><div class="hq-card__when">3개월~</div><div class="hq-card__head">정기 평가</div><p class="hq-card__line v2-body">3개월마다 HbA1c·신기능·uACR. 매년 심전도·LVH 평가. 효과 부족 시 용량 증량 또는 인슐린 추가.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">단계적 추가 전략 4단계</span><span class="hq-source">근거 · ADA 2024 step-up algorithm · KDA 2023 · Cardiovascular Diabetology 임상 적용</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CLOSING · 진료실 결론</div><div class="v2-mark"></div>
+<h2 class="v2-title">1차 진료 Take-home — 4가지 핵심</h2><p class="v2-sub">결과와 한계를 함께 확인합니다.</p>
+<div class="v2-panel hq-copy hq-copy--dense" style="left:64px;top:206px;width:714px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">1 · ASCVD·CKD·HF 동반 T2DM은 SGLT-2i + GLP-1RA 병용 검토 — MACE·신장 30%·사망 20% 추가 감소 · 2 · Metformin + 둘 다 = 고위험 환자에서 검토할 병용. SU·DPP-4i 단계적 감량 검토 · 3 · 단계적 추가 (4단계): 현황 평가 → 첫 약 → 안정화 → 두 번째. 동시 시작 X · 4 · 한국 보험 동시 인정 약제별 확인. 비용·순응도 부담 시 ASCVD→GLP-1RA / CKD·HF→SGLT-2i 우선 · 다시 보기 — 슬라이드 링크 QR</p></div></div>
+<div class="v2-panel hq-qr v2-panel--accent" style="left:802px;top:206px;width:414px;height:400px"><div class="qr-block"><div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM12,2H13V3H12zM13,2H14V3H13zM14,2H15V3H14zM15,2H16V3H15zM17,2H18V3H17zM19,2H20V3H19zM20,2H21V3H20zM22,2H23V3H22zM23,2H24V3H23zM25,2H26V3H25zM29,2H30V3H29zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM13,3H14V4H13zM16,3H17V4H16zM19,3H20V4H19zM20,3H21V4H20zM21,3H22V4H21zM23,3H24V4H23zM24,3H25V4H24zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM11,4H12V5H11zM12,4H13V5H12zM13,4H14V5H13zM16,4H17V5H16zM18,4H19V5H18zM19,4H20V5H19zM20,4H21V5H20zM21,4H22V5H21zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM26,4H27V5H26zM30,4H31V5H30zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM13,5H14V6H13zM17,5H18V6H17zM20,5H21V6H20zM21,5H22V6H21zM24,5H25V6H24zM25,5H26V6H25zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM30,5H31V6H30zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM18,6H19V7H18zM19,6H20V7H19zM23,6H24V7H23zM25,6H26V7H25zM27,6H28V7H27zM28,6H29V7H28zM29,6H30V7H29zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM16,7H17V8H16zM18,7H19V8H18zM19,7H20V8H19zM21,7H22V8H21zM24,7H25V8H24zM27,7H28V8H27zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM16,9H17V10H16zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM21,9H22V10H21zM23,9H24V10H23zM24,9H25V10H24zM25,9H26V10H25zM26,9H27V10H26zM29,9H30V10H29zM30,9H31V10H30zM2,10H3V11H2zM6,10H7V11H6zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM12,10H13V11H12zM14,10H15V11H14zM17,10H18V11H17zM20,10H21V11H20zM21,10H22V11H21zM22,10H23V11H22zM23,10H24V11H23zM24,10H25V11H24zM26,10H27V11H26zM28,10H29V11H28zM30,10H31V11H30zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM38,10H39V11H38zM3,11H4V12H3zM4,11H5V12H4zM6,11H7V12H6zM7,11H8V12H7zM9,11H10V12H9zM10,11H11V12H10zM12,11H13V12H12zM13,11H14V12H13zM14,11H15V12H14zM15,11H16V12H15zM16,11H17V12H16zM18,11H19V12H18zM20,11H21V12H20zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM27,11H28V12H27zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM33,11H34V12H33zM34,11H35V12H34zM37,11H38V12H37zM2,12H3V13H2zM4,12H5V13H4zM5,12H6V13H5zM8,12H9V13H8zM10,12H11V13H10zM12,12H13V13H12zM16,12H17V13H16zM18,12H19V13H18zM25,12H26V13H25zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM33,12H34V13H33zM35,12H36V13H35zM36,12H37V13H36zM2,13H3V14H2zM5,13H6V14H5zM7,13H8V14H7zM9,13H10V14H9zM11,13H12V14H11zM16,13H17V14H16zM19,13H20V14H19zM20,13H21V14H20zM21,13H22V14H21zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM28,13H29V14H28zM29,13H30V14H29zM33,13H34V14H33zM34,13H35V14H34zM36,13H37V14H36zM37,13H38V14H37zM4,14H5V15H4zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM11,14H12V15H11zM12,14H13V15H12zM14,14H15V15H14zM17,14H18V15H17zM19,14H20V15H19zM20,14H21V15H20zM21,14H22V15H21zM22,14H23V15H22zM23,14H24V15H23zM24,14H25V15H24zM25,14H26V15H25zM31,14H32V15H31zM32,14H33V15H32zM33,14H34V15H33zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM19,15H20V16H19zM20,15H21V16H20zM25,15H26V16H25zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM34,15H35V16H34zM35,15H36V16H35zM37,15H38V16H37zM2,16H3V17H2zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM10,16H11V17H10zM13,16H14V17H13zM15,16H16V17H15zM16,16H17V17H16zM17,16H18V17H17zM18,16H19V17H18zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM25,16H26V17H25zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM36,16H37V17H36zM3,17H4V18H3zM10,17H11V18H10zM11,17H12V18H11zM12,17H13V18H12zM13,17H14V18H13zM15,17H16V18H15zM16,17H17V18H16zM18,17H19V18H18zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM28,17H29V18H28zM31,17H32V18H31zM32,17H33V18H32zM33,17H34V18H33zM34,17H35V18H34zM36,17H37V18H36zM38,17H39V18H38zM5,18H6V19H5zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM13,18H14V19H13zM14,18H15V19H14zM18,18H19V19H18zM21,18H22V19H21zM22,18H23V19H22zM23,18H24V19H23zM26,18H27V19H26zM30,18H31V19H30zM32,18H33V19H32zM33,18H34V19H33zM35,18H36V19H35zM36,18H37V19H36zM37,18H38V19H37zM3,19H4V20H3zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM10,19H11V20H10zM11,19H12V20H11zM12,19H13V20H12zM13,19H14V20H13zM14,19H15V20H14zM19,19H20V20H19zM20,19H21V20H20zM24,19H25V20H24zM25,19H26V20H25zM26,19H27V20H26zM27,19H28V20H27zM29,19H30V20H29zM31,19H32V20H31zM33,19H34V20H33zM34,19H35V20H34zM37,19H38V20H37zM2,20H3V21H2zM3,20H4V21H3zM4,20H5V21H4zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM12,20H13V21H12zM15,20H16V21H15zM17,20H18V21H17zM20,20H21V21H20zM22,20H23V21H22zM24,20H25V21H24zM25,20H26V21H25zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM33,20H34V21H33zM34,20H35V21H34zM36,20H37V21H36zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM9,21H10V22H9zM10,21H11V22H10zM11,21H12V22H11zM14,21H15V22H14zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM22,21H23V22H22zM23,21H24V22H23zM28,21H29V22H28zM29,21H30V22H29zM30,21H31V22H30zM31,21H32V22H31zM36,21H37V22H36zM37,21H38V22H37zM2,22H3V23H2zM4,22H5V23H4zM5,22H6V23H5zM6,22H7V23H6zM8,22H9V23H8zM9,22H10V23H9zM10,22H11V23H10zM11,22H12V23H11zM13,22H14V23H13zM14,22H15V23H14zM15,22H16V23H15zM16,22H17V23H16zM18,22H19V23H18zM19,22H20V23H19zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM35,22H36V23H35zM36,22H37V23H36zM4,23H5V24H4zM5,23H6V24H5zM6,23H7V24H6zM7,23H8V24H7zM11,23H12V24H11zM13,23H14V24H13zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM20,23H21V24H20zM25,23H26V24H25zM27,23H28V24H27zM29,23H30V24H29zM30,23H31V24H30zM31,23H32V24H31zM33,23H34V24H33zM34,23H35V24H34zM2,24H3V25H2zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM12,24H13V25H12zM15,24H16V25H15zM17,24H18V25H17zM19,24H20V25H19zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM27,24H28V25H27zM29,24H30V25H29zM31,24H32V25H31zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM36,24H37V25H36zM37,24H38V25H37zM4,25H5V26H4zM6,25H7V26H6zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM19,25H20V26H19zM20,25H21V26H20zM22,25H23V26H22zM23,25H24V26H23zM25,25H26V26H25zM28,25H29V26H28zM31,25H32V26H31zM33,25H34V26H33zM34,25H35V26H34zM36,25H37V26H36zM37,25H38V26H37zM3,26H4V27H3zM5,26H6V27H5zM8,26H9V27H8zM9,26H10V27H9zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM20,26H21V27H20zM21,26H22V27H21zM22,26H23V27H22zM23,26H24V27H23zM30,26H31V27H30zM32,26H33V27H32zM35,26H36V27H35zM36,26H37V27H36zM37,26H38V27H37zM2,27H3V28H2zM9,27H10V28H9zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM18,27H19V28H18zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM28,27H29V28H28zM29,27H30V28H29zM31,27H32V28H31zM34,27H35V28H34zM4,28H5V29H4zM5,28H6V29H5zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM14,28H15V29H14zM15,28H16V29H15zM18,28H19V29H18zM20,28H21V29H20zM22,28H23V29H22zM25,28H26V29H25zM29,28H30V29H29zM30,28H31V29H30zM34,28H35V29H34zM35,28H36V29H35zM36,28H37V29H36zM5,29H6V30H5zM7,29H8V30H7zM10,29H11V30H10zM16,29H17V30H16zM19,29H20V30H19zM20,29H21V30H20zM21,29H22V30H21zM22,29H23V30H22zM23,29H24V30H23zM25,29H26V30H25zM26,29H27V30H26zM28,29H29V30H28zM36,29H37V30H36zM2,30H3V31H2zM3,30H4V31H3zM5,30H6V31H5zM8,30H9V31H8zM9,30H10V31H9zM11,30H12V31H11zM12,30H13V31H12zM15,30H16V31H15zM17,30H18V31H17zM19,30H20V31H19zM22,30H23V31H22zM23,30H24V31H23zM24,30H25V31H24zM26,30H27V31H26zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM36,30H37V31H36zM37,30H38V31H37zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM17,31H18V32H17zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM28,31H29V32H28zM30,31H31V32H30zM34,31H35V32H34zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM10,32H11V33H10zM11,32H12V33H11zM12,32H13V33H12zM15,32H16V33H15zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM20,32H21V33H20zM22,32H23V33H22zM23,32H24V33H23zM25,32H26V33H25zM27,32H28V33H27zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM14,33H15V34H14zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM36,33H37V34H36zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM14,34H15V35H14zM17,34H18V35H17zM18,34H19V35H18zM22,34H23V35H22zM23,34H24V35H23zM24,34H25V35H24zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM11,35H12V36H11zM15,35H16V36H15zM20,35H21V36H20zM23,35H24V36H23zM25,35H26V36H25zM28,35H29V36H28zM30,35H31V36H30zM32,35H33V36H32zM33,35H34V36H33zM35,35H36V36H35zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM11,36H12V37H11zM12,36H13V37H12zM13,36H14V37H13zM14,36H15V37H14zM15,36H16V37H15zM17,36H18V37H17zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM23,36H24V37H23zM25,36H26V37H25zM27,36H28V37H27zM28,36H29V37H28zM31,36H32V37H31zM32,36H33V37H32zM36,36H37V37H36zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM13,37H14V38H13zM15,37H16V38H15zM17,37H18V38H17zM18,37H19V38H18zM19,37H20V38H19zM20,37H21V38H20zM21,37H22V38H21zM23,37H24V38H23zM25,37H26V38H25zM26,37H27V38H26zM28,37H29V38H28zM31,37H32V38H31zM34,37H35V38H34zM36,37H37V38H36zM37,37H38V38H37zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM13,38H14V39H13zM14,38H15V39H14zM19,38H20V39H19zM21,38H22V39H21zM22,38H23V39H22zM23,38H24V39H23zM25,38H26V39H25zM26,38H27V39H26zM33,38H34V39H33zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div><div class="qr-block__caption">이 자료 다시 보기<br>광교바른내과 · 의료진 참고자료</div></div></div>
+<div class="v2-tip"><span class="v2-tip__t">논문 결과는 환자 특성과 최신 지침에 맞춰 해석합니다.</span><span class="hq-source">근거 · Cardiovascular Diabetology 2026 meta-analysis · ADA 2024 · KDA 2023 · &gt;1M T2DM cohort</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

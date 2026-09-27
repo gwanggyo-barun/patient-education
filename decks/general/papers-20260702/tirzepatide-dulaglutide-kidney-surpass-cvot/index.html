@@ -15,184 +15,53 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <link rel="stylesheet" href="../../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
-  <style>
-    .slide__bg-num { display: none !important; }
-    .slide__title-block { max-width: 1010px; margin-bottom: var(--space-6); }
-    .slide__subtitle { max-width: 1060px; font-size: 1.46rem; line-height: 1.24; letter-spacing: 0; }
-    .slide__title { font-size: 2.82rem; letter-spacing: var(--tracking-tight); }
-    .slide__header { margin-bottom: var(--space-8); }
-    .stars { color: var(--color-warning); letter-spacing: 0.12em; font-size: 1.15em; }
-    .slide--cover .slide__title-block { max-width: 1080px; }
-    .slide--cover .slide__subtitle { max-width: 1030px; color: var(--color-white-80); }
-
-    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); height: 100%; }
-    .stat-card { border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); background: var(--color-canvas); min-height: 0; overflow: hidden; }
-    .stat-card--navy { background: var(--color-navy); color: var(--color-canvas); border-color: var(--color-navy); }
-    .stat-card--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .stat-card--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .stat-card--warn { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
-    .stat-card--danger { background: var(--color-danger-bg); border-color: var(--color-danger-border); }
-    .stat-card__label { font-size: 0.76rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-    .stat-card--navy .stat-card__label { color: var(--color-sky); }
-    .stat-card__value { font-size: 2.25rem; font-weight: var(--weight-black); color: var(--color-navy); line-height: 1; letter-spacing: var(--tracking-tight); }
-    .stat-card--navy .stat-card__value { color: var(--color-canvas); }
-    .stat-card--good .stat-card__value { color: var(--color-success); }
-    .stat-card--warn .stat-card__value { color: var(--color-warning); }
-    .stat-card--danger .stat-card__value { color: var(--color-danger); }
-    .stat-card__body { font-size: 0.93rem; line-height: 1.42; color: var(--color-ink); }
-    .stat-card--navy .stat-card__body { color: var(--color-white-95); }
-
-    .note { margin-top: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); background: var(--color-canvas-warm); border-left: 5px solid var(--color-steel); font-size: 0.94rem; line-height: 1.45; color: var(--color-ink); }
-    .note strong { color: var(--color-navy); }
-    .note--good { background: var(--color-success-bg); border-left-color: var(--color-success); }
-    .note--warn { background: var(--color-warning-bg); border-left-color: var(--color-warning); }
-    .note--danger { background: var(--color-danger-bg); border-left-color: var(--color-danger); }
-
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); height: 100%; }
-    .split-col { min-height: 0; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-canvas-warm); padding: var(--space-5); }
-    .split-col__title { font-size: 1.24rem; font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: var(--space-3); line-height: 1.22; }
-    .line-list { list-style: none; padding: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 0; flex: 1; }
-    .line-list li { padding: 7px 0; border-bottom: 1px solid var(--color-border-soft); font-size: 0.98rem; line-height: 1.38; }
-    .line-list li strong { color: var(--color-navy); }
-    .line-list li:last-child { border-bottom: 0; }
-
-    .card-grid { display: grid; gap: var(--space-3); height: 350px; align-self: center; width: 100%; }
-    .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
-    .card-grid--3 { grid-template-columns: repeat(3, 1fr); }
-    .card-grid--4 { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }
-    .card-grid--6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
-    .review-card { border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-canvas); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); min-height: 0; overflow: hidden; }
-    .review-card--navy { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-canvas); }
-    .review-card--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .review-card--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .review-card--warn { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
-    .review-card--danger { background: var(--color-danger-bg); border-color: var(--color-danger-border); }
-    .review-card__kicker { font-size: 0.7rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-    .review-card__title { font-size: 1.08rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.22; }
-    .review-card--navy .review-card__title { color: var(--color-canvas); }
-    .review-card--good .review-card__title { color: var(--color-success); }
-    .review-card--warn .review-card__title { color: var(--color-warning); }
-    .review-card--danger .review-card__title { color: var(--color-danger); }
-    .review-card__body { font-size: 0.98rem; line-height: 1.38; color: var(--color-ink); }
-    .review-card--navy .review-card__body { color: var(--color-white-95); }
-    .review-card__metric { margin-top: auto; font-size: 1.45rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; letter-spacing: var(--tracking-tight); }
-
-    .table-wrap { display: flex; flex-direction: column; gap: 7px; height: 100%; justify-content: stretch; }
-    .tbl-row { display: grid; gap: var(--space-3); align-items: center; padding: 8px var(--space-3); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: var(--color-canvas); flex: 1 1 0; }
-    .tbl-row--4 { grid-template-columns: 1.08fr 0.9fr 0.9fr 1.4fr; }
-    .tbl-row--5 { grid-template-columns: 1fr 0.9fr 0.9fr 0.9fr 1.2fr; }
-    .tbl-row--head { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-canvas); font-weight: var(--weight-bold); flex: 0.68 1 0; }
-    .tbl-row--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tbl-row--warn { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
-    .tbl-row--danger { background: var(--color-danger-bg); border-color: var(--color-danger-border); }
-    .tbl-cell { font-size: 0.96rem; line-height: 1.32; color: var(--color-ink); }
-    .tbl-row--head .tbl-cell { color: var(--color-canvas); font-size: 0.84rem; }
-    .tbl-cell strong { color: var(--color-navy); }
-    .tbl-row--head .tbl-cell strong { color: var(--color-canvas); }
-
-    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); height: 100%; }
-    .step { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); }
-    .step--navy { background: var(--color-navy); border-color: var(--color-navy); }
-    .step--steel { background: var(--color-canvas-warm); border-color: var(--color-steel); }
-    .step--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .step--warn { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
-    .step--danger { background: var(--color-danger-bg); border-color: var(--color-danger-border); }
-    .step__num { font-size: 1.5rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; }
-    .step--navy .step__num { color: var(--color-sky); }
-    .step__title { font-size: 1rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.2; }
-    .step--navy .step__title { color: var(--color-canvas); }
-    .step__body { font-size: 0.88rem; line-height: 1.38; color: var(--color-ink); }
-    .step--navy .step__body { color: var(--color-white-95); }
-
-    .bar-wrap { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: var(--space-4); height: 100%; align-items: stretch; }
-    .bars { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); }
-    .bar-row { display: grid; grid-template-columns: 162px 1fr 84px; gap: var(--space-3); align-items: center; }
-    .bar-row__label { font-size: 0.86rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.18; }
-    .bar-track { height: 25px; background: var(--color-border); border-radius: 14px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 14px; background: linear-gradient(90deg, var(--color-steel), var(--color-navy)); }
-    .bar-fill--good { background: linear-gradient(90deg, var(--color-success), var(--color-success)); }
-    .bar-fill--warn { background: linear-gradient(90deg, var(--color-warning), var(--color-warning)); }
-    .bar-fill--danger { background: linear-gradient(90deg, var(--color-danger), var(--color-danger)); }
-    .bar-row__value { font-size: 0.94rem; font-weight: var(--weight-black); color: var(--color-navy); text-align: right; }
-
-    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); height: 100%; align-items: stretch; }
-    .flow-card { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-3); display: flex; flex-direction: column; gap: 6px; justify-content: center; }
-    .flow-card--navy { background: var(--color-navy); border-color: var(--color-navy); }
-    .flow-card--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .flow-card--warn { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
-    .flow-card--danger { background: var(--color-danger-bg); border-color: var(--color-danger-border); }
-    .flow-card__label { font-size: 0.66rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-    .flow-card--navy .flow-card__label { color: var(--color-sky); }
-    .flow-card__title { font-size: 1rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.2; }
-    .flow-card--navy .flow-card__title { color: var(--color-canvas); }
-    .flow-card__body { font-size: 0.96rem; line-height: 1.28; color: var(--color-ink); }
-    .flow-card--navy .flow-card__body { color: var(--color-white-95); }
-
-    .slide__body--visual-focus { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--space-7); align-items: center; }
-    .slide__body--visual-focus > .visual-copy { grid-column: 1; grid-row: 1; min-width: 0; min-height: 0; height: 100%; display: flex; flex-direction: column; justify-content: center; }
-    .slide__body--visual-focus > .paper-visual { grid-column: 2 !important; grid-row: 1 !important; }
-    .paper-visual { width: 320px; height: 320px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--color-border); background: var(--color-canvas); box-shadow: var(--shadow-card); align-self: center; justify-self: end; }
-    .paper-visual img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .slide__body--visual-focus .stat-grid { grid-template-columns: 1fr; gap: 9px; height: auto; }
-    .slide__body--visual-focus .stat-card { padding: 10px 14px; }
-    .slide__body--visual-focus .stat-card__label { font-size: 0.7rem; }
-    .slide__body--visual-focus .stat-card__value { font-size: 1.58rem; }
-    .slide__body--visual-focus .stat-card__body { font-size: 0.94rem; line-height: 1.28; }
-    .slide__body--visual-focus .review-card { padding: 11px 13px; gap: 6px; }
-    .slide__body--visual-focus .card-grid--4 { height: 330px; }
-    .slide__body--visual-focus .review-card__title { font-size: 1rem; }
-    .slide__body--visual-focus .review-card__body { font-size: 0.95rem; line-height: 1.28; }
-    .slide__body--visual-focus .review-card__metric { font-size: 1.05rem; }
-    .slide__body--visual-focus .split { gap: var(--space-3); }
-    .slide__body--visual-focus .line-list li { padding: 5px 0; font-size: 0.94rem; line-height: 1.3; }
-    .slide__body--visual-focus .split-col { padding: var(--space-3); }
-    .slide__body--visual-focus .split-col__title { font-size: 1rem; }
-    .slide__body--visual-focus .timeline { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 9px; }
-    .slide__body--visual-focus .step { padding: 10px 12px; }
-    .slide__body--visual-focus .step__num { font-size: 1.2rem; }
-    .slide__body--visual-focus .step__title { font-size: 0.84rem; }
-    .slide__body--visual-focus .step__body { font-size: 0.74rem; line-height: 1.28; }
-    .slide__body--visual-focus .bar-wrap { grid-template-columns: 1fr; gap: 10px; }
-    .slide__body--visual-focus .bars { padding: 12px; gap: 9px; }
-    .slide__body--visual-focus .bar-row { grid-template-columns: 125px 1fr 62px; gap: 8px; }
-    .slide__body--visual-focus .bar-row__label { font-size: 0.74rem; }
-    .slide__body--visual-focus .bar-row__value { font-size: 0.8rem; }
-    .slide__body--visual-focus .bar-track { height: 19px; }
-    .slide__body--visual-focus .table-wrap { gap: 5px; }
-    .slide__body--visual-focus .tbl-row { padding: 6px 9px; gap: 7px; }
-    .slide__body--visual-focus .tbl-cell { font-size: 0.94rem; line-height: 1.22; }
-    .slide__body--visual-focus .tbl-row--head .tbl-cell { font-size: 0.84rem; }
-    .slide__body--visual-focus .flow { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .slide__body--visual-focus .flow-card { padding: 9px 11px; }
-    .slide__body--visual-focus .flow-card__title { font-size: 0.96rem; }
-    .slide__body--visual-focus .flow-card__body { font-size: 0.94rem; line-height: 1.22; }
-    .slide__body--visual-focus .note { margin-top: 8px; padding: 9px 12px; font-size: 0.78rem; line-height: 1.32; border-radius: 10px; }
-
-    .takehome-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); height: 100%; }
-    .takehome-card { background: var(--color-navy); color: var(--color-canvas); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; gap: var(--space-3); align-items: center; min-height: 0; }
-    .takehome-card__num { color: var(--color-steel); font-size: 1.8rem; line-height: 1; font-weight: var(--weight-black); min-width: 38px; }
-    .takehome-card__text { font-size: 0.91rem; line-height: 1.36; font-weight: var(--weight-540); }
-    .takehome-card__text strong { color: var(--color-sky); }
-
-    .slide--closing .slide__body { gap: var(--space-3); justify-content: flex-start; }
-    .bar-wrap .card-grid--2 { grid-template-columns: 1fr; grid-template-rows: repeat(2, 1fr); height: 360px; }
-    .closing-grid { display: grid; grid-template-columns: 2.15fr 1fr; gap: var(--space-3); align-items: stretch; }
-    .closing-contact { background: var(--color-canvas-warm); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-    .closing-contact__label { font-size: 0.7rem; color: var(--color-steel); font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-    .closing-contact__title { font-size: 1.02rem; color: var(--color-navy); font-weight: var(--weight-bold); }
-    .closing-contact__body { font-size: 0.8rem; line-height: 1.34; color: var(--color-ink-soft); }
-    .qr-block { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-3); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; background: var(--color-canvas); }
-    .qr-block__code { width: 86px; height: 86px; display: flex; align-items: center; justify-content: center; }
-    .qr-block__code svg { width: 86px !important; height: 86px !important; }
-    .qr-block__caption { font-size: 0.68rem; color: var(--color-slate); line-height: 1.2; text-align: center; }
-
-  </style>
+    <link rel="stylesheet" href="../../../../shared/deck-look-v2.css">
+<style>
+/* HQ5L 2026-09-27: SKILL.md 393-409, 423-473, 484-551, 618-711. */
+body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+section.slide--v2{margin:0 auto 28px}
+.v2-tip{justify-content:space-between;gap:14px}
+.v2-tip__t{flex:1 1 auto;font-size:14px;line-height:1.35}
+.hq-source{flex:0 1 54%;font-size:12px;line-height:1.25;color:var(--v2-muted);text-align:right;white-space:normal}
+.hq-card{display:flex;flex-direction:column;justify-content:center;padding:20px 25px;overflow:hidden}
+.hq-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+.hq-card__head{font-size:19px;font-weight:750;line-height:1.32;color:var(--v2-navy);word-break:keep-all;margin-bottom:9px}
+.hq-card__line{font-size:16px;line-height:1.4;color:var(--v2-body);word-break:keep-all;text-wrap:balance;margin:1px 0}
+.hq-card__line b{color:var(--v2-navy)}
+.hq-card--accent .hq-card__head{color:var(--v2-accent)}
+.hq-card--compact{padding:14px 18px}
+.hq-card--compact .hq-card__head{font-size:17px;margin-bottom:5px}
+.hq-card--compact .hq-card__line{font-size:15.2px;line-height:1.33}
+.hq-card--tiny .hq-card__line{font-size:14.2px;line-height:1.3}
+.hq-copy{padding:22px 25px;display:flex;align-items:center}
+.hq-copy__body{font-size:16px;line-height:1.43;word-break:keep-all;text-wrap:balance;color:var(--v2-body);margin:0}
+.hq-copy--dense .hq-copy__body{columns:2;column-gap:22px;font-size:15.8px;line-height:1.38}
+.hq-figure{padding:0;border:0;background:transparent;box-shadow:none;overflow:hidden}
+.hq-figure::before{content:none}
+.hq-figure img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+.hq-caption{display:flex;align-items:center;justify-content:center;padding:7px 15px;font-size:15.5px;line-height:1.35;color:var(--v2-body);text-align:center}
+.hq-closing{display:flex;flex-direction:column;justify-content:space-evenly}
+.hq-closing .hq-card__line{font-size:17px}
+.hq-qr{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hq-qr .qr-block{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.hq-qr .qr-block__code{width:148px;height:148px}
+.hq-qr .qr-block__code svg,.hq-qr .qr-block__code img,.hq-qr .qr-block__code canvas{width:148px!important;height:148px!important}
+.hq-qr .qr-block__caption{font-size:16px;line-height:1.45;text-align:center}
+.hq-table{position:absolute;left:64px;top:206px;width:1152px;table-layout:fixed}
+.hq-table th,.hq-table td{font-size:16px;line-height:1.38;word-break:keep-all;padding:10px 17px}
+.hq-table thead th{font-size:16px}
+.hq-table tbody th{width:270px;font-size:17px}
+.hq-table--four th,.hq-table--four td{font-size:14px;padding:8px 10px}
+.hq-table--four tbody th{width:auto;font-size:14px}
+.hq-table--bar{width:760px}
+.hq-table--bar th,.hq-table--bar td{font-size:15px}
+.hq-table--illustrated th,.hq-table--illustrated td{font-size:12.8px;line-height:1.25;padding:6px 8px}
+.hq-table tfoot td{font-size:14px;line-height:1.35;background:var(--v2-chip-accent)}
+</style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
-<div class="deck">
-
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
 
     <header class="slide__header">
       <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
@@ -204,620 +73,111 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">SURPASS-CVOT kidney analysis · Lancet Diabetes Endocrinol 2026 · DOI 10.1016/S2213-8587(26)00032-X</span>
-      <span class="slide__page"><span class="stars">★★★★★</span></span>
+      <span class="slide__page">01 / 12</span></span>
     </footer>
   </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>TL;DR</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">한 문단·세 숫자로 요약</h2>
-      <p class="slide__subtitle">Dulaglutide를 active comparator로 둔 대형 CVOT에서 kidney composite도 유의하게 낮았다.</p>
-    </div>
-
-    <div class="slide__body slide__body--visual-focus">
-      <div class="visual-copy">
-
-      <div class="stat-grid">
-
-        <div class="stat-card stat-card--navy">
-          <div class="stat-card__label">POPULATION</div>
-          <div class="stat-card__value">13,299명</div>
-          <div class="stat-card__body">T2D+ASCVD, weekly tirzepatide vs dulaglutide.</div>
-        </div>
-        <div class="stat-card stat-card--good">
-          <div class="stat-card__label">PRIMARY KIDNEY</div>
-          <div class="stat-card__value">HR 0.77</div>
-          <div class="stat-card__body">주요 신장 사건 6.0% vs 7.6%.</div>
-        </div>
-        <div class="stat-card stat-card--steel">
-          <div class="stat-card__label">FOLLOW-UP</div>
-          <div class="stat-card__value">4.0년</div>
-          <div class="stat-card__body">Prespecified exploratory kidney analysis.</div>
-        </div>
-      </div>
-      <div class="note note--good"><strong>진료실 문장 — </strong>'심혈관 고위험 당뇨 환자에서 tirzepatide는 체중·혈당뿐 아니라 신장 composite도 더 낮춘 근거가 추가됐습니다.'</div>
-      </div>
-      <figure class="paper-visual">
-        <img src="../../../../shared/assets/generated/surpass-cvot-kidney-protection-20260702.png" alt="당뇨병 신장에서 incretin 경로와 사구체 누출 감소를 보여주는 세미리얼 의학 일러스트">
-      </figure>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">Lancet Diabetes Endocrinol 2026 · SURPASS-CVOT prespecified exploratory analysis</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>TRIAL DESIGN</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">SURPASS-CVOT의 신장 분석 설계</h2>
-      <p class="slide__subtitle">신장 전용 outcome trial은 아니지만, 대형 active-controlled CVOT 안에서 미리 정한 분석이다.</p>
-    </div>
-
-    <div class="slide__body">
-
-      <div class="card-grid card-grid--6">
-
-        <div class="review-card review-card--navy">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">Randomized double-blind</div>
-          <div class="review-card__body">640개 기관, 30개국. T2D+ASCVD 성인을 1:1 무작위 배정.</div>
-
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">Active comparator</div>
-          <div class="review-card__body">GLP-1RA인 dulaglutide 1.5 mg과 직접 비교. 위약 대조보다 임상 질문이 현실적.</div>
-
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">03</div>
-          <div class="review-card__title">Tirzepatide dose</div>
-          <div class="review-card__body">주 1회 최대 15 mg까지 증량. GIP/GLP-1 dual agonist.</div>
-
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">04</div>
-          <div class="review-card__title">Kidney assessments</div>
-          <div class="review-card__body">Creatinine, cystatin C, UACR를 매년 측정해 composite와 slope를 평가.</div>
-
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">05</div>
-          <div class="review-card__title">CKD stratification</div>
-          <div class="review-card__body">Low-to-moderate risk와 high-risk CKD로 나누어 일관성을 확인.</div>
-
-        </div>
-        <div class="review-card review-card--danger">
-          <div class="review-card__kicker">06</div>
-          <div class="review-card__title">Exploratory endpoint</div>
-          <div class="review-card__body">결과는 중요하지만 primary CV endpoint와 같은 확증 수준은 아님.</div>
-
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">SURPASS-CVOT methods · Lancet Diabetes Endocrinol 2026</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>WHO WAS INCLUDED</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">대상: 심혈관질환이 이미 있는 당뇨 환자</h2>
-      <p class="slide__subtitle">일반 저위험 T2D가 아니라 cardiorenal 위험이 높은 외래 환자상에 가깝다.</p>
-    </div>
-
-    <div class="slide__body">
-
-      <div class="split">
-
-        <div class="split-col">
-          <h3 class="split-col__title">포함 기준의 핵심</h3>
-          <ul class="line-list"><li><strong>40세 이상</strong> 제2형 당뇨병</li><li><strong>ASCVD 동반</strong> — 이미 심혈관질환이 있는 고위험군</li><li><strong>HbA1c 7.0-10.5%</strong> 범위</li><li><strong>BMI ≥25 kg/m²</strong>인 환자</li></ul>
-        </div>
-
-        <div class="split-col">
-          <h3 class="split-col__title">외래 해석</h3>
-          <ul class="line-list"><li><strong>체중·혈당·ASCVD</strong>가 함께 있는 환자에 맞는 근거</li><li><strong>CKD high-risk</strong> 2,948명 포함으로 신장 위험군 해석 가능</li><li><strong>Dulaglutide 대비</strong>라 기존 GLP-1RA와의 교체 질문에 가까움</li><li><strong>저위험·비만 단독</strong>으로 일반화하지 않기</li></ul>
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">SURPASS-CVOT eligibility criteria</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>MAIN RESULT</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">주요 신장 사건: 6.0% vs 7.6%</h2>
-      <p class="slide__subtitle">절대차는 작아 보여도, 이미 신장 보호 근거가 있는 비교약을 상대로 한 차이다.</p>
-    </div>
-
-    <div class="slide__body">
-
-      <div class="bar-wrap">
-        <div class="bars">
-
-          <div class="bar-row">
-            <div class="bar-row__label">Tirzepatide</div>
-            <div class="bar-track"><div class="bar-fill bar-fill--good" style="width:60%"></div></div>
-            <div class="bar-row__value">6.0%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-row__label">Dulaglutide</div>
-            <div class="bar-track"><div class="bar-fill bar-fill--steel" style="width:76%"></div></div>
-            <div class="bar-row__value">7.6%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-row__label">Hazard ratio</div>
-            <div class="bar-track"><div class="bar-fill bar-fill--good" style="width:77%"></div></div>
-            <div class="bar-row__value">0.77</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-row__label">P value</div>
-            <div class="bar-track"><div class="bar-fill bar-fill--navy" style="width:95%"></div></div>
-            <div class="bar-row__value">0.0002</div>
-          </div>
-        </div>
-        <div>
-      <div class="card-grid card-grid--2">
-
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">상대위험</div>
-          <div class="review-card__body">HR 0.77은 composite 기준 약 23% 상대위험 감소로 해석.</div>
-
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">절대효과</div>
-          <div class="review-card__body">4년 추적에서 1.6%p 차이. 고위험군일수록 임상 의미가 커진다.</div>
-
-        </div>
-      </div>
-      </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">SURPASS-CVOT kidney analysis results</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>CKD SUBGROUP</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">CKD 위험군별 방향성</h2>
-      <p class="slide__subtitle">낮은·중등도 위험군과 high-risk CKD 모두에서 tirzepatide 쪽으로 기울었다.</p>
-    </div>
-
-    <div class="slide__body slide__body--visual-focus">
-      <div class="visual-copy">
-
-      <div class="table-wrap">
-<div class="tbl-row tbl-row--4 tbl-row--head"><div class="tbl-cell">군</div><div class="tbl-cell">Tirzepatide</div><div class="tbl-cell">Dulaglutide</div><div class="tbl-cell">해석</div></div><div class="tbl-row tbl-row--4 tbl-row--good"><div class="tbl-cell"><strong>Overall</strong></div><div class="tbl-cell">6.0%</div><div class="tbl-cell">7.6%</div><div class="tbl-cell">HR 0.77, 전체 composite 유의 감소</div></div><div class="tbl-row tbl-row--4 tbl-row--good"><div class="tbl-cell"><strong>Low/mod CKD</strong></div><div class="tbl-cell">4.0%</div><div class="tbl-cell">5.6%</div><div class="tbl-cell">HR 0.70, 방향성 가장 선명</div></div><div class="tbl-row tbl-row--4 tbl-row--warn"><div class="tbl-cell"><strong>High-risk CKD</strong></div><div class="tbl-cell">12.2%</div><div class="tbl-cell">14.5%</div><div class="tbl-cell">HR 0.79, 위험 높은 군에서도 일관</div></div><div class="tbl-row tbl-row--4 tbl-row--steel"><div class="tbl-cell"><strong>해석 단서</strong></div><div class="tbl-cell">탐색적</div><div class="tbl-cell">하위군</div><div class="tbl-cell">상호작용보다 전체 방향성과 절대위험을 함께 봄</div></div>
-      </div>
-
-      </div>
-      <figure class="paper-visual">
-        <img src="../../../../shared/assets/generated/surpass-cvot-ckd-risk-map-20260702.png" alt="CKD 위험도에 따라 나뉜 신장과 사구체 보호 장면을 보여주는 의학 일러스트">
-      </figure>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">SURPASS-CVOT subgroup results</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>EGFR / UACR</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">eGFR slope와 albuminuria 신호</h2>
-      <p class="slide__subtitle">Composite 뒤에는 eGFR 감소 속도와 알부민뇨 변화라는 생물학적으로 그럴듯한 방향성이 있다.</p>
-    </div>
-
-    <div class="slide__body slide__body--visual-focus">
-      <div class="visual-copy">
-
-      <div class="card-grid card-grid--4">
-
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">eGFR decline</div>
-          <div class="review-card__body">특히 high-risk CKD에서 연간 eGFR 감소가 더 완만한 방향.</div>
-          <div class="review-card__metric">+0.93</div>
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">UACR</div>
-          <div class="review-card__body">알부민뇨 감소 방향은 신장 composite와 생물학적 일관성을 보강.</div>
-
-        </div>
-        <div class="review-card review-card--navy">
-          <div class="review-card__kicker">03</div>
-          <div class="review-card__title">Mechanism</div>
-          <div class="review-card__body">체중, 혈당, 혈압, 염증·신장 혈역학 변화가 복합적으로 기여 가능.</div>
-
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">04</div>
-          <div class="review-card__title">Outcome hierarchy</div>
-          <div class="review-card__body">eGFR slope·UACR는 보조 지표. 환자중심 hard renal endpoint와 구분.</div>
-
-        </div>
-      </div>
-
-      </div>
-      <figure class="paper-visual">
-        <img src="../../../../shared/assets/generated/surpass-cvot-egfr-slope-20260702.png" alt="시간에 따라 완만해지는 eGFR 감소와 알부민뇨 감소를 신장 그림으로 표현한 일러스트">
-      </figure>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">SURPASS-CVOT eGFR and UACR analyses</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>INTERPRETATION</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">무엇을 말할 수 있고, 아직 조심할 점</h2>
-      <p class="slide__subtitle">결론은 강하지만, '신장 전용 확증 trial'처럼 과장하면 안 된다.</p>
-    </div>
-
-    <div class="slide__body">
-
-      <div class="split">
-
-        <div class="split-col">
-          <h3 class="split-col__title">말할 수 있는 것</h3>
-          <ul class="line-list"><li><strong>Active comparator 대비</strong> kidney composite 감소</li><li><strong>ASCVD 동반 T2D</strong>에서 cardiorenal 선택지를 넓힘</li><li><strong>CKD 위험군 전반</strong>에서 방향성 유지</li><li><strong>체중·혈당 이득</strong>과 신장 신호가 같은 방향</li></ul>
-        </div>
-
-        <div class="split-col">
-          <h3 class="split-col__title">아직 말하기 이른 것</h3>
-          <ul class="line-list"><li><strong>모든 CKD 환자 1차 선택</strong>으로 일반화</li><li><strong>신장 endpoint 전용</strong> 확증 trial처럼 표현</li><li><strong>Dulaglutide 무효</strong>라는 식의 단순 결론</li><li><strong>보험·국내 적응증</strong>을 넘어선 자동 처방</li></ul>
-        </div>
-      </div>
-      <div class="note note--warn"><strong>정확한 표현 — </strong>'T2D+ASCVD CVOT에서 미리 정한 신장 분석상 유리한 결과'가 가장 안전하다.</div>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">Clinical interpretation of SURPASS-CVOT kidney analysis</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>SAFETY</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">안전성: 위장관 부작용을 먼저 말해야 한다</h2>
-      <p class="slide__subtitle">신장 신호가 좋아도 실제 지속은 오심·구토·설사와 증량 전략에 달려 있다.</p>
-    </div>
-
-    <div class="slide__body slide__body--visual-focus">
-      <div class="visual-copy">
-
-      <div class="card-grid card-grid--4">
-
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">GI adverse events</div>
-          <div class="review-card__body">Tirzepatide군에서 위장관 이상반응이 더 많았다. 시작 전 설명이 순응도 핵심.</div>
-
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">Titration</div>
-          <div class="review-card__body">증량 속도, 식사량, 탈수 예방, 변비/설사 관리 계획을 함께 잡는다.</div>
-
-        </div>
-        <div class="review-card review-card--danger">
-          <div class="review-card__kicker">03</div>
-          <div class="review-card__title">Renal caution</div>
-          <div class="review-card__body">구토·설사로 탈수되면 AKI 위험이 커질 수 있어 CKD 환자는 특히 주의.</div>
-
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">04</div>
-          <div class="review-card__title">Shared decision</div>
-          <div class="review-card__body">체중·혈당·심혈관·신장 이득과 부작용 부담을 같이 논의.</div>
-
-        </div>
-      </div>
-
-      </div>
-      <figure class="paper-visual">
-        <img src="../../../../shared/assets/generated/surpass-cvot-gi-safety-20260702.png" alt="주사 펜, 위장관, 식사 조절과 증량 달력을 함께 표현한 안전성 일러스트">
-      </figure>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">SURPASS-CVOT safety summary</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>CLINIC FLOW</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">외래 적용 흐름</h2>
-      <p class="slide__subtitle">약제 선택 전 환자의 cardiorenal phenotype과 지속 가능성을 먼저 확인한다.</p>
-    </div>
-
-    <div class="slide__body">
-
-      <div class="flow">
-
-        <div class="flow-card step-card flow-card--navy">
-          <div class="flow-card__label">RISK</div>
-          <div class="flow-card__title">ASCVD/CKD 확인</div>
-          <div class="flow-card__body">ASCVD, eGFR, UACR, 심부전, 체중, HbA1c를 한 번에 정리.</div>
-        </div>
-        <div class="flow-card step-card flow-card--steel">
-          <div class="flow-card__label">BASE</div>
-          <div class="flow-card__title">기본 치료 최적화</div>
-          <div class="flow-card__body">혈압, RAAS, SGLT2i 적응증, statin, 금연 등 cardiorenal 기본축.</div>
-        </div>
-        <div class="flow-card step-card flow-card--good">
-          <div class="flow-card__label">FIT</div>
-          <div class="flow-card__title">약제 적합성</div>
-          <div class="flow-card__body">체중 목표, 위장관 병력, 비용/공급, 주사제 선호를 확인.</div>
-        </div>
-        <div class="flow-card step-card flow-card--warn">
-          <div class="flow-card__label">START</div>
-          <div class="flow-card__title">증량·부작용 계획</div>
-          <div class="flow-card__body">소량 시작, GI 대처, 탈수 시 연락 기준을 사전 교육.</div>
-        </div>
-        <div class="flow-card step-card flow-card--good">
-          <div class="flow-card__label">TRACK</div>
-          <div class="flow-card__title">추적 지표</div>
-          <div class="flow-card__body">A1c, 체중, eGFR, UACR, 혈압, 부작용으로 지속 여부 판단.</div>
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">Clinic implementation draft based on SURPASS-CVOT</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 10 · <strong>LIMITATIONS</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">한계와 읽는 법</h2>
-      <p class="slide__subtitle">Lilly-funded 대형 연구라는 장점과, exploratory kidney endpoint라는 제한을 동시에 본다.</p>
-    </div>
-
-    <div class="slide__body">
-
-      <div class="card-grid card-grid--6">
-
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">01</div>
-          <div class="review-card__title">Exploratory</div>
-          <div class="review-card__body">Prespecified였지만 primary kidney outcome trial은 아니다.</div>
-
-        </div>
-        <div class="review-card review-card--steel">
-          <div class="review-card__kicker">02</div>
-          <div class="review-card__title">Composite endpoint</div>
-          <div class="review-card__body">Hard renal outcome만이 아니라 composite 구성에 따른 해석 필요.</div>
-
-        </div>
-        <div class="review-card review-card--good">
-          <div class="review-card__kicker">03</div>
-          <div class="review-card__title">Active comparator</div>
-          <div class="review-card__body">Dulaglutide 자체도 GLP-1RA 근거가 있어 위약 대비 해석과 다름.</div>
-
-        </div>
-        <div class="review-card review-card--warn">
-          <div class="review-card__kicker">04</div>
-          <div class="review-card__title">Sponsor</div>
-          <div class="review-card__body">Lilly funding. 독립 재현과 kidney-specific trial 근거가 더해지면 해석 강화.</div>
-
-        </div>
-        <div class="review-card review-card--danger">
-          <div class="review-card__kicker">05</div>
-          <div class="review-card__title">Generalizability</div>
-          <div class="review-card__body">T2D+ASCVD 중심. 저위험 T2D 또는 비당뇨 CKD로 확장 금지.</div>
-
-        </div>
-        <div class="review-card review-card--navy">
-          <div class="review-card__kicker">06</div>
-          <div class="review-card__title">Practice value</div>
-          <div class="review-card__body">그럼에도 cardiorenal high-risk T2D 약제 선택에서 매우 실용적 근거.</div>
-
-        </div>
-      </div>
-
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">SURPASS-CVOT limitations</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-  <section class="slide slide--closing">
-
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 11 · <strong>TAKE HOME</strong></div>
-    </header>
-
-    <div class="slide__title-block">
-      <h2 class="slide__title">진료실 결론</h2>
-      <p class="slide__subtitle">T2D+ASCVD 환자에서 tirzepatide는 dulaglutide 대비 신장 composite 이득까지 보여줬다.</p>
-    </div>
-    <div class="slide__body">
-
-      <div class="takehome-grid">
-
-        <div class="takehome-card">
-          <div class="takehome-card__num">01</div>
-          <div class="takehome-card__text"><strong>핵심 수치</strong> — 주요 신장 사건 6.0% vs 7.6%, HR 0.77.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">02</div>
-          <div class="takehome-card__text"><strong>대상은 고위험</strong> — T2D+ASCVD, CKD 위험을 함께 보는 환자군.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">03</div>
-          <div class="takehome-card__text"><strong>해석은 균형 있게</strong> — prespecified exploratory kidney analysis, 신장 전용 trial은 아님.</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">04</div>
-          <div class="takehome-card__text"><strong>실무 포인트</strong> — cardiorenal 이득과 GI 부작용·탈수 위험을 같이 설명한다.</div>
-        </div>
-      </div>
-      <div class="closing-grid">
-        <div class="closing-contact">
-          <div class="closing-contact__label">CLINIC NOTE</div>
-          <div class="closing-contact__title">광교바른내과 · 의료진 논문 리뷰</div>
-          <div class="closing-contact__body">이 자료는 의료진 논문 리뷰입니다. 국내 허가·급여·공급 상황과 환자별 금기/부작용 위험은 실제 처방 전 확인해야 합니다.</div>
-        </div>
-        <div class="qr-block">
-          <div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM12,2H13V3H12zM13,2H14V3H13zM15,2H16V3H15zM17,2H18V3H17zM18,2H19V3H18zM20,2H21V3H20zM24,2H25V3H24zM27,2H28V3H27zM31,2H32V3H31zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM12,3H13V4H12zM14,3H15V4H14zM15,3H16V4H15zM19,3H20V4H19zM21,3H22V4H21zM24,3H25V4H24zM28,3H29V4H28zM30,3H31V4H30zM33,3H34V4H33zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM15,4H16V5H15zM16,4H17V5H16zM17,4H18V5H17zM22,4H23V5H22zM23,4H24V5H23zM27,4H28V5H27zM29,4H30V5H29zM30,4H31V5H30zM33,4H34V5H33zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM16,5H17V6H16zM20,5H21V6H20zM22,5H23V6H22zM23,5H24V6H23zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM31,5H32V6H31zM33,5H34V6H33zM34,5H35V6H34zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM17,6H18V7H17zM18,6H19V7H18zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM30,6H31V7H30zM31,6H32V7H31zM33,6H34V7H33zM34,6H35V7H34zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM13,7H14V8H13zM15,7H16V8H15zM16,7H17V8H16zM19,7H20V8H19zM22,7H23V8H22zM24,7H25V8H24zM25,7H26V8H25zM26,7H27V8H26zM27,7H28V8H27zM28,7H29V8H28zM31,7H32V8H31zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM11,9H12V10H11zM12,9H13V10H12zM14,9H15V10H14zM15,9H16V10H15zM16,9H17V10H16zM17,9H18V10H17zM18,9H19V10H18zM22,9H23V10H22zM24,9H25V10H24zM26,9H27V10H26zM27,9H28V10H27zM30,9H31V10H30zM34,9H35V10H34zM2,10H3V11H2zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM15,10H16V11H15zM17,10H18V11H17zM19,10H20V11H19zM21,10H22V11H21zM22,10H23V11H22zM28,10H29V11H28zM29,10H30V11H29zM31,10H32V11H31zM33,10H34V11H33zM35,10H36V11H35zM38,10H39V11H38zM40,10H41V11H40zM41,10H42V11H41zM42,10H43V11H42zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM7,11H8V12H7zM10,11H11V12H10zM12,11H13V12H12zM13,11H14V12H13zM16,11H17V12H16zM17,11H18V12H17zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM24,11H25V12H24zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM33,11H34V12H33zM35,11H36V12H35zM38,11H39V12H38zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM15,12H16V13H15zM18,12H19V13H18zM19,12H20V13H19zM22,12H23V13H22zM23,12H24V13H23zM25,12H26V13H25zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM35,12H36V13H35zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM40,12H41V13H40zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM7,13H8V14H7zM11,13H12V14H11zM17,13H18V14H17zM18,13H19V14H18zM19,13H20V14H19zM21,13H22V14H21zM29,13H30V14H29zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM37,13H38V14H37zM38,13H39V14H38zM39,13H40V14H39zM41,13H42V14H41zM42,13H43V14H42zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM5,14H6V15H5zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM14,14H15V15H14zM16,14H17V15H16zM18,14H19V15H18zM20,14H21V15H20zM21,14H22V15H21zM22,14H23V15H22zM25,14H26V15H25zM26,14H27V15H26zM29,14H30V15H29zM34,14H35V15H34zM36,14H37V15H36zM37,14H38V15H37zM41,14H42V15H41zM5,15H6V16H5zM7,15H8V16H7zM10,15H11V16H10zM12,15H13V16H12zM14,15H15V16H14zM15,15H16V16H15zM19,15H20V16H19zM22,15H23V16H22zM24,15H25V16H24zM25,15H26V16H25zM26,15H27V16H26zM27,15H28V16H27zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM32,15H33V16H32zM36,15H37V16H36zM37,15H38V16H37zM38,15H39V16H38zM41,15H42V16H41zM42,15H43V16H42zM2,16H3V17H2zM6,16H7V17H6zM8,16H9V17H8zM11,16H12V17H11zM12,16H13V17H12zM13,16H14V17H13zM14,16H15V17H14zM17,16H18V17H17zM18,16H19V17H18zM21,16H22V17H21zM23,16H24V17H23zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM35,16H36V17H35zM36,16H37V17H36zM38,16H39V17H38zM40,16H41V17H40zM41,16H42V17H41zM42,16H43V17H42zM5,17H6V18H5zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM15,17H16V18H15zM20,17H21V18H20zM24,17H25V18H24zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM32,17H33V18H32zM33,17H34V18H33zM35,17H36V18H35zM37,17H38V18H37zM38,17H39V18H38zM39,17H40V18H39zM40,17H41V18H40zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM18,18H19V19H18zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM33,18H34V19H33zM34,18H35V19H34zM35,18H36V19H35zM41,18H42V19H41zM2,19H3V20H2zM4,19H5V20H4zM5,19H6V20H5zM10,19H11V20H10zM13,19H14V20H13zM16,19H17V20H16zM18,19H19V20H18zM21,19H22V20H21zM22,19H23V20H22zM26,19H27V20H26zM29,19H30V20H29zM33,19H34V20H33zM34,19H35V20H34zM35,19H36V20H35zM38,19H39V20H38zM39,19H40V20H39zM2,20H3V21H2zM3,20H4V21H3zM5,20H6V21H5zM7,20H8V21H7zM8,20H9V21H8zM13,20H14V21H13zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM21,20H22V21H21zM24,20H25V21H24zM25,20H26V21H25zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM36,20H37V21H36zM37,20H38V21H37zM38,20H39V21H38zM39,20H40V21H39zM42,20H43V21H42zM4,21H5V22H4zM7,21H8V22H7zM9,21H10V22H9zM14,21H15V22H14zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM21,21H22V22H21zM22,21H23V22H22zM24,21H25V22H24zM27,21H28V22H27zM28,21H29V22H28zM33,21H34V22H33zM35,21H36V22H35zM38,21H39V22H38zM39,21H40V22H39zM40,21H41V22H40zM41,21H42V22H41zM42,21H43V22H42zM2,22H3V23H2zM5,22H6V23H5zM8,22H9V23H8zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM14,22H15V23H14zM16,22H17V23H16zM21,22H22V23H21zM22,22H23V23H22zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM34,22H35V23H34zM36,22H37V23H36zM40,22H41V23H40zM41,22H42V23H41zM42,22H43V23H42zM2,23H3V24H2zM4,23H5V24H4zM6,23H7V24H6zM7,23H8V24H7zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM15,23H16V24H15zM16,23H17V24H16zM17,23H18V24H17zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM23,23H24V24H23zM25,23H26V24H25zM28,23H29V24H28zM29,23H30V24H29zM32,23H33V24H32zM33,23H34V24H33zM37,23H38V24H37zM38,23H39V24H38zM39,23H40V24H39zM40,23H41V24H40zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM15,24H16V25H15zM22,24H23V25H22zM24,24H25V25H24zM25,24H26V25H25zM28,24H29V25H28zM29,24H30V25H29zM31,24H32V25H31zM35,24H36V25H35zM38,24H39V25H38zM40,24H41V25H40zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM10,25H11V26H10zM11,25H12V26H11zM14,25H15V26H14zM16,25H17V26H16zM19,25H20V26H19zM20,25H21V26H20zM21,25H22V26H21zM28,25H29V26H28zM29,25H30V26H29zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM39,25H40V26H39zM42,25H43V26H42zM2,26H3V27H2zM3,26H4V27H3zM4,26H5V27H4zM7,26H8V27H7zM8,26H9V27H8zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM15,26H16V27H15zM16,26H17V27H16zM20,26H21V27H20zM21,26H22V27H21zM26,26H27V27H26zM30,26H31V27H30zM34,26H35V27H34zM35,26H36V27H35zM36,26H37V27H36zM39,26H40V27H39zM41,26H42V27H41zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM6,27H7V28H6zM10,27H11V28H10zM14,27H15V28H14zM16,27H17V28H16zM18,27H19V28H18zM20,27H21V28H20zM25,27H26V28H25zM27,27H28V28H27zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM34,27H35V28H34zM36,27H37V28H36zM38,27H39V28H38zM40,27H41V28H40zM42,27H43V28H42zM6,28H7V29H6zM8,28H9V29H8zM12,28H13V29H12zM16,28H17V29H16zM17,28H18V29H17zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM23,28H24V29H23zM24,28H25V29H24zM27,28H28V29H27zM29,28H30V29H29zM30,28H31V29H30zM31,28H32V29H31zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM39,28H40V29H39zM42,28H43V29H42zM2,29H3V30H2zM7,29H8V30H7zM12,29H13V30H12zM14,29H15V30H14zM16,29H17V30H16zM17,29H18V30H17zM18,29H19V30H18zM20,29H21V30H20zM22,29H23V30H22zM24,29H25V30H24zM25,29H26V30H25zM29,29H30V30H29zM33,29H34V30H33zM35,29H36V30H35zM36,29H37V30H36zM37,29H38V30H37zM38,29H39V30H38zM39,29H40V30H39zM40,29H41V30H40zM42,29H43V30H42zM3,30H4V31H3zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM14,30H15V31H14zM15,30H16V31H15zM20,30H21V31H20zM24,30H25V31H24zM25,30H26V31H25zM27,30H28V31H27zM30,30H31V31H30zM33,30H34V31H33zM34,30H35V31H34zM37,30H38V31H37zM39,30H40V31H39zM2,31H3V32H2zM5,31H6V32H5zM7,31H8V32H7zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM19,31H20V32H19zM21,31H22V32H21zM22,31H23V32H22zM24,31H25V32H24zM27,31H28V32H27zM29,31H30V32H29zM32,31H33V32H32zM33,31H34V32H33zM34,31H35V32H34zM38,31H39V32H38zM39,31H40V32H39zM40,31H41V32H40zM41,31H42V32H41zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM7,32H8V33H7zM8,32H9V33H8zM9,32H10V33H9zM10,32H11V33H10zM12,32H13V33H12zM14,32H15V33H14zM15,32H16V33H15zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM21,32H22V33H21zM23,32H24V33H23zM25,32H26V33H25zM27,32H28V33H27zM28,32H29V33H28zM29,32H30V33H29zM32,32H33V33H32zM33,32H34V33H33zM34,32H35V33H34zM35,32H36V33H35zM40,32H41V33H40zM41,32H42V33H41zM42,32H43V33H42zM2,33H3V34H2zM3,33H4V34H3zM5,33H6V34H5zM9,33H10V34H9zM10,33H11V34H10zM11,33H12V34H11zM12,33H13V34H12zM14,33H15V34H14zM15,33H16V34H15zM17,33H18V34H17zM18,33H19V34H18zM24,33H25V34H24zM25,33H26V34H25zM26,33H27V34H26zM27,33H28V34H27zM29,33H30V34H29zM32,33H33V34H32zM33,33H34V34H33zM36,33H37V34H36zM37,33H38V34H37zM39,33H40V34H39zM40,33H41V34H40zM2,34H3V35H2zM3,34H4V35H3zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM9,34H10V35H9zM12,34H13V35H12zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM31,34H32V35H31zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM39,34H40V35H39zM40,34H41V35H40zM41,34H42V35H41zM42,34H43V35H42zM10,35H11V36H10zM13,35H14V36H13zM16,35H17V36H16zM18,35H19V36H18zM21,35H22V36H21zM24,35H25V36H24zM25,35H26V36H25zM28,35H29V36H28zM29,35H30V36H29zM31,35H32V36H31zM32,35H33V36H32zM33,35H34V36H33zM34,35H35V36H34zM38,35H39V36H38zM40,35H41V36H40zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM10,36H11V37H10zM15,36H16V37H15zM16,36H17V37H16zM18,36H19V37H18zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM24,36H25V37H24zM25,36H26V37H25zM26,36H27V37H26zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM31,36H32V37H31zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM40,36H41V37H40zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM11,37H12V38H11zM14,37H15V38H14zM18,37H19V38H18zM19,37H20V38H19zM22,37H23V38H22zM24,37H25V38H24zM25,37H26V38H25zM28,37H29V38H28zM31,37H32V38H31zM33,37H34V38H33zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM14,38H15V39H14zM15,38H16V39H15zM16,38H17V39H16zM17,38H18V39H17zM18,38H19V39H18zM19,38H20V39H19zM20,38H21V39H20zM25,38H26V39H25zM26,38H27V39H26zM29,38H30V39H29zM30,38H31V39H30zM33,38H34V39H33zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM11,39H12V40H11zM12,39H13V40H12zM15,39H16V40H15zM16,39H17V40H16zM18,39H19V40H18zM19,39H20V40H19zM25,39H26V40H25zM26,39H27V40H26zM29,39H30V40H29zM30,39H31V40H30zM37,39H38V40H37zM40,39H41V40H40zM42,39H43V40H42zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM16,40H17V41H16zM17,40H18V41H17zM18,40H19V41H18zM20,40H21V41H20zM21,40H22V41H21zM22,40H23V41H22zM24,40H25V41H24zM26,40H27V41H26zM28,40H29V41H28zM29,40H30V41H29zM34,40H35V41H34zM35,40H36V41H35zM37,40H38V41H37zM38,40H39V41H38zM42,40H43V41H42zM2,41H3V42H2zM8,41H9V42H8zM11,41H12V42H11zM12,41H13V42H12zM13,41H14V42H13zM17,41H18V42H17zM20,41H21V42H20zM24,41H25V42H24zM28,41H29V42H28zM36,41H37V42H36zM38,41H39V42H38zM40,41H41V42H40zM42,41H43V42H42zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM11,42H12V43H11zM12,42H13V43H12zM15,42H16V43H15zM19,42H20V43H19zM20,42H21V43H20zM22,42H23V43H22zM24,42H25V43H24zM26,42H27V43H26zM27,42H28V43H27zM29,42H30V43H29zM32,42H33V43H32zM33,42H34V43H33zM34,42H35V43H34zM36,42H37V43H36zM38,42H39V43H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
-          <div class="qr-block__caption">온라인 슬라이드<br>QR 스캔</div>
-        </div>
-      </div>
-    </div>
-
-    <footer class="slide__footer">
-      <span class="slide__source">Lancet Diabetes Endocrinol 2026 · SURPASS-CVOT</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 01 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">한 문단·세 숫자로 요약</h2><p class="v2-sub">Dulaglutide를 active comparator로 둔 대형 CVOT에서 kidney composite도 유의하게 낮았다.</p>
+<div class="v2-panel hq-copy" style="left:398px;top:206px;width:818px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">POPULATION · 13,299명 · T2D+ASCVD, weekly tirzepatide vs dulaglutide. · PRIMARY KIDNEY · HR 0.77 · 주요 신장 사건 6.0% vs 7.6%. · FOLLOW-UP · 4.0년 · Prespecified exploratory kidney analysis. · 진료실 문장 — &#x27;심혈관 고위험 당뇨 환자에서 tirzepatide는 체중·혈당뿐 아니라 신장 composite도 더 낮춘 근거가 추가됐습니다.&#x27;</p></div></div>
+<div class="v2-panel hq-figure" style="left:64px;top:206px;width:310px;height:310px"><img class="v2-fig__img" src="../../../../shared/assets/generated/surpass-cvot-kidney-protection-20260702.png" alt="당뇨병 신장에서 incretin 경로와 사구체 누출 감소를 보여주는 세미리얼 의학 일러스트"></div>
+<div class="v2-panel hq-caption" style="left:64px;top:528px;width:310px;height:78px">당뇨병 신장에서 incretin 경로와 사구체 누출 감소를 보여주는 세미리얼 의학 일러스트</div>
+<div class="v2-tip"><span class="v2-tip__t">한 문단·세 숫자로 요약</span><span class="hq-source">근거 · Lancet Diabetes Endocrinol 2026 · SURPASS-CVOT prespecified exploratory analysis</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 02 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">SURPASS-CVOT의 신장 분석 설계</h2><p class="v2-sub">신장 전용 outcome trial은 아니지만, 대형 active-controlled CVOT 안에서 미리 정한 분석이다.</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Randomized double-blind</div><p class="hq-card__line v2-body">640개 기관, 30개국. T2D+ASCVD 성인을 1:1 무작위 배정.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Active comparator</div><p class="hq-card__line v2-body">GLP-1RA인 dulaglutide 1.5 mg과 직접 비교. 위약 대조보다 임상 질문이 현실적.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Tirzepatide dose</div><p class="hq-card__line v2-body">주 1회 최대 15 mg까지 증량. GIP/GLP-1 dual agonist.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Kidney assessments</div><p class="hq-card__line v2-body">Creatinine, cystatin C, UACR를 매년 측정해 composite와 slope를 평가.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">CKD stratification</div><p class="hq-card__line v2-body">Low-to-moderate risk와 high-risk CKD로 나누어 일관성을 확인.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:844px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Exploratory endpoint</div><p class="hq-card__line v2-body">결과는 중요하지만 primary CV endpoint와 같은 확증 수준은 아님.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">SURPASS-CVOT의 신장 분석 설계</span><span class="hq-source">근거 · SURPASS-CVOT methods · Lancet Diabetes Endocrinol 2026</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 03 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">대상: 심혈관질환이 이미 있는 당뇨 환자</h2><p class="v2-sub">일반 저위험 T2D가 아니라 cardiorenal 위험이 높은 외래 환자상에 가깝다.</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">포함 기준의 핵심</div><p class="hq-card__line v2-body">40세 이상 제2형 당뇨병 · ASCVD 동반 — 이미 심혈관질환이 있는 고위험군 · HbA1c 7.0-10.5% 범위 · BMI ≥25 kg/m²인 환자</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">외래 해석</div><p class="hq-card__line v2-body">체중·혈당·ASCVD가 함께 있는 환자에 맞는 근거 · CKD high-risk 2,948명 포함으로 신장 위험군 해석 가능 · Dulaglutide 대비라 기존 GLP-1RA와의 교체 질문에 가까움 · 저위험·비만 단독으로 일반화하지 않기</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">대상: 심혈관질환이 이미 있는 당뇨 환자</span><span class="hq-source">근거 · SURPASS-CVOT eligibility criteria</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 04 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">주요 신장 사건: 6.0% vs 7.6%</h2><p class="v2-sub">절대차는 작아 보여도, 이미 신장 보호 근거가 있는 비교약을 상대로 한 차이다.</p>
+<table class="v2-table hq-table hq-table--bar" style="width:760px"><thead><tr><th>핵심 항목</th><th>값</th></tr></thead><tbody><tr><th class="v2-body">Tirzepatide</th><td class="v2-body">6.0%</td></tr><tr><th class="v2-body">Dulaglutide</th><td class="v2-body">7.6%</td></tr><tr><th class="v2-body">Hazard ratio</th><td class="v2-body">0.77</td></tr><tr><th class="v2-body">P value</th><td class="v2-body">0.0002</td></tr></tbody></table><div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:372px;height:195px"><div class="v2-block"><div class="hq-card__head">상대위험</div><p class="hq-card__line v2-body">HR 0.77은 composite 기준 약 23% 상대위험 감소로 해석.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:411px;width:372px;height:195px"><div class="v2-block"><div class="hq-card__head">절대효과</div><p class="hq-card__line v2-body">4년 추적에서 1.6%p 차이. 고위험군일수록 임상 의미가 커진다.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">주요 신장 사건: 6.0% vs 7.6%</span><span class="hq-source">근거 · SURPASS-CVOT kidney analysis results</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 05 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">CKD 위험군별 방향성</h2><p class="v2-sub">낮은·중등도 위험군과 high-risk CKD 모두에서 tirzepatide 쪽으로 기울었다.</p>
+<div class="v2-panel hq-copy" style="left:398px;top:206px;width:818px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">군 · Tirzepatide · Dulaglutide · 해석 · Overall · 6.0% · 7.6% · HR 0.77, 전체 composite 유의 감소 · Low/mod CKD · 4.0% · 5.6% · HR 0.70, 방향성 가장 선명 · High-risk CKD · 12.2% · 14.5% · HR 0.79, 위험 높은 군에서도 일관 · 해석 단서 · 탐색적 · 하위군 · 상호작용보다 전체 방향성과 절대위험을 함께 봄</p></div></div>
+<div class="v2-panel hq-figure" style="left:64px;top:206px;width:310px;height:310px"><img class="v2-fig__img" src="../../../../shared/assets/generated/surpass-cvot-ckd-risk-map-20260702.png" alt="CKD 위험도에 따라 나뉜 신장과 사구체 보호 장면을 보여주는 의학 일러스트"></div>
+<div class="v2-panel hq-caption" style="left:64px;top:528px;width:310px;height:78px">CKD 위험도에 따라 나뉜 신장과 사구체 보호 장면을 보여주는 의학 일러스트</div>
+<div class="v2-tip"><span class="v2-tip__t">CKD 위험군별 방향성</span><span class="hq-source">근거 · SURPASS-CVOT subgroup results</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 06 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">eGFR slope와 albuminuria 신호</h2><p class="v2-sub">Composite 뒤에는 eGFR 감소 속도와 알부민뇨 변화라는 생물학적으로 그럴듯한 방향성이 있다.</p>
+<div class="v2-panel hq-copy" style="left:64px;top:206px;width:818px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">01 · eGFR decline · 특히 high-risk CKD에서 연간 eGFR 감소가 더 완만한 방향. · +0.93 · 02 · UACR · 알부민뇨 감소 방향은 신장 composite와 생물학적 일관성을 보강. · 03 · Mechanism · 체중, 혈당, 혈압, 염증·신장 혈역학 변화가 복합적으로 기여 가능. · 04 · Outcome hierarchy · eGFR slope·UACR는 보조 지표. 환자중심 hard renal endpoint와 구분.</p></div></div>
+<div class="v2-panel hq-figure" style="left:906px;top:206px;width:310px;height:310px"><img class="v2-fig__img" src="../../../../shared/assets/generated/surpass-cvot-egfr-slope-20260702.png" alt="시간에 따라 완만해지는 eGFR 감소와 알부민뇨 감소를 신장 그림으로 표현한 일러스트"></div>
+<div class="v2-panel hq-caption" style="left:906px;top:528px;width:310px;height:78px">시간에 따라 완만해지는 eGFR 감소와 알부민뇨 감소를 신장 그림으로 표현한 일러스트</div>
+<div class="v2-tip"><span class="v2-tip__t">eGFR slope와 albuminuria 신호</span><span class="hq-source">근거 · SURPASS-CVOT eGFR and UACR analyses</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 07 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">무엇을 말할 수 있고, 아직 조심할 점</h2><p class="v2-sub">결론은 강하지만, '신장 전용 확증 trial'처럼 과장하면 안 된다.</p>
+<div class="v2-panel hq-card" style="left:64px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">말할 수 있는 것</div><p class="hq-card__line v2-body">Active comparator 대비 kidney composite 감소 · ASCVD 동반 T2D에서 cardiorenal 선택지를 넓힘 · CKD 위험군 전반에서 방향성 유지 · 체중·혈당 이득과 신장 신호가 같은 방향</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:650px;top:206px;width:566px;height:400px"><div class="v2-block"><div class="hq-card__head">아직 말하기 이른 것</div><p class="hq-card__line v2-body">모든 CKD 환자 1차 선택으로 일반화 · 신장 endpoint 전용 확증 trial처럼 표현 · Dulaglutide 무효라는 식의 단순 결론 · 보험·국내 적응증을 넘어선 자동 처방 · 정확한 표현 —&#x27;T2D+ASCVD CVOT에서 미리 정한 신장 분석상 유리한 결과&#x27;가 가장 안전하다.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">무엇을 말할 수 있고, 아직 조심할 점</span><span class="hq-source">근거 · Clinical interpretation of SURPASS-CVOT kidney analysis</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 08 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">안전성: 위장관 부작용을 먼저 말해야 한다</h2><p class="v2-sub">신장 신호가 좋아도 실제 지속은 오심·구토·설사와 증량 전략에 달려 있다.</p>
+<div class="v2-panel hq-copy" style="left:64px;top:206px;width:818px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">01 · GI adverse events · Tirzepatide군에서 위장관 이상반응이 더 많았다. 시작 전 설명이 순응도 핵심. · 02 · Titration · 증량 속도, 식사량, 탈수 예방, 변비/설사 관리 계획을 함께 잡는다. · 03 · Renal caution · 구토·설사로 탈수되면 AKI 위험이 커질 수 있어 CKD 환자는 특히 주의. · 04 · Shared decision · 체중·혈당·심혈관·신장 이득과 부작용 부담을 같이 논의.</p></div></div>
+<div class="v2-panel hq-figure" style="left:906px;top:206px;width:310px;height:310px"><img class="v2-fig__img" src="../../../../shared/assets/generated/surpass-cvot-gi-safety-20260702.png" alt="주사 펜, 위장관, 식사 조절과 증량 달력을 함께 표현한 안전성 일러스트"></div>
+<div class="v2-panel hq-caption" style="left:906px;top:528px;width:310px;height:78px">주사 펜, 위장관, 식사 조절과 증량 달력을 함께 표현한 안전성 일러스트</div>
+<div class="v2-tip"><span class="v2-tip__t">안전성: 위장관 부작용을 먼저 말해야 한다</span><span class="hq-source">근거 · SURPASS-CVOT safety summary</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 09 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">외래 적용 흐름</h2><p class="v2-sub">약제 선택 전 환자의 cardiorenal phenotype과 지속 가능성을 먼저 확인한다.</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">ASCVD/CKD 확인</div><p class="hq-card__line v2-body">ASCVD, eGFR, UACR, 심부전, 체중, HbA1c를 한 번에 정리.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">기본 치료 최적화</div><p class="hq-card__line v2-body">혈압, RAAS, SGLT2i 적응증, statin, 금연 등 cardiorenal 기본축.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">약제 적합성</div><p class="hq-card__line v2-body">체중 목표, 위장관 병력, 비용/공급, 주사제 선호를 확인.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">증량·부작용 계획</div><p class="hq-card__line v2-body">소량 시작, GI 대처, 탈수 시 연락 기준을 사전 교육.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:454px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">추적 지표</div><p class="hq-card__line v2-body">A1c, 체중, eGFR, UACR, 혈압, 부작용으로 지속 여부 판단.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">외래 적용 흐름</span><span class="hq-source">근거 · Clinic implementation draft based on SURPASS-CVOT</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 10 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">한계와 읽는 법</h2><p class="v2-sub">Lilly-funded 대형 연구라는 장점과, exploratory kidney endpoint라는 제한을 동시에 본다.</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Exploratory</div><p class="hq-card__line v2-body">Prespecified였지만 primary kidney outcome trial은 아니다.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Composite endpoint</div><p class="hq-card__line v2-body">Hard renal outcome만이 아니라 composite 구성에 따른 해석 필요.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Active comparator</div><p class="hq-card__line v2-body">Dulaglutide 자체도 GLP-1RA 근거가 있어 위약 대비 해석과 다름.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Sponsor</div><p class="hq-card__line v2-body">Lilly funding. 독립 재현과 kidney-specific trial 근거가 더해지면 해석 강화.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Generalizability</div><p class="hq-card__line v2-body">T2D+ASCVD 중심. 저위험 T2D 또는 비당뇨 CKD로 확장 금지.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:844px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">Practice value</div><p class="hq-card__line v2-body">그럼에도 cardiorenal high-risk T2D 약제 선택에서 매우 실용적 근거.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">한계와 읽는 법</span><span class="hq-source">근거 · SURPASS-CVOT limitations</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CLOSING · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">진료실 결론</h2><p class="v2-sub">핵심 결과와 한계를 함께 확인합니다.</p>
+<div class="v2-panel hq-copy hq-copy--dense" style="left:64px;top:206px;width:714px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">01 · 핵심 수치 — 주요 신장 사건 6.0% vs 7.6%, HR 0.77. · 02 · 대상은 고위험 — T2D+ASCVD, CKD 위험을 함께 보는 환자군. · 03 · 해석은 균형 있게 — prespecified exploratory kidney analysis, 신장 전용 trial은 아님. · 04 · 실무 포인트 — cardiorenal 이득과 GI 부작용·탈수 위험을 같이 설명한다. · CLINIC NOTE · 광교바른내과 · 의료진 논문 리뷰 · 이 자료는 의료진 논문 리뷰입니다. 국내 허가·급여·공급 상황과 환자별 금기/부작용 위험은 실제 처방 전 확인해야 합니다. · 온라인 슬라이드 · QR 스캔</p></div></div>
+<div class="v2-panel hq-qr v2-panel--accent" style="left:802px;top:206px;width:414px;height:400px"><div class="qr-block"><div class="qr-block__code"><svg width="45mm" height="45mm" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM12,2H13V3H12zM13,2H14V3H13zM15,2H16V3H15zM17,2H18V3H17zM18,2H19V3H18zM20,2H21V3H20zM24,2H25V3H24zM27,2H28V3H27zM31,2H32V3H31zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM39,2H40V3H39zM40,2H41V3H40zM41,2H42V3H41zM42,2H43V3H42zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM12,3H13V4H12zM14,3H15V4H14zM15,3H16V4H15zM19,3H20V4H19zM21,3H22V4H21zM24,3H25V4H24zM28,3H29V4H28zM30,3H31V4H30zM33,3H34V4H33zM36,3H37V4H36zM42,3H43V4H42zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM15,4H16V5H15zM16,4H17V5H16zM17,4H18V5H17zM22,4H23V5H22zM23,4H24V5H23zM27,4H28V5H27zM29,4H30V5H29zM30,4H31V5H30zM33,4H34V5H33zM36,4H37V5H36zM38,4H39V5H38zM39,4H40V5H39zM40,4H41V5H40zM42,4H43V5H42zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM16,5H17V6H16zM20,5H21V6H20zM22,5H23V6H22zM23,5H24V6H23zM25,5H26V6H25zM26,5H27V6H26zM27,5H28V6H27zM31,5H32V6H31zM33,5H34V6H33zM34,5H35V6H34zM36,5H37V6H36zM38,5H39V6H38zM39,5H40V6H39zM40,5H41V6H40zM42,5H43V6H42zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM17,6H18V7H17zM18,6H19V7H18zM19,6H20V7H19zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM30,6H31V7H30zM31,6H32V7H31zM33,6H34V7H33zM34,6H35V7H34zM36,6H37V7H36zM38,6H39V7H38zM39,6H40V7H39zM40,6H41V7H40zM42,6H43V7H42zM2,7H3V8H2zM8,7H9V8H8zM13,7H14V8H13zM15,7H16V8H15zM16,7H17V8H16zM19,7H20V8H19zM22,7H23V8H22zM24,7H25V8H24zM25,7H26V8H25zM26,7H27V8H26zM27,7H28V8H27zM28,7H29V8H28zM31,7H32V8H31zM34,7H35V8H34zM36,7H37V8H36zM42,7H43V8H42zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM34,8H35V9H34zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM39,8H40V9H39zM40,8H41V9H40zM41,8H42V9H41zM42,8H43V9H42zM11,9H12V10H11zM12,9H13V10H12zM14,9H15V10H14zM15,9H16V10H15zM16,9H17V10H16zM17,9H18V10H17zM18,9H19V10H18zM22,9H23V10H22zM24,9H25V10H24zM26,9H27V10H26zM27,9H28V10H27zM30,9H31V10H30zM34,9H35V10H34zM2,10H3V11H2zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM11,10H12V11H11zM15,10H16V11H15zM17,10H18V11H17zM19,10H20V11H19zM21,10H22V11H21zM22,10H23V11H22zM28,10H29V11H28zM29,10H30V11H29zM31,10H32V11H31zM33,10H34V11H33zM35,10H36V11H35zM38,10H39V11H38zM40,10H41V11H40zM41,10H42V11H41zM42,10H43V11H42zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM7,11H8V12H7zM10,11H11V12H10zM12,11H13V12H12zM13,11H14V12H13zM16,11H17V12H16zM17,11H18V12H17zM19,11H20V12H19zM20,11H21V12H20zM21,11H22V12H21zM24,11H25V12H24zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM33,11H34V12H33zM35,11H36V12H35zM38,11H39V12H38zM2,12H3V13H2zM3,12H4V13H3zM4,12H5V13H4zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM15,12H16V13H15zM18,12H19V13H18zM19,12H20V13H19zM22,12H23V13H22zM23,12H24V13H23zM25,12H26V13H25zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM35,12H36V13H35zM36,12H37V13H36zM37,12H38V13H37zM38,12H39V13H38zM40,12H41V13H40zM3,13H4V14H3zM4,13H5V14H4zM5,13H6V14H5zM7,13H8V14H7zM11,13H12V14H11zM17,13H18V14H17zM18,13H19V14H18zM19,13H20V14H19zM21,13H22V14H21zM29,13H30V14H29zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM35,13H36V14H35zM37,13H38V14H37zM38,13H39V14H38zM39,13H40V14H39zM41,13H42V14H41zM42,13H43V14H42zM2,14H3V15H2zM3,14H4V15H3zM4,14H5V15H4zM5,14H6V15H5zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM14,14H15V15H14zM16,14H17V15H16zM18,14H19V15H18zM20,14H21V15H20zM21,14H22V15H21zM22,14H23V15H22zM25,14H26V15H25zM26,14H27V15H26zM29,14H30V15H29zM34,14H35V15H34zM36,14H37V15H36zM37,14H38V15H37zM41,14H42V15H41zM5,15H6V16H5zM7,15H8V16H7zM10,15H11V16H10zM12,15H13V16H12zM14,15H15V16H14zM15,15H16V16H15zM19,15H20V16H19zM22,15H23V16H22zM24,15H25V16H24zM25,15H26V16H25zM26,15H27V16H26zM27,15H28V16H27zM28,15H29V16H28zM29,15H30V16H29zM30,15H31V16H30zM32,15H33V16H32zM36,15H37V16H36zM37,15H38V16H37zM38,15H39V16H38zM41,15H42V16H41zM42,15H43V16H42zM2,16H3V17H2zM6,16H7V17H6zM8,16H9V17H8zM11,16H12V17H11zM12,16H13V17H12zM13,16H14V17H13zM14,16H15V17H14zM17,16H18V17H17zM18,16H19V17H18zM21,16H22V17H21zM23,16H24V17H23zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM31,16H32V17H31zM32,16H33V17H32zM33,16H34V17H33zM35,16H36V17H35zM36,16H37V17H36zM38,16H39V17H38zM40,16H41V17H40zM41,16H42V17H41zM42,16H43V17H42zM5,17H6V18H5zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM15,17H16V18H15zM20,17H21V18H20zM24,17H25V18H24zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM32,17H33V18H32zM33,17H34V18H33zM35,17H36V18H35zM37,17H38V18H37zM38,17H39V18H38zM39,17H40V18H39zM40,17H41V18H40zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM11,18H12V19H11zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM18,18H19V19H18zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM33,18H34V19H33zM34,18H35V19H34zM35,18H36V19H35zM41,18H42V19H41zM2,19H3V20H2zM4,19H5V20H4zM5,19H6V20H5zM10,19H11V20H10zM13,19H14V20H13zM16,19H17V20H16zM18,19H19V20H18zM21,19H22V20H21zM22,19H23V20H22zM26,19H27V20H26zM29,19H30V20H29zM33,19H34V20H33zM34,19H35V20H34zM35,19H36V20H35zM38,19H39V20H38zM39,19H40V20H39zM2,20H3V21H2zM3,20H4V21H3zM5,20H6V21H5zM7,20H8V21H7zM8,20H9V21H8zM13,20H14V21H13zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM21,20H22V21H21zM24,20H25V21H24zM25,20H26V21H25zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM36,20H37V21H36zM37,20H38V21H37zM38,20H39V21H38zM39,20H40V21H39zM42,20H43V21H42zM4,21H5V22H4zM7,21H8V22H7zM9,21H10V22H9zM14,21H15V22H14zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM21,21H22V22H21zM22,21H23V22H22zM24,21H25V22H24zM27,21H28V22H27zM28,21H29V22H28zM33,21H34V22H33zM35,21H36V22H35zM38,21H39V22H38zM39,21H40V22H39zM40,21H41V22H40zM41,21H42V22H41zM42,21H43V22H42zM2,22H3V23H2zM5,22H6V23H5zM8,22H9V23H8zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM14,22H15V23H14zM16,22H17V23H16zM21,22H22V23H21zM22,22H23V23H22zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM33,22H34V23H33zM34,22H35V23H34zM36,22H37V23H36zM40,22H41V23H40zM41,22H42V23H41zM42,22H43V23H42zM2,23H3V24H2zM4,23H5V24H4zM6,23H7V24H6zM7,23H8V24H7zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM15,23H16V24H15zM16,23H17V24H16zM17,23H18V24H17zM19,23H20V24H19zM20,23H21V24H20zM21,23H22V24H21zM23,23H24V24H23zM25,23H26V24H25zM28,23H29V24H28zM29,23H30V24H29zM32,23H33V24H32zM33,23H34V24H33zM37,23H38V24H37zM38,23H39V24H38zM39,23H40V24H39zM40,23H41V24H40zM2,24H3V25H2zM3,24H4V25H3zM4,24H5V25H4zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM15,24H16V25H15zM22,24H23V25H22zM24,24H25V25H24zM25,24H26V25H25zM28,24H29V25H28zM29,24H30V25H29zM31,24H32V25H31zM35,24H36V25H35zM38,24H39V25H38zM40,24H41V25H40zM2,25H3V26H2zM4,25H5V26H4zM5,25H6V26H5zM10,25H11V26H10zM11,25H12V26H11zM14,25H15V26H14zM16,25H17V26H16zM19,25H20V26H19zM20,25H21V26H20zM21,25H22V26H21zM28,25H29V26H28zM29,25H30V26H29zM31,25H32V26H31zM32,25H33V26H32zM33,25H34V26H33zM39,25H40V26H39zM42,25H43V26H42zM2,26H3V27H2zM3,26H4V27H3zM4,26H5V27H4zM7,26H8V27H7zM8,26H9V27H8zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM15,26H16V27H15zM16,26H17V27H16zM20,26H21V27H20zM21,26H22V27H21zM26,26H27V27H26zM30,26H31V27H30zM34,26H35V27H34zM35,26H36V27H35zM36,26H37V27H36zM39,26H40V27H39zM41,26H42V27H41zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM6,27H7V28H6zM10,27H11V28H10zM14,27H15V28H14zM16,27H17V28H16zM18,27H19V28H18zM20,27H21V28H20zM25,27H26V28H25zM27,27H28V28H27zM28,27H29V28H28zM29,27H30V28H29zM30,27H31V28H30zM34,27H35V28H34zM36,27H37V28H36zM38,27H39V28H38zM40,27H41V28H40zM42,27H43V28H42zM6,28H7V29H6zM8,28H9V29H8zM12,28H13V29H12zM16,28H17V29H16zM17,28H18V29H17zM18,28H19V29H18zM19,28H20V29H19zM20,28H21V29H20zM21,28H22V29H21zM22,28H23V29H22zM23,28H24V29H23zM24,28H25V29H24zM27,28H28V29H27zM29,28H30V29H29zM30,28H31V29H30zM31,28H32V29H31zM33,28H34V29H33zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM39,28H40V29H39zM42,28H43V29H42zM2,29H3V30H2zM7,29H8V30H7zM12,29H13V30H12zM14,29H15V30H14zM16,29H17V30H16zM17,29H18V30H17zM18,29H19V30H18zM20,29H21V30H20zM22,29H23V30H22zM24,29H25V30H24zM25,29H26V30H25zM29,29H30V30H29zM33,29H34V30H33zM35,29H36V30H35zM36,29H37V30H36zM37,29H38V30H37zM38,29H39V30H38zM39,29H40V30H39zM40,29H41V30H40zM42,29H43V30H42zM3,30H4V31H3zM6,30H7V31H6zM7,30H8V31H7zM8,30H9V31H8zM9,30H10V31H9zM14,30H15V31H14zM15,30H16V31H15zM20,30H21V31H20zM24,30H25V31H24zM25,30H26V31H25zM27,30H28V31H27zM30,30H31V31H30zM33,30H34V31H33zM34,30H35V31H34zM37,30H38V31H37zM39,30H40V31H39zM2,31H3V32H2zM5,31H6V32H5zM7,31H8V32H7zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM16,31H17V32H16zM17,31H18V32H17zM18,31H19V32H18zM19,31H20V32H19zM21,31H22V32H21zM22,31H23V32H22zM24,31H25V32H24zM27,31H28V32H27zM29,31H30V32H29zM32,31H33V32H32zM33,31H34V32H33zM34,31H35V32H34zM38,31H39V32H38zM39,31H40V32H39zM40,31H41V32H40zM41,31H42V32H41zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM7,32H8V33H7zM8,32H9V33H8zM9,32H10V33H9zM10,32H11V33H10zM12,32H13V33H12zM14,32H15V33H14zM15,32H16V33H15zM17,32H18V33H17zM18,32H19V33H18zM19,32H20V33H19zM21,32H22V33H21zM23,32H24V33H23zM25,32H26V33H25zM27,32H28V33H27zM28,32H29V33H28zM29,32H30V33H29zM32,32H33V33H32zM33,32H34V33H33zM34,32H35V33H34zM35,32H36V33H35zM40,32H41V33H40zM41,32H42V33H41zM42,32H43V33H42zM2,33H3V34H2zM3,33H4V34H3zM5,33H6V34H5zM9,33H10V34H9zM10,33H11V34H10zM11,33H12V34H11zM12,33H13V34H12zM14,33H15V34H14zM15,33H16V34H15zM17,33H18V34H17zM18,33H19V34H18zM24,33H25V34H24zM25,33H26V34H25zM26,33H27V34H26zM27,33H28V34H27zM29,33H30V34H29zM32,33H33V34H32zM33,33H34V34H33zM36,33H37V34H36zM37,33H38V34H37zM39,33H40V34H39zM40,33H41V34H40zM2,34H3V35H2zM3,34H4V35H3zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM9,34H10V35H9zM12,34H13V35H12zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM17,34H18V35H17zM18,34H19V35H18zM19,34H20V35H19zM26,34H27V35H26zM28,34H29V35H28zM29,34H30V35H29zM31,34H32V35H31zM33,34H34V35H33zM34,34H35V35H34zM35,34H36V35H35zM36,34H37V35H36zM37,34H38V35H37zM38,34H39V35H38zM39,34H40V35H39zM40,34H41V35H40zM41,34H42V35H41zM42,34H43V35H42zM10,35H11V36H10zM13,35H14V36H13zM16,35H17V36H16zM18,35H19V36H18zM21,35H22V36H21zM24,35H25V36H24zM25,35H26V36H25zM28,35H29V36H28zM29,35H30V36H29zM31,35H32V36H31zM32,35H33V36H32zM33,35H34V36H33zM34,35H35V36H34zM38,35H39V36H38zM40,35H41V36H40zM2,36H3V37H2zM3,36H4V37H3zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM7,36H8V37H7zM8,36H9V37H8zM10,36H11V37H10zM15,36H16V37H15zM16,36H17V37H16zM18,36H19V37H18zM19,36H20V37H19zM20,36H21V37H20zM22,36H23V37H22zM24,36H25V37H24zM25,36H26V37H25zM26,36H27V37H26zM28,36H29V37H28zM29,36H30V37H29zM30,36H31V37H30zM31,36H32V37H31zM33,36H34V37H33zM34,36H35V37H34zM36,36H37V37H36zM38,36H39V37H38zM40,36H41V37H40zM2,37H3V38H2zM8,37H9V38H8zM10,37H11V38H10zM11,37H12V38H11zM14,37H15V38H14zM18,37H19V38H18zM19,37H20V38H19zM22,37H23V38H22zM24,37H25V38H24zM25,37H26V38H25zM28,37H29V38H28zM31,37H32V38H31zM33,37H34V38H33zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM8,38H9V39H8zM10,38H11V39H10zM11,38H12V39H11zM14,38H15V39H14zM15,38H16V39H15zM16,38H17V39H16zM17,38H18V39H17zM18,38H19V39H18zM19,38H20V39H19zM20,38H21V39H20zM25,38H26V39H25zM26,38H27V39H26zM29,38H30V39H29zM30,38H31V39H30zM33,38H34V39H33zM34,38H35V39H34zM35,38H36V39H35zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38zM2,39H3V40H2zM4,39H5V40H4zM5,39H6V40H5zM6,39H7V40H6zM8,39H9V40H8zM10,39H11V40H10zM11,39H12V40H11zM12,39H13V40H12zM15,39H16V40H15zM16,39H17V40H16zM18,39H19V40H18zM19,39H20V40H19zM25,39H26V40H25zM26,39H27V40H26zM29,39H30V40H29zM30,39H31V40H30zM37,39H38V40H37zM40,39H41V40H40zM42,39H43V40H42zM2,40H3V41H2zM4,40H5V41H4zM5,40H6V41H5zM6,40H7V41H6zM8,40H9V41H8zM16,40H17V41H16zM17,40H18V41H17zM18,40H19V41H18zM20,40H21V41H20zM21,40H22V41H21zM22,40H23V41H22zM24,40H25V41H24zM26,40H27V41H26zM28,40H29V41H28zM29,40H30V41H29zM34,40H35V41H34zM35,40H36V41H35zM37,40H38V41H37zM38,40H39V41H38zM42,40H43V41H42zM2,41H3V42H2zM8,41H9V42H8zM11,41H12V42H11zM12,41H13V42H12zM13,41H14V42H13zM17,41H18V42H17zM20,41H21V42H20zM24,41H25V42H24zM28,41H29V42H28zM36,41H37V42H36zM38,41H39V42H38zM40,41H41V42H40zM42,41H43V42H42zM2,42H3V43H2zM3,42H4V43H3zM4,42H5V43H4zM5,42H6V43H5zM6,42H7V43H6zM7,42H8V43H7zM8,42H9V43H8zM10,42H11V43H10zM11,42H12V43H11zM12,42H13V43H12zM15,42H16V43H15zM19,42H20V43H19zM20,42H21V43H20zM22,42H23V43H22zM24,42H25V43H24zM26,42H27V43H26zM27,42H28V43H27zM29,42H30V43H29zM32,42H33V43H32zM33,42H34V43H33zM34,42H35V43H34zM36,42H37V43H36zM38,42H39V43H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div><div class="qr-block__caption">이 자료 다시 보기<br>광교바른내과 · 의료진 참고자료</div></div></div>
+<div class="v2-tip"><span class="v2-tip__t">논문 결과는 환자 특성과 최신 지침에 맞춰 해석합니다.</span><span class="hq-source">근거 · Lancet Diabetes Endocrinol 2026 · SURPASS-CVOT</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>

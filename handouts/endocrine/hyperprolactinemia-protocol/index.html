@@ -17,103 +17,149 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
+    }
     .page {
-      padding: 11mm 14mm 8mm;
-      gap: 4mm;
+      padding: 9.5mm 12.5mm 6.5mm;
+      gap: 2.5mm;
     }
-
+    .page__subtitle {
+      max-width: 176mm;
+    }
     .page__body {
-      gap: 2.8mm;
-      justify-content: space-between;
+      gap: 4.8mm;
+      justify-content: start;
     }
-
     .page__body > section {
       flex: 0 0 auto;
-      gap: 1.2mm;
+      gap: 1.6mm;
     }
-
     .section-heading {
-      margin-bottom: 1mm;
+      margin-bottom: 0.5mm;
     }
-
-    .protocol-flow {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 3mm;
+    .icon-sm {
+      width: 4.4mm;
+      height: 4.4mm;
+      vertical-align: -1mm;
+      margin-right: 1.2mm;
     }
-
-    .protocol-step {
-      background: var(--color-canvas-warm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 3mm;
-      min-height: 24mm;
+    .card {
+      padding: 2.8mm 3.2mm;
     }
-
-    .protocol-step__num {
-      color: var(--color-steel);
-      font-size: 8pt;
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-wide);
-      margin-bottom: 1.5mm;
-      text-transform: uppercase;
-    }
-
-    .protocol-step__title {
+    .card-label {
+      margin-bottom: 0.8mm;
       color: var(--color-navy);
-      font-size: 10.4pt;
-      font-weight: var(--weight-bold);
-      line-height: 1.22;
-      margin-bottom: 1.2mm;
+    }
+    .card-list {
+      font-size: 8.2pt;
+      line-height: 1.4;
+      margin: 0;
+    }
+    .card-list li + li {
+      margin-top: 1.1mm;
     }
 
-    .protocol-step__body {
+    /* 테이블 공통 스타일 */
+    .ge-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.2pt;
+      line-height: 1.38;
       color: var(--color-ink-soft);
-      font-size: 8.4pt;
-      line-height: 1.45;
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 2.1mm 2.2mm;
+      vertical-align: middle;
+      text-align: left;
+    }
+    .ge-table th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.3pt;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table .row-label {
+      background: var(--color-canvas-warm);
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+    }
+    .step-num {
+      display: block;
+      font-size: 7.8pt;
+      color: var(--color-steel);
+      letter-spacing: var(--tracking-wide);
     }
 
-    .compact-list {
-      list-style: none;
+    /* 그림 + 재검·원인 표 */
+    .check-grid {
+      display: grid;
+      grid-template-columns: 78mm 1fr;
+      gap: 3mm;
+      align-items: start;
+    }
+    .check-figure-col {
       display: flex;
       flex-direction: column;
-      gap: 1mm;
-      font-size: 8.55pt;
-      line-height: 1.46;
+      gap: 1.4mm;
     }
-
-    .compact-list li::before {
-      content: "";
-      display: inline-block;
-      width: 1.5mm;
-      height: 1.5mm;
-      margin-right: 1.6mm;
-      border-radius: 50%;
-      background: var(--color-steel);
-      vertical-align: 0.4mm;
+    .check-figure {
+      width: 78mm;
+      height: 52mm;
+      margin: 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      overflow: hidden;
+      position: relative;
     }
-
-    .card--warning .compact-list li::before {
-      background: var(--color-warning);
-    }
-
-    .prolactin-visual {
+    .check-figure img {
+      display: block;
       width: 100%;
-      max-width: none;
-      height: 25mm;
+      height: 100%;
+      object-fit: cover;
+    }
+    .check-figure__note {
+      font-size: 8.1pt;
+      line-height: 1.4;
+      color: var(--color-ink-soft);
+      margin: 0;
     }
 
-    .two-line {
-      font-size: 9.1pt;
-      line-height: 1.5;
+    /* 오늘 기억할 점 */
+    .er-card {
+      padding: 2.4mm 3.2mm;
+    }
+    .er-card .card-label {
+      color: #FFFFFF;
+      margin-bottom: 0.6mm;
+    }
+    .er-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-white-95);
     }
 
-    .card {
-      padding: 3.2mm 4mm;
+    .page__footer {
+      padding-top: 1.8mm;
     }
-
-    .stat-cell {
-      padding: 2.4mm 3mm;
+    @media screen {
+      .page__footer {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        align-items: flex-start !important;
+        gap: 3mm;
+      }
+      .page__footer-info {
+        width: 100% !important;
+      }
     }
   </style>
 <!-- seo:geo2 --><meta name="description" content="여성호르몬 검사에서 프로락틴이 높게 나온 경우 재검 조건, 흔한 원인, 추가 검사와 의뢰 기준을 한 장으로 정리했습니다.">
@@ -125,7 +171,7 @@
 <div class="page">
 
   <header class="page__header">
-    <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
+    <img src="../../../shared/assets/clinic_logo.png" alt="광교바른내과" class="page__logo">
     <div class="page__eyebrow">PATIENT HANDOUT · <strong>ENDOCRINE · PROLACTIN</strong></div>
   </header>
 
@@ -136,72 +182,87 @@
 
   <main class="page__body">
 
+    <!-- 1. 4단계 흐름 (표 1) -->
     <section>
-      <h2 class="section-heading">진료실에서 보는 4단계 흐름</h2>
-      <div class="protocol-flow">
-        <div class="protocol-step">
-          <div class="protocol-step__num">STEP 01</div>
-          <div class="protocol-step__title">증상·약 확인</div>
-          <div class="protocol-step__body">월경 변화, 유즙 분비, 두통·시야 증상과 복용약을 먼저 확인합니다.</div>
+      <h2 class="section-heading"><img data-asset="hi-filled-endocrinology" src="../../../shared/assets/healthicons/filled/specialties/endocrinology.svg" class="icon-sm" alt="내분비">진료실에서 보는 4단계 흐름</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 24%;">단계</th>
+            <th style="width: 76%;">진료실에서 하는 일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label"><span class="step-num">STEP 01</span>증상·약 확인</td>
+            <td>월경 변화, 유즙 분비, 두통·시야 증상과 복용약을 먼저 확인합니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label"><span class="step-num">STEP 02</span>안정 상태 재검</td>
+            <td>가능하면 오전, 도착 후 휴식한 상태에서 다시 측정해 일시 상승을 걸러냅니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label"><span class="step-num">STEP 03</span>흔한 원인 배제</td>
+            <td>임신 가능성, 갑상선 기능, 신장·간 기능, 약물 영향을 함께 봅니다.</td>
+          </tr>
+          <tr>
+            <td class="row-label"><span class="step-num">STEP 04</span>지속 상승 평가</td>
+            <td>반복 상승이나 증상이 있으면 뇌하수체 MRI(자기공명영상), 내분비 의뢰를 검토합니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 2. 재검 조건과 확인할 원인 (그림 + 표 2) -->
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-blood-drop" src="../../../shared/assets/healthicons/filled/body/blood-drop.svg" class="icon-sm" alt="혈액">재검 전 준비와 함께 확인할 원인</h2>
+      <div class="check-grid">
+        <div class="check-figure-col">
+          <figure class="check-figure" data-visual-intent="Resting morning blood draw for prolactin recheck">
+            <img src="../../../shared/assets/generated/hyperprolactinemia-protocol-recheck-20260927.jpg" alt="진료실에서 충분히 쉰 뒤 편안한 자세로 오전 채혈을 받는 모습">
+          </figure>
+          <p class="check-figure__note">긴장·수면 부족·격한 운동·임신/수유처럼 일시 상승 요인을 먼저&nbsp;확인합니다.</p>
         </div>
-        <div class="protocol-step">
-          <div class="protocol-step__num">STEP 02</div>
-          <div class="protocol-step__title">안정 상태 재검</div>
-          <div class="protocol-step__body">가능하면 오전, 도착 후 휴식한 상태에서 다시 측정해 일시 상승을 걸러냅니다.</div>
-        </div>
-        <div class="protocol-step">
-          <div class="protocol-step__num">STEP 03</div>
-          <div class="protocol-step__title">흔한 원인 배제</div>
-          <div class="protocol-step__body">임신 가능성, 갑상선 기능, 신장·간 기능, 약물 영향을 함께 봅니다.</div>
-        </div>
-        <div class="protocol-step">
-          <div class="protocol-step__num">STEP 04</div>
-          <div class="protocol-step__title">지속 상승 평가</div>
-          <div class="protocol-step__body">반복 상승이나 증상이 있으면 뇌하수체 MRI, 내분비 의뢰를 검토합니다.</div>
-        </div>
+        <table class="ge-table">
+          <thead>
+            <tr>
+              <th style="width: 50%;"><img data-asset="hi-filled-test-tubes" src="../../../shared/assets/healthicons/filled/devices/test-tubes.svg" class="icon-sm" alt="채혈">재검 조건</th>
+              <th style="width: 50%;"><img data-asset="hi-filled-medical-search" src="../../../shared/assets/healthicons/filled/symbols/medical-search.svg" class="icon-sm" alt="원인 확인">확인할 원인</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>오전 채혈</strong>을 우선 권장합니다.</td>
+              <td><strong>임신 가능성</strong> 또는 최근 수유 여부</td>
+            </tr>
+            <tr>
+              <td><strong>도착 후 10~20분 안정</strong>하고 채혈합니다.</td>
+              <td><strong>갑상선기능저하</strong>, 신장·간 기능 이상</td>
+            </tr>
+            <tr>
+              <td>전날 과격한 운동, 음주, 밤샘은 피합니다.</td>
+              <td>항정신병약, 항구토제, 일부 항우울제,&nbsp;진통제</td>
+            </tr>
+            <tr>
+              <td>검사 전 식사·공복 조건은 진료실 안내에 맞춥니다.</td>
+              <td>다낭성난소증후군(PCOS), 월경 불규칙</td>
+            </tr>
+            <tr>
+              <td>검사 당일 복용약·영양제를 접수 시 알려주세요.</td>
+              <td>반복 상승 시 뇌하수체 병변 가능성</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
+    <!-- 3. 바로 알릴 증상 / 준비할 정보 -->
     <section>
-      <h2 class="section-heading">검사 조건과 원인을 순서대로 확인합니다</h2>
-      <figure class="handout-visual-panel prolactin-visual" data-visual-intent="Prolactin evaluation flow">
-        <img src="../../../shared/assets/generated/hyperprolactinemia-protocol-flow-20260604.jpg" alt="프로락틴 상승 평가 흐름: 안정 상태 채혈, 약물 확인, 호르몬·갑상선·임신 가능성 평가, 필요 시 뇌하수체 영상 상담">
-        <figcaption class="handout-visual-caption">긴장·수면 부족·격한 운동·임신/수유처럼 일시 상승 요인을 먼저 확인합니다.</figcaption>
-      </figure>
-    </section>
-
-    <section>
-      <h2 class="section-heading">재검 전 준비와 함께 확인할 원인</h2>
-      <div class="body-2col">
-        <div class="card">
-          <div class="card-label card-label--steel">재검 조건</div>
-          <ul class="compact-list">
-            <li><strong>오전 채혈</strong>을 우선 권장합니다.</li>
-            <li><strong>도착 후 10~20분 안정</strong>하고 채혈합니다.</li>
-            <li>전날 과격한 운동, 음주, 밤샘은 피합니다.</li>
-            <li>검사 전 식사·공복 조건은 진료실 안내에 맞춥니다.</li>
-            <li>검사 당일 복용약·영양제를 접수 시 알려주세요.</li>
-          </ul>
-        </div>
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">확인할 원인</div>
-          <ul class="compact-list">
-            <li><strong>임신 가능성</strong> 또는 최근 수유 여부</li>
-            <li><strong>갑상선기능저하</strong>, 신장·간 기능 이상</li>
-            <li>항정신병약, 항구토제, 일부 항우울제, 진통제</li>
-            <li>다낭성난소증후군(PCOS), 월경 불규칙</li>
-            <li>반복 상승 시 뇌하수체 병변 가능성</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2 class="section-heading">바로 알려야 할 증상과 가져오면 좋은 정보</h2>
+      <h2 class="section-heading"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="경고">바로 알려야 할 증상과 가져오면 좋은 정보</h2>
       <div class="body-2col">
         <div class="card card--warning">
-          <div class="card-label card-label--warning">진료실에 바로 알려주세요</div>
-          <ul class="compact-list">
+          <div class="card-label card-label--warning"><img data-asset="hi-filled-head" src="../../../shared/assets/healthicons/filled/body/head.svg" class="icon-sm" alt="머리">진료실에 바로 알려주세요</div>
+          <ul class="card-list">
             <li><strong>시야가 좁아짐</strong> 또는 물체가 겹쳐 보임</li>
             <li><strong>새롭고 심한 두통</strong>, 구토가 동반되는 두통</li>
             <li>임신·수유와 무관한 유즙 분비</li>
@@ -209,8 +270,8 @@
           </ul>
         </div>
         <div class="card">
-          <div class="card-label card-label--steel">진료 때 준비하면 좋습니다</div>
-          <ul class="compact-list">
+          <div class="card-label card-label--steel"><img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" class="icon-sm" alt="복용약">진료 때 준비하면 좋습니다</div>
+          <ul class="card-list">
             <li>복용 중인 약 이름, 용량, 시작 시점</li>
             <li>최근 3개월 생리 주기와 마지막 생리 시작일</li>
             <li>임신 가능성, 수유 여부, 피임약·호르몬제 사용</li>
@@ -220,11 +281,12 @@
       </div>
     </section>
 
+    <!-- 4. 오늘 기억할 점 -->
     <section>
-      <div class="card card--navy">
-        <div class="card-label">오늘 기억할 점</div>
-        <div class="two-line">
-          프로락틴 상승은 <strong>재검으로 확인</strong>하고, 약물·임신·갑상선·신장 기능처럼 흔한 원인을 먼저 살핍니다. 반복해서 높거나 증상이 동반되면 영상검사나 내분비 진료로 이어질 수 있습니다.
+      <div class="card card--navy er-card">
+        <div class="card-label"><img data-asset="hi-filled-info" src="../../../shared/assets/healthicons/filled/symbols/info.svg" class="icon-sm" alt="안내">오늘 기억할 점</div>
+        <div class="er-text">
+          프로락틴 상승은 <strong style="color:var(--color-sky);">재검으로 확인</strong>하고, 약물·임신·갑상선·신장 기능처럼 흔한 원인을 먼저 살핍니다. 반복해서 높거나 증상이 동반되면 영상검사나 내분비 진료로 이어질 수 있습니다.
         </div>
       </div>
     </section>
@@ -234,8 +296,8 @@
   <footer class="page__footer">
     <div class="page__footer-info">
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>
-      <div class="clinic-meta">경기 용인 수지구 광교중앙로 298, 4층 · ☏ 031-893-4560</div>
-      <div class="clinic-meta">평일 08:30~18:30 · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
+      <div class="clinic-meta">경기도 용인시 수지구 광교중앙로 298, 4층 402-404호 · ☏ 031-893-4560</div>
+      <div class="clinic-meta">평일 08:30~18:30 (점심 13:00~14:00) · 토요일 08:30~13:30 · 일요일·공휴일 휴진</div>
       <div class="clinic-meta">근거 — Endocrine Society Hyperprolactinemia CPG · Endotext Prolactinoma Management</div>
       <div class="disclaimer">본 자료는 공통 설명용입니다. 실제 진단과 치료는 증상, 복용약, 임신 여부, 재검 결과를 함께 보고 결정합니다.</div>
     </div>

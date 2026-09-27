@@ -21,894 +21,184 @@
   <link rel="stylesheet" href="../../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../../shared/clinic-slides.css">
 
-  <style>
-    .slide__bg-num { display: none !important; }
-
-    /* ── TL;DR — 3 hero numbers ─────────────────────────────────── */
-    .pattern-stats3 { display: flex; flex-direction: column; gap: var(--space-4); height: 100%; }
-    .stats3-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-5); align-items: center; }
-    .stats3-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
-    .stats3-cell__circle { width: 180px; height: 180px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-canvas); text-align: center; }
-    .stats3-cell__circle--navy { background: var(--color-navy); }
-    .stats3-cell__circle--steel { background: var(--color-steel); }
-    .stats3-cell__circle--good { background: linear-gradient(135deg, var(--color-success), var(--color-success)); }
-    .stats3-cell__num { font-size: 2.05rem; font-weight: var(--weight-black); line-height: 1.05; letter-spacing: var(--tracking-tight); }
-    .stats3-cell__num small { display: block; font-size: 0.95rem; font-weight: var(--weight-540); margin-top: 4px; opacity: 0.88; }
-    .stats3-cell__label { font-size: 0.98rem; font-weight: var(--weight-540); color: var(--color-navy); text-align: center; max-width: 280px; line-height: var(--lh-snug); }
-    .stats3-note { padding: var(--space-3) var(--space-4); background: var(--color-canvas-warm); border-left: 4px solid var(--color-steel); border-radius: var(--radius-lg); font-size: 0.92rem; color: var(--color-ink); line-height: var(--lh-snug); }
-    .stats3-note--good { border-left-color: var(--color-success); background: var(--color-success-bg); }
-
-    /* ── Background — image + split text ──────────────────────────── */
-    /* 4:3 이미지(1280×900)를 좌측에 무게감 있게, 텍스트는 우측에 여유.
-       좌측 visual은 4:3 aspect-ratio로 고정해 이미지가 컨테이너를 가득 채움. */
-    .bg-image-split { display: grid; grid-template-columns: 0.95fr 1fr; gap: var(--space-4); height: 100%; align-items: stretch; }
-    .bg-image-split__visual { display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; overflow: hidden; justify-content: center; }
-    .bg-image-split__visual .ai-visual { flex: 0 0 auto; min-height: 0; height: auto; aspect-ratio: 4 / 3; width: 100%; }
-    .bg-image-split__caption { padding: var(--space-2) var(--space-3); background: var(--color-canvas-warm); border-left: 4px solid var(--color-navy); border-radius: var(--radius-md); font-size: 0.8rem; line-height: 1.35; color: var(--color-ink); flex-shrink: 0; }
-    .bg-image-split__caption strong { color: var(--color-navy); }
-    .bg-image-split__text { display: flex; flex-direction: column; min-height: 0; overflow: hidden; padding-left: var(--space-2); }
-    .bg-image-split__text .split__list { flex: 1 1 auto; min-height: 0; }
-    .bg-image-split__text .split__list li { padding: 6px 0; font-size: 0.88rem; line-height: 1.35; }
-    .bg-image-split__text .split__heading { font-size: 1.1rem; margin-bottom: var(--space-2); }
-    .bg-image-split__text .split__note { margin-top: var(--space-2); padding: var(--space-2) var(--space-3); font-size: 0.83rem; line-height: 1.4; flex-shrink: 0; }
-
-    /* 4:3 이미지를 컨테이너에 cover로 채우되 인물 잘림을 피하려 contain 유지하며 배경색만 살짝. */
-    .ai-visual { width: 100%; height: 100%; background: linear-gradient(180deg, var(--color-canvas-warm) 0%, var(--color-canvas-warm) 100%); border-radius: var(--radius-lg); overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 4px; border: 1px solid var(--color-border); position: relative; }
-    .ai-visual img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .ai-visual__placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-5); background: linear-gradient(135deg, var(--color-canvas-warm) 0%, var(--color-border-soft) 100%); color: var(--color-navy); text-align: center; }
-    .ai-visual__placeholder-tag { font-size: 0.72rem; font-weight: var(--weight-bold); letter-spacing: 0.12em; color: var(--color-steel); text-transform: uppercase; }
-    .ai-visual__placeholder-title { font-size: 1.5rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: var(--lh-snug); }
-    .ai-visual__placeholder-desc { font-size: 0.85rem; color: var(--color-ink-soft); line-height: var(--lh-snug); max-width: 80%; }
-
-    /* ── Split layout ─────────────────────────────────────────────── */
-    .pattern-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); height: 100%; }
-    .split__heading { font-size: var(--text-h3); font-weight: var(--weight-bold); color: var(--color-navy); margin-bottom: var(--space-4); }
-    .split__list { list-style: none; padding: 0; }
-    .split__list li { padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-body-lg); line-height: var(--lh-snug); }
-    .split__list li:last-child { border-bottom: 0; }
-    .split__list li strong { color: var(--color-navy); }
-    .split__note { margin-top: var(--space-4); padding: var(--space-4); background: var(--color-success-bg); border-left: 4px solid var(--color-success); border-radius: var(--radius-md); font-size: var(--text-body); line-height: var(--lh-relaxed); }
-    .split__note--warn { background: var(--color-warning-bg); border-left-color: var(--color-warning); }
-    .split__note--info { background: var(--color-canvas-warm); border-left-color: var(--color-steel); }
-
-    /* ── Checklist 2-col ──────────────────────────────────────────── */
-    .pattern-checklist { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-6); }
-    .check-item { display: flex; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-body-lg); align-items: flex-start; line-height: var(--lh-snug); }
-    .check-item__icon { color: var(--color-success); font-weight: var(--weight-black); flex-shrink: 0; font-size: 1.3em; line-height: 1; min-width: 22px; }
-    .check-item__icon--warn { color: var(--color-warning); }
-    .check-item__icon--navy { color: var(--color-navy); }
-    .check-item__text strong { color: var(--color-navy); }
-
-    /* ── Forest-plot style efficacy table ─────────────────────────── */
-    .forest-table { display: flex; flex-direction: column; gap: 6px; }
-    .forest-row { display: grid; grid-template-columns: 1.2fr 0.95fr 1.6fr 1fr; gap: var(--space-4); align-items: center; padding: 7px var(--space-4); background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
-    .forest-row--head { background: var(--color-navy); color: var(--color-canvas); border-color: var(--color-navy); padding: 6px var(--space-4); }
-    .forest-row--head .forest__label, .forest-row--head .forest__num, .forest-row--head .forest__bar-wrap, .forest-row--head .forest__ci { color: var(--color-canvas); font-weight: var(--weight-bold); font-size: 0.82rem; }
-    .forest-row--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .forest-row--neutral { background: var(--color-canvas-warm); }
-    .forest__label { font-weight: var(--weight-bold); color: var(--color-navy); font-size: 0.94rem; line-height: 1.3; }
-    .forest__num { font-size: 1.2rem; font-weight: var(--weight-black); color: var(--color-steel); text-align: center; letter-spacing: var(--tracking-tight); line-height: 1; }
-    .forest-row--good .forest__num { color: var(--color-success); }
-    .forest__bar-wrap { position: relative; height: 18px; background: var(--color-border-soft); border-radius: 9px; overflow: hidden; }
-    .forest__bar-zero { position: absolute; top: 0; bottom: 0; left: 50%; width: 1.5px; background: var(--color-ink-soft); z-index: 2; }
-    .forest__bar { position: absolute; top: 50%; height: 8px; background: var(--color-steel); border-radius: 4px; transform: translateY(-50%); z-index: 1; }
-    .forest__bar--good { background: var(--color-success); }
-    .forest__bar--bad { background: var(--color-danger); }
-    .forest__bar-pt { position: absolute; top: 50%; width: 12px; height: 12px; border-radius: 50%; transform: translate(-50%, -50%); background: var(--color-navy); z-index: 3; }
-    .forest-row--good .forest__bar-pt { background: var(--color-success); }
-    .forest__ci { font-size: 0.88rem; color: var(--color-ink-soft); line-height: var(--lh-snug); }
-
-    /* ── 2x2 grid tiles ───────────────────────────────────────────── */
-    .pattern-grid { display: grid; gap: var(--space-3); height: 100%; }
-    .pattern-grid--2 { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
-    .pattern-grid--3 { grid-template-columns: 1fr 1fr 1fr; grid-auto-rows: 1fr; }
-    .tile { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: 6px; min-height: 0; overflow: hidden; }
-    .tile__index { font-size: 0.72rem; font-weight: var(--weight-bold); color: var(--color-steel); letter-spacing: 0.05em; text-transform: uppercase; }
-    .tile__title { font-size: 1.05rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: 1.25; }
-    .tile__body { font-size: 0.88rem; color: var(--color-ink); line-height: 1.45; }
-    .tile__metric { font-size: 1.55rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; margin-top: auto; letter-spacing: var(--tracking-tight); }
-    .tile__metric small { font-size: 0.78rem; font-weight: var(--weight-540); color: var(--color-ink-soft); margin-left: 6px; }
-    .tile--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tile--good .tile__title { color: var(--color-success); }
-    .tile--good .tile__metric { color: var(--color-success); }
-    .tile--warn { background: var(--color-warning-bg); border-color: var(--color-warning); }
-    .tile--warn .tile__title { color: var(--color-warning); }
-    .tile--warn .tile__metric { color: var(--color-warning); }
-    .tile--navy { background: var(--color-navy); border-color: var(--color-navy); color: var(--color-canvas); }
-    .tile--navy .tile__title, .tile--navy .tile__metric { color: var(--color-canvas); }
-    .tile--navy .tile__index { color: var(--color-steel); }
-    .tile--navy .tile__body { color: var(--color-canvas); opacity: 0.92; }
-
-    /* ── Mechanism — PK/PD comparison ─────────────────────────────── */
-    /* 카드를 height 100% stretch하되 내부 콘텐츠를 균등 분배해 빈공간 분산. */
-    .mech-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); height: 100%; }
-    .mech-card { background: var(--color-canvas); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); min-height: 0; overflow: hidden; justify-content: space-between; }
-    .mech-card--efsitora { border-color: var(--color-navy); }
-    .mech-card--icodec { border-color: var(--color-steel); }
-    .mech-card__brand { display: flex; align-items: baseline; gap: var(--space-3); flex-shrink: 0; }
-    .mech-card__brand-name { font-size: 1.7rem; font-weight: var(--weight-black); color: var(--color-navy); letter-spacing: var(--tracking-tight); line-height: 1.1; }
-    .mech-card--icodec .mech-card__brand-name { color: var(--color-steel); }
-    .mech-card__brand-generic { font-size: 0.92rem; color: var(--color-ink-soft); font-weight: var(--weight-540); }
-    .mech-card__rows { display: grid; grid-template-columns: 95px 1fr; gap: var(--space-3) var(--space-3); font-size: 0.93rem; line-height: 1.4; flex: 1 1 auto; align-content: center; }
-    .mech-card__rows dt { font-weight: var(--weight-bold); color: var(--color-navy); }
-    .mech-card__rows dd { margin: 0; color: var(--color-ink); }
-    .mech-card__note { padding: var(--space-3); background: var(--color-canvas-warm); border-radius: var(--radius-md); font-size: 0.85rem; line-height: 1.45; flex-shrink: 0; }
-
-    /* ── Safety table — 5 row ─────────────────────────────────────── */
-    .pattern-table { display: flex; flex-direction: column; gap: 7px; }
-    .tbl-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.6fr; gap: var(--space-4); align-items: center; padding: 9px var(--space-4); background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
-    .tbl-row--head { background: var(--color-navy); color: var(--color-canvas); border-color: var(--color-navy); font-weight: var(--weight-bold); padding: 7px var(--space-4); }
-    .tbl-row--good { background: var(--color-success-bg); border-color: var(--color-success); }
-    .tbl-row--warn { background: var(--color-warning-bg); border-color: var(--color-warning); }
-    .tbl-row--neutral { background: var(--color-canvas-warm); }
-    .tbl__label { font-weight: var(--weight-bold); color: var(--color-navy); font-size: 0.95rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label { color: var(--color-canvas); font-size: 0.85rem; }
-    .tbl__num { font-size: 0.98rem; font-weight: var(--weight-black); color: var(--color-steel); text-align: center; letter-spacing: var(--tracking-tight); line-height: 1.25; }
-    .tbl-row--head .tbl__num { color: var(--color-canvas); font-size: 0.85rem; font-weight: var(--weight-bold); }
-    .tbl-row--good .tbl__num { color: var(--color-success); }
-    .tbl-row--warn .tbl__num { color: var(--color-warning); }
-    .tbl__note { font-size: 0.83rem; color: var(--color-ink-soft); line-height: 1.35; }
-    .tbl-row--head .tbl__note { color: var(--color-canvas); opacity: 0.92; font-size: 0.85rem; }
-
-    /* ── Timeline 4-step ──────────────────────────────────────────── */
-    /* 카드 4개 동일 높이 stretch + 카드 내부 콘텐츠를 위·아래로 분산. */
-    .pattern-timeline { display: grid; grid-template-columns: repeat(4, 1fr); --timeline-gap: var(--space-3); height: 100%; align-items: stretch; }
-    .timeline-step { background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.6; }
-    .timeline-step__title { margin-bottom: var(--space-1); }
-    .timeline-step--alt { background: var(--color-success-bg); border-color: var(--color-success); }
-    .timeline-step--warn { background: var(--color-warning-bg); border-color: var(--color-warning); }
-    .timeline-step__num { font-size: 1.6rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; }
-    .timeline-step--alt .timeline-step__num { color: var(--color-success); }
-    .timeline-step--warn .timeline-step__num { color: var(--color-warning); }
-    .timeline-step__when { font-size: 0.85rem; font-weight: var(--weight-bold); color: var(--color-navy); letter-spacing: 0.05em; text-transform: uppercase; }
-    .timeline-step__title { font-size: 1.05rem; font-weight: var(--weight-bold); color: var(--color-navy); line-height: var(--lh-snug); }
-    .timeline-step__body { font-size: 0.92rem; color: var(--color-ink); line-height: var(--lh-snug); }
-
-    /* ── Take-home grid + closing ─────────────────────────────────── */
-    .takehome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
-    .takehome-card { background: var(--color-navy); color: var(--color-canvas); padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); display: flex; gap: var(--space-3); align-items: flex-start; }
-    .takehome-card__num { font-size: 1.95rem; font-weight: var(--weight-black); color: var(--color-steel); line-height: 1; flex-shrink: 0; min-width: 36px; }
-    .takehome-card__text { font-size: 0.88rem; line-height: 1.4; font-weight: var(--weight-540); }
-    .takehome-card__text strong { color: var(--color-steel); }
-
-    .stars { color: var(--color-warning); letter-spacing: 0.12em; font-size: 1.25em; }
-
-    .slide--closing .slide__body { display: flex; flex-direction: column; gap: var(--space-4); min-height: 0; overflow: hidden; justify-content: space-between; }
-    .slide--closing .takehome-grid { flex-shrink: 0; gap: var(--space-3); }
-    .slide--closing .takehome-card { padding: var(--space-4) var(--space-4); gap: var(--space-3); align-items: center; }
-    .slide--closing .takehome-card__num { font-size: 2rem; min-width: 38px; }
-    .slide--closing .takehome-card__text { font-size: 0.88rem; line-height: 1.5; }
-    .slide--closing .closing-grid { flex-shrink: 0; display: grid; grid-template-columns: 2.2fr 1fr; gap: var(--space-3); align-items: stretch; }
-    .slide--closing .closing-grid__contact { background: var(--color-canvas-warm); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-    .slide--closing .closing-grid__contact-label { font-size: 0.7rem; font-weight: var(--weight-bold); color: var(--color-steel); text-transform: uppercase; letter-spacing: 0.05em; }
-    .slide--closing .closing-grid__contact-name { font-size: 1rem; font-weight: var(--weight-bold); color: var(--color-navy); }
-    .slide--closing .closing-grid__contact-meta { font-size: 0.78rem; line-height: 1.35; color: var(--color-ink-soft); }
-    .slide--closing .qr-block { padding: var(--space-2); gap: 6px; }
-    .slide--closing .qr-block__code { width: 92px; height: 92px; padding: 4px; }
-    .slide--closing .qr-block__code svg { width: 100% !important; height: 100% !important; }
-    .slide--closing .qr-block__caption { font-size: 0.7rem; color: var(--color-slate); text-align: center; line-height: 1.25; }
-
-    /* ── Subgroup mini-grid (3x2) ─────────────────────────────────── */
-    /* 카드 높이 stretch + 내부는 space-between로 분포해 공백 분산. */
-    .pattern-grid--3x2 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: var(--space-3); }
-    .pattern-grid--3x2 .tile { padding: var(--space-4) var(--space-4); gap: var(--space-2); justify-content: space-between; }
-    .pattern-grid--3x2 .tile__index { font-size: 0.72rem; }
-    .pattern-grid--3x2 .tile__title { font-size: 1.05rem; margin-bottom: 0; }
-    .pattern-grid--3x2 .tile__body { font-size: 0.9rem; line-height: 1.5; }
-
-    /* layout-sweep 2026-06: deck-local spacing fixes only */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-    .pattern-hero-number { gap: 32px; align-items: stretch; }
-    .pattern-hero-number__numeric { justify-content: space-between; }
-    .pattern-hero-number__detail { justify-content: center; }
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 2rem; line-height: 1.14; }
-    .pattern-split__supporting, .pattern-split__metric-detail { font-size: 1rem; line-height: 1.42; }
-    .pattern-split__detail { justify-content: space-between; min-height: 0; }
-    .pattern-split__metric { padding: 18px 20px; }
-    .pattern-timeline { align-items: stretch; --timeline-gap: 12px; }
-    .timeline-step { justify-content: space-between; padding: 14px; gap: 8px; }
-    .timeline-step__title { font-size: 1rem; line-height: 1.22; }
-    .timeline-step__body { font-size: 0.95rem; line-height: 1.32; }
-    .pattern-compare { align-items: stretch; }
-    .compare-col__list { justify-content: space-between; }
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .slide__body--visual-focus, .slide__body--visual-strip { gap: 32px; }
-    .slide__body--visual-focus:has(> .pattern-grid--3), .slide__body--visual-strip:has(> .pattern-grid--3) { gap: 32px; }
-    .tbl-row { padding-top: 10px; padding-bottom: 10px; }
-    .tbl__note { font-size: 0.94rem; line-height: 1.35; }
-    .split__note { font-size: 0.95rem; line-height: 1.42; padding: 14px 16px; }
-    .metric-stack { justify-content: space-between; height: 100%; }
-    .metric-card { padding: 16px 18px; }
-    .metric-card__hint { font-size: 0.94rem; line-height: 1.34; }
-    .bg-image-split { gap: 32px; min-height: 0; }
-    .bg-image-split__visual { min-height: 0; }
-    .bg-image-split__caption { font-size: 0.95rem; line-height: 1.34; padding: 12px 14px; }
-    .slide--closing { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; }
-    .qr-block { padding: 18px; gap: 10px; }
-    .qr-block__code { width: 104px; height: 104px; }
-    /* layout-sweep 2026-06: compact overflow/underfill corrections */
-    .slide--closing .slide__body { justify-content: stretch; }
-    .closing-grid { height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { min-height: 0; }
-    .tile { padding: 16px 18px; gap: 8px; }
-    .tile__title { font-size: 1.08rem; line-height: 1.22; }
-    .tile__body { font-size: 0.97rem; line-height: 1.34; }
-    .compare-col__header { padding: 14px 18px; font-size: 1.15rem; }
-    .compare-col__list { padding: 16px 20px 18px; gap: 8px; }
-    .compare-col__list li { font-size: 0.98rem; line-height: 1.3; padding-left: 22px; }
-    .alert-strip, .alert-row { padding: 16px 18px; }
-    .alert-strip__text, .alert-row__text { font-size: 1rem; line-height: 1.35; }
-    .pattern-stats3 { justify-content: space-between; }
-    .stats3-note { margin-top: auto; padding: 18px 22px; line-height: 1.42; }
-    .pattern-table { gap: 8px; }
-    .tbl-row { min-height: 0; padding: 8px 14px; gap: 10px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.98rem; line-height: 1.3; }
-    .tbl-row--head .tbl__label, .tbl-row--head .tbl__num, .tbl-row--head .tbl__note { font-size: 0.94rem; }
-    .split__list li { padding: 8px 0; font-size: 1rem; line-height: 1.32; }
-    .split__note { margin-top: 12px; }
-    .metric-card__value { font-size: 1.7rem; }
-    .metric-card__label, .metric-card__hint { font-size: 0.95rem; }
-    .tri-col__list { gap: 8px; }
-    .tri-col__list li { font-size: 0.98rem; line-height: 1.3; }
-    .lesson-card { padding: 16px 18px; }
-    /* layout-sweep 2026-06: footer-safe compact frame */
-    .slide { --slide-pad-y: 44px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-    .pattern-split__statement { font-size: 1.85rem; line-height: 1.12; }
-    .pattern-split__supporting { font-size: 0.96rem; line-height: 1.34; }
-    .pattern-split__metric { padding: 14px 18px; }
-    .pattern-split__metric-value { font-size: 1.85rem; line-height: 1.05; }
-    .pattern-split__metric-detail { font-size: 0.95rem; line-height: 1.3; }
-    .split, .split__left, .split__right { min-height: 0; }
-    .split__left, .split__right { display: flex; flex-direction: column; justify-content: space-between; }
-    .split__heading { margin-bottom: 12px; }
-    .split__note { font-size: 0.92rem; line-height: 1.32; padding: 12px 14px; }
-    .compare-col__list li { font-size: 0.94rem; line-height: 1.24; }
-    .compare-col__list { padding: 12px 18px 14px; gap: 6px; }
-    .tile { padding: 14px 16px; gap: 6px; }
-    .tile__body { font-size: 0.94rem; line-height: 1.28; }
-    .alert-strip, .alert-row { padding: 13px 16px; }
-    .alert-strip__text, .alert-row__text, .alert-row__body { font-size: 0.95rem; line-height: 1.28; }
-    .pattern-bars, .bars { min-height: 0; }
-    .bar-row, .bars__row { min-height: 0; }
-    .tbl-row { padding: 6px 12px; }
-    .tbl__label, .tbl__num, .tbl__note { font-size: 0.95rem; line-height: 1.24; }
-    .bg-image-split__visual { position: relative; }
-    .bg-image-split__caption { position: absolute; left: 12px; right: 12px; bottom: 12px; font-size: 0.9rem; line-height: 1.25; padding: 10px 12px; background: rgba(255, 255, 255, 0.94); }
-    .lesson-card { padding: 12px 16px; }
-    .lesson-card__body, .lesson-card__text { font-size: 0.96rem; line-height: 1.3; }
-    .glp-card, .glp-banner, .glp-list { min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .glp-card { padding-top: 28px; padding-bottom: 28px; }
-    .risk-row, .diet-warn, .sport-banner, .ntbl-row, .step-card, .takehome-item { min-height: 0; }
-    /* layout-sweep 2026-06: legacy local pattern fill */
-    .pattern-compare__col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-    .pattern-compare__head { padding: 14px 18px; }
-    .pattern-compare__title { font-size: 1.08rem; line-height: 1.22; }
-    .pattern-compare__list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 18px 16px; gap: 6px; }
-    .pattern-compare__list li { font-size: 0.94rem; line-height: 1.24; }
-    .glp-grid { grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
-    .glp-card, .glp-banner, .glp-list { height: 100%; min-height: 0; }
-    .slide__body--visual-strip > .glp-card, .slide__body--visual-strip > .glp-banner { height: 100%; }
-    .glp-title { font-size: 1.22rem; line-height: 1.22; }
-    .glp-body, .glp-list { font-size: 0.96rem; line-height: 1.36; }
-    .glp-banner { font-size: 1.1rem; line-height: 1.42; }
-    .alert-row { align-items: center; }
-    .alert-strip { min-height: 100%; box-sizing: border-box; display: flex; align-items: center; }
-    .stats3-row { align-items: stretch; }
-    .stats3-cell { justify-content: space-between; }
-    .kimura-legend, .risk-grid, .target-grid, .takehome-list { height: 100%; align-content: space-between; }
-    .kimura-legend__item, .risk-row, .target-row, .takehome-item { min-height: 0; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell, .pattern-uas7, .tri-col__list { font-size: 0.94rem; line-height: 1.24; }
-    .cmp-row, .hr-row, .prev-bar, .correa-note, .mech-card__note, .portion-labels__cell { padding-top: 8px; padding-bottom: 8px; }
-    .tri-col__list { display: flex; flex-direction: column; justify-content: space-between; }
-    /* layout-sweep 2026-06: final common component corrections */
-    .alert-strip { min-height: 0; display: flex; align-items: center; }
-    .qr-block { padding: 10px 12px; gap: 6px; }
-    .qr-block__code { width: 86px; height: 86px; }
-    .glp-card { justify-content: space-between; }
-    .glp-banner { justify-content: flex-end; }
-    .glp-list { justify-content: space-between; }
-    .pattern-table { height: 100%; justify-content: space-between; }
-    .tbl-row { flex: 0 1 auto; }
-    .split__note { max-height: 96px; overflow: hidden; }
-    .bg-image-split__caption { bottom: 28px; max-height: 82px; overflow: hidden; }
-    .metric-stack { gap: 8px; }
-    .metric-card { padding: 12px 16px; }
-    .mech-card__note { max-height: 96px; overflow: hidden; }
-    .lesson-card { padding: 10px 14px; }
-    .slide:nth-of-type(7) .mech-card__rows { gap: 4px; }
-    .slide:nth-of-type(7) .mech-card__rows dt,
-    .slide:nth-of-type(7) .mech-card__rows dd { font-size: 0.88rem; line-height: 1.2; }
-    .slide:nth-of-type(7) .mech-card__note { padding: 8px 10px; font-size: 0.86rem; line-height: 1.2; max-height: none; }
-    .slide--closing .slide__body { justify-content: center; }
-    .slide--closing .closing-grid { height: auto; align-items: center; }
-    .slide--closing .closing-grid > .qr-block { height: auto; }
-    .slide--closing .qr-block { padding: 4px 10px; }
-    .slide--closing .qr-block__code { width: 88px; height: 88px; }
-    .slide--closing .qr-block__code svg { width: 34mm; height: 34mm; }
-    .slide--closing .closing-grid { margin-top: 12px; }
-  </style>
+    <link rel="stylesheet" href="../../../../shared/deck-look-v2.css">
+<style>
+/* HQ5L 2026-09-27: SKILL.md 393-409, 423-473, 484-551, 618-711. */
+body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+section.slide--v2{margin:0 auto 28px}
+.v2-tip{justify-content:space-between;gap:14px}
+.v2-tip__t{flex:1 1 auto;font-size:14px;line-height:1.35}
+.hq-source{flex:0 1 54%;font-size:12px;line-height:1.25;color:var(--v2-muted);text-align:right;white-space:normal}
+.hq-card{display:flex;flex-direction:column;justify-content:center;padding:20px 25px;overflow:hidden}
+.hq-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+.hq-forest{position:relative;height:18px;border-radius:9px;background:var(--v2-surface);overflow:hidden}
+.hq-forest__zero{position:absolute;inset:0 auto 0 50%;width:2px;background:var(--v2-muted)}
+.hq-forest__bar{position:absolute;top:5px;height:8px;border-radius:4px;background:var(--color-success)}
+.hq-forest__bar--neutral{background:var(--v2-muted)}
+.hq-forest__point{position:absolute;top:9px;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);background:var(--color-success)}
+.hq-forest__point--neutral{background:var(--v2-muted)}
+.hq-card__head{font-size:19px;font-weight:750;line-height:1.32;color:var(--v2-navy);word-break:keep-all;margin-bottom:9px}
+.hq-card__line{font-size:16px;line-height:1.4;color:var(--v2-body);word-break:keep-all;text-wrap:balance;margin:1px 0}
+.hq-card__line b{color:var(--v2-navy)}
+.hq-card--accent .hq-card__head{color:var(--v2-accent)}
+.hq-card--compact{padding:14px 18px}
+.hq-card--compact .hq-card__head{font-size:17px;margin-bottom:5px}
+.hq-card--compact .hq-card__line{font-size:15.2px;line-height:1.33}
+.hq-card--tiny .hq-card__line{font-size:16px;line-height:1.35}
+.hq-copy{padding:22px 25px;display:flex;align-items:center}
+.hq-copy__body{font-size:16px;line-height:1.43;word-break:keep-all;text-wrap:balance;color:var(--v2-body);margin:0}
+.hq-copy--dense .hq-copy__body{columns:2;column-gap:22px;font-size:15.8px;line-height:1.38}
+.hq-figure{padding:0;border:0;background:transparent;box-shadow:none;overflow:hidden}
+.hq-figure::before{content:none}
+.hq-figure img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+.hq-caption{display:flex;align-items:center;justify-content:center;padding:7px 15px;font-size:15.5px;line-height:1.35;color:var(--v2-body);text-align:center}
+.hq-closing{display:flex;flex-direction:column;justify-content:space-evenly}
+.hq-closing .hq-card__line{font-size:17px}
+.hq-qr{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hq-qr .qr-block{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.hq-qr .qr-block__code{width:148px;height:148px}
+.hq-qr .qr-block__code svg,.hq-qr .qr-block__code img,.hq-qr .qr-block__code canvas{width:148px!important;height:148px!important}
+.hq-qr .qr-block__caption{font-size:16px;line-height:1.45;text-align:center}
+.hq-table{position:absolute;left:64px;top:206px;width:1152px;table-layout:fixed}
+.hq-table th,.hq-table td{font-size:16px;line-height:1.38;word-break:keep-all;padding:10px 17px}
+.hq-table thead th{font-size:16px}
+.hq-table tbody th{width:270px;font-size:17px}
+.hq-table--four th,.hq-table--four td{font-size:16px;padding:8px 10px}
+.hq-table--four tbody th{width:auto;font-size:16px}
+.hq-table--bar{width:760px}
+.hq-table--bar th,.hq-table--bar td{font-size:15px}
+.hq-table--illustrated th,.hq-table--illustrated td{font-size:16px;line-height:1.35;padding:6px 8px}
+.hq-table tfoot td{font-size:16px;line-height:1.35;background:var(--v2-chip-accent)}
+</style>
 <!-- seo:geo2 --><meta name="robots" content="noindex,nofollow">
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- SLIDE 01 · COVER -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PAPER REVIEW</strong> · CARDIOLOGY · DIABETES</div>
     </header>
     <div class="slide__title-block">
       <h1 class="slide__title">2형당뇨 강압치료,<br><em>SBP&lt;130의 심혈관 이득</em></h1>
-      <p class="slide__subtitle">2형당뇨병 환자에서 강력한 혈압조절(SBP&lt;130) vs 표준조절 — 주요심혈관사건(MACE) RR 0.80·뇌졸중 RR 0.73 감소. 9개 RCT·34,260명 메타분석. 2026 Front Endocrinol (PMID 42375334).</p>
+      <p class="slide__subtitle">2형당뇨병 환자에서 강력한 혈압조절(SBP&lt;130) vs 표준조절 — 주요심혈관사건(MACE) RR 0.80·뇌졸중 RR 0.73 감소. 9개 RCT·34,260명 메타분석. 2026 Front Endocrinol (PMID&nbsp;42375334).</p>
     </div>
     <footer class="slide__footer">
       <span class="slide__source">Front Endocrinol 2026;17:1850865 · PMID 42375334 · meta-analysis of 9 RCTs · intensive BP control in T2D</span>
-      <span class="slide__page"><span class="stars">★★★★</span></span>
+      <span class="slide__page">01 / 12</span></span>
     </footer>
   </section>
-
-  <!-- SLIDE 02 · TL;DR (3 hero numbers) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>TL;DR</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">한 문단·세 숫자로 요약</h2>
-      <p class="slide__subtitle">강력한 강압(SBP&lt;130) vs 표준조절 — 심혈관 이득 뚜렷·뇌졸중 감소 크고·저혈압은 주의</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-stats3">
-        <div class="stats3-row">
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--good">
-              <div class="stats3-cell__num">0.80<small>RR · MACE</small></div>
-            </div>
-            <div class="stats3-cell__label">주요심혈관사건 (MACE) ↓20%<br>(95% CI 0.73–0.89, p&lt;0.001)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--navy">
-              <div class="stats3-cell__num">0.73<small>RR · 뇌졸중</small></div>
-            </div>
-            <div class="stats3-cell__label">뇌졸중 (stroke) ↓27%<br>(95% CI 0.60–0.87, p=0.008)</div>
-          </div>
-          <div class="stats3-cell">
-            <div class="stats3-cell__circle stats3-cell__circle--steel">
-              <div class="stats3-cell__num">4.61<small>RR · 저혈압</small></div>
-            </div>
-            <div class="stats3-cell__label">저혈압 (hypotension) 신호 ↑<br>(95% CI 1.01–20.99, p=0.05 · 경계)</div>
-          </div>
-        </div>
-        <div class="stats3-note stats3-note--good">
-          <strong>핵심 메시지 — </strong>2형당뇨병 환자에서 강력한 강압치료(수축기혈압 &lt;130 mmHg)는 표준조절 대비 <strong>주요심혈관사건(MACE)을 20%, 특히 뇌졸중을 27% 감소</strong>시켰다(각 통계적 유의). 심부전·심근경색·심혈관사망은 유의한 차이 없음. 이득은 <strong>SBP&lt;130 목표 + 명시적 이완기 목표</strong>를 둔 시험에서 더 컸다. 단, <strong>저혈압 신호가 경계적으로 증가(RR 4.61)</strong>하므로 고령·다약제·기립저혈압 위험군은 가정혈압을 보며 단계적으로 도달한다.
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Front Endocrinol 2026;17:1850865 · PMID 42375334 · primary &amp; secondary endpoints</span>
-      <span class="slide__page">02 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 03 · BACKGROUND (image + split text) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>BACKGROUND</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">왜 당뇨 환자에서 강압이 중요한가</h2>
-      <p class="slide__subtitle">고혈압은 뇌·심장·신장 표적장기(target organ)를 손상 — 당뇨병과 겹치면 위험이 배가된다</p>
-    </div>
-    <div class="slide__body">
-      <div class="bg-image-split">
-        <div class="bg-image-split__visual">
-          <figure class="ai-visual">
-            <img class="ai-visual__image" src="../../../../shared/assets/generated/dm-intensive-bp-target-organ-20260701.png" alt="고혈압 표적장기">
-          </figure>
-          <div class="bg-image-split__caption">
-            <strong>표적장기 손상 — </strong>높은 혈압은 뇌졸중·심부전·신장병을 앞당긴다. 당뇨병은 이 손상을 가속한다.
-          </div>
-        </div>
-        <div class="bg-image-split__text">
-          <h3 class="split__heading">당뇨 + 고혈압 = 위험의 상승작용</h3>
-          <ul class="split__list">
-            <li><strong>동반 유병</strong> — 2형당뇨병 환자의 60% 이상이 고혈압을 동반</li>
-            <li><strong>뇌</strong> — 높은 혈압은 뇌소혈관 손상 → 뇌졸중 (stroke) 위험 ↑</li>
-            <li><strong>심장</strong> — 좌심실 비대·심부전·심근경색 (MI) 위험 ↑</li>
-            <li><strong>신장</strong> — 사구체 고압 → 단백뇨·만성신장병 (CKD) 진행 ↑</li>
-            <li><strong>목표 논쟁</strong> — 얼마나 낮춰야 하나? &lt;140 vs &lt;130 mmHg</li>
-            <li><strong>본 메타분석</strong> — 9개 RCT·34,260명으로 SBP&lt;130 이득을 정량화</li>
-          </ul>
-          <div class="split__note split__note--info">
-            ⭐ <strong>핵심 — </strong>2025 AHA/ACC 130/80 기조 · 2026 심장-신장-대사(CKM) 통합 관리 프레임워크로 강압의 근거가 강화되었다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">2025 AHA/ACC hypertension guideline · 2026 AHA/ACC/ADA/ASN CKM framework · PMID 42375334 도입부</span>
-      <span class="slide__page">03 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 04 · STUDY DESIGN (checklist 8) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>STUDY DESIGN</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Systematic Review &amp; Meta-analysis 설계</h2>
-      <p class="slide__subtitle">2형당뇨병 강압치료 RCT 9개 통합 — 강력조절 vs 표준조절, random-effects 모형</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>설계</strong> Systematic review + meta-analysis of RCTs · Front Endocrinol 2026;17:1850865 · PMID 42375334</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>포함 시험</strong> 무작위대조시험 (RCT) <strong>9개</strong>, 총 <strong>34,260명</strong>의 2형당뇨병 (T2D) 환자</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>중재군</strong> 강력한 혈압조절 (intensive BP control) — 낮은 목표혈압, 다수 시험이 SBP&lt;130 mmHg 지향</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>대조군</strong> 표준(관례적) 혈압조절 (conventional/standard BP control)</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>1차 endpoint</strong> 주요심혈관사건 (MACE) — 심혈관 복합사건 발생</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>2차 endpoint</strong> 뇌졸중 (stroke)·심부전 (HF)·심근경색 (MI)·심혈관사망 (CV death) 개별 성분</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>분석 방법</strong> Random-effects model · 상대위험도 (RR)·95% 신뢰구간 (CI) · PROSPERO CRD420251266814 사전등록</div></div>
-        <div class="check-item"><span class="check-item__icon warn">●</span><div><strong>한계 인지</strong> 시험 간 목표혈압 정의 이질성 · 저혈압 등 안전성 이벤트 보고 편차 · 개별 성분 검정력 제한</div></div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Front Endocrinol 2026;17:1850865 · PMID 42375334 · 9 RCTs · n=34,260 · PROSPERO CRD420251266814</span>
-      <span class="slide__page">04 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 05 · EFFICACY ① (forest plot table) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>EFFICACY ①</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">효능 — 심혈관 결과 forest plot 요약</h2>
-      <p class="slide__subtitle">강력조절 vs 표준조절. 좌측(녹색) = 강압 유리(RR&lt;1), 우측(빨강) = 강압 불리. ● 점추정, 막대 = 효과크기</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="forest-table">
-        <div class="forest-row forest-row--head">
-          <div class="forest__label">Outcome</div>
-          <div class="forest__num">RR (강력 vs 표준)</div>
-          <div class="forest__bar-wrap">← 강압 유리 · RR 1.0 · 강압 불리 →</div>
-          <div class="forest__ci">95% CI · p value</div>
-        </div>
-        <div class="forest-row forest-row--good">
-          <div class="forest__label">❤️ 주요심혈관사건 (MACE)</div>
-          <div class="forest__num">0.80</div>
-          <div class="forest__bar-wrap">
-            <div class="forest__bar-zero"></div>
-            <div class="forest__bar forest__bar--good" style="left: 35%; width: 15%;"></div>
-            <div class="forest__bar-pt" style="left: 35%;"></div>
-          </div>
-          <div class="forest__ci">0.73 ~ 0.89<br>p&lt;0.001 (유의)</div>
-        </div>
-        <div class="forest-row forest-row--good">
-          <div class="forest__label">🧠 뇌졸중 (stroke)</div>
-          <div class="forest__num">0.73</div>
-          <div class="forest__bar-wrap">
-            <div class="forest__bar-zero"></div>
-            <div class="forest__bar forest__bar--good" style="left: 29%; width: 21%;"></div>
-            <div class="forest__bar-pt" style="left: 29%;"></div>
-          </div>
-          <div class="forest__ci">0.60 ~ 0.87<br>p=0.008 (유의)</div>
-        </div>
-        <div class="forest-row forest-row--neutral">
-          <div class="forest__label">🫀 심부전·심근경색·심혈관사망</div>
-          <div class="forest__num">NS</div>
-          <div class="forest__bar-wrap">
-            <div class="forest__bar-zero"></div>
-            <div class="forest__bar" style="left: 43%; width: 15%; background: #94a3b8;"></div>
-            <div class="forest__bar-pt" style="left: 50%; background: #64748b;"></div>
-          </div>
-          <div class="forest__ci">95% CI 1.0 포함<br>유의한 차이 없음</div>
-        </div>
-      </div>
-      <div class="stats3-note stats3-note--good" style="margin-top: 6px; padding: 7px var(--space-3); font-size: 0.85rem; line-height: 1.35;">
-        <strong>요약 — </strong>MACE 20%↓·뇌졸중 27%↓ 통계적 유의. 심부전·MI·심혈관사망은 개별로는 유의차 없음 — 이득의 상당 부분이 뇌졸중에서 유래.
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Protection">
-        <img class="ai-visual__image" src="../../../../shared/assets/generated/dm-intensive-bp-mace-shield-20260701.png" alt="심혈관 보호">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">PMID 42375334 · primary MACE &amp; component endpoints · pooled RR (random effects)</span>
-      <span class="slide__page">05 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 06 · EFFICACY ② (patient experience grid 2x2) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>MECHANISM</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">기전 — 왜 뇌졸중에서 이득이 큰가</h2>
-      <p class="slide__subtitle">높은 혈압이 뇌혈관을 손상시키는 경로 — 강압이 이 손상을 되돌린다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--navy">
-          <div class="tile__index">MECHANISM · 01</div>
-          <h3 class="tile__title">🧠 뇌소혈관 손상</h3>
-          <p class="tile__body">지속적 고혈압은 뇌 <strong>소혈관 (small vessel)</strong>의 내막을 두껍게 하고 내강을 좁혀 열공경색·미세출혈을 유발한다.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">MECHANISM · 02</div>
-          <h3 class="tile__title">💧 강압의 직접 효과</h3>
-          <p class="tile__body">혈압을 낮추면 <strong>혈관벽 전단응력 (shear stress)</strong> 이 줄어 죽상경화·파열 위험이 감소 — 허혈성·출혈성 뇌졸중 모두 예방.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">MECHANISM · 03</div>
-          <h3 class="tile__title">🩸 뇌졸중 우선 반응</h3>
-          <p class="tile__body">뇌혈류는 심근·심부전 경로보다 혈압에 <strong>직접적·즉각적</strong>으로 반응 — 그래서 본 분석에서 뇌졸중 감소가 가장 뚜렷.</p>
-        </div>
-        <div class="tile">
-          <div class="tile__index">MECHANISM · 04</div>
-          <h3 class="tile__title">⚖️ 심부전·MI는 복합</h3>
-          <p class="tile__body">심부전·심근경색은 혈압 외 관상동맥·혈당·지질 등 <strong>다인자</strong> 영향 — 강압 단독 효과가 개별 성분에서는 희석된다.</p>
-        </div>
-      </div>
-      <figure class="ai-visual ai-visual--focus ai-visual--fill" data-visual-intent="Anatomy">
-        <img class="ai-visual__image" src="../../../../shared/assets/generated/dm-intensive-bp-artery-stroke-20260701.png" alt="뇌혈관 손상">
-      </figure></div>
-    <footer class="slide__footer">
-      <span class="slide__source">PMID 42375334 component analysis · hypertensive cerebral small-vessel disease pathophysiology</span>
-      <span class="slide__page">06 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 07 · MECHANISM / 약리 (PK/PD comparison) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>SUBGROUP</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">하위군 분석 — 어떤 환자에서 이득이 큰가</h2>
-      <p class="slide__subtitle">목표혈압 강도·이완기 목표 유무가 이득을 좌우 — 동반 혈당·지질 조절은 효과에 영향 없음</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3x2">
-        <div class="tile tile--good">
-          <div class="tile__index">SUBGROUP · 01 · 목표</div>
-          <h3 class="tile__title">🎯 SBP&lt;130 목표</h3>
-          <p class="tile__body">수축기혈압 &lt;130 mmHg를 지향한 시험에서 <strong>이득이 더 컸다</strong> — 더 낮은 목표가 더 큰 심혈관 보호로 이어짐.</p>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUBGROUP · 02 · 비교</div>
-          <h3 class="tile__title">📊 &lt;130 vs &lt;140</h3>
-          <p class="tile__body">표준적 &lt;140 목표 대비 <strong>&lt;130 목표군</strong>에서 MACE·뇌졸중 감소폭이 더 뚜렷하게 관찰되었다.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">SUBGROUP · 03 · DBP</div>
-          <h3 class="tile__title">📉 명시적 이완기 목표</h3>
-          <p class="tile__body"><strong>이완기혈압 (DBP) 목표</strong>를 함께 명시한 시험에서 이득이 더 컸다 — 수축기·이완기 통합 조절의 중요성.</p>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUBGROUP · 04 · 혈당</div>
-          <h3 class="tile__title">🩸 동반 혈당조절</h3>
-          <p class="tile__body">강력한 혈당조절 동반 여부는 강압의 심혈관 효과를 <strong>바꾸지 않았다</strong> (effect modification 없음).</p>
-        </div>
-        <div class="tile">
-          <div class="tile__index">SUBGROUP · 05 · 지질</div>
-          <h3 class="tile__title">🧈 동반 지질조절</h3>
-          <p class="tile__body">강력한 지질조절 동반 여부 역시 강압 효과를 <strong>변화시키지 않았다</strong> — 강압 이득은 독립적.</p>
-        </div>
-        <div class="tile tile--navy">
-          <div class="tile__index">SUBGROUP · 06 · 해석</div>
-          <h3 class="tile__title">🔑 핵심 시사점</h3>
-          <p class="tile__body">이득의 핵심 조건은 <strong>충분히 낮은 목표(SBP&lt;130) + 이완기 목표</strong> — 병용 위험인자 관리와 무관하게 강압 자체가 유효.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">PMID 42375334 subgroup &amp; meta-regression · SBP&lt;130 vs conventional target · effect-modification analysis</span>
-      <span class="slide__page">07 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 08 · SAFETY (5-row table) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>SAFETY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">안전성 — 저혈압 신호 vs 그 외 이상반응</h2>
-      <p class="slide__subtitle">저혈압 (hypotension)이 경계적으로 증가 · 그 외 이상반응은 두 군 간 차이 없음</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-table">
-        <div class="tbl-row tbl-row--head">
-          <div class="tbl__label">안전성 항목</div>
-          <div class="tbl__num">강력 vs 표준</div>
-          <div class="tbl__num">RR (95% CI)</div>
-          <div class="tbl__note">해석·임상 관리</div>
-        </div>
-        <div class="tbl-row tbl-row--warn">
-          <div class="tbl__label">🩹 저혈압 (hypotension)</div>
-          <div class="tbl__num">증가 (경계)</div>
-          <div class="tbl__num">RR 4.61 (1.01–20.99)</div>
-          <div class="tbl__note">유일하게 증가한 신호 (p=0.05, 넓은 CI). 고령·기립저혈압 위험군에서 특히 주의 — 단계적 강압·가정혈압 확인</div>
-        </div>
-        <div class="tbl-row">
-          <div class="tbl__label">🫀 서맥·실신</div>
-          <div class="tbl__num">차이 없음</div>
-          <div class="tbl__num">유의차 없음</div>
-          <div class="tbl__note">중대한 서맥·실신 이벤트는 두 군 간 유의한 차이 관찰되지 않음</div>
-        </div>
-        <div class="tbl-row">
-          <div class="tbl__label">🩺 신기능 악화</div>
-          <div class="tbl__num">차이 없음</div>
-          <div class="tbl__num">유의차 없음</div>
-          <div class="tbl__note">급성 신손상·전해질 이상 등 신장 관련 이상반응 증가 신호 없음</div>
-        </div>
-        <div class="tbl-row tbl-row--good">
-          <div class="tbl__label">✅ 전체 중대 이상반응</div>
-          <div class="tbl__num">차이 없음</div>
-          <div class="tbl__num">유의차 없음</div>
-          <div class="tbl__note">저혈압 외 다른 이상반응 증가는 관찰되지 않아 전반적 내약성은 양호</div>
-        </div>
-      </div>
-      <div class="alert-strip">
-        <span class="alert-strip__label">주의</span>
-        <span class="alert-strip__text">저혈압 신호는 넓은 신뢰구간(1.01–20.99)으로 불확실성이 크나, <strong>고령·다약제·기립저혈압 위험군</strong>에서는 가정혈압·기립혈압을 확인하며 목표에 단계적으로 도달한다.</span>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">PMID 42375334 safety analysis · hypotension RR 4.61 (95% CI 1.01–20.99, p=0.05)</span>
-      <span class="slide__page">08 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 09 · SUBGROUP (3x2 grid) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 07 · <strong>HOME BP · PRACTICAL</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">가정혈압으로 안전하게 목표에 도달</h2>
-      <p class="slide__subtitle">진료실 혈압만으로 강압하면 저혈압 위험 — 가정혈압을 보며 단계적으로 낮춘다</p>
-    </div>
-    <div class="slide__body">
-      <div class="bg-image-split">
-        <div class="bg-image-split__visual">
-          <figure class="ai-visual">
-            <img class="ai-visual__image" src="../../../../shared/assets/generated/dm-intensive-bp-home-monitor-20260701.png" alt="가정혈압 측정">
-          </figure>
-          <div class="bg-image-split__caption">
-            <strong>가정혈압 — </strong>아침·저녁 안정 상태에서 측정. 진료실 수치보다 실제 위험을 더 잘 반영한다.
-          </div>
-        </div>
-        <div class="bg-image-split__text">
-          <h3 class="split__heading">단계적 강압 실천 요령</h3>
-          <ul class="split__list">
-            <li><strong>측정 습관</strong> — 아침 기상 후·취침 전 2회, 앉아 5분 안정 후 측정</li>
-            <li><strong>목표</strong> — 가정혈압 기준 SBP&lt;130 mmHg를 무리 없이 지향</li>
-            <li><strong>단계적 도달</strong> — 급격한 강압 금지, 수 주에 걸쳐 서서히 낮춤</li>
-            <li><strong>기립혈압</strong> — 고령·다약제 환자는 앉았다 일어설 때 혈압 확인</li>
-            <li><strong>저혈압 증상</strong> — 어지럼·실신감 시 즉시 의료진과 용량 조정</li>
-            <li><strong>기록 지참</strong> — 가정혈압 수첩·앱 기록을 진료 시 함께 검토</li>
-          </ul>
-          <div class="split__note split__note--info">
-            ⭐ <strong>핵심 — </strong>목표는 <em>낮은 혈압 자체가 아니라 안전한 도달</em>. 가정·기립혈압으로 저혈압을 피하며 SBP&lt;130에 이른다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">PMID 42375334 practical implications · 가정혈압 (home BP) 기반 단계적 강압 · 기립저혈압 모니터링</span>
-      <span class="slide__page">09 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 10 · WHO/HOW — Timeline 4 step -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 08 · <strong>GUIDELINE</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">가이드라인 맥락 — 근거의 정합성</h2>
-      <p class="slide__subtitle">본 메타분석은 최신 고혈압·심장-신장-대사 통합 관리 기조와 방향이 일치한다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-grid pattern-grid--3x2">
-        <div class="tile tile--navy">
-          <div class="tile__index">GUIDELINE · 01</div>
-          <h3 class="tile__title">🩺 2025 AHA/ACC 고혈압</h3>
-          <p class="tile__body">고혈압 진단·치료 기준을 <strong>130/80 mmHg</strong>로 유지. 당뇨병 등 고위험군에서 적극적 강압을 권고 — 본 분석의 SBP&lt;130 이득과 방향이 일치.</p>
-        </div>
-        <div class="tile tile--good">
-          <div class="tile__index">GUIDELINE · 02</div>
-          <h3 class="tile__title">🔗 2026 CKM 프레임워크</h3>
-          <p class="tile__body">AHA/ACC/ADA/ASN <strong>심장-신장-대사 (CKM)</strong> 단계별 통합 관리. 혈압·혈당·신장·지질을 하나의 위험 스펙트럼으로 접근한다.</p>
-        </div>
-        <div class="tile">
-          <div class="tile__index">GUIDELINE · 03</div>
-          <h3 class="tile__title">🎯 목표혈압 근거</h3>
-          <p class="tile__body">더 낮은 목표(<strong>SBP&lt;130</strong>)가 더 큰 심혈관 보호로 이어진다는 본 결과가 가이드라인의 적극적 강압 기조를 뒷받침.</p>
-        </div>
-        <div class="tile">
-          <div class="tile__index">GUIDELINE · 04</div>
-          <h3 class="tile__title">🧠 뇌졸중 예방 정합</h3>
-          <p class="tile__body">강압의 이득 중 <strong>뇌졸중 감소</strong>가 가장 뚜렷 — 뇌졸중 부담이 큰 당뇨병 환자에서 적극적 강압의 명분이 강화된다.</p>
-        </div>
-        <div class="tile">
-          <div class="tile__index">GUIDELINE · 05</div>
-          <h3 class="tile__title">🩺 신장(KDIGO) 연계</h3>
-          <p class="tile__body">당뇨병성 신장병 혈압 관리와 정합. 강압은 <strong>단백뇨·CKD 진행</strong> 억제와 연계되어 심혈관·신장 위험을 함께 낮춘다.</p>
-        </div>
-        <div class="tile tile--navy">
-          <div class="tile__index">GUIDELINE · 06</div>
-          <h3 class="tile__title">🧩 통합 위험 관리</h3>
-          <p class="tile__body">개별 위험인자보다 <strong>통합 위험</strong>을 낮추는 전략으로 수렴. 혈압·혈당·지질·신장을 하나의 틀에서 함께 추적한다.</p>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">2025 AHA/ACC hypertension guideline · 2026 AHA/ACC/ADA/ASN CKM staged framework · KDIGO 연계</span>
-      <span class="slide__page">10 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 11 · LIMITS & KOREAN CONTEXT (checklist 8) -->
-  <section class="slide">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 09 · <strong>진료 적용 CHECKLIST</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">진료실 실천 체크리스트</h2>
-      <p class="slide__subtitle">당뇨+고혈압 환자 상담 시 바로 적용 — 목표 설정·안전한 강압·모니터링</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>목표 설정</strong> DM+HTN 환자에서 <strong>SBP&lt;130 mmHg</strong>를 무리 없이 지향 (개별 위험 고려)</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>이완기 함께</strong> 수축기만이 아니라 <strong>이완기혈압 (DBP) 목표</strong>도 명시해 통합 조절</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>뇌졸중 강조</strong> 강압의 이득 중 <strong>뇌졸중 예방</strong>이 가장 크다는 점을 환자에게 설명</div></div>
-        <div class="check-item"><span class="check-item__icon">●</span><div><strong>가정혈압</strong> 아침·저녁 측정 습관화 · 기록 지참 → 실제 위험 반영·과강압 예방</div></div>
-        <div class="check-item"><span class="check-item__icon check-item__icon--warn">●</span><div><strong>저혈압 경계</strong> 어지럼·실신감 시 즉시 보고 — 저혈압 신호 (RR 4.61) 사전 안내</div></div>
-        <div class="check-item"><span class="check-item__icon check-item__icon--warn">●</span><div><strong>고위험군</strong> 고령·다약제·<strong>기립저혈압</strong> 위험군은 기립혈압 확인하며 단계적 도달</div></div>
-        <div class="check-item"><span class="check-item__icon check-item__icon--navy">●</span><div><strong>병용 관리</strong> 혈당·지질 조절과 <strong>독립적</strong>으로 강압 이득 — 각각 최적화하되 강압을 미루지 않음</div></div>
-        <div class="check-item"><span class="check-item__icon check-item__icon--navy">●</span><div><strong>통합 프레임</strong> 심장-신장-대사 (CKM) 관점으로 혈압·신장·심혈관 위험을 함께 추적</div></div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">PMID 42375334 practical application · 2025 AHA/ACC 130/80 · 2026 CKM framework · 가정·기립혈압 모니터링</span>
-      <span class="slide__page">11 / 12</span>
-    </footer>
-  </section>
-
-  <!-- SLIDE 12 · TAKE-HOME (closing) -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">12 · <strong>TAKE-HOME</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Take-home 4가지</h2>
-      <p class="slide__subtitle">2형당뇨 강압치료(SBP&lt;130) — 진료실 바로 적용 가능 요약</p>
-    </div>
-    <div class="slide__body">
-      <div class="takehome-grid">
-        <div class="takehome-card">
-          <div class="takehome-card__num">1</div>
-          <div class="takehome-card__text">SBP&lt;130 강압 — <strong>MACE RR 0.80(↓20%)·뇌졸중 RR 0.73(↓27%)</strong> 유의 감소. 심부전·MI·심혈관사망은 개별로는 유의차 없음</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">2</div>
-          <div class="takehome-card__text">이득 조건 — <strong>SBP&lt;130 목표 + 명시적 이완기 목표</strong>에서 이득 최대. 동반 혈당·지질 조절 여부와 무관하게 강압 자체가 유효</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">3</div>
-          <div class="takehome-card__text">안전 — <strong>저혈압 신호 RR 4.61(경계)</strong> 외 이상반응 차이 없음. 고령·다약제·기립저혈압 위험군은 특히 주의</div>
-        </div>
-        <div class="takehome-card">
-          <div class="takehome-card__num">4</div>
-          <div class="takehome-card__text">실천 — <strong>가정·기립혈압을 보며 단계적으로 SBP&lt;130 도달</strong>. 2025 AHA/ACC 130/80·2026 CKM 통합 관리 기조와 일치</div>
-        </div>
-      </div>
-      <div class="closing-grid">
-        <div class="closing-grid__contact">
-          <div class="closing-grid__contact-label">CONTACT · 광교바른내과</div>
-          <div class="closing-grid__contact-name">031-893-4560</div>
-          <div class="closing-grid__contact-meta">평일(월–금) 08:30~18:30 (점심 13:00~14:00) · 토 08:30~13:30 · 일·공휴일 휴진<br>경기도 용인시 수지구 광교중앙로 298, 4층 402-404호</div>
-        </div>
-        <div class="qr-block">
-          <div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM12,2H13V3H12zM15,2H16V3H15zM16,2H17V3H16zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM27,2H28V3H27zM28,2H29V3H28zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM12,3H13V4H12zM13,3H14V4H13zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM19,3H20V4H19zM20,3H21V4H20zM22,3H23V4H22zM24,3H25V4H24zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM13,4H14V5H13zM15,4H16V5H15zM16,4H17V5H16zM22,4H23V5H22zM23,4H24V5H23zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM15,5H16V6H15zM16,5H17V6H16zM19,5H20V6H19zM21,5H22V6H21zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM17,6H18V7H17zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM13,7H14V8H13zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM22,7H23V8H22zM24,7H25V8H24zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM14,9H15V10H14zM15,9H16V10H15zM16,9H17V10H16zM17,9H18V10H17zM21,9H22V10H21zM23,9H24V10H23zM28,9H29V10H28zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM24,10H25V11H24zM26,10H27V11H26zM27,10H28V11H27zM29,10H30V11H29zM30,10H31V11H30zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM7,11H8V12H7zM10,11H11V12H10zM12,11H13V12H12zM13,11H14V12H13zM17,11H18V12H17zM18,11H19V12H18zM20,11H21V12H20zM21,11H22V12H21zM24,11H25V12H24zM25,11H26V12H25zM31,11H32V12H31zM35,11H36V12H35zM37,11H38V12H37zM4,12H5V13H4zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM12,12H13V13H12zM15,12H16V13H15zM16,12H17V13H16zM19,12H20V13H19zM20,12H21V13H20zM24,12H25V13H24zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM35,12H36V13H35zM37,12H38V13H37zM38,12H39V13H38zM3,13H4V14H3zM4,13H5V14H4zM7,13H8V14H7zM10,13H11V14H10zM13,13H14V14H13zM14,13H15V14H14zM16,13H17V14H16zM18,13H19V14H18zM23,13H24V14H23zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM2,14H3V15H2zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM15,14H16V15H15zM16,14H17V15H16zM19,14H20V15H19zM20,14H21V15H20zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM4,15H5V16H4zM7,15H8V16H7zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM25,15H26V16H25zM27,15H28V16H27zM30,15H31V16H30zM33,15H34V16H33zM37,15H38V16H37zM2,16H3V17H2zM3,16H4V17H3zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM14,16H15V17H14zM17,16H18V17H17zM20,16H21V17H20zM22,16H23V17H22zM26,16H27V17H26zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM3,17H4V18H3zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM9,17H10V18H9zM10,17H11V18H10zM13,17H14V18H13zM14,17H15V18H14zM16,17H17V18H16zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM2,18H3V19H2zM3,18H4V19H3zM5,18H6V19H5zM8,18H9V19H8zM11,18H12V19H11zM12,18H13V19H12zM13,18H14V19H13zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM18,18H19V19H18zM19,18H20V19H19zM22,18H23V19H22zM24,18H25V19H24zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM30,18H31V19H30zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM37,18H38V19H37zM6,19H7V20H6zM14,19H15V20H14zM15,19H16V20H15zM17,19H18V20H17zM19,19H20V20H19zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM25,19H26V20H25zM31,19H32V20H31zM35,19H36V20H35zM37,19H38V20H37zM2,20H3V21H2zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM13,20H14V21H13zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM19,20H20V21H19zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM3,21H4V22H3zM10,21H11V22H10zM16,21H17V22H16zM17,21H18V22H17zM21,21H22V22H21zM23,21H24V22H23zM24,21H25V22H24zM25,21H26V22H25zM28,21H29V22H28zM29,21H30V22H29zM32,21H33V22H32zM38,21H39V22H38zM3,22H4V23H3zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM24,22H25V23H24zM25,22H26V23H25zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM36,22H37V23H36zM2,23H3V24H2zM4,23H5V24H4zM5,23H6V24H5zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM13,23H14V24H13zM14,23H15V24H14zM15,23H16V24H15zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM2,24H3V25H2zM4,24H5V25H4zM7,24H8V25H7zM8,24H9V25H8zM12,24H13V25H12zM13,24H14V25H13zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM20,24H21V25H20zM23,24H24V25H23zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM38,24H39V25H38zM3,25H4V26H3zM5,25H6V26H5zM6,25H7V26H6zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM18,25H19V26H18zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM26,25H27V26H26zM30,25H31V26H30zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM38,25H39V26H38zM2,26H3V27H2zM3,26H4V27H3zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM19,26H20V27H19zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM32,26H33V27H32zM33,26H34V27H33zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM9,27H10V28H9zM12,27H13V28H12zM14,27H15V28H14zM16,27H17V28H16zM17,27H18V28H17zM18,27H19V28H18zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM31,27H32V28H31zM33,27H34V28H33zM35,27H36V28H35zM2,28H3V29H2zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM16,28H17V29H16zM19,28H20V29H19zM22,28H23V29H22zM24,28H25V29H24zM29,28H30V29H29zM31,28H32V29H31zM32,28H33V29H32zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM6,29H7V30H6zM7,29H8V30H7zM13,29H14V30H13zM15,29H16V30H15zM16,29H17V30H16zM18,29H19V30H18zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM28,29H29V30H28zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM37,29H38V30H37zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM14,30H15V31H14zM16,30H17V31H16zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM18,31H19V32H18zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM15,32H16V33H15zM17,32H18V33H17zM22,32H23V33H22zM24,32H25V33H24zM26,32H27V33H26zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM25,33H26V34H25zM26,33H27V34H26zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM16,34H17V35H16zM19,34H20V35H19zM20,34H21V35H20zM21,34H22V35H21zM24,34H25V35H24zM26,34H27V35H26zM27,34H28V35H27zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM13,35H14V36H13zM14,35H15V36H14zM15,35H16V36H15zM17,35H18V36H17zM20,35H21V36H20zM21,35H22V36H21zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM13,36H14V37H13zM14,36H15V37H14zM16,36H17V37H16zM17,36H18V37H17zM18,36H19V37H18zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM14,37H15V38H14zM15,37H16V38H15zM16,37H17V38H16zM18,37H19V38H18zM22,37H23V38H22zM23,37H24V38H23zM24,37H25V38H24zM28,37H29V38H28zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM13,38H14V39H13zM14,38H15V39H14zM15,38H16V39H15zM16,38H17V39H16zM19,38H20V39H19zM25,38H26V39H25zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM29,38H30V39H29zM34,38H35V39H34zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
-          <div class="qr-block__caption">다시 보기 — 슬라이드 링크 QR</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — Front Endocrinol 2026;17:1850865 (PMID 42375334) · 9 RCTs · n=34,260 · 2025 AHA/ACC · 2026 CKM</span>
-      <span class="slide__page">12 / 12</span>
-    </footer>
-  </section>
-
-</div>
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 01 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">한 문단·세 숫자로 요약</h2><p class="v2-sub">강력한 강압(SBP&lt;130) vs 표준조절 — 심혈관 이득 뚜렷·뇌졸중 감소 크고·저혈압은 주의</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">0.80 RR · MACE</div><p class="hq-card__line v2-body">주요심혈관사건 (MACE) ↓20%(95% CI 0.73–0.89, p&lt;0.001)</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">0.73 RR · 뇌졸중 감소</div><p class="hq-card__line v2-body">뇌졸중 (stroke) ↓27%(95% CI 0.60–0.87, p=0.008)</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">4.61 RR · 저혈압 신호</div><p class="hq-card__line v2-body">저혈압 (hypotension) 신호 ↑(95% CI 1.01–20.99, p=0.05 · 경계)</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent" style="left:64px;top:416px;width:1152px;height:190px"><div class="v2-block"><div class="hq-card__head">핵심 메시지 —</div><p class="hq-card__line v2-body">2형당뇨병 환자에서 강력한 강압치료(수축기혈압 &lt;130 mmHg)는 표준조절 대비 주요심혈관사건(MACE)을 20%, 특히 뇌졸중을 27% 감소시켰다(각 통계적 유의). 심부전·심근경색·심혈관사망은 유의한 차이 없음. 이득은 SBP&lt;130 목표 + 명시적 이완기 목표를 둔 시험에서 더 컸다. 단, 저혈압 신호가 경계적으로 증가(RR 4.61)하므로 고령·다약제·기립저혈압 위험군은 가정혈압을 보며 단계적으로 도달한다.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">한 문단·세 숫자로 요약</span><span class="hq-source">근거 · Front Endocrinol 2026;17:1850865 · PMID 42375334 · primary &amp; secondary endpoints</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">02 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 02 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">왜 당뇨 환자에서 강압이 중요한가</h2><p class="v2-sub">고혈압은 뇌·심장·신장 표적장기(target organ)를 손상 — 당뇨병과 겹치면 위험이 배가된다</p>
+<div class="v2-panel hq-copy" style="left:64px;top:206px;width:748px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">표적장기 손상 — 높은 혈압은 뇌졸중·심부전·신장병을 앞당긴다. 당뇨병은 이 손상을 가속한다. · 당뇨 + 고혈압 = 위험의 상승작용 · 동반 유병 — 2형당뇨병 환자의 60% 이상이 고혈압을 동반 · 뇌 — 높은 혈압은 뇌소혈관 손상 → 뇌졸중 (stroke) 위험 ↑ · 심장 — 좌심실 비대·심부전·심근경색 (MI) 위험 ↑ · 신장 — 사구체 고압 → 단백뇨·만성신장병 (CKD) 진행 ↑ · 목표 논쟁 — 얼마나 낮춰야 하나? &lt;140 vs &lt;130 mmHg · 본 메타분석 — 9개 RCT·34,260명으로 SBP&lt;130 이득을 정량화 · ⭐ 핵심 — 2025 AHA/ACC 130/80 기조 · 2026 심장-신장-대사(CKM) 통합 관리 프레임워크로 강압의 근거가 강화되었다.</p></div></div>
+<div class="v2-panel hq-figure" style="left:836px;top:206px;width:380px;height:285px"><img class="v2-fig__img" src="../../../../shared/assets/generated/dm-intensive-bp-target-organ-20260701.png" alt="고혈압 표적장기"></div>
+<div class="v2-panel hq-caption" style="left:836px;top:503px;width:380px;height:103px">고혈압 표적장기</div>
+<div class="v2-tip"><span class="v2-tip__t">왜 당뇨 환자에서 강압이 중요한가</span><span class="hq-source">근거 · 2025 AHA/ACC hypertension guideline · 2026 AHA/ACC/ADA/ASN CKM framework · PMID 42375334&nbsp;도입부</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">03 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 03 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">Systematic Review &amp; Meta-analysis 설계</h2><p class="v2-sub">2형당뇨병 강압치료 RCT 9개 통합 — 강력조절 vs 표준조절, random-effects 모형</p>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:64px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">연구 설계</div><p class="hq-card__line v2-body">Systematic review + meta-analysis of RCTs · Front Endocrinol 2026;17:1850865 · PMID 42375334</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact hq-card--tiny" style="left:357px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">포함 시험</div><p class="hq-card__line v2-body">무작위대조시험 (RCT) 9개, 총&nbsp;34,260명의 2형당뇨병 (T2D) 환자</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:650px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">중재군 구성</div><p class="hq-card__line v2-body">강력한 혈압조절 (intensive BP control) — 낮은 목표혈압, 다수 시험이 SBP&lt;130 mmHg 지향</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:943px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">대조군 구성</div><p class="hq-card__line v2-body">표준(관례적) 혈압조절 (conventional/standard BP control)</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:64px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">1차 endpoint</div><p class="hq-card__line v2-body">주요심혈관사건 (MACE) — 심혈관 복합사건 발생</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:357px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">2차 endpoint</div><p class="hq-card__line v2-body">뇌졸중 (stroke)·심부전 (HF)·심근경색 (MI)·심혈관사망 (CV death) 개별 성분</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:650px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">분석 방법</div><p class="hq-card__line v2-body">Random-effects model · 상대위험도 (RR)·95% 신뢰구간 (CI) · PROSPERO CRD420251266814 사전등록</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact hq-card--tiny" style="left:943px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">한계 인지</div><p class="hq-card__line v2-body">시험 간 목표혈압 정의 이질성 · 저혈압 등 안전성 이벤트 보고 편차 · 개별 성분 검정력 제한</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">Systematic Review &amp; Meta-analysis 설계</span><span class="hq-source">근거 · Front Endocrinol 2026;17:1850865 · PMID 42375334 · 9 RCTs · n=34,260 · PROSPERO CRD420251266814</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">04 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 04 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">효능 — 심혈관 결과 forest plot 요약</h2><p class="v2-sub">강력조절 vs 표준조절. 좌측(녹색) = 강압 유리(RR&lt;1), 우측(빨강) = 강압 불리. ● 점추정, 막대 = 효과크기</p>
+<table class="v2-table hq-table hq-table--four hq-table--illustrated" style="width:760px"><thead><tr><th>Outcome</th><th>RR (강력 vs 표준)</th><th>← 강압 유리 · RR 1.0 · 강압 불리 →</th><th>95% CI · p value</th></tr></thead><tbody><tr><th class="v2-body">❤️ 주요심혈관사건 (MACE)</th><td class="v2-body">0.80</td><td class="v2-body" aria-label="비교 도표"><div class="hq-forest"><span class="hq-forest__zero"></span><span class="hq-forest__bar" style="left:35%;width:15%"></span><span class="hq-forest__point" style="left:35%"></span></div></td><td class="v2-body">0.73 ~ 0.89 p&lt;0.001 (유의)</td></tr><tr><th class="v2-body">🧠 뇌졸중 (stroke)</th><td class="v2-body">0.73</td><td class="v2-body" aria-label="비교 도표"><div class="hq-forest"><span class="hq-forest__zero"></span><span class="hq-forest__bar" style="left:29%;width:21%"></span><span class="hq-forest__point" style="left:29%"></span></div></td><td class="v2-body">0.60 ~ 0.87 p=0.008 (유의)</td></tr><tr><th class="v2-body">🫀 심부전·심근경색·심혈관사망</th><td class="v2-body">NS</td><td class="v2-body" aria-label="비교 도표"><div class="hq-forest"><span class="hq-forest__zero"></span><span class="hq-forest__bar hq-forest__bar--neutral" style="left:43%;width:15%"></span><span class="hq-forest__point hq-forest__point--neutral" style="left:50%"></span></div></td><td class="v2-body">95% CI 1.0 포함 · 유의한 차이&nbsp;없음</td></tr></tbody><tfoot><tr><td class="v2-body" colspan="4">요약 — MACE 20%↓·뇌졸중 27%↓ 통계적 유의. 심부전·MI·심혈관사망은 개별로는 유의차 없음 — 이득의 상당 부분이 뇌졸중에서&nbsp;유래.</td></tr></tfoot></table>
+<div class="v2-panel hq-figure" style="left:844px;top:206px;width:372px;height:209.25px"><img class="v2-fig__img" src="../../../../shared/assets/generated/dm-intensive-bp-mace-shield-20260701.png" alt="심혈관 보호"></div>
+<div class="v2-panel hq-caption" style="left:844px;top:427px;width:372px;height:179px">심혈관 보호</div>
+<div class="v2-tip"><span class="v2-tip__t">효능 — 심혈관 결과 forest plot 요약</span><span class="hq-source">근거 · PMID 42375334 · primary MACE &amp; component endpoints · pooled RR (random effects)</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">05 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 05 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">기전 — 왜 뇌졸중에서 이득이 큰가</h2><p class="v2-sub">높은 혈압이 뇌혈관을 손상시키는 경로 — 강압이 이 손상 진행을 늦출 수 있다</p>
+<div class="v2-panel hq-copy hq-copy--dense" style="left:528px;top:206px;width:688px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">MECHANISM · 01 · 🧠 뇌소혈관 손상 · 지속적 고혈압은 뇌 소혈관 (small vessel)의 내막을 두껍게 하고 내강을 좁혀 열공경색·미세출혈을 유발한다. · MECHANISM · 02 · 💧 강압의 직접 효과 · 혈압을 낮추면 혈관벽 전단응력 (shear stress) 이 줄어 죽상경화·파열 위험이 감소 — 허혈성·출혈성 뇌졸중 모두 예방. · MECHANISM · 03 · 🩸 뇌졸중 우선 반응 · 뇌졸중 감소는 메타분석에서 관찰된 결과다. 혈압 조절이 뇌혈관에 영향을 줄 수 있다는 설명은 가능한 기전이며, 이 분석이 직접 검증한 것은 아니다. · MECHANISM · 04 · ⚖️ 심부전·MI는 복합 · 심부전·심근경색은 혈압 외 관상동맥·혈당·지질 등 다인자 영향 — 강압 단독 효과가 개별 성분에서는 희석된다.</p></div></div>
+<div class="v2-panel hq-figure" style="left:64px;top:206px;width:440px;height:248px"><img class="v2-fig__img" src="../../../../shared/assets/generated/dm-intensive-bp-artery-stroke-20260701.png" alt="뇌혈관 손상"></div>
+<div class="v2-panel hq-caption" style="left:64px;top:466px;width:440px;height:140px">뇌혈관 손상</div>
+<div class="v2-tip"><span class="v2-tip__t">기전 — 왜 뇌졸중에서 이득이 큰가</span><span class="hq-source">근거 · PMID 42375334 component analysis · hypertensive cerebral small-vessel disease pathophysiology</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">06 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 06 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">하위군 분석 — 어떤 환자에서 이득이 큰가</h2><p class="v2-sub">목표혈압 강도·이완기 목표 유무가 이득을 좌우 — 동반 혈당·지질 조절은 효과에 영향 없음</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🎯 SBP&lt;130 목표</div><p class="hq-card__line v2-body">수축기혈압 &lt;130 mmHg를 지향한 시험에서 이득이 더 컸다 — 더 낮은 목표가 더 큰 심혈관 보호로 이어짐.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">📊 &lt;130 vs &lt;140</div><p class="hq-card__line v2-body">표준적 &lt;140 목표 대비 &lt;130 목표군에서 MACE·뇌졸중 감소폭이 더 뚜렷하게 관찰되었다.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">📉 명시적 이완기 목표</div><p class="hq-card__line v2-body">이완기혈압 (DBP) 목표를 함께 명시한 시험에서 이득이 더 컸다 — 수축기·이완기 통합 조절의 중요성.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🩸 동반 혈당조절</div><p class="hq-card__line v2-body">강력한 혈당조절 동반 여부는 강압의 심혈관 효과를 바꾸지 않았다 (effect modification 없음).</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🧈 동반 지질조절</div><p class="hq-card__line v2-body">강력한 지질조절 동반 여부 역시 강압 효과를 변화시키지 않았다 — 강압 이득은 독립적.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:844px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🔑 핵심 시사점</div><p class="hq-card__line v2-body">이득의 핵심 조건은 충분히 낮은 목표(SBP&lt;130) + 이완기 목표 — 병용 위험인자 관리와 무관하게 강압 자체가 유효.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">하위군 분석 — 어떤 환자에서 이득이 큰가</span><span class="hq-source">근거 · PMID 42375334 subgroup &amp; meta-regression · SBP&lt;130 vs conventional target · effect-modification&nbsp;analysis</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">07 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 07 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">안전성 — 저혈압 신호 vs 그 외 이상반응</h2><p class="v2-sub">저혈압 (hypotension)이 경계적으로 증가 · 그 외 이상반응은 두 군 간 차이 없음</p>
+<table class="v2-table hq-table hq-table--four" style="width:1152px"><thead><tr><th>안전성 항목</th><th>강력 vs 표준</th><th>RR (95% CI)</th><th>해석·임상 관리</th></tr></thead><tbody><tr><th class="v2-body">🩹 저혈압 (hypotension)</th><td class="v2-body">증가 (경계)</td><td class="v2-body">RR 4.61 (1.01–20.99)</td><td class="v2-body">유일하게 증가한 신호 (p=0.05, 넓은 CI). 고령·기립저혈압 위험군에서 특히 주의 — 단계적 강압·가정혈압 확인</td></tr><tr><th class="v2-body">🫀 서맥·실신</th><td class="v2-body">차이 없음</td><td class="v2-body">유의차 없음</td><td class="v2-body">중대한 서맥·실신 이벤트는 두 군 간 유의한 차이 관찰되지 않음</td></tr><tr><th class="v2-body">🩺 신기능 악화</th><td class="v2-body">차이 없음</td><td class="v2-body">유의차 없음</td><td class="v2-body">급성 신손상·전해질 이상 등 신장 관련 이상반응 증가 신호 없음</td></tr><tr><th class="v2-body">✅ 전체 중대 이상반응</th><td class="v2-body">차이 없음</td><td class="v2-body">유의차 없음</td><td class="v2-body">저혈압 외 다른 이상반응 증가는 관찰되지 않아 전반적 내약성은 양호</td></tr></tbody><tfoot><tr><td class="v2-body" colspan="4">주의 저혈압 신호는 넓은 신뢰구간(1.01–20.99)으로 불확실성이 크나, 고령·다약제·기립저혈압 위험군에서는 가정혈압·기립혈압을 확인하며 목표에 단계적으로 도달한다.</td></tr></tfoot></table>
+<div class="v2-tip"><span class="v2-tip__t">안전성 — 저혈압 신호 vs 그 외 이상반응</span><span class="hq-source">근거 · PMID 42375334 safety analysis · hypotension RR 4.61 (95% CI 1.01–20.99, p=0.05)</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">08 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 08 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">가정혈압으로 안전하게 목표에 도달</h2><p class="v2-sub">진료실 혈압만으로 강압하면 저혈압 위험 — 가정혈압을 보며 단계적으로 낮춘다</p>
+<div class="v2-panel hq-copy" style="left:64px;top:206px;width:748px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">가정혈압 — 아침·저녁 안정 상태에서 측정. 진료실 수치보다 실제 위험을 더 잘 반영한다. · 단계적 강압 실천 요령 · 측정 습관 — 아침 기상 후·취침 전 2회, 앉아 5분 안정 후 측정 · 목표 — 가정혈압 기준 SBP&lt;130 mmHg를 무리 없이 지향 · 단계적 도달 — 급격한 강압 금지, 수 주에 걸쳐 서서히 낮춤 · 기립혈압 — 고령·다약제 환자는 앉았다 일어설 때 혈압 확인 · 저혈압 증상 — 어지럼·실신감 시 즉시 의료진과 용량 조정 · 기록 지참 — 가정혈압 수첩·앱 기록을 진료 시 함께 검토 · ⭐ 핵심 — 목표는 낮은 혈압 자체가 아니라 안전한 도달. 가정·기립혈압으로 저혈압을 피하며 SBP&lt;130에 이른다.</p></div></div>
+<div class="v2-panel hq-figure" style="left:836px;top:206px;width:380px;height:285px"><img class="v2-fig__img" src="../../../../shared/assets/generated/dm-intensive-bp-home-monitor-20260701.png" alt="가정혈압 측정"></div>
+<div class="v2-panel hq-caption" style="left:836px;top:503px;width:380px;height:103px">가정혈압 측정</div>
+<div class="v2-tip"><span class="v2-tip__t">가정혈압으로 안전하게 목표에 도달</span><span class="hq-source">근거 · PMID 42375334 practical implications · 가정혈압 (home BP) 기반 단계적 강압 · 기립저혈압 모니터링</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">09 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 09 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">가이드라인 맥락 — 근거의 정합성</h2><p class="v2-sub">본 메타분석은 최신 고혈압·심장-신장-대사 통합 관리 기조와 방향이 일치한다</p>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🩺 2025 AHA/ACC 고혈압</div><p class="hq-card__line v2-body">진단·치료 기준을 130/80 mmHg로 유지. 당뇨병 등 고위험군에서 적극적 강압을 권고 — 본 분석의 SBP&lt;130 이득과 방향이 일치.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:454px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🔗 2026 CKM 프레임워크</div><p class="hq-card__line v2-body">AHA/ACC/ADA/ASN 심장-신장-대사 (CKM) 단계별 통합 관리. 혈압·혈당·신장·지질을 하나의 위험 스펙트럼으로 접근한다.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:844px;top:206px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🎯 목표혈압 근거</div><p class="hq-card__line v2-body">더 낮은 목표(SBP&lt;130)가 더 큰 심혈관 보호로 이어진다는 본 결과가 가이드라인의 적극적 강압 기조를 뒷받침.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:64px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🧠 뇌졸중 예방 정합</div><p class="hq-card__line v2-body">강압의 이득 중 뇌졸중 감소가 가장 뚜렷 — 뇌졸중 부담이 큰 당뇨병 환자에서 적극적 강압의 명분이 강화된다.</p></div></div>
+<div class="v2-panel hq-card hq-card--compact" style="left:454px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🩺 신장(KDIGO) 연계</div><p class="hq-card__line v2-body">당뇨병성 신장병 혈압 관리와 정합. 강압은 단백뇨·CKD 진행 억제와 연계되어 심혈관·신장 위험을 함께 낮춘다.</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact" style="left:844px;top:416px;width:370px;height:190px"><div class="v2-block"><div class="hq-card__head">🧩 통합 위험 관리</div><p class="hq-card__line v2-body">개별 위험인자보다 통합 위험을 낮추는 전략으로 수렴. 혈압·혈당·지질·신장을 하나의 틀에서 함께 추적한다.</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">가이드라인 맥락 — 근거의 정합성</span><span class="hq-source">근거 · 2025 AHA/ACC hypertension guideline · 2026 AHA/ACC/ADA/ASN CKM staged framework · KDIGO 연계</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">10 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CHAPTER 10 · 논문 검토</div><div class="v2-mark"></div>
+<h2 class="v2-title">진료실 실천 체크리스트</h2><p class="v2-sub">당뇨+고혈압 환자 상담 시 바로 적용 — 목표 설정·안전한 강압·모니터링</p>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:64px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">목표 설정</div><p class="hq-card__line v2-body">DM+HTN 환자에서 SBP&lt;130 mmHg를 무리 없이 지향 (개별 위험 고려)</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact hq-card--tiny" style="left:357px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">이완기 함께</div><p class="hq-card__line v2-body">수축기만이 아니라 이완기혈압 (DBP) 목표도 명시해 통합 조절</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:650px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">뇌졸중 강조</div><p class="hq-card__line v2-body">강압의 이득 중 뇌졸중 예방이 가장 크다는 점을 환자에게 설명</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:943px;top:206px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">가정혈압</div><p class="hq-card__line v2-body">아침·저녁 측정 습관화 · 기록 지참 → 실제 위험 반영·과강압 예방</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:64px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">저혈압 경계</div><p class="hq-card__line v2-body">어지럼·실신감 시 즉시 보고 — 저혈압 신호 (RR 4.61) 사전 안내</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:357px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">고위험군</div><p class="hq-card__line v2-body">고령·다약제·기립저혈압 위험군은 기립혈압 확인하며 단계적 도달</p></div></div>
+<div class="v2-panel hq-card hq-card--compact hq-card--tiny" style="left:650px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">병용 관리</div><p class="hq-card__line v2-body">혈당·지질 조절과 독립적으로 강압 이득 — 각각 최적화하되 강압을 미루지 않음</p></div></div>
+<div class="v2-panel hq-card hq-card--accent v2-panel--accent hq-card--compact hq-card--tiny" style="left:943px;top:416px;width:273px;height:190px"><div class="v2-block"><div class="hq-card__head">통합 프레임</div><p class="hq-card__line v2-body">심장-신장-대사 (CKM) 관점으로 혈압·신장·심혈관 위험을 함께 추적</p></div></div>
+<div class="v2-tip"><span class="v2-tip__t">진료실 실천 체크리스트</span><span class="hq-source">근거 · PMID 42375334 practical application · 2025 AHA/ACC 130/80 · 2026 CKM framework · 가정·기립혈압&nbsp;모니터링</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">11 / 12</div>
+</section>
+<section class="slide slide--v2">
+<div class="v2-accent"></div><img class="v2-logo" src="../../../../shared/assets/clinic_logo.svg" alt="광교바른내과"><div class="v2-chapter">CLOSING · 진료실 결론</div><div class="v2-mark"></div>
+<h2 class="v2-title">Take-home 4가지</h2><p class="v2-sub">핵심 결과와 한계를 함께 확인합니다.</p>
+<div class="v2-panel hq-copy hq-copy--dense" style="left:64px;top:206px;width:714px;height:400px"><div class="v2-block"><p class="hq-copy__body v2-body">1 · SBP&lt;130 강압 — MACE RR 0.80(↓20%)·뇌졸중 RR 0.73(↓27%) 유의 감소. 심부전·MI·심혈관사망은 개별로는 유의차 없음 · 2 · 이득 조건 — SBP&lt;130 목표 + 명시적 이완기 목표에서 이득 최대. 동반 혈당·지질 조절 여부와 무관하게 강압 자체가 유효 · 3 · 안전 — 저혈압 신호 RR 4.61(경계) 외 이상반응 차이 없음. 고령·다약제·기립저혈압 위험군은 특히 주의 · 4 · 실천 — 가정·기립혈압을 보며 단계적으로 SBP&lt;130 도달. 2025 AHA/ACC 130/80·2026 CKM 통합 관리 기조와 일치 · CONTACT · 광교바른내과 · 031-893-4560 · 평일(월–금) 08:30~18:30 (점심 13:00~14:00) · 토 08:30~13:30 · 일·공휴일 휴진 · 경기도 용인시 수지구 광교중앙로 298, 4층 402-404호 · 다시 보기 — 슬라이드 링크 QR</p></div></div>
+<div class="v2-panel hq-qr v2-panel--accent" style="left:802px;top:206px;width:414px;height:400px"><div class="qr-block"><div class="qr-block__code"><svg width="41mm" height="41mm" version="1.1" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM12,2H13V3H12zM15,2H16V3H15zM16,2H17V3H16zM18,2H19V3H18zM19,2H20V3H19zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM25,2H26V3H25zM27,2H28V3H27zM28,2H29V3H28zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM35,2H36V3H35zM36,2H37V3H36zM37,2H38V3H37zM38,2H39V3H38zM2,3H3V4H2zM8,3H9V4H8zM12,3H13V4H12zM13,3H14V4H13zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM17,3H18V4H17zM19,3H20V4H19zM20,3H21V4H20zM22,3H23V4H22zM24,3H25V4H24zM27,3H28V4H27zM28,3H29V4H28zM29,3H30V4H29zM32,3H33V4H32zM38,3H39V4H38zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM11,4H12V5H11zM13,4H14V5H13zM15,4H16V5H15zM16,4H17V5H16zM22,4H23V5H22zM23,4H24V5H23zM29,4H30V5H29zM32,4H33V5H32zM34,4H35V5H34zM35,4H36V5H35zM36,4H37V5H36zM38,4H39V5H38zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM15,5H16V6H15zM16,5H17V6H16zM19,5H20V6H19zM21,5H22V6H21zM26,5H27V6H26zM27,5H28V6H27zM28,5H29V6H28zM29,5H30V6H29zM32,5H33V6H32zM34,5H35V6H34zM35,5H36V6H35zM36,5H37V6H36zM38,5H39V6H38zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM12,6H13V7H12zM17,6H18V7H17zM19,6H20V7H19zM21,6H22V7H21zM22,6H23V7H22zM25,6H26V7H25zM30,6H31V7H30zM32,6H33V7H32zM34,6H35V7H34zM35,6H36V7H35zM36,6H37V7H36zM38,6H39V7H38zM2,7H3V8H2zM8,7H9V8H8zM10,7H11V8H10zM11,7H12V8H11zM13,7H14V8H13zM15,7H16V8H15zM16,7H17V8H16zM17,7H18V8H17zM22,7H23V8H22zM24,7H25V8H24zM29,7H30V8H29zM30,7H31V8H30zM32,7H33V8H32zM38,7H39V8H38zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM30,8H31V9H30zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM35,8H36V9H35zM36,8H37V9H36zM37,8H38V9H37zM38,8H39V9H38zM10,9H11V10H10zM14,9H15V10H14zM15,9H16V10H15zM16,9H17V10H16zM17,9H18V10H17zM21,9H22V10H21zM23,9H24V10H23zM28,9H29V10H28zM29,9H30V10H29zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM11,10H12V11H11zM12,10H13V11H12zM13,10H14V11H13zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM24,10H25V11H24zM26,10H27V11H26zM27,10H28V11H27zM29,10H30V11H29zM30,10H31V11H30zM32,10H33V11H32zM33,10H34V11H33zM34,10H35V11H34zM35,10H36V11H35zM36,10H37V11H36zM4,11H5V12H4zM5,11H6V12H5zM6,11H7V12H6zM7,11H8V12H7zM10,11H11V12H10zM12,11H13V12H12zM13,11H14V12H13zM17,11H18V12H17zM18,11H19V12H18zM20,11H21V12H20zM21,11H22V12H21zM24,11H25V12H24zM25,11H26V12H25zM31,11H32V12H31zM35,11H36V12H35zM37,11H38V12H37zM4,12H5V13H4zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM12,12H13V13H12zM15,12H16V13H15zM16,12H17V13H16zM19,12H20V13H19zM20,12H21V13H20zM24,12H25V13H24zM26,12H27V13H26zM27,12H28V13H27zM28,12H29V13H28zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM32,12H33V13H32zM33,12H34V13H33zM35,12H36V13H35zM37,12H38V13H37zM38,12H39V13H38zM3,13H4V14H3zM4,13H5V14H4zM7,13H8V14H7zM10,13H11V14H10zM13,13H14V14H13zM14,13H15V14H14zM16,13H17V14H16zM18,13H19V14H18zM23,13H24V14H23zM28,13H29V14H28zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM38,13H39V14H38zM2,14H3V15H2zM7,14H8V15H7zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM13,14H14V15H13zM15,14H16V15H15zM16,14H17V15H16zM19,14H20V15H19zM20,14H21V15H20zM24,14H25V15H24zM27,14H28V15H27zM28,14H29V15H28zM29,14H30V15H29zM31,14H32V15H31zM32,14H33V15H32zM34,14H35V15H34zM35,14H36V15H35zM36,14H37V15H36zM37,14H38V15H37zM38,14H39V15H38zM2,15H3V16H2zM4,15H5V16H4zM7,15H8V16H7zM11,15H12V16H11zM12,15H13V16H12zM13,15H14V16H13zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM23,15H24V16H23zM25,15H26V16H25zM27,15H28V16H27zM30,15H31V16H30zM33,15H34V16H33zM37,15H38V16H37zM2,16H3V17H2zM3,16H4V17H3zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM10,16H11V17H10zM14,16H15V17H14zM17,16H18V17H17zM20,16H21V17H20zM22,16H23V17H22zM26,16H27V17H26zM27,16H28V17H27zM28,16H29V17H28zM29,16H30V17H29zM30,16H31V17H30zM32,16H33V17H32zM33,16H34V17H33zM34,16H35V17H34zM35,16H36V17H35zM37,16H38V17H37zM38,16H39V17H38zM2,17H3V18H2zM3,17H4V18H3zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM9,17H10V18H9zM10,17H11V18H10zM13,17H14V18H13zM14,17H15V18H14zM16,17H17V18H16zM22,17H23V18H22zM23,17H24V18H23zM24,17H25V18H24zM25,17H26V18H25zM26,17H27V18H26zM28,17H29V18H28zM30,17H31V18H30zM33,17H34V18H33zM34,17H35V18H34zM37,17H38V18H37zM2,18H3V19H2zM3,18H4V19H3zM5,18H6V19H5zM8,18H9V19H8zM11,18H12V19H11zM12,18H13V19H12zM13,18H14V19H13zM15,18H16V19H15zM16,18H17V19H16zM17,18H18V19H17zM18,18H19V19H18zM19,18H20V19H19zM22,18H23V19H22zM24,18H25V19H24zM27,18H28V19H27zM28,18H29V19H28zM29,18H30V19H29zM30,18H31V19H30zM32,18H33V19H32zM34,18H35V19H34zM36,18H37V19H36zM37,18H38V19H37zM6,19H7V20H6zM14,19H15V20H14zM15,19H16V20H15zM17,19H18V20H17zM19,19H20V20H19zM20,19H21V20H20zM21,19H22V20H21zM22,19H23V20H22zM23,19H24V20H23zM25,19H26V20H25zM31,19H32V20H31zM35,19H36V20H35zM37,19H38V20H37zM2,20H3V21H2zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM13,20H14V21H13zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM18,20H19V21H18zM19,20H20V21H19zM26,20H27V21H26zM27,20H28V21H27zM28,20H29V21H28zM29,20H30V21H29zM31,20H32V21H31zM32,20H33V21H32zM33,20H34V21H33zM34,20H35V21H34zM37,20H38V21H37zM38,20H39V21H38zM3,21H4V22H3zM10,21H11V22H10zM16,21H17V22H16zM17,21H18V22H17zM21,21H22V22H21zM23,21H24V22H23zM24,21H25V22H24zM25,21H26V22H25zM28,21H29V22H28zM29,21H30V22H29zM32,21H33V22H32zM38,21H39V22H38zM3,22H4V23H3zM8,22H9V23H8zM9,22H10V23H9zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM15,22H16V23H15zM16,22H17V23H16zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM24,22H25V23H24zM25,22H26V23H25zM27,22H28V23H27zM28,22H29V23H28zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM36,22H37V23H36zM2,23H3V24H2zM4,23H5V24H4zM5,23H6V24H5zM9,23H10V24H9zM10,23H11V24H10zM11,23H12V24H11zM13,23H14V24H13zM14,23H15V24H14zM15,23H16V24H15zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM25,23H26V24H25zM28,23H29V24H28zM30,23H31V24H30zM31,23H32V24H31zM35,23H36V24H35zM2,24H3V25H2zM4,24H5V25H4zM7,24H8V25H7zM8,24H9V25H8zM12,24H13V25H12zM13,24H14V25H13zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM20,24H21V25H20zM23,24H24V25H23zM28,24H29V25H28zM29,24H30V25H29zM30,24H31V25H30zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM35,24H36V25H35zM38,24H39V25H38zM3,25H4V26H3zM5,25H6V26H5zM6,25H7V26H6zM9,25H10V26H9zM10,25H11V26H10zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM18,25H19V26H18zM22,25H23V26H22zM23,25H24V26H23zM24,25H25V26H24zM26,25H27V26H26zM30,25H31V26H30zM32,25H33V26H32zM33,25H34V26H33zM34,25H35V26H34zM38,25H39V26H38zM2,26H3V27H2zM3,26H4V27H3zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM10,26H11V27H10zM11,26H12V27H11zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM16,26H17V27H16zM17,26H18V27H17zM19,26H20V27H19zM24,26H25V27H24zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM32,26H33V27H32zM33,26H34V27H33zM34,26H35V27H34zM36,26H37V27H36zM37,26H38V27H37zM2,27H3V28H2zM3,27H4V28H3zM4,27H5V28H4zM9,27H10V28H9zM12,27H13V28H12zM14,27H15V28H14zM16,27H17V28H16zM17,27H18V28H17zM18,27H19V28H18zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM24,27H25V28H24zM25,27H26V28H25zM27,27H28V28H27zM31,27H32V28H31zM33,27H34V28H33zM35,27H36V28H35zM2,28H3V29H2zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM16,28H17V29H16zM19,28H20V29H19zM22,28H23V29H22zM24,28H25V29H24zM29,28H30V29H29zM31,28H32V29H31zM32,28H33V29H32zM34,28H35V29H34zM35,28H36V29H35zM37,28H38V29H37zM38,28H39V29H38zM2,29H3V30H2zM6,29H7V30H6zM7,29H8V30H7zM13,29H14V30H13zM15,29H16V30H15zM16,29H17V30H16zM18,29H19V30H18zM22,29H23V30H22zM23,29H24V30H23zM24,29H25V30H24zM26,29H27V30H26zM28,29H29V30H28zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM37,29H38V30H37zM38,29H39V30H38zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM14,30H15V31H14zM16,30H17V31H16zM19,30H20V31H19zM21,30H22V31H21zM24,30H25V31H24zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM35,30H36V31H35zM36,30H37V31H36zM38,30H39V31H38zM10,31H11V32H10zM11,31H12V32H11zM13,31H14V32H13zM14,31H15V32H14zM18,31H19V32H18zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM23,31H24V32H23zM25,31H26V32H25zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM34,31H35V32H34zM35,31H36V32H35zM2,32H3V33H2zM3,32H4V33H3zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM7,32H8V33H7zM8,32H9V33H8zM15,32H16V33H15zM17,32H18V33H17zM22,32H23V33H22zM24,32H25V33H24zM26,32H27V33H26zM28,32H29V33H28zM30,32H31V33H30zM32,32H33V33H32zM34,32H35V33H34zM36,32H37V33H36zM37,32H38V33H37zM38,32H39V33H38zM2,33H3V34H2zM8,33H9V34H8zM10,33H11V34H10zM11,33H12V34H11zM14,33H15V34H14zM15,33H16V34H15zM16,33H17V34H16zM18,33H19V34H18zM21,33H22V34H21zM22,33H23V34H22zM23,33H24V34H23zM25,33H26V34H25zM26,33H27V34H26zM28,33H29V34H28zM30,33H31V34H30zM34,33H35V34H34zM35,33H36V34H35zM37,33H38V34H37zM38,33H39V34H38zM2,34H3V35H2zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM8,34H9V35H8zM10,34H11V35H10zM16,34H17V35H16zM19,34H20V35H19zM20,34H21V35H20zM21,34H22V35H21zM24,34H25V35H24zM26,34H27V35H26zM27,34H28V35H27zM29,34H30V35H29zM30,34H31V35H30zM31,34H32V35H31zM32,34H33V35H32zM33,34H34V35H33zM34,34H35V35H34zM36,34H37V35H36zM38,34H39V35H38zM2,35H3V36H2zM4,35H5V36H4zM5,35H6V36H5zM6,35H7V36H6zM8,35H9V36H8zM10,35H11V36H10zM13,35H14V36H13zM14,35H15V36H14zM15,35H16V36H15zM17,35H18V36H17zM20,35H21V36H20zM21,35H22V36H21zM25,35H26V36H25zM27,35H28V36H27zM29,35H30V36H29zM30,35H31V36H30zM32,35H33V36H32zM34,35H35V36H34zM37,35H38V36H37zM38,35H39V36H38zM2,36H3V37H2zM4,36H5V37H4zM5,36H6V37H5zM6,36H7V37H6zM8,36H9V37H8zM10,36H11V37H10zM13,36H14V37H13zM14,36H15V37H14zM16,36H17V37H16zM17,36H18V37H17zM18,36H19V37H18zM22,36H23V37H22zM23,36H24V37H23zM24,36H25V37H24zM27,36H28V37H27zM28,36H29V37H28zM30,36H31V37H30zM37,36H38V37H37zM38,36H39V37H38zM2,37H3V38H2zM8,37H9V38H8zM11,37H12V38H11zM12,37H13V38H12zM14,37H15V38H14zM15,37H16V38H15zM16,37H17V38H16zM18,37H19V38H18zM22,37H23V38H22zM23,37H24V38H23zM24,37H25V38H24zM28,37H29V38H28zM30,37H31V38H30zM32,37H33V38H32zM34,37H35V38H34zM38,37H39V38H38zM2,38H3V39H2zM3,38H4V39H3zM4,38H5V39H4zM5,38H6V39H5zM6,38H7V39H6zM7,38H8V39H7zM8,38H9V39H8zM10,38H11V39H10zM13,38H14V39H13zM14,38H15V39H14zM15,38H16V39H15zM16,38H17V39H16zM19,38H20V39H19zM25,38H26V39H25zM26,38H27V39H26zM27,38H28V39H27zM28,38H29V39H28zM29,38H30V39H29zM34,38H35V39H34zM36,38H37V39H36zM37,38H38V39H37zM38,38H39V39H38z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div><div class="qr-block__caption">이 자료 다시 보기<br>광교바른내과 · 의료진 참고자료</div></div></div>
+<div class="v2-tip"><span class="v2-tip__t">논문 결과는 환자 특성과 최신 지침에 맞춰 해석합니다.</span><span class="hq-source">근거 · Front Endocrinol 2026;17:1850865 (PMID 42375334) · 9 RCTs · n=34,260 · 2025 AHA/ACC · 2026 CKM</span></div>
+<div class="v2-foot v2-foot--l">광교바른내과 · 의료진 논문 리뷰 · 교육·참고용 — 실제 처방은 원문과 최신 진료지침 확인</div><div class="v2-foot v2-foot--r">12 / 12</div>
+</section>
 </body>
 </html>
