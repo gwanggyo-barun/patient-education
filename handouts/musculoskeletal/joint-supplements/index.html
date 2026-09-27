@@ -19,43 +19,272 @@
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-handout-a4.css">
   <style>
-    /* 영양제 비교 표 — 목록/문장형 셀이므로 좌측 정렬 + 열폭 재배분 ([Gotcha 17]) */
-    .supp-table .lab-row {
-      grid-template-columns: 1.1fr 0.7fr 1.9fr;
-      align-items: start;
+    body {
+      font-family: Pretendard Variable, Pretendard, var(--font-family), sans-serif;
     }
-    .supp-table .lab-row > div { text-align: left; }
-    .supp-table .lab-row__label { color: var(--color-navy); font-weight: var(--weight-semibold); }
-    .supp-table .supp-help { font-weight: var(--weight-semibold); }
-    .supp-table .supp-note { color: var(--color-ink); line-height: 1.4; }
-    .supp-table .supp-warn { color: var(--color-warning); font-weight: var(--weight-semibold); }
+    .page {
+      padding: 7.5mm 14mm 6.5mm;
+      gap: 2.8mm;
+    }
+    .page__header {
+      padding-bottom: 1.4mm;
+    }
+    .page__title-block {
+      gap: 0.8mm;
+      margin-bottom: 0;
+    }
+    .page__title {
+      font-size: 21pt;
+      line-height: 1.15;
+    }
+    .page__subtitle {
+      max-width: 176mm;
+      font-size: 9.4pt;
+      line-height: 1.34;
+    }
+    .page__body {
+      justify-content: flex-start;
+      gap: 2.6mm;
+    }
+    .page__body > section {
+      flex: 0 0 auto;
+    }
+    .page__body > section {
+      gap: 1mm;
+    }
+    .page__title .title-sub {
+      font-weight: 500;
+      font-size: 0.56em;
+      color: var(--color-ink-soft);
+    }
+    .icon-sm {
+      width: 4.6mm;
+      height: 4.6mm;
+      vertical-align: -0.9mm;
+      margin-right: 1.2mm;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5mm;
+    }
 
-    /* 무릎 골관절염 해부 비교 figure — 본문 풀폭 가로 밴드 (정상 vs 닳은 관절) */
-    .knee-figure {
-      margin: 0;
+    /* 표 공통 스타일 (H10 본보기와 같은 표) */
+    .ge-table {
       width: 100%;
-      height: 33mm;
-      overflow: hidden;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8.1pt;
+      line-height: 1.38;
+      color: var(--color-ink-soft);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-canvas);
+    }
+    .ge-table th,
+    .ge-table td {
+      border: 1px solid var(--color-border);
+      padding: 1.1mm 2mm;
+      vertical-align: top;
+      text-align: left;
+    }
+    .ge-table thead th {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-weight: var(--weight-semibold);
+      font-size: 8.5pt;
+    }
+    .ge-table thead th.th-ok {
+      background: var(--color-navy-mid);
+    }
+    .ge-table thead th.th-no,
+    .ge-table thead th.th-er {
+      background: var(--color-danger);
+    }
+    .ge-table thead th.th-soft {
+      background: var(--color-steel-deep);
+    }
+    .ge-table tbody th {
+      color: var(--color-navy);
       background: var(--color-canvas-warm);
+      font-weight: var(--weight-semibold);
+      font-size: 8.3pt;
+      vertical-align: middle;
+    }
+    .ge-table td strong {
+      color: var(--color-navy);
+    }
+    .ge-table td strong.danger {
+      color: var(--color-danger);
+    }
+    .table-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8mm;
+      font-size: 8.1pt;
+      line-height: 1.38;
+    }
+    .table-list li {
+      position: relative;
+      padding-left: 2.8mm;
+    }
+    .table-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-steel);
+      font-weight: bold;
+    }
+
+    /* 그림 + 옆 칸 */
+    .key-grid {
+      display: grid;
+      grid-template-columns: 64mm 1fr;
+      gap: 3.2mm;
+      align-items: stretch;
+    }
+    .fig-slot {
+      margin: 0;
+      width: 64mm;
+      height: 48mm;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-canvas-warm);
+      overflow: hidden;
       position: relative;
     }
-    .knee-figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .knee-figure__pin {
-      position: absolute;
-      font-size: 8.5pt;
-      font-weight: var(--weight-semibold);
-      color: var(--color-navy);
-      background: rgba(255, 255, 255, 0.86);
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-      padding: 1.5px 6px;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
+    .fig-slot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-    /* figure 추가분을 footer 위에서 끝나게 — 리스트 간격 약간 타이트 (이 핸드아웃 한정) */
-    .page__body .card-list { line-height: 1.4; gap: 1.6mm; }
+    .fig-caption {
+      position: absolute;
+      left: 1.5mm;
+      right: 1.5mm;
+      bottom: 1.5mm;
+      padding: 0.8mm 1.2mm;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 3px;
+      font-size: 7.2pt;
+      line-height: 1.25;
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+      text-align: center;
+      border: 1px solid rgba(0, 51, 102, 0.15);
+    }
+    .side-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6mm;
+    }
+    .side-text p {
+      margin: 0;
+    }
+    .side-text strong {
+      color: var(--color-navy);
+    }
+
+    /* 응급 안내 박스 */
+    .warning-box {
+      border: 1px solid var(--color-warning-border);
+      border-left: 4px solid var(--color-warning);
+      background: var(--color-warning-bg);
+      border-radius: var(--radius-sm);
+      padding: 2.2mm 3.2mm;
+    }
+    .warning-title {
+      font-size: 8.6pt;
+      font-weight: var(--weight-bold);
+      color: var(--color-navy);
+      margin-bottom: 1mm;
+      display: flex;
+      align-items: center;
+    }
+    .warning-text {
+      font-size: 8.4pt;
+      line-height: 1.45;
+      color: var(--color-ink);
+    }
+    .warning-text strong {
+      color: var(--color-danger);
+    }
+
+    /* 짝 자료 안내 한 줄 */
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 1.6mm;
+      font-size: 8pt;
+      line-height: 1.4;
+      color: var(--color-ink-soft);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--radius-sm);
+      padding: 1.4mm 2.4mm;
+      background: var(--color-canvas-warm);
+    }
+    .link-row strong {
+      color: var(--color-navy);
+    }
+    .link-row .url {
+      white-space: nowrap;
+      color: var(--color-steel-deep);
+      font-weight: var(--weight-semibold);
+    }
+    .nb { white-space: nowrap; }
+    .link-row a { color: inherit; text-decoration: none; }
+    .ge-table td.td-myth {
+      background: var(--color-warning-bg);
+      color: var(--color-navy);
+      font-weight: var(--weight-semibold);
+    }
+    .ge-table thead th.th-myth {
+      background: var(--color-warning);
+    }
+    .key-list {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 1.4mm;
+      font-size: 8.4pt; line-height: 1.42; color: var(--color-ink);
+    }
+    .key-list li { display: grid; grid-template-columns: 5.2mm 1fr; gap: 1.6mm; align-items: start; }
+    .key-list .no {
+      width: 5.2mm; height: 5.2mm; border-radius: 50%;
+      background: var(--color-navy); color: #FFFFFF;
+      font-size: 8pt; font-weight: var(--weight-bold);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .key-list strong { color: var(--color-navy); }
+    .side-stack { display: flex; flex-direction: column; gap: 1.8mm; justify-content: space-between; }
+    .mini-card {
+      border: 1px solid var(--color-border); border-left: 3px solid var(--color-steel);
+      border-radius: var(--radius-sm); background: var(--color-canvas-warm);
+      padding: 1.4mm 2.4mm; font-size: 8.1pt; line-height: 1.4; color: var(--color-ink);
+    }
+    .mini-card__label { display: flex; align-items: center; font-weight: var(--weight-semibold); color: var(--color-navy); font-size: 8.4pt; margin-bottom: 0.6mm; }
+    .mini-card ul { margin: 0; padding-left: 3.6mm; }
+    .mini-card strong { color: var(--color-navy); }
+    .unit-note { font-weight: 400; color: var(--color-slate); font-size: 7.8pt; margin-left: 1.2mm; }
+    .table-note { font-size: 8.2pt; line-height: 1.35; color: var(--color-navy); margin-top: 0.8mm; }
+    .navy-box { background: var(--color-navy); color: #FFFFFF; border-radius: var(--radius-sm); padding: 2.4mm 3.2mm; }
+    .navy-box__label { display: flex; align-items: center; font-size: 8.6pt; font-weight: var(--weight-semibold); margin-bottom: 0.6mm; }
+    .navy-box__text { font-size: 8.6pt; line-height: 1.45; color: var(--color-canvas); }
+    .key-grid { grid-template-columns: 80mm 1fr; }
+    .fig-slot { width: 80mm; height: 60mm; }
+    .ge-table { font-size: 9pt; line-height: 1.45; }
+    .ge-table th, .ge-table td { padding: 1.5mm 2.4mm; }
+    .key-list { font-size: 9.2pt; gap: 2.6mm; }
+    .mini-card { font-size: 9pt; padding: 2.4mm 3mm; }
+    .side-stack { justify-content: center; }
+    .warning-text { font-size: 9pt; }
+    .page__body { gap: 3.1mm; }
   </style>
 <!-- seo:geo2 --><meta name="description" content="골관절염 환자를 위한 관절 영양제 안내 — 글루코사민·콘드로이틴·MSM·강황(커큐민)·보스웰리아·콜라겐·오메가3의 도움 정도와 주의점, 안전 복용 수칙, 영양제보다 확실한 체중감량·운동·바르는 소염제까지 A4 한 장에 정리.">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/handouts/musculoskeletal/joint-supplements/">
@@ -63,117 +292,124 @@
 </head>
 <body>
 
-<!-- ============================================================ -->
-<!-- PAGE 1 — 관절 영양제, 도움이 될까요? (A4 단일 페이지)            -->
-<!-- ============================================================ -->
 <div class="page">
 
-  <!-- HEADER -->
   <header class="page__header">
     <img src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과" class="page__logo">
     <div class="page__eyebrow">PATIENT HANDOUT · <strong>MUSCULOSKELETAL · OSTEOARTHRITIS</strong></div>
   </header>
 
-  <!-- TITLE BLOCK -->
   <section class="page__title-block">
     <h1 class="page__title">관절 영양제, 도움이 될까요?</h1>
     <p class="page__subtitle">골관절염(퇴행성 관절염) 환자 안내 — 관절 영양제는 진통 효과가 약보다 약하지만 위장·콩팥 부담이 거의 없어, 소염진통제를 쓰기 어려운 분께는 시도해 볼 가치가 있습니다. 다만 만능은 아닙니다. 무엇이 정말 도움이 되는지 함께 정리했습니다.</p>
   </section>
 
-  <!-- BODY -->
   <main class="page__body">
 
-    <!-- 무릎 골관절염 해부 비교 (Anatomy) — 정상 vs 닳은 관절 -->
-    <section style="flex:0 0 auto;">
-      <figure class="knee-figure" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/joint-supplements-knee-oa-anatomy-20260614.png"
-             alt="정상 무릎 관절과 연골이 닳아 관절 간격이 좁아진 골관절염 무릎을 나란히 보여주는 단면 일러스트">
-        <span class="knee-figure__pin" style="left:4mm; top:3.5mm;">정상 관절 — 두꺼운 연골</span>
-        <span class="knee-figure__pin" style="right:4mm; top:3.5mm;">골관절염 — 연골이 닳아 좁아짐</span>
-      </figure>
-    </section>
-
-    <!-- 영양제별 도움/주의 표 -->
     <section>
-      <h2 class="section-heading">영양제별 도움 정도와 주의할 점</h2>
-      <div class="supp-table">
-        <div class="lab-row lab-row--header">
-          <div class="lab-row__label">영양제</div>
-          <div>도움 정도</div>
-          <div>알아둘 점 · 주의</div>
-        </div>
-        <div class="lab-row">
-          <div class="lab-row__label">글루코사민 · 콘드로이틴</div>
-          <div class="supp-help">효과 엇갈림</div>
-          <div class="supp-note">사람마다 효과가 다릅니다. <span class="supp-warn">⚠️ 와파린 등 '피 묽게 하는 약'</span> 드시면 주의가 필요합니다.</div>
-        </div>
-        <div class="lab-row">
-          <div class="lab-row__label">MSM</div>
-          <div class="supp-help">근거 약함</div>
-          <div class="supp-note">효과를 뒷받침하는 근거가 아직 약합니다.</div>
-        </div>
-        <div class="lab-row">
-          <div class="lab-row__label">강황 · 커큐민</div>
-          <div class="supp-help">통증 도움 가능</div>
-          <div class="supp-note">통증 완화에 도움이 될 수 있습니다. <span class="supp-warn">⚠️ 간 무리·피 묽게 하는 약·담석·철분 흡수</span>에 주의하세요.</div>
-        </div>
-        <div class="lab-row">
-          <div class="lab-row__label">보스웰리아</div>
-          <div class="supp-help">비교적 무난</div>
-          <div class="supp-note">비교적 부담 없이 시도해 볼 수 있습니다.</div>
-        </div>
-        <div class="lab-row">
-          <div class="lab-row__label">콜라겐 · 오메가3</div>
-          <div class="supp-help">관절엔 근거 약함</div>
-          <div class="supp-note">다른 건강 목적은 몰라도, 관절 통증 자체에 대한 근거는 약합니다.</div>
+      <h2 class="section-heading"><img data-asset="hi-filled-joints" src="../../../shared/assets/healthicons/filled/body/joints.svg" class="icon-sm" alt="관절">골관절염은 연골이 닳는 병입니다</h2>
+      <div class="key-grid">
+        <figure class="fig-slot" id="js-knee-figure">
+          <img src="../../../shared/assets/generated/joint-supplements-knee-compare-20260927.jpg"
+               alt="왼쪽은 두껍고 매끈한 연골의 정상 무릎, 오른쪽은 연골이 닳아 거칠어지고 관절 간격이 좁아진 골관절염 무릎을 나란히 보여주는 단면 그림">
+          <figcaption class="fig-caption">정상 관절(왼쪽) · 연골이 닳아 좁아진 골관절염(오른쪽)</figcaption>
+        </figure>
+        <div class="side-stack">
+          <div class="mini-card">
+            <div class="mini-card__label"><img data-asset="hi-filled-walking" src="../../../shared/assets/healthicons/filled/exercise/walking.svg" class="icon-sm" alt="운동">영양제보다 확실한 3가지</div>
+            <ol class="key-list">
+              <li><span class="no">1</span><span><strong>체중 감량</strong> — 무릎에 실리는 부담을 가장 확실하게 줄여 줍니다.</span></li>
+              <li><span class="no">2</span><span><strong>걷기 · 허벅지 근력 운동</strong> — 관절을 받쳐 주는 근육을 키웁니다.</span></li>
+              <li><span class="no">3</span><span><strong>바르는 소염제(디클로페낙 젤)</strong> — 위장 부담 없이 아픈 부위에 직접&nbsp;작용합니다.</span></li>
+            </ol>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 안전 복용 수칙 + 진짜 도움 (2열) -->
     <section>
-      <div class="body-2col">
+      <h2 class="section-heading"><img data-asset="hi-filled-pills-3" src="../../../shared/assets/healthicons/filled/medications/pills-3.svg" class="icon-sm" alt="영양제">영양제별 도움 정도와 주의할 점</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 23%;">영양제</th>
+            <th class="th-soft" style="width: 16%;">도움 정도</th>
+            <th style="width: 61%;">알아둘 점 · 주의</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>글루코사민 · 콘드로이틴</th>
+            <td><strong>효과 엇갈림</strong></td>
+            <td>사람마다 효과가 다릅니다. <strong class="danger">와파린 등 '피 묽게 하는 약'</strong> 드시면 주의가 필요합니다.</td>
+          </tr>
+          <tr>
+            <th>MSM</th>
+            <td><strong>근거 약함</strong></td>
+            <td>효과를 뒷받침하는 근거가 아직 약합니다.</td>
+          </tr>
+          <tr>
+            <th>강황 · 커큐민</th>
+            <td><strong>통증 도움 가능</strong></td>
+            <td>통증 완화에 도움이 될 수 있습니다.<br><strong class="danger">간 무리·피 묽게 하는 약·담석·철분 흡수</strong>에 주의하세요.</td>
+          </tr>
+          <tr>
+            <th>보스웰리아</th>
+            <td><strong>비교적 무난</strong></td>
+            <td>비교적 부담 없이 시도해 볼 수 있습니다.</td>
+          </tr>
+          <tr>
+            <th>콜라겐 · 오메가3</th>
+            <td><strong>관절엔 근거 약함</strong></td>
+            <td>다른 건강 목적은 몰라도, 관절 통증 자체에 대한 근거는 약합니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-        <!-- 안전 복용 수칙 -->
-        <div class="card">
-          <div class="card-label card-label--steel">안전하게 드시는 4가지 수칙</div>
-          <ul class="card-list">
-            <li><strong>1. 피 묽게 하는 약을 드시면 꼭 알리기</strong> — 와파린·아스피린 등 복용 사실을 의료진에게 말씀하세요.</li>
-            <li><strong>2. 믿을 수 있는 표준화 제품 고르기</strong> — 함량이 일정한 제품을 선택합니다.</li>
-            <li><strong>3. 8~12주 써 보고 판단</strong> — 그동안 효과가 없으면 중단하세요.</li>
-            <li><strong>4. 여러 개를 고용량으로 한꺼번에 먹지 않기</strong> — 간·콩팥 부담이 커질 수 있습니다.</li>
-          </ul>
-        </div>
+    <section>
+      <h2 class="section-heading"><img data-asset="hi-filled-pharmacy" src="../../../shared/assets/healthicons/filled/symbols/pharmacy.svg" class="icon-sm" alt="수칙">안전하게 드시는 4가지 수칙</h2>
+      <table class="ge-table">
+        <thead>
+          <tr>
+            <th style="width: 42%;">수칙</th>
+            <th class="th-ok" style="width: 58%;">이렇게 하세요</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>1. 피 묽게 하는 약을 드시면 꼭 알리기</th>
+            <td>와파린·아스피린 등 복용 사실을 의료진에게 말씀하세요.</td>
+          </tr>
+          <tr>
+            <th>2. 믿을 수 있는 표준화 제품 고르기</th>
+            <td>함량이 일정한 제품을 선택합니다.</td>
+          </tr>
+          <tr>
+            <th>3. 8~12주 써 보고 판단</th>
+            <td>그동안 효과가 없으면 중단하세요.</td>
+          </tr>
+          <tr>
+            <th>4. 여러 개를 고용량으로 한꺼번에 먹지 않기</th>
+            <td>간·콩팥 부담이 커질 수 있습니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-        <!-- 진짜 도움 (영양제보다 우선) -->
-        <div class="card card--accent">
-          <div class="card-label card-label--navy">영양제보다 확실한 3가지</div>
-          <ul class="card-list">
-            <li><strong>1. 체중 감량</strong> — 무릎에 실리는 부담을 가장 확실하게 줄여 줍니다.</li>
-            <li><strong>2. 걷기 · 허벅지 근력 운동</strong> — 관절을 받쳐 주는 근육을 키웁니다.</li>
-            <li><strong>3. 바르는 소염제(디클로페낙 젤)</strong> — 위장 부담 없이 아픈 부위에 직접 작용합니다.</li>
-          </ul>
-        </div>
-
+    <section>
+      <div class="warning-box">
+        <div class="warning-title"><img data-asset="hi-filled-alert-triangle" src="../../../shared/assets/healthicons/filled/symbols/alert-triangle.svg" class="icon-sm" alt="주의">이럴 때는 진료를 받으세요</div>
+        <div class="warning-text"><strong>통증이 점점 심해지거나 밤에 아파</strong> 잠을 깰 때 · <strong>영양제·약을 써도 나아지지 않을</strong> 때 · <strong>간·신장 질환이 있어</strong> 영양제 복용이 걱정될 때 · <strong>관절이 붓거나 열이 나고 갑자기 움직이기 어려울</strong> 때 (☏ 031-893-4560)</div>
       </div>
     </section>
 
-    <!-- 진료 받을 때 (Red Flags) -->
     <section>
-      <h2 class="section-heading">이럴 때는 진료를 받으세요</h2>
-      <div class="card card--warning">
-        <ul class="card-list" style="columns:2; column-gap:8mm;">
-          <li><strong>통증이 점점 심해지거나 밤에 아파</strong> 잠을 깰 때</li>
-          <li><strong>영양제·약을 써도 나아지지 않을</strong> 때</li>
-          <li><strong>간·신장 질환이 있어</strong> 영양제 복용이 걱정될 때</li>
-          <li><strong>관절이 붓거나 열이 나고 갑자기 움직이기 어려울</strong> 때</li>
-        </ul>
-      </div>
+      <div class="link-row"><img data-asset="hi-filled-medicines" src="../../../shared/assets/healthicons/filled/medications/medicines.svg" class="icon-sm" alt="함께 보기"><span><strong>함께 보기</strong> — 영양제 전반의 복용 원칙은 <a href="../../lifestyle/supplements-basics/">「영양제, 이것만 알고 드세요」</a> 안내문을 보세요 (edu.gwanggyobarun.com)</span></div>
     </section>
 
   </main>
 
-  <!-- FOOTER (mini QR + clinic info) -->
   <footer class="page__footer">
     <div class="page__footer-info">
       <div class="clinic-name">광교바른내과 · Gwanggyo Barun Internal Medicine</div>

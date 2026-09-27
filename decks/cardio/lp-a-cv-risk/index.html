@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1280">
-  <title>Lp(a) and Cardiovascular Risk — Gwanggyo Barun Internal Medicine</title>
+  <title>Lp(a)와 심혈관 위험 — 광교바른내과</title>
 
   <!-- Open Graph for KakaoTalk preview -->
   <meta property="og:type" content="article">
@@ -18,91 +18,112 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-  <!-- QR code library (loaded only on closing slide) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-
   <!-- Design system -->
   <link rel="stylesheet" href="../../../shared/design-tokens.css">
   <link rel="stylesheet" href="../../../shared/clinic-slides.css">
-  <style>
-    /* ====================================================================
-       Lp(a) deck — deck-local layout overrides only.
-       Follows §19 (type scale + golden proportion) and §20/§21:
-       박스 안 "제목+설명"은 하나의 묶음 → 가운데로 모으고, 늘어난
-       공간은 빈 띠가 아니라 폰트로 채운다. shared 기본값은 건드리지 않음.
-       ==================================================================== */
-    .slide:not(.slide--cover):not(.slide--closing) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
-    .slide__body { min-height: 0; }
-
-    /* hero number (s4) — 값+캡션 한 묶음 가운데, 숫자 키워 여백 흡수 */
-    .pattern-hero-number { align-items: stretch; gap: 30px; }
-    .pattern-hero-number__numeric { justify-content: center; gap: 22px; }
-    .pattern-hero-number__value { font-size: 9rem; line-height: 1.0; }
-    .pattern-hero-number__caption { max-width: 100%; font-size: 1.24rem; line-height: 1.48; }
-    .pattern-hero-number__detail { justify-content: center; gap: 14px; }
-    .pattern-hero-number__detail-text { font-size: 1.08rem; line-height: 1.56; }
-
-    /* split metrics (s2 안내 카드) — 두 박스 등높이로 컬럼 채움, 안은 가운데 */
-    .pattern-split { gap: 32px; min-height: 0; }
-    .pattern-split__statement { font-size: 1.78rem; line-height: 1.16; }
-    .pattern-split__supporting { font-size: 1.0rem; line-height: 1.5; }
-    .pattern-split__detail { justify-content: stretch; gap: 18px; min-height: 0; }
-    .pattern-split__metric { flex: 1 1 0; justify-content: center; padding: 20px 22px; }
-    .pattern-split__metric-value { font-size: 1.7rem; line-height: 1.08; }
-    .pattern-split__metric-detail { font-size: 0.97rem; line-height: 1.4; }
-
-    /* tiles (s3 위험 3카드) — 제목+본문 가운데 묶음, 제목 확대 */
-    .tile { padding: 16px 18px; gap: 10px; justify-content: center; }
-    .tile__body { margin-top: 0; }
-    .pattern-grid--3 .tile__title { font-size: 1.12rem; line-height: 1.24; }
-    .pattern-grid--3 .tile__body { font-size: 0.97rem; line-height: 1.42; }
-    .pattern-grid--2 .tile__title { font-size: 1.18rem; line-height: 1.24; }
-    .pattern-grid--2 .tile__body { font-size: 1.0rem; line-height: 1.46; }
-
-    /* visual-focus gutter (s2 · s3 · s5) */
-    .slide__body--visual-focus { gap: 32px; }
-
-    /* alert strip (s6 한계 경고) */
-    .alert-strip { padding: 16px 20px; min-height: 0; display: flex; align-items: center; }
-    .alert-strip__text { font-size: 1.02rem; line-height: 1.42; }
-
-    /* checklist (s7) — 항목 폰트 키워 채움 */
-    .pattern-checklist { height: 100%; align-content: space-between; }
-    .check-item { min-height: 0; }
-    .check-item__text { font-size: 1.08rem; line-height: 1.4; }
-
-    /* footer-safe compact frame */
-    .slide { --slide-pad-y: 46px; }
-    .slide__title-block { margin-bottom: 24px; }
-    .slide__footer { padding-top: 8px; font-size: 12px; }
-
-    /* closing — body present (avoid dead band under title, per §7.2) */
-    .slide--closing { grid-template-rows: auto auto 1fr auto; }
-    .slide--closing .slide__title { margin-top: 0; font-size: 2.5rem; }
-    .slide--closing .slide__body { min-height: 0; justify-content: flex-start; }
-    .closing-grid { min-height: 0; height: 100%; align-items: stretch; }
-    .closing-grid > .qr-block { height: 100%; box-sizing: border-box; }
-    .qr-block { padding: 12px 14px; gap: 8px; }
-    .qr-block__code { width: 96px; height: 96px; }
-
-    /* image figure surface — §0/§2 of proportions: transparent media surface,
-       radius+shadow on <img>, contain for diagrams (no-crop, §15) */
-    .ai-visual { background: transparent; border: none; box-shadow: none; }
-    .ai-visual img { border-radius: 12px; box-shadow: 0 3px 9px rgba(0,0,0,0.08); }
-    .ai-visual--diagram img { object-fit: contain; }
-  </style>
+  <link rel="stylesheet" href="../../../shared/deck-look-v2.css">
+<style>
+ /* HQ3F-redesign 2026-09-27 (원장님 49028) — v1 덱을 v2 룩으로 옮겼다. 본문 16~17px(하한 15),
+    결론 카드·대비 2단·표·가로 단계·숫자 칸·글+그림을 섞어 한 가지 틀 반복을 피한다.
+    그림칸 = 원본 비율 16:9 그대로(잘림·레터박스 없음), 그림 설명은 HTML 캡션 띠.  */
+ body{margin:0;background:var(--v2-surface);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+ section.slide--v2{margin:0 auto 28px}
+ .v2-tip{justify-content:space-between;gap:16px}
+ .v2-tip__t{flex:1 1 auto}
+ .v2-src{flex:none;font-size:12.5px;color:var(--v2-muted);white-space:nowrap}
+ .v2-body{font-size:16px;line-height:1.6}
+ /* 글 패널 — 블록을 패널 높이에 고르게 편다 */
+ .q-text{display:flex;flex-direction:column;justify-content:space-between}
+ .q-text .v2-block + .v2-block{margin-top:0}
+ .q-text .v2-head{margin-bottom:8px}
+ /* 그림 — 칸 비율 = 원본 비율, radius·그림자는 img 자체에 */
+ .q-fig{padding:0;border:0;background:transparent;box-shadow:none}
+ .q-fig::before{content:none}
+ .q-fig__img{display:block;object-fit:contain;border-radius:12px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+ .q-figcap{display:flex;align-items:center;padding:12px 20px}
+ .q-figcap__t{font-size:15px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-figcap__t b{color:var(--v2-navy)}
+ /* 결론 카드 */
+ .q-card{display:flex;flex-direction:column;padding:26px 26px}
+ .q-card--accent{--rule:var(--v2-accent);--chip:var(--v2-chip-accent)}
+ .q-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+ .q-card__top .v2-chip{width:52px;height:52px;border-radius:14px}
+ .q-card__top .v2-chip svg{width:32px;height:32px}
+ .q-card__n{font-size:52px;font-weight:800;line-height:1;color:var(--v2-line)}
+ .q-card__h{font-size:22px;font-weight:700;color:var(--v2-navy);line-height:1.35;word-break:keep-all;margin-bottom:14px}
+ .q-card .v2-body{font-size:18px;line-height:1.7;margin-top:34px}
+ .q-card__k{margin-top:auto;padding:12px 14px;border-radius:8px;background:var(--chip);color:var(--v2-navy);font-size:16px;font-weight:700;border-left:4px solid var(--rule)}
+ /* 표 */
+ .q-table tbody th{font-size:17px}
+ .q-table tbody td{font-size:16px;line-height:1.5}
+ .q-table thead th{font-size:16px}
+ .v2-vs__head{font-size:20px}
+ .v2-vs__lead{font-size:17px;padding:14px 22px}
+ .v2-vs__list{justify-content:space-evenly}
+ .v2-vs__list li{font-size:19px;padding:15px 0 15px 22px;line-height:1.55}
+ .v2-vs__list li::before{top:19px}
+ /* 격자 카드 */
+ .q-grid{display:flex;flex-direction:column;justify-content:center}
+ .q-grid .v2-block{display:flex;flex-direction:column;justify-content:space-between;height:100%}
+ .q-grid .v2-body{max-width:440px}
+ .q-grid .v2-head{margin-bottom:10px}
+ .q-grid .v2-head b{font-size:20px}
+ .q-grid .v2-body{font-size:16px;line-height:1.6}
+ /* 숫자 칸 */
+ .q-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 20px}
+ .q-stat__num{font-size:54px;font-weight:800;color:var(--v2-navy);line-height:1;letter-spacing:-1.5px}
+ .q-stat__num span{font-size:24px;font-weight:700;color:var(--v2-accent);margin-left:2px;letter-spacing:0}
+ .q-stat__lab{margin-top:10px;font-size:18px;font-weight:700;color:var(--v2-navy);word-break:keep-all}
+ .q-stat__cap{margin-top:6px;font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-note{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;align-content:center}
+ .q-note .v2-block + .v2-block{margin-top:0;padding-top:0;border-top:0;padding-left:36px;border-left:1px solid var(--v2-line)}
+ .q-note .v2-body{font-size:17px;line-height:1.65}
+ .q-note .v2-head{margin-bottom:6px}
+ /* 가로 단계 */
+ .q-step{display:flex;flex-direction:column;padding:24px 22px}
+ .q-step__n{width:44px;height:44px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .v2-panel--accent .q-step__n{background:var(--v2-accent)}
+ .q-step__h{margin-top:16px;font-size:21px;font-weight:700;color:var(--v2-navy);line-height:1.3;word-break:keep-all}
+ .q-step__tag{margin:8px 0 12px;align-self:flex-start;padding:4px 10px;border-radius:6px;background:var(--v2-chip-navy);color:var(--v2-navy);font-size:15px;font-weight:700}
+ .q-step .v2-body{font-size:17px;line-height:1.7;margin-top:auto}
+ .q-arrow{position:absolute;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--v2-accent)}
+ /* 체크리스트 */
+ .q-chk{display:flex;align-items:center;gap:16px;padding:0 22px}
+ .q-chk__t{max-width:350px;font-size:19px;line-height:1.55}
+ .q-chk__n{flex:none;font-size:22px;font-weight:800;color:var(--v2-accent);width:34px}
+ .q-chk__t{font-size:19px;line-height:1.55;color:var(--v2-ink);font-weight:600;word-break:keep-all}
+ /* 클로징 */
+ .q-close .v2-block + .v2-block{margin-top:12px;padding-top:12px}
+ .q-close .v2-head{margin-bottom:8px}
+ .q-refs{font-size:15px;line-height:1.55}
+ .q-srow{display:flex;gap:14px;align-items:flex-start}
+ .q-srow + .q-srow{padding-top:8px;border-top:1px solid var(--v2-line)}
+ .q-srow__n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--v2-navy);color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ .q-srow:last-child .q-srow__n{background:var(--v2-accent)}
+ .q-srow__h{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:4px;word-break:keep-all}
+ .q-srow__tag{margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--v2-chip-navy);font-size:15px;font-weight:700}
+ .q-alert{display:flex;flex-direction:column;justify-content:center}
+ .q-alert .v2-head{margin-bottom:6px}
+ .q-srow .v2-body{line-height:1.45}
+ .q-srow__h{margin-bottom:2px}
+ .q-text:has(.q-srow:nth-child(6)){padding-top:18px;padding-bottom:18px}
+ .q-mini{display:flex;align-items:center;gap:18px;padding:16px 22px}
+ .q-mini__num{flex:none;font-size:34px;font-weight:800;color:var(--v2-navy);letter-spacing:-1px}
+ .q-mini__lab{font-size:18px;font-weight:700;color:var(--v2-navy);margin-bottom:2px}
+ .q-mini__cap{font-size:15px;line-height:1.45;color:var(--v2-body);word-break:keep-all}
+ .q-tight th, .q-tight td{padding-top:9px !important;padding-bottom:9px !important}
+ .q-hl{color:var(--v2-accent)}
+ .q-inline-p{display:flex;align-items:center;padding:0 22px}
+ .q-inline{font-size:16px;line-height:1.5;color:var(--v2-body);word-break:keep-all}
+ .q-inline b{color:var(--v2-navy);margin-right:6px}
+ .q-qr{display:flex;align-items:center;justify-content:center}
+</style>
 <!-- seo:geo2 --><meta name="description" content="새로운 심장병 위험인자 지질단백질(a) — 무엇이고, 왜 위험하며, 최근 연구는 무엇을 보여주는지 정리한 안내">
 <link rel="canonical" href="https://edu.gwanggyobarun.com/decks/cardio/lp-a-cv-risk/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Lp(a) and Cardiovascular Risk — Gwanggyo Barun Internal Medicine", "description": "새로운 심장병 위험인자 지질단백질(a) — 무엇이고, 왜 위험하며, 최근 연구는 무엇을 보여주는지 정리한 안내", "url": "https://edu.gwanggyobarun.com/decks/cardio/lp-a-cv-risk/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": "Lp(a)와 심혈관 위험 — 광교바른내과", "description": "새로운 심장병 위험인자 지질단백질(a) — 무엇이고, 왜 위험하며, 최근 연구는 무엇을 보여주는지 정리한 안내", "url": "https://edu.gwanggyobarun.com/decks/cardio/lp-a-cv-risk/", "inLanguage": "ko", "audience": {"@type": "PeopleAudience", "audienceType": "환자·보호자"}, "publisher": {"@type": "MedicalClinic", "name": "광교바른내과"}}</script>
 </head>
 <body>
-
-<div class="deck">
-
-  <!-- ========================================================================
-       SLIDE 01 · COVER
-       ======================================================================== -->
-  <section class="slide slide--cover">
+<section class="slide slide--cover">
     <header class="slide__header">
       <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
       <div class="slide__chapter"><strong>PATIENT EDUCATION</strong> · CARDIOLOGY</div>
@@ -113,362 +134,183 @@
     </div>
     <footer class="slide__footer">
       <span class="slide__source">Lipoprotein(a) · Cardiovascular Risk · VESALIUS-CV (Circulation 2026)</span>
-      <span class="slide__page">광교바른내과 순환기·일반내과</span>
+      <span class="slide__page">01 / 08</span>
     </footer>
   </section>
-
-
-  <!-- ========================================================================
-       SLIDE 02 · WHAT IS Lp(a) — asymmetric split + image (Anatomy)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">02</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 01 · <strong>WHAT IS Lp(a)</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">Lp(a)가 무엇인가요</h2>
-      <p class="slide__subtitle">나쁜 콜레스테롤(LDL)에 끈끈한 단백질이 한 겹 더 붙은, 특별한 형태의 지질입니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">Lp(a)는 LDL 입자에 <em>아포(a)라는 끈끈한 단백질</em>이 추가로 붙어 있는 형태로, 혈관에 더 잘 들러붙고 혈전과도 관련됩니다.</p>
-          <p class="pattern-split__supporting">
-            보통의 콜레스테롤 검사(LDL·HDL·중성지방)에는 나오지 않아 따로 측정해야 알 수 있습니다.
-            농도는 주로 <strong>타고난 유전</strong>으로 정해져 평생 비교적 일정하며, 식사·운동으로는 크게 바뀌지 않습니다.
-            그래서 "콜레스테롤은 정상인데 심장병이 일찍 온" 경우의 숨은 원인이 되기도 합니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">유전으로 결정</div>
-            <div class="pattern-split__metric-value">평생 일정</div>
-            <div class="pattern-split__metric-detail">농도의 약 70~90%가 유전 — 식이·운동으로는 거의 바뀌지 않습니다.</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">일반 검사엔 없음</div>
-            <div class="pattern-split__metric-value">따로 측정</div>
-            <div class="pattern-split__metric-detail">혈액검사로 Lp(a) 항목을 추가해야 확인할 수 있습니다.</div>
-          </div>
-        </div>
-      </div>
-      <!-- IMAGE SLOT · SLIDE 02 · Anatomy (LDL vs Lp(a) structure comparison) — DO NOT GENERATE YET
-        $imagegen spec:
-          subject: Side-by-side cross-section comparison of two lipoprotein particles. LEFT = an
-            ordinary LDL particle (a spherical fatty core wrapped by a single ring of one looping
-            protein, apoB-100). RIGHT = an Lp(a) particle = the SAME LDL sphere with ONE EXTRA long,
-            ribbon-like sticky protein (apolipoprotein(a)) coiled and clasped around the outside,
-            making it visibly "stickier" / spikier than the plain LDL.
-          visual_type: Anatomy / medical structural illustration, clean educational diagram style.
-          palette: brand Navy #003366 + Steel Blue #5B9BD5 for the particles and proteins; soft
-            var(--color-canvas-warm) neutral background; the extra apo(a) ribbon tinted a slightly warmer steel so it
-            reads as the distinguishing feature. (§20: NO red here — there is no blood/bleeding in
-            this structural figure; red is reserved strictly for blood.)
-          composition: two particles equal size, centered, evenly filling the canvas; clear visual
-            difference is the extra outer protein on the right particle.
-          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left text column
-            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
-            ratio exactly so object-fit:contain has zero crop (§15 no-crop, diagram = contain).
-          constraints: ABSOLUTELY NO TEXT — no letters, numbers, words, labels, or captions in any
-            language anywhere on the canvas. Korean labels ("LDL", "Lp(a)", "추가된 단백질 apo(a)")
-            are overlaid via HTML Pretendard separately (§14). No empty side panels — illustration
-            spans the entire canvas evenly.
-      -->
-      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Anatomy">
-        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s02-anatomy-ldl-vs-lpa-20260624.png" alt="LDL 입자와, 거기에 끈끈한 단백질 apo(a)가 한 겹 더 붙은 Lp(a) 입자의 구조 비교">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Lipoprotein(a) = LDL + apolipoprotein(a) · 농도 약 70~90% 유전 결정 — AHA 과학성명(ATVB 2022) · EAS Lp(a) consensus(Eur Heart J 2022)</span>
-      <span class="slide__page">02 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 03 · WHY DANGEROUS — 3-card grid + image (Process)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">03</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 02 · <strong>WHY IT MATTERS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">왜 위험할까요</h2>
-      <p class="slide__subtitle">VESALIUS-CV 연구에서 Lp(a)가 높을수록 심장 혈관 사건이 늘었습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--3">
-        <div class="tile tile--accent">
-          <div class="tile__index">관상동맥 사건</div>
-          <div class="tile__title">위험 약 15% 증가</div>
-          <div class="tile__body">Lp(a)가 100nmol/L 높아질 때마다 주요 관상동맥 사건(심장사·심근경색·응급 시술)이 약 15% 늘었습니다. <strong>(위험비 1.15)</strong></div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">심근경색 (MI)</div>
-          <div class="tile__title">위험 약 23% 증가</div>
-          <div class="tile__body">심근경색만 떼어 보면 100nmol/L 증가당 위험이 약 23% 더 높았습니다. <strong>(위험비 1.23)</strong> 심장 혈관에 특히 영향이 컸습니다.</div>
-        </div>
-        <div class="tile">
-          <div class="tile__index">허혈성 뇌졸중</div>
-          <div class="tile__title">뚜렷한 관련 없음</div>
-          <div class="tile__body">반면 뇌졸중과는 의미 있는 연관이 보이지 않았습니다. <strong>(위험비 1.00)</strong> Lp(a)는 주로 <em>심장 혈관</em> 위험과 연결됩니다.</div>
-        </div>
-      </div>
-      <!-- IMAGE SLOT · SLIDE 03 · Process (artery wall deposit → plaque → heart attack) — DO NOT GENERATE YET
-        $imagegen spec:
-          subject: A 3-stage left-to-right PROCESS illustration of how an Lp(a)-rich particle damages
-            a coronary artery. STAGE 1 = sticky Lp(a) particles depositing into the inner wall of an
-            open, healthy artery cross-section. STAGE 2 = a built-up atherosclerotic plaque
-            narrowing the artery channel. STAGE 3 = the plaque rupturing with a clot (thrombus)
-            blocking blood flow → a heart-muscle (myocardial infarction) territory downstream.
-            Show clear directional arrows between the three stages.
-          visual_type: Process / mechanism medical illustration, clean educational cross-section style.
-          palette: brand Navy #003366 + Steel Blue #5B9BD5 for the artery wall, particles, and plaque.
-            §20 BLOOD = RED: the flowing blood inside the lumen and the clot/thrombus are rendered in
-            medical red (#B91C1C family); arteries themselves stay navy/steel. Soft var(--color-canvas-warm)
-            background.
-          composition: 3 equal stages evenly distributed across canvas width; arrow tips and the final
-            heart-territory MUST NOT be clipped at the edges (diagram = object-fit:contain, §15).
-          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left 3-card column
-            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
-            ratio so contain has zero crop. (If stacking the 3 stages vertically reads better for a
-            portrait slot, keep them top-to-bottom with downward arrows — still no edge clipping.)
-          constraints: ABSOLUTELY NO TEXT — no letters/numbers/words/labels/captions in any language.
-            Korean stage labels are overlaid via HTML Pretendard separately (§14). Illustration spans
-            the whole canvas evenly — no empty side panels.
-      -->
-      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Process">
-        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s03-process-lpa-artery-mi-20260624.png" alt="Lp(a)가 혈관벽에 침착되어 경화반을 키우고, 파열·혈전으로 심근경색에 이르는 3단계 과정">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — VESALIUS-CV 사전계획 분석 · Circulation 2026;153(25):1960-68 · Lp(a) 100nmol/L 증가당 위험비</span>
-      <span class="slide__page">03 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 04 · WHO WAS STUDIED — hero number (7,557명 / 4.6년 / 1차예방)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">04</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 03 · <strong>THE STUDY</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">누구를, 얼마나 오래 관찰했나요</h2>
-      <p class="slide__subtitle">아직 심근경색·뇌졸중을 겪지 않은 고위험군에서 Lp(a)를 측정해 추적했습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-hero-number">
-        <div class="pattern-hero-number__numeric">
-          <div class="pattern-hero-number__value"><em>7,557</em>명</div>
-          <div class="pattern-hero-number__caption">VESALIUS-CV 연구에서 기저 Lp(a)를 측정한 참가자 수 — 중앙 추적 기간은 <strong>4.6년</strong>입니다.</div>
-        </div>
-        <div class="pattern-hero-number__detail">
-          <div class="pattern-hero-number__detail-label">Who & how long</div>
-          <div class="pattern-hero-number__detail-text">
-            대상은 심근경색·뇌졸중 <strong>기왕력이 없는</strong> 고위험자, 즉 <strong>1차 예방</strong> 대상입니다.
-            중앙 연령은 66세, 여성이 42.8%였고, 혈중 Lp(a) 중앙값은 28nmol/L였습니다.
-            이 연구는 평소 잘 다루지 않던 Lp(a)가 실제 심장 사건과 어떻게 연결되는지를 본 것입니다.
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — VESALIUS-CV (NCT03872401) · TIMI Study Group · 1차 예방 대상 · 중앙 추적 4.6년</span>
-      <span class="slide__page">04 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 05 · DRUG EFFECT — 2-card grid + image (Comparison bars 41% vs 35%)
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">05</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 04 · <strong>TREATMENT EFFECT</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">콜레스테롤 강하 치료의 효과</h2>
-      <p class="slide__subtitle">강력한 LDL 강하 주사제(에볼로쿠맙)는 두 그룹 모두에서 심장 사건을 줄였습니다</p>
-    </div>
-    <div class="slide__body slide__body--visual-focus">
-      <div class="pattern-grid pattern-grid--2">
-        <div class="tile tile--accent">
-          <div class="tile__index">Lp(a)가 높은 그룹</div>
-          <div class="tile__title">관상동맥 사건 약 41% 감소</div>
-          <div class="tile__body">기저 Lp(a)가 높았던(105nmol/L 초과) 참가자에서 치료군의 주요 관상동맥 사건이 약 41% 줄었습니다. <strong>(위험비 0.59)</strong></div>
-        </div>
-        <div class="tile tile--accent">
-          <div class="tile__index">Lp(a)가 낮은 그룹</div>
-          <div class="tile__title">관상동맥 사건 약 35% 감소</div>
-          <div class="tile__body">Lp(a)가 낮았던(105nmol/L 이하) 참가자에서도 사건이 약 35% 줄었습니다. <strong>(위험비 0.65)</strong> 양쪽 모두 분명한 이득이 있었습니다.</div>
-        </div>
-      </div>
-      <!-- IMAGE SLOT · SLIDE 05 · Comparison (relative risk reduction bar chart: 41% vs 35%) — DO NOT GENERATE YET
-        $imagegen spec:
-          subject: A simple two-bar comparison column chart showing the RELATIVE REDUCTION in major
-            coronary events with treatment, in two groups. BAR 1 (taller) = high-Lp(a) group, filled
-            to ~41% of a 100% reference frame. BAR 2 (slightly shorter) = low-Lp(a) group, filled to
-            ~35%. Both bars clearly downward-reduction themed (e.g. a faint full-height reference
-            outline behind each bar so the "reduction" reads visually). Keep the two bars only
-            modestly different in height (41 vs 35) so the chart does NOT exaggerate the gap.
-          visual_type: Comparison / clean infographic bar chart, flat educational style.
-          palette: brand Navy #003366 for one bar and Steel Blue #5B9BD5 for the other; soft var(--color-canvas-warm)
-            background; faint steel reference frames. (§20: NO red — this is an outcome chart with no
-            blood; red is reserved strictly for blood/bleeding imagery.)
-          composition: two equal-width bars, centered, evenly filling the canvas; bar tops not clipped.
-          slot_aspect_ratio: strictly ~0.78:1 portrait media surface beside the left 2-card column
-            (right column of a visual-focus split). Target ~5:6.4 (e.g. 760 x 900 px). Match slot
-            ratio exactly → contain with zero crop (§15).
-          constraints: ABSOLUTELY NO TEXT, NUMBERS, AXES LABELS, OR PERCENT SIGNS anywhere on the
-            canvas — no characters in any language. The values "약 41% 감소" / "약 35% 감소" and the
-            group labels are overlaid via HTML Pretendard separately (§14). Bars span the canvas
-            evenly — no empty side panels.
-      -->
-      <figure class="ai-visual ai-visual--focus ai-visual--fill ai-visual--diagram" data-visual-intent="Comparison">
-        <img src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s05-comparison-rrr-bars-20260624.png" alt="Lp(a) 높은 그룹 약 41% 감소 vs 낮은 그룹 약 35% 감소를 나타낸 두 개의 막대">
-      </figure>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">근거 — VESALIUS-CV 사전계획 분석 · 에볼로쿠맙 vs 위약 · 48주 LDL-C 약 −61~67mg/dL 강하</span>
-      <span class="slide__page">05 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 06 · DOES HIGH-Lp(a) BENEFIT MORE? — split + caution (NNT 28 vs 40)
-       NOTE: interaction p=0.45 / p=0.09 → NOT significant. Do NOT overclaim.
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">06</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 05 · <strong>INTERPRETATION</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">"Lp(a)가 높으면 약 효과가 더 좋다"고 말할 수 있을까요</h2>
-      <p class="slide__subtitle">숫자만 보면 그래 보이지만, 통계적으로는 아직 단정할 수 없습니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-split">
-        <div class="pattern-split__primary">
-          <p class="pattern-split__statement">한 명의 사건을 막기 위해 치료가 필요한 인원(NNT)은 Lp(a) 높은 그룹 <em>약 28명</em>, 낮은 그룹 약 40명으로 차이가 있어 보였습니다.</p>
-          <p class="pattern-split__supporting">
-            하지만 두 그룹의 효과 차이가 <strong>우연이 아니라고 보기엔 통계가 충분하지 않았습니다</strong>
-            (상호작용 p=0.45, 절대감소 차이 p=0.09 — 모두 유의 기준 미달).
-            게다가 이 분석은 미리 정해 둔 <strong>하위그룹 가설탐색</strong>이며, Lp(a)를 직접 낮춰 사건이 줄었는지를 본 연구도 아닙니다.
-            그래서 "Lp(a) 높은 사람만 약효가 좋다"고 단정하지 않습니다.
-          </p>
-        </div>
-        <div class="pattern-split__detail">
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">NNT · Lp(a) 높음</div>
-            <div class="pattern-split__metric-value">약 28명</div>
-            <div class="pattern-split__metric-detail">한 사건을 막는 데 필요한 치료 인원 (절대감소 3.7%).</div>
-          </div>
-          <div class="pattern-split__metric">
-            <div class="pattern-split__metric-label">NNT · Lp(a) 낮음</div>
-            <div class="pattern-split__metric-value">약 40명</div>
-            <div class="pattern-split__metric-detail">차이는 통계적으로 유의하지 않음 (p=0.09).</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">한계 — 사전계획 하위분석(가설탐색) · 상호작용 p=0.45 · 절대감소 차이 p=0.09 (모두 비유의)</span>
-      <span class="slide__page">06 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 07 · KEY TAKEAWAYS — checklist
-       ======================================================================== -->
-  <section class="slide">
-    <div class="slide__bg-num">07</div>
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">CHAPTER 06 · <strong>KEY TAKEAWAYS</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">오늘 꼭 기억할 점</h2>
-      <p class="slide__subtitle">Lp(a)는 한 번 알아두면 평생 도움이 되는 위험 정보입니다</p>
-    </div>
-    <div class="slide__body">
-      <div class="pattern-checklist">
-        <div class="check-item">
-          <div class="check-item__num">01</div>
-          <div class="check-item__text">Lp(a)는 일반 콜레스테롤 검사에 안 나오는 <strong>숨은 심혈관 위험인자</strong>입니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">02</div>
-          <div class="check-item__text">농도는 대부분 <strong>유전으로 결정</strong>되어 평생 일정 — 보통 <strong>한 번만 검사</strong>하면 됩니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">03</div>
-          <div class="check-item__text">Lp(a)가 높을수록 <strong>심근경색 등 관상동맥 사건</strong> 위험이 올라갑니다 (뇌졸중과는 무관)</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">04</div>
-          <div class="check-item__text">강력한 LDL 강하 치료는 <strong>Lp(a)가 높든 낮든 모두</strong> 심장 사건을 줄였습니다</div>
-        </div>
-        <div class="check-item">
-          <div class="check-item__num">05</div>
-          <div class="check-item__text">"Lp(a) 높은 사람만 약효가 더 좋다"는 <strong>아직 단정할 수 없습니다</strong> (연구로 미확정)</div>
-        </div>
-        <div class="check-item" style="border-bottom: none;">
-          <div class="check-item__num" style="color: var(--color-navy);">→</div>
-          <div class="check-item__text" style="color: var(--color-slate);">Lp(a)가 높다면 혈압·LDL·흡연·당뇨 등 <strong>고칠 수 있는 위험인자를 더 철저히 관리</strong>하세요</div>
-        </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">Lp(a) 검사 1회 · 관상동맥 위험 인지 · 조절 가능한 위험인자 관리가 핵심</span>
-      <span class="slide__page">07 / 08</span>
-    </footer>
-  </section>
-
-
-  <!-- ========================================================================
-       SLIDE 08 · CLOSING — contact card + QR (live render from og:url)
-       ======================================================================== -->
-  <section class="slide slide--closing">
-    <header class="slide__header">
-      <img class="slide__logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
-      <div class="slide__chapter">END OF DECK · <strong>THANK YOU</strong></div>
-    </header>
-    <div class="slide__title-block">
-      <h2 class="slide__title">심장을 지키는<br><em>한 걸음 더</em></h2>
-      <p class="slide__subtitle">Lp(a) 검사·심혈관 위험 관리에 대해 궁금한 점이 있으시면 언제든 문의해 주세요</p>
-    </div>
-    <div class="slide__body">
-      <div class="closing-grid">
-        <div class="contact-card">
-          <div class="contact-card__item">
-            <div class="contact-card__label">Phone</div>
-            <div class="contact-card__value">031-893-4560</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Address</div>
-            <div class="contact-card__value">경기 용인 수지구<br>광교중앙로 298, 4층</div>
-          </div>
-          <div class="contact-card__item">
-            <div class="contact-card__label">Specialty</div>
-            <div class="contact-card__value">순환기내과 · 일반내과<br>5대암 검진</div>
-          </div>
-        </div>
-        <div class="qr-block">
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">01 · 숨은 위험</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">보통 콜레스테롤 검사에 나오지 않습니다</h2>
+  <p class="v2-sub">지질단백질(a)은 별도의 혈액검사로 확인합니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><b>어떤 물질인가요</b></div><div class="v2-body">나쁜 콜레스테롤 입자에 단백질이 하나 더 붙은 형태입니다. 일반 콜레스테롤과 비슷해 보여도 별도로 살펴야 합니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>어떻게 아나요</b></div><div class="v2-body">일반 콜레스테롤 검사에는 포함되지 않아 따로 측정합니다. 검사표에 이 항목이 없으면 수치를 알 수 없습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>왜 알아두나요</b></div><div class="v2-body">높으면 심장 혈관 위험을 판단할 때 중요한 단서가 됩니다. 다른 위험요인과 함께 보아야 결과를 바르게 해석할 수 있습니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s02-anatomy-ldl-vs-lpa-20260624.png" alt="일반 콜레스테롤 입자와 지질단백질(a) 비교">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 모양이 비슷해도 검사 항목은 다릅니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">농도는 주로 유전으로 정해져 비교적 일정합니다.</span><span class="v2-src">근거 · AHA·EAS 2022 지질단백질(a) 자료 · VESALIUS-CV, Circulation 2026</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">02 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">02 · 왜 중요한가</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">높을수록 심장 혈관 위험이 커질 수 있습니다</h2>
+  <p class="v2-sub">한 연구에서는 심근경색 등 심장 사건과의 관련이 뚜렷했습니다</p>
+  <div class="v2-panel q-fig" style="left:64px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s03-process-lpa-artery-mi-20260624.png" alt="지질단백질(a)과 심장 혈관 문제의 관계">
+  </div>
+  <div class="v2-panel q-figcap" style="left:64px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 혈액검사 결과는 다른 위험요인과 함께 해석합니다.</div></div>
+  <div class="v2-panel q-text" style="left:656px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><b>심장 혈관</b></div><div class="v2-body">지질단백질(a)이 높을수록 심근경색 등 관상동맥 사건이 늘었습니다. 이 연구에서는 심장 혈관과의 관련이 특히 뚜렷했습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>뇌졸중 해석</b></div><div class="v2-body">이 연구에서는 허혈성 뇌졸중과 뚜렷한 관련이 보이지 않았습니다. 뇌졸중과 무관하다고 결론내릴 수는 없으며 다른 연구까지 모두 부정하는 뜻도 아닙니다.</div></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">한 연구의 뇌졸중 결과를 모든 사람에게 일반화하지 않습니다.</span><span class="v2-src">근거 · AHA·EAS 2022 지질단백질(a) 자료 · VESALIUS-CV, Circulation 2026</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">03 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">03 · 연구 대상</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">고위험군 7,557명을 살펴봤습니다</h2>
+  <p class="v2-sub">심근경색이나 뇌졸중을 아직 겪지 않은 분들을 추적했습니다</p>
+  <div class="v2-panel q-card" style="left:64px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">7,557</span></div>
+    <div class="q-card__h">검사한 사람</div>
+    <div class="v2-body">연구 시작 때 지질단백질(a)을 측정했습니다. 참가자는 아직 심근경색이나 뇌졸중을 겪지 않은 고위험군이었습니다.</div>
+    <div class="q-card__k">고위험군 연구</div>
+  </div>
+  <div class="v2-panel q-card q-card--accent" style="left:456px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 23C13.8954 23 13 23.8954 13 25V27C13 28.1046 13.8954 29 15 29H17C18.1046 29 19 28.1046 19 27V25C19 23.8954 18.1046 23 17 23H15ZM15 25V27H17V25H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21 25C21 23.8954 21.8954 23 23 23H25C26.1046 23 27 23.8954 27 25V27C27 28.1046 26.1046 29 25 29H23C21.8954 29 21 28.1046 21 27V25ZM23 25H25V27H23V25Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 23C29.8954 23 29 23.8954 29 25V27C29 28.1046 29.8954 29 31 29H33C34.1046 29 35 28.1046 35 27V25C35 23.8954 34.1046 23 33 23H31ZM31 25V27H33V25H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 33C13 31.8954 13.8954 31 15 31H17C18.1046 31 19 31.8954 19 33V35C19 36.1046 18.1046 37 17 37H15C13.8954 37 13 36.1046 13 35V33ZM15 35V33H17V35H15Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23 31C21.8954 31 21 31.8954 21 33V35C21 36.1046 21.8954 37 23 37H25C26.1046 37 27 36.1046 27 35V33C27 31.8954 26.1046 31 25 31H23ZM25 33H23V35H25V33Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29 33C29 31.8954 29.8954 31 31 31H33C34.1046 31 35 31.8954 35 33V35C35 36.1046 34.1046 37 33 37H31C29.8954 37 29 36.1046 29 35V33ZM31 35V33H33V35H31Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C15.4477 6 15 6.44772 15 7V10H11C8.79086 10 7 11.7909 7 14V38C7 40.2092 8.79086 42 11 42H37C39.2091 42 41 40.2092 41 38V14C41 11.7909 39.2091 10 37 10H35V13C35 13.5523 34.5523 14 34 14C33.4477 14 33 13.5523 33 13V7C33 6.44772 32.5523 6 32 6C31.4477 6 31 6.44772 31 7V10H19V13C19 13.5523 18.5523 14 18 14C17.4477 14 17 13.5523 17 13V7C17 6.44772 16.5523 6 16 6ZM9 38V21H39V38C39 39.1046 38.1046 40 37 40H11C9.89543 40 9 39.1046 9 38Z" fill="currentColor"/>
+</svg></div><span class="q-card__n">4.6년</span></div>
+    <div class="q-card__h">관찰 기간</div>
+    <div class="v2-body">참가자를 추적한 기간의 중앙값입니다. 연구진은 그동안 심장 혈관 사건이 생기는지 살폈습니다.</div>
+    <div class="q-card__k">긴 기간 관찰</div>
+  </div>
+  <div class="v2-panel q-card" style="left:848px;top:206px;width:368px;height:400px">
+    <div class="q-card__top"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div></div>
+    <div class="q-card__h">예방 대상</div>
+    <div class="v2-body">첫 심근경색·뇌졸중을 막는 치료를 살폈습니다. 이미 병을 겪은 분의 재발 예방과는 구분해 읽어야 합니다.</div>
+    <div class="q-card__k">이미 병을 겪은 분과 구분</div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">이 연구의 결과는 참여한 고위험군의 특성을 고려해 읽어야 합니다.</span><span class="v2-src">근거 · AHA·EAS 2022 지질단백질(a) 자료 · VESALIUS-CV, Circulation 2026</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">04 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">04 · 치료 효과</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">강한 콜레스테롤 치료는 양쪽 모두에 도움됐습니다</h2>
+  <p class="v2-sub">지질단백질(a)이 높든 낮든 심장 사건이 줄었습니다</p>
+  <div class="v2-panel q-text" style="left:64px;top:206px;width:560px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><b>높은 그룹</b></div><div class="v2-body">주사 치료를 받은 그룹에서 주요 관상동맥 사건이 약 41% 감소했습니다. 이 수치는 지질단백질(a)이 높은 그룹의 결과입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.0003 6H24.0003V8.64383C25.2726 8.56635 26.5058 8.64043 27.6139 8.87435C22.9135 10.7244 20.7509 15.4788 20.3968 16.2574L20.375 16.3051C19.2264 16.1307 17.982 15.9857 16.8045 15.9965C15.5911 16.0999 14.4138 16.2792 12.4749 17.3713C12.2015 17.5645 11.8329 17.8814 11.332 18.3646C11.2956 18.3384 11.2566 18.3141 11.2056 18.2822C11.1648 18.2567 11.1161 18.2264 11.0549 18.1864C10.778 18.0055 10.3737 17.7607 9.8807 17.5162C8.86512 17.0123 7.61933 16.5826 6.39844 16.5826V12.7043C8.50949 12.7043 10.4075 13.421 11.7027 14.0636C12.152 14.2865 12.5463 14.5093 12.8726 14.7073C13.1613 14.0911 13.5422 13.518 13.9976 12.9896L11.801 9.54272L15.322 7.25618L17.3485 10.4363C18.1831 10.0059 19.0783 9.64876 20.0003 9.36808V6Z" fill="currentColor"/>
+<path d="M30.7567 14.691C29.299 15.3667 28.0372 16.4774 26.8996 18.6154C26.8996 18.6154 24.3757 17.4612 22.3281 16.8613C23.8996 13.6753 25.7283 11.8827 28.425 10.6327C31.0336 9.42353 34.1456 9.11392 37.8425 9.24167L37.6675 14.0001C34.2564 13.8822 32.3024 13.9745 30.7567 14.691Z" fill="currentColor"/>
+<path d="M13.281 19.2195C6.01833 25.6975 16.3935 41.8925 24.6938 41.8925C32.994 41.8925 44.4232 25.7119 36.1066 18.2941C35.9147 18.1229 35.7467 17.9689 35.5907 17.8259C34.9033 17.1956 34.4458 16.7762 33.1774 16.022C30.6251 16.022 29.087 18.5751 28.3868 20.1305C28.3512 20.2095 28.3073 20.2832 28.2565 20.3508L26.6423 24.8414L26.0606 26.9296C25.9992 27.1501 26.0152 27.3849 26.1061 27.595L26.7855 29.1652L30.3035 28.7569L30.5341 30.7435L27.2254 31.1276L27.4404 34.2794L25.4451 34.4155L25.1768 30.4837L24.2706 28.3892C23.9979 27.759 23.9497 27.0543 24.1339 26.3929L24.1513 26.3305L22.1173 27.2503L20.7874 30.6121L18.9276 29.8764L19.9809 27.214L16.7704 26.4576L17.229 24.5109L21.2345 25.4546L24.891 23.8009L26.1206 20.3804C22.9526 18.892 16.4469 16.3956 13.281 19.2195Z" fill="currentColor"/>
+</svg></div><b>낮은 그룹</b></div><div class="v2-body">같은 치료를 받은 그룹에서도 약 35% 감소했습니다. 지질단백질(a)이 낮아도 치료 이득이 관찰됐습니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.1009 6.84867C23.4658 6.09862 24.5345 6.09862 24.8994 6.84867L41.3008 40.5628C41.6239 41.227 41.1402 42.0002 40.4016 42.0002H7.59866C6.86002 42.0002 6.3763 41.227 6.69943 40.5628L23.1009 6.84867ZM22 20C22 18.8954 22.8954 18 24 18C25.1046 18 26 18.8954 26 20V30C26 31.1046 25.1046 32 24 32C22.8954 32 22 31.1046 22 30V20ZM23.9665 34C22.8806 34 22.0002 34.8803 22.0002 35.9663C22.0002 37.0523 22.8806 37.9326 23.9665 37.9326H24.0339C25.1199 37.9326 26.0002 37.0523 26.0002 35.9663C26.0002 34.8803 25.1199 34 24.0339 34H23.9665Z" fill="currentColor"/>
+</svg></div><b>숫자의 차이</b></div><div class="v2-body">두 그룹의 감소율 차이만으로 어느 쪽에 약이 더 잘 듣는다고 단정할 수 없습니다. 두 그룹 모두 이득이 있었다는 점이 중요합니다.</div></div>
+  </div>
+  <div class="v2-panel q-fig" style="left:656px;top:206px;width:560px;height:315px">
+    <img class="v2-fig__img q-fig__img" style="width:560px;height:315px" src="../../../shared/assets/generated/cardio-lp-a-cv-risk-s05-comparison-rrr-bars-20260624.png" alt="지질단백질(a) 높고 낮은 그룹의 치료 효과 비교">
+  </div>
+  <div class="v2-panel q-figcap" style="left:656px;top:533px;width:560px;height:73px"><div class="q-figcap__t">그림 · 두 그룹 모두에서 이득이 관찰됐습니다.</div></div>
+  <div class="v2-tip"><span class="v2-tip__t">두 그룹을 비교한 추가 분석의 한계가 있습니다.</span><span class="v2-src">근거 · AHA·EAS 2022 지질단백질(a) 자료 · VESALIUS-CV, Circulation 2026</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">05 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">05 · 결과 해석</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">높은 사람에게만 약이 더 잘 듣는 것은 아닙니다</h2>
+  <p class="v2-sub">두 그룹의 차이는 우연일 가능성을 배제할 수 없었습니다</p>
+  <div class="v2-vs" style="left:64px;top:206px;width:1152px;height:400px">
+    <div class="v2-vs__col"><div class="v2-vs__head">확인된 내용</div><div class="v2-vs__lead">지질단백질(a)이 높든 낮든, 나쁜 콜레스테롤을 낮추는 주사 치료를 받은 양쪽 그룹에서 심장 사건이 줄었습니다.</div><ul class="v2-vs__list"><li>지질단백질(a)이 높은 그룹에서도 사건 감소</li><li>지질단백질(a)이 낮은 그룹에서도 사건 감소</li><li>두 그룹 모두 나쁜 콜레스테롤을 낮추는 주사 치료를 받았고 심장 사건이 줄었음</li></ul></div>
+    <div class="v2-vs__mid"></div>
+    <div class="v2-vs__col v2-vs__col--b"><div class="v2-vs__head">확인되지 않은 내용</div><div class="v2-vs__lead">두 그룹의 감소율만 나란히 놓고 한쪽에 약이 더 잘 듣는다고 단정하지 않습니다. 추가 연구가 필요합니다.</div><ul class="v2-vs__list"><li>지질단백질(a)이 높은 그룹에만 약이 특별히 더 잘 듣는다는 결론</li><li>지질단백질(a)을 직접 낮춰서 사건이 줄었다는 결론</li><li>검사 수치만으로 모든 환자에게 같은 치료가 필요하다는 결론</li></ul></div>
+  </div>
+  <div class="v2-tip"><span class="v2-tip__t">검사 결과 하나만으로 약을 정하지 않고 혈압·당뇨·흡연 등 전체 심혈관 위험을 함께 봅니다.</span><span class="v2-src">근거 · AHA·EAS 2022 지질단백질(a) 자료 · VESALIUS-CV, Circulation 2026</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">06 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">06 · 다음 행동</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">검사 결과를 알고 조절 가능한 위험을 관리하세요</h2>
+  <p class="v2-sub">유전으로 정해지는 수치보다 바꿀 수 있는 요인에 집중합니다</p>
+  <div class="v2-panel q-chk" style="left:64px;top:206px;width:564px;height:122px"><span class="q-chk__n">01</span><span class="q-chk__t">지질단백질(a)은 일반 콜레스테롤 검사와 별도로 확인합니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:344px;width:564px;height:122px"><span class="q-chk__n">02</span><span class="q-chk__t">주로 유전으로 정해지는 수치여서 평생 비교적 일정하고 보통 한 번 확인합니다</span></div>
+  <div class="v2-panel q-chk" style="left:64px;top:482px;width:564px;height:122px"><span class="q-chk__n">03</span><span class="q-chk__t">수치가 높다면 혈압을 잘 관리하고 다른 심장 혈관 위험도 함께 살핍니다</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:206px;width:564px;height:122px"><span class="q-chk__n">04</span><span class="q-chk__t">나쁜 콜레스테롤을 낮추는 치료를 꾸준히 받으며 임의로 중단하지 않습니다</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:344px;width:564px;height:122px"><span class="q-chk__n">05</span><span class="q-chk__t">흡연과 당뇨 등 조절 가능한 다른 위험요인도 함께 살핍니다</span></div>
+  <div class="v2-panel q-chk" style="left:652px;top:482px;width:564px;height:122px"><span class="q-chk__n">06</span><span class="q-chk__t">검사 수치 하나만 보지 말고 담당 의사와 전체 위험을 함께 해석합니다</span></div>
+  <div class="v2-tip"><span class="v2-tip__t">뇌졸중과 무관하다고 안심할 근거로 쓰지 마세요.</span><span class="v2-src">근거 · AHA·EAS 2022 지질단백질(a) 자료 · VESALIUS-CV, Circulation 2026</span></div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">07 / 08</div>
+</section>
+<section class="slide slide--v2">
+  <div class="v2-accent"></div>
+  <img class="v2-logo" src="../../../shared/assets/clinic_logo.svg" alt="광교바른내과">
+  <div class="v2-chapter">CLOSING</div>
+  <div class="v2-mark"></div>
+  <h2 class="v2-title">다시 보기 · 문의</h2>
+  <p class="v2-sub">QR을 스캔하면 같은 자료를 휴대폰에서 다시 열 수 있습니다</p>
+  <div class="v2-panel q-close" style="left:64px;top:206px;width:702px;height:400px">
+    <div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.4326 33.4416C13.5732 33.9692 13 34.9177 13 36C13 37.6569 14.3431 39 16 39C17.6569 39 19 37.6569 19 36C19 34.476 17.8636 33.2174 16.3919 33.0254C16.3591 32.9079 16.3249 32.7725 16.2901 32.6206C16.1703 32.0972 16.056 31.4332 15.9709 30.7512C15.8856 30.0679 15.8327 29.3904 15.8292 28.8375C15.8279 28.6348 15.8334 28.4582 15.8446 28.3101C16.2293 28.1997 16.6151 28.1003 17 28.0126C17.4413 27.9121 17.7025 28.433 17.9141 28.8551C17.9436 28.9139 17.9721 28.9707 18 29.0237H22.0639C22.9797 29.0235 23.4324 29.0236 23.8903 29.0237C24.3376 29.0238 24.7906 29.0239 25.6851 29.0237H29.7493C29.9775 28.5902 30.4972 27.8981 31 28.0126C31.5363 28.1348 32.0745 28.2798 32.6089 28.4456L32.6056 28.4472C32.6044 28.4449 32.6045 28.4453 32.6057 28.4487C32.6104 28.4627 32.6324 28.5281 32.6542 28.6699C32.6791 28.8313 32.6964 29.0411 32.7035 29.2937C32.7177 29.798 32.6894 30.411 32.6297 31.0287C32.5699 31.6456 32.4811 32.2429 32.3811 32.7144C32.359 32.8188 32.3369 32.9141 32.3152 33H31C30.6212 33 30.275 33.214 30.1056 33.5528L29.1056 35.5528C29.0361 35.6916 29 35.8448 29 36V38C29 38.5523 29.4477 39 30 39H32V37H31V36.2361L31.618 35H34.382L35 36.2361V37H34V39H36C36.5523 39 37 38.5523 37 38V36C37 35.8448 36.9639 35.6916 36.8944 35.5528L35.8944 33.5528C35.725 33.214 35.3788 33 35 33H34.3643C34.4711 32.4673 34.56 31.8448 34.6203 31.2213C34.6856 30.5473 34.7198 29.8478 34.7027 29.2376L34.7019 29.2101C38.6895 30.8949 42 33.6661 42 36.5699V42H6V36.5699C6 33.5376 9.60993 30.6499 13.831 28.993C13.8424 29.6146 13.9013 30.3182 13.9862 30.9988C14.0779 31.7335 14.2029 32.4653 14.3406 33.0669C14.3701 33.1958 14.4008 33.3213 14.4326 33.4416ZM16 37.0147C16.5384 37.0147 17 36.5742 17 36C17 35.4258 16.5384 34.9853 16 34.9853C15.4616 34.9853 15 35.4258 15 36C15 36.5742 15.4616 37.0147 16 37.0147Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 24C28.4183 24 32 20.4183 32 16C32 11.5817 28.4183 8 24 8C19.5817 8 16 11.5817 16 16C16 20.4183 19.5817 24 24 24ZM24 26C29.5228 26 34 21.5228 34 16C34 10.4772 29.5228 6 24 6C18.4772 6 14 10.4772 14 16C14 21.5228 18.4772 26 24 26Z" fill="currentColor"/>
+</svg></div><b>광교바른내과</b></div><div class="v2-body">경기 용인 수지구 광교중앙로 298, 4층 · <b>031-893-4560</b><br>평일 08:30~18:30 · 토요일 08:30~13:30</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip" style="--rule:var(--v2-accent);--chip:var(--v2-chip-accent)"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 15V4H10C9.44772 4 9 4.44772 9 5V43C9 43.5523 9.44772 44 10 44H38C38.5523 44 39 43.5523 39 43V16H28C27.4477 16 27 15.5523 27 15ZM29 14V4.58579L38.4142 14H29ZM17 19C17 18.4477 17.4477 18 18 18H23C25.2091 18 27 19.7909 27 22C27 24.0759 25.4186 25.7825 23.3948 25.9808L27 29.5859L30.2929 26.293L31.7072 27.7072L28.4142 31.0001L31.7071 34.293L30.2928 35.7072L27 32.4143L23.7072 35.7072L22.2929 34.293L25.5858 31.0001L20.5857 26H19V33H17V25V19ZM23 24H19V20H23C24.1046 20 25 20.8954 25 22C25 23.1046 24.1046 24 23 24Z" fill="currentColor"/>
+</svg></div><b>이 자료의 성격</b></div><div class="v2-body">지질단백질(a) 검사와 심혈관 위험을 이해하기 위한 환자 안내자료입니다.</div></div><div class="v2-block"><div class="v2-head"><div class="v2-chip"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31 10C30.4477 10 30 10.4477 30 11C30 11.5523 30.4477 12 31 12V19H28V12C28.5523 12 29 11.5523 29 11C29 10.4477 28.5523 10 28 10H20C19.4477 10 19 10.4477 19 11C19 11.5523 19.4477 12 20 12V19H17V12C17.5523 12 18 11.5523 18 11C18 10.4477 17.5523 10 17 10H9C8.44772 10 8 10.4477 8 11C8 11.5523 8.44772 12 9 12V19H7V16H5V19H4V21H5V34H4V36H5V38H7V36L41 36V38H43V36H44V34H43V21H44V19H43V16H41V19H39V12C39.5523 12 40 11.5523 40 11C40 10.4477 39.5523 10 39 10H31ZM37 19V12H33V19L37 19ZM33 21L37 21V26H33V21ZM31 21V29C31 31.2091 32.7909 33 35 33C37.2091 33 39 31.2091 39 29V21H41V34L7 34V21H9V29C9 31.2091 10.7909 33 13 33C15.2091 33 17 31.2091 17 29V21H20V29C20 31.2091 21.7909 33 24 33C26.2091 33 28 31.2091 28 29V21H31ZM26 19V12H22V19H26ZM15 19V12H11V19L15 19ZM11 21L15 21V23H11V21Z" fill="currentColor"/>
+</svg></div><b>참고한 자료</b></div><div class="v2-body"><span class="q-refs">AHA·EAS 2022 지질단백질(a) 자료 · VESALIUS-CV, Circulation 2026</span></div></div>
+  </div>
+  <div class="v2-panel v2-panel--accent q-qr" style="left:796px;top:206px;width:420px;height:400px">
+    <div class="qr-block">
           <div class="qr-block__code"><svg width="37mm" height="37mm" version="1.1" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM11,2H12V3H11zM13,2H14V3H13zM16,2H17V3H16zM18,2H19V3H18zM20,2H21V3H20zM23,2H24V3H23zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM11,3H12V4H11zM12,3H13V4H12zM14,3H15V4H14zM15,3H16V4H15zM16,3H17V4H16zM18,3H19V4H18zM20,3H21V4H20zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM17,4H18V5H17zM18,4H19V5H18zM21,4H22V5H21zM23,4H24V5H23zM25,4H26V5H25zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM14,5H15V6H14zM17,5H18V6H17zM19,5H20V6H19zM22,5H23V6H22zM23,5H24V6H23zM24,5H25V6H24zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM17,6H18V7H17zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM25,6H26V7H25zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM18,7H19V8H18zM20,7H21V8H20zM23,7H24V8H23zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM13,9H14V10H13zM14,9H15V10H14zM16,9H17V10H16zM21,9H22V10H21zM24,9H25V10H24zM2,10H3V11H2zM8,10H9V11H8zM10,10H11V11H10zM15,10H16V11H15zM16,10H17V11H16zM17,10H18V11H17zM19,10H20V11H19zM24,10H25V11H24zM25,10H26V11H25zM26,10H27V11H26zM27,10H28V11H27zM28,10H29V11H28zM31,10H32V11H31zM32,10H33V11H32zM33,10H34V11H33zM5,11H6V12H5zM6,11H7V12H6zM9,11H10V12H9zM11,11H12V12H11zM12,11H13V12H12zM13,11H14V12H13zM14,11H15V12H14zM16,11H17V12H16zM17,11H18V12H17zM21,11H22V12H21zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM30,11H31V12H30zM31,11H32V12H31zM32,11H33V12H32zM2,12H3V13H2zM3,12H4V13H3zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM12,12H13V13H12zM17,12H18V13H17zM18,12H19V13H18zM19,12H20V13H19zM20,12H21V13H20zM22,12H23V13H22zM23,12H24V13H23zM24,12H25V13H24zM26,12H27V13H26zM30,12H31V13H30zM32,12H33V13H32zM33,12H34V13H33zM2,13H3V14H2zM4,13H5V14H4zM5,13H6V14H5zM7,13H8V14H7zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM16,13H17V14H16zM17,13H18V14H17zM18,13H19V14H18zM21,13H22V14H21zM22,13H23V14H22zM24,13H25V14H24zM25,13H26V14H25zM28,13H29V14H28zM29,13H30V14H29zM30,13H31V14H30zM31,13H32V14H31zM32,13H33V14H32zM33,13H34V14H33zM34,13H35V14H34zM4,14H5V15H4zM5,14H6V15H5zM6,14H7V15H6zM8,14H9V15H8zM9,14H10V15H9zM10,14H11V15H10zM13,14H14V15H13zM14,14H15V15H14zM15,14H16V15H15zM16,14H17V15H16zM18,14H19V15H18zM26,14H27V15H26zM28,14H29V15H28zM33,14H34V15H33zM34,14H35V15H34zM2,15H3V16H2zM3,15H4V16H3zM6,15H7V16H6zM7,15H8V16H7zM12,15H13V16H12zM14,15H15V16H14zM16,15H17V16H16zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM25,15H26V16H25zM28,15H29V16H28zM29,15H30V16H29zM33,15H34V16H33zM34,15H35V16H34zM3,16H4V17H3zM4,16H5V17H4zM5,16H6V17H5zM6,16H7V17H6zM8,16H9V17H8zM9,16H10V17H9zM11,16H12V17H11zM15,16H16V17H15zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM27,16H28V17H27zM28,16H29V17H28zM31,16H32V17H31zM33,16H34V17H33zM2,17H3V18H2zM5,17H6V18H5zM9,17H10V18H9zM10,17H11V18H10zM11,17H12V18H11zM13,17H14V18H13zM16,17H17V18H16zM17,17H18V18H17zM20,17H21V18H20zM25,17H26V18H25zM27,17H28V18H27zM30,17H31V18H30zM31,17H32V18H31zM32,17H33V18H32zM34,17H35V18H34zM5,18H6V19H5zM6,18H7V19H6zM8,18H9V19H8zM9,18H10V19H9zM12,18H13V19H12zM14,18H15V19H14zM15,18H16V19H15zM19,18H20V19H19zM21,18H22V19H21zM24,18H25V19H24zM25,18H26V19H25zM26,18H27V19H26zM27,18H28V19H27zM29,18H30V19H29zM30,18H31V19H30zM31,18H32V19H31zM34,18H35V19H34zM3,19H4V20H3zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM7,19H8V20H7zM12,19H13V20H12zM13,19H14V20H13zM17,19H18V20H17zM18,19H19V20H18zM19,19H20V20H19zM21,19H22V20H21zM22,19H23V20H22zM25,19H26V20H25zM26,19H27V20H26zM28,19H29V20H28zM31,19H32V20H31zM32,19H33V20H32zM34,19H35V20H34zM4,20H5V21H4zM6,20H7V21H6zM8,20H9V21H8zM9,20H10V21H9zM10,20H11V21H10zM11,20H12V21H11zM17,20H18V21H17zM20,20H21V21H20zM21,20H22V21H21zM23,20H24V21H23zM24,20H25V21H24zM25,20H26V21H25zM28,20H29V21H28zM29,20H30V21H29zM31,20H32V21H31zM32,20H33V21H32zM34,20H35V21H34zM2,21H3V22H2zM4,21H5V22H4zM5,21H6V22H5zM6,21H7V22H6zM7,21H8V22H7zM9,21H10V22H9zM13,21H14V22H13zM14,21H15V22H14zM16,21H17V22H16zM17,21H18V22H17zM24,21H25V22H24zM30,21H31V22H30zM31,21H32V22H31zM32,21H33V22H32zM33,21H34V22H33zM4,22H5V23H4zM5,22H6V23H5zM8,22H9V23H8zM10,22H11V23H10zM11,22H12V23H11zM12,22H13V23H12zM13,22H14V23H13zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM21,22H22V23H21zM26,22H27V23H26zM27,22H28V23H27zM29,22H30V23H29zM30,22H31V23H30zM31,22H32V23H31zM33,22H34V23H33zM2,23H3V24H2zM3,23H4V24H3zM10,23H11V24H10zM11,23H12V24H11zM12,23H13V24H12zM14,23H15V24H14zM18,23H19V24H18zM20,23H21V24H20zM21,23H22V24H21zM22,23H23V24H22zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM29,23H30V24H29zM30,23H31V24H30zM32,23H33V24H32zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM7,24H8V25H7zM8,24H9V25H8zM12,24H13V25H12zM16,24H17V25H16zM17,24H18V25H17zM18,24H19V25H18zM24,24H25V25H24zM27,24H28V25H27zM30,24H31V25H30zM31,24H32V25H31zM33,24H34V25H33zM2,25H3V26H2zM5,25H6V26H5zM9,25H10V26H9zM10,25H11V26H10zM14,25H15V26H14zM16,25H17V26H16zM21,25H22V26H21zM22,25H23V26H22zM25,25H26V26H25zM27,25H28V26H27zM32,25H33V26H32zM2,26H3V27H2zM3,26H4V27H3zM4,26H5V27H4zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM9,26H10V27H9zM11,26H12V27H11zM13,26H14V27H13zM16,26H17V27H16zM17,26H18V27H17zM18,26H19V27H18zM21,26H22V27H21zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM33,26H34V27H33zM10,27H11V28H10zM12,27H13V28H12zM13,27H14V28H13zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM17,27H18V28H17zM18,27H19V28H18zM19,27H20V28H19zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM23,27H24V28H23zM25,27H26V28H25zM26,27H27V28H26zM30,27H31V28H30zM32,27H33V28H32zM34,27H35V28H34zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM11,28H12V29H11zM13,28H14V29H13zM16,28H17V29H16zM17,28H18V29H17zM19,28H20V29H19zM22,28H23V29H22zM23,28H24V29H23zM24,28H25V29H24zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM32,28H33V29H32zM33,28H34V29H33zM2,29H3V30H2zM8,29H9V30H8zM12,29H13V30H12zM13,29H14V30H13zM14,29H15V30H14zM15,29H16V30H15zM17,29H18V30H17zM21,29H22V30H21zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM34,29H35V30H34zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM14,30H15V31H14zM15,30H16V31H15zM16,30H17V31H16zM20,30H21V31H20zM22,30H23V31H22zM24,30H25V31H24zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM31,30H32V31H31zM33,30H34V31H33zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM11,31H12V32H11zM14,31H15V32H14zM15,31H16V32H15zM18,31H19V32H18zM19,31H20V32H19zM20,31H21V32H20zM21,31H22V32H21zM22,31H23V32H22zM26,31H27V32H26zM27,31H28V32H27zM29,31H30V32H29zM30,31H31V32H30zM31,31H32V32H31zM33,31H34V32H33zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM11,32H12V33H11zM14,32H15V33H14zM15,32H16V33H15zM16,32H17V33H16zM18,32H19V33H18zM21,32H22V33H21zM26,32H27V33H26zM27,32H28V33H27zM29,32H30V33H29zM30,32H31V33H30zM33,32H34V33H33zM34,32H35V33H34zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM12,33H13V34H12zM13,33H14V34H13zM16,33H17V34H16zM17,33H18V34H17zM18,33H19V34H18zM20,33H21V34H20zM21,33H22V34H21zM24,33H25V34H24zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM31,33H32V34H31zM32,33H33V34H32zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM11,34H12V35H11zM13,34H14V35H13zM14,34H15V35H14zM19,34H20V35H19zM20,34H21V35H20zM24,34H25V35H24zM25,34H26V35H25zM26,34H27V35H26zM27,34H28V35H27zM29,34H30V35H29zM33,34H34V35H33z" id="qr-path" fill="#003366" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></div>
           <div class="qr-block__text">
             <div class="qr-block__label">SCAN TO REVISIT</div>
@@ -476,96 +318,9 @@
             <div class="qr-block__hint">QR을 스캔하면 핸드폰에서<br>같은 자료를 다시 볼 수 있어요</div>
           </div>
         </div>
-      </div>
-    </div>
-    <footer class="slide__footer">
-      <span class="slide__source">광교바른내과 · Gwanggyo Barun Internal Medicine</span>
-      <span class="slide__page">08 / 08</span>
-    </footer>
-  </section>
-
-</div>
-
-
-<!-- Presenting mode toggle -->
-<div class="deck-nav">
-  <button id="presentBtn" type="button">Present</button>
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const btn = document.getElementById('presentBtn');
-    let currentIndex = 0;
-
-    function showSlide(idx) {
-      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      currentIndex = idx;
-    }
-
-    function fitScale() {
-      const sw = window.innerWidth, sh = window.innerHeight;
-      const scale = Math.min(sw / 1280, sh / 720);
-      document.documentElement.style.setProperty('--present-scale', scale);
-    }
-
-    function enterPresent() {
-      document.body.classList.add('presenting');
-      fitScale();
-      window.addEventListener('resize', fitScale);
-      showSlide(0);
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Exit';
-    }
-
-    function exitPresent() {
-      document.body.classList.remove('presenting');
-      slides.forEach(s => s.classList.remove('is-active'));
-      window.removeEventListener('resize', fitScale);
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-      btn.textContent = 'Present';
-    }
-
-    btn.addEventListener('click', () => {
-      document.body.classList.contains('presenting') ? exitPresent() : enterPresent();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!document.body.classList.contains('presenting')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        if (currentIndex > 0) showSlide(currentIndex - 1);
-      } else if (e.key === 'Escape') {
-        exitPresent();
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Render QR code on closing slide using og:url as source of truth
-  (function() {
-    const qrEl = document.querySelector('.qr-block__code');
-    if (!qrEl) return;
-    const ogUrl = document.querySelector('meta[property="og:url"]')?.content;
-    if (!ogUrl || typeof QRCode === 'undefined') return;
-    if (qrEl.children.length > 0) return; // already injected by build
-    new QRCode(qrEl, {
-      text: ogUrl,
-      width: 96, height: 96,
-      colorDark: '#003366',
-      colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
-  })();
-</script>
-
+  </div>
+  <div class="v2-foot v2-foot--l">광교바른내과 · 환자 안내자료 · ⚠️ 교육·참고용 — 진단·치료 결정은 담당 의료진과 상의해 정합니다</div>
+  <div class="v2-foot v2-foot--r">08 / 08</div>
+</section>
 </body>
 </html>
